@@ -21356,6 +21356,3793 @@ completion_reward = {
 	###################
 	###################
 
+	focus = {
+		id = GER_start_the_proletarian_revolution
+		icon = GFX_focus_SWE_refuge_for_revolutionaries
+		prerequisite = { focus = GER_tend_to_the_future_of_germany }
+		mutually_exclusive = { focus = GER_monarchist_sentiment }
+
+		x = -11
+		y = 1
+		relative_position_id = GER_tend_to_the_future_of_germany
+		cost = 5
+		available = {
+		}
+
+		bypass = {
+			has_government = communism
+		}
+
+		allow_branch = {
+			has_dlc = "Gotterdammerung"
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = obsolete_focus_branches_visibility
+						option = HIDE
+					}
+				}
+				NOT = {
+					has_completed_focus = GER_monarchist_sentiment
+					has_completed_focus = GER_remilitarize_the_rhineland
+				}
+			}
+			always = no
+		}
+
+		offset = {
+			x = 11
+			y = 0
+			trigger = {
+				has_game_rule = {
+					rule = obsolete_focus_branches_visibility
+					option = HIDE
+				}
+				has_completed_focus = GER_start_the_proletarian_revolution
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL_CHARACTER }
+
+		completion_reward = {
+			if = {
+				limit = {
+					has_active_mission = GER_growing_public_dissent_mission
+				}
+				add_days_mission_timeout = {
+					mission = GER_growing_public_dissent_mission
+					days = 45
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+
+			set_country_flag = GER_the_proletarian_revolution_flag
+
+			add_political_power = 75
+			add_stability = -0.025
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			if = {
+				limit = {
+					51 = { 
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = GER_proletarian_state_flag }
+					}
+				}
+				51 = { #Sachsen
+					add_dynamic_modifier = {
+						modifier = GER_proletariat_uprising_modifier
+					}
+					set_state_flag = GER_proletarian_state_flag
+				}
+			}
+			else = {
+				random_core_state = {
+					limit = {
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = GER_proletarian_state_flag }
+						NOT = { 
+							has_dynamic_modifier = {
+								modifier = GER_proletariat_uprising_modifier
+							}
+							state = 65 #Sachsen
+							state = 60 #Thüringen
+							state = 51 #Rhineland
+						}
+					}
+
+					prioritize = { 909 61 54 58 } #schleswig, Mecklenburg, Franken and Holstein
+
+					add_dynamic_modifier = {
+						modifier = GER_proletariat_uprising_modifier
+					}
+					set_state_flag = GER_proletarian_state_flag
+				}
+			}
+			if = {
+				limit = {
+					60 = { 
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = GER_proletarian_state_flag }
+					}
+				}
+				60 = { #Sachsen
+					add_dynamic_modifier = {
+						modifier = GER_proletariat_uprising_modifier
+					}
+					set_state_flag = GER_proletarian_state_2_flag
+				}
+			}
+			else = {
+				random_core_state = {
+					limit = {
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = GER_proletarian_state_flag }
+						NOT = { 
+							has_dynamic_modifier = {
+								modifier = GER_proletariat_uprising_modifier
+							}
+							state = 65 #Sachsen
+							state = 60 #Thüringen
+							state = 51 #Rhineland
+						}
+					}
+
+					prioritize = { 58 54 61 909 } #holstein, Franken, Mecklenburg and Schleswig
+
+					add_dynamic_modifier = {
+						modifier = GER_proletariat_uprising_modifier
+					}
+					set_state_flag = GER_proletarian_state_flag
+				}
+			}
+			if = {
+				limit = {
+					65 = {
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = GER_proletarian_state_flag }
+					}
+				}
+				65 = { #Sachsen
+					add_dynamic_modifier = {
+						modifier = GER_proletariat_uprising_modifier
+					}
+					set_state_flag = GER_proletarian_state_flag
+				}
+			}
+			else = {
+				random_core_state = {
+					limit = {
+						is_fully_controlled_by = ROOT
+						NOT = { has_state_flag = GER_proletarian_state_flag }
+						NOT = { 
+							has_dynamic_modifier = {
+								modifier = GER_proletariat_uprising_modifier
+							}
+							state = 65 #Sachsen
+							state = 60 #Thüringen
+							state = 51 #Rhineland
+						}
+					}
+
+					prioritize = { 61 54 909 58 } #Mecklenburg, Franken, schleswig and holstein
+
+					add_dynamic_modifier = {
+						modifier = GER_proletariat_uprising_modifier
+					}
+					set_state_flag = GER_proletarian_state_3_flag
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			unlock_decision_tooltip = GER_expand_the_proletarian_uprisings_decision
+				
+			custom_effect_tooltip = generic_skip_one_line_tt
+			activate_mission_tooltip = GER_imminent_proletarian_revolution_mission
+			custom_effect_tooltip = GER_start_the_proletarian_revolution_civil_war_tt
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_states_with_proletarian_uprising_joins_cw_tt
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_political_advisor
+			show_ideas_tooltip = GER_walter_ulbricht
+			show_ideas_tooltip = GER_bernhard_bastlein
+
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = obsolete_focus_branches_visibility
+						option = HIDE
+					}
+				}
+				mark_focus_tree_layout_dirty = yes
+			}
+
+			every_core_state = {
+				limit = {
+					has_state_flag = GER_proletarian_state_flag
+				}
+				clr_state_flag = GER_proletarian_state_flag
+			}
+		}
+	}
+
+	focus = {
+		id = GER_formalize_the_intelligence_wing
+		icon = GFX_focus_generic_whispers 
+		prerequisite = { focus = GER_start_the_proletarian_revolution }
+
+		x = -3
+		y = 1
+		relative_position_id = GER_start_the_proletarian_revolution
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL_CHARACTER FOCUS_FILTER_POLITICAL }
+
+		completion_reward = {
+			if = {
+				limit = {
+					NOT = { has_completed_focus = GER_the_peoples_victory }
+				}
+				add_days_mission_timeout = {
+					mission = GER_imminent_proletarian_revolution_mission
+					days = 15
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+
+			add_dynamic_modifier = {
+				modifier = GER_communist_intel_modifier
+			}
+
+			if = {
+				limit = {
+					has_dlc = "La Resistance"
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+
+				custom_effect_tooltip = available_political_advisor
+				show_ideas_tooltip = GER_wilhelm_zaisser			
+			}
+		}
+	}
+	
+	focus = {
+		id = GER_form_the_stasi
+		icon = GFX_focus_GER_form_the_stasi
+		prerequisite = { focus = GER_formalize_the_intelligence_wing }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_formalize_the_intelligence_wing
+		cost = 5
+		available = {
+			has_government = communism
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL_CHARACTER }
+
+		completion_reward = {
+
+			IF = {
+				limit = { has_dlc = "La Resistance" }
+
+				IF = {
+					limit = { has_intelligence_agency = no }
+
+					create_intelligence_agency = {
+						name = "Stasi"
+						icon = GFX_intelligence_agency_logo_GER_stasi
+					}
+				}
+				ELSE = {
+					gain_random_agency_upgrade = yes
+				}
+
+
+				custom_effect_tooltip = generic_skip_one_line_tt
+
+				remove_dynamic_modifier = { #for tooltip reasons this appears twice
+					modifier = GER_communist_intel_modifier
+				}
+
+				custom_effect_tooltip = generic_skip_one_line_tt
+
+				add_dynamic_modifier = {
+					modifier = GER_stasi_modifier
+				}
+
+				IF = {
+					limit = {
+						NOT = {
+							has_country_flag = GER_has_done_stasi_focus_flag
+						}
+					}
+					add_to_variable = { GER_communist_intel_operative_slot = 1 tooltip = operative_slot_tt }
+					add_to_variable = { GER_communist_intel_stability_factor = -0.05 tooltip = stability_factor_tt }
+				}
+
+				set_country_flag = GER_has_done_stasi_focus_flag
+			}
+
+			ELSE = {
+
+				remove_dynamic_modifier = { #for tooltip reasons this appears twice
+					modifier = GER_communist_intel_modifier
+				}
+
+				custom_effect_tooltip = generic_skip_one_line_tt
+
+				add_dynamic_modifier = {
+					modifier = GER_stasi_modifier
+				}
+
+				add_to_variable = { GER_communist_intel_subversive_activities_upkeep = -0.3 tooltip = subversive_activites_upkeep_tt }
+				add_to_variable = { GER_communist_intel_stability_factor = -0.05 tooltip = stability_factor_tt }
+			}
+
+			if = {
+				limit = {
+					has_dlc = "La Resistance"
+				}
+ 				custom_effect_tooltip = generic_skip_one_line_tt
+	
+				GER_wilhelm_zaisser = {
+					remove_trait = {
+						slot = political_advisor
+						trait = GER_intelligence_coordinator
+					}
+				}
+				GER_wilhelm_zaisser = {
+ 					add_trait = { 
+ 						slot = political_advisor
+ 						trait = GER_secretary_of_state_security
+ 					}
+ 				}
+ 			}
+		}
+	}
+	focus = {
+		id = GER_effective_operations
+		icon = GFX_focus_generic_secret_service_agency
+		prerequisite = { focus = GER_formalize_the_intelligence_wing }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_formalize_the_intelligence_wing
+		cost = 5
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			IF = {
+				limit = {
+					has_dynamic_modifier = {
+						modifier = GER_stasi_modifier
+					}
+				}
+				custom_effect_tooltip = GER_stasi_modifier_intro_tt
+			}
+			ELSE = {
+				custom_effect_tooltip = GER_communist_intel_modifier_intro_tt
+			}
+
+			IF = {
+				limit = { has_dlc = "La Resistance" }
+
+
+				add_to_variable = { GER_communist_intel_subversive_activities_upkeep = -0.25 tooltip = subversive_activites_upkeep_tt }
+				add_to_variable = { GER_communist_intel_intel_network_gain = 0.2 tooltip = intel_network_gain_factor_tt }
+			}
+			ELSE = {
+				add_to_variable = { GER_communist_intel_decryption_factor = 0.2 tooltip = decryption_factor_tt }
+				add_to_variable = { GER_communist_intel_encryption_factor = 0.2 tooltip = encryption_factor_tt }
+				
+			}
+		}
+	}
+	focus = {
+		id = GER_assemble_red_orchestra
+		icon = GFX_focus_SWI_embrace_rote_drei
+		prerequisite = { focus = GER_form_the_stasi }
+		prerequisite = { focus = GER_effective_operations }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_effective_operations
+		cost = 5
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+
+			IF = {
+				limit = { has_dlc = "La Resistance"}
+
+				create_operative_leader = {
+					name = GER_erich_mielke
+					bypass_recruitment = no 
+					traits = { operative_commando operative_escape_artist operative_master_interrogator }
+					available_to_spy_master = yes  
+					GFX = GFX_portrait_GER_erich_mielke
+					gender = male
+				}
+
+				create_operative_leader = {
+					name = GER_marie_luise_hammerstein
+					bypass_recruitment = no 
+					traits = { operative_natural_orator }
+					available_to_spy_master = yes 
+					nationalities = { GER SOU } 
+					GFX = GFX_portrait_GER_marie_luise_hammerstein
+					gender = female
+				}
+
+				create_operative_leader = {
+					name = GER_rudolf_herrnstadt
+					bypass_recruitment = no 
+					traits = { }
+					available_to_spy_master = yes 
+					nationalities = { GER SOU } 
+					GFX = GFX_portrait_GER_rudolf_herrnstadt
+					gender = male
+				}
+
+				create_operative_leader = {
+					name = GER_ernst_wollweber
+					bypass_recruitment = no 
+					traits = { operative_tough }
+					available_to_spy_master = yes 
+					nationalities = { GER SOU } 
+					GFX = GFX_portrait_GER_ernst_wollweber
+					gender = male
+				}
+
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_stasi_modifier_intro_tt
+
+				add_to_variable = { GER_communist_intel_operative_slot = 2 tooltip = operative_slot_tt }
+			}
+
+			ELSE = {
+				custom_effect_tooltip = GER_stasi_modifier_intro_tt
+				add_to_variable = { GER_communist_intel_decryption_factor = 0.2 tooltip = decryption_factor_tt }
+				add_to_variable = { GER_communist_intel_encryption_factor = 0.2 tooltip = encryption_factor_tt }
+			}
+
+			
+		}
+	}
+	focus = {
+		id = GER_ressurect_the_red_front_fighters_league
+		icon = GFX_focus_YUG_pan_slavic_congress
+		prerequisite = { focus = GER_start_the_proletarian_revolution }
+
+		x = 3
+		y = 1
+		relative_position_id = GER_start_the_proletarian_revolution
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL_CHARACTER } 
+
+		completion_reward = {
+			if = {
+				limit = {
+					NOT = { has_completed_focus = GER_the_peoples_victory }
+				}
+				add_days_mission_timeout = {
+					mission = GER_imminent_proletarian_revolution_mission
+					days = 15
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+
+			add_popularity = {
+				ideology = communism
+				popularity = 0.03
+			}
+			add_war_support = 0.05
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			division_template = {
+				name = "Roter Frontkämpferbund Division"
+				priority = 1
+				division_names_group = GER_MIL_03
+				template_counter = 69 #nice!
+				is_locked = no
+				regiments = {
+					militia = { x = 0 y = 0 }
+					militia = { x = 0 y = 1 }
+					militia = { x = 0 y = 2 }
+					militia = { x = 1 y = 0 }
+					militia = { x = 1 y = 1 }
+				
+				}
+				override_model = GER_militia_alt_0_entity
+			}
+
+			IF = {
+				limit = {
+					NOT = {
+						any_controlled_state = {
+							has_dynamic_modifier = { modifier = GER_proletariat_uprising_modifier }
+						}
+						has_government = communism
+					}
+				}
+
+				custom_effect_tooltip = GER_ressurect_the_red_front_fighters_league_tt
+			}
+			every_core_state = {
+				limit = {
+					OR = {
+						has_dynamic_modifier = { modifier = GER_proletariat_uprising_modifier }
+						AND = {
+							controller = {
+								has_government = communism
+								original_tag = GER
+							}
+						}
+					}
+					
+				}
+				random_select_amount = 3
+
+				create_unit = {
+					division = "division_template =\"Roter Frontkämpferbund Division\" start_experience_factor = 0.2 start_equipment_factor = 0.7"
+					owner = PREV
+					count = 2
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						has_government = communism
+						has_completed_focus = GER_the_peoples_victory
+					} 
+				}
+				custom_effect_tooltip = GER_spawn_more_communist_militias_in_civil_war_tt
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_ernst_thalmann = {
+				remove_trait = {
+					slot = political_advisor
+					trait = GER_proletarian_leader
+				}
+			}
+			GER_ernst_thalmann = {
+ 				add_trait = { 
+ 					slot = political_advisor
+ 					trait = GER_militant_communist
+ 				}
+ 			}
+			
+		}
+	}
+	focus = {
+		id = GER_reorganize_nationale_volksarmee
+		icon = GFX_focus_generic_full_social_mobilization
+		prerequisite = { focus = GER_ressurect_the_red_front_fighters_league }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_ressurect_the_red_front_fighters_league
+		cost = 5
+		available = {
+			has_civil_war = no
+		}
+
+		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_WAR_SUPPORT }
+
+		completion_reward = {
+			if = {
+				limit = {
+					NOT = { has_completed_focus = GER_the_peoples_victory }
+				}
+				add_days_mission_timeout = {
+					mission = GER_imminent_proletarian_revolution_mission
+					days = 15
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+
+			add_war_support = 0.05
+			add_command_power = 15
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_planning_speed = -0.1 tooltip = planning_speed_factor_tt }
+			add_to_variable = { GER_military_unit_leader_as_advisor_cp_cost_factor = -0.1 tooltip = unit_leader_as_advisor_cp_cost_factor_tt }
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			effect_tooltip = { #GER_vincenz_muller exists in the character file. This is for TT purposes only
+				add_field_marshal_role  = {
+					character = GER_vincenz_muller
+					traits = { infantry_officer trait_reckless politically_connected offensive_doctrine }
+					skill = 2
+					attack_skill = 2
+					defense_skill = 2
+					planning_skill = 1
+					logistics_skill = 2
+				}
+			}
+			show_unit_leaders_tooltip = GER_hans_kahle
+			show_unit_leaders_tooltip = GER_hans_marchwitza
+			show_unit_leaders_tooltip = GER_arno_von_lenski
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			if = {
+				limit = {
+					NOT = { has_country_flag = GER_communist_civil_war_flag }
+				}
+				custom_effect_tooltip = GER_cannot_join_oppossing_civil_war_side_tt
+			}
+			if = {
+				limit = {
+					has_character = GER_maximilian_von_weichs
+				}
+				retire_character = GER_maximilian_von_weichs
+			}
+			if = {
+				limit = {
+					has_character = GER_ewald_von_kleist
+				}
+				retire_character = GER_ewald_von_kleist
+			}
+		}
+	}
+	focus = {
+		id = GER_political_commissars
+		icon = GFX_focus_SOV_mobilization_plan
+		prerequisite = { focus = GER_ressurect_the_red_front_fighters_league }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_ressurect_the_red_front_fighters_league
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT }
+
+		completion_reward = {
+			if = {
+				limit = {
+					NOT = { has_completed_focus = GER_the_peoples_victory }
+				}
+				add_days_mission_timeout = {
+					mission = GER_imminent_proletarian_revolution_mission
+					days = 15
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_popularity = {
+				ideology = communism
+				popularity = 0.03
+			}
+			add_war_support = 0.05
+			add_command_power = 15
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_morale_factor = 0.1 tooltip = army_morale_factor_tt }
+			add_to_variable = { GER_military_army_org_factor = -0.05 tooltip = army_org_factor_tt }
+			add_to_variable = { GER_military_command_power_gain_mult = 0.1 tooltip = command_power_gain_mult_tt }		
+		}
+	}
+	focus = {
+		id = GER_rapid_army_expansion
+		icon = GFX_focus_SOV_the_glory_of_the_red_army_communism
+		prerequisite = { focus = GER_reorganize_nationale_volksarmee }
+		prerequisite = { focus = GER_political_commissars}
+
+		x = 1
+		y = 1
+		relative_position_id = GER_reorganize_nationale_volksarmee
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_MANPOWER }
+
+		completion_reward = {
+
+
+			GER_add_or_modify_politburo = yes
+			add_to_variable = { GER_politburo_mobilization_laws_cost_factor = -0.15 tooltip = mobilization_laws_cost_factor_tt }
+			add_to_variable = { GER_politburo_conscription_factor = 0.05 tooltip = conscription_factor_tt }
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_mobilization_speed = 0.1 tooltip = mobilization_speed_tt }
+			add_to_variable = { GER_military_experience_gain_army_factor = -0.1 tooltip = experience_gain_army_factor_tt }
+			add_to_variable = { GER_military_minimum_training_level = -0.1 tooltip = minimum_training_level_tt }
+
+			
+		}
+	}
+	focus = {
+		id = GER_the_peoples_victory
+		icon = GFX_focus_GER_the_peoples_victory
+		prerequisite = { focus = GER_start_the_proletarian_revolution }
+
+		x = 0
+		y = 3
+		relative_position_id = GER_start_the_proletarian_revolution
+		cost = 5
+		available = {
+			communism > 0.5
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+
+		completion_reward = {
+			hidden_effect = { #To switch color
+				set_cosmetic_tag = GER_communism 
+			}
+			every_controlled_state = {
+				limit = {
+					has_dynamic_modifier = { modifier = GER_proletariat_uprising_modifier }
+				}
+				remove_dynamic_modifier = { modifier = GER_proletariat_uprising_modifier }
+			}
+
+			add_stability = 0.05
+			add_political_power = 100
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			if = {
+				limit = {
+					NOT = { has_government = communism }
+				}
+				set_politics = {
+					ruling_party = communism
+					elections_allowed = no
+					last_election = "1933.3.5"
+					election_frequency = 48
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+
+			IF = {
+				limit = { has_country_flag = GER_thalmann_freed_from_prison_flag }
+
+				GER_ernst_thalmann = {
+					add_country_leader_role = {
+						promote_leader = yes
+						country_leader = {
+							ideology = leninism
+							expire = 1965.1.1
+							traits = { NOR_stern_communist} 
+						}
+					}
+				}
+			}
+
+			ELSE = {
+				GER_walter_ulbricht = {
+					add_country_leader_role = {
+						promote_leader = yes
+						country_leader = {
+							ideology = stalinism
+							expire = 1965.1.1
+							traits = { GER_inflexible_communist_organizer } 
+						}
+					}
+				}
+			}
+
+			add_named_threat = { threat = 5 name = GER_the_peoples_victory }
+		}
+	}
+	focus = {
+		id = GER_legacy_of_the_spartacus_league
+		icon = GFX_focus_GER_legacy_of_the_spartacus_league
+		prerequisite = { focus = GER_the_peoples_victory }
+		mutually_exclusive = { focus = GER_proletarian_dictatorship }
+		x = -5
+		y = 1
+		relative_position_id = GER_the_peoples_victory
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_POLITICAL_CHARACTER }
+
+		completion_reward = {
+
+			add_political_power = 50
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			set_party_name = { 
+				ideology = communism
+				long_name = GER_communism_arbeit_party_long
+				name = GER_communism_arbeit_party
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			country_event = {
+				id = wuw_GER_german_politics.02
+				hours = 6
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			
+			custom_effect_tooltip = available_political_advisor
+			show_ideas_tooltip = GER_otto_ruhle
+
+
+			set_cosmetic_tag = GER_peoples_republic
+		}
+	}
+	focus = {
+		id = GER_social_ownership
+		icon = GFX_focus_DEN_no_regulations
+		prerequisite = { focus = GER_legacy_of_the_spartacus_league }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_legacy_of_the_spartacus_league
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+
+		completion_reward = {
+
+			add_stability = 0.1
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_factory_max_efficiency_factor = 0.025
+				tooltip = production_factory_max_efficiency_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_efficiency_gain_factor = 0.025
+				tooltip = production_factory_efficiency_gain_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				tooltip = production_factory_start_efficiency_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_line_change_production_efficiency_factor = 0.025
+				tooltip = line_change_production_efficiency_factor_tt
+			}
+		}
+	}
+	focus = {
+		id = GER_civil_liberties
+		icon = GFX_focus_spr_torchbearers_of_tomorrow
+		prerequisite = { focus = GER_social_ownership }
+
+		x = -2
+		y = 1
+		relative_position_id = GER_social_ownership
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL }
+
+		completion_reward = {
+			GER_add_or_modify_politburo = yes
+
+			add_to_variable = { GER_politburo_political_power_factor = 0.1 tooltip = political_power_factor_tt }
+			add_to_variable = { GER_politburo_resistance_growth = -0.05 tooltip = resistance_growth_tt }
+			add_to_variable = { GER_politburo_compliance_growth = 0.05 tooltip = compliance_growth_tt }
+			add_to_variable = { GER_politburo_subjects_autonomy_gain = -0.15 tooltip = subjects_autonomy_gain_tt }
+		}
+	}
+
+	focus = {
+		id = GER_embrace_democratic_institutions
+		icon = GFX_focus_generic_improve_the_administration
+		prerequisite = { focus = GER_social_ownership }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_social_ownership
+		cost = 5
+		available = {
+			is_subject = no
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+
+		completion_reward = {
+			GER_add_or_modify_politburo = yes
+
+			add_to_variable = { GER_politburo_democratic_drift = 0.02 tooltip = democratic_drift_tt }
+			add_to_variable = { GER_politburo_party_popularity_stability_factor = 0.15 tooltip = party_popularity_stability_factor_tt }
+			add_to_variable = { GER_politburo_defensive_war_stability_factor = 0.15 tooltip = defensive_war_stability_factor_tt }
+		}
+	}
+
+	focus = {
+		id = GER_protect_the_revolution
+		icon = GFX_focus_spr_masters_of_our_own_fate
+		prerequisite = { focus = GER_civil_liberties }
+		prerequisite = { focus = GER_embrace_democratic_institutions }
+		prerequisite = { focus = GER_spark_the_flame_of_revolution }
+
+		x = 1
+		y = 2
+		relative_position_id = GER_civil_liberties
+		cost = 10
+		available = {
+			is_subject = no
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_protect_the_revolution_tt
+		}
+	}
+
+	focus = {
+		id = GER_establish_volkskommissariats
+		icon = GFX_focus_GER_establish_volkskommissariats
+		prerequisite = { focus = GER_protect_the_revolution }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_protect_the_revolution
+		cost = 5
+		available = {
+			is_subject = no
+			num_subjects > 0
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL }
+
+		completion_reward = {
+			add_political_power = 100
+			
+			custom_effect_tooltip = GER_establish_volkskommissariats_tt
+		}
+	}
+
+	focus = {
+		id = GER_industrialize_volkskommissariats
+		icon = GFX_goal_generic_construct_civilian
+		prerequisite = { focus = GER_establish_volkskommissariats }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_establish_volkskommissariats
+		cost = 5
+		available = {
+			is_subject = no
+			num_subjects > 0
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			custom_effect_tooltip = GER_industrialize_volkskommissariats_tt
+		}
+	}
+
+	focus = {
+		id = GER_instill_german_discipline
+		icon = GFX_focus_generic_license_production
+		prerequisite = { focus = GER_establish_volkskommissariats }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_establish_volkskommissariats
+		cost = 5
+		available = {
+			is_subject = no
+			num_subjects > 0
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			IF = {
+				limit = {
+					any_country = {
+						has_autonomy_state = autonomy_volkskommissariat
+					}
+				}
+				every_other_country = {
+					limit = {
+						has_autonomy_state = autonomy_volkskommissariat
+					}
+
+					add_ideas = GER_volkskommissariat_military
+				}
+			}
+
+			ELSE = {
+				custom_effect_tooltip = GER_current_future_volkskommisariats_tt
+				effect_tooltip = {
+					add_ideas = GER_volkskommissariat_military
+				}
+			}
+		}
+	}
+	focus = {
+		id = GER_integrate_subjects_economies
+		icon = GFX_focus_usa_reestablish_the_gold_standard
+		prerequisite = { focus = GER_industrialize_volkskommissariats }
+		prerequisite = { focus = GER_instill_german_discipline }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_industrialize_volkskommissariats
+		cost = 10
+		available = {
+			is_subject = no
+			num_subjects > 0
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+
+			IF = {
+				limit = {
+					any_country = {
+						has_autonomy_state = autonomy_volkskommissariat
+					}
+				}
+				every_other_country = {
+					limit = {
+						has_autonomy_state = autonomy_volkskommissariat
+					}
+
+					add_ideas = GER_volkskommissariat_economic_integration
+				}
+			}
+
+			ELSE = {
+				custom_effect_tooltip = GER_current_future_volkskommisariats_tt
+				effect_tooltip = {
+					add_ideas = GER_volkskommissariat_economic_integration
+				}
+			}
+		}
+	}
+	focus = {
+		id = GER_integrate_volkskommissariats
+		icon = GFX_focus_GER_integrate_volkskommissariats
+		prerequisite = { focus = GER_integrate_subjects_economies }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_integrate_subjects_economies
+		cost = 10
+		available = {
+			num_subjects > 2
+		}
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			custom_effect_tooltip = GER_integrate_volkskommissariats_tt
+		}
+	}
+
+
+	focus = {
+		id = GER_liberate_austria
+		icon = GFX_focus_generic_attack_austria
+		prerequisite = { focus = GER_social_ownership focus = GER_state_controlled_economy }
+
+		x = 3
+		y = 1
+		relative_position_id = GER_social_ownership
+		cost = 10
+		available = {
+			is_subject = no
+			AUS = { 
+				exists = yes
+				NOT = { has_war_with = ROOT }
+				NOT = { is_guaranteed_by = ROOT }
+				NOT = { has_non_aggression_pact_with = ROOT }
+				OR = {
+					is_subject_of = ROOT
+					AND = {
+						is_subject = no
+						OR = {
+							NOT = { is_in_faction_with = ROOT }
+							AND = {
+								is_faction_leader = no
+								is_in_faction_with = ROOT
+							}
+						}
+					}
+				}
+			}
+		}
+
+		bypass = {
+			AUS = { 
+				OR = {
+					exists = no
+					has_war_with = ROOT
+					AND = {
+						is_subject = yes
+						NOT = { is_subject_of = ROOT }
+					}
+					AND = {
+						is_faction_leader = yes
+						is_in_faction_with = ROOT
+					}
+					is_guaranteed_by = ROOT
+					has_non_aggression_pact_with = ROOT
+				}
+			}
+		}
+
+		will_lead_to_war_with = AUS
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+
+			add_named_threat = { threat = 3 name = GER_liberate_austria }
+
+			if = {
+				limit = {
+					OR = {
+						has_subject = AUS
+						AND = {
+							is_in_faction_with = AUS
+							is_faction_leader = yes
+						}
+						AUS = {
+							OR = {
+								has_government = communism
+								has_government = democratic
+							}
+							is_subject = no
+							is_in_faction = no
+						}
+					}
+				}
+				AUS = {
+					country_event = {
+						id = wuw_GER_diplomacy.77
+						hours = 12
+					}
+				}
+			}
+			else = {
+				create_wargoal = {
+					type = puppet_wargoal_focus
+					target = AUS
+					expire = 0
+				}
+			}
+		}
+	}
+	focus = {
+		id = GER_spark_the_flame_of_revolution
+		icon = GFX_focus_generic_workers_and_farmers_rise
+		prerequisite = { focus = GER_liberate_austria }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_liberate_austria
+		cost = 5
+		available = {
+			is_subject = no
+			any_neighbor_country = {
+				capital_scope = {
+					is_on_continent = europe
+				}
+				is_major = no
+				NOT = { has_government = fascism }
+				NOT = { has_government = communism }
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
+
+		completion_reward = {
+			add_war_support = 0.05
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = GER_spark_the_flame_of_revolution_tt
+
+			if = {
+				limit = {
+					is_in_faction = yes
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_central_european_alliance_tt
+			}
+			effect_tooltip = {
+				create_faction_from_template = {
+					template = faction_template_POR_popular_front_bloc
+					name = GER_proletarian_international_alliance
+					icon = GFX_faction_logo_generic_9
+				}
+			}
+			hidden_effect = {
+				if = {
+					limit = {
+						is_in_faction = no
+					}
+					create_faction_from_template = {
+						template = faction_template_POR_popular_front_bloc
+						name = GER_proletarian_international_alliance
+						icon = GFX_faction_logo_generic_9
+					}
+				}
+			}
+		}
+	}
+	focus = {
+		id = GER_support_the_proletarian_uprising
+		icon = GFX_focus_GER_support_the_proletarian_uprising
+		prerequisite = { focus = GER_spark_the_flame_of_revolution }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_spark_the_flame_of_revolution
+		cost = 5
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_support_the_proletarian_uprising_tt
+		}
+	}
+	focus = {
+		id = GER_the_proletarian_legion
+		icon = GFX_focus_SOV_builder_of_the_red_army
+		prerequisite = { focus = GER_support_the_proletarian_uprising focus = GER_protect_the_revolution }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_support_the_proletarian_uprising
+		cost = 5
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_the_proletarian_legion_tt
+			effect_tooltip = {
+				add_ideas = GER_proletarian_legion_ns
+			}
+			#custom_effect_tooltip = "TODO_Danne: Could even give attack/defense bonus against the opposing side of the CW using targeted_modifier targeting a variable? Polish/nice to have"
+		}
+	}
+	focus = {
+		id = GER_strengthen_the_proletarian_international
+		icon = GFX_focus_GER_strengthen_the_proletarian_international
+		prerequisite = { focus = GER_support_the_proletarian_uprising }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_support_the_proletarian_uprising
+		cost = 5
+		available = {
+		}
+
+		search_filters = {}
+
+
+		completion_reward = {
+			if = {
+				limit = {
+					any_other_country = {
+						NOT = { is_in_faction_with = ROOT }
+						is_in_array = {
+							array = GER.started_communist_cw_here
+							value = THIS
+						}
+						capital_scope = { is_on_continent = europe}
+					}
+				}
+				every_other_country = {
+					limit = {
+						NOT = { is_in_faction_with = ROOT }
+						is_in_array = {
+							array = GER.started_communist_cw_here
+							value = THIS
+						}
+						capital_scope = { is_on_continent = europe}
+					}
+					country_event = {
+						id = wuw_GER_diplomacy.83
+						hours = 6
+					}
+				}
+			}	
+			else = {
+				custom_effect_tooltip = GER_strengthen_the_proletarian_international_tt
+			}
+		}
+	}
+	focus = {
+		id = GER_red_europe
+		icon = GFX_focus_ger_great_red_menace
+		prerequisite = { focus = GER_the_proletarian_legion focus = GER_strengthen_the_proletarian_international }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_the_proletarian_legion
+		cost = 5
+		available = {
+			any_country = {
+				capital_scope = {
+					is_on_continent = europe
+				}
+				is_major = no
+				NOT = { has_government = fascism }
+				NOT = { has_government = communism }
+			}
+		}
+
+		bypass = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			add_named_threat = { threat = 5 name = GER_red_europe }
+
+			custom_effect_tooltip = GER_spark_the_flame_of_revolution_red_europe_tt
+		}
+	}
+	focus = {
+		id = GER_proletarian_solidarity
+		icon = GFX_focus_GER_proletarian_solidarity
+		prerequisite = { focus = GER_red_europe }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_red_europe
+		cost = 5
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_proletarian_solidarity_decision_tt
+		}
+	}
+	focus = {
+		id = GER_liberate_italy
+		icon = GFX_focus_attack_italy
+		prerequisite = { focus = GER_liberate_austria }
+
+		x = 1
+		y = 2
+		relative_position_id = GER_liberate_austria
+		cost = 10
+		available = {
+			ITA = { 
+				is_subject = no
+				NOT = { has_government = communism }
+			}
+			NOT = { has_guaranteed = ITA }
+			NOT = { has_non_aggression_pact_with = ITA }
+		}
+
+		bypass = {
+			ITA = { 
+				OR = {
+					exists = no
+					is_subject = yes
+					has_government = communism
+					has_war_with = ROOT
+					is_guaranteed_by = ROOT
+					has_non_aggression_pact_with = ROOT
+				}
+			}
+		}
+
+		will_lead_to_war_with = ITA
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			add_named_threat = { threat = 3 name = GER_liberate_italy }
+
+			create_wargoal = {
+				type = puppet_wargoal_focus
+				target = ITA
+				expire = 0
+			}
+		}
+	}
+
+	focus = {
+		id = GER_the_end_to_fascist_europe
+		icon = GFX_focus_ITA_liberation_or_death
+		prerequisite = { focus = GER_liberate_italy }
+
+		x = 1
+		y = 2
+		relative_position_id = GER_liberate_italy
+		cost = 10
+		available = {
+			any_other_country = {
+				capital_scope = {
+					is_on_continent = europe
+				}
+				has_government = fascism
+			}
+		}
+
+		bypass = {
+			custom_trigger_tooltip = {
+				tooltip = GER_bypass_end_to_fascist_europe_tt
+				NOT = {
+					any_other_country = {
+						capital_scope = { is_on_continent = europe }
+						has_government = fascism
+					}
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			add_war_support = 0.05
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = GER_war_against_fascism_tt
+			every_other_country = {
+				limit = {
+					OR = {
+						is_in_faction_with = ROOT
+						is_guaranteed_by = ROOT
+						has_non_aggression_pact_with = ROOT
+					}
+					has_government = fascism
+					NOT = {
+						GER = {
+							has_wargoal_against = PREV
+						}
+					}
+				}
+				if = {
+					limit = {
+						ROOT = { is_faction_leader = yes }
+					}
+					ROOT = { remove_from_faction = PREV }
+				}
+				else_if = {
+					limit = {
+						is_faction_leader = yes
+					}
+					ROOT = { leave_faction = yes }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							has_guaranteed = PREV
+						}
+					}
+					ROOT = {
+						diplomatic_relation = {
+						    country = PREV
+						    relation = guarantee
+						    active = no
+						}
+					}
+				}
+				if = {
+					limit = {
+						has_non_aggression_pact_with = ROOT
+					}
+					ROOT = {
+						diplomatic_relation = {
+						    country = PREV
+						    relation = non_aggression_pact
+						    active = no
+						}
+					}
+				}
+				ROOT = {
+					create_wargoal = {
+						type = annex_everything
+						target = PREV
+					}
+				}
+			}
+			every_other_country = {
+				limit = {
+					capital_scope = { is_on_continent = europe }
+					has_government = fascism
+					NOT = { is_in_faction_with = ROOT }
+					NOT = { is_guaranteed_by = ROOT }
+					NOT = { has_non_aggression_pact_with = ROOT }
+					NOT = {
+						GER = {
+							has_wargoal_against = PREV
+						}
+					}	
+				}
+				ROOT = {
+					create_wargoal = {
+						type = annex_everything
+						target = PREV
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_root_out_imperialism
+		icon = GFX_focus_GER_liberate_exploited_colonial_workers
+		prerequisite = { focus = GER_the_end_to_fascist_europe focus = GER_red_europe }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_the_end_to_fascist_europe
+		cost = 10
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_root_out_imperialism_tt
+			GER_set_up_colonial_resistance_states = yes #build array
+			IF = {
+				limit = {
+					NOT = {
+						any_other_country = {
+							is_in_array = {
+								array = GER.started_communist_cw_here
+								value = THIS
+							}
+							NOT = { capital_scope = { is_on_continent = europe}}
+						}
+					}
+				}
+				custom_effect_tooltip = GER_strengthen_the_proletarian_international_internationally_tt
+			}
+			
+			ELSE = {
+				every_other_country = {
+					limit = {
+						is_in_array = {
+							array = GER.started_communist_cw_here
+							value = THIS
+						}
+						NOT = { capital_scope = { is_on_continent = europe}}
+					}
+					country_event = {
+						id = wuw_GER_diplomacy.83
+						hours = 6
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_hegemony_over_europe
+		icon = GFX_focus_GER_hegemony_over_europe
+		prerequisite = { focus = GER_root_out_imperialism }
+
+		x = 0
+		y = 3
+		relative_position_id = GER_root_out_imperialism
+		cost = 10
+		available = {
+			is_subject = no
+			any_other_country = {
+				is_major = yes
+				any_controlled_state = {
+					is_on_continent = europe
+				}
+				NOT = {
+					has_war_with = ROOT
+				}
+			}
+			64 = {
+				is_fully_controlled_by = ROOT
+			}
+		}
+
+		will_lead_to_war_with = SOV
+		will_lead_to_war_with = ENG
+		will_lead_to_war_with = FRA
+		will_lead_to_war_with = ITA
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+
+			unlock_decision_tooltip = form_greater_proletarian_state
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			
+			custom_effect_tooltip = GER_war_against_major_countries_in_europe_tt
+			every_other_country = {
+				limit = {
+					is_major = yes
+					any_controlled_state = {
+						is_on_continent = europe
+					}
+					OR = {
+						is_in_faction_with = ROOT
+						is_guaranteed_by = ROOT
+						has_non_aggression_pact_with = ROOT
+					}
+					NOT = {
+						GER = {
+							has_wargoal_against = PREV
+						}
+					}
+				}
+				if = {
+					limit = {
+						ROOT = { is_faction_leader = yes }
+					}
+					ROOT = { remove_from_faction = PREV }
+				}
+				else_if = {
+					limit = {
+						is_faction_leader = no
+					}
+					ROOT = { leave_faction = yes }
+				}
+				if = {
+					limit = {
+						ROOT = {
+							has_guaranteed = PREV
+						}
+					}
+					ROOT = {
+						diplomatic_relation = {
+						    country = PREV
+						    relation = guarantee
+						    active = no
+						}
+					}
+				}
+				if = {
+					limit = {
+						has_non_aggression_pact_with = ROOT
+					}
+					ROOT = {
+						diplomatic_relation = {
+						    country = PREV
+						    relation = non_aggression_pact
+						    active = no
+						}
+					}
+				}
+				ROOT = {
+					create_wargoal = {
+						type = annex_everything
+						target = PREV
+					}
+				}
+			}
+			every_other_country = {
+				limit = {
+					is_major = yes
+					any_controlled_state = {
+						is_on_continent = europe
+					}
+					NOT = { is_in_faction_with = ROOT }
+					NOT = { is_guaranteed_by = ROOT }
+					NOT = { has_non_aggression_pact_with = ROOT }	
+					NOT = {
+						GER = {
+							has_wargoal_against = PREV
+						}
+					}
+				}
+				ROOT = {
+					create_wargoal = {
+						type = annex_everything
+						target = PREV
+					}
+				}
+			}
+			IF = {
+				limit = {
+					has_dlc = "Gotterdammerung"
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_build_volkshalle_landmark_tt
+				hidden_effect = {
+					64 = {
+						remove_building = {
+						    type = landmark_berlin_reichstag
+						    level = 1
+						    province = 6521
+						}
+						add_building_construction = {
+						    type = landmark_berlin_volkshalle
+						    level = 1
+						    instant_build = yes
+						    province = 6521
+						}
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_align_south_america
+		icon = GFX_focus_GER_align_south_america
+		prerequisite = { focus = GER_root_out_imperialism }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_root_out_imperialism
+		cost = 5
+		available = {
+			is_faction_leader = yes
+			any_other_country = {
+				capital_scope = {
+					is_on_continent = south_america
+				}
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+		}
+
+		bypass = {
+			all_other_country = {
+				capital_scope = {
+					is_on_continent = south_america
+				}
+				OR = {
+					exists = no
+					has_government = fascism
+					has_government = communism
+				}
+			}
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_communist_propaganda_south_america_decision_tt
+		}
+	}
+
+	focus = {
+		id = GER_wage_war_on_capitalism
+		icon = GFX_focus_GER_wage_war_on_capitalism
+		prerequisite = { focus = GER_align_south_america }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_align_south_america
+		cost = 10
+		available = {
+			is_subject = no
+			USA = {
+				NOT = {
+					is_in_faction_with = ROOT
+					has_war_with = ROOT
+					has_government = communism
+				}
+			}
+		}
+
+		will_lead_to_war_with = USA
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+
+			add_timed_idea = {
+				idea = GER_wage_war_on_capitalism_ns
+				days = 365
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			create_wargoal = {
+				type = annex_everything
+				target = USA
+			}
+
+			add_ai_strategy = { 
+				type = conquer	
+				id = USA
+				value = 250
+			}
+
+			add_ai_strategy = {
+				type = antagonize
+				id = USA
+				value = 250
+			}
+
+		}
+	}
+
+	focus = {
+		id = GER_instigate_middle_eastern_revolutions
+		icon = GFX_focus_GER_align_middle_east
+		prerequisite = { focus = GER_root_out_imperialism }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_root_out_imperialism
+		cost = 5
+		available = {
+			is_faction_leader = yes
+			any_other_country = {
+				capital_scope = {
+					is_on_continent = middle_east
+				}
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+		}
+
+		bypass = {
+			all_other_country = {
+				capital_scope = {
+					is_on_continent = middle_east
+				}
+				OR = {
+					exists = no
+					has_government = fascism
+					has_government = communism
+				}
+			}
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_communist_propaganda_middle_east_decision_tt
+		}
+	}
+
+	focus = {
+		id = GER_strike_at_the_rising_sun
+		icon = GFX_focus_GER_strike_at_the_rising_sun
+		prerequisite = { focus = GER_instigate_middle_eastern_revolutions }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_instigate_middle_eastern_revolutions
+		cost = 10
+		available = {
+			is_subject = no
+			NOT = {
+				JAP = {
+					has_government = communism
+					is_in_faction_with = ROOT
+					has_war_with = ROOT
+				}
+			}
+		}
+
+		will_lead_to_war_with = JAP
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+
+			add_timed_idea = {
+				idea = GER_pacific_blitzkrieg_ns
+				days = 365
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			create_wargoal = {
+				type = annex_everything
+				target = JAP
+			}
+
+			add_ai_strategy = { 
+				type = conquer	
+				id = JAP
+				value = 250
+			}
+
+			add_ai_strategy = {
+				type = antagonize
+				id = JAP
+				value = 250
+			}
+
+		}
+	}
+
+	focus = {
+		id = GER_nationalize_industries
+		icon = GFX_focus_generic_communist_industry
+		prerequisite = { focus = GER_social_ownership focus = GER_state_controlled_economy }
+
+		x = 7
+		y = 1
+		relative_position_id = GER_social_ownership
+		cost = 10
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL_CHARACTER }
+
+		completion_reward = {
+
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 1
+						include_locked = yes
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			IF = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+				}
+
+				add_to_variable = { GER_industrial_capacity_military_industrial_organization_funds_gain = 0.1 tooltip =  military_industrial_organization_funds_gain_tt }
+				add_to_variable  = { GER_industrial_capacity_military_industrial_organization_research_bonus = 0.1 tooltip = military_industrial_organization_research_bonus_tt }
+			}
+
+			ELSE = {
+				add_to_variable = { GER_industrial_capacity_tank_manufacturer_cost_factor = -0.2 tooltip = tank_manufacturer_cost_factor_tt }
+				add_to_variable = { GER_industrial_capacity_naval_manufacturer_cost_factor = -0.2 tooltip = naval_manufacturer_cost_factor_tt }
+				add_to_variable = { GER_industrial_capacity_aircraft_manufacturer_cost_factor = -0.2 tooltip = aircraft_manufacturer_cost_factor_tt }
+				add_to_variable = { GER_industrial_capacity_materiel_manufacturer_cost_factor = -0.2 tooltip = materiel_manufacturer_cost_factor_tt }
+			}
+
+			add_to_variable = { GER_industrial_industrial_concern_cost_factor = -0.2 tooltip = industrial_concern_cost_factor_tt }
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_august_thalheimer = {
+				remove_trait = {
+					slot = political_advisor
+					trait = GER_stakhonovite_collectivist1
+				}
+			}
+			GER_august_thalheimer = {
+ 				add_trait = { 
+ 					slot = political_advisor
+ 					trait = GER_stakhonovite_collectivist2
+ 				}
+ 			}
+		}
+	}
+	focus = {
+		id = GER_form_agricultural_cooperatives
+		icon = GFX_focus_generic_farmland
+		prerequisite = { focus = GER_nationalize_industries }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_nationalize_industries
+		cost = 10
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+
+
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+				}
+				
+				add_extra_state_shared_building_slots = 2
+			}
+
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+				}
+				
+				add_extra_state_shared_building_slots = 2
+			}
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+				}
+				
+				add_extra_state_shared_building_slots = 2
+			}
+
+
+			random_owned_controlled_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = infrastructure
+						size > 0						
+					}
+				}
+
+
+				prioritize = { 50 59 63 66 67 68 }
+				
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+
+			random_owned_controlled_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = infrastructure
+						size > 0						
+					}
+				}
+
+				prioritize = { 50 59 63 66 67 68 }
+				
+
+
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+
+			random_owned_controlled_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = infrastructure
+						size > 0						
+					}
+				}
+
+
+				prioritize = { 50 59 63 66 67 68 }
+
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_labor_rights_and_union_stuff
+		icon = GFX_focus_generic_workers
+		prerequisite = { focus = GER_nationalize_industries }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_nationalize_industries
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_factory = 0.05
+				tooltip = industrial_capacity_factory_tt
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = GER_modify_politburo_modifier_tt
+			add_to_variable = { GER_politburo_stability_factor = 0.05 tooltip = stability_factor_tt }
+			#add_to_variable = { GER_politburo_communism_drift = 0.03 tooltip = communism_drift_tt }
+		}
+	}
+
+	focus = {
+		id = GER_expand_social_welfare
+		icon = GFX_focus_generic_welfare
+		prerequisite = { focus = GER_form_agricultural_cooperatives focus = GER_labor_rights_and_union_stuff }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_labor_rights_and_union_stuff
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+
+		completion_reward = {
+
+			add_stability = 0.05
+			add_political_power = 50
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = GER_modify_politburo_modifier_tt
+			add_to_variable = { GER_politburo_party_popularity_stability_factor = 0.1 tooltip = party_popularity_stability_factor_tt }
+			add_to_variable = { GER_politburo_weekly_manpower = 100  tooltip = weekly_manpower_tt }
+		}
+	}
+
+	focus = {
+		id = GER_effectivize_the_volkswerke
+		icon = GFX_focus_generic_public_works
+		prerequisite = { focus = GER_form_agricultural_cooperatives focus = GER_labor_rights_and_union_stuff }
+
+		x = 2
+		y = 1
+		relative_position_id = GER_labor_rights_and_union_stuff
+		cost = 5
+		available = {
+			has_completed_focus = GER_establish_the_reichswerke
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+
+			if = {
+				limit = {
+					has_idea = GER_reichswerke
+				}
+				swap_ideas = {
+					remove_idea = GER_reichswerke
+					add_idea = GER_reichswerke_improved
+				}
+			}
+			else = {
+				effect_tooltip = {
+					swap_ideas = {
+						remove_idea = GER_reichswerke
+						add_idea = GER_reichswerke_improved
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_womens_rights_and_equality
+		icon = GFX_focus_ARG_women_in_industry
+		prerequisite = { focus = GER_expand_social_welfare focus = GER_effectivize_the_volkswerke }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_expand_social_welfare
+		cost = 5
+		available = {
+			NOT = { has_decision = women_in_the_workforce }
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+
+		completion_reward = {
+
+			add_popularity = {
+				ideology = communism
+				popularity = 0.05
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = GER_locks_women_in_workforce_decision_tt
+
+			custom_effect_tooltip = GER_modify_politburo_modifier_tt
+			add_to_variable = { GER_politburo_conscription = 0.03 tooltip = conscription_tt }
+
+			#IF = {
+			#	limit = {
+			#		NOT = { has_decision = women_in_the_workforce }
+			#	}
+			#	unlock_decision_tooltip = {
+			#		decision = women_in_the_workforce
+			#		show_effect_tooltip = yes # default is no
+			#		show_modifiers = yes # default is no
+			#	}
+			#	IF = {
+			#		limit = { has_war = yes }
+			#		activate_decision = women_in_the_workforce	 
+			#	} 
+			#}
+		}
+	}
+
+	focus = {
+		id = GER_proletarian_dictatorship
+		icon = GFX_focus_GER_proletarian_dictatorship
+		prerequisite = { focus = GER_the_peoples_victory }
+		mutually_exclusive = { focus = GER_legacy_of_the_spartacus_league }
+		x = 5
+		y = 1
+		relative_position_id = GER_the_peoples_victory
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL_CHARACTER }
+
+		completion_reward = {
+			add_political_power = 50
+			add_stability = 0.05
+			add_war_support = 0.05
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_add_or_modify_politburo = yes
+
+			add_to_variable = { GER_politburo_defensive_war_stability_factor = 0.1 tooltip = defensive_war_stability_factor_tt }
+			add_to_variable = { GER_politburo_offensive_war_stability_factor = 0.2 tooltip = offensive_war_stability_factor_tt }
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_walter_ulbricht = {
+				swap_country_leader_traits = {
+					remove = GER_inflexible_communist_organizer
+					add = GER_staunch_stalinist_leader
+				}
+			}
+
+			GER_walter_ulbricht = {
+				remove_trait = {
+					slot = political_advisor
+					trait = GER_inflexible_communist_organizer
+				}
+			}
+			GER_walter_ulbricht = {
+ 				add_trait = { 
+ 					slot = political_advisor
+ 					trait = GER_staunch_stalinist
+ 				}
+ 			}
+		}
+	}
+
+	focus = {
+		id = GER_state_controlled_economy
+		icon = GFX_focus_DEN_heavy_regulations
+		prerequisite = { focus = GER_proletarian_dictatorship }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_proletarian_dictatorship
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_factory = 0.05
+				tooltip = industrial_capacity_factory_tt
+			}
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_dockyard = 0.05
+				tooltip = industrial_capacity_dockyard_tt
+			}
+		}
+	}
+
+	focus = {
+		id = GER_central_planning
+		icon = GFX_focus_generic_soviet_politics
+		prerequisite = { focus = GER_state_controlled_economy }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_state_controlled_economy
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_lack_of_resource_penalty_factor = -0.05
+				tooltip = production_lack_of_resource_penalty_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = GER_the_german_stakhanovite_movement
+		icon = GFX_focus_GER_stakhanovite_movement
+		prerequisite = { focus = GER_central_planning }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_central_planning
+		cost = 5
+		available = {
+			OR = {
+				has_completed_focus = GER_establish_the_reichswerke
+				has_completed_focus = GER_invest_in_vereinigte_stahlwerke
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			add_stability = -0.05
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			IF = {
+				limit = {
+					65 = {
+						is_fully_controlled_by = ROOT
+					}
+				}
+
+				65 = {
+					add_resource = {
+						type = steel
+						amount = 60
+					}
+					add_resource = {
+						type = tungsten
+						amount = 30
+					}
+					add_resource = {
+						type = chromium
+						amount = 30
+					}
+				}
+			}
+			else = {
+				random_core_state = {
+					limit = {
+						is_fully_controlled_by = ROOT
+						has_resources_amount = {
+							resource = steel
+							amount > 40
+							delivered = no
+						}
+					}
+					prioritize = { 51 60 }
+					add_resource = {
+						type = steel
+						amount = 60
+					}
+					add_resource = {
+						type = tungsten
+						amount = 30
+					}
+					add_resource = {
+						type = chromium
+						amount = 30
+					}
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			if = {
+				limit = {
+					NOT = {
+						has_completed_focus = GER_establish_the_reichswerke
+						has_completed_focus = GER_invest_in_vereinigte_stahlwerke
+					}
+				}
+				custom_effect_tooltip = GER_the_german_stakhanovite_movement_tt
+			}
+			else_if = {
+				limit = {
+					has_completed_focus = GER_establish_the_reichswerke
+				}
+				custom_effect_tooltip = GER_modify_wehrwirtschaft_modifier_tt
+				add_to_variable = { 
+					GER_wehrwirtschaft_local_resources_factor = 0.05
+					tooltip = local_resources_factor_tt
+				}
+			}
+			else_if = {
+				limit = {
+					has_completed_focus = GER_invest_in_vereinigte_stahlwerke
+				}
+				GER_modify_industrial_modifier = yes
+				add_to_variable = { 
+					GER_recovering_economy_modifier_local_resources_factor = 0.05
+					tooltip = local_resources_factor_tt
+				}
+			}
+
+		}
+	}
+
+	focus = {
+		id = GER_spheres_of_influence
+		icon = GFX_focus_GER_spheres_of_influence
+		prerequisite = { focus = GER_state_controlled_economy }
+		prerequisite = { focus = GER_defense_treaty_with_the_soviet }
+
+		x = 2
+		y = 2
+		relative_position_id = GER_state_controlled_economy
+		cost = 5
+		available = {
+			is_subject = no
+			NOT = { has_war_with = SOV }
+			SOV = {
+				is_subject = no
+				has_government = communism
+			}
+		}
+
+		bypass = {
+			OR = {
+				has_war_with = SOV
+				SOV = { is_subject = yes }
+				NOT = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SOV
+						has_government = communism
+						exists = yes
+					}
+				}
+			}
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			
+			SOV = {
+				country_event = {
+					id = wuw_GER_diplomacy.89
+					hours = 12
+				}
+			}
+
+			custom_effect_tooltip = if_they_accept_tt
+			custom_effect_tooltip = FRA_establish_spheres_of_influence #This is here so we can re-use this phrase in the available and bypass triggers for the focuses below
+			custom_effect_tooltip = GER_spheres_of_influence_tt
+			
+			add_named_threat = { threat = 5 name = GER_spheres_of_influence }
+		}
+	}
+	focus = {
+		id = GER_czechoslovakia
+		icon = GFX_focus_generic_communist_attack_czechoslovakia
+		prerequisite = { focus = GER_spheres_of_influence }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_spheres_of_influence
+		cost = 10
+		available = {
+			is_subject = no
+			NOT = { has_war_with = CZE }
+			CZE = {	
+				if = {
+					limit = {
+						has_country_flag = GER_SOV_agreed_sphere_of_influence
+						custom_override_tooltip = {
+							tooltip = {
+								localization_key = FRA_establish_spheres_of_influence
+							}
+							always = yes
+						}
+					}
+					OR = {
+						is_subject = no
+						OVERLORD = {
+							OR = {
+								tag = ROOT
+								is_in_faction_with = ROOT
+								NOT = {  original_tag = SOV }
+							}
+						}
+					}
+				}
+				else = {
+					OR = {
+						is_subject = no
+						OVERLORD = {
+							OR = {
+								tag = ROOT
+								NOT = { is_in_faction_with = ROOT }
+							}
+						}
+					}
+				}
+				OR = {
+					controls_state = 69
+					controls_state = 972
+					controls_state = 9
+					controls_state = 75
+					controls_state = 74
+					controls_state = 72
+				}
+			}
+		}
+
+		bypass = {
+			OR = {
+				NOT = { country_exists = CZE} 
+				has_war_with = CZE
+				CZE = {
+					AND = {
+						is_subject = yes
+						OVERLORD = {
+							or = {
+								is_in_faction_with = ROOT
+								AND = {
+									hidden_trigger = { has_country_flag = GER_SOV_agreed_sphere_of_influence }
+									custom_override_tooltip = {
+										tooltip = {
+											localization_key = FRA_establish_spheres_of_influence
+										}
+										always = yes
+									}
+									original_tag = SOV
+								}
+							}
+						}
+					}
+					AND = {
+						NOT = { controls_state = 69 }
+						NOT = { controls_state = 972 }
+						NOT = { controls_state = 9 }
+						NOT = { controls_state = 75 }
+						NOT = { controls_state = 74 }
+						NOT = { controls_state = 72 }
+					}
+				}
+			}	
+		}
+
+		will_lead_to_war_with = CZE
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			IF = {
+				limit = {
+					CZE = {
+						OR = {
+							is_subject_of = ROOT
+							AND = {
+								is_subject = no
+								is_in_faction_with = ROOT
+							}
+						}
+					}
+				}
+				CZE = {
+					country_event = {
+						id = wuw_GER_diplomacy.85
+						hours = 12
+					}
+				}
+			}
+			ELSE_IF = {
+				limit = {
+					is_faction_leader = yes
+					CZE = {
+						has_government = communism
+						is_subject = no
+					}
+				}
+
+				CZE = {
+					country_event = {
+						id = generic.5
+						hours = 6
+					}
+				}
+			}
+			ELSE_IF = {
+				limit = {
+					CZE = {
+						OR = {
+							controls_state = 69
+							controls_state = 972
+							controls_state = 9
+							controls_state = 75
+							controls_state = 74
+							controls_state = 72
+						}
+					}
+				}
+				create_wargoal = {
+					type = take_claimed_state
+					target = CZE
+					generator = { 69 972 9 75 74 72 } 
+				}
+			}
+
+			add_threat = 3
+
+			add_ai_strategy = {
+				type = antagonize
+				id = CZE
+				value = 50
+			}
+
+		}
+	}
+
+	focus = {
+		id = GER_poland
+		icon = GFX_focus_generic_communist_attack_poland
+		prerequisite = { focus = GER_spheres_of_influence }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_spheres_of_influence
+		cost = 10
+
+		available = {
+			is_subject = no
+			NOT = { has_war_with = POL }
+			POL = {	
+				if = {
+					limit = {
+						has_country_flag = GER_SOV_agreed_sphere_of_influence
+						custom_override_tooltip = {
+							tooltip = {
+								localization_key = FRA_establish_spheres_of_influence
+							}
+							always = yes
+						}
+					}
+					OR = {
+						is_subject = no
+						OVERLORD = {
+							OR = {
+								tag = ROOT
+								is_in_faction_with = ROOT
+								NOT = {  original_tag = SOV }
+							}
+						}
+					}
+				}
+				else = {
+					OR = {
+						is_subject = no
+						OVERLORD = {
+							OR = {
+								tag = ROOT
+								NOT = { is_in_faction_with = ROOT }
+							}
+						}
+					}
+				}
+				OR = {
+					controls_state = 807
+					controls_state = 85
+					controls_state = 86
+					controls_state = 87
+					controls_state = 88
+					controls_state = 90
+					controls_state = 92
+					controls_state = 98
+					controls_state = 10
+					controls_state = 762
+				}
+			}
+		}
+
+		bypass = {
+			OR = {
+				NOT = { country_exists = POL } 
+				has_war_with = POL
+				POL = {
+					AND = {
+						is_subject = yes
+						OVERLORD = {
+							or = {
+								is_in_faction_with = ROOT
+								AND = {
+									hidden_trigger = { has_country_flag = GER_SOV_agreed_sphere_of_influence }
+									custom_override_tooltip = {
+										tooltip = {
+											localization_key = FRA_establish_spheres_of_influence
+										}
+										always = yes
+									}
+									original_tag = SOV
+								}
+							}
+						}
+					}
+					AND = {
+						NOT = { controls_state = 807 }
+						NOT = { controls_state = 85 }
+						NOT = { controls_state = 86 }
+						NOT = { controls_state = 87 }
+						NOT = { controls_state = 88 }
+						NOT = { controls_state = 90 }
+						NOT = { controls_state = 92 }
+						NOT = { controls_state = 98 }
+						NOT = { controls_state = 10 }
+						NOT = { controls_state = 762 }
+					}
+				}
+			}	
+		}
+
+		will_lead_to_war_with = POL
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+
+			IF = {
+				limit = {
+					POL = {
+						OR = {
+							is_subject_of = ROOT
+							AND = {
+								is_subject = no
+								is_in_faction_with = ROOT
+							}
+						}
+					}
+				}
+
+				POL = {
+					country_event = {
+						id = wuw_GER_diplomacy.85
+						hours = 12
+					}
+				}
+			}
+
+			ELSE_IF = {
+				limit = {
+					is_faction_leader = yes
+					POL = {
+						has_government = communism
+						is_subject = no
+					}
+				}
+
+				POL = {
+					country_event = {
+						id = generic.5
+						hours = 6
+					}
+				}
+			}
+
+			ELSE_IF = {
+				limit = {
+					POL = {
+						OR = {
+							controls_state = 807
+							controls_state = 85
+							controls_state = 86
+							controls_state = 87
+							controls_state = 88
+							controls_state = 90
+							controls_state = 92
+							controls_state = 98
+							controls_state = 10
+							controls_state = 762
+						}
+					}
+				}
+				create_wargoal = {
+					type = take_claimed_state
+					target = POL
+					generator = { 807 85 86 87 88 90 92 98 10 762 } # optional 
+				}
+			}
+
+			add_threat = 3
+
+			add_ai_strategy = {
+				type = antagonize
+				id = POL
+				value = 50
+			}
+		}
+	}
+
+	focus = {
+		id = GER_hungary
+		icon = GFX_focus_generic_communist_attack_hungary
+		prerequisite = { focus = GER_czechoslovakia focus = GER_poland }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_czechoslovakia
+		cost = 10
+
+		available = {
+			is_subject = no
+			NOT = { has_war_with = HUN }
+			HUN = {	
+				if = {
+					limit = {
+						has_country_flag = GER_SOV_agreed_sphere_of_influence
+						custom_override_tooltip = {
+							tooltip = {
+								localization_key = FRA_establish_spheres_of_influence
+							}
+							always = yes
+						}
+					}
+					OR = {
+						is_subject = no
+						OVERLORD = {
+							OR = {
+								tag = ROOT
+								is_in_faction_with = ROOT
+								NOT = {  original_tag = SOV }
+							}
+						}
+					}
+				}
+				else = {
+					OR = {
+						is_subject = no
+						OVERLORD = {
+							OR = {
+								tag = ROOT
+								NOT = { is_in_faction_with = ROOT }
+							}
+						}
+					}
+				}
+				OR = {
+					controls_state = 155
+					controls_state = 974
+					controls_state = 973
+					controls_state = 43
+					controls_state = 154
+				}
+			}
+		}
+
+		bypass = {
+			OR = {
+				NOT = { country_exists = HUN } 
+				has_war_with = HUN
+				HUN = {
+					AND = {
+						is_subject = yes
+						OVERLORD = {
+							or = {
+								is_in_faction_with = ROOT
+								AND = {
+									hidden_trigger = { has_country_flag = GER_SOV_agreed_sphere_of_influence }
+									custom_override_tooltip = {
+										tooltip = {
+											localization_key = FRA_establish_spheres_of_influence
+										}
+										always = yes
+									}
+									original_tag = SOV
+								}
+							}
+						}
+					}
+					AND = {
+						NOT = { controls_state = 155 }
+						NOT = { controls_state = 974 }
+						NOT = { controls_state = 973 }
+						NOT = { controls_state = 43 }
+						NOT = { controls_state = 154 }
+					}
+				}
+			}	
+		}
+
+		will_lead_to_war_with = HUN
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			IF = {
+				limit = {
+					HUN = {
+						OR = {
+							is_subject_of = ROOT
+							AND = {
+								is_subject = no
+								is_in_faction_with = ROOT
+							}
+						}
+						
+					}
+				}
+				HUN = {
+					country_event = {
+						id = wuw_GER_diplomacy.85
+						hours = 12
+					}
+				}
+			}
+			ELSE_IF = {
+				limit = {
+					is_faction_leader = yes
+					HUN = {
+						has_government = communism
+						is_subject = no
+					}
+				}
+
+				HUN = {
+					country_event = {
+						id = generic.5
+						hours = 6
+					}
+				}
+			}
+			ELSE_IF = {
+				limit = {
+					HUN = {
+						OR = {
+							controls_state = 155
+							controls_state = 174
+							controls_state = 973
+							controls_state = 43
+							controls_state = 154
+						}
+					}
+				}
+
+				create_wargoal = {
+					type = annex_everything
+					target = HUN
+				}
+			}
+
+			add_threat = 3
+
+			add_ai_strategy = {
+				type = antagonize
+				id = HUN
+				value = 50
+			}
+		}
+	}
+
+	focus = {
+		id = GER_the_northern_shield
+		icon = GFX_focus_GER_northern_shield
+		prerequisite = { focus = GER_hungary }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_hungary
+		cost = 10
+		available = {
+			OR = {
+				DEN = {
+					exists = yes
+					NOT = { has_war_with = ROOT }
+					if = {
+						limit = {
+							has_country_flag = GER_SOV_agreed_sphere_of_influence
+							custom_override_tooltip = {
+								tooltip = {
+									localization_key = FRA_establish_spheres_of_influence
+								}
+								always = yes
+							}
+						}
+						OR = {
+							is_subject = no
+							OVERLORD = {
+								OR = {
+									tag = ROOT
+									is_in_faction_with = ROOT
+									NOT = {  original_tag = SOV }
+								}
+							}
+						}
+					}
+					else = {
+						OR = {
+							is_subject = no
+							OVERLORD = {
+								OR = {
+									tag = ROOT
+									NOT = { is_in_faction_with = ROOT }
+								}
+							}
+						}
+					}
+				}
+				NOR = {
+					exists = yes
+					NOT = { has_war_with = ROOT }
+					if = {
+						limit = {
+							has_country_flag = GER_SOV_agreed_sphere_of_influence
+							custom_override_tooltip = {
+								tooltip = {
+									localization_key = FRA_establish_spheres_of_influence
+								}
+								always = yes
+							}
+						}
+						OR = {
+							is_subject = no
+							OVERLORD = {
+								OR = {
+									tag = ROOT
+									is_in_faction_with = ROOT
+									NOT = {  original_tag = SOV }
+								}
+							}
+						}
+					}
+					else = {
+						OR = {
+							is_subject = no
+							OVERLORD = {
+								OR = {
+									tag = ROOT
+									NOT = { is_in_faction_with = ROOT }
+								}
+							}
+						}
+					}
+				}
+				SWE = {
+					exists = yes
+					NOT = { has_war_with = ROOT }
+					if = {
+						limit = {
+							has_country_flag = GER_SOV_agreed_sphere_of_influence
+							custom_override_tooltip = {
+								tooltip = {
+									localization_key = FRA_establish_spheres_of_influence
+								}
+								always = yes
+							}
+						}
+						OR = {
+							is_subject = no
+							OVERLORD = {
+								OR = {
+									tag = ROOT
+									is_in_faction_with = ROOT
+									NOT = {  original_tag = SOV }
+								}
+							}
+						}
+					}
+					else = {
+						OR = {
+							is_subject = no
+							OVERLORD = {
+								OR = {
+									tag = ROOT
+									NOT = { is_in_faction_with = ROOT }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+
+		will_lead_to_war_with = DEN
+		will_lead_to_war_with = NOR
+		will_lead_to_war_with = SWE
+
+		completion_reward = {
+
+			add_threat = 5
+
+			if = {
+				limit = {
+					DEN = {
+						OR = {
+							is_subject_of = ROOT
+							AND = {
+								is_subject = no
+								is_in_faction_with = ROOT
+							}
+						}
+					}
+				}
+				DEN = {
+					country_event = {
+						id = wuw_GER_diplomacy.85
+						hours = 6
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					DEN = {
+						has_government = communism
+						is_in_faction = no
+					}
+					is_faction_leader = yes
+				}
+
+				DEN = {
+					country_event = {
+						id = generic.5
+						hours = 6
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_completed_focus = GER_spheres_of_influence
+					NOT = { has_war_with = SOV }
+					DEN = {
+						NOT = {
+							is_subject_of = SOV
+						}
+					}
+				}
+				create_wargoal = {
+					type = annex_everything
+					target = DEN
+					expire = 0
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = {
+							has_completed_focus = GER_spheres_of_influence
+							has_war_with = SOV
+						}
+						NOT = { has_completed_focus = GER_spheres_of_influence }
+					}
+				}
+				create_wargoal = {
+					type = annex_everything
+					target = DEN
+					expire = 0
+				}
+			}
+
+			if = {
+				limit = {
+					NOR = {
+						OR = {
+							is_subject_of = ROOT
+							AND = {
+								is_subject = no
+								is_in_faction_with = ROOT
+							}
+						}
+					}
+				}
+				NOR = {
+					country_event = {
+						id = wuw_GER_diplomacy.85
+						hours = 6
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					NOR = {
+						has_government = communism
+						is_in_faction = no
+					}
+					is_faction_leader = yes
+				}
+
+				NOR = {
+					country_event = {
+						id = generic.5
+						hours = 6
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_completed_focus = GER_spheres_of_influence
+					NOT = { has_war_with = SOV }
+					NOR = {
+						NOT = {
+							is_subject_of = SOV
+						}
+					}
+				}
+				create_wargoal = {
+					type = annex_everything
+					target = NOR
+					expire = 0
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = {
+							has_completed_focus = GER_spheres_of_influence
+							has_war_with = SOV
+						}
+						NOT = { has_completed_focus = GER_spheres_of_influence }
+					}
+				}
+				create_wargoal = {
+					type = annex_everything
+					target = NOR
+					expire = 0
+				}
+			}
+
+			if = {
+				limit = {
+					SWE = {
+						OR = {
+							is_subject_of = ROOT
+							AND = {
+								is_subject = no
+								is_in_faction_with = ROOT
+							}
+						}
+					}
+				}
+				SWE = {
+					country_event = {
+						id = wuw_GER_diplomacy.85
+						hours = 6
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					SWE = {
+						has_government = communism
+						is_in_faction = no
+					}
+					is_faction_leader = yes
+				}
+
+				SWE = {
+					country_event = {
+						id = generic.5
+						hours = 6
+					}
+				}
+			}
+			else_if = {
+				limit = {
+					has_completed_focus = GER_spheres_of_influence
+					NOT = { has_war_with = SOV }
+					SWE = {
+						NOT = {
+							is_subject_of = SOV
+						}
+					}
+				}
+				create_wargoal = {
+					type = annex_everything
+					target = SWE
+					expire = 0
+				}
+			}
+			else_if = {
+				limit = {
+					OR = {
+						AND = {
+							has_completed_focus = GER_spheres_of_influence
+							has_war_with = SOV
+						}
+						NOT = { has_completed_focus = GER_spheres_of_influence }
+					}
+				}
+				create_wargoal = {
+					type = annex_everything
+					target = SWE
+					expire = 0
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_intervene_in_spain
+		icon = GFX_focus_generic_befriend_republican_spain_focus
+		prerequisite = { focus = GER_legacy_of_the_spartacus_league focus = GER_proletarian_dictatorship }
+
+		x = 4
+		y = 1
+		relative_position_id = GER_legacy_of_the_spartacus_league
+		cost = 5
+		available = {
+			NOT = { has_idea = GER_fernostliche_legion_ns }
+			any_country = {
+				original_tag = SPR 
+				exists = yes
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+				has_volunteers_amount_from = {
+					tag = ROOT
+					count > 1
+				}
+			}	
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AIR_XP }
+
+		completion_reward = {
+
+			if = {
+				limit = {
+					NOT = { has_dlc = "La Resistance" }
+				}
+				random_other_country = {
+					limit = {
+						original_tag = SPR
+						OR = {
+							has_government = democratic
+							has_government = communism
+						}
+					}
+					add_opinion_modifier = { target = GER modifier = ita_supported_spain_civil_war }
+				}
+			}
+			if = {
+				limit = {
+					has_dlc = "La Resistance"
+					SPR = {
+						OR = {
+							has_government = democratic
+							has_government = communism
+						}
+					}
+				}
+				SPR = { add_opinion_modifier = { target = GER modifier = ita_supported_spain_civil_war } }
+			}
+
+			add_timed_idea = {
+				idea = GER_legion_condor_ns
+				days = 545
+			}
+
+			add_ai_strategy = {
+				type = befriend
+				id = SPR
+				value = 100
+			}
+
+		}
+
+	}
+
+	focus = {
+		id = GER_assist_our_eastern_comrades
+		icon = GFX_focus_chi_cooperation_with_the_communists
+		prerequisite = { focus = GER_legacy_of_the_spartacus_league focus = GER_proletarian_dictatorship }
+
+		x = 6
+		y = 1
+		relative_position_id = GER_legacy_of_the_spartacus_league
+		cost = 5
+		available = {
+			NOT = { has_idea = GER_legion_condor_ns }
+			PRC = { 
+				exists = yes
+				is_subject = no
+				has_volunteers_amount_from = {
+					tag = ROOT
+					count > 1
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_AIR_XP }
+
+		completion_reward = {
+
+			add_timed_idea = {
+				idea = GER_fernostliche_legion_prc_ns
+				days = 545
+			}
+
+			add_ai_strategy = {
+				type = befriend
+				id = PRC
+				value = 100
+			}
+
+		}
+	}
+
+	focus = {
+		id = GER_sign_the_second_treaty_of_berlin
+		icon = GFX_focus_GER_SOV_treaty
+		prerequisite = { focus = GER_the_peoples_victory }
+
+		x = 8
+		y = 1
+		relative_position_id = GER_the_peoples_victory
+		cost = 5
+		available = {
+			NOT = {
+				has_war_with = SOV
+				SOV = {
+					has_government = neutrality
+					has_government = fascism
+				}
+			}
+		}
+
+		bypass = {
+			OR = {
+				SOV = { is_subject = yes }
+				NOT = { country_exists = SOV }
+				is_in_faction_with = SOV
+				has_non_aggression_pact_with = SOV
+				AND = {
+					is_guaranteed_by = SOV
+					has_guaranteed = SOV
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL }
+
+		completion_reward = {
+			SOV = {
+				country_event = {
+					id = wuw_GER_diplomacy.90
+					hours = 12
+				}
+			}
+
+			custom_effect_tooltip = if_they_accept_tt
+			effect_tooltip = {
+				add_opinion_modifier = {
+					target = SOV
+					modifier = medium_increase 
+				}
+			}
+			SOV = {
+				event_option_tooltip = wuw_GER_diplomacy.90.a
+			}
+			
+			
+		}
+	}
+
+	focus = {
+		id = GER_defense_treaty_with_the_soviet
+		icon = GFX_focus_GER_SOV_defence_treaty
+		prerequisite = { focus = GER_sign_the_second_treaty_of_berlin }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_sign_the_second_treaty_of_berlin
+		cost = 5
+		available = {
+			is_subject = no
+			NOT = { has_war_with = SOV }
+			SOV = {
+				is_subject = no
+				has_government = communism
+			}
+		}
+
+		bypass = {
+			OR = {
+				SOV = { is_subject = yes }
+				AND = {
+					is_guaranteed_by = SOV
+					has_guaranteed = SOV
+				}
+				any_country = {
+					original_tag = SOV #in the event of cw weirdness
+					OR = {
+						exists = no
+						NOT = { has_government = communism }
+					}
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL }
+
+		completion_reward = {
+			add_ai_strategy = { 
+				type = befriend 
+				id = SOV
+				value = 100
+			}
+
+			SOV = {
+				add_ai_strategy = { 
+					type = befriend 
+					id = ROOT
+					value = 100
+				}
+			}
+
+			add_popularity = {
+				ideology = communism
+				popularity = 0.05
+			}
+
+			SOV = {
+				country_event = {
+					id = wuw_GER_mutual_guarantees.1
+					hours = 12
+				}
+			}
+
+			custom_effect_tooltip = if_they_accept_tt
+			effect_tooltip = {
+				give_guarantee = SOV
+				SOV = {
+					give_guarantee = GER
+				}
+			}
+
+			IF = {
+				limit = {
+					has_country_leader = {
+						ruling_only = yes # default = yes
+						character = GER_ernst_thalmann
+					}
+				}
+
+				hidden_effect = {
+					SOV = {
+						country_event = {
+							id = wuw_GER_diplomacy.91
+							hours = 12
+						}
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_industrial_cooperation
+		icon = GFX_goal_generic_soviet_construction
+		prerequisite = { focus = GER_sign_the_second_treaty_of_berlin }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_sign_the_second_treaty_of_berlin
+		cost = 5
+		available = {
+			NOT = { has_war_with = SOV }
+			SOV = {
+				OR = {
+					is_subject = no
+					is_subject_of = ROOT
+				}
+				OR = {
+					has_government = communism
+					has_government = democratic
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			SOV = {
+				country_event = {
+					id = wuw_GER_diplomacy.95
+					hours = 12
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_tech_sharing
+		icon = GFX_focus_generic_socialist_science
+		prerequisite = { focus = GER_industrial_cooperation }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_industrial_cooperation
+		cost = 5
+		available = {
+			NOT = { has_war_with = SOV }
+			SOV = {
+				OR = {
+					is_subject = no
+					is_subject_of = ROOT
+				}
+				OR = {
+					has_government = communism
+					has_government = democratic
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+
+		completion_reward = {
+
+			SOV = {
+				country_event = {
+					id = wuw_GER_diplomacy.98
+					hours = 12
+				}
+			}
+
+			custom_effect_tooltip = if_they_accept_tt
+			effect_tooltip = {
+				add_to_tech_sharing_group = GER_SOV_industrial_development_group
+				SOV = {
+					add_to_tech_sharing_group = GER_SOV_industrial_development_group
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_resource_trade
+		icon = GFX_goal_generic_positive_trade_relations
+		prerequisite = { focus = GER_industrial_cooperation }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_industrial_cooperation
+		cost = 5
+		available = {
+			NOT = { has_war_with = SOV }
+			SOV = {
+				OR = {
+					is_subject = no
+					is_subject_of = ROOT
+				}
+				OR = {
+					has_government = communism
+					has_government = democratic
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_INTERNATIONAL_TRADE }
+
+		completion_reward = {
+
+			SOV = {
+				country_event = {
+					id = wuw_GER_diplomacy.1
+					hours = 6
+				}
+			}
+
+			custom_effect_tooltip = if_they_accept_tt
+			effect_tooltip = {
+				SOV = {
+					add_ideas = GER_german_trade_ns
+					add_opinion_modifier = {
+						target = ROOT
+						modifier = GER_trading_partners
+					}
+				}
+			}
+		}
+	}
+	focus = {
+		id = GER_factories_for_resources
+		icon = GFX_focus_GER_factories_for_resources
+		prerequisite = { focus = GER_tech_sharing }
+		prerequisite = { focus = GER_resource_trade }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_tech_sharing
+		cost = 5
+		available = {
+			NOT = { has_war_with = SOV }
+			SOV = {
+				OR = {
+					is_subject = no
+					is_subject_of = ROOT
+				}
+				OR = {
+					has_government = communism
+					has_government = democratic
+				}
+				OR = { #SOV must control one of these states or else the decision is worthless
+					229 = {
+						is_fully_controlled_by = PREV
+					}
+					234 = {
+						is_fully_controlled_by = PREV
+					}
+					564 = {
+						is_fully_controlled_by = PREV
+					}
+					401 = {
+						is_fully_controlled_by = PREV
+					}
+					402 = {
+						is_fully_controlled_by = PREV
+					}
+					573 = {
+						is_fully_controlled_by = PREV
+					}
+				}
+			}
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = GER_factories_for_resources_tt
+		}
+	}
+
+
+
+
+
 	################################
 	################################
 	#### NON-ALIGNED/DEMOCRATIc ####
