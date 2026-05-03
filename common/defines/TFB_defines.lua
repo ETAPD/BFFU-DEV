@@ -545,7 +545,7 @@ NDefines.NNavy.SCREEN_RATIO_FOR_FULL_SCREENING_FOR_CAPITALS 					= 3.0	-- this s
 NDefines.NNavy.LIGHT_GUN_ATTACK_TO_SHORE_BOMBARDMENT							= 0.02 -- light gun attack value is divided by this value * 100 and added to shore bombardment modifier 
 NDefines.NNavy.GUN_HIT_PROFILES = { -- hit profiles for guns if target ih profile is lower the gun will have lower accuracy
 	95.0,	-- big guns
-	130.0,	-- torpedos
+	260.0,	-- torpedos
 	60.0	-- small guns
 }
 NDefines.NNavy.DEPTH_CHARGES_HIT_PROFILE 										= 80	-- hit profile for depth charges
@@ -554,8 +554,8 @@ NDefines.NNavy.BASE_GUN_COOLDOWNS = { -- number of hours for a gun to be ready a
 	6.0,	-- torpedoes
 	2.0,	-- small guns
 }
-NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_CHANCE 									= 0.25		-- chance for critical hit from torpedo.
-NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_DAMAGE_MULT								= 3.75		-- multiplier to damage when got critical hit from torpedo. (Critical hits are devastating as usually torpedo_attack are pretty high base values)
+NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_CHANCE 									= 0.8		-- chance for critical hit from torpedo.
+NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_DAMAGE_MULT								= 64		-- multiplier to damage when got critical hit from torpedo. (Critical hits are devastating as usually torpedo_attack are pretty high base values)
 NDefines.NNavy.COMBAT_EVASION_TO_HIT_CHANCE_TORPEDO_MULT						= 24		-- the above evasion hit chance is multiplied by 400% if shooting with torpedoes. Torpedoes are slow, so evasion matters more.
 NDefines.NNavy.DEPTH_CHARGES_HIT_CHANCE_MULT 									= 1.25 		-- multiplies hit chance of small guns
 NDefines.NNavy.COMBAT_ARMOR_PIERCING_CRITICAL_BONUS = 2.0						-- Bonus to critical chance when shooter armor piercing is higher then target armor.
