@@ -1,0 +1,306 @@
+SOV_gosplan_decisions_category = {	
+
+	SOV_big_fleet_program = {
+        icon = generic_naval
+        days_mission_timeout = 1460
+        is_good = no
+		days_remove = 360
+
+		activation = {
+			has_country_flag = SOV_stalin_demands_ship_flag
+			original_tag = SOV
+		}
+
+        available = {
+            or = {
+            has_navy_size = {
+                unit = battle_cruiser
+                size > 1
+            }
+            has_navy_size = {
+                unit = carrier
+                size > 1
+            }
+            has_navy_size = {
+            unit = Battleship
+                size > 4
+            }
+        }
+        has_navy_size = {
+                unit = heavy_cruiser
+                size > 2
+            }
+        or = {
+            has_navy_size = {
+                unit = light_cruiser
+                size > 6
+            }
+            has_navy_size = {
+                unit = destroyer
+                size > 29
+            }
+        }
+        has_navy_size = {
+             unit = submarine
+             size > 79
+           }
+		}
+        fire_only_once = yes
+
+        visible = {
+             original_tag = SOV
+        }
+
+        timeout_effect = {
+            add_political_power = -75
+			add_stability = -0.05
+        }
+
+        complete_effect = {
+            add_political_power = 75
+			add_war_support = 0.05
+			navy_experience = 150
+        }
+		
+		modifier = {
+			experience_gain_navy = 0.5
+		}
+    }
+
+	SOV_stalin_demands_tanks = {
+		icon = generic_merge_plant_tank
+		days_mission_timeout = 720
+		days_remove = 360
+		is_good = no
+		fire_only_once = yes
+		
+		available = {
+			OR = {
+				has_equipment = {
+					light_tank_chassis > 6999
+				}
+				has_equipment = {
+					medium_tank_chassis > 999
+				}
+				has_equipment = {
+					heavy_tank_chassis > 499
+				}
+			}
+		}
+
+		activation = {
+			has_country_flag = SOV_stalin_demands_tanks_flag
+			original_tag = SOV
+		}
+		
+		visible = {
+			original_tag = SOV
+		}
+		
+		timeout_effect = {
+			add_political_power = -75
+			add_war_support = -0.075
+		}
+		
+		complete_effect = {
+			add_political_power = 75
+			army_experience = 50
+			add_timed_idea = {
+				idea = SOV_stalin_happy_tanks
+				days = 360
+			}
+		}
+		
+		modifier = {
+			experience_gain_army = 0.1
+		}
+		
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	SOV_stalin_demands_planes = {
+		icon = generic_merge_plant_aircraft
+		days_mission_timeout = 1080
+		days_remove = 360
+		is_good = no
+		fire_only_once = yes
+		
+		available = {
+			OR = {
+				has_equipment = {
+					fighter_equipment > 4499
+				}
+				has_equipment = {
+					heavy_fighter_equipment > 1499
+				}
+				has_equipment = {
+					CAS_equipment > 1499
+				}
+			}
+		}
+
+		activation = {
+			has_country_flag = SOV_stalin_demands_planes_flag
+			original_tag = SOV
+		}
+		
+		visible = {
+			original_tag = SOV
+		}
+		
+		timeout_effect = {
+			add_political_power = -75
+			add_stability = -0.05
+			add_ideas = SOV_enemy_air_confidence
+		}
+		
+		complete_effect = {
+			add_political_power = 75
+			add_timed_idea = {
+				idea = SOV_stalin_happy_planes
+				days = 360
+			}
+		}
+		
+		modifier = {
+			experience_gain_air = 0.1
+		}
+		
+		ai_will_do = {
+			factor = 100
+		}
+	}
+	
+	SOV_second_5_year_plan_deadline = {
+		icon = gre_paying_ifc_debt
+		days_mission_timeout = 700
+		is_good = no
+		fire_only_once = yes
+		
+		available = {
+			has_country_flag = SOV_second_5_year_plan_completed
+		}
+
+		activation = {
+			original_tag = SOV
+		}
+		
+		visible = {
+			original_tag = SOV
+		}
+
+		cancel_trigger  = {
+			has_country_flag = SOV_great_patriotic_war_start
+		}
+		
+		timeout_effect = {
+			add_political_power = -50
+			add_stability = -0.025
+		}
+		
+		complete_effect = {
+			add_political_power = 75
+			add_stability = 0.05
+			247 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			252 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_5_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 5 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }	
+		}
+		
+		ai_will_do = {
+			factor = 100
+		}
+	}
+
+	SOV_third_5_year_plan_deadline = {
+		icon = gre_paying_ifc_debt
+		days_mission_timeout = 1800 
+		is_good = no
+		fire_only_once = yes
+		
+		available = {
+			has_country_flag = SOV_third_5_year_plan_completed
+		}
+
+		activation = {
+			original_tag = SOV
+			has_country_flag = SOV_second_5_year_plan_completed
+		}
+		
+		visible = {
+			original_tag = SOV
+		}
+
+		cancel_trigger  = {
+			has_country_flag = SOV_great_patriotic_war_start
+		}
+		
+		timeout_effect = {
+			add_political_power = -50
+			add_stability = -0.025
+		}
+		
+		complete_effect = {
+			add_political_power = 75
+			add_stability = 0.05
+			222 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			223 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			405 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			408 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+		}
+		
+		ai_will_do = {
+			factor = 100
+		}
+	}
+}

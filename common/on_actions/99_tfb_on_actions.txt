@@ -32,14 +32,53 @@ on_actions = {
 			}
 		}
 		
-		# Update Stalin Air Weekly
+		effect = {
+			# First remove the traits
+			every_country = {
+				every_army_leader = {
+					limit = {
+						has_trait = volunteer_xp_debuff
+						NOT = {
+							OR = {
+								is_leading_volunteer_group_with_original_country = THIS
+								is_leading_volunteer_group = THIS
+							}
+						}
+					}
+					remove_unit_leader_trait = volunteer_xp_debuff 
+				}
+			}
+			# Then Re-Add Them
+			every_country = {
+				every_army_leader = {
+					limit = {
+						NOT = { has_trait = volunteer_xp_debuff }
+						OR = {
+							is_leading_volunteer_group_with_original_country = THIS
+							is_leading_volunteer_group = THIS
+						}
+					}
+
+					add_unit_leader_trait = volunteer_xp_debuff 
+				}
+			}
+		}
+		# Update Dockyard Consumer Goods or Build Speed
 		effect = {
 			if = {
 				limit = {
-					has_global_flag = soviet_air_changes_full_flag
+					has_global_flag = dockyard_cg_enabled_flag
 				}
-				SOV = {
-					SOV_stalins_air_needs = yes
+				every_country = {
+					dockyard_cg_calculation = yes
+				}
+			}
+			else_if = {
+				limit = {
+					has_global_flag = dockyard_cg_build_speed_flag
+				}
+				every_country = {
+					dockyard_build_speed_calculation = yes
 				}
 			}
 		}
@@ -421,6 +460,12 @@ on_actions = {
 		# }
 		effect = {
 			set_global_flag = game_has_started
+		}
+		effect = {
+			add_power_balance_modifier = {
+				id = SOV_purge_bop    # The ID of the balance of power
+				modifier = SOV_purge1 # The modifier to add
+			}
 		}
 		# Set all of the flags from GameRules for easier setup:
 		effect = {
@@ -809,42 +854,14 @@ on_actions = {
 		# Apply Soviet Stuff
 		effect = {
 			SOV = {
-				add_ideas = SOV_soviet_industry
-				add_ideas = SOV_soviet_industry_railway_gun
+				# add_ideas = SOV_soviet_industry
+				# add_ideas = SOV_soviet_industry_railway_gun
 				add_tech_bonus = {
 					name = SOV_small_cannon
 					ahead_reduction = 1
 					uses = 2
 					technology = antiair_research1
 					technology = sov_t26_upgrade
-				}
-			}
-			if = {
-				limit = {
-					OR = {
-						has_game_rule = {
-							rule = soviet_air_changes
-							option = FULL_SOV_AIR
-						}
-						has_game_rule = {
-							rule = soviet_air_changes
-							option = START_SOV_AIR
-						}
-					}
-				}
-				SOV = {
-					add_dynamic_modifier = { modifier = soviet_air_mod_pre_war }
-					SOV_stalins_air_needs = yes
-				}
-			} else_if = {
-				limit = {
-					has_game_rule = {
-						rule = soviet_air_changes
-						option = FOCUS_SOV_AIR
-					}
-				}
-				SOV = {
-					add_dynamic_modifier = { modifier = soviet_air_mod_pre_war }
 				}
 			}
 		}		
@@ -1464,23 +1481,23 @@ on_actions = {
 			340 = { set_demilitarized_zone = no }
 		}
 		effect = {
-			SOV = {
-				mio:SOV_morozov_design_bureau_organization = {
-					add_mio_funds_gain_factor = -0.75
-				}
-				mio:SOV_astrov_design_bureau_organization = {
-					add_mio_funds_gain_factor = -0.75
-				}
-				mio:SOV_okmo_organization = {
-					add_mio_funds_gain_factor = -0.75
-				}
-				mio:SOV_mytishchy_machine_building_plant_organization = {
-					add_mio_funds_gain_factor = -0.75
-				}
-				mio:SOV_kirov_organization = {
-					add_mio_funds_gain_factor = -0.75
-				}
-			}
+			# SOV = {
+			# 	mio:SOV_morozov_design_bureau_organization = {
+			# 		add_mio_funds_gain_factor = -0.75
+			# 	}
+			# 	mio:SOV_astrov_design_bureau_organization = {
+			# 		add_mio_funds_gain_factor = -0.75
+			# 	}
+			# 	mio:SOV_okmo_organization = {
+			# 		add_mio_funds_gain_factor = -0.75
+			# 	}
+			# 	mio:SOV_mytishchy_machine_building_plant_organization = {
+			# 		add_mio_funds_gain_factor = -0.75
+			# 	}
+			# 	mio:SOV_kirov_organization = {
+			# 		add_mio_funds_gain_factor = -0.75
+			# 	}
+			# }
 			# if = {
 			# 	limit = {
 			# 		KSR = { is_ai = yes }
@@ -1627,8 +1644,274 @@ on_actions = {
 		# 		}
 		# 	}
 		# }
-	}
+		
+		# SOV GOSPLAN STUFF
+		effect = {
+			SOV = {
+				# Progress Bar Counter
+				set_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 60 }
+				
+				# Marsh / Island that cant be upgraded
+				194 = { add_dynamic_modifier = { modifier = SOV_regional_development_stage_1 }}
+				875 = { add_dynamic_modifier = { modifier = SOV_regional_development_stage_1 }}
 
+				# Northwest
+				set_variable = { var_northwest_dev_map = 1 }
+				set_variable = { var_northwest_dev_map_counter = 50 }
+				SOV = { add_to_array = { northwest_states = 213 } }
+				SOV = { add_to_array = { northwest_states = 215 } }
+				SOV = { add_to_array = { northwest_states = 216 } }
+				SOV = { add_to_array = { northwest_states = 351 } }
+				SOV = { add_to_array = { northwest_states = 880 } }
+				SOV = { add_to_array = { northwest_states = 879 } }
+				SOV = { add_to_array = { northwest_states = 214 } }
+				SOV = { add_to_array = { northwest_states = 825 } }
+				SOV = { add_to_array = { northwest_states = 262 } }
+				SOV = { add_to_array = { northwest_states = 397 } }
+				SOV = { add_to_array = { northwest_states = 400 } }
+				for_each_scope_loop = {
+					array = SOV.northwest_states
+					add_dynamic_modifier = {
+						modifier =  SOV_regional_development_stage_1 
+					}
+				}
+				
+				# MOSCOW
+				set_variable = { var_moscow_dev_map = 3 }
+				set_variable = { var_moscow_dev_map_counter = 5 }
+				SOV = { add_to_array = { moscow_states = 248 } }
+				SOV = { add_to_array = { moscow_states = 247 } }
+				SOV = { add_to_array = { moscow_states = 246 } }
+				SOV = { add_to_array = { moscow_states = 242 } }
+				SOV = { add_to_array = { moscow_states = 243 } }
+				SOV = { add_to_array = { moscow_states = 205 } }
+				SOV = { add_to_array = { moscow_states = 219 } }
+				SOV = { add_to_array = { moscow_states = 223 } }
+				SOV = { add_to_array = { moscow_states = 254 } }
+				SOV = { add_to_array = { moscow_states = 253 } }
+				for_each_scope_loop = {
+					array = SOV.moscow_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_3
+					}
+				}
+				
+				# Leningrad
+				set_variable = { var_leningrad_dev_map = 3 }
+				set_variable = { var_leningrad_dev_map_counter = 0 }
+				SOV = { add_to_array = { leningrad_states = 195 } }
+				SOV = { add_to_array = { leningrad_states = 244 } }
+				SOV = { add_to_array = { leningrad_states = 264 } }
+				SOV = { add_to_array = { leningrad_states = 263 } }
+				SOV = { add_to_array = { leningrad_states = 210 } }
+				SOV = { add_to_array = { leningrad_states = 209 } }
+				SOV = { add_to_array = { leningrad_states = 208 } }
+				for_each_scope_loop = {
+					array = SOV.leningrad_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_3
+					}
+				}
+				
+				# Belarus
+				set_variable = { var_belarus_dev_map = 2 }
+				set_variable = { var_belarus_dev_map_counter = 50 }
+				#SOV = { add_to_array = { belarus_states = 194 } }
+				SOV = { add_to_array = { belarus_states = 207 } }
+				SOV = { add_to_array = { belarus_states = 206 } }
+				SOV = { add_to_array = { belarus_states = 204 } }
+				SOV = { add_to_array = { belarus_states = 241 } }
+				for_each_scope_loop = {
+					array = SOV.belarus_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_2
+					}
+				}
+				
+				# Ukraine West
+				set_variable = { var_ukraine_west_dev_map = 2 }
+				set_variable = { var_ukraine_west_dev_map_counter = 50 }
+				SOV = { add_to_array = { ukraine_west_states = 137 } }
+				SOV = { add_to_array = { ukraine_west_states = 196 } }
+				SOV = { add_to_array = { ukraine_west_states = 200 } }
+				SOV = { add_to_array = { ukraine_west_states = 226 } }
+				SOV = { add_to_array = { ukraine_west_states = 203 } }
+				SOV = { add_to_array = { ukraine_west_states = 197 } }
+				SOV = { add_to_array = { ukraine_west_states = 192 } }
+				SOV = { add_to_array = { ukraine_west_states = 834 } }
+				SOV = { add_to_array = { ukraine_west_states = 198 } }
+				SOV = { add_to_array = { ukraine_west_states = 199 } }
+				SOV = { add_to_array = { ukraine_west_states = 201 } }
+				SOV = { add_to_array = { ukraine_west_states = 202 } }
+				for_each_scope_loop = {
+					array = SOV.ukraine_west_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_2
+					}
+				}
+				
+				# Ukraine East
+				set_variable = { var_ukraine_east_dev_map = 2 }
+				set_variable = { var_ukraine_east_dev_map_counter = 70 }
+				SOV = { add_to_array = { ukraine_east_states = 227 } }
+				SOV = { add_to_array = { ukraine_east_states = 218 } }
+				SOV = { add_to_array = { ukraine_east_states = 228 } }
+				SOV = { add_to_array = { ukraine_east_states = 221 } }
+				SOV = { add_to_array = { ukraine_east_states = 259 } }
+				SOV = { add_to_array = { ukraine_east_states = 193 } }
+				SOV = { add_to_array = { ukraine_east_states = 224 } }
+				SOV = { add_to_array = { ukraine_east_states = 225 } }
+				SOV = { add_to_array = { ukraine_east_states = 222 } }
+				SOV = { add_to_array = { ukraine_east_states = 220 } }
+				SOV = { add_to_array = { ukraine_east_states = 240 } }
+				SOV = { add_to_array = { ukraine_east_states = 258 } }
+				SOV = { add_to_array = { ukraine_east_states = 260 } }
+				SOV = { add_to_array = { ukraine_east_states = 257 } }
+				for_each_scope_loop = {
+					array = SOV.ukraine_east_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_2
+					}
+				}
+				
+				# Caucasus
+				set_variable = { var_caucasus_dev_map = 2 }
+				set_variable = { var_caucasus_dev_map_counter = 0 }
+				SOV = { add_to_array = { caucasus_states = 234 } }
+				SOV = { add_to_array = { caucasus_states = 235 } }
+				SOV = { add_to_array = { caucasus_states = 232 } }
+				SOV = { add_to_array = { caucasus_states = 821 } }
+				SOV = { add_to_array = { caucasus_states = 828 } }
+				SOV = { add_to_array = { caucasus_states = 827 } }
+				SOV = { add_to_array = { caucasus_states = 233 } }
+				SOV = { add_to_array = { caucasus_states = 826 } }
+				SOV = { add_to_array = { caucasus_states = 231 } }
+				SOV = { add_to_array = { caucasus_states = 230 } }
+				SOV = { add_to_array = { caucasus_states = 229 } }
+				for_each_scope_loop = {
+					array = SOV.caucasus_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_2
+					}
+				}
+				
+				# Volga
+				set_variable = { var_volga_dev_map = 2 }
+				set_variable = { var_volga_dev_map_counter = 15 }
+				SOV = { add_to_array = { volga_states = 237 } }
+				SOV = { add_to_array = { volga_states = 236 } }
+				SOV = { add_to_array = { volga_states = 238 } }
+				SOV = { add_to_array = { volga_states = 217 } }
+				SOV = { add_to_array = { volga_states = 407 } }
+				SOV = { add_to_array = { volga_states = 265 } }
+				SOV = { add_to_array = { volga_states = 829 } }
+				SOV = { add_to_array = { volga_states = 401 } }
+				SOV = { add_to_array = { volga_states = 251 } }
+				SOV = { add_to_array = { volga_states = 250 } }
+				SOV = { add_to_array = { volga_states = 255 } }
+				SOV = { add_to_array = { volga_states = 239 } }
+				SOV = { add_to_array = { volga_states = 833 } }
+				SOV = { add_to_array = { volga_states = 252 } }
+				SOV = { add_to_array = { volga_states = 256 } }
+				SOV = { add_to_array = { volga_states = 652 } }
+				SOV = { add_to_array = { volga_states = 249 } }
+				SOV = { add_to_array = { volga_states = 245 } }
+				SOV = { add_to_array = { volga_states = 406 } }
+				for_each_scope_loop = {
+					array = SOV.volga_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_2
+					}
+				}
+				
+				# Urals
+				set_variable = { var_urals_dev_map = 2 }
+				set_variable = { var_urals_dev_map_counter = 0 }
+				SOV = { add_to_array = { urals_states = 582 } }
+				SOV = { add_to_array = { urals_states = 572 } }
+				SOV = { add_to_array = { urals_states = 573 } }
+				SOV = { add_to_array = { urals_states = 651 } }
+				SOV = { add_to_array = { urals_states = 399 } }
+				SOV = { add_to_array = { urals_states = 398 } }
+				SOV = { add_to_array = { urals_states = 581 } }
+				SOV = { add_to_array = { urals_states = 579 } }
+				SOV = { add_to_array = { urals_states = 580 } }
+				SOV = { add_to_array = { urals_states = 403 } }
+				SOV = { add_to_array = { urals_states = 653 } }
+				SOV = { add_to_array = { urals_states = 571 } }
+				# Formally Central Asia
+				SOV = { add_to_array = { urals_states = 587 } }
+				SOV = { add_to_array = { urals_states = 584 } }
+				SOV = { add_to_array = { urals_states = 832 } }
+				SOV = { add_to_array = { urals_states = 831 } }
+				SOV = { add_to_array = { urals_states = 823 } }
+				SOV = { add_to_array = { urals_states = 402 } }
+				SOV = { add_to_array = { urals_states = 583 } }
+				SOV = { add_to_array = { urals_states = 590 } }
+				SOV = { add_to_array = { urals_states = 881 } }
+				SOV = { add_to_array = { urals_states = 404 } }
+				SOV = { add_to_array = { urals_states = 585 } }
+				SOV = { add_to_array = { urals_states = 830 } }
+				SOV = { add_to_array = { urals_states = 742 } }
+				SOV = { add_to_array = { urals_states = 405 } }
+				SOV = { add_to_array = { urals_states = 732 } }
+				SOV = { add_to_array = { urals_states = 586 } }
+				SOV = { add_to_array = { urals_states = 589 } }
+				SOV = { add_to_array = { urals_states = 882 } }
+				SOV = { add_to_array = { urals_states = 588 } }
+				for_each_scope_loop = {
+					array = SOV.urals_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_2
+					}
+				}
+
+				# Siberia
+				set_variable = { var_siberia_dev_map = 1 }
+				set_variable = { var_siberia_dev_map_counter = 35 }
+				SOV = { add_to_array = { siberia_states = 654 } }
+				SOV = { add_to_array = { siberia_states = 40 } }
+				SOV = { add_to_array = { siberia_states = 570 } }
+				SOV = { add_to_array = { siberia_states = 578 } }
+				SOV = { add_to_array = { siberia_states = 577 } }
+				SOV = { add_to_array = { siberia_states = 824 } }
+				# SOV = { add_to_array = { siberia_states = 329 } } Tannu Tuva
+				SOV = { add_to_array = { siberia_states = 569 } }
+				SOV = { add_to_array = { siberia_states = 568 } }
+				SOV = { add_to_array = { siberia_states = 576 } }
+				SOV = { add_to_array = { siberia_states = 516 } }
+				SOV = { add_to_array = { siberia_states = 878 } }
+				SOV = { add_to_array = { siberia_states = 876 } }
+				SOV = { add_to_array = { siberia_states = 575 } }
+				SOV = { add_to_array = { siberia_states = 565 } }
+				SOV = { add_to_array = { siberia_states = 563 } }
+				SOV = { add_to_array = { siberia_states = 564 } }
+				SOV = { add_to_array = { siberia_states = 566 } }
+				SOV = { add_to_array = { siberia_states = 567 } }
+				SOV = { add_to_array = { siberia_states = 408 } }
+				SOV = { add_to_array = { siberia_states = 409 } }
+				SOV = { add_to_array = { siberia_states = 655 } }
+				SOV = { add_to_array = { siberia_states = 560 } }
+				SOV = { add_to_array = { siberia_states = 657 } }
+				SOV = { add_to_array = { siberia_states = 561 } }
+				SOV = { add_to_array = { siberia_states = 574 } }
+				SOV = { add_to_array = { siberia_states = 562 } }
+				SOV = { add_to_array = { siberia_states = 877 } }
+				SOV = { add_to_array = { siberia_states = 644 } }
+				SOV = { add_to_array = { siberia_states = 874 } }
+				SOV = { add_to_array = { siberia_states = 637 } }
+				SOV = { add_to_array = { siberia_states = 822 } }
+				for_each_scope_loop = {
+					array = SOV.siberia_states
+					add_dynamic_modifier = {
+						modifier = SOV_regional_development_stage_1
+					}
+				}
+
+				set_variable = {gosplan_help_industry = 1 }
+			}
+		}
+	}
 	# on_unit_leader_created = {
 	# 	effect = {
 	# 		if = {
@@ -2224,4 +2507,182 @@ on_actions = {
 		}
 	}
 
+						# Calculate factories on war dec
+						set_variable = { POL_num_of_war_civs = num_of_civilian_factories }
+						set_variable = { POL_num_of_war_mils = num_of_military_factories }
+						set_variable = { POL_num_of_war_docs = num_of_naval_factories }
+
+						# Subtract the war factories from starting ones to find the difference between starting/built
+						subtract_from_variable = { POL_num_of_war_civs = POL_num_of_starting_civs }
+						subtract_from_variable = { POL_num_of_war_mils = POL_num_of_starting_mils }
+						subtract_from_variable = { POL_num_of_war_docs = POL_num_of_starting_docs }
+
+						# Multiply the starting factories by the precent gained from focuses
+						multiply_variable = { POL_num_of_starting_civs = POL_extra_factories_precent } # Percentage from focuses
+						multiply_variable = { POL_num_of_starting_mils = POL_extra_factories_precent } # Percentage from focuses
+						multiply_variable = { POL_num_of_starting_docs = POL_extra_factories_precent } # Percentage from focuses
+
+						# Add them both together to get the total to be added
+						add_to_variable = { POL_num_of_war_civs = POL_num_of_starting_civs }
+						add_to_variable = { POL_num_of_war_mils = POL_num_of_starting_mils }
+						add_to_variable = { POL_num_of_war_docs = POL_num_of_starting_docs }
+					}
+				}
+			}
+		}
+	}
+
+	on_daily_SOV = {
+		effect = {
+			if = { 
+				limit = { has_war_with_major = yes }
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_war_mobilisation } NOT = { has_country_flag = started_war_mob }}
+					set_country_flag = started_war_mob
+					activate_shine_on_focus = SOV_war_mobilisation
+					set_country_flag = { flag = SOV_war_mobilisation_in_progress_flag days = 7 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 7 } 
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_order_270 } has_completed_focus = SOV_war_mobilisation surrender_progress > 0.2 NOT = { has_country_flag = started_order_270 } }
+					set_country_flag = started_order_270
+					activate_shine_on_focus = SOV_order_270
+					set_country_flag = { flag = SOV_order_270_in_progress_flag days = 7 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 7 } 
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_allied_lend_lease } has_completed_focus = SOV_war_mobilisation surrender_progress > 0.1 NOT = { has_country_flag = started_lend_lease } }
+					set_country_flag = started_lend_lease
+					activate_shine_on_focus = SOV_allied_lend_lease
+					set_country_flag = { flag = SOV_allied_lend_lease_in_progress_flag days = 7 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 7 } 
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_american_logistical_assistance } has_completed_focus = SOV_technical_assistance surrender_progress > 0.15 NOT = { has_country_flag = started_studebaker } }
+					set_country_flag = started_studebaker
+					activate_shine_on_focus = SOV_american_logistical_assistance
+					set_country_flag = { flag = SOV_american_logistical_assistance_in_progress_flag days = 35 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 35 } 
+				}
+				if = { 
+					limit = { 
+						NOT = { has_completed_focus = SOV_defend_leningrad } 
+						has_completed_focus = SOV_found_state_defense_committee 
+						OR = {
+							NOT = { controls_state = 146 }
+							NOT = { controls_state = 208 }
+							NOT = { controls_state = 209 }
+							NOT = { controls_state = 263 }
+						}
+						controls_state = 195
+						NOT = { has_country_flag = started_lenningrad }
+					}
+					set_country_flag = started_lenningrad
+					activate_shine_on_focus = SOV_defend_leningrad
+					set_country_flag = { flag = SOV_order_270_in_progress_flag days = 14 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 14 }
+				}
+				if = { 
+					limit = { 
+						NOT = { has_completed_focus = SOV_defend_moscow } 
+						has_completed_focus = SOV_found_state_defense_committee 
+						OR = {
+							NOT = { controls_state = 242 }
+							NOT = { controls_state = 246 }
+							NOT = { controls_state = 247 }
+							NOT = { controls_state = 205 }
+						}
+						controls_state = 219
+						NOT = { has_country_flag = started_moscow }
+					}
+					set_country_flag = started_moscow
+					activate_shine_on_focus = SOV_defend_moscow
+					set_country_flag = { flag = SOV_defend_moscow_in_progress_flag days = 14 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 14 }
+				}
+				if = { 
+					limit = { 
+						NOT = { has_completed_focus = SOV_defend_stalingrad } 
+						has_completed_focus = SOV_found_state_defense_committee 
+						OR = {
+							NOT = { controls_state = 218 }
+							NOT = { controls_state = 234 }
+							NOT = { controls_state = 228 }
+							NOT = { controls_state = 260 }
+						}
+						controls_state = 217
+						NOT = { has_country_flag = started_stalingrad }
+					}
+					set_country_flag = started_stalingrad
+					activate_shine_on_focus = SOV_defend_stalingrad
+					set_country_flag = { flag = SOV_defend_stalingrad_in_progress_flag days = 14 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 14 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_coordinate_industry } has_completed_focus = SOV_order_270 surrender_progress > 0.25 NOT = { has_country_flag = started_coordinate } }
+					set_country_flag = started_coordinate
+					activate_shine_on_focus = SOV_coordinate_industry
+					set_country_flag = { flag = SOV_coordinate_industry_in_progress_flag days = 35 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 35 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_mass_tank_production } has_completed_focus = SOV_coordinate_industry surrender_progress > 0.3 NOT = { has_country_flag = started_mass_tanks } }
+					set_country_flag = started_mass_tanks
+					activate_shine_on_focus = SOV_mass_tank_production
+					set_country_flag = { flag = SOV_mass_tank_production_in_progress_flag days = 35 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 35 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_focus_forced_labour } has_completed_focus = SOV_coordinate_industry surrender_progress > 0.35 NOT = { has_country_flag = started_force_labour } }
+					set_country_flag = started_force_labour
+					activate_shine_on_focus = SOV_focus_forced_labour
+					set_country_flag = { flag = SOV_focus_forced_labour_in_progress_flag days = 35 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 35 }
+				}
+				if = { 
+					limit = { 
+						NOT = { has_completed_focus = SOV_reorganize_red_army }
+						has_completed_focus = SOV_empower_stavka
+						OR = {
+							surrender_progress > 0.05
+							date > 1942.1.1
+						}
+						NOT = { has_country_flag = started_reorganize } 
+					}
+					set_country_flag = started_reorganize
+					activate_shine_on_focus = SOV_reorganize_red_army
+					set_country_flag = { flag = SOV_reorganize_red_army_in_progress_flag days = 35 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 35 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_new_doctrine } has_completed_focus = SOV_reorganize_red_army surrender_progress > 0.1 NOT = { has_country_flag = started_deep_battle } }
+					set_country_flag = started_deep_battle
+					activate_shine_on_focus = SOV_new_doctrine
+					set_country_flag = { flag = SOV_new_doctrine_in_progress_flag days = 21 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 21 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_learn_from_our_losses } has_completed_focus = SOV_new_doctrine surrender_progress > 0.2 NOT = { has_country_flag = started_learn } }
+					set_country_flag = started_learn
+					activate_shine_on_focus = SOV_learn_from_our_losses
+					set_country_flag = { flag = SOV_learn_from_our_losses_in_progress_flag days = 21 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 21 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_learn_from_losses_2 } has_completed_focus = SOV_learn_from_our_losses surrender_progress > 0.4 NOT = { has_country_flag = started_learn2 } }
+					set_country_flag = started_learn2
+					activate_shine_on_focus = SOV_learn_from_losses_2
+					set_country_flag = { flag = SOV_learn_from_losses_2_in_progress_flag days = 21 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 21 }
+				}
+				if = { 
+					limit = { NOT = { has_completed_focus = SOV_enforced_fanaticism } has_completed_focus = SOV_guards surrender_progress > 0.3 NOT = { has_country_flag = started_no_step } }
+					set_country_flag = started_no_step
+					activate_shine_on_focus = SOV_enforced_fanaticism
+					set_country_flag = { flag = SSOV_enforced_fanaticism_in_progress_flag days = 14 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.01 days = 14 }
+				}
+			}
+		}
+	}
 }
