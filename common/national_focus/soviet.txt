@@ -3641,6 +3641,7 @@
 			has_country_flag = SOV_big_purge_decision4_flag
 			has_completed_focus = SOV_pol_nkvd6
 			OR = {
+				has_war_with = FIN
 				has_global_flag = SOV_winter_war_loss
 				has_global_flag = SOV_winter_war_win
 				has_war_with = GER
@@ -4761,9 +4762,14 @@
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
 			custom_effect_tooltip = army_mid_tt
-			every_army_leader = {
-			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-			add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+			if = {
+				limit = {
+					NOT = { has_completed_focus = SOV_order_270 }
+				}
+				every_army_leader = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+				}
 			}
 			hidden_effect = {
 				IF = {
@@ -5908,7 +5914,7 @@
 		x = -1
 		y = 1
 		relative_position_id = SOV_eco_finish_collectivisation_process
-		cost = 5
+		cost = 2
 		ai_will_do = {
 			factor = 5
 		}
@@ -5944,8 +5950,8 @@
 			custom_effect_tooltip = SOV_consumer_good_factor_-5_tt
 			add_to_variable = { SOV_command_economy_consumer_goods_factor_var = -0.05 }
 			
-			custom_effect_tooltip = SOV_factory_output_-2_tt
-			add_to_variable = { SOV_command_economy_industrial_capacity_factory_var = -0.02 }
+			# custom_effect_tooltip = SOV_factory_output_-2_tt
+			# add_to_variable = { SOV_command_economy_industrial_capacity_factory_var = -0.02 }
 
 		}
 	}
@@ -8082,7 +8088,6 @@
 
 	focus = {
 		id = SOV_heavy_shift_to_armaments_production
-		prerequisite = { focus = SOV_heavy_industrial_expansion }
 		prerequisite = { focus = SOV_heavy_urbanization_of_society }
 		prerequisite = { focus = SOV_heavy_new_construction_sites }
 		mutually_exclusive = { focus = SOV_heavy_balanced_industrial_approach }
@@ -8126,7 +8131,6 @@
 		id = SOV_heavy_balanced_industrial_approach
 		prerequisite = { focus = SOV_heavy_industrial_expansion }
 		prerequisite = { focus = SOV_heavy_urbanization_of_society }
-		prerequisite = { focus = SOV_heavy_new_construction_sites }
 		mutually_exclusive = { focus = SOV_heavy_shift_to_armaments_production }
 		icon = GFX_focus_NORDIC_com_capstone_civilian
 		x = 1
@@ -8148,7 +8152,7 @@
 			custom_effect_tooltip = SOV_dockyard_output_5_tt
 			add_to_variable = { SOV_command_economy_industrial_capacity_dockyard_var = 0.05 }
 			add_to_variable = { 
-           	 	SOV_command_economy_production_factory_max_efficiency_factor_var = 0.06
+           	 	SOV_command_economy_production_factory_max_efficiency_factor_var = 0.05
             	tooltip = production_factory_max_efficiency_factor_tt
             }
 
@@ -10352,6 +10356,17 @@
 
 			custom_effect_tooltip = SOV_generic_modify_northwest_level_tt
 			SOV_upgrade_region_northwest = yes
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 	}
 
@@ -10444,6 +10459,16 @@
 					rear_1_custom_slot = ship_light_battery_2
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 		
 	}
@@ -10525,6 +10550,16 @@
 					rear_1_custom_slot = ship_airplane_launcher_2
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 	}
 
@@ -10656,6 +10691,16 @@
 					}
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 	}
 
@@ -10756,6 +10801,16 @@
 				progress = 0.95
 				amount = 1 #Tooltip purposes
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 	}
 
@@ -10905,7 +10960,17 @@
 					progress = 0.35
 					amount = 1
 				}
-			}			
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes			
 		}
 	}
 	
@@ -11040,7 +11105,16 @@
 			else = {
 				custom_effect_tooltip = SOV_merge_naval_plants_tt
 			}
-
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_1_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 	}
 
@@ -11184,6 +11258,16 @@
 					add_dynamic_modifier = { modifier = SOV_defend_city }
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_increase_5_year_plan_5_tt 
+			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 5 }
+			clamp_variable = {
+				var = var_SOV_second_5_year_plan_progress_bar_counter
+				max = 100
+			}
+			add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }		
+			
+			SOV_check_plan_completion = yes
 		}
 	}
 
