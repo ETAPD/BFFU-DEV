@@ -129,17 +129,6 @@
 			add_political_power = 25
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
 	
 	focus = {
 		id = SOV_pol_purge1
@@ -410,10 +399,10 @@
 		}
 
 		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_purge_bop
-				value = -0.05
-			}
+			# add_power_balance_value = {
+			# 	id = SOV_purge_bop
+			# 	value = -0.05
+			# }
 			# custom_effect_tooltip = generic_skip_one_line_tt
 			# custom_effect_tooltip = {
 			# 	localization_key = remove_character_as_tt
@@ -6699,7 +6688,7 @@
 		x = 0
 		y = 1
 		relative_position_id = SOV_light_restructure_society
-		cost = 8
+		cost = 7
 
 		search_filters = { FOCUS_FILTER_STABILITY  FOCUS_FILTER_POLITICAL }
 		
@@ -8535,10 +8524,6 @@
 		}
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-			custom_effect_tooltip = SOV_factory_output_3_tt
-			add_to_variable = { SOV_command_economy_industrial_capacity_factory_var = 0.03 }
-			custom_effect_tooltip = generic_skip_one_line_tt
 			
 			every_owned_state = {
 				limit = {
@@ -8549,10 +8534,10 @@
 					}
 				}
 				random_select_amount = 3
-				add_extra_state_shared_building_slots = 3
+				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = arms_factory
-					level = 3
+					level = 4
 					instant_build = yes
 				}
 			}
@@ -8617,7 +8602,7 @@
 		}
 		
 		relative_position_id = SOV_heavy_new_mines_caucasus
-		cost = 8
+		cost = 7
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
 			custom_effect_tooltip = SOV_factories_in_state_2_tt
@@ -8751,7 +8736,7 @@
 		}
 		
 		relative_position_id = SOV_heavy_standardize_factory_blueprints
-		cost = 8
+		cost = 7
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
 			custom_effect_tooltip = SOV_efficiency_growth_3_tt
@@ -8953,7 +8938,7 @@
 		}
 		
 		relative_position_id = SOV_heavy_productive_forces
-		cost = 8
+		cost = 7
 		completion_reward = {			
 			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
 			custom_effect_tooltip = SOV_construction_speed_5_tt
@@ -9361,32 +9346,24 @@
 			
 			custom_effect_tooltip = generic_skip_one_line_tt
 			
-			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-			
-			add_to_variable = { 
-           	 	SOV_command_economy_production_factory_max_efficiency_factor_var = 0.02
-            	tooltip = production_factory_max_efficiency_factor_tt
-            }
-			custom_effect_tooltip = generic_skip_one_line_tt
-			
 			if = {
 				limit = {
 					NOT = { has_country_flag = SOV_third_5_year_plan_started }
 				}
 				572 = {
-					add_extra_state_shared_building_slots = 2
+					add_extra_state_shared_building_slots = 4
 					add_building_construction = {
 						type = industrial_complex
-						level = 2
+						level = 4
 						instant_build = yes
 					}
 				}
 			} else = {
 				572 = {
-					add_extra_state_shared_building_slots = 3
+					add_extra_state_shared_building_slots = 4
 					add_building_construction = {
 						type = arms_factory
-						level = 3
+						level = 4
 						instant_build = yes
 					}
 				}
@@ -9757,7 +9734,7 @@
 
 		
 		relative_position_id = SOV_heavy_mining_combines
-		cost = 8
+		cost = 7
 		completion_reward = {			
 			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
 			custom_effect_tooltip = SOV_factory_output_5_tt
@@ -13428,6 +13405,7 @@
 		x = -11
 		y = 11
 		cost = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		# offset = {
 		# 	x = 60
@@ -13559,46 +13537,76 @@
 		y = 1
 		relative_position_id = SOV_war_mobilisation
 		cost = 5
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
-			OR = {
-				195 = { #LENINGRAD
-					is_controlled_by = ROOT
-					any_neighbor_state = {
-						is_owned_by = ROOT
-						NOT = { is_fully_controlled_by = ROOT }
-					}
+			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
+				limit = {
+					has_country_flag = SOV_the_road_of_life_in_progress_flag
 				}
-				219 = { #MOSCOW
-					is_controlled_by = ROOT
-					any_neighbor_state = {
-						is_owned_by = ROOT
-						NOT = { is_fully_controlled_by = ROOT }
+				set_temp_variable = { temp_focus_days = 5 } #For tooltip purposes
+				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_in_progress_tt
+						FLAG_DAYS = [?SOV_the_road_of_life_in_progress_flag:days]
 					}
+					always = no 
 				}
-				217 = { #STALINGRAD
-					is_controlled_by = ROOT
-					any_neighbor_state = {
-						is_owned_by = ROOT
-						NOT = { is_fully_controlled_by = ROOT }
+			}
+			else = { #NOT BEEN WORKED ON (Just Explain)
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_will_auto_start_on_approach2_tt
+						STATE1 = [?195.GetName]
+						STATE2 = [?219.GetName]
+						STATE3 = [?217.GetName]
+						STATE4 = [?137.GetName]
+						STATE5 = [?202.GetName]
 					}
-				}
-				137 = { #SEVASTOPOL
-					is_controlled_by = ROOT
-					any_neighbor_state = {
-						is_owned_by = ROOT
-						NOT = { is_fully_controlled_by = ROOT }
-					}
-				}
-				202 = { #Kiev
-					is_controlled_by = ROOT
-					any_neighbor_state = {
-						is_owned_by = ROOT
-						NOT = { is_fully_controlled_by = ROOT }
-					}
+					always = no
 				}
 			}
 		}
+		# available = {
+		# 	OR = {
+		# 		195 = { #LENINGRAD
+		# 			is_controlled_by = ROOT
+		# 			any_neighbor_state = {
+		# 				is_owned_by = ROOT
+		# 				NOT = { is_fully_controlled_by = ROOT }
+		# 			}
+		# 		}
+		# 		219 = { #MOSCOW
+		# 			is_controlled_by = ROOT
+		# 			any_neighbor_state = {
+		# 				is_owned_by = ROOT
+		# 				NOT = { is_fully_controlled_by = ROOT }
+		# 			}
+		# 		}
+		# 		217 = { #STALINGRAD
+		# 			is_controlled_by = ROOT
+		# 			any_neighbor_state = {
+		# 				is_owned_by = ROOT
+		# 				NOT = { is_fully_controlled_by = ROOT }
+		# 			}
+		# 		}
+		# 		137 = { #SEVASTOPOL
+		# 			is_controlled_by = ROOT
+		# 			any_neighbor_state = {
+		# 				is_owned_by = ROOT
+		# 				NOT = { is_fully_controlled_by = ROOT }
+		# 			}
+		# 		}
+		# 		202 = { #Kiev
+		# 			is_controlled_by = ROOT
+		# 			any_neighbor_state = {
+		# 				is_owned_by = ROOT
+		# 				NOT = { is_fully_controlled_by = ROOT }
+		# 			}
+		# 		}
+		# 	}
+		# }
 		
 		search_filters = {}
 
@@ -13622,11 +13630,34 @@
 		prerequisite = { focus = SOV_war_mobilisation }
 		x = 5
 		y = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		relative_position_id = SOV_war_mobilisation
 		cost = 5
-		
+
 		available = {
+			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
+				limit = {
+					has_country_flag = SOV_found_state_defense_committee_in_progress_flag
+				}
+				set_temp_variable = { temp_focus_days = 5 } #For tooltip purposes
+				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_in_progress_tt
+						FLAG_DAYS = [?SOV_found_state_defense_committee_in_progress_flag:days]
+					}
+					always = no 
+				}
+			}
+			else = { #NOT BEEN WORKED ON (Just Explain)
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_will_auto_start_on_war_mob_finish_tt
+					}
+					always = no
+				}
+			}
 		}
 
 		completion_reward = {
@@ -13855,16 +13886,36 @@
 		relative_position_id = SOV_found_state_defense_committee
 		x = 0
 		y = 2
-		cost = 5 # Make cheaper if dynamic focus cost possible
+		cost = 5
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		ai_will_do = {
 			factor = 1
 		}
 
-
-
 		available = {
-
+			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
+				limit = {
+					has_country_flag = SOV_empower_stavka_in_progress_flag
+				}
+				set_temp_variable = { temp_focus_days = 5 } #For tooltip purposes
+				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_in_progress_tt
+						FLAG_DAYS = [?SOV_empower_stavka_in_progress_flag:days]
+					}
+					always = no 
+				}
+			}
+			else = { #NOT BEEN WORKED ON (Just Explain)
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_will_auto_start_on_defense_committee_finish_tt
+					}
+					always = no
+				}
+			}
 		}
 
 		completion_reward = {
@@ -13951,18 +14002,19 @@
 		x = -4
 		y = 1
 		cost = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
 				limit = {
-					has_country_flag = SOV_allied_lend_lease
+					has_country_flag = SOV_allied_lend_lease_in_progress_flag
 				}
 				set_temp_variable = { temp_focus_days = 1 } #For tooltip purposes
 				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
 				custom_override_tooltip = {
 					tooltip = {
 						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_allied_lend_lease:days]
+						FLAG_DAYS = [?SOV_allied_lend_lease_in_progress_flag:days]
 					}
 					always = no 
 				}
@@ -14016,21 +14068,33 @@
 		prerequisite = { focus = SOV_allied_lend_lease }
 		x = -2
 		y = 1
-
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		relative_position_id = SOV_allied_lend_lease
 		cost = 5
-		
+
 		available = {
-			any_country = {
- 				is_major = yes
- 				has_war_with = ROOT
- 			}
-			USA = {
-				any_country = {
- 					is_major = yes
- 					has_war_with = USA
- 				}
+			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
+				limit = {
+					has_country_flag = SOV_technical_assistance_in_progress_flag
+				}
+				set_temp_variable = { temp_focus_days = 5 } #For tooltip purposes
+				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_in_progress_tt
+						FLAG_DAYS = [?SOV_technical_assistance_in_progress_flag:days]
+					}
+					always = no 
+				}
+			}
+			else = { #NOT BEEN WORKED ON (Just Explain)
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_will_auto_start_at_surrender_level_tech_tt
+					}
+					always = no
+				}
 			}
 		}
 
@@ -14128,18 +14192,19 @@
 		y = 2
 		relative_position_id = SOV_technical_assistance
 		cost = 5
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
 				limit = {
-					has_country_flag = SOV_american_logistical_assistance
+					has_country_flag = SOV_american_logistical_assistance_in_progress_flag
 				}
 				set_temp_variable = { temp_focus_days = 5 } #For tooltip purposes
 				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
 				custom_override_tooltip = {
 					tooltip = {
 						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_american_logistical_assistance:days]
+						FLAG_DAYS = [?SOV_american_logistical_assistance_in_progress_flag:days]
 					}
 					always = no 
 				}
@@ -14154,8 +14219,6 @@
 				}
 			}
 		}
-
-
 
 		completion_reward = {
 			add_equipment_to_stockpile = { type = motorized_equipment_0 amount = 1000 producer = USA }
@@ -14463,6 +14526,7 @@
 		y = 4
 		relative_position_id = SOV_war_mobilisation
 		cost = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 
 		available = {
@@ -14550,6 +14614,7 @@
 		y = 1
 		relative_position_id = SOV_order_270
 		cost = 5
+		overlay = GFX_focus_fast_overlay_generic_clock
 		
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -14592,6 +14657,7 @@
 		y = 1
 		relative_position_id = SOV_coordinate_industry
 		cost = 5
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -14633,6 +14699,7 @@
 		y = 1
 		relative_position_id = SOV_coordinate_industry
 		cost = 5
+		overlay = GFX_focus_fast_overlay_generic_clock
 		ai_will_do = {
 			factor = 5
 		}
@@ -14712,6 +14779,7 @@
 		y = 2
 		relative_position_id = SOV_found_state_defense_committee
 		cost = 2
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -14890,6 +14958,7 @@
 		y = 1
 		relative_position_id = SOV_found_state_defense_committee
 		cost = 2
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -15092,6 +15161,7 @@
 		prerequisite = { focus = SOV_found_state_defense_committee }
 		x = 3
 		y = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 
 		relative_position_id = SOV_found_state_defense_committee
@@ -15333,13 +15403,14 @@
 		y = 1
 		relative_position_id = SOV_order_270
 		cost = 5 # TODO: MAKE DYNAMIC IF POSSIBLE (14 days if order 227 has been done, 70 if not) (Not sure if should do)
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
 				limit = {
 					has_country_flag = SOV_reorganize_red_army_in_progress_flag
 				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
+				set_temp_variable = { temp_focus_days = 5 } #For tooltip purposes
 				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
 				custom_override_tooltip = {
 					tooltip = {
@@ -15487,6 +15558,7 @@
 		y = 1
 		relative_position_id = SOV_guards
 		cost = 2
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -15530,6 +15602,7 @@
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
 		cost = 3
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -15583,6 +15656,7 @@
 		y = 1
 		relative_position_id = SOV_new_doctrine
 		cost = 3
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -15643,6 +15717,7 @@
 		y = 1
 		relative_position_id = SOV_learn_from_our_losses
 		cost = 3
+		overlay = GFX_focus_fast_overlay_generic_clock
 
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
