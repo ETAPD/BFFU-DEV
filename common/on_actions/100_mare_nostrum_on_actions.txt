@@ -1,0 +1,114 @@
+on_actions = {
+	#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
+
+	on_monthly_ITA = {
+		effect = {
+			if = {
+				limit = {
+					has_dynamic_modifier = { modifier = ITA_lira_overvaluation }
+				}
+				if = {
+					limit = {
+						check_variable = { ITA_consumer_goods_factor < 1 }
+					}
+					add_to_variable = { ITA_consumer_goods_factor = ITA_consumer_goods_factor_increase }
+				}
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		 effect = {
+			if = {
+				limit = {
+					FROM = { 
+						has_war_with = ENG
+					}
+					ROOT = { 
+						has_war_with = ITA
+					}
+					FROM.FROM = {
+						has_state_flag = MALTA_NOSTRUM_AXIS_controls
+					}
+				}
+				FROM.FROM = {  
+				 	set_state_flag = MALTA_NOT_NOSTRUM_AXIS_controls
+				 	clr_state_flag = MALTA_NOSTRUM_AXIS_controls
+				}
+			 	ITA  = { 
+					KIH_nostrum_lvl_down = yes
+				}		 	
+			}
+		}
+
+		effect = {
+			if = {
+				limit = {
+					ROOT = { 
+						has_war_with = ENG
+					}
+					FROM = { 
+						has_war_with = ITA
+					}
+					FROM.FROM = {
+						has_state_flag = MALTA_NOT_NOSTRUM_AXIS_controls
+					}
+				}
+				FROM.FROM = {  
+				 	set_state_flag = MALTA_NOSTRUM_AXIS_controls 
+				 	clr_state_flag = MALTA_NOT_NOSTRUM_AXIS_controls
+				}
+			 	ITA  = { 
+					KIH_nostrum_lvl_up = yes
+				}
+			}
+		}
+		#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
+        effect = {
+			if = {
+				limit = {
+					FROM = { 
+						has_war_with = ENG
+					}
+					ROOT = { 
+						has_war_with = ITA
+					}
+					FROM.FROM = {
+						has_state_flag = NOSTRUM_AXIS_controls
+					}
+				}
+				FROM.FROM = {  
+				 	set_state_flag = NOT_NOSTRUM_AXIS_controls
+				 	clr_state_flag = NOSTRUM_AXIS_controls
+				}
+			 	ITA  = { 
+					KIH_nostrum_lvl_down = yes
+				}		 	
+			}
+		}
+		
+		#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
+        effect = {
+			if = {
+				limit = {
+					ROOT = { 
+						has_war_with = ENG
+					}
+					FROM = { 
+						has_war_with = ITA
+					}
+					FROM.FROM = {
+						has_state_flag = NOT_NOSTRUM_AXIS_controls
+					}
+				}
+				FROM.FROM = {  
+				 	set_state_flag = NOSTRUM_AXIS_controls 
+				 	clr_state_flag = NOT_NOSTRUM_AXIS_controls
+				}
+			 	ITA  = { 
+					KIH_nostrum_lvl_up = yes
+				}
+			}
+		}
+    }
+}

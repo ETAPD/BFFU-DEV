@@ -1,0 +1,195 @@
+add_namespace = BBA_italy_decide_the_fate_of_mussolini
+add_namespace = KIH_convene_council
+### CHOICE
+
+country_event = {
+	id = KIH_convene_council.1
+	title = KIH_convene_council.1.t
+	desc = KIH_convene_council.1.desc
+	picture = GFX_report_event_generic_mussolini
+
+	is_triggered_only = yes
+
+	option = { #MUSSOLINI 
+		name = KIH_convene_council.1.a
+		ai_chance = {
+			base = 100
+		}
+		complete_national_focus = ITA_culto_il_duce
+	}
+
+	option = { #GRANDI
+		name = KIH_convene_council.1.b
+		ai_chance = {
+			base = 0
+		}
+		complete_national_focus = ITA_defy_the_duce
+		complete_national_focus = ITA_dino_grandi_focus
+
+	}
+
+	option = { #BALBO	
+		name = KIH_convene_council.1.c
+		ai_chance = {
+			base = 0
+		}
+		complete_national_focus = ITA_defy_the_duce
+		complete_national_focus = ITA_italo_balbo_focus
+	}
+
+}
+
+###########################
+###THE FATE OF MUSSOLINI###
+###########################
+country_event = {
+	id = BBA_italy_decide_the_fate_of_mussolini.1
+	title = BBA_italy_decide_the_fate_of_mussolini.1.t
+	desc = BBA_italy_decide_the_fate_of_mussolini.1.desc
+	picture = GFX_report_event_generic_mussolini
+
+	is_triggered_only = yes
+
+	option = { #Trial 
+		name = BBA_italy_decide_the_fate_of_mussolini.1.a
+		ai_chance = {
+			base = 5
+			modifier = {
+				add = 35
+				has_dino_grandi = yes
+			}
+		}
+		custom_effect_tooltip = ITA_mussolini_stands_trial_tt
+		country_event = { id = BBA_italy_decide_the_fate_of_mussolini.2 days = 10 }
+	}
+
+	option = { #Execution
+		name = BBA_italy_decide_the_fate_of_mussolini.1.b
+		ai_chance = {
+			base = 10
+		}
+		add_political_power = 75
+		add_stability = -0.05 
+		add_popularity = {
+		    ideology = fascism
+		    popularity = -0.05
+		}
+		remove_ideas = ITA_shadow_of_mussolini
+
+		hidden_effect = {
+			retire_character = ITA_benito_mussolini
+		}
+	}
+
+	option = { #Assassination
+		name = BBA_italy_decide_the_fate_of_mussolini.1.c
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 20
+				has_country_leader = {
+					character = ITA_italo_balbo
+					ruling_only = yes
+				}
+			}
+		}	
+		custom_effect_tooltip = ITA_mussolini_is_assassinated_tt
+		country_event = { id = BBA_italy_decide_the_fate_of_mussolini.3 days = 5 } 
+	}
+}
+
+#MUSSOLINI STANDS ON TRIAL
+country_event = {
+	id = BBA_italy_decide_the_fate_of_mussolini.2
+	title = BBA_italy_decide_the_fate_of_mussolini.2.t
+	desc = BBA_italy_decide_the_fate_of_mussolini.2.desc
+	picture = GFX_report_event_generic_mussolini
+
+	is_triggered_only = yes
+
+	option = { #acquitted
+		name = BBA_italy_decide_the_fate_of_mussolini.2.a
+		ai_chance = {
+			base = 1
+		}
+		remove_ideas = ITA_shadow_of_mussolini
+		custom_effect_tooltip = ITA_mussolini_walks_free_tt
+		hidden_effect = {
+			set_country_flag = ITA_mussolini_is_innocent
+		}
+	}
+
+	option = { #imprisonment
+		name = BBA_italy_decide_the_fate_of_mussolini.2.b
+		ai_chance = {
+			base = 10
+		}
+		add_political_power = 50
+		add_popularity = {
+		    ideology = fascism
+		    popularity = 0.05
+		} 
+		
+		remove_ideas = ITA_shadow_of_mussolini
+
+		hidden_effect = {
+			set_country_flag = ITA_mussolini_is_guilty
+		}
+	}
+}
+
+#MUSSOLINI IS ASSASSINATED
+country_event = {
+	id = BBA_italy_decide_the_fate_of_mussolini.3
+	title = BBA_italy_decide_the_fate_of_mussolini.3.t
+	desc = BBA_italy_decide_the_fate_of_mussolini.3.desc
+	picture = GFX_report_event_generic_mussolini
+
+	is_triggered_only = yes
+
+	option = { #Blame Communists
+		name = BBA_italy_decide_the_fate_of_mussolini.3.a
+
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_country_leader = {
+					character = ITA_italo_balbo
+					ruling_only = yes
+				}
+			}
+		}
+
+		add_war_support = 0.05
+		add_popularity = {
+		    ideology = communism
+		    popularity = -0.05
+		} 
+		remove_ideas = ITA_shadow_of_mussolini
+		hidden_effect = {
+			set_country_flag = ITA_mussolini_blame_communists
+			retire_character = ITA_benito_mussolini
+		}
+	}
+
+	option = { #Cover Story
+		name = BBA_italy_decide_the_fate_of_mussolini.3.b
+
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = 10
+				has_dino_grandi = yes
+			}
+		}
+
+		add_political_power = 25
+
+		remove_ideas = ITA_shadow_of_mussolini
+		hidden_effect = {
+			set_country_flag = ITA_mussolini_cover_story
+			retire_character = ITA_benito_mussolini
+		}
+	}
+}

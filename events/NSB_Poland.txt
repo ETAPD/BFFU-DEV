@@ -1,0 +1,570 @@
+﻿###########################
+# NSB Polish Events
+###########################
+
+add_namespace = NSB_poland_events
+
+
+
+#Poland wants to buy other colonies
+country_event = {
+	id = NSB_poland_events.5	
+	title = NSB_poland_events.4.t
+	desc = NSB_poland_events.4.desc
+	picture = GFX_report_event_generic_conference
+	
+	is_triggered_only = yes
+
+	option = { #Sell the island(s) to Poland
+		name = NSB_poland_events.4.a
+		ai_chance = {
+			base = 1000
+		}
+
+		POL = {
+			transfer_state = event_target:POL_colony_purchase
+
+		}
+			#event_target:POL_colony_purchase = {set_state_category = rural}	
+			event_target:POL_colony_purchase = {set_state_category = pastoral}		
+			add_timed_idea = {
+				idea = POL_sold_colony_cheap
+				days = 720
+			}
+		POL = { country_event = { id = NSB_poland_events.501 } }
+	}
+}
+#Colony sale succeeds
+country_event = {
+	id = NSB_poland_events.501
+	title = NSB_poland_events.401.t
+	desc = {
+		text = NSB_poland_events.401.desc.dem
+		trigger = {
+			POL = { NOT = { has_government = communism } }
+		}
+	}
+	desc = {
+		text = NSB_poland_events.401.desc.com
+		trigger = {
+			POL = { has_government = communism }
+		}
+	}
+	picture = GFX_report_event_generic_read_write
+	
+	is_triggered_only = yes
+
+	option = { #Sell the island(s) to Poland
+		name = NSB_poland_events.401.a
+		ai_chance = {
+			base = 10
+		}
+		effect_tooltip = {
+			transfer_state = event_target:POL_colony_purchase
+			event_target:POL_colony_purchase = {set_state_category = pastoral}		
+		}
+	}
+}
+
+
+
+#Poland is told no by Liberia
+country_event = {
+	id = NSB_poland_events.601
+	title = NSB_poland_events.601.t
+	desc = NSB_poland_events.601.desc
+	picture = GFX_report_event_generic_parliament
+	
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	option = { #Gain a wargoal on Liberia. Good luck naval invading.
+		name = NSB_poland_events.601.a
+		ai_chance = {
+			base = 10
+		}
+		# create_wargoal = {
+		# 	target = LIB
+		# 	type = puppet_wargoal_focus
+		# }
+	}
+
+	option = { #Just let it slide, gain nothing.
+		name = NSB_poland_events.601.b
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+
+add_namespace = NSB_poland_royal_election
+# Friedrich Christian
+country_event = {
+	id = NSB_poland_royal_election.1
+	title = NSB_poland_royal_election.1.t
+	desc = NSB_poland_royal_election.1.desc
+	picture = GFX_report_event_royal_parade
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NSB_poland_royal_election.1.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						has_country_flag = POL_AI_RANDOM_COMMONWEALTH
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = COMMONWEALTH
+						}
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = DEFAULT
+						}
+					}
+				}
+			}
+		}
+		set_party_name = { 
+			ideology = neutrality 
+			long_name = POL_wettin_party
+			name = POL_wettin_party 
+		}
+		hidden_effect = {
+			clr_country_flag = POL_searching_for_monarch_flag
+		}
+		promote_character = POL_friedrich_christian
+		complete_national_focus = POL_fulfil_fifth_of_november
+		unlock_national_focus = POL_claiming_lithuania
+		hidden_effect = {
+			set_country_flag = achievement_POL_elected_monarch
+			news_event = {
+				id = nsb_news.5
+				days = 1
+			}
+		}
+	}
+
+	option = {
+		name = NSB_poland_royal_election.1.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_country_flag = POL_AI_RANDOM_COMMONWEALTH
+					has_game_rule = {
+						rule = POL_ai_behavior
+						option = COMMONWEALTH
+					}
+				}
+			}
+		}
+		custom_effect_tooltip = POL_keep_looking_tt
+		hidden_effect = {
+			country_event = {
+				id = NSB_poland_royal_election.5
+				days = 35
+			}
+		}
+	}
+}
+# King Michael
+country_event = {
+	id = NSB_poland_royal_election.2
+	title = NSB_poland_royal_election.2.t
+	desc = NSB_poland_royal_election.2.desc
+	picture = GFX_report_event_royal_parade
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NSB_poland_royal_election.2.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						has_country_flag = POL_AI_RANDOM_ROMANIA
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = ROMANIA
+						}
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = DEFAULT
+						}
+					}
+				}
+			}
+		}
+
+		set_party_name = { 
+			ideology = neutrality 
+			long_name = POL_hohenzollern_sigmaringen
+			name = POL_hohenzollern_sigmaringen
+		}
+		hidden_effect = {
+			clr_country_flag = POL_searching_for_monarch_flag
+		}
+		set_country_flag = king_michael_flag
+		complete_national_focus = POL_fulfil_fifth_of_november
+		unlock_national_focus = POL_hohenzollern
+		hidden_effect = {
+			set_country_flag = achievement_POL_elected_monarch
+			news_event = {
+				id = nsb_news.5
+				days = 1
+			}
+		}
+	}
+
+	option = {
+		name = NSB_poland_royal_election.2.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_country_flag = POL_AI_RANDOM_ROMANIA
+					has_game_rule = {
+						rule = POL_ai_behavior
+						option = ROMANIA
+					}
+				}
+			}
+		}
+		custom_effect_tooltip = POL_keep_looking_tt
+		hidden_effect = {
+			country_event = {
+				id = NSB_poland_royal_election.3
+				days = 35
+			}
+		}
+	}
+}
+# Pavel Bermondt-Avalov
+country_event = {
+	id = NSB_poland_royal_election.3
+	title = NSB_poland_royal_election.3.t
+	desc = NSB_poland_royal_election.3.desc
+	picture = GFX_report_event_royal_visit
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = NSB_poland_royal_election.3.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						has_country_flag = POL_AI_RANDOM_BERMONDT
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = BERMONDT
+						}
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = DEFAULT
+						}
+					}
+				}
+			}
+		}
+		add_ruling_to_fas = yes
+		set_politics = {
+			ruling_party = fascism
+			elections_allowed = no
+			long_name = bermontian_party
+			name = bermontian_party 
+		}
+		promote_character = POL_pavel_bermondt_avalov
+		hidden_effect = {
+			set_cosmetic_tag = POL_KINGDOM_RUS
+			clr_country_flag = POL_searching_for_monarch_flag
+		}
+		complete_national_focus = POL_fulfil_fifth_of_november
+		unlock_national_focus = POL_cossack_king
+		hidden_effect = {
+			set_country_flag = achievement_POL_elected_monarch
+			news_event = {
+				id = nsb_news.5
+				days = 1
+			}
+		}
+	}
+
+	option = {
+		name = NSB_poland_royal_election.3.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_country_flag = POL_AI_RANDOM_BERMONDT
+					has_game_rule = {
+						rule = POL_ai_behavior
+						option = BERMONDT
+					}
+				}
+			}
+		}
+		custom_effect_tooltip = POL_keep_looking_tt
+		hidden_effect = {
+			add_to_variable = {
+				var = POL_election_cycle
+				value = 1
+			}
+			if = {
+				limit = {
+					check_variable = { POL_election_cycle < 2 }
+				}
+				country_event = {
+					id = NSB_poland_royal_election.1
+					days = 35
+				}
+			}
+			else = {
+				country_event = {
+					id = NSB_poland_royal_election.4
+					days = 35
+				}
+			}
+		}
+	}
+}
+# "Anastasia"
+country_event = {
+	id = NSB_poland_royal_election.4
+	title = NSB_poland_royal_election.4.t
+	desc = NSB_poland_royal_election.4.desc
+	picture = GFX_report_event_royal_parade
+	
+	immediate = {
+		hidden_effect = {
+			set_country_flag = romanov_enabled
+		}
+	}
+
+	is_triggered_only = yes
+	
+	option = {
+		name = NSB_poland_royal_election.4.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				always = no
+			}
+		}
+		load_focus_tree = {
+			tree = polish_focus
+			keep_completed = yes
+		}
+		mark_focus_tree_layout_dirty = yes
+		promote_character = POL_anna_andersson
+		set_cosmetic_tag = POL_KINGDOM_RUS
+		set_party_name = { 
+			ideology = neutrality 
+			long_name = romanov_party
+			name = romanov_party
+		}
+		complete_national_focus = POL_fulfil_fifth_of_november
+		unlock_national_focus = POL_romanov
+		hidden_effect = {
+			set_country_flag = achievement_POL_elected_monarch
+			news_event = {
+				id = nsb_news.5
+				days = 1
+			}
+		}
+	}
+
+	option = {
+		name = NSB_poland_royal_election.4.b
+		ai_chance = {
+			base = 10
+		}
+		custom_effect_tooltip = POL_keep_looking_tt
+		hidden_effect = {
+			country_event = {
+				id = NSB_poland_royal_election.1
+				days = 35
+			}
+		}
+	}
+}
+# The fan favourite Habsburg man™
+country_event = {
+	id = NSB_poland_royal_election.5
+	title = NSB_poland_royal_election.5.t
+	desc = NSB_poland_royal_election.5.desc
+	picture = GFX_report_event_generic_parliament
+	
+	immediate = {
+	}
+
+	is_triggered_only = yes
+	
+	option = {
+		name = NSB_poland_royal_election.5.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				NOT = {
+					OR = {
+						has_country_flag = POL_AI_RANDOM_HABSBURG
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = HABSBURG
+						}
+						has_game_rule = {
+							rule = POL_ai_behavior
+							option = DEFAULT
+						}
+					}
+				}
+			}
+		}
+		promote_character = POL_karl_albrecht
+		set_party_name = { 
+			ideology = neutrality 
+			long_name = POL_habsburg_party
+			name = POL_habsburg_party 
+		}
+		unlock_national_focus = POL_habsburg
+		hidden_effect = {
+			set_country_flag = achievement_POL_elected_monarch
+			news_event = {
+				id = nsb_news.5
+				days = 1
+			}
+		}
+	}
+
+	option = {
+		name = NSB_poland_royal_election.5.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_country_flag = POL_AI_RANDOM_HABSBURG
+					has_game_rule = {
+						rule = POL_ai_behavior
+						option = HABSBURG
+					}
+				}
+			}
+		}
+		custom_effect_tooltip = POL_keep_looking_tt
+		hidden_effect = {
+			country_event = {
+				id = NSB_poland_royal_election.2
+				days = 35
+			}
+		}
+	}
+}
+
+
+
+
+
+add_namespace = NSB_poland_democratic_events
+#Event for deciding if Poland should be lead by Wincenty Witos or Stanisław Mikołajczyk
+country_event = {
+	id = NSB_poland_democratic_events.1
+	title = NSB_poland_democratic_events.1.t
+	desc = NSB_poland_democratic_events.1.desc
+	picture = GFX_report_event_sanation_revolt
+
+	fire_only_once = yes
+	is_triggered_only = yes
+	
+	option = {
+		name = NSB_poland_democratic_events.1.a
+		ai_chance = {
+			base = 10
+		}
+		if = {
+			limit = {
+				has_cosmetic_tag = POL_PEASANT
+			}
+			drop_cosmetic_tag = yes
+		}
+		promote_character = POL_wincenty_witos
+	}
+
+	option = {
+		name = NSB_poland_democratic_events.1.b
+		ai_chance = {
+			base = 40
+		}
+		promote_character = POL_stanislaw_mikolajczyk
+	}
+}
+
+add_namespace = NSB_polish_fascist_events
+
+
+
+#Piasecki taking control of the government
+country_event = {
+	id = NSB_polish_fascist_events.6
+	title = NSB_polish_fascist_events.6.t
+	desc = NSB_polish_fascist_events.6.desc
+	picture = GFX_report_event_sanation_revolt
+	
+	is_triggered_only = yes
+
+	fire_only_once = no
+
+	option = {
+		name = NSB_polish_fascist_events.6.a
+		ai_chance = {
+			factor = 10
+		}
+		add_stability = -0.1
+		set_politics = {
+			ruling_party = fascism
+			elections_allowed = no
+		}
+	}
+}
+#National-Democrats winning the "election"
+country_event = {
+	id = NSB_polish_fascist_events.7
+	title = NSB_polish_fascist_events.7.t
+	desc = NSB_polish_fascist_events.7.desc
+	picture = GFX_report_event_election_vote
+	
+	is_triggered_only = yes
+
+	fire_only_once = no
+
+	option = {
+		name = NSB_polish_fascist_events.7.a
+		ai_chance = {
+			factor = 10
+		}
+		set_politics = {
+			ruling_party = fascism
+			elections_allowed = yes
+			election_frequency = 60
+			long_name = POL_natdem_party_long
+			name = POL_natdem_party 
+		}
+		promote_character = POL_roman_dmowski
+	}
+}
+

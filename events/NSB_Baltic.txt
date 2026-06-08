@@ -1,0 +1,716 @@
+﻿###########################
+# Shared Baltic Events
+###########################
+
+add_namespace = BALTIC_events
+
+# Baltic nation asks Britain for Guarantees
+country_event = {
+	id = BALTIC_events.1
+	title = BALTIC_events.1.t
+	desc = BALTIC_events.1.d
+	picture = GFX_report_event_sanation_left_victory
+	
+	is_triggered_only = yes
+
+	option = { #We will defend the Baltic
+		name = BALTIC_events.1.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				FROM = {
+					has_government = ROOT
+				}
+			}
+			modifier = {
+				factor = 0
+				FROM = { is_in_faction = yes }
+			}
+		}
+		give_guarantee = FROM
+		hidden_effect = {
+			FROM = { country_event = { id = BALTIC_events.101 days = 5 } }
+		}
+	}
+
+	option = { #Absolutely not
+		name = BALTIC_events.1.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0
+				NOT = { has_government = fascism }
+				FROM = {
+					OR = {
+						has_government = fascism
+						has_government = communism
+					}
+				}
+			}
+		}
+		reverse_add_opinion_modifier = {
+			target = FROM
+			modifier = refused_help
+		}
+		hidden_effect = {
+			FROM = { country_event = { id = BALTIC_events.102 days = 5 } }
+		}
+	}
+}
+#Informed of choice
+country_event = {
+	id = BALTIC_events.101
+	title = BALTIC_events.101.t
+	desc = BALTIC_events.101.d
+	picture = GFX_report_event_generic_conference
+	
+	is_triggered_only = yes
+
+	option = { #Nice!
+		name = BALTIC_events.101.a
+		effect_tooltip = {
+			FROM = { give_guarantee = ROOT }
+		}
+	}
+}
+
+country_event = {
+	id = BALTIC_events.102
+	title = BALTIC_events.102.t
+	desc = BALTIC_events.102.d
+	picture = GFX_report_event_journalists_speech
+	
+	is_triggered_only = yes
+
+	option = { #Not Nice!
+		name = BALTIC_events.102.a
+		effect_tooltip = {
+			add_opinion_modifier = {
+				target = FROM
+				modifier = refused_help
+			}
+		}
+	}
+}
+
+# Formalizing the Baltic entente
+country_event = {
+	id = BALTIC_events.2
+	title = BALTIC_events.2.t
+	desc = {
+		text = BALTIC_events.2.d_baltic
+		trigger = {
+			OR = {
+				original_tag = EST
+				original_tag = LAT
+				original_tag = LIT
+			}
+		}
+	}
+	desc = {
+		text = BALTIC_events.2.d_scandi
+		trigger = {
+			NOT = {
+				original_tag = EST
+				original_tag = LAT
+				original_tag = LIT
+			}
+		}
+	}
+	picture = GFX_report_event_canada_patriation
+	
+	is_triggered_only = yes
+
+	option = { #Sign up for the Baltic Entente
+		name = BALTIC_events.2.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				FROM = {
+					has_government = ROOT
+				}
+			}
+			modifier = {
+				factor = 100
+				is_historical_focus_on = yes
+				is_in_faction = no
+				OR = {
+					original_tag = LIT
+					original_tag = LAT
+					original_tag = EST
+				}
+			}
+			modifier = {
+				factor = 0
+				is_in_faction = yes
+			}
+			modifier = {
+				factor = 1.5
+				EST = { has_country_flag = baltic_entente_flag } #countries are more likely to join if others have done so already
+			}
+			modifier = {
+				factor = 1.5
+				LIT = { has_country_flag = baltic_entente_flag }
+			}
+			modifier = {
+				factor = 1.5
+				LAT = { has_country_flag = baltic_entente_flag }
+			}
+			modifier = {
+				factor = 3
+				FIN = { has_country_flag = baltic_entente_flag }
+			}
+			modifier = {
+				factor = 5
+				NOR = { has_country_flag = baltic_entente_flag }
+			}
+			modifier = {
+				factor = 10
+				SWE = { has_country_flag = baltic_entente_flag }
+			}
+			modifier = { #for neutrality
+				factor = 0.1
+				tag = SWE
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+			modifier = { #To make sure a Democracy doesn't join a Fascist/Non-Aligned Country 
+				factor = 0
+				FROM = {
+					OR = {
+						has_government = fascism
+						has_government = neutrality	
+					}
+				}
+				has_government = democratic 
+			}
+		}
+
+		trigger = {
+			#Lone Wolf Finland can't join any factions
+			FIN_is_lone_wolf_finland = no
+		}
+
+		if = {
+			limit = {
+				FROM = {
+					is_faction_leader = yes
+				}
+			}
+			FROM = { add_to_faction = PREV }
+		}
+		else = {
+			give_guarantee = FROM
+			FROM = { give_guarantee = ROOT }
+		}
+		hidden_effect = {
+			set_country_flag = baltic_entente_flag
+			FROM = { country_event = { id = BALTIC_events.201 days = 5 } }
+		}
+	}
+
+	option = { #Sounds like a bad idea
+		name = BALTIC_events.2.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0.5
+				FROM = {
+					has_government = ROOT
+				}
+				is_in_faction = no
+			}
+			modifier = {
+				factor = 0
+				is_historical_focus_on = yes
+				is_in_faction = no
+				OR = {
+					original_tag = LIT
+					original_tag = LAT
+					original_tag = EST
+				}
+			}
+			modifier = {
+				factor = 5
+				NOT = {
+					FROM = {
+						has_government = ROOT
+					}
+				}
+			}
+			modifier = { #for neutrality
+				factor = 10
+				tag = SWE
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+		}
+		#Lone Wolf Finland can't join any factions
+		if = {
+			limit = {	
+				FIN_is_lone_wolf_finland = yes
+			}
+			custom_effect_tooltip = FIN_the_lone_wolf_no_faction_tt
+		}
+		hidden_effect = {
+			FROM = {
+				country_event = { id = BALTIC_events.202 days = 5 }
+			}
+		}
+		reverse_add_opinion_modifier = {
+			target = FROM
+			modifier = refused_baltic_entente_opinion
+		}
+	}
+}
+
+country_event = {
+	id = BALTIC_events.201
+	title = BALTIC_events.101.t
+	desc = BALTIC_events.101.d
+	picture = GFX_report_event_generic_sign_treaty3
+	
+	is_triggered_only = yes
+
+	option = { #Nice!
+		name = BALTIC_events.101.a
+		effect_tooltip = {
+			if = {
+				limit = {
+					is_faction_leader = yes
+				}
+				add_to_faction = FROM
+			}
+			else = {
+				give_guarantee = FROM
+				FROM = { give_guarantee = ROOT }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = BALTIC_events.202
+	title = BALTIC_events.102.t
+	desc = BALTIC_events.102.d
+	picture = GFX_report_event_generic_rally
+	
+	is_triggered_only = yes
+
+	option = { #How dare you!
+		name = BALTIC_events.202.a
+		if = {
+			limit = {
+				FROM = {
+					NOT = { has_government = ROOT }
+					OR = {
+						original_tag = LIT
+						original_tag = LAT
+						original_tag = EST
+					}
+				}
+			}
+			every_other_country = {
+				limit = { original_tag = FROM}
+				ROOT = {
+					create_wargoal = {
+						type = puppet_wargoal_focus
+						target = PREV
+					}
+				}
+			}
+			
+		}
+	}
+}
+
+#Baltic Entente is abandoned
+country_event = {
+	id = BALTIC_events.203
+	title = BALTIC_events.203.t
+	desc = BALTIC_events.203.d
+	picture = GFX_report_event_journalists_speech
+	
+	is_triggered_only = yes
+
+	option = { #How dare you!
+		name = BALTIC_events.203.a
+		diplomatic_relation = {
+			country = FROM
+			relation = guarantee
+			active = no
+		}
+		FROM = {
+			diplomatic_relation = {
+				country = ROOT
+				relation = guarantee
+				active = no
+			}
+		}
+		add_opinion_modifier = {
+			target = FROM
+			modifier = refused_baltic_entente_opinion
+		}
+		reverse_add_opinion_modifier = {
+			target = FROM
+			modifier = refused_baltic_entente_opinion
+		}
+	}
+}
+
+#Soviets are asked to join Baltic civil war
+country_event = {
+	id = BALTIC_events.3
+	title = BALTIC_events.3.t
+	desc = BALTIC_events.3.d
+	picture = GFX_report_event_bul_ff_troops_yugoslavia
+	
+	is_triggered_only = yes
+
+	option = { #Join the war on the side of the Baltic State
+		name = BALTIC_events.3.a
+		ai_chance = {
+			base = 10
+		}
+		random_other_country = {
+			limit = {
+				has_war_with = FROM
+			}
+			PREV = {
+				add_to_war = { 
+					targeted_alliance = FROM 
+					enemy = PREV
+					hostility_reason = asked_to_join
+				}
+			}
+		}
+	}
+
+	option = { #Refuse
+		name = BALTIC_events.3.b
+		ai_chance = {
+			base = 0
+		}
+		FROM = {
+			hidden_effect = {
+				country_event = BALTIC_events.301 #informed of Soviet rejection
+			}
+		}
+	}
+}
+country_event = {
+	id = BALTIC_events.301
+	title = BALTIC_events.301.t
+	desc = BALTIC_events.301.d
+	picture = GFX_report_event_generic_communist_congress
+	
+	is_triggered_only = yes
+
+	option = { #Oh well
+		name = BALTIC_events.301.a
+		ai_chance = {
+			base = 10
+		}
+		#Something to compensate for the lost 70 days
+		add_war_support = 0.1
+		add_political_power = 100
+	}
+}
+
+#Baltic civil war
+country_event = {
+	id = BALTIC_events.4
+	title = BALTIC_events.4.t
+	desc = BALTIC_events.4.d
+	picture = GFX_report_event_long_march
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		hidden_effect = {
+			set_variable = {
+				var = civil_war_size_var
+				value = party_popularity@communism
+			}
+			add_to_variable = {
+				var = civil_war_size_var
+				value = 0.15
+			}
+			set_variable = {
+				var = ruling_size_var
+				value = 1
+			}
+			subtract_from_variable = {
+				var = ruling_size_var
+				value = party_popularity@communism
+			}
+		}
+	}
+
+	option = { #We have no choice
+		name = BALTIC_events.4.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = ruling_size_var
+			}
+		}
+		set_politics = {
+			ruling_party = communism
+			elections_allowed = no
+		}
+	}
+
+	option = { #Over my dead body
+		name = BALTIC_events.4.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = civil_war_size_var
+			}
+		}
+		start_civil_war = {
+			ideology = communism
+			size = civil_war_size_var
+		}
+	}
+}
+
+#Baltic state asks for control of Belarus
+country_event = {
+	id = BALTIC_events.5
+	title = BALTIC_events.5.t
+	desc = BALTIC_events.5.d
+	picture = GFX_report_event_generic_rally
+	
+	is_triggered_only = yes
+
+	option = { #Great idea!
+		name = BALTIC_events.5.a
+		ai_chance = {
+			base = 10
+		}
+		custom_effect_tooltip = FROM_gets_belarus_tt
+		hidden_effect = {
+			FROM = { country_event = BALTIC_events.501 }
+		}
+	}
+
+	option = { #Nope
+		name = BALTIC_events.5.b
+		ai_chance = {
+			base = 0
+		}
+		FROM = { country_event = BALTIC_events.502 }
+	}
+}
+#Event to inform of Soviet approval
+country_event = {
+	id = BALTIC_events.501
+	title = BALTIC_events.501.t
+	desc = BALTIC_events.501.d
+	picture = GFX_report_event_gre_megali_conference_signing
+	
+	is_triggered_only = yes
+
+	option = {
+		name = BALTIC_events.501.a
+		ai_chance = {
+			base = 10
+		}
+		every_country = {
+			limit = {
+				original_tag = SOV
+				has_government = communism 
+			}
+			every_owned_state = {
+				limit = {
+					is_core_of = BLR
+				}
+				custom_effect_tooltip = transfer_state_tt
+				hidden_effect = { ROOT = { transfer_state = PREV } }
+			}
+		}	
+		every_state = {
+			limit = { is_core_of = BLR }
+			add_core_of = ROOT
+		}
+		hidden_effect = {
+			set_country_flag = BLT_soviets_said_yes_to_belarus_flag
+		}
+		if = {
+			limit = {
+				original_tag = LIT
+			}
+			set_cosmetic_tag = LIT_belarus
+		}
+		if = {
+			limit = {
+				original_tag = LAT
+			}
+			set_cosmetic_tag = LAT_belarus
+		}
+		if = {
+			limit = {
+				original_tag = EST
+			}
+			set_cosmetic_tag = EST_belarus
+		}
+	}
+}
+#Event to inform of Soviet rejection
+country_event = {
+	id = BALTIC_events.502
+	title = BALTIC_events.502.t
+	desc = BALTIC_events.502.d
+	picture = GFX_report_event_journalists_speech
+	
+	is_triggered_only = yes
+
+	option = { #oh well
+		name = BALTIC_events.502.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Baltic unification event, communist
+country_event = {
+	id = BALTIC_events.6
+	title = BALTIC_events.6.t
+	desc = BALTIC_events.6.d
+	picture = GFX_report_event_generic_conference
+	
+	is_triggered_only = yes
+
+	option = { #Annex Baltic state
+		name = BALTIC_events.6.a
+		ai_chance = {
+			base = 10
+		}
+		IF = {
+			limit = {
+				ROOT = { has_civil_war = yes }
+			}
+			every_other_country = {
+				limit = { 
+					original_tag = ROOT
+					has_war_with = ROOT 
+				}
+				FROM = {
+					declare_war_on = {
+						target = PREV
+						type = annex_everything
+					} 
+				}
+			}
+		}
+		FROM = {
+			annex_country = {
+				target = PREV
+				transfer_troops = yes
+			}
+		}
+		custom_effect_tooltip = GAME_OVER_TT
+	}
+
+	option = { #Nope
+		name = BALTIC_events.6.b
+		ai_chance = {
+			base = 1
+		}
+		FROM = { country_event = { id = BALTIC_events.601 hours = 5 } }
+	}
+}
+#Event to inform of Baltic rejection
+country_event = {
+	id = BALTIC_events.601
+	title = BALTIC_events.601.t
+	desc = BALTIC_events.601.d
+	picture = GFX_report_event_communist_leader
+	
+	is_triggered_only = yes
+
+	option = { #Declare war
+		name = BALTIC_events.601.a
+		ai_chance = {
+			base = 10
+		}
+		declare_war_on = {
+			target = FROM
+			type = annex_everything
+		}
+	}
+
+	option = { #Nope
+		name = BALTIC_events.601.b
+		ai_chance = {
+			base = 0
+		}
+	}
+}
+
+#Asks overlord to declare on FIN
+country_event = {
+	id = BALTIC_events.7
+	title = BALTIC_events.7.t
+	desc = BALTIC_events.7.d
+	picture = GFX_report_event_danzig_joins_nazis
+	
+	is_triggered_only = yes
+	
+	immediate = {
+		FIN = {
+			save_event_target_as = baltic_wargoal_target
+		}
+	}
+
+	option = { #Great idea!
+		name = BALTIC_events.7.a
+		ai_chance = {
+			base = 10
+		}
+		FROM = {
+			declare_war_on = {
+				type = topple_government
+				target = FIN
+			}
+		}
+	}
+
+	option = { #Nope
+		name = BALTIC_events.7.b
+		ai_chance = {
+			base = 0
+		}
+		FROM = { country_event = BALTIC_events.701 }
+	}
+}
+#Baltic state is informed of rejection
+country_event = {
+	id = BALTIC_events.701
+	title = BALTIC_events.701.t
+	desc = BALTIC_events.701.d
+	picture = GFX_report_event_communist_leader
+	
+	is_triggered_only = yes
+
+	option = { #Oh well
+		name = BALTIC_events.701.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+
+
+
+
