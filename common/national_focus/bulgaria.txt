@@ -425,7 +425,6 @@ focus = {
 						NOT = { has_completed_focus = BUL_invigorate_national_industry }
 					}
 				}
-			BUL_replace_national_industrial_designer = yes
 			}
 	}
 
@@ -812,56 +811,6 @@ focus = {
 	}
 
 	focus = {
-		id = BUL_found_dvf_sopot
-
-		prerequisite = { focus = BUL_new_rifles }
-		icon = GFX_goal_generic_army_artillery
-		relative_position_id = BUL_new_rifles
-		x = 1
-		y = 1
-		cost = 10
-
-		available = {
-			212 = {
-				is_owned_by = BUL
-			}
-		}
-		
-		search_filters = {FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			212 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			add_tech_bonus = {
-				name = BUL_found_dvf_sopot
-			    bonus = 0.5
-			    uses = 2
-				category = artillery
-			}
-			IF = {
-				limit = {
-					has_dlc = "Arms Against Tyranny"
-				}	
-				custom_effect_tooltip = available_mio_tt
-				show_mio_tooltip = BUL_dvf_sopot_organization
-
-				mio:BUL_dvf_sopot_organization = {
-					add_mio_size = 3
-				}
-			}
-			ELSE = {
-				custom_effect_tooltip = available_designer
-				show_ideas_tooltip = BUL_dvf_sopot
-			}
-		}
-	}
-
-	focus = {
 		id = BUL_contract_foreign_companies
 
 		prerequisite = { focus = BUL_darzhavna_voenna_fabrika }
@@ -928,184 +877,8 @@ focus = {
 		}
 	}
 
-	focus = {
-		id = BUL_rebuild_the_army
 
-		prerequisite = { focus = BUL_tactical_innovations }
-		icon = GFX_focus_generic_little_entente
-		relative_position_id = BUL_tactical_innovations
-		x = 0
-		y = 1
-		cost = 10
 
-		available = {
-		}
-		
-		search_filters = {FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER}
-		completion_reward = {
-			add_doctrine_cost_reduction = {
-				name = BUL_rebuild_the_army
-			    cost_reduction = 0.5
-			    uses = 2
-				category = land_doctrine
-			}
-			if = {
-				limit = { has_idea = BUL_bulgarian_army_02 }
-				swap_ideas = {
-					remove_idea = BUL_bulgarian_army_02
-					add_idea = BUL_bulgarian_army_03
-				}
-			}
-			else = {
-				add_ideas = BUL_bulgarian_army_01
-			}
-			if = {
-				limit = { has_idea = disarmed_nation }
-				add_ideas = volunteer_only
-			}
-			if = {
-				limit = { has_idea = volunteer_only }
-				add_ideas = limited_conscription
-			}
-			if = {
-				limit = {
-					has_idea = limited_conscription
-				}
-				add_ideas = extensive_conscription
-			}
-		}
-	}
-
-	focus = {
-		id = BUL_vasil_levsky_national_military_university
-
-		prerequisite = { focus = BUL_rebuild_the_army }
-		prerequisite = { focus = BUL_national_military_academy }
-		icon = GFX_focus_research
-		relative_position_id = BUL_rebuild_the_army
-		x = 1
-		y = 1
-		cost = 10
-
-		available = {
-
-		}
-		
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			army_experience = 15
-			navy_experience = 15
-			air_experience = 15
-			add_doctrine_cost_reduction = {
-				name = BUL_vasil_levsky_national_military_university
-			    cost_reduction = 0.35
-			    uses = 2
-				category = land_doctrine
-				category = naval_doctrine
-				category = air_doctrine
-			}
-			add_research_slot = 1
-		}
-	}
-
-	focus = {
-		id = BUL_prussia_of_the_balkans
-
-		prerequisite = {  focus = BUL_artillery_focus}
-		icon = GFX_focus_BUL_prussia_of_the_balkans
-		relative_position_id = BUL_artillery_focus
-		x = 0
-		y = 1
-		cost = 10
-
-		available = {
-			controls_state = 48
-			controls_state = 212
-			controls_state = 211
-			controls_state = 801
-		}
-		
-		search_filters = {FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY}
-		completion_reward = {
-			if = {
-				limit = { has_idea = BUL_bulgarian_army_01 }
-				swap_ideas = {
-					remove_idea = BUL_bulgarian_army_01
-					add_idea = BUL_prussia_of_the_balkans_01
-				}
-			}
-			else_if = {
-				limit = { has_idea = BUL_bulgarian_army_03 }
-				swap_ideas = {
-					remove_idea = BUL_bulgarian_army_03
-					add_idea = BUL_prussia_of_the_balkans_01
-				}
-			}
-			else = {
-				effect_tooltip = {
-					remove_ideas = BUL_bulgarian_army_01
-				}
-				add_ideas = BUL_prussia_of_the_balkans_01
-			}
-
-			if = {
-				limit = {
-					has_dlc = "Arms Against Tyranny"
-				}
-				every_military_industrial_organization = {
-					limit = {
-						OR = {
-							is_military_industrial_organization = BUL_dar_organization
-							is_military_industrial_organization = BUL_kaproni_bulgarski_organization
-							is_military_industrial_organization = BUL_dvf_organization
-							is_military_industrial_organization = BUL_dvf_sopot_organization
-						}
-					}
-					complete_mio_trait = BUL_mio_trait_prussia_of_the_balkans
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = BUL_national_military_academy
-
-		prerequisite = { focus = BUL_found_dvf_sopot }
-		icon = GFX_focus_generic_military_academy
-		relative_position_id = BUL_found_dvf_sopot
-		x = 0
-		y = 1
-		cost = 5
-
-		available = {
-
-		}
-		
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			army_experience = 15
-			add_doctrine_cost_reduction = {
-				name = BUL_national_military_academy
-			    cost_reduction = 0.5
-			    uses = 1
-				category = land_doctrine
-			}
-			if = {
-				limit = { has_idea = BUL_bulgarian_army_01}
-				swap_ideas = {
-					remove_idea = BUL_bulgarian_army_01
-					add_idea = BUL_bulgarian_army_03
-				}
-			}
-			else_if = {
-				limit = {
-					NOT = { has_completed_focus = BUL_prussia_of_the_balkans }
-				}
-				add_ideas = BUL_bulgarian_army_02
-			}
-			add_ideas = SPA_expand_conscription
-		}
-	}
 	focus = {
 		id = BUL_a_mechanised_army
 		icon = GFX_focus_generic_mechanized
@@ -1887,6 +1660,67 @@ focus = {
 			}
 		}
 	}
+
+	
+
+	focus = {
+		id = BUL_prussia_of_the_balkans
+
+		prerequisite = {  focus = BUL_artillery_focus}
+		icon = GFX_focus_BUL_prussia_of_the_balkans
+		relative_position_id = BUL_artillery_focus
+		x = 0
+		y = 1
+		cost = 10
+
+		available = {
+			controls_state = 48
+			controls_state = 212
+			controls_state = 211
+			controls_state = 801
+		}
+		
+		search_filters = {FOCUS_FILTER_MANPOWER FOCUS_FILTER_INDUSTRY}
+		completion_reward = {
+			if = {
+				limit = { has_idea = BUL_bulgarian_army_01 }
+				swap_ideas = {
+					remove_idea = BUL_bulgarian_army_01
+					add_idea = BUL_prussia_of_the_balkans_01
+				}
+			}
+			else_if = {
+				limit = { has_idea = BUL_bulgarian_army_03 }
+				swap_ideas = {
+					remove_idea = BUL_bulgarian_army_03
+					add_idea = BUL_prussia_of_the_balkans_01
+				}
+			}
+			else = {
+				effect_tooltip = {
+					remove_ideas = BUL_bulgarian_army_01
+				}
+				add_ideas = BUL_prussia_of_the_balkans_01
+			}
+
+			if = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+				}
+				every_military_industrial_organization = {
+					limit = {
+						OR = {
+							is_military_industrial_organization = BUL_dar_organization
+							is_military_industrial_organization = BUL_kaproni_bulgarski_organization
+							is_military_industrial_organization = BUL_dvf_organization
+							is_military_industrial_organization = BUL_dvf_sopot_organization
+						}
+					}
+					complete_mio_trait = BUL_mio_trait_prussia_of_the_balkans
+				}
+			}
+		}
+	}
 	focus = {
 		id = BUL_tactical_innovations
 		icon = GFX_goal_generic_position_armies
@@ -1918,6 +1752,178 @@ focus = {
 				amount = 25
 				folder = land
 			}
+		}
+	}
+	
+	focus = {
+		id = BUL_rebuild_the_army
+
+		prerequisite = { focus = BUL_tactical_innovations }
+		icon = GFX_focus_generic_little_entente
+		relative_position_id = BUL_tactical_innovations
+		x = 0
+		y = 1
+		cost = 10
+
+		available = {
+		}
+		
+		search_filters = {FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER}
+		completion_reward = {
+			add_doctrine_cost_reduction = {
+				name = BUL_rebuild_the_army
+			    cost_reduction = 0.5
+			    uses = 2
+				category = land_doctrine
+			}
+			if = {
+				limit = { has_idea = BUL_bulgarian_army_02 }
+				swap_ideas = {
+					remove_idea = BUL_bulgarian_army_02
+					add_idea = BUL_bulgarian_army_03
+				}
+			}
+			else = {
+				add_ideas = BUL_bulgarian_army_01
+			}
+			if = {
+				limit = { has_idea = disarmed_nation }
+				add_ideas = volunteer_only
+			}
+			if = {
+				limit = { has_idea = volunteer_only }
+				add_ideas = limited_conscription
+			}
+			if = {
+				limit = {
+					has_idea = limited_conscription
+				}
+				add_ideas = extensive_conscription
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_found_dvf_sopot
+
+		prerequisite = { focus = BUL_new_rifles }
+		icon = GFX_goal_generic_army_artillery
+		relative_position_id = BUL_new_rifles
+		x = 1
+		y = 1
+		cost = 10
+
+		available = {
+			212 = {
+				is_owned_by = BUL
+			}
+		}
+		
+		search_filters = {FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			212 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			add_tech_bonus = {
+				name = BUL_found_dvf_sopot
+			    bonus = 0.5
+			    uses = 2
+				category = artillery
+			}
+			IF = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+				}	
+				custom_effect_tooltip = available_mio_tt
+				show_mio_tooltip = BUL_dvf_sopot_organization
+
+				mio:BUL_dvf_sopot_organization = {
+					add_mio_size = 3
+				}
+			}
+			ELSE = {
+				custom_effect_tooltip = available_designer
+				show_ideas_tooltip = BUL_dvf_sopot
+			}
+		}
+	}
+
+	
+	focus = {
+		id = BUL_national_military_academy
+
+		prerequisite = { focus = BUL_found_dvf_sopot }
+		icon = GFX_focus_generic_military_academy
+		relative_position_id = BUL_found_dvf_sopot
+		x = 0
+		y = 1
+		cost = 5
+
+		available = {
+
+		}
+		
+		search_filters = {FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			army_experience = 15
+			add_doctrine_cost_reduction = {
+				name = BUL_national_military_academy
+			    cost_reduction = 0.5
+			    uses = 1
+				category = land_doctrine
+			}
+			if = {
+				limit = { has_idea = BUL_bulgarian_army_01}
+				swap_ideas = {
+					remove_idea = BUL_bulgarian_army_01
+					add_idea = BUL_bulgarian_army_03
+				}
+			}
+			else_if = {
+				limit = {
+					NOT = { has_completed_focus = BUL_prussia_of_the_balkans }
+				}
+				add_ideas = BUL_bulgarian_army_02
+			}
+			add_ideas = SPA_expand_conscription
+		}
+	}
+
+	
+	focus = {
+		id = BUL_vasil_levsky_national_military_university
+
+		prerequisite = { focus = BUL_rebuild_the_army }
+		prerequisite = { focus = BUL_national_military_academy }
+		icon = GFX_focus_research
+		relative_position_id = BUL_rebuild_the_army
+		x = 1
+		y = 1
+		cost = 10
+
+		available = {
+
+		}
+		
+		search_filters = {FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			army_experience = 15
+			navy_experience = 15
+			air_experience = 15
+			add_doctrine_cost_reduction = {
+				name = BUL_vasil_levsky_national_military_university
+			    cost_reduction = 0.35
+			    uses = 2
+				category = land_doctrine
+				category = naval_doctrine
+				category = air_doctrine
+			}
+			add_research_slot = 1
 		}
 	}
 
@@ -2070,29 +2076,47 @@ focus = {
 			custom_effect_tooltip = BUL_cooperate_with_the_zveno_coup_tt
 		}
 	}
+########    ###     ######   ######  ####  ######  ########    ########  ########     ###    ##    ##  ######  ##     ## 
+##         ## ##   ##    ## ##    ##  ##  ##    ##    ##       ##     ## ##     ##   ## ##   ###   ## ##    ## ##     ## 
+##        ##   ##  ##       ##        ##  ##          ##       ##     ## ##     ##  ##   ##  ####  ## ##       ##     ## 
+######   ##     ##  ######  ##        ##   ######     ##       ########  ########  ##     ## ## ## ## ##       ######### 
+##       #########       ## ##        ##        ##    ##       ##     ## ##   ##   ######### ##  #### ##       ##     ## 
+##       ##     ## ##    ## ##    ##  ##  ##    ##    ##       ##     ## ##    ##  ##     ## ##   ### ##    ## ##     ## 
+##       ##     ##  ######   ######  ####  ######     ##       ########  ##     ## ##     ## ##    ##  ######  ##     ## 
+
 
 	focus = {
-		id = BUL_promote_bulgarian_nationalism
+		id = BUL_appoint_right_wing_ministers
 
-		prerequisite = {  focus = BUL_appoint_right_wing_ministers }
-		icon = GFX_focus_BUL_promote_bulgarian_nationalism
-		relative_position_id = BUL_appoint_right_wing_ministers
-		x = -4
-		y = 2
+		prerequisite = { focus = BUL_power_to_the_tsar }
+		icon = GFX_focus_generic_diplomatic_treaty
+		relative_position_id = BUL_power_to_the_tsar
+		x = 0
+		y = 1
 		cost = 5
+
 
 		available = {
 
 		}
 		
-		search_filters = {FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_WAR_SUPPORT}
+		search_filters = {FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS}
 		completion_reward = {
+			add_popularity = {
+				ideology = fascism
+				popularity = 0.05
+			}
 			add_political_power = 70
-			add_stability = 0.05
-			add_war_support = 0.05
+			custom_effect_tooltip = available_political_advisor
+			show_ideas_tooltip = BUL_nikola_zhekov
+			BUL_zveno_low_loyalty_increase_effect = yes
+			BUL_bs_low_loyalty_decrease_effect = yes
+			BUL_bzns_low_loyalty_increase_effect = yes
+			BUL_nsm_low_loyalty_increase_effect = yes
+			custom_effect_tooltip = BUL_appoint_right_wing_ministers_tt
 		}
 	}
-
+	
 	focus = {
 		id = BUL_crush_the_communists
 
@@ -2142,7 +2166,30 @@ focus = {
 			}
 		}
 	}
+	
 	focus = {
+		id = BUL_promote_bulgarian_nationalism
+
+		prerequisite = {  focus = BUL_appoint_right_wing_ministers }
+		icon = GFX_focus_BUL_promote_bulgarian_nationalism
+		relative_position_id = BUL_appoint_right_wing_ministers
+		x = -4
+		y = 2
+		cost = 5
+
+		available = {
+
+		}
+		
+		search_filters = {FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY FOCUS_FILTER_WAR_SUPPORT}
+		completion_reward = {
+			add_political_power = 70
+			add_stability = 0.05
+			add_war_support = 0.05
+		}
+	}
+
+focus = {
 		id = BUL_limited_womens_suffrage
 
 		prerequisite = { focus = BUL_promote_bulgarian_nationalism }
@@ -2184,7 +2231,7 @@ focus = {
 		}
 	}
 
-	focus = {
+focus = {
 		id = BUL_found_the_brannik
 
 		prerequisite = { focus = BUL_promote_bulgarian_nationalism }
@@ -2206,7 +2253,7 @@ focus = {
 		}
 	}
 
-	focus = {
+focus = {
 		id = BUL_bulgarian_irredentism
 
 		prerequisite = { focus = BUL_promote_bulgarian_nationalism focus = BUL_the_path_towards_a_greater_bulgaria }
@@ -2231,48 +2278,6 @@ focus = {
 			}
 		}
 	}
-
-########    ###     ######   ######  ####  ######  ########    ########  ########     ###    ##    ##  ######  ##     ## 
-##         ## ##   ##    ## ##    ##  ##  ##    ##    ##       ##     ## ##     ##   ## ##   ###   ## ##    ## ##     ## 
-##        ##   ##  ##       ##        ##  ##          ##       ##     ## ##     ##  ##   ##  ####  ## ##       ##     ## 
-######   ##     ##  ######  ##        ##   ######     ##       ########  ########  ##     ## ## ## ## ##       ######### 
-##       #########       ## ##        ##        ##    ##       ##     ## ##   ##   ######### ##  #### ##       ##     ## 
-##       ##     ## ##    ## ##    ##  ##  ##    ##    ##       ##     ## ##    ##  ##     ## ##   ### ##    ## ##     ## 
-##       ##     ##  ######   ######  ####  ######     ##       ########  ##     ## ##     ## ##    ##  ######  ##     ## 
-
-
-	focus = {
-		id = BUL_appoint_right_wing_ministers
-
-		prerequisite = { focus = BUL_power_to_the_tsar }
-		icon = GFX_focus_generic_diplomatic_treaty
-		relative_position_id = BUL_power_to_the_tsar
-		x = 0
-		y = 1
-		cost = 5
-
-
-		available = {
-
-		}
-		
-		search_filters = {FOCUS_FILTER_POLITICAL FOCUS_FILTER_INTERNAL_AFFAIRS}
-		completion_reward = {
-			add_popularity = {
-				ideology = fascism
-				popularity = 0.05
-			}
-			add_political_power = 70
-			custom_effect_tooltip = available_political_advisor
-			show_ideas_tooltip = BUL_nikola_zhekov
-			BUL_zveno_low_loyalty_increase_effect = yes
-			BUL_bs_low_loyalty_decrease_effect = yes
-			BUL_bzns_low_loyalty_increase_effect = yes
-			BUL_nsm_low_loyalty_increase_effect = yes
-			custom_effect_tooltip = BUL_appoint_right_wing_ministers_tt
-		}
-	}
-
 	focus = {
 		id = BUL_the_path_towards_a_greater_bulgaria
 
