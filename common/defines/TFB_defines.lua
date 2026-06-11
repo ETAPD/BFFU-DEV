@@ -437,7 +437,10 @@ NDefines.NAir.AIR_WING_FLIGHT_SPEED_MULT = 0.02					-- Global speed multiplier f
 NDefines.NAir.AIR_WING_XP_LOSS_REDUCTION_OVER_FRIENDLY_TERRITORY_FACTOR = 0.2 --Reduction on XP loss over friendly territory
 
 
-NDefines.NAir.DISRUPTION_FACTOR = 4.0									-- multiplier on disruption damage to scale its effects on planes
+NDefines.NAir.DISRUPTION_FACTOR = 4 -- multiplier on disruption damage to scale its effects on planes
+
+-- NDefines.NAir.AIR_SUPERIORITY_FOR_FRIENDLY_CAS_RATIO = 1.0 -- Demand at least this proportion of our cas planes as air superiority regardless of other needs
+
 -- NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 500.0						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.DISRUPTION_SPEED_FACTOR = 1.5
 NDefines.NAir.DISRUPTION_AGILITY_FACTOR = 1.0
@@ -946,7 +949,7 @@ NDefines.NMilitary.TRAINING_MAX_LEVEL = 8
 NDefines.NMilitary.DEPLOY_TRAINING_MAX_LEVEL = 6
 NDefines.NMilitary.ARMY_EXP_BASE_LEVEL = 6
 -- NDefines.NMilitary.TRAINING_EXPERIENCE_SCALE = 80.0
-NDefines.NMilitary.UNIT_EXP_LEVELS = { 0.09, 0.18, 0.27, 0.36, 0.45, 0.54, 0.63, 0.72, 0.83, 0.95 }		-- Experience needed to progress to the next level
+NDefines.NMilitary.UNIT_EXP_LEVELS = { 0.07, 0.14, 0.21, 0.28, 0.35, 0.42, 0.49, 0.56, 0.80, 0.95 }		-- Experience needed to progress to the next level
 NDefines.NMilitary.EXPERIENCE_COMBAT_FACTOR = 0.05
 
 -------------------------    
