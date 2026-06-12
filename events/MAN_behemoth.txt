@@ -1,0 +1,121 @@
+###########################################
+# Industrial Behemoth of the East — events
+#  1: First Five-Year Plan concludes
+#  2: Second Five-Year Plan concludes
+# 31: minor industrial accident
+# 32: major industrial disaster (destroys a factory)
+###########################################
+
+add_namespace = man_behemoth
+
+# The First Five-Year Plan Concludes
+country_event = {
+	id = man_behemoth.1
+	title = man_behemoth.1.t
+	desc = man_behemoth.1.d
+	picture = GFX_report_event_generic_factory
+
+	is_triggered_only = yes
+
+	option = {
+		name = man_behemoth.1.a
+		add_stability = 0.05
+		custom_effect_tooltip = MAN_eco_spirit_changed_tt
+		custom_effect_tooltip = man_behemoth.1.tt
+		add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.05 }
+		hidden_effect = { force_update_dynamic_modifier = yes }
+		custom_effect_tooltip = MAN_second_fyp_unlocked_tt
+		# TODO(manchukuo-rework): the future focus tree's "Second Five-Year Plan"
+		# focus can also set this flag / build on it.
+		set_country_flag = MAN_second_five_year_plan_active
+	}
+}
+
+# The Second Five-Year Plan Concludes
+country_event = {
+	id = man_behemoth.2
+	title = man_behemoth.2.t
+	desc = man_behemoth.2.d
+	picture = GFX_report_event_generic_factory
+
+	is_triggered_only = yes
+
+	option = {
+		name = man_behemoth.2.a
+		add_stability = 0.05
+		add_war_support = 0.05
+		custom_effect_tooltip = MAN_eco_spirit_changed_tt
+		custom_effect_tooltip = man_behemoth.2.tt
+		add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.05 }
+		add_to_variable = { MAN_behemoth_production_factory_max_efficiency_factor = 0.03 }
+		hidden_effect = { force_update_dynamic_modifier = yes }
+	}
+}
+
+# Oil Strike — the surveys pay off (historically, the Japanese drilled all
+# over Manchuria and missed Daqing; this is the lucky timeline)
+country_event = {
+	id = man_behemoth.33
+	title = man_behemoth.33.t
+	desc = man_behemoth.33.d
+	picture = GFX_report_event_generic_factory
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = { set_country_flag = MAN_oil_found_flag }
+	}
+
+	option = {
+		name = man_behemoth.33.a
+		add_resource = {
+			type = oil
+			amount = 4
+			state = 714
+		}
+	}
+}
+
+# Minor Industrial Accident
+country_event = {
+	id = man_behemoth.31
+	title = man_behemoth.31.t
+	desc = man_behemoth.31.d
+	picture = GFX_report_event_generic_factory
+
+	is_triggered_only = yes
+
+	option = {
+		name = man_behemoth.31.a
+		add_stability = -0.01
+		add_manpower = -2500
+	}
+}
+
+# Disaster at the Works
+country_event = {
+	id = man_behemoth.32
+	title = man_behemoth.32.t
+	desc = man_behemoth.32.d
+	picture = GFX_report_event_generic_factory
+
+	is_triggered_only = yes
+
+	option = {
+		name = man_behemoth.32.a
+		add_stability = -0.02
+		add_war_support = -0.01
+		add_manpower = -8000
+		custom_effect_tooltip = man_behemoth.32.tt
+		hidden_effect = {
+			random_owned_controlled_state = {
+				prioritize = { 715 328 716 }
+				limit = { industrial_complex > 0 }
+				remove_building = {
+					type = industrial_complex
+					level = 1
+				}
+			}
+		}
+	}
+}

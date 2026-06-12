@@ -18,20 +18,46 @@ set_technology = {
 
 set_research_slots = 5
 
-if = {
-	limit = { has_dlc = "Waking the Tiger" }
-	set_country_flag = MAN_northern_bandits
-	set_country_flag = MAN_eastern_bandits
-	set_country_flag = MAN_western_bandits
-	add_ideas = MAN_puyi
-	add_ideas = MAN_banditry
-	add_ideas = MAN_kwantung_veto
-	add_ideas = MAN_low_legitimacy_5
-	add_ideas = MAN_opium_plantations
-	add_ideas = MAN_yamato-damashii
-}
-
 set_convoys = 25
+
+### Industrial Behemoth of the East ###
+# Spirit variables — MUST be set before add_dynamic_modifier.
+# Accumulated by the Five-Year Plan decisions; future focuses add to them too.
+set_variable = { MAN_behemoth_consumer_goods_factor = 0 }
+set_variable = { MAN_behemoth_stability_factor = 0 }
+set_variable = { MAN_behemoth_political_power_factor = 0 }
+set_variable = { MAN_behemoth_local_resources_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_buildings_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_industrial_complex_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_infrastructure_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_synthetic_refinery_factor = 0 }
+set_variable = { MAN_behemoth_industrial_capacity_factory = 0 }
+set_variable = { MAN_behemoth_production_factory_max_efficiency_factor = 0 }
+set_variable = { MAN_behemoth_production_factory_efficiency_gain_factor = 0 }
+
+# Plan progress (each project = +20, plan concludes at 100)
+set_variable = { MAN_fyp1_progress = 0 }
+set_variable = { MAN_fyp2_progress = 0 }
+
+add_dynamic_modifier = { modifier = MAN_industrial_behemoth }
+
+# TODO(manchukuo-rework): when the new MAN focus tree exists, the
+# "First Five-Year Plan" focus should set this flag instead of history.
+set_country_flag = MAN_first_five_year_plan_active
+
+### Banditry ###
+# Partisan strength: negative = stability penalty via the MAN_banditry spirit.
+# Raids and historical events push it toward 0 (suppression, manchukou.31);
+# partisan sabotage pushes it toward -0.5 (uprising, manchukou.32).
+set_variable = { MAN_strength_of_partisan_movement_var = -0.2 }
+add_dynamic_modifier = { modifier = MAN_banditry }
+610 = { add_dynamic_modifier = { modifier = MAN_banditry_activity } }
+714 = { add_dynamic_modifier = { modifier = MAN_banditry_activity } }
+717 = { add_dynamic_modifier = { modifier = MAN_banditry_activity } }
+761 = { add_dynamic_modifier = { modifier = MAN_banditry_activity } }
+
+# Setup Politics
 set_politics = {
 	ruling_party = fascism
 	last_election = "1936.1.1"
@@ -42,6 +68,7 @@ set_popularities = {
 	fascism = 80
 	neutrality = 20
 }
+
 #dlc characters
 recruit_character = MAN_pujie
 recruit_character = MAN_songgotu_zhanshan
@@ -68,17 +95,3 @@ recruit_character = MAN_hesehn_tiemei
 # recruit_character = MAN_hung_zhehuang
 recruit_character = MAN_xian_yuan
 recruit_character = MAN_deng_linge
-
-1939.1.1 = {
-}
-
-add_equipment_production = {
-    equipment = {
-        type = convoy_1
-        creator = MAN
-    }
-    requested_factories = 15
-    progress = 0.0
-    efficiency = 0.7
-    amount = 2000
-}

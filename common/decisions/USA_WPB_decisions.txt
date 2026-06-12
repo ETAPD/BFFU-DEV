@@ -1,0 +1,163 @@
+############################################################
+# War Productions Board — One-Time Historical Directives
+# These decisions appear below the WPB allocation GUI.
+# Each is available once and locks behind a country flag.
+############################################################
+
+USA_war_productions_board_cat = {
+
+	# ── Automotive Production Ban ────────────────────────────────────────
+	# Historical: Feb 1942 — WPB halted all civilian car production.
+	# Mechanically: removes 40 CIV, adds 30 MIL across random owned states.
+	USA_WPB_automotive_ban_decision = {
+		icon = generic_industry
+
+		allowed = {
+			original_tag = USA
+		}
+
+		available = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_country_flag = USA_WPB_automotive_ban_done }
+		}
+
+		visible = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_country_flag = USA_WPB_automotive_ban_done }
+		}
+
+		cost = 75
+
+		complete_effect = {
+			set_country_flag = USA_WPB_automotive_ban_done
+
+			# ── Remove 40 civilian factories (8 × 5) ──────────────────
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+			random_owned_controlled_state = { limit = { industrial_complex > 4 } remove_building = { type = industrial_complex level = 5 } }
+
+			# ── Add 30 military factories (6 × 5) ─────────────────────
+			random_owned_controlled_state = { add_extra_state_shared_building_slots = 5  add_building_construction = { type = arms_factory level = 5 instant_build = yes } }
+			random_owned_controlled_state = { add_extra_state_shared_building_slots = 5  add_building_construction = { type = arms_factory level = 5 instant_build = yes } }
+			random_owned_controlled_state = { add_extra_state_shared_building_slots = 5  add_building_construction = { type = arms_factory level = 5 instant_build = yes } }
+			random_owned_controlled_state = { add_extra_state_shared_building_slots = 5  add_building_construction = { type = arms_factory level = 5 instant_build = yes } }
+			random_owned_controlled_state = { add_extra_state_shared_building_slots = 5  add_building_construction = { type = arms_factory level = 5 instant_build = yes } }
+			random_owned_controlled_state = { add_extra_state_shared_building_slots = 5  add_building_construction = { type = arms_factory level = 5 instant_build = yes } }
+
+			custom_effect_tooltip = USA_WPB_automotive_ban_effect_tt
+		}
+	}
+
+	# ── Victory Ship Program ─────────────────────────────────────────────
+	USA_WPB_victory_ship_program_decision = {
+		icon = generic_navy
+
+		allowed = {
+			original_tag = USA
+		}
+
+		available = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_idea = USA_WPB_victory_ship_program }
+		}
+
+		visible = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_idea = USA_WPB_victory_ship_program }
+		}
+
+		cost = 100
+
+		complete_effect = {
+			add_ideas = USA_WPB_victory_ship_program
+			custom_effect_tooltip = USA_WPB_victory_ship_effect_tt
+		}
+	}
+
+	# ── Synthetic Rubber Drive ───────────────────────────────────────────
+	USA_WPB_synthetic_rubber_decision = {
+		icon = generic_industry
+
+		allowed = {
+			original_tag = USA
+		}
+
+		available = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_idea = USA_WPB_synthetic_rubber_drive }
+		}
+
+		visible = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_idea = USA_WPB_synthetic_rubber_drive }
+		}
+
+		cost = 100
+
+		complete_effect = {
+			add_ideas = USA_WPB_synthetic_rubber_drive
+
+			# ── Spawn 4 synthetic refineries across 2 Gulf Coast states ───
+			# Historical: Louisiana and Texas were the primary sites.
+			371 = {   # Louisiana
+				add_building_construction = {
+					type          = synthetic_refinery
+					level         = 2
+					instant_build = yes
+				}
+			}
+			375 = {   # Texas
+				add_building_construction = {
+					type          = synthetic_refinery
+					level         = 2
+					instant_build = yes
+				}
+			}
+
+			custom_effect_tooltip = USA_WPB_synthetic_rubber_effect_tt
+		}
+	}
+
+	# ── Aluminum Drive ───────────────────────────────────────────────────
+	USA_WPB_aluminum_drive_decision = {
+		icon = generic_research
+
+		allowed = {
+			original_tag = USA
+		}
+
+		available = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_idea = USA_WPB_aluminum_drive }
+		}
+
+		visible = {
+			has_country_flag = USA_WPB_active
+			NOT = { has_idea = USA_WPB_aluminum_drive }
+		}
+
+		cost = 75
+
+		complete_effect = {
+			add_ideas = USA_WPB_aluminum_drive
+
+			# ── Spawn 1400 aluminium in Tennessee (Alcoa, TN) ─────────────
+			# Historical: Alcoa's flagship smelter was in Alcoa, Tennessee —
+			# the city literally named after the company.
+			368 = {
+				add_resource = {
+					type   = aluminium
+					amount = 1400
+				}
+			}
+
+			custom_effect_tooltip = USA_WPB_aluminum_drive_effect_tt
+		}
+	}
+
+}

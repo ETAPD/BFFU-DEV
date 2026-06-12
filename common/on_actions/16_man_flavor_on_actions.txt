@@ -1,0 +1,100 @@
+# Manchukuo historical event scheduling + banditry tick.
+on_actions = {
+
+	on_startup = {
+		effect = {
+			if = {
+				limit = {
+					tag = MAN
+					has_start_date < 1936.1.2
+				}
+				# Lore series
+				country_event = { id = manchukou.141 days = 3 }
+				# 1936
+				country_event = { id = manchukou.1 days = 30 }
+				country_event = { id = manchukou_banditry.29 days = 57 }   # partisan activization (March 1936)
+				country_event = { id = manchukou.14 days = 60 }               # Xing'an purge
+				country_event = { id = manchukou.23 days = 74 }               # Kaspe affair
+				country_event = { id = manchukou.52 days = 120 }              # Korean resettlement (repeats yearly)
+				country_event = { id = manchukou_opium.1 days = 150 }
+				country_event = { id = manchukou.151 days = 200 }             # Veneration of Puyi
+				country_event = { id = manchukou.126 days = 274 }             # Industrialists' tour
+				country_event = { id = manchukou.137 days = 335 }             # Ayukawa's report -> confrontation
+				# 1937
+				country_event = { id = manchukou.35 days = 380 }
+				country_event = { id = manchukou_opium.2 days = 400 }
+				country_event = { id = manchukou.36 days = 420 }
+				country_event = { id = manchukou.37 days = 500 }
+				country_event = { id = manchukou.89 days = 540 }              # criminal altercations
+				country_event = { id = manchukou_opium.3 days = 650 }
+				# 1938+
+				country_event = { id = manchukou.152 days = 800 }             # A Living Death
+				country_event = { id = manchukou_opium.4 days = 900 }
+				country_event = { id = manchukou_opium.5 days = 1150 }
+				country_event = { id = manchukou_opium.6 days = 1400 }
+				country_event = { id = manchukou.30 days = 1900 }             # Sando's death (1941)
+			}
+			if = {
+				limit = {
+					tag = JAP
+					has_start_date < 1936.1.2
+				}
+				country_event = { id = manchukou.126 days = 274 }             # Industrialists' tour
+				country_event = { id = manchukou.45 days = 330 }              # Pujie's bride candidates
+				country_event = { id = manchukou.137 days = 335 }             # Ayukawa's report
+				country_event = { id = manchukou.53 days = 700 }              # The Fugu Plan
+			}
+		}
+	}
+
+	# Banditry resolution checks
+	on_weekly_MAN = {
+		effect = {
+			if = {
+				limit = {
+					has_dynamic_modifier = { modifier = MAN_banditry }
+					check_variable = { var = MAN_strength_of_partisan_movement_var value = 0 compare = greater_than_or_equals }
+				}
+				country_event = manchukou.31
+			}
+			else_if = {
+				limit = {
+					has_dynamic_modifier = { modifier = MAN_banditry }
+					check_variable = { var = MAN_strength_of_partisan_movement_var value = -0.5 compare = less_than_or_equals }
+					has_civil_war = no
+				}
+				country_event = manchukou.32
+			}
+		}
+	}
+
+	# Partisan sabotage roller — while banditry persists, things burn
+	on_monthly_MAN = {
+		effect = {
+			if = {
+				limit = {
+					has_dynamic_modifier = { modifier = MAN_banditry }
+					check_variable = { var = MAN_strength_of_partisan_movement_var value = -0.05 compare = less_than }
+				}
+				random_list = {
+					55 = {
+						# quiet month
+					}
+					3 = { country_event = { id = manchukou_banditry.17 days = 3 } }
+					3 = { country_event = { id = manchukou_banditry.18 days = 3 } }
+					3 = { country_event = { id = manchukou_banditry.19 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.20 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.21 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.22 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.23 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.24 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.25 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.26 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.27 days = 3 } }
+					4 = { country_event = { id = manchukou_banditry.28 days = 3 } }
+				}
+			}
+		}
+	}
+
+}

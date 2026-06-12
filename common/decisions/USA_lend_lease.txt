@@ -1,0 +1,816 @@
+####################################################
+# USA — Lend-Lease Act Decisions
+####################################################
+# Unlocked by: USA_begin_the_lend_lease_act (sets flag USA_lend_lease_act_active)
+#
+# Variables (initialised in focus completion_reward):
+#   USA_lend_lease_tier_ENG   0 → 1 → 2 → 3
+#   USA_lend_lease_tier_FRA   0 → 1 → 2 → 3
+#   USA_lend_lease_tier_SOV   0 → 1 → 2 → 3
+#   USA_lend_lease_last_done  0 = none  1 = ENG  2 = FRA  3 = SOV
+#     (set immediately on click in complete_effect to block same-country back-to-back)
+#
+# Tier amounts (sent in remove_effect after 180-day duration):
+#   Tier I  — 10 000 inf / 4 000 squad / 5 000 support / 3 000 radio / 2 000 trucks
+#   Tier II — 15 000 inf / 6 000 squad / 7 500 support / 4 500 radio / 3 000 trucks
+#   Tier III— 20 000 inf / 8 000 squad /10 000 support / 6 000 radio / 4 000 trucks  (repeatable)
+#
+# PP cost: 50 / 75 / 100 per tier
+# Factory penalty while active: -10% / -15% / -20%
+# producer = receiving country tag so equipment displays as that nation's own arms
+####################################################
+
+USA_lend_lease_cat = {
+
+	#####################################
+	# ====  UNITED KINGDOM  ====
+	#####################################
+
+	USA_lend_lease_ENG_tier1 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = ENG
+			check_variable = { var = USA_lend_lease_tier_ENG value = 0.5 compare = less_than }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 1 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.10
+		}
+
+		days_remove = 180
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 1 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = ENG }
+				ENG = {
+					# Infantry Equipment — 10,000 (latest tech)
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 10000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 10000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 10000 producer = ENG }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 10000 producer = ENG }
+					}
+					# Squad Equipment — 4,000 (latest tech)
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 4000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 4000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 4000 producer = ENG }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 4000 producer = ENG }
+					}
+					# Fixed equipment
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 5000 producer = ENG }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 3000 producer = ENG }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 2000 producer = ENG }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_ENG value = 1 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 ENG = { has_war = yes } }
+		}
+	}
+
+	USA_lend_lease_ENG_tier2 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = ENG
+			check_variable = { var = USA_lend_lease_tier_ENG value = 0.5 compare = greater_than }
+			NOT = { check_variable = { var = USA_lend_lease_tier_ENG value = 1.5 compare = greater_than } }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 1 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.15
+		}
+
+		days_remove = 180
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 1 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = ENG }
+				ENG = {
+					# Infantry Equipment — 15,000 (latest tech)
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 15000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 15000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 15000 producer = ENG }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 15000 producer = ENG }
+					}
+					# Squad Equipment — 6,000 (latest tech)
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 6000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 6000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 6000 producer = ENG }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 6000 producer = ENG }
+					}
+					# Fixed equipment
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 7500 producer = ENG }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 4500 producer = ENG }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 3000 producer = ENG }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_ENG value = 2 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 ENG = { has_war = yes } }
+		}
+	}
+
+	USA_lend_lease_ENG_tier3 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = ENG
+			check_variable = { var = USA_lend_lease_tier_ENG value = 1.5 compare = greater_than }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 1 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.20
+		}
+
+		days_remove = 180
+		days_re_enable = 1
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 1 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = ENG }
+				ENG = {
+					# Infantry Equipment — 20,000 (latest tech)
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 20000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 20000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 20000 producer = ENG }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 20000 producer = ENG }
+					}
+					# Squad Equipment — 8,000 (latest tech)
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 8000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 8000 producer = ENG }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 8000 producer = ENG }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 8000 producer = ENG }
+					}
+					# Fixed equipment
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 10000 producer = ENG }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 6000  producer = ENG }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 4000  producer = ENG }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_ENG value = 3 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 ENG = { has_war = yes } }
+		}
+	}
+
+	#####################################
+	# ====  FRANCE  ====
+	#####################################
+
+	USA_lend_lease_FRA_tier1 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = FRA
+			check_variable = { var = USA_lend_lease_tier_FRA value = 0.5 compare = less_than }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 2 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.10
+		}
+
+		days_remove = 180
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 2 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = FRA }
+				FRA = {
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 10000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 10000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 10000 producer = FRA }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 10000 producer = FRA }
+					}
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 4000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 4000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 4000 producer = FRA }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 4000 producer = FRA }
+					}
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 5000 producer = FRA }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 3000 producer = FRA }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 2000 producer = FRA }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_FRA value = 1 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 FRA = { has_war = yes } }
+		}
+	}
+
+	USA_lend_lease_FRA_tier2 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = FRA
+			check_variable = { var = USA_lend_lease_tier_FRA value = 0.5 compare = greater_than }
+			NOT = { check_variable = { var = USA_lend_lease_tier_FRA value = 1.5 compare = greater_than } }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 2 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.15
+		}
+
+		days_remove = 180
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 2 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = FRA }
+				FRA = {
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 15000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 15000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 15000 producer = FRA }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 15000 producer = FRA }
+					}
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 6000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 6000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 6000 producer = FRA }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 6000 producer = FRA }
+					}
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 7500 producer = FRA }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 4500 producer = FRA }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 3000 producer = FRA }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_FRA value = 2 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 FRA = { has_war = yes } }
+		}
+	}
+
+	USA_lend_lease_FRA_tier3 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = FRA
+			check_variable = { var = USA_lend_lease_tier_FRA value = 1.5 compare = greater_than }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 2 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.20
+		}
+
+		days_remove = 180
+		days_re_enable = 1
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 2 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = FRA }
+				FRA = {
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 20000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 20000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 20000 producer = FRA }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 20000 producer = FRA }
+					}
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 8000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 8000 producer = FRA }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 8000 producer = FRA }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 8000 producer = FRA }
+					}
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 10000 producer = FRA }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 6000  producer = FRA }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 4000  producer = FRA }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_FRA value = 3 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 FRA = { has_war = yes } }
+		}
+	}
+
+	#####################################
+	# ====  SOVIET UNION  ====
+	#####################################
+
+	USA_lend_lease_SOV_tier1 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = SOV
+			check_variable = { var = USA_lend_lease_tier_SOV value = 0.5 compare = less_than }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 3 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.10
+		}
+
+		days_remove = 180
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 3 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = SOV }
+				SOV = {
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 10000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 10000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 10000 producer = SOV }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 10000 producer = SOV }
+					}
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 4000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 4000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 4000 producer = SOV }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 4000 producer = SOV }
+					}
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 5000 producer = SOV }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 3000 producer = SOV }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 2000 producer = SOV }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_SOV value = 1 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 SOV = { has_war = yes } }
+		}
+	}
+
+	USA_lend_lease_SOV_tier2 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = SOV
+			check_variable = { var = USA_lend_lease_tier_SOV value = 0.5 compare = greater_than }
+			NOT = { check_variable = { var = USA_lend_lease_tier_SOV value = 1.5 compare = greater_than } }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 3 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.15
+		}
+
+		days_remove = 180
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 3 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = SOV }
+				SOV = {
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 15000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 15000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 15000 producer = SOV }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 15000 producer = SOV }
+					}
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 6000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 6000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 6000 producer = SOV }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 6000 producer = SOV }
+					}
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 7500 producer = SOV }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 4500 producer = SOV }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 3000 producer = SOV }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_SOV value = 2 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 SOV = { has_war = yes } }
+		}
+	}
+
+	USA_lend_lease_SOV_tier3 = {
+		icon = generic_operation
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = USA_lend_lease_act_active
+			country_exists = SOV
+			check_variable = { var = USA_lend_lease_tier_SOV value = 1.5 compare = greater_than }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_lend_lease_not_same_country_tt
+				OR = {
+					NOT = { check_variable = { var = USA_lend_lease_last_done value = 3 compare = equals } }
+					AND = {
+						check_variable = { var = USA_lend_lease_tier_ENG value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_FRA value = 2.5 compare = greater_than }
+						check_variable = { var = USA_lend_lease_tier_SOV value = 2.5 compare = greater_than }
+					}
+				}
+			}
+		}
+
+		cost = 50
+
+		modifier = {
+			industrial_capacity_factory = -0.20
+		}
+
+		days_remove = 180
+		days_re_enable = 1
+
+		complete_effect = {
+			set_variable = { var = USA_lend_lease_last_done value = 3 }
+		}
+
+		remove_effect = {
+			if = {
+				limit = { country_exists = SOV }
+				SOV = {
+					if = {
+						limit = { has_tech = advanced_infantry_weapons2 }
+						add_equipment_to_stockpile = { type = infantry_equipment_4 amount = 20000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = advanced_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_3 amount = 20000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = improved_infantry_weapons }
+						add_equipment_to_stockpile = { type = infantry_equipment_2 amount = 20000 producer = SOV }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 20000 producer = SOV }
+					}
+					if = {
+						limit = { has_tech = support_weapons4 }
+						add_equipment_to_stockpile = { type = squad_equipment_3 amount = 8000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons3 }
+						add_equipment_to_stockpile = { type = squad_equipment_2 amount = 8000 producer = SOV }
+					}
+					else_if = {
+						limit = { has_tech = support_weapons2 }
+						add_equipment_to_stockpile = { type = squad_equipment_1 amount = 8000 producer = SOV }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = squad_equipment_0 amount = 8000 producer = SOV }
+					}
+					add_equipment_to_stockpile = { type = support_equipment_1   amount = 10000 producer = SOV }
+					add_equipment_to_stockpile = { type = radio_equipment_0     amount = 6000  producer = SOV }
+					add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 4000  producer = SOV }
+				}
+			}
+			set_variable = { var = USA_lend_lease_tier_SOV value = 3 }
+		}
+
+		ai_will_do = {
+			factor = 5
+			modifier = { factor = 3 SOV = { has_war = yes } }
+		}
+	}
+}

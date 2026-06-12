@@ -1,0 +1,270 @@
+############################################################
+# War Productions Board — Scripted GUI
+# context_type = decision_category
+# Window: USA_war_productions_board_window
+#
+# Point pool: 6 total, max 3 per sector.
+# Cooldown: 90 days between any reallocation.
+#
+# Modifier variables per sector:
+#   Armor:    armor_mil_speed (5/10/15%), armor_cost (-5/-10/-15%)
+#   Air:      air_cost (-5/-10/-15%)
+#   Naval:    naval_output (5/10/15%), naval_ship_cost (-2.5/-5/-7.5%)
+#   Infantry: inf_eq_cost (-15/-20/-25%), inf_squad_cost (-10/-15/-20%),
+#             inf_mot_cost (-5/-7.5/-10%)
+############################################################
+
+scripted_gui = {
+
+	USA_war_productions_board_ui = {
+		context_type = decision_category
+		window_name  = "USA_war_productions_board_window"
+
+		visible = {
+			has_country_flag = USA_WPB_active
+		}
+
+		effects = {
+
+			# ── ARMORED FORCES ───────────────────────────────────────────
+			wpb_armor_decrease_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_armor_level = 3 } }
+					set_variable = { USA_WPB_armor_level = 2 }
+					remove_ideas = USA_WPB_armor_cost_3
+					add_ideas    = USA_WPB_armor_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_armor_level = 2 } }
+					set_variable = { USA_WPB_armor_level = 1 }
+					remove_ideas = USA_WPB_armor_cost_2
+					add_ideas    = USA_WPB_armor_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_armor_level = 1 } }
+					set_variable = { USA_WPB_armor_level = 0 }
+					remove_ideas = USA_WPB_armor_cost_1
+				}
+				subtract_from_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			wpb_armor_increase_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_armor_level = 0 } }
+					set_variable = { USA_WPB_armor_level = 1 }
+					add_ideas = USA_WPB_armor_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_armor_level = 1 } }
+					set_variable = { USA_WPB_armor_level = 2 }
+					remove_ideas = USA_WPB_armor_cost_1
+					add_ideas    = USA_WPB_armor_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_armor_level = 2 } }
+					set_variable = { USA_WPB_armor_level = 3 }
+					remove_ideas = USA_WPB_armor_cost_2
+					add_ideas    = USA_WPB_armor_cost_3
+				}
+				add_to_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			# ── AIR FORCES ───────────────────────────────────────────────
+			wpb_air_decrease_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_air_level = 3 } }
+					set_variable = { USA_WPB_air_level = 2 }
+					remove_ideas = USA_WPB_air_cost_3
+					add_ideas    = USA_WPB_air_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_air_level = 2 } }
+					set_variable = { USA_WPB_air_level = 1 }
+					remove_ideas = USA_WPB_air_cost_2
+					add_ideas    = USA_WPB_air_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_air_level = 1 } }
+					set_variable = { USA_WPB_air_level = 0 }
+					remove_ideas = USA_WPB_air_cost_1
+				}
+				subtract_from_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			wpb_air_increase_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_air_level = 0 } }
+					set_variable = { USA_WPB_air_level = 1 }
+					add_ideas = USA_WPB_air_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_air_level = 1 } }
+					set_variable = { USA_WPB_air_level = 2 }
+					remove_ideas = USA_WPB_air_cost_1
+					add_ideas    = USA_WPB_air_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_air_level = 2 } }
+					set_variable = { USA_WPB_air_level = 3 }
+					remove_ideas = USA_WPB_air_cost_2
+					add_ideas    = USA_WPB_air_cost_3
+				}
+				add_to_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			# ── NAVAL FORCES ─────────────────────────────────────────────
+			wpb_naval_decrease_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_naval_level = 3 } }
+					set_variable = { USA_WPB_naval_level = 2 }
+					remove_ideas = USA_WPB_naval_cost_3
+					add_ideas    = USA_WPB_naval_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_naval_level = 2 } }
+					set_variable = { USA_WPB_naval_level = 1 }
+					remove_ideas = USA_WPB_naval_cost_2
+					add_ideas    = USA_WPB_naval_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_naval_level = 1 } }
+					set_variable = { USA_WPB_naval_level = 0 }
+					remove_ideas = USA_WPB_naval_cost_1
+				}
+				subtract_from_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			wpb_naval_increase_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_naval_level = 0 } }
+					set_variable = { USA_WPB_naval_level = 1 }
+					add_ideas = USA_WPB_naval_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_naval_level = 1 } }
+					set_variable = { USA_WPB_naval_level = 2 }
+					remove_ideas = USA_WPB_naval_cost_1
+					add_ideas    = USA_WPB_naval_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_naval_level = 2 } }
+					set_variable = { USA_WPB_naval_level = 3 }
+					remove_ideas = USA_WPB_naval_cost_2
+					add_ideas    = USA_WPB_naval_cost_3
+				}
+				add_to_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			# ── INFANTRY FORCES ──────────────────────────────────────────
+			wpb_infantry_decrease_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_infantry_level = 3 } }
+					set_variable = { USA_WPB_infantry_level = 2 }
+					remove_ideas = USA_WPB_infantry_cost_3
+					add_ideas    = USA_WPB_infantry_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_infantry_level = 2 } }
+					set_variable = { USA_WPB_infantry_level = 1 }
+					remove_ideas = USA_WPB_infantry_cost_2
+					add_ideas    = USA_WPB_infantry_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_infantry_level = 1 } }
+					set_variable = { USA_WPB_infantry_level = 0 }
+					remove_ideas = USA_WPB_infantry_cost_1
+				}
+				subtract_from_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+			wpb_infantry_increase_click = {
+				if = {
+					limit = { check_variable = { USA_WPB_infantry_level = 0 } }
+					set_variable = { USA_WPB_infantry_level = 1 }
+					add_ideas = USA_WPB_infantry_cost_1
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_infantry_level = 1 } }
+					set_variable = { USA_WPB_infantry_level = 2 }
+					remove_ideas = USA_WPB_infantry_cost_1
+					add_ideas    = USA_WPB_infantry_cost_2
+				}
+				else_if = {
+					limit = { check_variable = { USA_WPB_infantry_level = 2 } }
+					set_variable = { USA_WPB_infantry_level = 3 }
+					remove_ideas = USA_WPB_infantry_cost_2
+					add_ideas    = USA_WPB_infantry_cost_3
+				}
+				add_to_variable = { USA_WPB_points_used = 1 }
+				set_country_flag = { flag = USA_WPB_reallocation_cooldown days = 90 }
+			}
+
+		}
+
+		triggers = {
+
+			# ── Button enable conditions ──────────────────────────────────
+
+			wpb_armor_decrease_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_armor_level > 0 }
+			}
+			wpb_armor_increase_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_armor_level < 3 }
+				check_variable = { USA_WPB_points_used < 6 }
+			}
+
+			wpb_air_decrease_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_air_level > 0 }
+			}
+			wpb_air_increase_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_air_level < 3 }
+				check_variable = { USA_WPB_points_used < 6 }
+			}
+
+			wpb_naval_decrease_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_naval_level > 0 }
+			}
+			wpb_naval_increase_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_naval_level < 3 }
+				check_variable = { USA_WPB_points_used < 6 }
+			}
+
+			wpb_infantry_decrease_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_infantry_level > 0 }
+			}
+			wpb_infantry_increase_click_enabled = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+				check_variable = { USA_WPB_infantry_level < 3 }
+				check_variable = { USA_WPB_points_used < 6 }
+			}
+
+			# ── Status line visibility ────────────────────────────────────
+
+			wpb_cooldown_text_visible = {
+				has_country_flag = USA_WPB_reallocation_cooldown
+			}
+			wpb_ready_text_visible = {
+				NOT = { has_country_flag = USA_WPB_reallocation_cooldown }
+			}
+			wpb_points_full_visible = {
+				check_variable = { USA_WPB_points_used > 5 }
+			}
+
+		}
+	}
+
+}
