@@ -1,0 +1,316 @@
+##############################################
+# USA — Corporate Relations Decisions        #
+# Unlocked by: Reconcile with Domestic Corps #
+#              Look towards J.P. Morgan      #
+##############################################
+
+USA_corporate_relations = {
+
+	##################################################
+	# BUILD RELATIONS DECISIONS (25 PP each)
+	# Trust scale: 1=Agitated  2=Neutral  3=Friendly
+	##################################################
+
+	USA_build_relations_kaiser = {
+		icon = GFX_corp_usa_kaiser
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_reconcile_with_domestic_corporations
+		}
+
+		available = {
+			check_variable = { var = USA_kaiser_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { check_variable = { var = USA_kaiser_trust value = 2.5 compare = greater_than_or_equals } }
+		}
+
+		cost = 25
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			add_to_variable = { var = USA_kaiser_trust value = 1 }
+		}
+	}
+
+	USA_build_relations_ford_chrysler = {
+		icon = GFX_idea_generic_production_bonus
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_reconcile_with_domestic_corporations
+		}
+
+		available = {
+			check_variable = { var = USA_ford_chrysler_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { check_variable = { var = USA_ford_chrysler_trust value = 2.5 compare = greater_than_or_equals } }
+		}
+
+		cost = 25
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			add_to_variable = { var = USA_ford_chrysler_trust value = 1 }
+		}
+	}
+
+	USA_build_relations_gm_dupont = {
+		icon = GFX_idea_general_motors-2046
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_reconcile_with_domestic_corporations
+		}
+
+		available = {
+			check_variable = { var = USA_gm_dupont_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { check_variable = { var = USA_gm_dupont_trust value = 2.5 compare = greater_than_or_equals } }
+		}
+
+		cost = 25
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			add_to_variable = { var = USA_gm_dupont_trust value = 1 }
+		}
+	}
+
+	USA_build_relations_jpmorgan = {
+		icon = GFX_idea_generic_economic_increase
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_look_towards_jp_morgan
+		}
+
+		available = {
+			check_variable = { var = USA_jpmorgan_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { check_variable = { var = USA_jpmorgan_trust value = 2.5 compare = greater_than_or_equals } }
+		}
+
+		cost = 25
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			add_to_variable = { var = USA_jpmorgan_trust value = 1 }
+		}
+	}
+
+	##################################################
+	# NEGOTIATE / CONTRACT DECISIONS (75 PP each)
+	# Bonus tier = trust level at time of signing.
+	# Max 2 contracts active simultaneously.
+	# Each contract lasts 1 year, then expires.
+	##################################################
+
+	USA_negotiate_with_kaiser = {
+		icon = GFX_corp_usa_kaiser
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_reconcile_with_domestic_corporations
+		}
+
+		available = {
+			check_variable = { var = USA_kaiser_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { has_country_flag = USA_kaiser_contract_active }
+			NOT = { check_variable = { var = USA_active_contracts value = 2 compare = greater_than_or_equals } }
+		}
+
+		cost = 75
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			if = {
+				limit = { check_variable = { var = USA_kaiser_trust value = 2.5 compare = greater_than_or_equals } }
+				add_ideas = USA_kaiser_contract_3
+				set_variable = { var = USA_kaiser_contract_tier value = 3 }
+				# 3 civs in random states
+				random_owned_controlled_state = {
+					limit = { is_core_of = ROOT }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				random_owned_controlled_state = {
+					limit = { is_core_of = ROOT }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				random_owned_controlled_state = {
+					limit = { is_core_of = ROOT }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				custom_effect_tooltip = USA_kaiser_contract_civ_3_tt
+			}
+			else_if = {
+				limit = { check_variable = { var = USA_kaiser_trust value = 1.5 compare = greater_than_or_equals } }
+				add_ideas = USA_kaiser_contract_2
+				set_variable = { var = USA_kaiser_contract_tier value = 2 }
+				# 2 civs in random states
+				random_owned_controlled_state = {
+					limit = { is_core_of = ROOT }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				random_owned_controlled_state = {
+					limit = { is_core_of = ROOT }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				custom_effect_tooltip = USA_kaiser_contract_civ_2_tt
+			}
+			else = {
+				add_ideas = USA_kaiser_contract_1
+				set_variable = { var = USA_kaiser_contract_tier value = 1 }
+				# 1 civ in random state
+				random_owned_controlled_state = {
+					limit = { is_core_of = ROOT }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				custom_effect_tooltip = USA_kaiser_contract_civ_1_tt
+			}
+			add_to_variable = { var = USA_active_contracts value = 1 }
+			set_country_flag = USA_kaiser_contract_active
+			country_event = { id = usa_corp.1 days = 365 }
+		}
+	}
+
+	USA_negotiate_with_ford_chrysler = {
+		icon = GFX_idea_generic_production_bonus
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_reconcile_with_domestic_corporations
+		}
+
+		available = {
+			check_variable = { var = USA_ford_chrysler_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { has_country_flag = USA_ford_chrysler_contract_active }
+			NOT = { check_variable = { var = USA_active_contracts value = 2 compare = greater_than_or_equals } }
+		}
+
+		cost = 75
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			if = {
+				limit = { check_variable = { var = USA_ford_chrysler_trust value = 2.5 compare = greater_than_or_equals } }
+				add_ideas = USA_ford_chrysler_contract_3
+				set_variable = { var = USA_ford_chrysler_contract_tier value = 3 }
+			}
+			else_if = {
+				limit = { check_variable = { var = USA_ford_chrysler_trust value = 1.5 compare = greater_than_or_equals } }
+				add_ideas = USA_ford_chrysler_contract_2
+				set_variable = { var = USA_ford_chrysler_contract_tier value = 2 }
+			}
+			else = {
+				add_ideas = USA_ford_chrysler_contract_1
+				set_variable = { var = USA_ford_chrysler_contract_tier value = 1 }
+			}
+			add_to_variable = { var = USA_active_contracts value = 1 }
+			set_country_flag = USA_ford_chrysler_contract_active
+			country_event = { id = usa_corp.2 days = 365 }
+		}
+	}
+
+	USA_negotiate_with_gm_dupont = {
+		icon = GFX_idea_general_motors-2046
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_reconcile_with_domestic_corporations
+		}
+
+		available = {
+			check_variable = { var = USA_gm_dupont_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { has_country_flag = USA_gm_dupont_contract_active }
+			NOT = { check_variable = { var = USA_active_contracts value = 2 compare = greater_than_or_equals } }
+		}
+
+		cost = 75
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			if = {
+				limit = { check_variable = { var = USA_gm_dupont_trust value = 2.5 compare = greater_than_or_equals } }
+				add_ideas = USA_gm_dupont_contract_3
+				set_variable = { var = USA_gm_dupont_contract_tier value = 3 }
+			}
+			else_if = {
+				limit = { check_variable = { var = USA_gm_dupont_trust value = 1.5 compare = greater_than_or_equals } }
+				add_ideas = USA_gm_dupont_contract_2
+				set_variable = { var = USA_gm_dupont_contract_tier value = 2 }
+			}
+			else = {
+				add_ideas = USA_gm_dupont_contract_1
+				set_variable = { var = USA_gm_dupont_contract_tier value = 1 }
+			}
+			add_to_variable = { var = USA_active_contracts value = 1 }
+			set_country_flag = USA_gm_dupont_contract_active
+			country_event = { id = usa_corp.3 days = 365 }
+		}
+	}
+
+	USA_negotiate_with_jpmorgan = {
+		icon = GFX_idea_generic_economic_increase
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_completed_focus = USA_look_towards_jp_morgan
+		}
+
+		available = {
+			check_variable = { var = USA_jpmorgan_trust value = 0.5 compare = greater_than_or_equals }
+			NOT = { has_country_flag = USA_jpmorgan_contract_active }
+			NOT = { check_variable = { var = USA_active_contracts value = 2 compare = greater_than_or_equals } }
+		}
+
+		cost = 75
+		days_remove = 0
+
+		ai_will_do = { factor = 1 }
+
+		complete_effect = {
+			if = {
+				limit = { check_variable = { var = USA_jpmorgan_trust value = 2.5 compare = greater_than_or_equals } }
+				add_ideas = USA_jpmorgan_contract_3
+				set_variable = { var = USA_jpmorgan_contract_tier value = 3 }
+			}
+			else_if = {
+				limit = { check_variable = { var = USA_jpmorgan_trust value = 1.5 compare = greater_than_or_equals } }
+				add_ideas = USA_jpmorgan_contract_2
+				set_variable = { var = USA_jpmorgan_contract_tier value = 2 }
+			}
+			else = {
+				add_ideas = USA_jpmorgan_contract_1
+				set_variable = { var = USA_jpmorgan_contract_tier value = 1 }
+			}
+			add_to_variable = { var = USA_active_contracts value = 1 }
+			set_country_flag = USA_jpmorgan_contract_active
+			country_event = { id = usa_corp.4 days = 365 }
+		}
+	}
+}

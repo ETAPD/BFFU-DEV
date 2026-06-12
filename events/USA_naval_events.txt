@@ -1,0 +1,92 @@
+###########################
+# USA Naval Events
+###########################
+
+add_namespace = USA_naval
+
+# ── USA_naval.1 ─────────────────────────────────────────────────────────────
+# "The Future of the United States Navy"
+# Fires 3 days after Congress Passes the Bureau of Ships completes.
+# Three mutually-exclusive choices autocomplete one of the three child focuses.
+country_event = {
+	id = USA_naval.1
+	title = USA_naval.1.t
+	desc = USA_naval.1.d
+	picture = GFX_report_event_naval_treaty
+
+	is_triggered_only = yes
+
+	option = {				# Build for FY40
+		name = USA_naval.1.a
+		ai_chance = { factor = 30 }
+		complete_national_focus = USA_build_for_fy40
+	}
+
+	option = {				# A Middle Ground
+		name = USA_naval.1.b
+		ai_chance = { factor = 40 }
+		complete_national_focus = USA_a_middle_ground
+	}
+
+	option = {				# Plan for FY42
+		name = USA_naval.1.c
+		ai_chance = { factor = 30 }
+		complete_national_focus = USA_plan_for_fy42
+	}
+}
+
+# ── USA_naval.2 ─────────────────────────────────────────────────────────────
+# Hidden trigger: USA enters a war while holding USA_fy40_funding.
+# Swaps the spirit to USA_naval_funds_running_low.
+country_event = {
+	id = USA_naval.2
+	hidden = yes
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		has_idea = USA_fy40_funding
+		has_war = yes
+	}
+
+	mean_time_to_happen = {
+		days = 7
+	}
+
+	immediate = {
+		remove_ideas = USA_fy40_funding
+		add_ideas = USA_naval_funds_running_low
+	}
+
+	option = {
+		name = USA_naval.2.a
+	}
+}
+
+# ── USA_naval.3 ─────────────────────────────────────────────────────────────
+# Hidden trigger: USA enters a war while holding USA_long_term_funding.
+# Swaps the spirit to USA_superior_naval_shipbuilding.
+country_event = {
+	id = USA_naval.3
+	hidden = yes
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		has_idea = USA_long_term_funding
+		has_war = yes
+	}
+
+	mean_time_to_happen = {
+		days = 7
+	}
+
+	immediate = {
+		remove_ideas = USA_long_term_funding
+		add_ideas = USA_superior_naval_shipbuilding
+	}
+
+	option = {
+		name = USA_naval.3.a
+	}
+}

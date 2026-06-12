@@ -1,333 +1,5 @@
-war_measures = {
-
-	USA_homeland_defense = {
-
-		icon = generic_prepare_civil_war
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			any_core_state = {
-				NOT = {
-					is_controlled_by = USA
-				}
-			}
-			has_civil_war = no
-
-		}
-
-		cost = 50
-		fire_only_once = yes
-		ai_will_do = {
-			factor = 200
-		}
-
-		visible = {
-			has_defensive_war = yes
-			CSA = {
-				exists = no
-			}
-		}
-
-		complete_effect = {
-			if = {
-				limit = {
-					has_war_support < 0.9
-				}
-				set_war_support = 0.9
-			}
-			if = {
-				limit = {
-					has_idea = great_depression
-				}
-				remove_ideas = great_depression
-			}
-			if = {
-				limit = {
-					NOT = {
-						OR = {
-							has_idea = extensive_conscription
-							has_idea = scraping_the_barrel
-							has_idea = service_by_requirement
-							has_idea = all_adults_serve
-						}
-					}
-				}
-				add_ideas = extensive_conscription
-			}
-			if = {
-				limit = {
-					OR = {
-						has_idea = undisturbed_isolation
-						has_idea = isolation
-						has_idea = civilian_economy
-						has_idea = low_economic_mobilisation
-					}
-				}
-				add_ideas = war_economy
-			}
-			add_ideas = USA_homeland_defense
-		}
-	}
-}
-USA_aid_britain = {
-	USA_establish_personal_communication_with_former_naval_person = {
-
-		icon = generic_political_discourse
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			has_country_leader = { ruling_only = yes character = USA_franklin_delano_roosevelt }
-			has_country_flag = blood_toil_tears_sweat_speech
-			ENG = { has_defensive_war = yes }
-		}
-
-		cost = 50
-		fire_only_once = yes
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 10
-				has_opinion = { target = ENG value > 60 }
-			}
-			modifier = {
-				factor = 10
-				has_opinion = { target = ENG value > 99 }
-			}
-		}
-
-		visible = {
-			has_war = no
-		}
-
-		complete_effect = {
-			add_war_support = 0.05
-			add_opinion_modifier = { target = ENG modifier = USA_special_relationship }
-			reverse_add_opinion_modifier = { target = ENG modifier = USA_special_relationship }
-		}
-	}
-
-	USA_battle_domestic_isolationism = {
-
-		icon = generic_civil_support
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			has_country_leader = { ruling_only = yes character = USA_franklin_delano_roosevelt }
-			has_country_flag = fight_on_the_beaches_speech
-			ENG = { has_defensive_war = yes }
-		}
-
-		cost = 50
-		fire_only_once = yes
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 10
-				has_opinion = { target = ENG value > 60 }
-			}
-			modifier = {
-				factor = 10
-				has_opinion = { target = ENG value > 99 }
-			}
-		}
-
-		modifier = {
-			war_support_weekly = 0.002		
-		}
-
-		days_remove = 180
-
-		visible = {
-			has_war = no
-		}
-
-		complete_effect = {
-			add_war_support = 0.05
-		}
-	}
-
-	USA_arsenal_of_democracy_decision = {
-
-		icon = generic_industry
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			has_country_leader = { ruling_only = yes character = USA_franklin_delano_roosevelt }
-			FRA = {has_capitulated = yes}
-			ENG = { has_defensive_war = yes }
-		}
-
-		cost = 50
-		fire_only_once = yes
-		ai_will_do = {
-			factor = 10
-		}
-
-		visible = {
-			has_war = no
-		}
-
-		modifier = {
-			war_support_weekly = 0.001		
-			industrial_capacity_factory = 0.1
-			industrial_capacity_dockyard = 0.1
-			consumer_goods_factor = -0.15
-		}
-
-		days_remove = 360
-
-		complete_effect = {
-		}
-	}
-}
-
 operations = {
-	USA_join_the_allies = {
-		icon = generic_operation
-		allowed = {
-			original_tag = USA
-		}
-		available = {
-			OR = {
-				AND = {
-					has_war_with = JAP
-					has_offensive_war = no
-				}
-				AND = {
-					has_war_with = GER
-					has_offensive_war = no
-				}
-				ENG = { surrender_progress > 0.1 }
-				SOV = { surrender_progress > 0.35 }
-				date > 1942.1.1
-			}
-		}
-		visible = {
-			OR = {
-				has_idea = USA_neutrality_idea
-				has_idea = USA_neutrality_idea_2
-				has_idea = USA_neutrality_idea_3
-			}
-		}
-		ai_will_do = {
-			factor = 1000
-		}
-		fire_only_once = yes
-		complete_effect = {
-			remove_ideas = USA_neutrality_idea
-			remove_ideas = USA_neutrality_idea_2
-			remove_ideas = USA_neutrality_idea_3
-			ENG = { add_to_faction = USA }
-			country_event = usa.1005
-		}
-	}
 
-	USA_join_the_allies_2 = {
-
-		icon = generic_operation
-
-		allowed = {
-			original_tag = USA
-		}
-		
-		available = {
-			NOT = { 
-				has_idea = USA_neutrality_idea 
-				has_idea = USA_neutrality_idea_2 
-				has_idea = USA_neutrality_idea_3 
-			}
-		}
-
-		days_mission_timeout = 60
-
-		activation = {
-			ENG = { has_war_with = JAP }
-			#NOT = { has_country_flag = JAP_early_war }
-		}
-		ai_will_do = {
-			factor = 1000
-		}
-		timeout_effect = {
-			remove_ideas = USA_neutrality_idea
-			remove_ideas = USA_neutrality_idea_2
-			remove_ideas = USA_neutrality_idea_3
-			ENG = { add_to_faction = USA }
-			country_event = usa.1005
-		}
-	}
-	# USA_join_the_allies_3 = {
-
-	# 	icon = generic_operation
-
-	# 	allowed = {
-	# 		original_tag = USA
-	# 	}
-		
-	# 	available = {
-	# 		NOT = { 
-	# 			has_idea = USA_neutrality_idea 
-	# 			has_idea = USA_neutrality_idea_2 
-	# 			has_idea = USA_neutrality_idea_3 
-	# 		}
-	# 	}
-
-	# 	days_mission_timeout = 90
-
-	# 	activation = {
-	# 		ENG = { has_war_with = JAP }
-	# 		has_country_flag = JAP_early_war
-	# 	}
-	# 	ai_will_do = {
-	# 		factor = 1000
-	# 	}
-	# 	timeout_effect = {
-	# 		remove_ideas = USA_neutrality_idea
-	# 		remove_ideas = USA_neutrality_idea_2
-	# 		remove_ideas = USA_neutrality_idea_3
-	# 		ENG = { add_to_faction = USA }
-	# 		country_event = usa.1005
-	# 	}
-	# }
-	USA_Lend_Lease_Soviets = {
-
-		icon = generic_construction
-
-		visible = {
-			SOV = { has_war_with = GER }
-		}
-		
-		allowed = {
-			original_tag = USA
-		}
-		
-		available = {
-			SOV = {
-				surrender_progress > 0.5
-			}
-		}
-
-		modifier = {
-			civilian_factory_use = 30
-		}
-		
-		days_remove = 365
-
-		remove_effect = {
-			SOV = {add_offsite_building = { type = arms_factory level = 30 }}
-		}
-	}
 	USA_annex_mex = {
 
 		allowed = {
@@ -335,10 +7,11 @@ operations = {
 		}
 
 		available = {
-			MEX = {is_ai = yes}
+			MEX = { is_ai = yes }
 			OR = {
-				CHI = { exists = no}
-				GER = { has_war = yes }
+				JAP = { has_war_with = ENG }
+				GER = { has_war_with = SOV }
+				USA = { has_war = yes }
 			}
 		}
 
@@ -350,17 +23,18 @@ operations = {
 			always = yes
 			country_exists = MEX
 		}
+
 		fire_only_once = yes
+
 		complete_effect = {
 			annex_country = { target = MEX transfer_troops = yes }
 			every_owned_state = {
-				limit = {
-					is_core_of = MEX
-				}
+				limit = { is_core_of = MEX }
 				set_compliance = 60
 			}
 		}
 	}
+
 	USA_annex_bra = {
 
 		allowed = {
@@ -368,10 +42,11 @@ operations = {
 		}
 
 		available = {
-			BRA = {is_ai = yes}
+			BRA = { is_ai = yes }
 			OR = {
-				CHI = { exists = no}
-				GER = { has_war = yes }
+				JAP = { has_war_with = ENG }
+				GER = { has_war_with = SOV }
+				USA = { has_war = yes }
 			}
 		}
 
@@ -383,33 +58,34 @@ operations = {
 			always = yes
 			country_exists = BRA
 		}
+
 		fire_only_once = yes
+
 		complete_effect = {
 			annex_country = { target = BRA transfer_troops = yes }
 			every_owned_state = {
-				limit = {
-					is_core_of = BRA
-				}
+				limit = { is_core_of = BRA }
 				set_compliance = 60
 				if = {
 					limit = { has_dynamic_modifier = { modifier = BRA_neglected_state_dynamic_modifier } }
-					remove_dynamic_modifier = { modifier =	BRA_neglected_state_dynamic_modifier }
+					remove_dynamic_modifier = { modifier = BRA_neglected_state_dynamic_modifier }
 				}
 				if = {
 					limit = { has_dynamic_modifier = { modifier = BRA_cangaceiro_state } }
-					remove_dynamic_modifier = { modifier =	BRA_cangaceiro_state }
-				}					
+					remove_dynamic_modifier = { modifier = BRA_cangaceiro_state }
+				}
 			}
 		}
 	}
+
 	USA_initiate_the_greenland_patrol = {
 
 		icon = generic_operation
-	
+
 		allowed = {
 			tag = USA
 		}
-		
+
 		available = {
 			OR = {
 				has_government = democratic
@@ -422,16 +98,14 @@ operations = {
 				is_subject = yes
 			}
 			IF = {
-				limit = {	
-					DEN = {
-						is_subject = yes
-					}
+				limit = {
+					DEN = { is_subject = yes }
 				}
 				DEN = {
 					overlord = {
 						NOT = {
 							has_government = democratic
-							has_war_with = USA #Unfair to just grab a piece of land from your enemy like this
+							has_war_with = USA
 							is_in_faction_with = ROOT
 						}
 					}
@@ -440,13 +114,12 @@ operations = {
 		}
 
 		cost = 50
-
 		fire_only_once = yes
 
 		ai_will_do = {
 			base = 1
 			modifier = {
-				factor = 50 
+				factor = 50
 				DEN = {
 					overlord = {
 						OR = {
@@ -462,14 +135,14 @@ operations = {
 				ENG = {
 					has_war_with = GER
 					has_subject = CAN
-				}	
+				}
 				GER = {
 					has_government = fascism
 					has_subject = DEN
 				}
 			}
 		}
-		
+
 		visible = {
 			tag = USA
 			OR = {
@@ -485,1434 +158,573 @@ operations = {
 					is_major = yes
 					NOT = {
 						has_government = democratic
-						has_war_with = USA #Unfair to just grab a piece of land from your enemy like this
+						has_war_with = USA
 						is_in_faction_with = ROOT
 					}
 				}
 			}
 			has_dlc = "Arms Against Tyranny"
 		}
-		
+
 		complete_effect = {
 			DEN = { country_event = { id = AAT_USA_events.01 days = 2 } }
-			add_ideas = USA_greenland_patrol_idea
-			ROOT = {
-				transfer_state = 101
-			}
+			ROOT = { transfer_state = 101 }
 			hidden_effect = {
 				set_global_flag = USA_occupied_DEN_greenland
 			}
 		}
 	}
 }
-USA_war_plans = {
-	USA_execute_war_plan_green = {
-		icon = generic_operation
-		available = {
-			has_war_with = MEX
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_green
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		modifier = {
-			production_speed_infrastructure_factor = 0.1
-		}
-		targeted_modifier = {
-			tag = MEX
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-	USA_execute_war_plan_red = {
-		icon = generic_operation
-		available = {
-			has_war_with = ENG
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_red
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		modifier = {
-			spotting_chance = 0.1
-		}
-		targeted_modifier = {
-			tag = ENG
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-	USA_execute_war_plan_silver = {
-		icon = generic_operation
-		available = {
-			has_war_with = ITA
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_silver
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		targeted_modifier = {
-			tag = ITA
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-	USA_execute_war_plan_ruby = {
-		icon = generic_operation
-		available = {
-			has_war_with = RAJ
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_ruby
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		targeted_modifier = {
-			tag = RAJ
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-	USA_execute_war_plan_scarlet_garnet = {
-		icon = generic_operation
-		available = {
-			has_war_with = AST
-			has_war_with = NZL
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_scarlet_garnet
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		targeted_modifier = {
-			tag = AST
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-		targeted_modifier = {
-			tag = NZL
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-	USA_execute_war_plan_orange = {
-		icon = generic_operation
-		available = {
-			has_war_with = JAP
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_orange
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		modifier = {
-			amphibious_invasion = 0.1
-			invasion_preparation = -0.25
-		}
-		targeted_modifier = {
-			tag = JAP
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-		targeted_modifier = {
-			tag = MAN
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-		targeted_modifier = {
-			tag = SIA
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-}
-	USA_execute_war_plan_black = {
-		icon = generic_operation
-		available = {
-			has_war_with = GER
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_black
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 365
-		targeted_modifier = {
-			tag = GER
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-	USA_execute_war_plan_white = {
-		icon = generic_operation
-		available = {
-			has_war_with = SOU
-		}
-		visible = {
-			has_completed_focus = USA_war_plan_white
-		}
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		targeted_modifier = {
-			tag = SOU
-			attack_bonus_against = 0.1
-			defense_bonus_against = 0.1
-		}
-	}
-}
-USA_intervention_mandate = {
-	# USA_request_mandate_against_FROM = {
-	# 	available = {
-	# 		has_war_support > 0.4
-	# 		if = {
-	# 			limit = {
-	# 				FROM = {
-	# 					has_offensive_war = yes
-	# 				}
-	# 				congress_low_support_trigger = yes
-	# 			}
-	# 		}
-	# 		else_if = {
-	# 			limit = {
-	# 				FROM = {
-	# 					has_war = yes
-	# 				}
-	# 			}
-	# 			congress_medium_support_trigger = yes
-	# 		}
-	# 		else = {
-	# 			congress_high_support_trigger = yes
-	# 		}
-	# 		not = { has_war_with = FROM }
-	# 	}
-	# 	visible = {
-	# 		not = { has_wargoal_against = FROM }
-	# 	}
-	# 	target_trigger = {
-	# 		FROM = {
-	# 			exists = yes
-	# 			not = {
-	# 				has_war_with = ROOT
-	# 				is_in_faction_with = ROOT
-	# 				is_subject_of = ROOT
-	# 			}
-	# 			has_country_flag = {
-	# 				flag = USA_intervention_strikes
-	# 				value > 2
-	# 			}
-	# 		}
-	# 	}
-	# 	war_with_target_on_remove = yes
-	# 	days_remove = 60
-	# 	cost = 50
-	# 	ai_will_do = {
-	# 		factor = 1
-	# 		modifier = {
-	# 			has_war = yes
-	# 			factor = 0
-	# 		}
-	# 		modifier = {
-	# 			OR = {
-	# 				GER = { has_completed_focus = GER_danzig_or_war }
-	# 				JAP = { has_completed_focus = JAP_reinforce_the_beijing_garrison }
-	# 			}
-	# 			factor = 10
-	# 		}
-	# 	}
-	# 	remove_effect = {
-	# 		create_wargoal = {
-	# 			type = topple_government
-	# 			target = FROM
-	# 		}
-	# 	}
-	# }
-	USA_prepare_intervention_in_europe_against_FROM = {
 
-		icon = generic_prepare_civil_war
+###########################
+# Ohio River Flood Recovery — Mission Chain
+###########################
 
-		available = {
+USA_flood_control_cat = {
 
-		}
+	# Rush: Accelerate all remaining acts by 60 days
+	USA_rush_flood_control = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
 
 		visible = {
-			not = {
-				has_war_with = FROM
-			}
-			always = no
-		}
-		target_trigger = {
-			FROM = {
-				is_major = yes
-				capital_scope = {
-					is_on_continent = europe
-				}
-				has_added_tension_amount > 10
-				not = { has_government = democratic }
-			}
+			has_country_flag = ohio_flood_recovery_active
+			NOT = { has_country_flag = ohio_flood_rushed }
 		}
 
-		cost = 75
-		days_remove = 90
-		complete_effect = {
-			add_war_support = 0.05
-			if = {
-				limit = {
-					has_war_support < 0.4
-				}
-				USA_congress_small_opposition = yes
-			}
-			if = {
-				limit = {
-					FROM = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				FROM = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				FROM = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	USA_prepare_intervention_in_asia_against_FROM = {
-
-		icon = generic_prepare_civil_war
-
 		available = {
-
+			has_country_flag = ohio_flood_recovery_active
+			has_completed_focus = USA_rush_the_flood_control_acts
 		}
 
-		visible = {
-			not = {
-				has_war_with = FROM
-			}
-			always = no
-		}
-
-		target_trigger = {
-			FROM = {
-				is_major = yes
-				capital_scope = {
-					is_on_continent = asia
-				}
-				has_added_tension_amount > 10
-				not = { has_government = democratic }
-			}
-		}
-		cost = 75
-		days_remove = 90
-		complete_effect = {
-			add_war_support = 0.05
-			if = {
-				limit = {
-					has_war_support < 0.4
-				}
-				USA_congress_small_opposition = yes
-			}
-			if = {
-				limit = {
-					FROM = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				FROM = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				FROM = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-	USA_protest_anschluss = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_anschluss_window
-			always = no
-			not = {
-				has_war_with = GER
-			}
-		}
 		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			GER = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					GER = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				GER = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				GER = { 
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_munich = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_munich_window
-			always = no
-			not = {
-				has_war_with = GER
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			GER = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					GER = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				GER = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				GER = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_molotov_ribbentrop = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_MR_window
-			always = no
-			not = {
-				has_war_with = GER
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			GER = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					GER = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				GER = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				GER = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			if = {
-				limit = {
-					SOV = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				SOV = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				SOV = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_baltic_annexation = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_baltic_window
-			always = no
-			not = {
-				has_war_with = SOV
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-			modifier = {
-				GER = {
-					has_country_flag = USA_intervention_strikes
-				}
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			SOV = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					SOV = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				SOV = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				SOV = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_army_of_aggression = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_army_of_aggression_window
-			always = no
-			not = {
-				has_war_with = FRA
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-			modifier = {
-				GER = {
-					has_country_flag = USA_intervention_strikes
-				}
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			FRA = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					FRA = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				FRA = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				FRA = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_albania = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_albania_window
-			always = no
-			not = {
-				has_war_with = ITA
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-			modifier = {
-				GER = {
-					has_country_flag = USA_intervention_strikes
-				}
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			ITA = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					ITA = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				ITA = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				ITA = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_yugoslavia = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_yugoslavia_window
-			always = no
-			not = {
-				has_war_with = ITA
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-			modifier = {
-				GER = {
-					has_country_flag = USA_intervention_strikes
-				}
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			ITA = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					ITA = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				ITA = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				ITA = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_china = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			OR = {
-				has_country_flag = USA_china_window
-				OR = {
-					613 = {
-						CONTROLLER = {
-							OR = {
-								original_tag = JAP
-								is_subject_of = JAP
-							}
-						}
-					}
-					event_target:WTT_current_china_leader = {
-						surrender_progress > 0.5
-					}
-				}
-			}
-			always = no
-			not = {
-				has_war_with = JAP
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			JAP = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					JAP = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				JAP = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				JAP = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_indochina = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_indochina_window
-			always = no
-			not = {
-				has_war_with = JAP
-			}
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			JAP = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					JAP = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				JAP = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				JAP = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_protest_panay = {
-		icon = eng_propaganda_campaigns
-		available = {
-			
-		}
-		visible = {
-			has_country_flag = USA_panay_window
-			always = no
-			not = {
-				has_war_with = JAP
-			}
-			not = { has_wargoal_against = JAP }
-		}
-		fire_only_once = yes
-		cost = 25
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			add_war_support = 0.05
-			JAP = { country_event = mtg_usa_diplomatic_protest.1 } 
-			if = {
-				limit = {
-					JAP = {
-						not = { has_country_flag = USA_intervention_strikes }
-					}
-				}
-				JAP = {
-					set_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-			else = {
-				JAP = {
-					modify_country_flag = {
-						flag = USA_intervention_strikes
-						value = 1
-					}
-				}
-			}
-		}
-	}
-	USA_request_monroe_mandate_against_FROM = {
-		available = {
-			has_war_support > 0.25
-			if = {
-				limit = {
-					has_war_support > 0.6
-				}
-				congress_low_support_trigger = yes
-			}
-			else_if = {
-				limit = {
-					has_war_support > 0.4
-				}
-				congress_medium_support_trigger = yes
-			}
-			else = {
-				congress_high_support_trigger = yes
-			}
-		}
-		visible = {
-			has_completed_focus = USA_reinforce_monroe_doctrine
-			not = { has_wargoal_against = FROM }
-			not = { has_war_with = FROM }
-			FROM = {
-				exists = yes
-				not = { is_subject_of = ROOT }
-			}
-		}
-		target_trigger = {
-			FROM = {
-				exists = yes
-				not = { has_war_with = ROOT }
-				NOT = { 
-					has_government = ROOT
-					is_subject_of = ROOT
-				}
-				capital_scope = {
-					OR = {
-						is_on_continent = north_america
-						is_on_continent = south_america
-					}
-				}
-				OR = {
-					has_civil_war = no
-					AND = {
-						is_subject = yes
-						NOT = { tag = CAN }
-						OVERLORD = {
-							NOT = { 
-								capital_scope = {
-									OR = {
-										is_on_continent = north_america
-										is_on_continent = south_america
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
 		cost = 50
-		days_remove = 35
-		war_with_target_on_remove = yes
 
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-			modifier = {
-				FROM = {
-					has_added_tension_amount < 8
-				}
-				factor = 0
-			}
+		ai_will_do = { factor = 100 }
 
-			modifier = {
-				FROM = {
-					OR = {
-						has_added_tension_amount > 30
-						has_government = fascism
-						has_government = communism
-					}
-					NOT = { is_in_faction_with = USA }
-				}
-				factor = 2
-
-			}
-
+		complete_effect = {
+			add_stability = 0.15
+			set_country_flag = ohio_flood_rushed
 		}
-		remove_effect = {
-			create_wargoal = {
-				type = puppet_wargoal_focus
-				target = FROM
+	}
+
+	# Provide Care Immediately (Landon path)
+	USA_landon_provide_care_immediately = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			has_completed_focus = USA_propose_the_the_responsible_waters_management_act
+		}
+
+		available = {
+			has_country_flag = ohio_flood_recovery_active
+			has_completed_focus = USA_propose_the_the_responsible_waters_management_act
+		}
+
+		fire_only_once = yes
+		cost = 150
+
+		ai_will_do = { factor = 100 }
+
+		complete_effect = {
+			261 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			360 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			369 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			395 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			396 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			816 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			set_variable = { var = ohio_flood_act value = 4 }
+			set_country_flag = USA_landon_flood_care_provided
+			clr_country_flag = ohio_flood_recovery_active
+		}
+	}
+
+	# Act I: Full → Two-thirds penalty
+	USA_flood_control_act_1 = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 1 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_country_flag = USA_landon_flood_care_provided } }
+				261 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				360 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				369 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				395 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				396 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				816 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				set_variable = { var = ohio_flood_act value = 2 }
+				if = {
+					limit = { has_country_flag = ohio_flood_rushed }
+					activate_mission = USA_flood_control_act_2_r
+				}
+				else = {
+					activate_mission = USA_flood_control_act_2
+				}
 			}
 		}
 	}
-	USA_demand_liberation = {
-		available = {
-			has_war_support > 0.2
+
+	# Act II: Two-thirds → One-third penalty
+	USA_flood_control_act_2 = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 2 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
 			if = {
-				limit = {
-					has_war_support > 0.6
+				limit = { NOT = { has_country_flag = USA_landon_flood_care_provided } }
+				261 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
 				}
-				congress_low_support_trigger = yes
+				360 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				369 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				395 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				396 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				816 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				set_variable = { var = ohio_flood_act value = 3 }
+				if = {
+					limit = { has_country_flag = ohio_flood_rushed }
+					activate_mission = USA_flood_control_act_3_r
+				}
+				else = {
+					activate_mission = USA_flood_control_act_3
+				}
 			}
-			else_if = {
-				limit = {
-					has_war_support > 0.4
+		}
+	}
+
+	# Act III: One-third → Flood debuff fully cleared
+	USA_flood_control_act_3 = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 3 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_country_flag = USA_landon_flood_care_provided } }
+				261 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				360 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				369 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				395 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				396 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				816 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				set_variable = { var = ohio_flood_act value = 4 }
+				if = {
+					limit = { has_country_flag = ohio_flood_rushed }
+					activate_mission = USA_flood_control_act_4_r
 				}
-				congress_medium_support_trigger = yes
+				else = {
+					activate_mission = USA_flood_control_act_4
+				}
+			}
+		}
+	}
+
+	# Act IV: Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_4 = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 4 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			set_variable = { var = ohio_flood_act value = 5 }
+			if = {
+				limit = { has_country_flag = ohio_flood_rushed }
+				activate_mission = USA_flood_control_act_5_r
 			}
 			else = {
-				congress_high_support_trigger = yes
-			}
-		}
-		visible = {
-			has_completed_focus = USA_reinforce_monroe_doctrine
-			NOT = { has_wargoal_against = FROM }
-			FROM = {
-				NOT = { has_country_flag = USA_monroe_backed_down } #set when US player backs down in reply event
-				any_owned_state = {
-					is_controlled_by = PREV
-					OR = {
-						is_on_continent = north_america
-						is_on_continent = south_america
-					}
-				}
-			} 
-		}
-		target_trigger = {
-			FROM = {
-				NOT = { 
-					OR = {
-						has_government = ROOT
-						has_government = neutrality
-					}
-				}
-				NOT = { 
-					capital_scope = {
-						OR = {
-							is_on_continent = north_america
-							is_on_continent = south_america
-						}
-					}
-				}
-				any_owned_state = {
-					is_controlled_by = PREV
-					OR = {
-						is_on_continent = north_america
-						is_on_continent = south_america
-					}
-				}
-			}
-		}
-		cost = 50
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_war = yes
-				factor = 0
-			}
-		}
-		complete_effect = {
-			FROM = { 
-				country_event = mtg_usa_diplomatic_protest.2 
-			}
-		}
-	}
-}
-USA_decolonisation = {
-	# USA_freedom_for_Papua = {
-	# 	available = {
-	# 		PNG = {
-	# 			exists = no
-	# 		}
-	# 		controls_state = 523
-	# 		controls_state = 737
-	# 	}
-	# 	cost = 25
-	# 	ai_will_do = {
-	# 		factor = 1
-	# 	}
-	# 	fire_only_once = yes
-	# 	days_remove = 180
-	# 	remove_effect = {
-	# 		PNG = {
-	# 			transfer_state = 523
-	# 			transfer_state = 737 
-	# 		}
-	# 	}
-	# }
-	USA_indonesian_liberation = {
-		available = {
-			OR = {
-				controls_state = 669
-				controls_state = 668
-				controls_state = 673
-				controls_state = 334
-				controls_state = 672
-				controls_state = 335
-				controls_state = 667
-				controls_state = 738
-			}
-		}
-		cost = 25
-		ai_will_do = {
-			factor = 1
-		}
-		fire_only_once = yes
-		days_remove = 180
-		remove_effect = {
-			if = {
-				limit = {
-					not = { country_exists = INS }
-				}
-				every_state = {
-					limit = {
-						is_core_of = INS
-						is_controlled_by = ROOT
-					}
-					"INS" = {
-						transfer_state = PREV
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					has_war_with = INS
-				}
-				"INS" = {
-					start_civil_war = {
-						ideology = ROOT
-						size = 1
-					}
-				}
-				random_country = {
-					limit = {
-						original_tag = INS
-						has_government = ROOT
-					}
-					ROOT = {
-						add_to_faction = PREV
-					}
-					every_state = {
-						limit = {
-							OR = {
-								state = 669
-								state = 668
-								state = 673
-								state = 334
-								state = 672
-								state = 335
-								state = 667
-								state = 738
-							}
-							is_controlled_by = ROOT
-						}
-						random_country = {
-							limit = {
-								original_tag = INS
-								has_government = ROOT
-							}
-							transfer_state = PREV
-						}
-					}
-				}
-			}
-		}
-	}
-}
-foreign_support = {
-	USA_support_the_anti_fascist_war = {
-
-		icon = generic_industry
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			NOT = {
-				has_global_flag = USA_support_the_anti_fascist_war_flag
-			}
-			FROM = {
-				has_completed_focus = CHI_mission_to_the_us
-				has_war_with = JAP
-			}
-		}
-
-		targets = { CHI PRC SIK }
-		targets_dynamic = yes
-
-		target_root_trigger = {
-			has_completed_focus = USA_lend_lease_act
-		}
-
-		target_trigger = {
-			FROM = {
-				has_completed_focus = CHI_mission_to_the_us
-				has_war_with = JAP
-			}
-		}
-
-		visible = {
-			has_government = democratic
-			FROM = {
-				has_completed_focus = CHI_mission_to_the_us
-				has_war_with = JAP
-			}
-		}
-
-		cost = 25
-		ai_will_do = {
-			factor = 50
-			modifier = {
-				factor = 3
-				any_other_country = {
-					has_completed_focus = CHI_mission_to_the_us
-					has_idea = CHI_soong_mei_ling
-					surrender_progress > 0.2
-					has_defensive_war = yes
-				}
-			}
-
-			modifier = {
-				factor = 0.5
-				has_war_support > 0.6
-			}
-
-			modifier = {
-				factor = 2
-				has_war_with = JAP
-			}
-		}
-
-		fire_only_once = no
-
-		modifier = {
-			civilian_factory_use = 5			
-		}
-
-		days_remove = 180
-
-		complete_effect = {
-			FROM = {
-				add_offsite_building = { type = arms_factory level = 3 }
-				set_global_flag = USA_support_the_anti_fascist_war_flag
-			}
-		}
-
-		remove_effect = {
-			add_war_support = 0.05
-			FROM = {
-				add_offsite_building = { type = arms_factory level = -3 }
-				hidden_effect = {
-					clr_global_flag = USA_support_the_anti_fascist_war_flag
-				}
+				activate_mission = USA_flood_control_act_5
 			}
 		}
 	}
 
-	USA_guns_for_the_anti_fascist_war = {
+	# Act V: Final Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_5 = {
+		icon = GFX_decision_generic_factory
 
-		icon = generic_prepare_civil_war
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			has_equipment = { infantry_equipment > 999 }
-			FROM = {
-				has_completed_focus = CHI_mission_to_the_us
-				has_idea = CHI_soong_mei_ling
-				has_war_with = JAP
-			}
-		}
-
-		targets = { CHI PRC SIK }
-		targets_dynamic = yes
-
-		target_trigger = {
-			FROM = {
-				has_completed_focus = CHI_mission_to_the_us
-				has_idea = CHI_soong_mei_ling
-				has_war_with = JAP
-			}
-		}
+		allowed = { original_tag = USA }
 
 		visible = {
-			has_government = democratic
-			FROM = {
-				has_completed_focus = CHI_mission_to_the_us
-				has_idea = CHI_soong_mei_ling
-				has_war_with = JAP
-			}
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 5 compare = equals }
 		}
 
-		cost = 25
-		ai_will_do = {
-			factor = 25
-			modifier = {
-				factor = 3
-				FROM = {
-					has_completed_focus = CHI_mission_to_the_us
-					has_idea = CHI_soong_mei_ling
-					surrender_progress > 0.2
-					has_defensive_war = yes
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
 				}
 			}
-
-			modifier = {
-				factor = 0.5
-				has_war_support < 0.6
-			}
-
-			modifier = {
-				factor = 2
-				has_war_with = JAP
-			}
-		}
-
-		fire_only_once = no	
-
-		days_re_enable = 180
-
-		complete_effect = {
-			ROOT = {
-				send_equipment = {
-					target = FROM
-					type = infantry_equipment
-					amount = 1000
-					old_prioritised = yes
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
 				}
 			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			clear_variable = ohio_flood_act
+			clr_country_flag = ohio_flood_recovery_active
 		}
 	}
-}
 
-foreign_politics = {
-	USA_form_defensive_alliance_north_american_dominion = {
+	###########################
+	# Rushed Variants (120 days)
+	###########################
 
-		icon = generic
+	# Act II (Rushed): Two-thirds → One-third penalty
+	USA_flood_control_act_2_r = {
+		icon = GFX_decision_generic_industry
 
-		available = {
-			not = { has_global_flag = mtg_usa_north_american_dominion_refused_faction }
-		}
-
-		cost = 25
-		fire_only_once = yes
-		ai_will_do = {
-			factor = 10
-			modifier = {
-				has_war_with = USA
-				factor = 20
-			}
-		}
+		allowed = { original_tag = USA }
 
 		visible = {
-			has_country_flag = north_american_dominion_refused
-			is_in_faction = no
-			not = { has_global_flag = mtg_usa_north_american_dominion_refused_faction }
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 2 compare = equals }
+			has_country_flag = ohio_flood_rushed
 		}
 
-		complete_effect = {
-			set_global_flag = mtg_usa_north_american_dominion_refused_faction
-			set_rule = {
-				can_create_factions = yes
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			261 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
 			}
-			create_faction = MTG_USA_NORTH_AMERICAN_DOMINION_FACTION
-			hidden_effect = {
-				#news_event = { id = xxx days = 3 } MTG_TODO_GABRIEL
+			360 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
 			}
+			369 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			395 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			396 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			816 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			set_variable = { var = ohio_flood_act value = 3 }
+			activate_mission = USA_flood_control_act_3_r
 		}
 	}
-	USA_join_defensive_alliance_north_american_dominion = {
 
-		icon = generic
+	# Act III (Rushed): One-third → Flood debuff fully cleared
+	USA_flood_control_act_3_r = {
+		icon = GFX_decision_generic_industry
 
-		available = {
-			has_global_flag = mtg_usa_north_american_dominion_refused_faction
-		}
-
-		cost = 25
-		fire_only_once = yes
-		ai_will_do = {
-			factor = 10
-			modifier = {
-				has_war_with = USA
-				factor = 20
-			}
-		}
+		allowed = { original_tag = USA }
 
 		visible = {
-			has_country_flag = north_american_dominion_refused
-			is_in_faction = no
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 3 compare = equals }
+			has_country_flag = ohio_flood_rushed
 		}
 
-		complete_effect = {
-			random_other_country = {
-				limit = {
-					has_country_flag = north_american_dominion_refused
-					is_faction_leader = yes
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			261 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			360 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			369 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			395 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			396 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			816 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			set_variable = { var = ohio_flood_act value = 4 }
+			activate_mission = USA_flood_control_act_4_r
+		}
+	}
+
+	# Act IV (Rushed): Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_4_r = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 4 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
 				}
-				country_event = generic.2
 			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			set_variable = { var = ohio_flood_act value = 5 }
+			activate_mission = USA_flood_control_act_5_r
+		}
+	}
+
+	# Act V (Rushed): Final Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_5_r = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 5 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			clear_variable = ohio_flood_act
+			clr_country_flag = ohio_flood_rushed
+			clr_country_flag = ohio_flood_recovery_active
 		}
 	}
 }
@@ -1949,4111 +761,2097 @@ USA_special_research = {
 	}
 }
 
-USA_propaganda_campaigns = {
-	USA_man_the_guns = { # ID = 2
-		priority = 12
+###########################
+# North American Aviation Military Contracts
+###########################
 
-		icon = GFX_decision_generic_merge_plant_ship
+###########################
+# Federal Project One (WPA Arts)
+###########################
 
-		allowed = {
-			original_tag = USA
-		}
+USA_federal_project_one_cat = {
 
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_completed_focus = USA_two_ocean_navy_act
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			industrial_capacity_dockyard = 0.1
-		}
+	USA_federal_art_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
 
 		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 2 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 2 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
-
-	USA_buy_extra_bonds = { # ID = 3
-		priority = 11
-
-		icon = GFX_decision_generic_consumer_goods
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_completed_focus = USA_the_giant_wakes
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			consumer_goods_factor = -0.09
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 3 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 3 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
-
-	USA_keep_em_firing = { # ID = 4
-		priority = 10
-
-		icon = GFX_decision_generic_factory
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_completed_focus = USA_fair_labour_standards_act
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			industrial_capacity_factory = 0.075
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 4 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 4 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
-
-	USA_united_we_are_strong = { # ID = 5
-		priority = 9
-
-		icon = eng_propaganda_campaigns
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			is_in_faction = yes
-			has_war = yes
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			stability_weekly = 0.005
-			command_power_gain_mult = 0.25
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 5 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 5 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
-
-	USA_death_on_subs = { # ID = 6
-		priority = 8
-
-		icon = GFX_decision_SWE_set_navy_budget
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			OR = {
-				has_war_with = GER
-				has_war_with = ITA
-				has_war_with = JAP
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
 			}
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			navy_submarine_detection_factor = 0.3
-			convoy_escort_efficiency = 0.3
-			convoy_retreat_speed = 0.3
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 6 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 6 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
-
-	USA_we_can_do_it = { # ID = 7
-		priority = 7
-
-		icon = GFX_decision_generic_factory
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_completed_focus = USA_wartime_industry
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			production_factory_efficiency_gain_factor = 0.1
-			line_change_production_efficiency_factor = 0.1
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 7 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 7 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
-	
-	USA_convoy_prop = { # ID = 8
-		priority = 6
-
-		icon = eng_propaganda_campaigns
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			ENG = { has_war_with = GER}
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		targeted_modifier = {
-			tag = ENG
-			license_purchase_cost = -0.2
-			license_production_speed = 0.2
-			license_tech_difference_speed = 0.2
-			trade_cost_for_target_factor = -0.2
-		}
-
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 8 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-			ENG = { add_ideas = USA_convoys }
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 8 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-			ENG = { remove_ideas = USA_convoys }
-		}
-	}
-	
-	USA_nurse_prop = { # ID = 9
-		priority = 5
-
-		icon = GFX_decision_generic_army_support
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_war = yes
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			experience_loss_factor = -0.25
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 9 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 9 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}	
-
-	USA_alter_prop = { # ID = 10
-		priority = 4
-
-		icon = GFX_decision_generic_wreckers
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_war = yes
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			repair_speed_factor = 0.25
-			equipment_conversion_speed = 0.20
-			equipment_upgrade_xp_cost = -0.25
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 10 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 10 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}	
-
-	USA_marines_prop = { # ID = 11
-		priority = 3
-
-		icon = GFX_decision_SWE_set_navy_budget
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_completed_focus = USA_expand_the_USMC
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			experience_gain_navy = 0.04
-			experience_gain_army = 0.04
-			trait_naval_invader_xp_gain_factor = 0.2
-			naval_invasion_prep_speed = 0.1
-			naval_invasion_division_cap = 1 
-			naval_invasion_plan_cap = 10
-			amphibious_invasion = 0.1
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 11 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 11 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}	
-
-	USA_intel_prop = { # ID = 12
-		priority = 2
-
-		icon = GFX_decision_onmap_recruit_operative
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_war = yes
-		}
-
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			local_intel_to_enemies = -0.2
-			own_operative_intel_extraction_rate = -0.2
-			intelligence_agency_defense = 0.5
-		}
-
-		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 12 }
-			USA_pick_propaganda_campaign_slot_effect = yes
-		}
-
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 12 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}	
-
-	USA_army_prop = { # ID = 13
-		priority = 1
-
-		icon = GFX_decision_SWE_set_army_budget
-
-		allowed = {
-			original_tag = USA
-		}
-
-		available = {
-			USA_propaganda_poster_slot_available = yes
-			has_completed_focus = USA_army_of_the_united_states
-			or = {
-				has_war = yes
-				date > 1941.1.1
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
 			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_art_project_tt
 		}
+	}
 
-		days_remove = 365
-
-		days_re_enable = 360
-
-		cost = 25
-
-		modifier = {
-			experience_gain_army = 0.15
-			experience_gain_army_factor = 0.10
-			training_time_army_factor = -0.10
-			army_advisor_cost_factor = -0.15
-		}
+	USA_federal_music_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
 
 		complete_effect = {
-			set_variable = { USA_new_propaganda_campaign = 13 }
-			USA_pick_propaganda_campaign_slot_effect = yes
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_music_project_tt
 		}
+	}
 
-		remove_effect = {
-			set_variable = { USA_propaganda_campaign_to_remove = 13 }
-			USA_reset_propaganda_campaign_slot_effect = yes
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
+	USA_federal_theatre_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_theatre_project_tt
+		}
+	}
+
+	USA_federal_writers_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_writers_project_tt
+		}
+	}
+
+	USA_historical_records_survey = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_historical_records_survey_tt
 		}
 	}
 }
-USA_election_campaigns = {
-	USA_electoral_map = {
-		priority = 1000
-		icon = generic_army_support
-		available = {
-		}
-		visible = {
-		}
 
-		cost = 0
-		fire_only_once = no
-		ai_will_do = {
-			factor = 0
-		}
-		complete_effect = {
-			news_event =  usa.1004
-		}
-	}
-	USA_democratic_campaign_swing_state = {
-		priority = 10
+USA_military_contracts_cat = {
 
-		icon = infiltrate_state
+	USA_north_american_aviation_contracts_mission = {
 
-		state_target = any_owned_state
+		icon = generic_industry
+		is_good = yes
 
-		target_trigger = {
-			FROM = {
-				has_state_flag = USA_swing_state
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
+		allowed = { tag = USA }
 
 		visible = {
-			has_country_flag = USA_dem_campaign
+			has_completed_focus = USA_give_north_american_aviation_military_contracts
 		}
 
-		cancel_if_not_visible = yes
+		activation = { always = no }
+		available = { always = no }
 
-		cost = 10
+		days_mission_timeout = 180
 
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		ai_will_do = {
-			factor = 10
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_swing_state
-				set_state_flag = USA_blue_state
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 390
-					}
-				}
-				set_variable = { USA_sd_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 383
-					}
-				}
-				set_variable = { USA_ks_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 9
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 384
-					}
-				}
-				set_variable = { USA_ne_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 7
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 395
-					}
-				}
-				set_variable = { USA_il_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 29
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 393
-					}
-				}
-				set_variable = { USA_mi_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 19
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 396
-					}
-				}
-				set_variable = { USA_in_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 14
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 392
-					}
-				}
-				set_variable = { USA_ia_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 369
-					}
-				}
-				set_variable = { USA_ky_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 360
-					}
-				}
-				set_variable = { USA_pa_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 36
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 358
-					}
-				}
-				set_variable = { USA_ny_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 47
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 359
-					}
-				}
-				set_variable = { USA_nj_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 16
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 386
-					}
-				}
-				set_variable = { USA_wa_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 385
-					}
-				}
-				set_variable = { USA_or_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 5
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 378
-					}
-				}
-				set_variable = { USA_ca_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 22
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 379
-					}
-				}
-				set_variable = { USA_nv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 387
-					}
-				}
-				set_variable = { USA_id_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 388
-					}
-				}
-				set_variable = { USA_mt_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 381
-					}
-				}
-				set_variable = { USA_wy_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 380
-					}
-				}
-				set_variable = { USA_ut_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 377
-					}
-				}
-				set_variable = { USA_az_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 376
-					}
-				}
-				set_variable = { USA_nm_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 382
-					}
-				}
-				set_variable = { USA_co_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 6
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 375
-					}
-				}
-				set_variable = { USA_tx_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 23
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 374
-					}
-				}
-				set_variable = { USA_ok_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 389
-					}
-				}
-				set_variable = { USA_nd_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 391
-					}
-				}
-				set_variable = { USA_mn_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 394
-					}
-				}
-				set_variable = { USA_wi_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 12
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 373
-					}
-				}
-				set_variable = { USA_mo_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 15
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 372
-					}
-				}
-				set_variable = { USA_ar_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 9
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 371
-					}
-				}
-				set_variable = { USA_la_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 10
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 370
-					}
-				}
-				set_variable = { USA_ms_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 9
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 367
-					}
-				}
-				set_variable = { USA_al_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 366
-					}
-				}
-				set_variable = { USA_fl_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 7
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 365
-					}
-				}
-				set_variable = { USA_ga_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 12
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 368
-					}
-				}
-				set_variable = { USA_tn_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 364
-					}
-				}
-				set_variable = { USA_sc_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 363
-					}
-				}
-				set_variable = { USA_nc_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 13
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 362
-					}
-				}
-				set_variable = { USA_va_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 261
-					}
-				}
-				set_variable = { USA_oh_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 26
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			else_if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 3 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-		}
-	}
-	
-	USA_democratic_campaign_swing_state_ri = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ri_swing
-				}
-			}
-		}
-
-		available = {
-			#has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ri_swing
-				set_state_flag = USA_ri_blue
-			}
-			set_variable = { USA_ri_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 4
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_ct = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ct_swing
-				}
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-		ai_will_do = {
-			factor = 1000
-		}
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ct_swing
-				set_state_flag = USA_ct_blue
-			}
-			set_variable = { USA_ct_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 8
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_ma = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ma_swing
-				}
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-		ai_will_do = {
-			factor = 1000
-		}
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ma_swing
-				set_state_flag = USA_ma_blue
-			}
-			set_variable = { USA_ma_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 17
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_nh = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_nh_swing
-				}
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_nh_swing
-				set_state_flag = USA_nh_blue
-			}
-			set_variable = { USA_nh_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 4
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_me = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_me_swing
-				}
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_me_swing
-				set_state_flag = USA_me_blue
-			}
-			set_variable = { USA_me_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 5
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_vt = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_vt_swing
-				}
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_vt_swing
-				set_state_flag = USA_vt_blue
-			}
-			set_variable = { USA_vt_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 3
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_de = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_de_swing
-				}
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_de_swing
-				set_state_flag = USA_de_blue
-			}
-			set_variable = { USA_de_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 3
-			}
-		}
-	}
-
-	USA_democratic_campaign_swing_state_md = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_md_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-		ai_will_do = {
-			factor = 1000
-		}
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_md_swing
-				set_state_flag = USA_md_blue
-			}
-			set_variable = { USA_md_frame = 3 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 8
-			}
-		}
-	}
-
-	USA_democratic_campaign_red_state = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				has_state_flag = USA_red_state
-			}
-		}
-
-		available = {
-			has_country_flag = USA_dem_campaign
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_red_state
-				set_state_flag = USA_swing_state
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 390
-					}
-				}
-				set_variable = { USA_sd_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 383
-					}
-				}
-				set_variable = { USA_ks_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 384
-					}
-				}
-				set_variable = { USA_ne_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 395
-					}
-				}
-				set_variable = { USA_il_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 393
-					}
-				}
-				set_variable = { USA_mi_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 396
-					}
-				}
-				set_variable = { USA_in_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 392
-					}
-				}
-				set_variable = { USA_ia_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 369
-					}
-				}
-				set_variable = { USA_ky_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 360
-					}
-				}
-				set_variable = { USA_pa_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 358
-					}
-				}
-				set_variable = { USA_ny_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 359
-					}
-				}
-				set_variable = { USA_nj_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 386
-					}
-				}
-				set_variable = { USA_wa_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 385
-					}
-				}
-				set_variable = { USA_or_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 378
-					}
-				}
-				set_variable = { USA_ca_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 379
-					}
-				}
-				set_variable = { USA_nv_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 387
-					}
-				}
-				set_variable = { USA_id_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 388
-					}
-				}
-				set_variable = { USA_mt_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 381
-					}
-				}
-				set_variable = { USA_wy_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 380
-					}
-				}
-				set_variable = { USA_ut_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 377
-					}
-				}
-				set_variable = { USA_az_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 376
-					}
-				}
-				set_variable = { USA_nm_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 382
-					}
-				}
-				set_variable = { USA_co_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 375
-					}
-				}
-				set_variable = { USA_tx_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 374
-					}
-				}
-				set_variable = { USA_ok_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 389
-					}
-				}
-				set_variable = { USA_nd_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 391
-					}
-				}
-				set_variable = { USA_mn_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 394
-					}
-				}
-				set_variable = { USA_wi_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 373
-					}
-				}
-				set_variable = { USA_mo_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 372
-					}
-				}
-				set_variable = { USA_ar_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 371
-					}
-				}
-				set_variable = { USA_la_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 370
-					}
-				}
-				set_variable = { USA_ms_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 367
-					}
-				}
-				set_variable = { USA_al_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 366
-					}
-				}
-				set_variable = { USA_fl_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 365
-					}
-				}
-				set_variable = { USA_ga_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 368
-					}
-				}
-				set_variable = { USA_tn_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 364
-					}
-				}
-				set_variable = { USA_sc_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 363
-					}
-				}
-				set_variable = { USA_nc_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 362
-					}
-				}
-				set_variable = { USA_va_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 261
-					}
-				}
-				set_variable = { USA_oh_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 1 }
-			}
-		}
-	}
-	
-	USA_democratic_campaign_red_state_ri = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ri_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ri_red
-				set_state_flag = USA_ri_swing
-			}
-			set_variable = { USA_ri_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_ct = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ct_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ct_red
-				set_state_flag = USA_ct_swing
-			}
-			set_variable = { USA_ct_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_ma = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ma_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ma_red
-				set_state_flag = USA_ma_swing
-			}
-			set_variable = { USA_ma_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_nh = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_nh_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_nh_red
-				set_state_flag = USA_nh_swing
-			}
-			set_variable = { USA_nh_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_me = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_me_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_me_red
-				set_state_flag = USA_me_swing
-			}
-			set_variable = { USA_me_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_vt = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_vt_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_vt_red
-				set_state_flag = USA_vt_swing
-			}
-			set_variable = { USA_vt_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_de = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_de_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_de_red
-				set_state_flag = USA_de_swing
-			}
-			set_variable = { USA_de_frame = 1 }
-		}
-	}
-
-	USA_democratic_campaign_red_state_md = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_md_red
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_dem_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_md_red
-				set_state_flag = USA_md_swing
-			}
-			set_variable = { USA_md_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_swing_state = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				has_state_flag = USA_swing_state
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_swing_state
-				set_state_flag = USA_red_state
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 390
-					}
-				}
-				set_variable = { USA_sd_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 383
-					}
-				}
-				set_variable = { USA_ks_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 9
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 384
-					}
-				}
-				set_variable = { USA_ne_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 7
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 395
-					}
-				}
-				set_variable = { USA_il_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 29
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 393
-					}
-				}
-				set_variable = { USA_mi_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 19
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 396
-					}
-				}
-				set_variable = { USA_in_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 14
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 392
-					}
-				}
-				set_variable = { USA_ia_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 369
-					}
-				}
-				set_variable = { USA_ky_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 360
-					}
-				}
-				set_variable = { USA_pa_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 36
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 358
-					}
-				}
-				set_variable = { USA_ny_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 47
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 359
-					}
-				}
-				set_variable = { USA_nj_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 16
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 386
-					}
-				}
-				set_variable = { USA_wa_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 385
-					}
-				}
-				set_variable = { USA_or_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 5
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 378
-					}
-				}
-				set_variable = { USA_ca_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 22
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 379
-					}
-				}
-				set_variable = { USA_nv_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 387
-					}
-				}
-				set_variable = { USA_id_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 388
-					}
-				}
-				set_variable = { USA_mt_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 381
-					}
-				}
-				set_variable = { USA_wy_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 380
-					}
-				}
-				set_variable = { USA_ut_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 377
-					}
-				}
-				set_variable = { USA_az_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 376
-					}
-				}
-				set_variable = { USA_nm_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 3
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 382
-					}
-				}
-				set_variable = { USA_co_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 6
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 375
-					}
-				}
-				set_variable = { USA_tx_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 23
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 374
-					}
-				}
-				set_variable = { USA_ok_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 389
-					}
-				}
-				set_variable = { USA_nd_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 4
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 391
-					}
-				}
-				set_variable = { USA_mn_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 394
-					}
-				}
-				set_variable = { USA_wi_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 12
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 373
-					}
-				}
-				set_variable = { USA_mo_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 15
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 372
-					}
-				}
-				set_variable = { USA_ar_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 9
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 371
-					}
-				}
-				set_variable = { USA_la_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 10
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 370
-					}
-				}
-				set_variable = { USA_ms_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 9
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 367
-					}
-				}
-				set_variable = { USA_al_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 366
-					}
-				}
-				set_variable = { USA_fl_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 7
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 365
-					}
-				}
-				set_variable = { USA_ga_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 12
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 368
-					}
-				}
-				set_variable = { USA_tn_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 364
-					}
-				}
-				set_variable = { USA_sc_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 363
-					}
-				}
-				set_variable = { USA_nc_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 13
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 362
-					}
-				}
-				set_variable = { USA_va_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 11
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 261
-					}
-				}
-				set_variable = { USA_oh_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 26
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 2 }
-				add_to_variable = {
-					var = USA_predicted_ec
-					value = 8
-				}
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_ri = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ri_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ri_swing
-				set_state_flag = USA_ri_red
-			}
-			set_variable = { USA_ri_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 4
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_ct = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ct_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ct_swing
-				set_state_flag = USA_ct_red
-			}
-			set_variable = { USA_ct_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 8
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_ma = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ma_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ma_swing
-				set_state_flag = USA_ma_red
-			}
-			set_variable = { USA_ma_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 17
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_nh = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_nh_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_nh_swing
-				set_state_flag = USA_nh_red
-			}
-			set_variable = { USA_nh_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 4
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_me = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_me_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_me_swing
-				set_state_flag = USA_me_red
-			}
-			set_variable = { USA_me_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 5
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_vt = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_vt_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_vt_swing
-				set_state_flag = USA_vt_red
-			}
-			set_variable = { USA_vt_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 3
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_de = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_de_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_de_swing
-				set_state_flag = USA_de_red
-			}
-			set_variable = { USA_de_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 3
-			}
-		}
-	}
-
-	USA_republican_campaign_swing_state_md = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_md_swing
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 10
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_md_swing
-				set_state_flag = USA_md_red
-			}
-			set_variable = { USA_md_frame = 2 }
-			add_to_variable = {
-				var = USA_predicted_ec
-				value = 8
-			}
-		}
-	}
-
-	USA_republican_campaign_blue_state = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				has_state_flag = USA_blue_state
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_blue_state
-				set_state_flag = USA_swing_state
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 390
-					}
-				}
-				set_variable = { USA_sd_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 383
-					}
-				}
-				set_variable = { USA_ks_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 384
-					}
-				}
-				set_variable = { USA_ne_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 395
-					}
-				}
-				set_variable = { USA_il_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 393
-					}
-				}
-				set_variable = { USA_mi_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 396
-					}
-				}
-				set_variable = { USA_in_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 392
-					}
-				}
-				set_variable = { USA_ia_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 369
-					}
-				}
-				set_variable = { USA_ky_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 360
-					}
-				}
-				set_variable = { USA_pa_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 358
-					}
-				}
-				set_variable = { USA_ny_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 359
-					}
-				}
-				set_variable = { USA_nj_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 386
-					}
-				}
-				set_variable = { USA_wa_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 385
-					}
-				}
-				set_variable = { USA_or_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 378
-					}
-				}
-				set_variable = { USA_ca_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 379
-					}
-				}
-				set_variable = { USA_nv_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 387
-					}
-				}
-				set_variable = { USA_id_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 388
-					}
-				}
-				set_variable = { USA_mt_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 381
-					}
-				}
-				set_variable = { USA_wy_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 380
-					}
-				}
-				set_variable = { USA_ut_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 377
-					}
-				}
-				set_variable = { USA_az_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 376
-					}
-				}
-				set_variable = { USA_nm_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 382
-					}
-				}
-				set_variable = { USA_co_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 375
-					}
-				}
-				set_variable = { USA_tx_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 374
-					}
-				}
-				set_variable = { USA_ok_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 389
-					}
-				}
-				set_variable = { USA_nd_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 391
-					}
-				}
-				set_variable = { USA_mn_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 394
-					}
-				}
-				set_variable = { USA_wi_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 373
-					}
-				}
-				set_variable = { USA_mo_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 372
-					}
-				}
-				set_variable = { USA_ar_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 371
-					}
-				}
-				set_variable = { USA_la_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 370
-					}
-				}
-				set_variable = { USA_ms_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 367
-					}
-				}
-				set_variable = { USA_al_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 366
-					}
-				}
-				set_variable = { USA_fl_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 365
-					}
-				}
-				set_variable = { USA_ga_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 368
-					}
-				}
-				set_variable = { USA_tn_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 364
-					}
-				}
-				set_variable = { USA_sc_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 363
-					}
-				}
-				set_variable = { USA_nc_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 362
-					}
-				}
-				set_variable = { USA_va_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 261
-					}
-				}
-				set_variable = { USA_oh_frame = 1 }
-			}
-			if = {
-				limit = {
-					FROM = {
-						state = 816
-					}
-				}
-				set_variable = { USA_wv_frame = 1 }
-			}
-		}
-	}
-
-	USA_republican_campaign_blue_state_ri = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ri_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ri_blue
-				set_state_flag = USA_ri_swing
-			}
-			set_variable = { USA_ri_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_ct = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ct_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ct_blue
-				set_state_flag = USA_ct_swing
-			}
-			set_variable = { USA_ct_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_ma = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_ma_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_ma_blue
-				set_state_flag = USA_ma_swing
-			}
-			set_variable = { USA_ma_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_nh = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_nh_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_nh_blue
-				set_state_flag = USA_nh_swing
-			}
-			set_variable = { USA_nh_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_me = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_me_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_me_blue
-				set_state_flag = USA_me_swing
-			}
-			set_variable = { USA_me_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_vt = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_vt_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_vt_blue
-				set_state_flag = USA_vt_swing
-			}
-			set_variable = { USA_vt_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_de = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_de_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_de_blue
-				set_state_flag = USA_de_swing
-			}
-			set_variable = { USA_de_frame = 1 }
-		}
-	}
-
-	USA_republican_campaign_blue_state_md = {
-		priority = 10
-
-		icon = infiltrate_state
-
-		state_target = any_owned_state
-
-		target_trigger = {
-			FROM = {
-				OR = {
-					has_state_flag = USA_md_blue
-				}
-			}
-		}
-
-		available = {
-			NOT = {
-				has_country_flag = USA_campaigning_flag
-			}
-		}
-
-		allowed = {
-			original_tag = USA
-		}
-
-		visible = {
-			has_country_flag = USA_rep_campaign
-		}
-
-		cancel_if_not_visible = yes
-
-		cost = 20
-
-		days_remove = 7
-		
-		days_re_enable = 1
-
-		complete_effect = {
-			set_country_flag = USA_campaigning_flag
-		}
-
-		remove_effect = {
-			clr_country_flag = USA_campaigning_flag
-			FROM = {
-				clr_state_flag = USA_md_blue
-				set_state_flag = USA_md_swing
-			}
-			set_variable = { USA_md_frame = 1 }
-		}
-	}
-	
-	USA_election_mission = {
-		priority = 2000
-		icon = generic_political_discourse
-		
-		allowed = {
-			always = no
-		}
-
-		available = {
-			hidden_trigger = { always = no }
-		}
-
-		days_mission_timeout = 150
-		
 		timeout_effect = {
-			USA_election_count = yes
+			if = {
+				limit = {
+					NOT = { has_war = yes }
+					date < 1941.1.29
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+				activate_mission = USA_north_american_aviation_contracts_mission
+			}
 		}
-
-		is_good = no
 	}
 }
+
+############################################################
+# Operation Torch — On-Map Softening Decisions
+# Unlocked by completing USA_operation_torch.
+# Each decision applies a 30-day province+state debuff
+# to reduce entrenchment and defence on the target state.
+############################################################
+USA_operation_torch_cat = {
+
+	# ── Casablanca (state 461) ────────────────────────────────────────────────
+	USA_torch_soften_casablanca = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 461 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_torch
+			461 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_torch
+			461 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				461 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 461 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Marrakech (state 462) ─────────────────────────────────────────────────
+	USA_torch_soften_marrakech = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 462 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_torch
+			462 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_torch
+			462 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				462 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 462 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Algiers (state 459) ───────────────────────────────────────────────────
+	USA_torch_soften_algiers = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 459 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_torch
+			459 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_torch
+			459 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				459 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 459 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Kasserine Pass — On-Map Softening Decisions
+# Unlocked by completing USA_kaiserrine_pass.
+# Mirrors the Operation Torch system for Tunisia and Gabès.
+############################################################
+USA_kaiserrine_pass_cat = {
+
+	# ── Tunisia (state 458) ───────────────────────────────────────────────────
+	USA_kaiserrine_soften_tunisia = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 458 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_kaiserrine_pass
+			458 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_kaiserrine_pass
+			458 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				458 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 458 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Gabès (state 665) ─────────────────────────────────────────────────────
+	USA_kaiserrine_soften_gabes = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 665 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_kaiserrine_pass
+			665 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_kaiserrine_pass
+			665 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				665 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 665 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Husky — On-Map Softening Decisions
+# Unlocked by completing USA_operation_husky.
+# Mirrors the Operation Torch system for Sicily.
+############################################################
+USA_operation_husky_cat = {
+
+	# ── Sicily (state 115) ────────────────────────────────────────────────────
+	USA_husky_soften_sicily = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 115 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_husky
+			115 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_husky
+			115 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				115 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 115 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Avalanche — On-Map Softening Decisions
+# Unlocked by completing USA_operation_avalanche.
+# Mirrors the Operation Torch system for Piemonte and Toscana.
+############################################################
+USA_operation_avalanche_cat = {
+
+	# ── Piemonte (state 158) ──────────────────────────────────────────────────
+	USA_avalanche_soften_piemonte = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 158 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_avalanche
+			158 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_avalanche
+			158 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				158 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 158 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Toscana (state 162) ───────────────────────────────────────────────────
+	USA_avalanche_soften_toscana = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 162 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_avalanche
+			162 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_avalanche
+			162 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				162 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 162 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Manna — On-Map Softening Decisions
+# Unlocked by completing USA_operation_manna.
+# Mirrors the Operation Torch system for Greece.
+############################################################
+USA_operation_manna_cat = {
+
+	# ── Attica / Greece (state 47) ────────────────────────────────────────────
+	USA_manna_soften_attica = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 47 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			47 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			47 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				47 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 47 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Peloponnese (state 186) ───────────────────────────────────────────────
+	USA_manna_soften_peloponnese = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 186 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			186 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			186 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				186 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 186 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Crete (state 182) ─────────────────────────────────────────────────────
+	USA_manna_soften_crete = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 182 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			182 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			182 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				182 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 182 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Dodecanese (state 164) ────────────────────────────────────────────────
+	USA_manna_soften_dodecanese = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 164 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			164 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			164 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				164 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 164 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Aegean Islands (state 187) ────────────────────────────────────────────
+	USA_manna_soften_aegean = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 187 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			187 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			187 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				187 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 187 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Dragoon — On-Map Softening Decisions
+# Unlocked by completing USA_operation_dragoon.
+# Targets southern France: Bouches-du-Rhône, Var, Savoy, Roussillon.
+############################################################
+USA_operation_dragoon_cat = {
+
+	# ── Bouches-du-Rhône (state 21) ──────────────────────────────────────────
+	USA_dragoon_soften_bouches = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 21 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			21 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			21 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				21 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 21 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Var (state 851) ───────────────────────────────────────────────────────
+	USA_dragoon_soften_var = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 851 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			851 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			851 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				851 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 851 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Savoy (state 735) ─────────────────────────────────────────────────────
+	USA_dragoon_soften_savoy = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 735 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			735 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			735 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				735 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 735 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Roussillon (state 22) ─────────────────────────────────────────────────
+	USA_dragoon_soften_roussillon = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 22 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			22 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			22 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				22 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 22 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Overlord — On-Map Softening Decisions
+# Unlocked by completing USA_operatation_overlord.
+# Targets northern France and Brest.
+############################################################
+USA_operatation_overlord_cat = {
+
+	# ── Normandy (state 15) ───────────────────────────────────────────────────
+	USA_overlord_soften_normandy = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 15 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			15 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			15 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				15 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 15 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Pas-de-Calais (state 29) ──────────────────────────────────────────────
+	USA_overlord_soften_pas_de_calais = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 29 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			29 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			29 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				29 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 29 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Picardy (state 785) ───────────────────────────────────────────────────
+	USA_overlord_soften_picardy = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 785 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			785 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			785 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				785 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 785 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Brittany (state 14) ───────────────────────────────────────────────────
+	USA_overlord_soften_brittany = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 14 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			14 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			14 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				14 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 14 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Brest (state 204) ─────────────────────────────────────────────────────
+	USA_overlord_soften_brest = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 204 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			204 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			204 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				204 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 204 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+
+}
+
+############################################################
+# Break the Initiative — On-Map Softening Decisions
+# Unlocked by completing USA_break_the_initative.
+# Targets Japanese-held Pacific territories.
+############################################################
+USA_break_the_initative_cat = {
+
+	# ── Papua (state 523) ─────────────────────────────────────────────────────
+	USA_break_soften_papua = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 523 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			523 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			523 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				523 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 523 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Kaiser-Wilhelmsland (state 979) ───────────────────────────────────────
+	USA_break_soften_kaiser_wilhelmsland = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 979 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			979 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			979 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				979 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 979 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── West Papua (state 669) ────────────────────────────────────────────────
+	USA_break_soften_west_papua = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 669 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			669 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			669 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				669 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 669 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Bismarck Archipelago (state 737) ──────────────────────────────────────
+	USA_break_soften_bismarck = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 737 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			737 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			737 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				737 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 737 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Solomon Islands (state 634) ──────────────────────────────────────────
+	USA_break_soften_solomons = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 634 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			634 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			634 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				634 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 634 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Control The Philippines — On-Map Softening Decisions
+# Unlocked by completing USA_control_the_phillippines.
+############################################################
+USA_control_the_phillippines_cat = {
+
+	# ── Manila / Philippines (state 327) ──────────────────────────────────────
+	USA_philippines_soften_manila = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 327 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			327 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			327 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				327 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 327 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Luzon (state 623) ─────────────────────────────────────────────────────
+	USA_philippines_soften_luzon = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 623 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			623 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			623 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				623 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 623 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Palawan (state 626) ───────────────────────────────────────────────────
+	USA_philippines_soften_palawan = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 626 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			626 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			626 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				626 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 626 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Mindanao (state 627) ──────────────────────────────────────────────────
+	USA_philippines_soften_mindanao = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 627 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			627 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			627 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				627 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 627 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Cebu (state 628) ──────────────────────────────────────────────────────
+	USA_philippines_soften_cebu = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 628 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			628 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			628 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				628 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 628 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── North Mindanao (state 1026) ───────────────────────────────────────────
+	USA_philippines_soften_north_mindanao = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 1026 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			1026 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			1026 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				1026 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 1026 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Iceberg — On-Map Softening Decisions
+# Unlocked by completing USA_operation_iceberg.
+# Targets Japanese-held Central Pacific islands.
+############################################################
+USA_operation_iceberg_cat = {
+
+	# ── Guam (state 638) ──────────────────────────────────────────────────────
+	USA_iceberg_soften_guam = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 638 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			638 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			638 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				638 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 638 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Saipan (state 646) ────────────────────────────────────────────────────
+	USA_iceberg_soften_saipan = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 646 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			646 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			646 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				646 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 646 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Caroline Islands (state 684) ──────────────────────────────────────────
+	USA_iceberg_soften_carolines = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 684 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			684 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			684 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				684 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 684 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Minamitorishima / Marcus Island (state 648) ───────────────────────────
+	USA_iceberg_soften_minamitorishima = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 648 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			648 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			648 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				648 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 648 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Wake Island (state 632) ───────────────────────────────────────────────
+	USA_iceberg_soften_wake = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 632 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			632 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			632 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				632 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 632 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Palau (state 647) ─────────────────────────────────────────────────────
+	USA_iceberg_soften_palau = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 647 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			647 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			647 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				647 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 647 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Causeway — On-Map Softening Decisions
+# Unlocked by completing USA_operation_causeway.
+# Targets Taiwan and Okinawa.
+############################################################
+USA_operation_causeway_cat = {
+
+	# ── Taiwan (state 524) ────────────────────────────────────────────────────
+	USA_causeway_soften_taiwan = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 524 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_causeway
+			524 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_causeway
+			524 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				524 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 524 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Okinawa (state 526) ───────────────────────────────────────────────────
+	USA_causeway_soften_okinawa = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 526 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_causeway
+			526 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_causeway
+			526 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				526 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 526 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+

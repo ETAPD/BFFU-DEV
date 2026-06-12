@@ -1,0 +1,334 @@
+############################################################
+# War Productions Board — GUI Layout
+# Decision category scripted GUI window.
+#
+# Layout:
+#   y=8:   Title bar
+#   y=44:  Points allocated (left) + cooldown/ready status (right)
+#   y=64:  "All 6 points allocated" warning row (only when maxed)
+#   y=88:  Armor row
+#   y=138: Air row
+#   y=188: Naval row
+#   y=238: Infantry row
+#   Height: 285
+############################################################
+
+guiTypes = {
+
+	containerWindowType = {
+		name     = "USA_war_productions_board_window"
+		position = { x = 0 y = 0 }
+		size     = { width = 100% height = 285 }
+
+		# ── Panel background ──────────────────────────────────────────
+		background = {
+			name = "wpb_background"
+			quadTextureSprite = "GFX_tiled_window_1b_border"
+			alwaystransparent = yes
+		}
+
+		# ── Title ─────────────────────────────────────────────────────
+		instantTextBoxType = {
+			name     = "wpb_title"
+			position = { x = 0 y = 8 }
+			font     = "hoi_36header"
+			text     = "USA_WPB_title"
+			format   = center
+			maxWidth = 540
+			maxHeight = 38
+		}
+
+		# ── Points allocated counter (left) ───────────────────────────
+		instantTextBoxType = {
+			name     = "wpb_points_label"
+			position = { x = 10 y = 44 }
+			font     = "hoi_18mbs"
+			text     = "Points Allocated: [?USA_WPB_points_used] / 6"
+			format   = left
+			maxWidth = 230
+			maxHeight = 20
+		}
+
+		# Cooldown active (right) — mutually exclusive with wpb_ready_text
+		instantTextBoxType = {
+			name     = "wpb_cooldown_text"
+			position = { x = 250 y = 44 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_cooldown_active"
+			format   = right
+			maxWidth = 210
+			maxHeight = 20
+		}
+
+		# Ready to reallocate (right)
+		instantTextBoxType = {
+			name     = "wpb_ready_text"
+			position = { x = 250 y = 44 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_cooldown_ready"
+			format   = right
+			maxWidth = 210
+			maxHeight = 20
+		}
+
+		# ── Points pool maxed warning — own row, never overlaps ───────
+		instantTextBoxType = {
+			name     = "wpb_points_full"
+			position = { x = 0 y = 64 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_points_full"
+			format   = center
+			maxWidth = 540
+			maxHeight = 20
+		}
+
+		# ═════════════════════════════════════════════════════════════
+		# ROW 1 — ARMORED FORCES  (y = 88)
+		# ═════════════════════════════════════════════════════════════
+
+		iconType = {
+			name       = "wpb_armor_icon"
+			spriteType = "GFX_WPB_sector_armor"
+			position   = { x = 8 y = 86 }
+			scale      = 0.75
+			pdx_tooltip = "USA_WPB_armor_tt"
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_armor_label"
+			position = { x = 55 y = 88 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_sector_armor"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_armor_sublabel"
+			position = { x = 55 y = 106 }
+			font     = "cg_16b"
+			text     = "[GetWPBArmorSub]"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		buttonType = {
+			name             = "wpb_armor_decrease"
+			position         = { x = 235 y = 91 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "-"
+			pdx_tooltip      = "USA_WPB_decrease_tt"
+			clicksound       = click_default
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_armor_level_num"
+			position = { x = 333 y = 94 }
+			font     = "hoi_18mbs"
+			text     = "[?USA_WPB_armor_level]"
+			format   = center
+			maxWidth = 38
+			maxHeight = 24
+		}
+
+		buttonType = {
+			name             = "wpb_armor_increase"
+			position         = { x = 374 y = 91 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "+"
+			pdx_tooltip      = "USA_WPB_increase_tt"
+			clicksound       = click_default
+		}
+
+		# ═════════════════════════════════════════════════════════════
+		# ROW 2 — AIR FORCES  (y = 138)
+		# ═════════════════════════════════════════════════════════════
+
+		iconType = {
+			name       = "wpb_air_icon"
+			spriteType = "GFX_WPB_sector_air"
+			position   = { x = 8 y = 136 }
+			scale      = 0.75
+			pdx_tooltip = "USA_WPB_air_tt"
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_air_label"
+			position = { x = 55 y = 138 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_sector_air"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_air_sublabel"
+			position = { x = 55 y = 156 }
+			font     = "cg_16b"
+			text     = "[GetWPBAirSub]"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		buttonType = {
+			name             = "wpb_air_decrease"
+			position         = { x = 235 y = 141 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "-"
+			pdx_tooltip      = "USA_WPB_decrease_tt"
+			clicksound       = click_default
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_air_level_num"
+			position = { x = 333 y = 144 }
+			font     = "hoi_18mbs"
+			text     = "[?USA_WPB_air_level]"
+			format   = center
+			maxWidth = 38
+			maxHeight = 24
+		}
+
+		buttonType = {
+			name             = "wpb_air_increase"
+			position         = { x = 374 y = 141 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "+"
+			pdx_tooltip      = "USA_WPB_increase_tt"
+			clicksound       = click_default
+		}
+
+		# ═════════════════════════════════════════════════════════════
+		# ROW 3 — NAVAL FORCES  (y = 188)
+		# ═════════════════════════════════════════════════════════════
+
+		iconType = {
+			name       = "wpb_naval_icon"
+			spriteType = "GFX_WPB_sector_naval"
+			position   = { x = 8 y = 186 }
+			scale      = 0.75
+			pdx_tooltip = "USA_WPB_naval_tt"
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_naval_label"
+			position = { x = 55 y = 188 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_sector_naval"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_naval_sublabel"
+			position = { x = 55 y = 206 }
+			font     = "cg_16b"
+			text     = "[GetWPBNavalSub]"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		buttonType = {
+			name             = "wpb_naval_decrease"
+			position         = { x = 235 y = 191 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "-"
+			pdx_tooltip      = "USA_WPB_decrease_tt"
+			clicksound       = click_default
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_naval_level_num"
+			position = { x = 333 y = 194 }
+			font     = "hoi_18mbs"
+			text     = "[?USA_WPB_naval_level]"
+			format   = center
+			maxWidth = 38
+			maxHeight = 24
+		}
+
+		buttonType = {
+			name             = "wpb_naval_increase"
+			position         = { x = 374 y = 191 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "+"
+			pdx_tooltip      = "USA_WPB_increase_tt"
+			clicksound       = click_default
+		}
+
+		# ═════════════════════════════════════════════════════════════
+		# ROW 4 — INFANTRY FORCES  (y = 238)
+		# ═════════════════════════════════════════════════════════════
+
+		iconType = {
+			name       = "wpb_infantry_icon"
+			spriteType = "GFX_WPB_sector_infantry"
+			position   = { x = 8 y = 236 }
+			scale      = 0.75
+			pdx_tooltip = "USA_WPB_infantry_tt"
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_infantry_label"
+			position = { x = 55 y = 238 }
+			font     = "hoi_18mbs"
+			text     = "USA_WPB_sector_infantry"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_infantry_sublabel"
+			position = { x = 55 y = 256 }
+			font     = "cg_16b"
+			text     = "[GetWPBInfantrySub]"
+			format   = left
+			maxWidth = 175
+			maxHeight = 20
+		}
+
+		buttonType = {
+			name             = "wpb_infantry_decrease"
+			position         = { x = 235 y = 241 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "-"
+			pdx_tooltip      = "USA_WPB_decrease_tt"
+			clicksound       = click_default
+		}
+
+		instantTextBoxType = {
+			name     = "wpb_infantry_level_num"
+			position = { x = 333 y = 244 }
+			font     = "hoi_18mbs"
+			text     = "[?USA_WPB_infantry_level]"
+			format   = center
+			maxWidth = 38
+			maxHeight = 24
+		}
+
+		buttonType = {
+			name             = "wpb_infantry_increase"
+			position         = { x = 374 y = 241 }
+			quadTextureSprite = "GFX_button_94x31"
+			buttonFont       = "hoi_18mbs"
+			buttonText       = "+"
+			pdx_tooltip      = "USA_WPB_increase_tt"
+			clicksound       = click_default
+		}
+
+	}
+}
