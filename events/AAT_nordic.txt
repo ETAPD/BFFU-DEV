@@ -119,6 +119,7 @@ country_event = { #Invite to Nordic Alliance
 		}
 		trigger = {
 		}
+		NORDIC_add_to_nordic_alliance = yes 
 		clr_country_flag = NORDIC_already_member_flag
 	}
 	option = {
@@ -262,6 +263,16 @@ country_event = { #Event to notify Aggressor country that there's a country too 
 		}
 		trigger = {
 		}
+		FROM = {
+			var:NORDIC_country_to_defend = {
+				PREV = {
+					add_to_war = {
+						targeted_alliance = PREV
+						enemy = ROOT 
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -283,6 +294,15 @@ country_event = { # Event to ask defender if they want them to join
 			base = 10
 		}
 		trigger = {
+		}
+		
+		var:NORDIC_attacker = {
+			FROM = {
+				add_to_war = {
+					targeted_alliance = ROOT
+					enemy = PREV  
+				}
+			}
 		}
 		
 	}
@@ -343,6 +363,10 @@ country_event = { # Asking for investments
 			base = 10
 		}
 		trigger = {
+		}
+		add_timed_idea = {
+			idea = NORDIC_investing_in_neighbor_ns
+			days = 60
 		}
 		FROM = {
 			country_event = {
@@ -420,6 +444,82 @@ country_event = { # They Rejected
 		add_political_power = 25
 	}
 }
+
+country_event = { # Asking if they want to cooperate    
+	id = AAT_nordic_cooperation.7
+	title = AAT_nordic_cooperation.7.t
+	desc = AAT_nordic_cooperation.7.desc
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+		}
+	}
+
+	option = { # Sure why not
+		name = AAT_nordic_cooperation.7.a
+		ai_chance = {
+			base = 10
+		}
+		trigger = {
+		}
+		add_timed_idea = {
+			idea = NORDIC_economic_cooperation_ns
+			days = 90
+		}
+		add_opinion_modifier = {
+			target = FROM
+			modifier = NORDIC_economic_cooperation
+		}
+		FROM = {
+			add_timed_idea = {
+				idea = NORDIC_economic_cooperation_ns
+				days = 90
+			}
+			add_opinion_modifier = {
+				target = PREV
+				modifier = NORDIC_economic_cooperation
+			}
+		}
+	}
+
+	option = { # No 
+		name = AAT_nordic_cooperation.7.b
+		ai_chance = {
+			base = 10
+		}
+		trigger = {
+		}
+	}
+}
+
+country_event = { # They Accepted the proposition 
+	id = AAT_nordic_cooperation.8
+	title = AAT_nordic_cooperation.8.t
+	desc = AAT_nordic_cooperation.8.desc
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+		}
+	}
+
+	option = { # Nice
+		name = AAT_nordic_cooperation.8.a
+		ai_chance = {
+			base = 10
+		}
+		trigger = {
+		}
+		FROM = {
+			event_option_tooltip = AAT_nordic_cooperation.7.a
+		}
+	}
+}
+
+
 country_event = { # They Rejected
 	id = AAT_nordic_cooperation.9
 	title = AAT_nordic_cooperation.9.t

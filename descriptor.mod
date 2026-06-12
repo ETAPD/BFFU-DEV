@@ -7,7 +7,7 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="Secret Rearmament"
+name="GMFU DEV"
 picture="thumbnail.png"
 replace_path="common/ai_equipment"
 replace_path="common/ai_strategy"
@@ -16,3 +16,4 @@ replace_path="common/ai_templates"
 replace_path="gfx/interface/equipmentdesigner/tanks/designer"
 replace_path="history/countries"
 supported_version="1.17.3.0"
+remote_file_id="3710073497"

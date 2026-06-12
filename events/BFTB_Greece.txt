@@ -2973,24 +2973,685 @@ country_event = {
 	}
 }
 
+#Tow the Stalinist Line - event chain begins here
+country_event = {
+	id = bftb_greece.29
+	title = bftb_greece.29.t
+	desc = bftb_greece.29.desc
+	picture = GFX_report_event_tur_turkish_soldiers
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.29.a
+		add_war_support = 0.05
+		hidden_effect = { 
+			SOV = { set_country_flag = BOSPHORUS_STRAIT_BLOCKED_FOR_COUNTRY }
+			GRE = { set_country_flag = BOSPHORUS_STRAIT_BLOCKED_FOR_COUNTRY }
+			every_country = { 
+				limit = { 
+					is_in_faction_with = SOV
+				}
+				set_country_flag = BOSPHORUS_STRAIT_BLOCKED_FOR_COUNTRY
+			}
+		}
+	}
+}
 
+#Tow the Stalinist Line - Soviet Union is informed of Greece's submission and of Turkey's new hostile move
+country_event = {
+	id = bftb_greece.30
+	title =  bftb_greece.29.t	#reused
+	desc = bftb_greece.30.desc
+	picture = GFX_report_event_tur_military_affair
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.30.a
+		ai_chance = {
+			base = 4
+			modifier = {
+				any_other_country = {
+					is_major = yes
+					has_guaranteed = TUR
+				}
+				factor = 0.5
+			}
+			modifier = {
+				any_other_country = {
+					has_guaranteed = TUR
+					strength_ratio = {
+						tag = ROOT
+						ratio > 1
+					}
+				}
+				factor = 0
+			}
+			modifier = {
+				surrender_progress > 0.1
+				factor = 0
+			}
+			modifier = {
+				has_war_with_major = yes
+				factor = 0
+			}
+		}
+		add_war_support = 0.05
+		give_guarantee = GRE
+		add_opinion_modifier = {
+		    target = GRE
+		    modifier = offered_support
+		}
+		FROM = {
+			country_event = bftb_greece.237
+		}
+		hidden_effect = { 
+			set_country_flag = SOV_isolating_turkey
+			add_opinion_modifier = {
+		   		target = TUR
+		   		modifier = GRE_strategic_enemy
+			}
+		}
+	}
+	option = {
+		name = bftb_greece.30.b
+		ai_chance = {
+			base = 1
+		}
+		FROM = {
+			country_event = bftb_greece.236
+		}
+	}
+}
+#Tow the Stalinist Line - Greek player is notified they'll be demanding Istanbul be demilitarised again, with the strait reopened and for Greek/Soviet troops to be stationed in Turkey (Danzig or War - the offer is not meant to be accepted)
+country_event = {
+	id = bftb_greece.31
+	title = bftb_greece.31.t
+	desc = bftb_greece.31.desc
+	picture = GFX_report_event_gre_greek_cavalry
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.31.a
+		add_war_support = 0.05
+		TUR = { country_event = { id = bftb_greece.32 days = 1 } }
+		custom_effect_tooltip = GRE_border_war_possible_tt
+		hidden_effect = { 
+			set_country_flag = GRE_isolating_turkey
+		}
+	}
+}
+#Tow the Stalinist Line - Greek demands to Turkey
+country_event = {
+	id = bftb_greece.32
+	title = bftb_greece.32.t
+	desc = bftb_greece.32.desc
+	picture = GFX_report_event_tur_cakmak_general_staff
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.32.a #what could go wrong?
+		add_stability = -0.15
+		797 = { set_demilitarized_zone = yes }
+		341 = { set_demilitarized_zone = yes }
+		340 = { set_demilitarized_zone = yes }
+		SOV = { clr_country_flag = BOSPHORUS_STRAIT_BLOCKED_FOR_COUNTRY }
+		GRE = { clr_country_flag = BOSPHORUS_STRAIT_BLOCKED_FOR_COUNTRY }
+		hidden_effect = { 
+			set_global_flag = GRE_turkey_surrenders
+			GRE = { 
+				country_event = { id = bftb_greece.33 days = 1 }
+			}
+			SOV = { 
+				country_event = { id = bftb_greece.33 days = 1 }
+				#unlock_decision_tooltip = SOV_set_up_puppet_state_in_turkey
+			}
+		}
+	}
+	option = {
+		name = bftb_greece.32.b #no
+		add_war_support = 0.05
+		GRE = { 
+			country_event = { id = bftb_greece.35 days = 1 } 
+		}
+		hidden_effect = { 
+			set_global_flag = GRE_turkey_resisting
+		}
+	}	
+}
+#Tow the Stalinist Line - Turkey submitted to us!
+country_event = {
+	id = bftb_greece.33
+	title = bftb_greece.33.t
+	desc = bftb_greece.33.desc
+	picture = GFX_report_event_gre_winter_soldiers_celebrating
 
+	is_triggered_only = yes
 
+	option = {
+		name = bftb_greece.33.a 
+		add_war_support = -0.05
+		TUR = { give_military_access = ROOT }
+		if = { 
+			limit = { 
+				original_tag = SOV
+			}
+			#unlock_decision_tooltip = SOV_set_up_puppet_state_in_turkey
+			add_to_faction = GRE
+		}
+		hidden_effect = {
+			TUR = {
+				remove_opinion_modifier = {
+					target = GRE
+					modifier = GRE_strategic_enemy
+				}
+				remove_opinion_modifier = {
+					target = SOV
+					modifier = GRE_strategic_enemy
+				}				
+			}
+		}
+	}	
+}
+#Tow the Stalinist Line - Turkey is puppeted, civil war breaks out
+country_event = {
+	id = bftb_greece.34
+	title = bftb_greece.34.t
+	desc = bftb_greece.34.desc
+	picture = GFX_report_event_gre_city_siege
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.34.a #serve
+		SOV = { puppet = TUR }
+		start_civil_war = {
+			ruling_party = communism
+			ideology = neutrality
+			size = 0.85
+			capital = 797
+			states = { 797 341 340 347 339 }
+		}
+		hidden_effect = { 
+			random_other_country = {
+				limit = {
+					original_tag = TUR
+					has_government = neutrality
+				}
+				save_event_target_as = TUR_original_government
+			}
+			SOV = { 
+				declare_war_on = {
+					target = event_target:TUR_original_government
+					type = puppet_wargoal_focus
+				}
+			}
+		}
+	}
+	option = {
+		name = bftb_greece.34.b #fight
+		if = { 
+			limit = { 
+				has_government = neutrality
+			}	
+			start_civil_war = {
+				ruling_party = neutrality
+				ideology = communism
+				size = 0.1
+				capital = 49
+				states = { 49 342 343 356 346 345 348 798 355 349 344 354 353 800 352 350 }
+			}
+			add_timed_idea = {
+				idea = TUR_the_battle_for_our_nations_survival
+				days = 480
+			}
+			hidden_effect = { 
+				random_other_country = {
+					limit = {
+						original_tag = TUR
+						has_government = communism
+					}
+					save_event_target_as = TUR_puppet_government
+					load_focus_tree = { tree = turkish_focus keep_completed = no }
+				}
+				SOV = { 
+					declare_war_on = {
+						target = TUR
+						type = puppet_wargoal_focus
+					}
+					puppet = event_target:TUR_puppet_government
+				}
+			}
+		}
+		else_if = { 
+			limit = { 
+				has_government = fascism
+			}	
+			start_civil_war = {
+				ruling_party = fascism
+				ideology = communism
+				size = 0.15
+				capital = 49
+				states = { 49 342 343 356 346 345 348 798 355 349 344 354 353 800 352 350 }
+			}
+			add_timed_idea = {
+				idea = TUR_the_battle_for_our_nations_survival
+				days = 360
+			}
+			hidden_effect = { 
+				random_other_country = {
+					limit = {
+						original_tag = TUR
+						has_government = communism
+					}
+					save_event_target_as = TUR_puppet_government
+					load_focus_tree = { tree = turkish_focus keep_completed = no }
+				}
+				SOV = { 
+					declare_war_on = {
+						target = TUR
+						type = puppet_wargoal_focus
+					}
+					puppet = event_target:TUR_puppet_government
+				}
+			}
+		}
+		else_if = { 
+			limit = { 
+				has_government = democratic
+			}	
+			start_civil_war = {
+				ruling_party = democratic
+				ideology = communism
+				size = 0.2
+				capital = 49
+				states = { 49 342 343 356 346 345 348 798 355 349 344 354 353 800 352 350 }
+			}
+			add_timed_idea = {
+				idea = TUR_the_battle_for_our_nations_survival
+				days = 180
+			}
+			hidden_effect = { 
+				random_other_country = {
+					limit = {
+						original_tag = TUR
+						has_government = communism
+					}
+					save_event_target_as = TUR_puppet_government
+				}
+				SOV = { 
+					declare_war_on = {
+						target = TUR
+						type = puppet_wargoal_focus
+					}
+					puppet = event_target:TUR_puppet_government
+				}
+			}
+		}
+	}
+}
+#Tow the Stalinist Line - Escalation with Turkey
+country_event = {
+	id = bftb_greece.35
+	title = bftb_greece.35.t
+	desc = bftb_greece.35.desc
+	picture = GFX_report_event_tur_machine_gunners
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.35.a 
+		start_border_war = {
+			change_state_after_war = no
+			attacker = {
+				state = 184
+				num_provinces = 1
+				on_win = bftb_greece.36 #greece wins
+				on_lose = bftb_greece.38 #greece loses
+			}
+			
+			defender = {
+				state = 341
+				num_provinces = 2
+				on_win = bftb_greece.37 #turkey wins
+				on_lose = bftb_greece.39 #turkey loses
+			}
+		}
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Greece wins first engagement
+country_event = {
+	id = bftb_greece.36
+	title = bftb_greece.36.t
+	desc = bftb_greece.36.desc
+	picture = GFX_report_event_gre_city_devastated
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.36.a 
+		add_timed_idea = { 
+			idea = GRE_battle_for_the_bosporus
+			days = 90
+		}
+		declare_war_on = { 
+			type = take_state_focus
+			target = TUR
+			generator = { 797 341 347 340 339 }
+		}
+		SOV = { add_to_faction = GRE }
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Turkey wins first engagement
+country_event = {
+	id = bftb_greece.37
+	title = bftb_greece.37.t
+	desc = bftb_greece.37.desc
+	picture = GFX_report_event_tur_turkish_soldiers
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.37.a
+		add_stability = 0.1
+		add_war_support = 0.15
+		army_experience = 10
+		hidden_effect = {
+			SOV = { 
+				country_event = {
+					id = bftb_greece.227
+					days = 1
+				}
+				add_state_claim = 797
+			}
+		}
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Soviets Informed of Skirmishes on Turkish Border
+country_event = {
+	id = bftb_greece.227
+	title = bftb_greece.227.t
+	desc = bftb_greece.227.desc
+	picture = GFX_report_event_gre_city_siege
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.227.a
+		add_war_support = 0.05
+		effect_tooltip = {
+			add_state_claim = 797
+		}
+		custom_effect_tooltip = TUR_border_conflicts_in_trabzon_tt
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Greece loses first engagement
+country_event = {
+	id = bftb_greece.38
+	title = bftb_greece.38.t
+	desc = bftb_greece.38.desc
+	picture = GFX_report_event_gre_rural_rebels
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.38.a 
+		start_border_war = {
+			change_state_after_war = no
+			attacker = {
+				state = 187
+				num_provinces = 1
+				on_win = bftb_greece.40 #greeks win
+				on_lose = bftb_greece.42 #greeks lose
+			}
+			
+			defender = {
+				state = 339
+				num_provinces = 1
+				on_win = bftb_greece.41 #turks win
+				on_lose = bftb_greece.43 #turks lose
+			}
+		}
+		start_border_war = {
+			change_state_after_war = no
+			attacker = {
+				state = 231
+				num_provinces = 3
+				on_win = bftb_greece.44 #soviets win
+				on_lose = bftb_greece.46 #soviets lose
+			}
+			
+			defender = {
+				state = 354
+				num_provinces = 2
+				on_win = bftb_greece.45 #turks win
+				on_lose = bftb_greece.47 #turks lose
+			}
+		}
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Turkey loses first engagement
+country_event = {
+	id = bftb_greece.39
+	title = bftb_greece.39.t
+	desc = bftb_greece.39.desc
+	picture = GFX_report_event_gre_greek_cavalry
 
+	is_triggered_only = yes
 
+	option = {
+		name = bftb_greece.39.a 
+		add_stability = -0.05
+		add_war_support = 0.15
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Greece wins second engagement
+country_event = {
+	id = bftb_greece.40
+	title = bftb_greece.40.t
+	desc = bftb_greece.40.desc
+	picture = GFX_report_event_gre_parade
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.40.a 
+		add_timed_idea = { 
+			idea = GRE_battle_for_the_bosporus
+			days = 30
+		}
+		declare_war_on = { 
+			type = take_state_focus
+			target = TUR
+			generator = { 341 347 340 339 }
+		}
+		hidden_effect = {
+			SOV = { add_to_faction = GRE }
+		}
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Turkey wins second engagement
+country_event = {
+	id = bftb_greece.41
+	title = bftb_greece.41.t
+	desc = bftb_greece.41.desc
+	picture = GFX_report_event_tur_military_affair
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.41.a
+		add_stability = 0.05
+		add_war_support = 0.35
+		declare_war_on = { 
+			target = GRE
+			type = topple_government
+		}
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Greece loses second engagement
+country_event = {
+	id = bftb_greece.42
+	title = bftb_greece.42.t
+	desc = bftb_greece.42.desc
+	picture = GFX_report_event_gre_rural_rebels
 
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.42.a 
+		add_stability = -0.15
+		add_war_support = -0.25
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Turkey loses second engagement
+country_event = {
+	id = bftb_greece.43
+	title = bftb_greece.43.t
+	desc = bftb_greece.43.desc
+	picture = GFX_report_event_tur_machine_gunners
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.43.a
+		add_stability = -0.05
+		add_war_support = 0.1
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Soviets win border clash
+country_event = {
+	id = bftb_greece.44
+	title = bftb_greece.44.t
+	desc = bftb_greece.44.desc
+	picture = GFX_report_event_gre_city_devastated
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.44.a 
+		declare_war_on = { 
+			type = puppet_wargoal_focus
+			target = TUR
+		}
+		hidden_effect = {
+			SOV = { add_to_faction = GRE }
+		}
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Turkey wins clash with Soviets
+country_event = {
+	id = bftb_greece.45
+	title = bftb_greece.45.t
+	desc = bftb_greece.45.desc
+	picture = GFX_report_event_tur_upheaval_celebration
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.45.a 
+		add_stability = 0.1
+		add_political_power = 120
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Soviets lose clash with Turks
+country_event = {
+	id = bftb_greece.46
+	title = bftb_greece.46.t
+	desc = bftb_greece.46.desc
+	picture = GFX_report_event_tur_turkish_soldiers
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.46.a 
+		add_stability = -0.05
+		army_experience = 10
+		hidden_effect = {
+			GRE = { 
+				country_event = {
+					id = bftb_greece.228
+					days = 1
+				}
+			}
+		}
+	}
+}
+#Tow the Stalinist Line - Escalation with Turkey - Greeks are Notified Soviets lost clash with Turks
+country_event = {
+	id = bftb_greece.228
+	title = bftb_greece.228.t
+	desc = bftb_greece.228.desc
+	picture = GFX_report_event_tur_turkish_soldiers
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.228.a 
+		add_stability = -0.05
+	}	
+}
+#Tow the Stalinist Line - Escalation with Turkey - Turks lose clash with Soviets
+country_event = {
+	id = bftb_greece.47
+	title = bftb_greece.47.t
+	desc = bftb_greece.47.desc
+	picture = GFX_report_event_tur_military_affair
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.47.a
+		add_stability = -0.1
+		add_war_support = 0.15
+		army_experience = 15
+	}	
+}
+#Ally Tito Event - Yugoslavia not communist
+country_event = {
+	id = bftb_greece.48 
+	title = bftb_greece.48.t
+	desc = bftb_greece.48.desc
+	picture = GFX_report_event_yugoslavia_partisans
+
+	is_triggered_only = yes
+	
+	option = {
+		name = bftb_greece.48.a
+		add_stability = -0.05
+		custom_effect_tooltip = GRE_tito_backed_guerilla_war_tt
+		hidden_effect = { 
+			start_civil_war = {
+				ruling_party = neutrality
+				ideology = communism
+				size = 0.2
+				capital = 108
+				states = { 108 106 802 803 }
+			}
+			YUG = {
+				declare_war_on = {
+					target = GRE
+					type = topple_government
+				}
+			}
+			random_other_country = {
+				limit = {
+					original_tag = YUG
+					has_government = communism
+				}
+				save_event_target_as = YUG_titoist_revolters 
+			}
+			event_target:YUG_titoist_revolters = {
+				set_stability = 0.5
+				set_war_support = 0.8
+				GRE = { add_to_faction = ROOT } 
+			}
+		}	
+	}
+}
 #The King Takes Power
 country_event = {
 	id = bftb_greece.50

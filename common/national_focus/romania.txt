@@ -1224,6 +1224,13 @@ focus_tree = {
 			factor = 1
 		}
 
+		available = {
+			NOT = {
+				has_idea = ROM_privatization_process_idea
+				# has_idea = ROM_nationalisation_process_idea
+			}
+		}
+
 		bypass = {
 
 		}
@@ -1833,15 +1840,45 @@ focus_tree = {
 		}
 	}
 
-
-
 	focus = {
-		id = ROM_land_reform
-		icon = GFX_focus_generic_land_reclamation
+		id = ROM_reform_central_bank
+		icon = GFX_focus_usa_reestablish_the_gold_standard
 		prerequisite = { focus = ROM_compromise_with_liberals }
 		x = 0
 		y = 1
 		relative_position_id = ROM_compromise_with_liberals
+		cost = 7
+		ai_will_do = {}
+		available = { NOT = { has_completed_focus = ROM_national_humiliation } }
+		completion_reward = {
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+			add_timed_idea = { idea = ROM_reform_central_bank days = 300 }
+		}
+	}
+
+	focus = {
+		id = ROM_land_reform
+		icon = GFX_focus_generic_land_reclamation
+		prerequisite = { focus = ROM_reform_central_bank }
+		x = 0
+		y = 1
+		relative_position_id = ROM_reform_central_bank
 		cost = 7
 		ai_will_do = {}
 		available = { NOT = { has_completed_focus = ROM_national_humiliation } }
@@ -1861,72 +1898,6 @@ focus_tree = {
 			}
 		}
 	}
-	
-	focus = {
-		id = ROM_reform_central_bank
-		icon = GFX_focus_usa_reestablish_the_gold_standard
-		prerequisite = { focus = ROM_land_reform }
-		x = 0
-		y = 1
-		relative_position_id = ROM_land_reform
-		cost = 7
-		ai_will_do = {}
-		available = { NOT = { has_completed_focus = ROM_national_humiliation } }
-		completion_reward = {
-			random_controlled_state = {
-					limit = {
-						is_fully_controlled_by = ROOT
-						free_building_slots = {
-							building = industrial_complex
-							size > 0
-							include_locked = yes
-						}
-					}
-					prioritize = { 46 79 971 81 } 
-					add_extra_state_shared_building_slots = 1
-					add_building_construction = {
-						type = industrial_complex
-						level = 1
-						instant_build = yes
-					}
-				}	
-			random_controlled_state = {
-					limit = {
-						is_fully_controlled_by = ROOT
-						free_building_slots = {
-							building = industrial_complex
-							size > 0
-							include_locked = yes
-						}
-					}
-					prioritize = { 46 79 971 81 } 
-					add_extra_state_shared_building_slots = 1
-					add_building_construction = {
-						type = industrial_complex
-						level = 1
-						instant_build = yes
-					}
-				}
-			random_controlled_state = {
-					limit = {
-						is_fully_controlled_by = ROOT
-						free_building_slots = {
-							building = industrial_complex
-							size > 0
-							include_locked = yes
-						}
-					}
-					prioritize = { 46 79 971 81 } 
-					add_extra_state_shared_building_slots = 1
-					add_building_construction = {
-						type = industrial_complex
-						level = 1
-						instant_build = yes
-					}
-				}				
-			add_timed_idea = { idea = ROM_reform_central_bank days = 300 }
-		}
-	}	
 
 	focus = {
 		id = ROM_centralisation
@@ -1985,9 +1956,9 @@ focus_tree = {
 		prerequisite = { focus = ROM_beacon_of_liberty_balkans  }
 		#prerequisite = { focus = ROM_land_reform }
 		prerequisite = { focus = ROM_arrest_iron_guard_leaders }
-		x = 2
+		x = 0
 		y = 1
-		relative_position_id = ROM_beacon_of_liberty_balkans
+		relative_position_id = ROM_land_reform
 		cost = 10
 		ai_will_do = {}
 		continue_if_invalid = yes
@@ -3483,7 +3454,7 @@ focus_tree = {
 						engineer = { x = 0 y = 0 }
 						hq_company = { x = 0 y = 1 }
 						recon = { x = 0 y = 2 }
-						logistics_company = { x = 0 y = 3 }
+						logistics_company_horse = { x = 0 y = 3 }
 					}
 				}
 				random_owned_controlled_state = {
