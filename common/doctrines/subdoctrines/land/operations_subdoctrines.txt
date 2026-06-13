@@ -42,51 +42,39 @@ mission_type_tactics = {
         }
     }
 
-    command_power_gain = 0.02
-    category_all_infantry = {
-        max_organisation = 7.5
-    }
-
+    initiative_factor = 0.05
+    enable_tactic = tactic_backhand_blow
     
 
     rewards = {
         low_level_delegation ={
         #1
-            category_all_infantry = {
-                default_morale = 0.1
-            }
+            initiative_factor = 0.05
+            planning_speed = 0.05
         }
         flexible_command = {
         #2
-            org_loss_when_moving = -0.075
+            max_planning = -0.05
+            planning_speed = 0.1
+            army_morale = 0.05
         }
         maneouver_drills = {
         #3
-            category_all_infantry = {
-                default_morale = 0.1
-            }
-            category_all_armor = {
-                maximum_speed = 0.05
-            }
+            planning_decay_rate_factor = -0.1
+            planning_speed = 0.1
             
         }
         flexible_combat_formations = {
         #4
-
-            category_all_infantry = {
-                breakthrough = 0.05
-                max_organisation = 3
-            }
+            initiative = 0.05
+            army_morale = 0.05
         }
         control_zone_responsibilities = {
         #5
-        
-            category_all_infantry = {
-                default_morale = 0.2
-            }
-            category_tanks = {
-                default_morale = 0.2
-            }
+            planning_speed = 0.05
+            planning_decay_rate_factor = -0.2
+            initiative_factor = 0.15
+            army_morale = 0.05
 
         }
     }
@@ -121,170 +109,169 @@ last_stand = {
     }
 
     # conscription = 0.05
-    supply_combat_penalties_on_core_factor = -0.1
+    defence = 0.05
+    pocket_penalty = -0.1
 
     ai_will_do = {
 
         base = 0
 
     }
+    breakthrough_factor = -0.05
 
     rewards = {
         werwolf_groups = {
         #1
-            resistance_damage_to_garrison_on_our_occupied_states = 0.25
-            pocket_penalty = -0.1
-            army_core_defence_factor = 0.05
+            cas_damage_reduction = 0.05
+            breakthrough_factor = -0.05
         }
 
         pocket_consolidation = {
         #2
-            category_all_infantry = {
-                defense = 0.15
-                breakthrough = -0.1
-            }
+            pocket_penalty = -0.1 
         }
         digging_in = {
         #3
-            out_of_supply_factor = -0.10
-            category_all_infantry = {
-                entrenchment = 0.05
-            }
+            org_loss_when_moving = -0.1
+            defence = 0.05
         }
         stocking_up = {
         #4
-            no_supply_grace = 36 
+            org_loss_when_moving = -0.1
+            defence = 0.05
         }
         breaking_out = {
         #5
-            cas_damage_reduction = 0.15
-            army_core_attack_factor = 0.05
+            cas_damage_reduction = 0.05
+            pocket_penalty = -0.3
+            org_loss_when_moving = -0.05
+            breakthrough_factor = -0.05
         }
     }
 }
 
-infiltration_tactics = {
-    track = operations
-    name = SUBDOCTRINE_INFILTRATION_TACTICS
-    description = SUBDOCTRINE_INFILTRATION_TACTICS_DESC
-    icon = GFX_doctrine_infiltration_assault_medium
-    xp_cost = 100
-    xp_type = army
+# infiltration_tactics = {
+#     track = operations
+#     name = SUBDOCTRINE_INFILTRATION_TACTICS
+#     description = SUBDOCTRINE_INFILTRATION_TACTICS_DESC
+#     icon = GFX_doctrine_infiltration_assault_medium
+#     xp_cost = 100
+#     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = infiltration_tactics_doctrine_check }
-    }
+#     available = {
+#         # always = yes
+#         NOT = { has_country_flag = infiltration_tactics_doctrine_check }
+#     }
 
-    ai_will_do = {
+#     ai_will_do = {
 
-        base = 1
-        modifier = {
-            factor = 50
-            original_tag = JAP
-        }
+#         base = 1
+#         modifier = {
+#             factor = 50
+#             original_tag = JAP
+#         }
 
-    }
+#     }
 
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = INFILTRATION_TACTIS_MASTERY_GAIN
-            sub_doctrine = infiltration_tactics				
-        }
-        set_country_flag = {
-            flag = infiltration_tactics_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
+#     # EFFECTS
+#     effect = {
+#         add_daily_mastery = {
+#             amount = 0.4						
+#             days = 1250						
+#             name = INFILTRATION_TACTIS_MASTERY_GAIN
+#             sub_doctrine = infiltration_tactics				
+#         }
+#         set_country_flag = {
+#             flag = infiltration_tactics_doctrine_check
+#             days = 1250
+#             value = 1
+#         }
+#     }
 
-    # enable_tactic = tactic_infantry_assault
-    enable_tactic = tactic_infantry_charge
-    max_planning = 0.05 
+#     # enable_tactic = tactic_infantry_assault
+#     enable_tactic = tactic_infantry_charge
+#     max_planning = 0.05 
 
-    ai_will_do = { }
+#     ai_will_do = { }
 
-     rewards = {
-        infiltration_assault = {
-        #1
-            category_army = {
-                breakthrough = 0.05
-                max_organisation = 3
-            }
-        }
-        nightly_assaults = {
-        #2
-            land_night_attack = 0.125
-        }
-        self_sustaining_infiltration_units = {
-        #3
-            supply_consumption_factor = -0.05
-            command_power_gain = 0.015
-            category_tanks = {
-                max_organisation = 2
-            }
-            category_all_armor = {
-                default_morale = 0.05
-            }
-        }
-        terrain_and_situation_assessment = {
-        #4
-            recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                }
-                battalion_mult = {
-                    category = category_cavalry
-                    soft_attack = 0.03
-                }
-            }
-            mot_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                }
-                battalion_mult = {
-                    category = category_cavalry
-                    soft_attack = 0.03
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                }
-                battalion_mult = {
-                    category = category_cavalry
-                    soft_attack = 0.03
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                }
-                battalion_mult = {
-                    category = category_cavalry
-                    soft_attack = 0.03
-                }
-            }
-            category_recon = {
-                recon = 1
-            }
+#      rewards = {
+#         infiltration_assault = {
+#         #1
+#             category_army = {
+#                 breakthrough = 0.05
+#                 max_organisation = 3
+#             }
+#         }
+#         nightly_assaults = {
+#         #2
+#             land_night_attack = 0.125
+#         }
+#         self_sustaining_infiltration_units = {
+#         #3
+#             supply_consumption_factor = -0.05
+#             command_power_gain = 0.015
+#             category_tanks = {
+#                 max_organisation = 2
+#             }
+#             category_all_armor = {
+#                 default_morale = 0.05
+#             }
+#         }
+#         terrain_and_situation_assessment = {
+#         #4
+#             recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                 }
+#                 battalion_mult = {
+#                     category = category_cavalry
+#                     soft_attack = 0.03
+#                 }
+#             }
+#             mot_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                 }
+#                 battalion_mult = {
+#                     category = category_cavalry
+#                     soft_attack = 0.03
+#                 }
+#             }
+#             light_tank_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                 }
+#                 battalion_mult = {
+#                     category = category_cavalry
+#                     soft_attack = 0.03
+#                 }
+#             }
+#             armored_car_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                 }
+#                 battalion_mult = {
+#                     category = category_cavalry
+#                     soft_attack = 0.03
+#                 }
+#             }
+#             category_recon = {
+#                 recon = 1
+#             }
 
-        }
-        infiltration_in_depth = {
-        #5
-            land_reinforce_rate = 0.02
-            org_loss_when_moving = -0.10
+#         }
+#         infiltration_in_depth = {
+#         #5
+#             land_reinforce_rate = 0.02
+#             org_loss_when_moving = -0.10
             
-        }
-    }
-}
+#         }
+#     }
+# }
 
 grand_assault = {
     track = operations
@@ -321,697 +308,643 @@ grand_assault = {
             name = GRAND_ASSAULT_MASTERY_GAIN
             sub_doctrine = grand_assault				
         }
-        set_country_flag = {
-            flag = grand_assault_doctrine_check
-            days = 1250
-            value = 1
-        }
+
     }
 
-    max_planning = 0.05
-    category_army = {
-        breakthrough = 0.05
-        soft_attack = 0.03
-    }
+    enable_tactic = tactic_planned_attack
+    max_planning_factor = 0.05
 
-    ai_will_do = { }
 
     rewards = {
         central_planning = {
         #1
-            max_command_power = 50
-
-            logistics_company = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    defense = 0.075
-                }
-            }
-            logistics_company_mot = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    defense = 0.075
-                }
-            }
-            logistics_company_horse = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    defense = 0.075
-                }
-            }
+            planning_decay_rate_factor = 0.1
+            breakthrough_factor = 0.02
         }
         multiple_attack_directions = {
         #2
-            category_army = {
-                breakthrough = 0.075
-            }
+            supply_consumption_factor = -0.05
+            max_planning_factor = 0.05
         }
         combined_arms_integration = {
         #3
-            army_bonus_air_superiority_factor = 0.05 
-            coordination_bonus = 0.1
-            category_tanks = {
-               max_organisation = 3
-            }
-            category_anti_air = {
-                air_attack = 0.05
-            }
+            army_org_factor = 0.05
+            breakthrough_factor = 0.03
         }
         forward_command_posts = {
         #4
-            logistics_company = {
-                battalion_mult = {
-                    category = category_all_infantry 
-                    supply_consumption = -0.05
-                }
-            }
-            logistics_company_mot = {
-                battalion_mult = {
-                    category = category_all_infantry 
-                    supply_consumption = -0.05
-                }
-            }
-            logistics_company_horse = {
-                battalion_mult = {
-                    category = category_all_infantry 
-                    supply_consumption = -0.05
-                }
-            }
-            category_recon = {
-               recon = 0.075
-            }
+            planning_decay_rate_factor = 0.05
+            max_planning_factor = 0.05
         }
         c3i_theory = {
         #5
-            max_planning = 0.05
-            category_all_infantry = {
-               max_organisation = 3
-            }
+            breakthrough_factor = 0.075
+            army_org_factor = 0.03
         }
     }
 }
 
-deep_battle = {
-    track = operations
-    name = SUBDOCTRINE_DEEP_BATTLE
-    description = SUBDOCTRINE_DEEP_BATTLE_DESC
-    icon = GFX_doctrine_deep_battle_medium
-    xp_cost = 100
-    xp_type = army
+# deep_battle = {
+#     track = operations
+#     name = SUBDOCTRINE_DEEP_BATTLE
+#     description = SUBDOCTRINE_DEEP_BATTLE_DESC
+#     icon = GFX_doctrine_deep_battle_medium
+#     xp_cost = 100
+#     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = deep_battle_doctrine_check }
-    }
+#     available = {
+#         # always = yes
+#         NOT = { has_country_flag = deep_battle_doctrine_check }
+#     }
 
-    visible = {
-            has_dlc = "La Resistance"
-    }
+#     visible = {
+#             has_dlc = "La Resistance"
+#     }
 
-    ai_will_do = {
+#     ai_will_do = {
 
-        base = 1
-        modifier = {
-            factor = 50
-            original_tag = SOV
-        }
+#         base = 1
+#         modifier = {
+#             factor = 50
+#             original_tag = SOV
+#         }
 
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
+#         modifier = {
+#             factor = 0.5
+#             is_major = no
+#         }
 
-    }
+#     }
 
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = DEEP_BATTLE_MASTERY_GAIN
-            sub_doctrine = deep_battle				
-        }
-        set_country_flag = {
-            flag = deep_battle_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
+#     # EFFECTS
+#     effect = {
+#         add_daily_mastery = {
+#             amount = 0.4						
+#             days = 1250						
+#             name = DEEP_BATTLE_MASTERY_GAIN
+#             sub_doctrine = deep_battle				
+#         }
+#         set_country_flag = {
+#             flag = deep_battle_doctrine_check
+#             days = 1250
+#             value = 1
+#         }
+#     }
 
-    enable_tactic = tactic_backhand_blow
-    category_tanks = {
-       max_organisation = 3
-    }
-
-
-    ai_will_do = { }
-
-    rewards = {
-        bounding_overwatch = {
-        #1
-            recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            mot_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            category_vehicle_infantry = {
-                max_organisation = 2
-            }
-
-        }
-        operational_concentration = {
-        #2
-            category_tanks = {
-               max_organisation = 3
-            }
-            armored_car = {
-               max_organisation = 3
-            }
-            land_reinforce_rate = 0.05
-            cas_damage_reduction = 0.1
-        }
-        maskirovka = {
-        #3
-            army_intel_to_others = -10.0
-            airforce_intel_to_others = -5.0
-            army_intel_factor = 0.05
-
-        }
-        breakthrough_priority = {
-        #4
-            org_loss_when_moving = -0.1
-            category_vehicle_infantry = {
-               max_organisation = 3
-                default_morale = 0.05
-            }
-            category_tanks = {
-                max_organisation = 2
-            }
-            category_all_armor = {
-                default_morale = 0.05
-            }
-            armored_car = {
-               max_organisation = 3
-            }
-        }
-        operational_depth_control = {
-        #5
-            org_loss_when_moving = -0.05
-            land_reinforce_rate = 0.05
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                   max_organisation = 3
-                    add = yes
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                   max_organisation = 3
-                    add = yes
-                }
-            }
-            category_army = {
-                breakthrough = 0.05
-            }
-        }
-    }
-}
-
-deep_battle_no_lar = {
-    track = operations
-    name = SUBDOCTRINE_DEEP_BATTLE
-    description = SUBDOCTRINE_DEEP_BATTLE_DESC
-    icon = GFX_doctrine_deep_battle_medium
-    xp_cost = 100
-    xp_type = army
-
-    available = {
-        # always = yes
-        NOT = { has_country_flag = deep_battle_no_lar_doctrine_check }
-    }
-    visible = {
-        NOT = {
-            has_dlc = "La Resistance"
-        }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 50
-            original_tag = SOV
-        }
-
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
-
-    }
-
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = DEEP_BATTLE_NO_LAR_MASTERY_GAIN
-            sub_doctrine = deep_battle_no_lar				
-        }
-        set_country_flag = {
-            flag = deep_battle_no_lar_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-
-    enable_tactic = tactic_backhand_blow
-    category_tanks = {
-       max_organisation = 3
-    }
+#     enable_tactic = tactic_backhand_blow
+#     category_tanks = {
+#        max_organisation = 3
+#     }
 
 
-    ai_will_do = { }
+#     ai_will_do = { }
 
-    rewards = {
-        bounding_overwatch = {
-        #1
-            recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            mot_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-            }
-            category_vehicle_infantry = {
-                max_organisation = 2
-            }
-        }
-        operational_concentration = {
-        #2
-            category_tanks = {
-               max_organisation = 3
-            }
-            mechanized = {
-               max_organisation = 3
-            }
-            land_reinforce_rate = 0.05
-        }
-        maskirovka = {
-        #3
-            army_intel_to_others = -10.0
-            airforce_intel_to_others = -5.0
-            army_intel_factor = 0.05
-        }
-        breakthrough_priority = {
-        #4
-            org_loss_when_moving = -0.2
-            category_vehicle_infantry = {
-                max_organisation = 10
-                default_morale = 0.1
-            }
-            category_tanks = {
-                max_organisation = 2
-            }
-            category_all_armor = {
-                default_morale = 0.1
-            }
-            mechanized = {
-                breakthrough = 0.05
-            }
-        }
-        operational_depth_control = {
-        #5
-            org_loss_when_moving = -0.1
-            land_reinforce_rate = 0.05
-            recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                   max_organisation = 3
-                    add = yes
-                }
-            }
-            mot_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                   max_organisation = 3
-                    add = yes
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                   max_organisation = 3
-                    add = yes
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_light_infantry
-                   max_organisation = 3
-                    add = yes
-                }
-            }
-        }
-    }
-}
-guerilla_war = {
-    track = operations
-    name = SUBDOCTRINE_GUERILLA_WAR
-    description = SUBDOCTRINE_GUERILLA_WAR_DESC
-    icon = GFX_doctrine_guerilla_warfare_medium
+#     rewards = {
+#         bounding_overwatch = {
+#         #1
+#             recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             mot_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             armored_car_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             light_tank_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             category_vehicle_infantry = {
+#                 max_organisation = 2
+#             }
+
+#         }
+#         operational_concentration = {
+#         #2
+#             category_tanks = {
+#                max_organisation = 3
+#             }
+#             armored_car = {
+#                max_organisation = 3
+#             }
+#             land_reinforce_rate = 0.05
+#             cas_damage_reduction = 0.1
+#         }
+#         maskirovka = {
+#         #3
+#             army_intel_to_others = -10.0
+#             airforce_intel_to_others = -5.0
+#             army_intel_factor = 0.05
+
+#         }
+#         breakthrough_priority = {
+#         #4
+#             org_loss_when_moving = -0.1
+#             category_vehicle_infantry = {
+#                max_organisation = 3
+#                 default_morale = 0.05
+#             }
+#             category_tanks = {
+#                 max_organisation = 2
+#             }
+#             category_all_armor = {
+#                 default_morale = 0.05
+#             }
+#             armored_car = {
+#                max_organisation = 3
+#             }
+#         }
+#         operational_depth_control = {
+#         #5
+#             org_loss_when_moving = -0.05
+#             land_reinforce_rate = 0.05
+#             armored_car_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                    max_organisation = 3
+#                     add = yes
+#                 }
+#             }
+#             light_tank_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                    max_organisation = 3
+#                     add = yes
+#                 }
+#             }
+#             category_army = {
+#                 breakthrough = 0.05
+#             }
+#         }
+#     }
+# }
+
+# deep_battle_no_lar = {
+#     track = operations
+#     name = SUBDOCTRINE_DEEP_BATTLE
+#     description = SUBDOCTRINE_DEEP_BATTLE_DESC
+#     icon = GFX_doctrine_deep_battle_medium
+#     xp_cost = 100
+#     xp_type = army
+
+#     available = {
+#         # always = yes
+#         NOT = { has_country_flag = deep_battle_no_lar_doctrine_check }
+#     }
+#     visible = {
+#         NOT = {
+#             has_dlc = "La Resistance"
+#         }
+#     }
+
+#     ai_will_do = {
+
+#         base = 1
+#         modifier = {
+#             factor = 50
+#             original_tag = SOV
+#         }
+
+#         modifier = {
+#             factor = 0.5
+#             is_major = no
+#         }
+
+#     }
+
+#     # EFFECTS
+#     effect = {
+#         add_daily_mastery = {
+#             amount = 0.4						
+#             days = 1250						
+#             name = DEEP_BATTLE_NO_LAR_MASTERY_GAIN
+#             sub_doctrine = deep_battle_no_lar				
+#         }
+#         set_country_flag = {
+#             flag = deep_battle_no_lar_doctrine_check
+#             days = 1250
+#             value = 1
+#         }
+#     }
+
+#     enable_tactic = tactic_backhand_blow
+#     category_tanks = {
+#        max_organisation = 3
+#     }
+
+
+#     ai_will_do = { }
+
+#     rewards = {
+#         bounding_overwatch = {
+#         #1
+#             recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             mot_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             light_tank_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             armored_car_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                     soft_attack = 0.03
+#                     defense = 0.05
+#                 }
+#             }
+#             category_vehicle_infantry = {
+#                 max_organisation = 2
+#             }
+#         }
+#         operational_concentration = {
+#         #2
+#             category_tanks = {
+#                max_organisation = 3
+#             }
+#             mechanized = {
+#                max_organisation = 3
+#             }
+#             land_reinforce_rate = 0.05
+#         }
+#         maskirovka = {
+#         #3
+#             army_intel_to_others = -10.0
+#             airforce_intel_to_others = -5.0
+#             army_intel_factor = 0.05
+#         }
+#         breakthrough_priority = {
+#         #4
+#             org_loss_when_moving = -0.2
+#             category_vehicle_infantry = {
+#                 max_organisation = 10
+#                 default_morale = 0.1
+#             }
+#             category_tanks = {
+#                 max_organisation = 2
+#             }
+#             category_all_armor = {
+#                 default_morale = 0.1
+#             }
+#             mechanized = {
+#                 breakthrough = 0.05
+#             }
+#         }
+#         operational_depth_control = {
+#         #5
+#             org_loss_when_moving = -0.1
+#             land_reinforce_rate = 0.05
+#             recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                    max_organisation = 3
+#                     add = yes
+#                 }
+#             }
+#             mot_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                    max_organisation = 3
+#                     add = yes
+#                 }
+#             }
+#             armored_car_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                    max_organisation = 3
+#                     add = yes
+#                 }
+#             }
+#             light_tank_recon = {
+#                 battalion_mult = {
+#                     category = category_light_infantry
+#                    max_organisation = 3
+#                     add = yes
+#                 }
+#             }
+#         }
+#     }
+# }
+# guerilla_war = {
+#     track = operations
+#     name = SUBDOCTRINE_GUERILLA_WAR
+#     description = SUBDOCTRINE_GUERILLA_WAR_DESC
+#     icon = GFX_doctrine_guerilla_warfare_medium
     
-    xp_cost = 100
-    xp_type = army
+#     xp_cost = 100
+#     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = guerilla_war_doctrine_check }
-    }
-    visible = {
-        has_dlc = "No Compromise, No Surrender"
-    }
+#     available = {
+#         # always = yes
+#         NOT = { has_country_flag = guerilla_war_doctrine_check }
+#     }
+#     visible = {
+#         has_dlc = "No Compromise, No Surrender"
+#     }
 
-    ai_will_do = { 
-        base = 1
-        modifier = {
-            factor = 1000
-            tag = CHI
-        }
-        modifier = {
-            factor = 1000
-            original_tag = CHI
-        }
-        modifier = {
-            factor = 0
-            NOT = { original_tag = CHI }           
-        }
+#     ai_will_do = { 
+#         base = 1
+#         modifier = {
+#             factor = 1000
+#             tag = CHI
+#         }
+#         modifier = {
+#             factor = 1000
+#             original_tag = CHI
+#         }
+#         modifier = {
+#             factor = 0
+#             NOT = { original_tag = CHI }           
+#         }
         
-        # modifier = {
-        #     factor = 0
-        #     is_major = yes
-        # }
-        # modifier = {
-        #     factor = 2
-        #     is_major = no
-        # }
-        # modifier = {
-        #     factor = 0
-        #     NOT = {
-        #         OR = {
-        #             has_template_containing_unit = irregular_infantry
-        #             has_template_containing_unit = militia
-        #         }
-        #     }
-        # }
+#         # modifier = {
+#         #     factor = 0
+#         #     is_major = yes
+#         # }
+#         # modifier = {
+#         #     factor = 2
+#         #     is_major = no
+#         # }
+#         # modifier = {
+#         #     factor = 0
+#         #     NOT = {
+#         #         OR = {
+#         #             has_template_containing_unit = irregular_infantry
+#         #             has_template_containing_unit = militia
+#         #         }
+#         #     }
+#         # }
     
-    }
+#     }
 
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = GUERILLA_WAR_MASTERY_GAIN
-            sub_doctrine = guerilla_war				
-        }
-        set_country_flag = {
-            flag = guerilla_war_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
+#     # EFFECTS
+#     effect = {
+#         add_daily_mastery = {
+#             amount = 0.4						
+#             days = 1250						
+#             name = GUERILLA_WAR_MASTERY_GAIN
+#             sub_doctrine = guerilla_war				
+#         }
+#         set_country_flag = {
+#             flag = guerilla_war_doctrine_check
+#             days = 1250
+#             value = 1
+#         }
+#     }
 
-    enable_tactic = tactic_guerrilla_tactics
-    irregular_infantry = {
-        soft_attack = 0.03
-        defense = 0.05
-    }
-    militia = {
-        soft_attack = 0.03
-        defense = 0.05
-    }
-    garrison = {
-        soft_attack = 0.03
-        defense = 0.05
-    }
-    penal_battalion = {
-        soft_attack = 0.03
-        defense = 0.05
-    }
+#     enable_tactic = tactic_guerrilla_tactics
+#     irregular_infantry = {
+#         soft_attack = 0.03
+#         defense = 0.05
+#     }
+#     militia = {
+#         soft_attack = 0.03
+#         defense = 0.05
+#     }
+#     garrison = {
+#         soft_attack = 0.03
+#         defense = 0.05
+#     }
+#     penal_battalion = {
+#         soft_attack = 0.03
+#         defense = 0.05
+#     }
 
-    rewards = {
-        catch_and_seize = {
-        #1
-            category_cavalry = {
-                equipment_capture_factor = 0.02
-                plains = {
-                    movement = 0.05
-                }   
-            }
-            category_light_infantry = { 
-                equipment_capture_factor = 0.02
-                plains = {
-                    movement = 0.05
-                } 
-            }
-            pocket_penalty = -0.1
-        }
-        galvanize_support = {
-        #2
-            army_intel_to_others = -5.0
-            army_intel_factor = 0.05
-            war_support_factor = 0.1
-            political_power_factor = 0.1
-            mobilization_speed = 0.1
-        }
-        scorched_earth = {
-        #3
-            resistance_damage_to_garrison_on_our_occupied_states = 0.1
-            resistance_target_on_our_occupied_states = 0.1
-            category_army = {
-                defense = 0.05
-            }
-        }
-        urban_assaults = {
-        #4
-            irregular_infantry = {
-                dense_urban = {
-                    attack = 0.1
-                    defence = 0.1
-                }
-                urban = {
-                    attack = 0.05
-                    defence = 0.05
-                }
-            }
-            militia = {
-                dense_urban = {
-                    attack = 0.1
-                    defence = 0.1
-                }
-                urban = {
-                    attack = 0.05
-                    defence = 0.05
-                }
-            }
-            garrison = {
-                dense_urban = {
-                    attack = 0.1
-                    defence = 0.1
-                }
-                urban = {
-                    attack = 0.05
-                    defence = 0.05
-                }
-            }
-            infantry = {
-                dense_urban = {
-                    attack = 0.1
-                    defence = 0.1
-                }
-                urban = {
-                    attack = 0.05
-                    defence = 0.05
-                }
-            }
-        }
-        defense_of_gained_power = {
-        #5
-            stability_factor = 0.1
-            party_popularity_stability_factor = 0.1
-            category_army = {
-                defense = 0.1
-            }
+#     rewards = {
+#         catch_and_seize = {
+#         #1
+#             category_cavalry = {
+#                 equipment_capture_factor = 0.02
+#                 plains = {
+#                     movement = 0.05
+#                 }   
+#             }
+#             category_light_infantry = { 
+#                 equipment_capture_factor = 0.02
+#                 plains = {
+#                     movement = 0.05
+#                 } 
+#             }
+#             pocket_penalty = -0.1
+#         }
+#         galvanize_support = {
+#         #2
+#             army_intel_to_others = -5.0
+#             army_intel_factor = 0.05
+#             war_support_factor = 0.1
+#             political_power_factor = 0.1
+#             mobilization_speed = 0.1
+#         }
+#         scorched_earth = {
+#         #3
+#             resistance_damage_to_garrison_on_our_occupied_states = 0.1
+#             resistance_target_on_our_occupied_states = 0.1
+#             category_army = {
+#                 defense = 0.05
+#             }
+#         }
+#         urban_assaults = {
+#         #4
+#             irregular_infantry = {
+#                 dense_urban = {
+#                     attack = 0.1
+#                     defence = 0.1
+#                 }
+#                 urban = {
+#                     attack = 0.05
+#                     defence = 0.05
+#                 }
+#             }
+#             militia = {
+#                 dense_urban = {
+#                     attack = 0.1
+#                     defence = 0.1
+#                 }
+#                 urban = {
+#                     attack = 0.05
+#                     defence = 0.05
+#                 }
+#             }
+#             garrison = {
+#                 dense_urban = {
+#                     attack = 0.1
+#                     defence = 0.1
+#                 }
+#                 urban = {
+#                     attack = 0.05
+#                     defence = 0.05
+#                 }
+#             }
+#             infantry = {
+#                 dense_urban = {
+#                     attack = 0.1
+#                     defence = 0.1
+#                 }
+#                 urban = {
+#                     attack = 0.05
+#                     defence = 0.05
+#                 }
+#             }
+#         }
+#         defense_of_gained_power = {
+#         #5
+#             stability_factor = 0.1
+#             party_popularity_stability_factor = 0.1
+#             category_army = {
+#                 defense = 0.1
+#             }
             
-        }
-    }
-}
+#         }
+#     }
+# }
 
-#shock & awe or airland battle
-rapid_domination = {
-    track = operations
-    name = SUBDOCTRINE_RAPID_DOMINATION
-    description = SUBDOCTRINE_RAPID_DOMINATION_DESC
-    icon = GFX_doctrine_shock_and_awe_medium
+# #shock & awe or airland battle
+# rapid_domination = {
+#     track = operations
+#     name = SUBDOCTRINE_RAPID_DOMINATION
+#     description = SUBDOCTRINE_RAPID_DOMINATION_DESC
+#     icon = GFX_doctrine_shock_and_awe_medium
     
-    xp_cost = 100
-    xp_type = army
+#     xp_cost = 100
+#     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = rapid_domination_doctrine_check }
-    }
+#     available = {
+#         # always = yes
+#         NOT = { has_country_flag = rapid_domination_doctrine_check }
+#     }
 
-    ai_will_do = {
+#     ai_will_do = {
 
-        base = 1
-        modifier = {
-            factor = 50
-            original_tag = USA
-        }
+#         base = 1
+#         modifier = {
+#             factor = 50
+#             original_tag = USA
+#         }
 
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
+#         modifier = {
+#             factor = 0.5
+#             is_major = no
+#         }
 
-    }
+#     }
 
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = RAPID_DOMINATION_MASTERY_GAIN
-            sub_doctrine = rapid_domination				
-        }
-        set_country_flag = {
-            flag = rapid_domination_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
+#     # EFFECTS
+#     effect = {
+#         add_daily_mastery = {
+#             amount = 0.4						
+#             days = 1250						
+#             name = RAPID_DOMINATION_MASTERY_GAIN
+#             sub_doctrine = rapid_domination				
+#         }
+#         set_country_flag = {
+#             flag = rapid_domination_doctrine_check
+#             days = 1250
+#             value = 1
+#         }
+#     }
 
-    enable_tactic = tactic_breakthrough
-    land_reinforce_rate = 0.02
-    # category_all_infantry = {
-    #     soft_attack = 0.03
-    # }
-    category_line_artillery = {
-        soft_attack = 0.03
-    }
-
-
-    ai_will_do = { }
-
-    rewards = {
-        forward_observers = {
-        #1
-            land_reinforce_rate = 0.02
-            category_recon = {
-                recon = 1
-            }
-            category_artillery = {
-                soft_attack = 0.03
-            }
+#     enable_tactic = tactic_breakthrough
+#     land_reinforce_rate = 0.02
+#     # category_all_infantry = {
+#     #     soft_attack = 0.03
+#     # }
+#     category_line_artillery = {
+#         soft_attack = 0.03
+#     }
 
 
-        }
-        advanced_firebases = {
-        #2
-            hq_company = {
-                #supply_consumption = -0.05
+#     ai_will_do = { }
 
-                battalion_mult = {
-                    category = category_army
-                    default_morale = 0.02
-                    add = yes
-                }
-            }
+#     rewards = {
+#         forward_observers = {
+#         #1
+#             land_reinforce_rate = 0.02
+#             category_recon = {
+#                 recon = 1
+#             }
+#             category_artillery = {
+#                 soft_attack = 0.03
+#             }
 
-        }
-        centralized_fire_control = {
-        #3
-            signal_company = {
-                battalion_mult = {
-                    category = category_artillery
-                    soft_attack = 0.03
-                }
-            }
-            armored_signal = {
-                battalion_mult = {
-                    category = category_artillery
-                    soft_attack = 0.03
-                }
-            }
-        }
-        regimental_combat_teams = {
-        #4
-            category_support_battalions = {
-               max_organisation = 3
-                soft_attack = 0.03
-            }
-        }
-        shock_and_awe = {
-        #5
-            category_army = {
-                soft_attack = 0.03
-            }
-            category_all_infantry = {
-                soft_attack = 0.03
-                hard_attack = 0.05
-            }
-            army_bonus_air_superiority_factor = 0.05 
-        }
-    }
-}
+
+#         }
+#         advanced_firebases = {
+#         #2
+#             hq_company = {
+#                 #supply_consumption = -0.05
+
+#                 battalion_mult = {
+#                     category = category_army
+#                     default_morale = 0.02
+#                     add = yes
+#                 }
+#             }
+
+#         }
+#         centralized_fire_control = {
+#         #3
+#             signal_company = {
+#                 battalion_mult = {
+#                     category = category_artillery
+#                     soft_attack = 0.03
+#                 }
+#             }
+#             armored_signal = {
+#                 battalion_mult = {
+#                     category = category_artillery
+#                     soft_attack = 0.03
+#                 }
+#             }
+#         }
+#         regimental_combat_teams = {
+#         #4
+#             category_support_battalions = {
+#                max_organisation = 3
+#                 soft_attack = 0.03
+#             }
+#         }
+#         shock_and_awe = {
+#         #5
+#             category_army = {
+#                 soft_attack = 0.03
+#             }
+#             category_all_infantry = {
+#                 soft_attack = 0.03
+#                 hard_attack = 0.05
+#             }
+#             army_bonus_air_superiority_factor = 0.05 
+#         }
+#     }
+# }
 
 expeditionary_warfare = {
     track = operations
@@ -1022,19 +955,6 @@ expeditionary_warfare = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        NOT = { has_country_flag = expeditionary_warfare_doctrine_check }
-    }
-    visible = {
-        has_dlc = "No Compromise, No Surrender"
-    }
-
-    ai_will_do = {
-
-        base = 0
-
-    }
-
     # EFFECTS
     effect = {
         add_daily_mastery = {
@@ -1043,52 +963,64 @@ expeditionary_warfare = {
             name = EXPEDITIONARY_WARFARE_MASTERY_GAIN
             sub_doctrine = expeditionary_warfare				
         }
-        set_country_flag = {
-            flag = expeditionary_warfare_doctrine_check
-            days = 1250
-            value = 1
-        }
     }
     
-    send_volunteer_divisions_required = -0.25
-    send_volunteer_factor = 0.125
-    send_volunteers_tension = -0.05
-    special_forces_training_time_factor = -0.25
-
-    ai_will_do = { }
-
+    special_forces_no_supply_grace = 8
+    special_forces_cap_flat = 4
+    
     rewards = {
         staging_area_security = {
         #1
-            dig_in_speed_factor = 0.05
-            out_of_supply_factor = -0.10
-            category_army = {
-                defense = 0.075
+            no_supply_grace = 16
+            marine = {
+                hard_attack = 0.05
+                defence = 0.05
+                max_organisation = 2
             }
-
+            
         }
         landing_operations = {
         #2
-            naval_invasion_prep_speed = 0.15
-            naval_invasion_penalty = -0.1
-            naval_invasion_planning_bonus_speed = 0.15
-            category_army = {
-                soft_attack = 0.06
+            marine = {
+                soft_attack = 0.05
+                defence = 0.05
             }
         }
         shore_fire_control_parties = {
         #3
-            shore_bombardment_bonus = 0.25
+            shore_bombardment_bonus = 0.05
+            # enable_subunits = {
+			#     marine_commando
+		    # }
+            special_forces_training_time_factor = 0.15
         }
         breakout_emphasis = {
         #4
-            no_supply_grace = 32
-            special_forces_out_of_supply_factor = -0.05
-            pocket_penalty = -0.05
+            no_supply_grace = 16
+            marine_commando = {
+                soft_attack = 0.05
+                defence = 0.05
+            }
         }
         withdrawal_protocols = {
         #5
-            org_loss_when_moving = -0.15
+            naval_invasion_penalty = -0.1
+            invasion_preparation_speed = 0.15
+            shore_bombardment_bonus = 0.1
+            special_forces_no_supply_grace = 16
+            
+            marine = {
+                max_organisation = 3
+                default_morale = 0.2
+                breakthrough = 0.05
+            }
+            marine_commando = {
+                max_organisation = 3
+                default_morale = 0.2
+                breakthrough = 0.1
+                soft_attack = 0.05
+                defence = 0.05
+            }
         }
     }
 }
