@@ -10,241 +10,6 @@
 # (man_behemoth.1 / .2) and the next stage unlocks.
 # All economy effects accumulate in the MAN_industrial_behemoth spirit.
 
-######## BANDITRY ########
-
-MAN_banditry_cat = {
-
-	# Anti-bandit raids — clear bandit activity from a state
-	MAN_xingan_raid = {
-		icon = generic_police_action
-		priority = 60
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		visible = {
-			761 = { has_dynamic_modifier = { modifier = MAN_banditry_activity } }
-		}
-		available = {
-			divisions_in_state = {
-				state = 761
-				size > 2
-			}
-		}
-		highlight_states = {
-			highlight_state_targets = { state = 761 }
-		}
-
-		custom_cost_trigger = {
-			command_power > 9
-		}
-		custom_cost_text = MAN_raid_cp_cost_tt
-		days_remove = 70
-
-		complete_effect = {
-			hidden_effect = { add_command_power = -10 }
-		}
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_strength_of_partisan_movement_tooltip
-			add_to_variable = { MAN_strength_of_partisan_movement_var = 0.04 tooltip = stability_factor_tooltip }
-			761 = { remove_dynamic_modifier = { modifier = MAN_banditry_activity } }
-			country_event = manchukou_banditry.1
-		}
-
-		ai_will_do = { base = 20 }
-	}
-
-	MAN_lungkiang_raid = {
-		icon = generic_police_action
-		priority = 59
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		visible = {
-			714 = {
-				OR = {
-					has_dynamic_modifier = { modifier = MAN_banditry_activity }
-					has_dynamic_modifier = { modifier = MAN_partisan_war }
-				}
-			}
-		}
-		available = {
-			divisions_in_state = {
-				state = 714
-				size > 2
-			}
-		}
-		highlight_states = {
-			highlight_state_targets = { state = 714 }
-		}
-
-		custom_cost_trigger = {
-			command_power > 9
-		}
-		custom_cost_text = MAN_raid_cp_cost_tt
-		days_remove = 70
-
-		complete_effect = {
-			hidden_effect = { add_command_power = -10 }
-		}
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_strength_of_partisan_movement_tooltip
-			add_to_variable = { MAN_strength_of_partisan_movement_var = 0.04 tooltip = stability_factor_tooltip }
-			714 = {
-				remove_dynamic_modifier = { modifier = MAN_banditry_activity }
-				remove_dynamic_modifier = { modifier = MAN_partisan_war }
-			}
-			country_event = manchukou_banditry.3
-		}
-
-		ai_will_do = { base = 20 }
-	}
-
-	MAN_chuho_raid = {
-		icon = generic_police_action
-		priority = 58
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		visible = {
-			717 = {
-				OR = {
-					has_dynamic_modifier = { modifier = MAN_banditry_activity }
-					has_dynamic_modifier = { modifier = MAN_partisan_war }
-				}
-			}
-		}
-		available = {
-			divisions_in_state = {
-				state = 717
-				size > 2
-			}
-		}
-		highlight_states = {
-			highlight_state_targets = { state = 717 }
-		}
-
-		custom_cost_trigger = {
-			command_power > 9
-		}
-		custom_cost_text = MAN_raid_cp_cost_tt
-		days_remove = 70
-
-		complete_effect = {
-			hidden_effect = { add_command_power = -10 }
-		}
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_strength_of_partisan_movement_tooltip
-			add_to_variable = { MAN_strength_of_partisan_movement_var = 0.04 tooltip = stability_factor_tooltip }
-			717 = {
-				remove_dynamic_modifier = { modifier = MAN_banditry_activity }
-				remove_dynamic_modifier = { modifier = MAN_partisan_war }
-			}
-			country_event = manchukou_banditry.2
-		}
-
-		ai_will_do = { base = 20 }
-	}
-
-	MAN_jehol_raid = {
-		icon = generic_police_action
-		priority = 57
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		visible = {
-			610 = { has_dynamic_modifier = { modifier = MAN_banditry_activity } }
-		}
-		available = {
-			divisions_in_state = {
-				state = 610
-				size > 2
-			}
-		}
-		highlight_states = {
-			highlight_state_targets = { state = 610 }
-		}
-
-		custom_cost_trigger = {
-			command_power > 9
-		}
-		custom_cost_text = MAN_raid_cp_cost_tt
-		days_remove = 70
-
-		complete_effect = {
-			hidden_effect = { add_command_power = -10 }
-		}
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_strength_of_partisan_movement_tooltip
-			add_to_variable = { MAN_strength_of_partisan_movement_var = 0.04 tooltip = stability_factor_tooltip }
-			610 = { remove_dynamic_modifier = { modifier = MAN_banditry_activity } }
-			country_event = manchukou_banditry.5
-		}
-
-		ai_will_do = { base = 20 }
-	}
-
-	# Repeatable anti-partisan sweep
-	MAN_anti_partisan_sweep = {
-		icon = generic_police_action
-		priority = 55
-
-		allowed = { original_tag = MAN }
-		fire_only_once = no
-
-		visible = {
-			has_dynamic_modifier = { modifier = MAN_banditry }
-		}
-
-		custom_cost_trigger = {
-			command_power > 14
-		}
-		custom_cost_text = MAN_sweep_cp_cost_tt
-		days_remove = 60
-		days_re_enable = 90
-
-		complete_effect = {
-			hidden_effect = { add_command_power = -15 }
-		}
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_sweep_outcome_tt
-			hidden_effect = {
-				random_list = {
-					60 = {
-						add_to_variable = { MAN_strength_of_partisan_movement_var = 0.03 }
-						random_list = {
-							25 = { country_event = { id = manchukou_banditry.7 days = 2 } }
-							25 = { country_event = { id = manchukou_banditry.9 days = 2 } }
-							25 = { country_event = { id = manchukou_banditry.11 days = 2 } }
-							25 = { country_event = { id = manchukou_banditry.13 days = 2 } }
-						}
-					}
-					40 = {
-						subtract_from_variable = { MAN_strength_of_partisan_movement_var = 0.01 }
-						random_list = {
-							25 = { country_event = { id = manchukou_banditry.8 days = 2 } }
-							25 = { country_event = { id = manchukou_banditry.10 days = 2 } }
-							25 = { country_event = { id = manchukou_banditry.12 days = 2 } }
-							25 = { country_event = { id = manchukou_banditry.14 days = 2 } }
-						}
-					}
-				}
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-}
-
 ######## MATSUOKA VS AYUKAWA — Bureaucratic Confrontation ########
 
 MAN_ayukawa_vs_matsuoka_category = {
@@ -355,6 +120,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 60
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_formmanestsusindustrialsector }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -404,6 +170,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 59
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_purchase_german_liscenses }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -462,6 +229,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 58
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_the_matsuoka_plan }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -512,6 +280,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 57
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_the_aikawa_plan }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -560,6 +329,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 56
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_manchurian_aircrafts_company }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -605,6 +375,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 55
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_restructure_the_liaohe_river_flow }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -643,6 +414,69 @@ MAN_first_five_year_plan_cat = {
 			custom_effect_tooltip = MAN_eco_spirit_changed_tt
 			custom_effect_tooltip = MAN_fyp_sungari_dams_tt
 			add_to_variable = { MAN_behemoth_production_speed_industrial_complex_factor = 0.05 }
+			hidden_effect = {
+				force_update_dynamic_modifier = yes
+				add_to_variable = { MAN_fyp1_progress = 20 }
+				MAN_behemoth_accident_roll = yes
+				MAN_fyp1_completion_check = yes
+			}
+		}
+
+		ai_will_do = { base = 10 }
+	}
+
+	# The Asia Express — Mantetsu's flagship high-speed line, Dairen to Hsinking
+	MAN_fyp_asia_express = {
+		icon = generic_construction
+		priority = 54
+
+		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_create_the_main_railway_administration }
+		fire_only_once = yes
+
+		highlight_states = {
+			highlight_state_targets = { state = 716 }
+		}
+
+		cost = 50
+		days_remove = 180
+
+		modifier = {
+			civilian_factory_use = 3
+		}
+
+		complete_effect = {
+			add_stability = -0.015
+		}
+
+		remove_effect = {
+			custom_effect_tooltip = MAN_fyp_progress_20_tt
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			716 = {
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+			328 = {
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+			714 = {
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+			add_war_support = 0.02
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			custom_effect_tooltip = MAN_fyp_asia_express_tt
+			add_to_variable = { MAN_behemoth_production_speed_infrastructure_factor = 0.05 }
 			hidden_effect = {
 				force_update_dynamic_modifier = yes
 				add_to_variable = { MAN_fyp1_progress = 20 }
@@ -693,6 +527,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 45
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_foster_a_light_metal_society }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -723,6 +558,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 44
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_expansionofmanestucontrol }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -758,6 +594,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 43
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_formmanestsusindustrialsector }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -792,6 +629,7 @@ MAN_first_five_year_plan_cat = {
 
 		visible = {
 			NOT = { has_country_flag = MAN_oil_found_flag }
+			has_completed_focus = MAN_purchase_german_liscenses
 		}
 
 		highlight_states = {
@@ -828,6 +666,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 41
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_remove_extraterritorially_privledges }
 		fire_only_once = yes
 
 		highlight_states = {
@@ -870,6 +709,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 40
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_create_new_worker_ethos }
 		fire_only_once = yes
 
 		cost = 35
@@ -897,6 +737,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 39
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_manetsu_research_department }
 		fire_only_once = yes
 
 		cost = 25
@@ -920,6 +761,7 @@ MAN_first_five_year_plan_cat = {
 		priority = 38
 
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_manetsu_research_department }
 		fire_only_once = yes
 
 		cost = 35

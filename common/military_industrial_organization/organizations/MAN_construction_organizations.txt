@@ -1,0 +1,690 @@
+generic_building_organization = {
+	icon = GFX_idea_generic_improved_repair
+
+	# Template only — the MAN-specific orgs below include it. Never selectable on its own.
+	allowed = {
+		always = no
+	}
+	available = {
+		always = no
+	}
+
+	equipment_type = { mio_cat_eq_build }
+	research_categories = { industry }
+
+	research_bonus = 0.0
+	task_capacity = 1
+	
+	tree_header_text = {
+		text = mio_header_construction
+		x = 3
+	}
+	tree_header_text = {
+		text = mio_header_learning_experience
+		x = 8
+	}
+
+	
+	initial_trait = {
+		name = construction
+	}
+	on_design_team_assigned_to_variant = {
+		custom_effect_tooltip = INDUSTRIAL_ORG_DETAIL_TOOLTIP_FUNDS_FROM_BUILD_TT
+	}
+	
+	
+
+
+	trait = {
+		token = generic_mio_trait_mechanization_of_construction
+		name = generic_mio_trait_mechanization_of_construction
+		icon = GFX_generic_mio_trait_mechanization_of_construction
+		
+		on_complete = {
+			hidden_effect = {
+				FROM = {
+					if = {
+						limit = { NOT = { has_dynamic_modifier = { modifier = generic_building_organization_dyn } } }
+						add_dynamic_modifier = { modifier = generic_building_organization_dyn }
+					}
+				}
+			}
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.01 tooltip = production_speed_buildings_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+		
+		position = { x=5 y=0 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	
+	trait = {
+		token = generic_mio_trait_multidisciplinary_teams
+		name = generic_mio_trait_multidisciplinary_teams
+		icon = GFX_generic_mio_trait_multidisciplinary_teams
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.02 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_conversion_cost_factor = -0.1 tooltip = conversion_cost_mil_to_civ_factor_tooltip }
+			effect_tooltip = { add_to_variable = { FROM.generic_building_organization_conversion_cost_factor = -0.1 tooltip = conversion_cost_civ_to_mil_factor_tooltip } }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_mechanization_of_construction }
+		mutually_exclusive = { generic_mio_trait_search_for_unique_specialists }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=-4 y=1 }
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 0
+				owner = {
+					original_tag = GER
+				}
+			}
+		}
+	}
+	trait = {
+		token = generic_mio_trait_dual_use_production
+		name = generic_mio_trait_dual_use_production
+		icon = GFX_generic_mio_trait_dual_use_production
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_industrial_complex_factor = 0.03 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.03 tooltip = production_speed_arms_factory_factor_tt }
+			# add_to_variable = { FROM.generic_building_organization_production_speed_universal_factory _factor = 0.03 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_multidisciplinary_teams }
+		relative_position_id = generic_mio_trait_multidisciplinary_teams
+		position = { x=-1 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_design_of_transport_hubs
+		name = generic_mio_trait_design_of_transport_hubs
+		icon = GFX_generic_mio_trait_design_of_transport_hubs
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_supply_node_factor = 0.05 tooltip = production_speed_supply_node_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_multidisciplinary_teams }
+		relative_position_id = generic_mio_trait_multidisciplinary_teams
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_mass_residential_construction
+		name = generic_mio_trait_mass_residential_construction
+		icon = GFX_generic_mio_trait_attracting_foreign_contractors
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_hospital_factor = 0.08 tooltip = production_speed_hospital_factor_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_multidisciplinary_teams }
+		relative_position_id = generic_mio_trait_multidisciplinary_teams
+		position = { x=1 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_hiring_of_fortification_engineers
+		name = generic_mio_trait_hiring_of_fortification_engineers
+		icon = GFX_generic_mio_trait_hiring_of_fortification_engineers
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_bunker_factor = 0.07 tooltip = production_speed_bunker_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_coastal_bunker_factor = 0.07 tooltip = production_speed_coastal_bunker_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_land_bunker_effectiveness_factor = 0.15 tooltip = land_bunker_effectiveness_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_coastal_bunker_effectiveness_factor = 0.15 tooltip = coastal_bunker_effectiveness_factor_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+		
+		any_parent = { generic_mio_trait_dual_use_production generic_mio_trait_design_of_transport_hubs generic_mio_trait_mass_residential_construction }
+		relative_position_id = generic_mio_trait_dual_use_production
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_emergency_recovery_teams
+		name = generic_mio_trait_emergency_recovery_teams
+		icon = GFX_generic_mio_trait_emergency_recovery_teams
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_industry_repair_factor = 0.07 tooltip = industry_repair_factor_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+		
+		any_parent = { generic_mio_trait_dual_use_production generic_mio_trait_design_of_transport_hubs generic_mio_trait_mass_residential_construction }
+		relative_position_id = generic_mio_trait_design_of_transport_hubs
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_anti_aircraft_cover_in_cities
+		name = generic_mio_trait_anti_aircraft_cover_in_cities
+		icon = GFX_generic_mio_trait_anti_aircraft_cover_in_cities
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_anti_air_building_factor = 0.07 tooltip = production_speed_anti_air_building_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_radar_station_factor = 0.07 tooltip = production_speed_radar_station_factor_tooltip }
+			# add_to_variable = { FROM.generic_building_organization_tech_air_damage_factor = -0.1 tooltip = tech_air_damage_factor_tooltip } TODO ?
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+		
+		any_parent = { generic_mio_trait_dual_use_production generic_mio_trait_design_of_transport_hubs generic_mio_trait_mass_residential_construction }
+		relative_position_id = generic_mio_trait_mass_residential_construction
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	
+	###
+	
+	trait = {
+		token = generic_mio_trait_expansion_of_shipyards
+		name = generic_mio_trait_expansion_of_shipyards
+		icon = GFX_generic_mio_trait_expansion_of_shipyards
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_dockyard_factor = 0.04 tooltip = production_speed_dockyard_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_mechanization_of_construction }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	
+	trait = {
+		token = generic_mio_trait_own_training_school
+		name = generic_mio_trait_own_training_school
+		icon = GFX_generic_mio_trait_own_training_school
+		
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.15
+		}
+
+		any_parent = { generic_mio_trait_mechanization_of_construction }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=2 y=1 }
+		ai_will_do = {
+			base = 5
+		}
+	}
+	trait = {
+		token = generic_mio_trait_development_of_state_standards
+		name = generic_mio_trait_development_of_state_standards
+		icon = GFX_generic_mio_trait_development_of_state_standards
+		
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_research_bonus = 0.02
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_mechanization_of_construction }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=4 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_round_clock_shifts
+		name = generic_mio_trait_round_clock_shifts
+		icon = GFX_generic_mio_trait_round_clock_shifts
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_add_money = -0.15 tooltip = military_industrial_organization_funds_gain_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.02 tooltip = production_speed_buildings_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_own_training_school generic_mio_trait_development_of_state_standards }
+		mutually_exclusive = { generic_mio_trait_introduction_of_modern_technology }
+		relative_position_id = generic_mio_trait_own_training_school
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_introduction_of_modern_technology
+		name = generic_mio_trait_introduction_of_modern_technology
+		icon = GFX_generic_mio_trait_introduction_of_modern_technology
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_add_money = 0.1 tooltip = military_industrial_organization_funds_gain_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_research_bonus = 0.03
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_own_training_school generic_mio_trait_development_of_state_standards }
+		mutually_exclusive = { generic_mio_trait_round_clock_shifts }
+		relative_position_id = generic_mio_trait_development_of_state_standards
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_urban_development_planning
+		name = generic_mio_trait_urban_development_planning
+		icon = GFX_generic_mio_trait_urban_development_planning
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_global_building_slots_factor = 0.05 tooltip = global_building_slots_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+		
+		any_parent = { generic_mio_trait_round_clock_shifts generic_mio_trait_introduction_of_modern_technology }
+		relative_position_id = generic_mio_trait_round_clock_shifts
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_planning_department
+		name = generic_mio_trait_planning_department
+		icon = GFX_generic_mio_trait_planning_department
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_consumer_goods_factor = -0.03 tooltip = consumer_goods_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_round_clock_shifts generic_mio_trait_introduction_of_modern_technology }
+		relative_position_id = generic_mio_trait_round_clock_shifts
+		position = { x=1 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_expertise_of_foreign_documents
+		name = generic_mio_trait_expertise_of_foreign_documents
+		icon = GFX_generic_mio_trait_instructions_in_foreign_languages
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_operation_steal_tech_outcome = 0.15 tooltip = operation_steal_tech_outcome_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_round_clock_shifts generic_mio_trait_introduction_of_modern_technology }
+		relative_position_id = generic_mio_trait_introduction_of_modern_technology
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	
+	trait = {
+		token = generic_mio_trait_development_of_marine_logistics
+		name = generic_mio_trait_development_of_marine_logistics
+		icon = GFX_generic_mio_trait_development_of_marine_logistics
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_naval_base_factor = 0.06 tooltip = production_speed_naval_base_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_floating_harbor_range = 0.15 tooltip = floating_harbor_range_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_mechanization_of_construction }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=1 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	
+	###
+	
+	trait = {
+		token = generic_mio_trait_search_for_unique_specialists
+		name = generic_mio_trait_search_for_unique_specialists
+		icon = GFX_generic_mio_trait_search_for_unique_specialists
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.02 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_equipment_conversion_speed = 0.1 tooltip = equipment_conversion_speed_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_mechanization_of_construction }
+		mutually_exclusive = { generic_mio_trait_multidisciplinary_teams }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=-1 y=1 }
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 0
+				owner = {
+					original_tag = SOV
+				}
+			}
+		}
+	}
+	trait = {
+		token = generic_mio_trait_military_facilities
+		name = generic_mio_trait_military_facilities
+		icon = GFX_generic_mio_trait_military_facilities
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.04 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_search_for_unique_specialists }
+		relative_position_id = generic_mio_trait_search_for_unique_specialists
+		position = { x=-1 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_rational_design_of_autobahns
+		name = generic_mio_trait_rational_design_of_autobahns
+		icon = GFX_generic_mio_trait_rational_design_of_autobahns
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_infrastructure_factor = 0.05 tooltip = production_speed_infrastructure_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_air_base_factor = 0.05 tooltip = production_speed_air_base_factor_tt }
+			# add_to_variable = { FROM.generic_building_organization_truck_attrition_factor = -0.1 tooltip = truck_attrition_factor_tooltip } TODO ?
+			# add_to_variable = { FROM.generic_building_organization_supply_node_range = 0.1 tooltip = supply_node_range_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_search_for_unique_specialists }
+		relative_position_id = generic_mio_trait_search_for_unique_specialists
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_development_of_mining_business
+		name = generic_mio_trait_development_of_mining_business
+		icon = GFX_generic_mio_trait_development_of_mining_business
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_rail_way_factor = 0.05 tooltip = production_speed_rail_way_factor_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_search_for_unique_specialists }
+		relative_position_id = generic_mio_trait_search_for_unique_specialists
+		position = { x=1 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_chemical_production_design
+		name = generic_mio_trait_chemical_production_design
+		icon = GFX_generic_mio_trait_chemical_production_design
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_synthetic_refinery_factor = 0.07 tooltip = production_speed_synthetic_refinery_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_fuel_silo_factor = 0.07 tooltip = production_speed_fuel_silo_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+		
+		any_parent = { generic_mio_trait_military_facilities generic_mio_trait_rational_design_of_autobahns generic_mio_trait_development_of_mining_business }
+		relative_position_id = generic_mio_trait_military_facilities
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_underground_factories
+		name = generic_mio_trait_underground_factories
+		icon = GFX_generic_mio_trait_underground_factories
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_industry_air_damage_factor = -0.07 tooltip = industry_air_damage_factor_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_military_facilities generic_mio_trait_rational_design_of_autobahns generic_mio_trait_development_of_mining_business }
+		relative_position_id = generic_mio_trait_rational_design_of_autobahns
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_mastering_drilling_business
+		name = generic_mio_trait_mastering_drilling_business
+		icon = GFX_generic_mio_trait_mastering_drilling_business
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_local_resources_factor = 0.03 tooltip = local_resources_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { generic_mio_trait_military_facilities generic_mio_trait_rational_design_of_autobahns generic_mio_trait_development_of_mining_business }
+		relative_position_id = generic_mio_trait_development_of_mining_business
+		position = { x=0 y=1 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	
+	###
+	
+	trait = {
+		token = generic_mio_trait_bringing_to_automatism
+		name = generic_mio_trait_bringing_to_automatism
+		icon = GFX_generic_mio_trait_bringing_to_automatism
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.03 tooltip = production_speed_buildings_factor_tt }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { 
+			generic_mio_trait_urban_development_planning generic_mio_trait_planning_department generic_mio_trait_expertise_of_foreign_documents
+			generic_mio_trait_hiring_of_fortification_engineers generic_mio_trait_emergency_recovery_teams generic_mio_trait_anti_aircraft_cover_in_cities
+			generic_mio_trait_chemical_production_design generic_mio_trait_underground_factories generic_mio_trait_mastering_drilling_business 
+		}
+		mutually_exclusive = { generic_mio_trait_implement_innovative_developments }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=-1 y=4 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+	trait = {
+		token = generic_mio_trait_implement_innovative_developments
+		name = generic_mio_trait_implement_innovative_developments
+		icon = GFX_generic_mio_trait_implement_innovative_developments
+		
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_radar_station_factor = 0.07 tooltip = production_speed_radar_station_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_rocket_site_factor = 0.07 tooltip = production_speed_rocket_site_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_nuclear_reactor_factor = 0.07 tooltip = production_speed_nuclear_reactor_factor_tooltip }
+		}
+		organization_modifier = {
+			custom_modifier_tooltip = empty_text
+			military_industrial_organization_design_team_assign_cost = -0.03
+		}
+
+		any_parent = { 
+			generic_mio_trait_urban_development_planning generic_mio_trait_planning_department generic_mio_trait_expertise_of_foreign_documents
+			generic_mio_trait_hiring_of_fortification_engineers generic_mio_trait_emergency_recovery_teams generic_mio_trait_anti_aircraft_cover_in_cities
+			generic_mio_trait_chemical_production_design generic_mio_trait_underground_factories generic_mio_trait_mastering_drilling_business 
+		}
+		mutually_exclusive = { generic_mio_trait_bringing_to_automatism }
+		relative_position_id = generic_mio_trait_mechanization_of_construction
+		position = { x=1 y=4 }
+		ai_will_do = {
+			base = 1
+		}
+	}
+}
+
+##########################################################################
+# MAN construction MIOs — include the template above (full trait tree).
+# Focus/flag gates removed for now (focus blocks come later); the source's
+# bespoke Mantetsu railway-line-days plumbing is intentionally dropped.
+##########################################################################
+
+# South Manchuria Railway Company (Mantetsu)
+MAN_south_manchuria_railway_company_organisation = {
+	name = MAN_south_manchuria_railway_company
+	include = generic_building_organization
+	icon = GFX_idea_MAN_mantetsu_concern
+	allowed = {
+		original_tag = MAN
+		has_dlc = "Arms Against Tyranny"
+	}
+	# Founded by the "Create the Main Railway Administration" focus.
+	available = {
+		FROM = { has_country_flag = MAN_mantetsu_founded }
+	}
+
+	initial_trait = {
+		name = construction
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.025
+		}
+	}
+}
+
+# Mange / Mangyo — Manchurian Industrial Development Company
+MAN_mange_organisation = {
+	name = MAN_mange_concern
+	include = generic_building_organization
+	icon = GFX_idea_MAN_mangyo_concern
+	allowed = {
+		original_tag = MAN
+		has_dlc = "Arms Against Tyranny"
+	}
+	# Founded by the "Found Mangyō" focus.
+	available = {
+		FROM = { has_country_flag = MAN_mangyo_founded }
+	}
+
+	initial_trait = {
+		name = construction
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.1
+		}
+	}
+}

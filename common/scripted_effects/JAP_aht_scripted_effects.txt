@@ -1,0 +1,79 @@
+# Association to Help the Throne (Imperial Rule Assistance Association) — ported from New Ways.
+# DORMANT: call JAP_aht_activate to switch the system on (a future Japan focus should do this).
+# Fixed Konoe-style starting setup; the leader-branching and military-influence meter were dropped.
+
+JAP_aht_legitimacy_check = {
+	clamp_variable = { var = JAP_aht_legitimacy min = 0 max = 1 }
+	if = {
+		limit = {
+			check_variable = { JAP_aht_legitimacy = 0 }
+			NOT = { has_country_flag = JAP_aht_no_zero_legitimacy_effect }
+		}
+		country_event = jap_aht.14
+	}
+}
+
+JAP_aht_fractions_influence_update = {
+	set_temp_variable = { loyal = 0 }
+	set_temp_variable = { opposition = 0 }
+	for_each_scope_loop = {
+		array = JAP_aht_fractions
+
+		clamp_variable = { var = JAP_aht_influence min = 0 }
+		if = {
+			limit = { check_variable = { JAP_aht_fraction_position = 1 } }
+			add_to_temp_variable = { loyal = JAP_aht_influence }
+		}
+		else_if = {
+			limit = { check_variable = { JAP_aht_fraction_position = 3 } }
+			add_to_temp_variable = { opposition = JAP_aht_influence }
+		}
+	}
+	set_variable = { JAP_aht_fraction_support = loyal }
+	add_to_temp_variable = { opposition = loyal }
+	divide_variable = { JAP_aht_fraction_support = opposition }
+}
+
+JAP_aht_faction_status_update = {
+	clamp_temp_variable = { var = position min = 1 max = 3 }
+	if = {
+		limit = { NOT = { check_variable = { position = var:faction:JAP_aht_fraction_position } } }
+		set_temp_variable = { JAP_aht_fraction_position = position }
+		custom_effect_tooltip = {
+			localization_key = JAP_faction_status_change
+			FACTION = "[?var:faction.JAP_get_current_fraction_desc]"
+			NEW_STATUS = "[JAP_get_current_fraction_position_full]"
+		}
+		set_variable = { var:faction:JAP_aht_fraction_position = position }
+	}
+	JAP_aht_fractions_influence_update = yes
+}
+
+# Switch the system on. A future Japan focus should call this.
+JAP_aht_activate = {
+	set_country_flag = JAP_Association_to_Help_the_Throne_flag
+
+	add_to_array = { JAP_aht_fractions = 1 }
+	add_to_array = { JAP_aht_fractions = 2 }
+	add_to_array = { JAP_aht_fractions = 3 }
+	add_to_array = { JAP_aht_fractions = 4 }
+	add_to_array = { JAP_aht_fractions = 5 }
+	add_to_array = { JAP_aht_fractions = 6 }
+
+	# Fixed Konoe-style start (IRAA founder).
+	set_variable = { 1.JAP_aht_influence = 15 }	# Party Reformers
+	set_variable = { 1.JAP_aht_fraction_position = 1 }
+	set_variable = { 2.JAP_aht_influence = 20 }	# Left Renovationists
+	set_variable = { 2.JAP_aht_fraction_position = 1 }
+	set_variable = { 3.JAP_aht_influence = 20 }	# Right Renovationists
+	set_variable = { 3.JAP_aht_fraction_position = 1 }
+	set_variable = { 4.JAP_aht_influence = 10 }	# National Socialists
+	set_variable = { 4.JAP_aht_fraction_position = 2 }
+	set_variable = { 5.JAP_aht_influence = 25 }	# Conservatives
+	set_variable = { 5.JAP_aht_fraction_position = 3 }
+	set_variable = { 6.JAP_aht_influence = 0 }	# Matsuoka Faction
+	set_variable = { 6.JAP_aht_fraction_position = 2 }
+	set_variable = { JAP_aht_legitimacy = 0.8 }
+
+	JAP_aht_fractions_influence_update = yes
+}

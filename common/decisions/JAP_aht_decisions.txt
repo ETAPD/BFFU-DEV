@@ -1,0 +1,475 @@
+# Association to Help the Throne decisions/missions (ported from New Ways).
+# Event refs renamed NW_JAP_aht.* -> jap_aht.*; references to the dropped
+# military-insubordination system and to missing characters/focuses were stripped.
+JAP_Association_to_Help_the_Throne = {
+
+	#### Missions ####
+	JAP_status_of_AHT = {
+		icon = GFX_decision_JAP_status_of_AHT
+		activation = { always = no }
+		available = { has_country_flag = JAP_status_of_AHT_mission_remove }
+		fire_only_once = yes
+		selectable_mission = no
+		days_mission_timeout = 60
+		is_good = no
+		complete_effect = {
+			add_to_variable = { JAP_aht_statuses = 1 }
+		}
+		timeout_effect = {
+			add_to_variable = { JAP_aht_statuses = 1 }
+			add_to_variable = { JAP_aht_legitimacy = -0.05 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			custom_effect_tooltip = JAP_status_of_AHT_tooltip
+			set_country_flag = JAP_status_of_AHT_flag
+			country_event = jap_aht.22
+			set_country_flag = JAP_AHT_is_addition_to_government
+		}
+	}
+	JAP_status_of_AHT_heads = {
+		icon = GFX_decision_JAP_status_of_AHT_heads
+		activation = { always = no }
+		available = { has_country_flag = JAP_status_of_AHT_heads_mission_remove }
+		fire_only_once = yes
+		selectable_mission = no
+		days_mission_timeout = 150
+		is_good = no
+		complete_effect = {
+			add_to_variable = { JAP_aht_statuses = 1 }
+		}
+		timeout_effect = {
+			add_to_variable = { JAP_aht_statuses = 1 }
+			add_to_variable = { JAP_aht_legitimacy = -0.05 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			custom_effect_tooltip = JAP_status_of_AHT_heads_tooltip
+			set_country_flag = JAP_status_of_AHT_heads_flag
+			country_event = jap_aht.23
+		}
+	}
+	JAP_New_economic_structure_mission = {
+		icon = GFX_decision_JAP_New_economic_structure_mission
+		activation = { always = no }
+		available = { has_country_flag = JAP_New_economic_structure_mission_remove }
+		fire_only_once = yes
+		selectable_mission = no
+		days_mission_timeout = 300
+		is_good = no
+		complete_effect = {
+			add_to_variable = { JAP_aht_statuses = 1 }
+		}
+		timeout_effect = {
+			add_to_variable = { JAP_aht_statuses = 1 }
+			add_to_variable = { JAP_aht_legitimacy = -0.05 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			custom_effect_tooltip = JAP_New_economic_structure_mission_tooltip
+			set_country_flag = JAP_New_economic_structure_mission_flag
+			country_event = jap_aht.21
+		}
+	}
+
+	#### Status of the Association ####
+	JAP_Recognize_AHT_as_political_organization = {
+		icon = GFX_decision_JAP_Recognize_AHT_as_political_organization
+		allowed = { original_tag = JAP }
+		visible = { NOT = { has_country_flag = JAP_status_of_AHT_flag } }
+		available = {
+			NOT = { has_country_flag = JAP_status_of_AHT_flag }
+			set_temp_variable = { val = 0.5 }
+			custom_trigger_tooltip = {
+				tooltip = JAP_aht_fraction_support_trigger
+				check_variable = { JAP_aht_fraction_support > val }
+			}
+		}
+		fire_only_once = yes
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.3 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.3 }
+			JAP_aht_legitimacy_check = yes
+			effect_tooltip = { remove_mission = JAP_status_of_AHT }
+			set_country_flag = JAP_status_of_AHT_mission_remove
+			set_country_flag = JAP_status_of_AHT_flag
+			set_temp_variable = { faction = 5.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+			set_country_flag = JAP_AHT_is_political_organization
+		}
+	}
+	JAP_Recognize_AHT_as_addition_to_government = {
+		icon = GFX_decision_JAP_Recognize_AHT_as_addition_to_government
+		allowed = { original_tag = JAP }
+		visible = { NOT = { has_country_flag = JAP_status_of_AHT_flag } }
+		available = { NOT = { has_country_flag = JAP_status_of_AHT_flag } }
+		fire_only_once = yes
+		cost = 20
+		complete_effect = {
+			effect_tooltip = { remove_mission = JAP_status_of_AHT }
+			set_country_flag = JAP_status_of_AHT_mission_remove
+			set_country_flag = JAP_status_of_AHT_flag
+			set_temp_variable = { faction = 3.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+			set_country_flag = JAP_AHT_is_addition_to_government
+		}
+	}
+
+	#### Status of the governors ####
+	JAP_Make_governors_heads_of_branches = {
+		icon = GFX_decision_JAP_Make_governors_heads_of_branches
+		allowed = { original_tag = JAP }
+		visible = { NOT = { has_country_flag = JAP_status_of_AHT_heads_flag } }
+		available = {
+			NOT = { has_country_flag = JAP_status_of_AHT_heads_flag }
+			set_temp_variable = { val = 0.5 }
+			custom_trigger_tooltip = {
+				tooltip = JAP_aht_fraction_support_trigger
+				check_variable = { JAP_aht_fraction_support > val }
+			}
+		}
+		fire_only_once = yes
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.3 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.3 }
+			JAP_aht_legitimacy_check = yes
+			effect_tooltip = { remove_mission = JAP_status_of_AHT_heads }
+			set_country_flag = JAP_status_of_AHT_heads_mission_remove
+			set_country_flag = JAP_status_of_AHT_heads_flag
+			set_temp_variable = { faction = 1.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+			set_temp_variable = { faction = 5.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+		}
+	}
+	JAP_Keep_independence_of_governors = {
+		icon = GFX_decision_JAP_Keep_independence_of_governors
+		allowed = { original_tag = JAP }
+		visible = { NOT = { has_country_flag = JAP_status_of_AHT_heads_flag } }
+		available = { NOT = { has_country_flag = JAP_status_of_AHT_heads_flag } }
+		fire_only_once = yes
+		cost = 30
+		complete_effect = {
+			effect_tooltip = { remove_mission = JAP_status_of_AHT_heads }
+			set_country_flag = JAP_status_of_AHT_heads_mission_remove
+			set_country_flag = JAP_status_of_AHT_heads_flag
+			# (Konoe-leader special case dropped; apply the default shift.)
+			set_temp_variable = { faction = 3.id }
+			set_temp_variable = { position = 2 }
+			JAP_aht_faction_status_update = yes
+		}
+	}
+
+	#### New Economic Structure ####
+	JAP_Accept_PC_New_Economic_Structure = {
+		icon = GFX_decision_JAP_Accept_PC_New_Economic_Structure
+		allowed = { original_tag = JAP }
+		visible = { NOT = { has_country_flag = JAP_New_economic_structure_mission_flag } }
+		available = {
+			NOT = { has_country_flag = JAP_New_economic_structure_mission_flag }
+			set_temp_variable = { val = 0.66 }
+			custom_trigger_tooltip = {
+				tooltip = JAP_aht_fraction_support_trigger
+				check_variable = { JAP_aht_fraction_support > val }
+			}
+		}
+		fire_only_once = yes
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.5 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.5 }
+			JAP_aht_legitimacy_check = yes
+			effect_tooltip = { remove_mission = JAP_New_economic_structure_mission }
+			set_country_flag = JAP_New_economic_structure_mission_remove
+			set_country_flag = JAP_New_economic_structure_mission_flag
+			set_temp_variable = { faction = 5.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+		}
+	}
+	JAP_Accept_Nakano_New_Economic_Structure = {
+		icon = GFX_decision_JAP_Accept_PC_New_Economic_Structure
+		allowed = { original_tag = JAP }
+		visible = {
+			has_country_flag = JAP_Accept_Nakano_New_Economic_Structure_decision_unlock
+			NOT = { has_country_flag = JAP_New_economic_structure_mission_flag }
+		}
+		available = {
+			NOT = { has_country_flag = JAP_New_economic_structure_mission_flag }
+			set_temp_variable = { val = 0.5 }
+			custom_trigger_tooltip = {
+				tooltip = JAP_aht_fraction_support_trigger
+				check_variable = { JAP_aht_fraction_support > val }
+			}
+		}
+		fire_only_once = yes
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.3 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.3 }
+			JAP_aht_legitimacy_check = yes
+			effect_tooltip = { remove_mission = JAP_New_economic_structure_mission }
+			set_country_flag = JAP_New_economic_structure_mission_remove
+			set_country_flag = JAP_New_economic_structure_mission_flag
+			set_temp_variable = { faction = 5.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+		}
+	}
+	JAP_Accept_compromise_New_Economic_Structure = {
+		icon = GFX_decision_JAP_Accept_PC_New_Economic_Structure
+		allowed = { original_tag = JAP }
+		visible = {
+			has_country_flag = JAP_Accept_compromise_New_Economic_Structure_decision_unlock
+			NOT = { has_country_flag = JAP_New_economic_structure_mission_flag }
+		}
+		available = {
+			NOT = { has_country_flag = JAP_New_economic_structure_mission_flag }
+			set_temp_variable = { val = 0.5 }
+			custom_trigger_tooltip = {
+				tooltip = JAP_aht_fraction_support_trigger
+				check_variable = { JAP_aht_fraction_support > val }
+			}
+		}
+		fire_only_once = yes
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.3 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.3 }
+			JAP_aht_legitimacy_check = yes
+			effect_tooltip = { remove_mission = JAP_New_economic_structure_mission }
+			set_country_flag = JAP_New_economic_structure_mission_remove
+			set_country_flag = JAP_New_economic_structure_mission_flag
+			set_temp_variable = { faction = 5.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+		}
+	}
+	JAP_Accept_NM_New_Economic_Structure = {
+		icon = GFX_decision_JAP_Accept_PC_New_Economic_Structure
+		allowed = { original_tag = JAP }
+		visible = {
+			has_country_flag = JAP_Accept_NM_New_Economic_Structure_decision_available
+			NOT = { has_country_flag = JAP_New_economic_structure_mission_flag }
+		}
+		available = { NOT = { has_country_flag = JAP_New_economic_structure_mission_flag } }
+		fire_only_once = yes
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.05 }
+			set_temp_variable = { pp_cost = 30 }
+			has_political_power > pp_cost
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_pp_and_legitimacy_cost
+		complete_effect = {
+			hidden_effect = { add_political_power = -30 }
+			add_to_variable = { JAP_aht_legitimacy = -0.05 }
+			JAP_aht_legitimacy_check = yes
+			effect_tooltip = { remove_mission = JAP_New_economic_structure_mission }
+			set_country_flag = JAP_New_economic_structure_mission_remove
+			set_country_flag = JAP_New_economic_structure_mission_flag
+			set_temp_variable = { faction = 5.id }
+			set_temp_variable = { position = 3 }
+			JAP_aht_faction_status_update = yes
+		}
+	}
+
+	#### Legitimacy upkeep ####
+	JAP_threaten_to_Retire = {
+		icon = GFX_decision_JAP_threaten_to_Retire
+		allowed = { original_tag = JAP }
+		custom_cost_trigger = {
+			set_temp_variable = { custom_cost_pp = 10 }
+			has_political_power > custom_cost_pp
+			set_temp_variable = { stability_cost = 0.005 }
+			set_temp_variable = { stability_total = stability }
+			subtract_from_temp_variable = { stability_total = modifier@stability_factor }
+		}
+		custom_cost_text = pol_and_stability_cost
+		days_re_enable = 60
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.02 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+		}
+	}
+	JAP_condemn_Shogunate = {
+		icon = GFX_decision_JAP_condemn_Shogunate
+		allowed = { original_tag = JAP }
+		cost = 15
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.01 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			set_temp_variable = { faction = 2 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 4 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = 2 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+	JAP_reject_condemn_Shogunate = {
+		icon = GFX_decision_JAP_reject_condemn_Shogunate
+		allowed = { original_tag = JAP }
+		cost = 30
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.01 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			set_temp_variable = { faction = 3 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+	JAP_promise_parliamentary_leaders_ministerial_positions = {
+		icon = GFX_decision_JAP_promise_parliamentary_leaders_ministerial_positions
+		allowed = { original_tag = JAP }
+		cost = 20
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.03 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			set_temp_variable = { faction = 3 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+
+	#### Factional support ####
+	JAP_support_from_the_military = {
+		icon = GFX_decision_JAP_support_from_the_military
+		allowed = { original_tag = JAP }
+		custom_cost_trigger = {
+			set_temp_variable = { cp_cost = 20 }
+			check_variable = { var = command_power value = cp_cost }
+		}
+		custom_cost_text = CP_COST
+		days_re_enable = 20
+		complete_effect = {
+			# (military-insubordination effects dropped)
+			add_to_variable = { JAP_aht_legitimacy = 0.02 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+		}
+	}
+	JAP_support_from_renovationists = {
+		icon = GFX_decision_JAP_support_from_renovationists
+		allowed = { original_tag = JAP }
+		cost = 20
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.03 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			set_temp_variable = { faction = 2 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+	JAP_support_from_national_socialists = {
+		icon = GFX_decision_JAP_support_from_national_socialists
+		allowed = { original_tag = JAP }
+		cost = 20
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.01 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			set_temp_variable = { faction = 4 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+	JAP_support_from_MIA = {
+		icon = GFX_decision_JAP_support_from_MIA
+		allowed = { original_tag = JAP }
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.03 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = -0.03 }
+			JAP_aht_legitimacy_check = yes
+			add_political_power = 75
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 1 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+	JAP_support_from_Zaibatsu = {
+		icon = GFX_decision_JAP_support_from_Zaibatsu
+		allowed = { original_tag = JAP }
+		cost = 30
+		days_re_enable = 20
+		complete_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.03 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+		}
+	}
+	JAP_control_streets_with_YL = {
+		icon = GFX_decision_JAP_control_streets_with_YL
+		allowed = { original_tag = JAP }
+		custom_cost_trigger = {
+			set_temp_variable = { custom_cost_pp = 10 }
+			has_political_power > custom_cost_pp
+			set_temp_variable = { stability_cost = 0.01 }
+			set_temp_variable = { stability_total = stability }
+			subtract_from_temp_variable = { stability_total = modifier@stability_factor }
+		}
+		custom_cost_text = pol_and_stability_cost
+		days_remove = 15
+		remove_effect = {
+			add_to_variable = { JAP_aht_legitimacy = 0.02 tooltip = JAP_aht_legitimacy_tooltip }
+			JAP_aht_legitimacy_check = yes
+			set_temp_variable = { faction = 3 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+	JAP_speech_at_meeting = {
+		icon = GFX_decision_JAP_speech_at_meeting
+		allowed = { original_tag = JAP }
+		# (Matsuoka-leader gate dropped)
+		custom_cost_trigger = {
+			set_temp_variable = { cost = 0.03 }
+			check_variable = { JAP_aht_legitimacy > cost }
+		}
+		custom_cost_text = JAP_aht_legitimacy_cost
+		days_re_enable = 30
+		complete_effect = {
+			set_temp_variable = { faction = 6 }
+			add_to_variable = { var:faction:JAP_aht_influence = 1 tooltip = JAP_aht_faction_influence_tooltip }
+			set_temp_variable = { faction = 5 }
+			add_to_variable = { var:faction:JAP_aht_influence = -1 tooltip = JAP_aht_faction_influence_tooltip }
+			JAP_aht_fractions_influence_update = yes
+		}
+	}
+
+}

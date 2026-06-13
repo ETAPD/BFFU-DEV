@@ -1,2 +1,1115 @@
-# GUTTED for Manchukuo rework — this empty file overrides the vanilla manchukuo.txt focus tree.
-# Manchukuo falls back to the generic focus tree until the new tree is built here.
+focus_tree = {
+	id = manchuko
+	continuous_focus_position = { x = 3570 y = 1310 } 
+	country = {
+		factor = 0
+		modifier = {
+			add = 10
+			tag = MAN
+		}
+	}
+	#First Five Year Plan
+	focus = {
+		id = MAN_first_five_year_plan
+		icon = GFX_MAN_first_five_year_plan-905539
+		x = 6
+		y = 1
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		completion_reward = {
+			# Opens the "Industrial Behemoth — First Five-Year Plan" decision tab.
+			custom_effect_tooltip = MAN_fyp_tab_unlocked_tt
+			set_country_flag = MAN_first_five_year_plan_active
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Form Manestsu's Industrial Sector
+	focus = {
+		id = MAN_formmanestsusindustrialsector
+		icon = GFX_MAN_formmanestsusindustrialsector-905540
+		x = 5
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_first_five_year_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_showa_steel
+			unlock_decision_tooltip = MAN_fyp_liaotung_iron
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_industrial_complex_factor = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Create the Main Railway Administration
+	focus = {
+		id = MAN_create_the_main_railway_administration
+		icon = GFX_MAN_create_the_main_railway_administration-905541
+		x = 7
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_first_five_year_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_asia_express
+			# Founds the South Manchuria Railway Company (Mantetsu) organisation.
+			custom_effect_tooltip = MAN_mantetsu_founded_tt
+			set_country_flag = MAN_mantetsu_founded
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_infrastructure_factor = 0.05 tooltip = production_speed_infrastructure_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#The Matsuoka Plan
+	focus = {
+		id = MAN_the_matsuoka_plan
+		icon = GFX_MAN_the_matsuoka_plan-905543
+		x = 3
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_formmanestsusindustrialsector  } prerequisite = { focus = MAN_create_the_main_railway_administration  }
+		mutually_exclusive = { focus = MAN_the_aikawa_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_benxihu
+			# State-led model — Mantetsu monopoly squeezes consumer output.
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_consumer_goods_factor = -0.01 tooltip = consumer_goods_factor_tt }
+			add_to_variable = { MAN_behemoth_political_power_factor = 0.05 tooltip = political_power_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#The Aikawa Plan
+	focus = {
+		id = MAN_the_aikawa_plan
+		icon = GFX_MAN_the_aikawa_plan-905545
+		x = 9
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_formmanestsusindustrialsector  } prerequisite = { focus = MAN_create_the_main_railway_administration  }
+		mutually_exclusive = { focus = MAN_the_matsuoka_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_dowa_auto
+			# Private-capital model — Aikawa's Nissan combine expands industry.
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#One Company One Industry
+	focus = {
+		id = MAN_one_company_one_industry
+		icon = GFX_MAN_one_company_one_industry-905547
+		x = 2
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_the_matsuoka_plan  }
+		completion_reward = {
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_factory_max_efficiency_factor = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Create New Worker Ethos
+	focus = {
+		id = MAN_create_new_worker_ethos
+		icon = GFX_MAN_create_new_worker_ethos-905548
+		x = 4
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_the_matsuoka_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_settler_workforce
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_factory_efficiency_gain_factor = 0.05 tooltip = production_factory_efficiency_gain_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Manestu Reborn
+	focus = {
+		id = MAN_manestu_reborn
+		icon = GFX_MAN_manestu_reborn-905549
+		x = 3
+		y = 5
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_one_company_one_industry  } prerequisite = { focus = MAN_create_new_worker_ethos  }
+		completion_reward = {
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_industrial_complex_factor = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Expansion of  Manestu Control
+	focus = {
+		id = MAN_expansionofmanestucontrol
+		icon = GFX_MAN_expansionofmanestucontrol-905550
+		x = 3
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_manestu_reborn  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_chahar_ores
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_local_resources_factor = 0.05 tooltip = local_resources_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Replace Manestsu's Control
+	focus = {
+		id = MAN_replacemanestsuscontrol
+		icon = GFX_MAN_replacemanestsuscontrol-905551
+		x = 10
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_the_aikawa_plan  }
+		completion_reward = {
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Remove Extraterritorially Privledges
+	focus = {
+		id = MAN_remove_extraterritorially_privledges
+		icon = GFX_MAN_remove_extraterritorially_privledges-905552
+		x = 8
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_the_aikawa_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_dairen_dockyards
+			add_political_power = 75
+			add_stability = 0.03
+		}
+	}
+
+	#Found Mangyō
+	focus = {
+		id = MAN_foundmangyo
+		icon = GFX_MAN_foundmangyo-905554
+		x = 9
+		y = 5
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_replacemanestsuscontrol  } prerequisite = { focus = MAN_remove_extraterritorially_privledges  }
+		completion_reward = {
+			# Founds the Mangyo (Manchurian Industrial Development Company) organisation.
+			custom_effect_tooltip = MAN_mangyo_founded_tt
+			set_country_flag = MAN_mangyo_founded
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0.05 tooltip = production_speed_arms_factory_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Manetsu Research Department
+	focus = {
+		id = MAN_manetsu_research_department
+		icon = GFX_MAN_manetsu_research_department-905555
+		x = 6
+		y = 5
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_RESEARCH
+		}
+		prerequisite = { focus = MAN_the_aikawa_plan  focus = MAN_the_matsuoka_plan  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_mantetsu_research
+			unlock_decision_tooltip = MAN_fyp_industrial_studies
+			add_research_slot = 1
+		}
+	}
+
+	#Purchase German Liscenses
+	focus = {
+		id = MAN_purchase_german_liscenses
+		icon = GFX_MAN_purchase_german_liscenses-905556
+		x = 4
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_manetsu_research_department  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_fushun_fuel
+			unlock_decision_tooltip = MAN_fyp_oil_surveys
+			add_tech_bonus = {
+				bonus = 0.5
+				uses = 1
+				category = industry
+				name = MAN_purchase_german_liscenses
+			}
+		}
+	}
+
+	#Learn From American Steelmakers
+	focus = {
+		id = MAN_learn_from_american_steelmakers
+		icon = GFX_MAN_learn_from_american_steelmakers-905557
+		x = 8
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_manetsu_research_department  }
+		completion_reward = {
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_factory_max_efficiency_factor = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Manchurian Aircrafts Company
+	focus = {
+		id = MAN_manchurian_aircrafts_company
+		icon = GFX_MAN_manchurian_aircrafts_company-905558
+		x = 6
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_manetsu_research_department  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_mamc
+			air_experience = 25
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0.05 tooltip = production_speed_arms_factory_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Second Five Year Plan
+	focus = {
+		id = MAN_second_five_year_plan
+		icon = GFX_MAN_second_five_year_plan-905559
+		x = 6
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_purchase_german_liscenses  } prerequisite = { focus = MAN_learn_from_american_steelmakers  } prerequisite = { focus = MAN_manchurian_aircrafts_company  }
+		completion_reward = {
+			# Opens the "Second Five-Year Plan" decision tab.
+			custom_effect_tooltip = MAN_syp_tab_unlocked_tt
+			set_country_flag = MAN_second_five_year_plan_active
+		}
+	}
+
+	#Breakthrough in Steel Rolling
+	focus = {
+		id = MAN_breakthrough_in_steel_rolling
+		icon = GFX_MAN_breakthrough_in_steel_rolling-905560
+		x = 5
+		y = 8
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_second_five_year_plan  }
+		completion_reward = {
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Modernised Agriculture
+	focus = {
+		id = MAN_modernised_agriculture
+		icon = GFX_MAN_modernised_agriculture-905561
+		x = 7
+		y = 8
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_second_five_year_plan  }
+		completion_reward = {
+			add_stability = 0.03
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_stability_factor = 0.02 tooltip = stability_factor_tt }
+			add_to_variable = { MAN_behemoth_consumer_goods_factor = -0.01 tooltip = consumer_goods_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Restructure the Liaohe River Flow
+	focus = {
+		id = MAN_restructure_the_liaohe_river_flow
+		icon = GFX_MAN_restructure_the_liaohe_river_flow-905562
+		x = 9
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_foundmangyo  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_sungari_dams
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_infrastructure_factor = 0.05 tooltip = production_speed_infrastructure_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Foster a Light Metal Society
+	focus = {
+		id = MAN_foster_a_light_metal_society
+		icon = GFX_MAN_foster_a_light_metal_society-905563
+		x = 11
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_foundmangyo  }
+		completion_reward = {
+			unlock_decision_tooltip = MAN_fyp_kirin_aluminium
+			add_resource = { type = aluminium amount = 12 state = 717 }
+			custom_effect_tooltip = MAN_eco_spirit_changed_tt
+			add_to_variable = { MAN_behemoth_production_speed_synthetic_refinery_factor = 0.05 tooltip = production_speed_synthetic_refinery_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	#Kwantung Demands Economic Planning
+	focus = {
+		id = MAN_kwantung_demands_economic_planning
+		icon = GFX_MAN_kwantung_demands_economic_planning-905568
+		x = 32
+		y = 1
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+	}
+
+	#Court Reorganisation Act
+	focus = {
+		id = MAN_court_reorganisation_act
+		icon = GFX_MAN_court_reorganisation_act-905569
+		x = 29
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_kwantung_demands_economic_planning  }
+	}
+
+	#Invest in Mass Education
+	focus = {
+		id = MAN_invest_in_mass_education
+		icon = GFX_MAN_invest_in_mass_education-905570
+		x = 26
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_court_reorganisation_act  }
+	}
+
+	#Implement a Japanese Tax System
+	focus = {
+		id = MAN_implement_a_japanese_tax_system
+		icon = GFX_MAN_implement_a_japanese_tax_system-905571
+		x = 28
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_court_reorganisation_act  }
+	}
+
+	#Open a Law School
+	focus = {
+		id = MAN_open_a_law_school
+		icon = GFX_MAN_open_a_law_school-905574
+		x = 30
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_court_reorganisation_act  }
+	}
+
+	#Delegate Authority to Manestsu Research Branch
+	focus = {
+		id = MAN_delegate_authority_to_manestsu_research_branch
+		icon = GFX_MAN_delegate_authority_to_manestsu_research_branch-905575
+		x = 31
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_kwantung_demands_economic_planning  }
+		mutually_exclusive = { focus = MAN_delegate_authority_to_the_manchuko_government  }
+	}
+
+	#Delegate Authority to the Manchuko Government
+	focus = {
+		id = MAN_delegate_authority_to_the_manchuko_government
+		icon = GFX_MAN_delegate_authority_to_the_manchuko_government-905576
+		x = 33
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_kwantung_demands_economic_planning  }
+		mutually_exclusive = { focus = MAN_delegate_authority_to_manestsu_research_branch  }
+	}
+
+	#Introduce Moral Societies
+	focus = {
+		id = MAN_introduce_moral_societies
+		icon = GFX_MAN_introduce_moral_societies-905579
+		x = 35
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_kwantung_demands_economic_planning  }
+	}
+
+	#Manchuko National Musuem
+	focus = {
+		id = MAN_manchuko_national_musuem
+		icon = GFX_MAN_manchuko_national_musuem-905580
+		x = 36
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_introduce_moral_societies  }
+	}
+
+	#Establish the Manchuko Film Association
+	focus = {
+		id = MAN_establish_the_manchuko_film_association
+		icon = GFX_MAN_establish_the_manchuko_film_association-905582
+		x = 32
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_invest_in_mass_education  } prerequisite = { focus = MAN_implement_a_japanese_tax_system  } prerequisite = { focus = MAN_open_a_law_school  } prerequisite = { focus = MAN_manchuko_national_musuem  }
+	}
+
+	#Promote Chinese Multicultralism
+	focus = {
+		id = MAN_promote_chinese_multicultralism
+		icon = GFX_MAN_promote_chinese_multicultralism-905589
+		x = 33
+		y = 5
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_establish_the_manchuko_film_association  }
+		mutually_exclusive = { focus = MAN_promote_manchurian_identity  }
+	}
+
+	#Promote Manchurian Identity
+	focus = {
+		id = MAN_promote_manchurian_identity
+		icon = GFX_MAN_promote_manchurian_identity-905592
+		x = 31
+		y = 5
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_establish_the_manchuko_film_association  }
+		mutually_exclusive = { focus = MAN_promote_chinese_multicultralism  }
+	}
+
+	#Nationwide Federalisation of Manchuria
+	focus = {
+		id = MAN_nationwide_federalisation_of_manchuria
+		icon = GFX_MAN_nationwide_federalisation_of_manchuria-905594
+		x = 32
+		y = 6
+		cost = 15
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_promote_chinese_multicultralism  focus = MAN_promote_manchurian_identity  }
+	}
+
+	#Call for Mixed Marriages
+	focus = {
+		id = MAN_call_for_mixed_marriages
+		icon = GFX_MAN_call_for_mixed_marriages-905595
+		x = 32
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_nationwide_federalisation_of_manchuria  }
+	}
+
+	#Keep Chinese Language
+	focus = {
+		id = MAN_keep_chinese_language
+		icon = GFX_MAN_keep_chinese_language-905596
+		x = 30
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_promote_chinese_multicultralism  }
+		mutually_exclusive = { focus = MAN_introduce_manchurian_language  } mutually_exclusive = { focus = MAN_force_the_japanese_language  }
+	}
+
+	#Introduce Manchurian Language
+	focus = {
+		id = MAN_introduce_manchurian_language
+		icon = GFX_MAN_introduce_manchurian_language-905597
+		x = 26
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_promote_manchurian_identity  }
+		mutually_exclusive = { focus = MAN_keep_chinese_language  } mutually_exclusive = { focus = MAN_force_the_japanese_language  }
+	}
+
+	#Force the Japanese Language
+	focus = {
+		id = MAN_force_the_japanese_language
+		icon = GFX_MAN_force_the_japanese_language-905598
+		x = 28
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_promote_chinese_multicultralism  focus = MAN_promote_manchurian_identity  }
+		mutually_exclusive = { focus = MAN_keep_chinese_language  } mutually_exclusive = { focus = MAN_introduce_manchurian_language  }
+	}
+
+	#Support Manchurian Elite Families
+	focus = {
+		id = MAN_support_manchurian_elite_families
+		icon = GFX_MAN_support_manchurian_elite_families-905599
+		x = 27
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_force_the_japanese_language  focus = MAN_introduce_manchurian_language  }
+	}
+
+	#Joint Manchu-Korean Leadership
+	focus = {
+		id = MAN_joint_manchukorean_leadership
+		icon = GFX_MAN_joint_manchukorean_leadership-905604
+		x = 35
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_promote_chinese_multicultralism  focus = MAN_promote_manchurian_identity  }
+	}
+
+	#Reform Mongolian Territory
+	focus = {
+		id = MAN_reform_mongolian_territory
+		icon = GFX_MAN_reform_mongolian_territory-905605
+		x = 35
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_joint_manchukorean_leadership  }
+	}
+
+	#Recognise Russian Influx
+	focus = {
+		id = MAN_recognise_russian_influx
+		icon = GFX_MAN_recognise_russian_influx-905607
+		x = 37
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_promote_chinese_multicultralism  focus = MAN_promote_manchurian_identity  }
+	}
+
+	#Restoring Control to the Concord Society
+	focus = {
+		id = MAN_restoring_control_to_the_concord_society
+		icon = GFX_MAN_restoring_control_to_the_concord_society-905608
+		x = 16
+		y = 1
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		mutually_exclusive = { focus = MAN_an_army_with_a_state  }
+	}
+
+	#Dreams of a Republican State
+	focus = {
+		id = MAN_dreams_of_a_republican_state
+		icon = GFX_MAN_dreams_of_a_republican_state-905610
+		x = 17
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_restoring_control_to_the_concord_society  }
+	}
+
+	#Begin Self-Governance
+	focus = {
+		id = MAN_begin_selfgovernance
+		icon = GFX_MAN_begin_selfgovernance-905611
+		x = 18
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_dreams_of_a_republican_state  }
+	}
+
+	#Restoring the Harmony Society
+	focus = {
+		id = MAN_restoring_the_harmony_society
+		icon = GFX_MAN_restoring_the_harmony_society-905613
+		x = 15
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_restoring_control_to_the_concord_society  }
+	}
+
+	#Legitimise Representative Functions
+	focus = {
+		id = MAN_legitimise_representative_functions
+		icon = GFX_MAN_legitimise_representative_functions-905614
+		x = 14
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_restoring_the_harmony_society  }
+	}
+
+	#Return Japanese Possesions
+	focus = {
+		id = MAN_return_japanese_possesions
+		icon = GFX_MAN_return_japanese_possesions-905615
+		x = 16
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_dreams_of_a_republican_state  }
+	}
+
+	#Return Japanese Civilians to Politics
+	focus = {
+		id = MAN_return_japanese_civilians_to_politics
+		icon = GFX_MAN_return_japanese_civilians_to_politics-905617
+		x = 16
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_begin_selfgovernance  } prerequisite = { focus = MAN_legitimise_representative_functions  } prerequisite = { focus = MAN_return_japanese_possesions  }
+	}
+
+	#Progressive Bureaucrats In Power
+	focus = {
+		id = MAN_progressive_bureaucrats_in_power
+		icon = GFX_MAN_progressive_bureaucrats_in_power-905618
+		x = 16
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_return_japanese_civilians_to_politics  }
+	}
+
+	#Release Intellectual Leftist
+	focus = {
+		id = MAN_release_intellectual_leftist
+		icon = GFX_MAN_release_intellectual_leftist-905619
+		x = 17
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_progressive_bureaucrats_in_power  }
+	}
+
+	#Restore the Status of the Party
+	focus = {
+		id = MAN_restore_the_status_of_the_party
+		icon = GFX_MAN_restore_the_status_of_the_party-905620
+		x = 15
+		y = 7
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_progressive_bureaucrats_in_power  }
+	}
+
+	#Manchuria Greening Program
+	focus = {
+		id = MAN_manchuria_greening_program
+		icon = GFX_MAN_manchuria_greening_program-905624
+		x = 15
+		y = 9
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_restore_the_status_of_the_party  }
+	}
+
+	#Support Land Reform
+	focus = {
+		id = MAN_support_land_reform
+		icon = GFX_MAN_support_land_reform-905626
+		x = 17
+		y = 9
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_release_intellectual_leftist  }
+	}
+
+	#The Japanese are at the Top, Chinese Second
+	focus = {
+		id = MAN_thejapaneseareatthetopchinesesecond
+		icon = GFX_MAN_thejapaneseareatthetopchinesesecond-905630
+		x = 16
+		y = 10
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_manchuria_greening_program  } prerequisite = { focus = MAN_support_land_reform  }
+	}
+
+	#An Army with a State
+	focus = {
+		id = MAN_an_army_with_a_state
+		icon = GFX_MAN_an_army_with_a_state-905635
+		x = 22
+		y = 1
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		mutually_exclusive = { focus = MAN_restoring_control_to_the_concord_society  }
+	}
+
+	#Finish Off the Concord Society
+	focus = {
+		id = MAN_finish_off_the_concord_society
+		icon = GFX_MAN_finish_off_the_concord_society-905636
+		x = 21
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_an_army_with_a_state  }
+	}
+
+	#Establish Religious Laws
+	focus = {
+		id = MAN_establish_religious_laws
+		icon = GFX_MAN_establish_religious_laws-905638
+		x = 23
+		y = 2
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_an_army_with_a_state  }
+	}
+
+	#Punish Thoughtcrimes
+	focus = {
+		id = MAN_punish_thoughtcrimes
+		icon = GFX_MAN_punish_thoughtcrimes-905640
+		x = 20
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_finish_off_the_concord_society  }
+	}
+
+	#Idealogical Use for the Kwantung
+	focus = {
+		id = MAN_idealogical_use_for_the_kwantung
+		icon = GFX_MAN_idealogical_use_for_the_kwantung-905642
+		x = 22
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_finish_off_the_concord_society  }
+	}
+
+	#Shut Down Land Reforms
+	focus = {
+		id = MAN_shut_down_land_reforms
+		icon = GFX_MAN_shut_down_land_reforms-905643
+		x = 21
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_punish_thoughtcrimes  } prerequisite = { focus = MAN_idealogical_use_for_the_kwantung  }
+	}
+
+	#Enact Mobilisation
+	focus = {
+		id = MAN_enact_mobilisation
+		icon = GFX_MAN_enact_mobilisation-905645
+		x = 23
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_idealogical_use_for_the_kwantung  }
+	}
+
+	#Transform the Civilian Sector
+	focus = {
+		id = MAN_transform_the_civilian_sector
+		icon = GFX_MAN_transform_the_civilian_sector-905646
+		x = 25
+		y = 4
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_establish_religious_laws  }
+	}
+
+	#Pass Forced Labours
+	focus = {
+		id = MAN_pass_forced_labours
+		icon = GFX_MAN_pass_forced_labours-905647
+		x = 24
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_enact_mobilisation  } prerequisite = { focus = MAN_transform_the_civilian_sector  }
+	}
+
+	#Purge the Left
+	focus = {
+		id = MAN_purge_the_left
+		icon = GFX_MAN_purge_the_left-905648
+		x = 20
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_shut_down_land_reforms  }
+	}
+
+	#Open the Lab...
+	focus = {
+		id = MAN_openthelab
+		icon = GFX_MAN_openthelab-905650
+		x = 22
+		y = 8
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = MAN_pass_forced_labours  } prerequisite = { focus = MAN_purge_the_left  }
+	}
+
+	#Manchurian Army Uniform Standard
+	focus = {
+		id = MAN_manchurian_army_uniform_standard
+		icon = GFX_MAN_manchurian_army_uniform_standard-905652
+		x = 10
+		y = 9
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_ANNEXATION
+		}
+	}
+
+	#New military Academies
+	focus = {
+		id = MAN_new_military_academies
+		icon = GFX_MAN_new_military_academies-905654
+		x = 10
+		y = 11
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_ANNEXATION
+		}
+		prerequisite = { focus = MAN_manchurian_army_uniform_standard  }
+	}
+
+	#Korean Special Forces
+	focus = {
+		id = MAN_korean_special_forces
+		icon = GFX_MAN_korean_special_forces-905656
+		x = 9
+		y = 12
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_ANNEXATION
+		}
+		prerequisite = { focus = MAN_new_military_academies  }
+	}
+
+	#Form the Asano Squad
+	focus = {
+		id = MAN_form_the_asano_squad
+		icon = GFX_MAN_form_the_asano_squad-905657
+		x = 11
+		y = 12
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_ANNEXATION
+		}
+		prerequisite = { focus = MAN_new_military_academies  }
+	}
+
+	#Lay Down the First Destroyer
+	focus = {
+		id = MAN_lay_down_the_first_destroyer
+		icon = GFX_MAN_lay_down_the_first_destroyer-905658
+		x = 8
+		y = 10
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_RESEARCH
+		}
+		prerequisite = { focus = MAN_manchurian_army_uniform_standard  }
+	}
+
+	#Manchurian Shipyards
+	focus = {
+		id = MAN_manchurian_shipyards
+		icon = GFX_goal_generic_construct_naval_dockyard
+		x = 7
+		y = 11
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_RESEARCH
+		}
+		prerequisite = { focus = MAN_lay_down_the_first_destroyer  }
+	}
+
+	#Create a Manchurian Air Force
+	focus = {
+		id = MAN_create_a_manchurian_air_force
+		icon = GFX_MAN_create_a_manchurian_air_force-905660
+		x = 12
+		y = 10
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_RESEARCH
+		}
+		prerequisite = { focus = MAN_manchurian_army_uniform_standard  }
+	}
+
+	#Air Defense Department
+	focus = {
+		id = MAN_air_defense_department
+		icon = GFX_goal_generic_army_artillery2
+		x = 13
+		y = 11
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = MAN_create_a_manchurian_air_force  }
+	}
+
+}
