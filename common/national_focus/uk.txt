@@ -269,7 +269,7 @@ focus_tree = {
 
 	# Amphibious Branch - Island Warfare
 	focus = {
-		id = ENG_marine_training_program
+		id = ENG_naval_invasion_tactics
 		icon = GFX_focus_generic_naval_invasion
 		prerequisite = { focus = ENG_amphibious_special_forces }
 		x = 0
@@ -279,6 +279,21 @@ focus_tree = {
 
 		completion_reward = {
 			army_experience = 25
+			add_ideas = ENG_UK_Marines
+		}
+	}
+
+	focus = {
+		id = ENG_marine_training_program
+		icon = GFX_focus_generic_naval_invasion
+		prerequisite = { focus = ENG_naval_invasion_tactics }
+		x = -1
+		y = 1
+		relative_position_id = ENG_naval_invasion_tactics
+		cost = 5
+
+		completion_reward = {
+			custom_effect_tooltip = ENG_modify_spirit_of_rattanakosin_dynamic_modifier_tt
 			random_army_leader = {
 				limit = {
 					NOT = { has_trait = naval_invader }
@@ -295,64 +310,38 @@ focus_tree = {
 	}
 
 	focus = {
-		id = ENG_naval_invasion_tactics
-		icon = GFX_focus_generic_naval_invasion
-		prerequisite = { focus = ENG_marine_training_program }
-		x = -1
-		y = 1
-		relative_position_id = ENG_marine_training_program
-		cost = 5
-
-		completion_reward = {
-			custom_effect_tooltip = ENG_modify_spirit_of_rattanakosin_dynamic_modifier_tt
-			add_to_variable = {
-				ENG_var_naval_invasion_penalty = -0.075
-				tooltip = naval_invasion_penalty_tt
-			}
-			add_to_variable = {
-				ENG_var_shore_bombardment_bonus = 0.1
-				tooltip = shore_bombardment_bonus_tt
-			}
-			force_update_dynamic_modifier = yes
-		}
-	}
-
-	focus = {
 		id = ENG_coastal_assault_doctrine
 		icon = GFX_focus_generic_naval_invasion
-		prerequisite = { focus = ENG_marine_training_program }
+		prerequisite = { focus = ENG_naval_invasion_tactics }
 		x = 1
 		y = 1
-		relative_position_id = ENG_marine_training_program
+		relative_position_id = ENG_naval_invasion_tactics
 		cost = 5
 
 		completion_reward = {
 			army_experience = 25
-			add_ideas = ENG_amphibious_equipment_production
+			swap_ideas = {
+				add_idea = ENG_UK_Marines_2
+				remove_idea = ENG_UK_Marines
+			}
 		}
 	}
 
 	focus = {
 		id = ENG_royal_marines
 		icon = GFX_focus_generic_naval_invasion
-		prerequisite = { focus = ENG_naval_invasion_tactics }
+		prerequisite = { focus = ENG_marine_training_program }
 		prerequisite = { focus = ENG_coastal_assault_doctrine }
-		x = 0
-		y = 2
+		x = 1
+		y = 1
 		relative_position_id = ENG_marine_training_program
 		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = ENG_modify_spirit_of_rattanakosin_dynamic_modifier_tt
-			add_to_variable = {
-				ENG_var_special_forces_defence_factor = 0.04
-				tooltip = special_forces_defence_factor_tt
+			swap_ideas = {
+				add_idea = ENG_UK_Marines_3
+				remove_idea = ENG_UK_Marines_2
 			}
-			add_to_variable = {
-				ENG_var_special_forces_attack_factor = 0.04
-				tooltip = special_forces_attack_factor_tt
-			}				
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -367,14 +356,7 @@ focus_tree = {
 		cost = 5
 
 		completion_reward = {
-			add_to_variable = {
-				ENG_var_army_artillery_attack_factor = 0.03
-				tooltip = army_artillery_attack_factor_tt
-			}			
-			add_to_variable = {
-				ENG_var_attrition = -0.05
-				tooltip = attrition_tt
-			}	
+	    add_ideas = ENG_UK_Mountaineer
 		}
 	}
 
@@ -388,10 +370,9 @@ focus_tree = {
 		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = ENG_modify_spirit_of_rattanakosin_dynamic_modifier_tt
-			add_to_variable = {
-				ENG_var_acclimatization_cold_climate_gain_factor = 0.25
-				tooltip = acclimatization_cold_climate_gain_factor_tt
+			swap_ideas = {
+				add_idea = ENG_UK_Mountaineers
+				remove_idea = ENG_UK_Mountaineer
 			}
 		}
 	}
@@ -406,12 +387,6 @@ focus_tree = {
 		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = ENG_modify_spirit_of_rattanakosin_dynamic_modifier_tt
-			add_to_variable = {
-				ENG_var_supply_consumption_factor = -0.10
-				tooltip = supply_consumption_factor_tt
-			}
-			force_update_dynamic_modifier = yes
 				random_army_leader = {
 				limit = {
 					NOT = { has_trait = hill_fighter }
@@ -437,6 +412,10 @@ focus_tree = {
 		cost = 5
 
 		completion_reward = {
+			swap_ideas = {
+				add_idea = ENG_UK_Mountaineer_3
+				remove_idea = ENG_UK_Mountaineers
+			}
 		}
 	}
 
@@ -453,10 +432,7 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = ENG_expand_special_forces_idea1
-				add_idea = ENG_expand_special_forces_idea2
-			}
+        add_ideas = ENG_expand_special_forces_idea1
 			
 			add_tech_bonus = {
 				name = mar_bonus
@@ -478,7 +454,10 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			swap_ideas = {
+				remove_idea = ENG_expand_special_forces_idea1
+				add_idea = ENG_expand_special_forces_idea2
+			}
 		}
 	}
 	focus = {
@@ -493,7 +472,10 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			swap_ideas = {
+				remove_idea = ENG_expand_special_forces_idea2
+				add_idea = ENG_expand_special_forces_idea3
+			}
 		}
 	}
 	focus = {
@@ -508,7 +490,18 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			random_army_leader = {
+				limit = {
+					NOT = { has_trait = paratrooper }
+				}
+				add_unit_leader_trait =  paratrooper
+			}
+			random_army_leader = {
+				limit = {
+					NOT = { has_trait =  paratrooper }
+				}
+				add_unit_leader_trait =  paratrooper
+			}
 		}
 	}
 	focus = {
@@ -524,7 +517,10 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			swap_ideas = {
+				remove_idea = ENG_expand_special_forces_idea3
+				add_idea = ENG_expand_special_forces_idea4
+			}
 		}
 	}
 	
@@ -916,7 +912,7 @@ focus_tree = {
 	# Mediums
 	focus = {
 		id = ENG_cruiser_tanks
-		icon = GFX_cruiser_tank
+		icon = GFX_focus_NOR_rikstanken
 		prerequisite = { focus = ENG_mechanize_infantry }
 		mutually_exclusive = { focus = ENG_infantry_tanks }
 		
@@ -3539,6 +3535,7 @@ focus_tree = {
 		icon = GFX_SINK_BURN_DESTROY
 		prerequisite = { focus = ENG_battleship_investments focus = ENG_form_watu focus = ENG_better_torpedo }
 		available = {
+			date > 1941.1.1
 		}
 
 		x = 0
@@ -3551,6 +3548,7 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
+			remove_ideas = ENG_niger_navy
 		}
 	}
 	focus = {
@@ -3564,12 +3562,13 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_sink_burn_destroy
 		
-	cost = 3
+	cost = 5
 		
 		ai_will_do = {
 			factor = 1
 		}	
 		completion_reward = {
+			add_ideas = ENG_niger_navy2
 		}
 	}
 
@@ -3853,7 +3852,7 @@ focus_tree = {
 			CHI = { exists = no }
 		}
 
-		icon = GFX_Burma_Road
+		icon = GFX_focus_CHI_generalissimo_for_all_of_china
 		x = 2
 		y = 1
 		relative_position_id = ENG_fortify_the_east
@@ -4215,6 +4214,7 @@ focus_tree = {
 	}
     focus = {
     id = ENG_imphal_kohima_frontline
+	icon = GFX_focus_generic_air_defense
     prerequisite = { focus = ENG_burma_road}
 	prerequisite = {focus = ENG_mobilise_eastern_garrison}
 	mutually_exclusive = { focus = ENG_malta_east}
@@ -4222,15 +4222,77 @@ focus_tree = {
     x = -1
     y = 1
 	cost = 2
+        completion_reward = {
+			1058 = {
+				add_building_construction = {
+					type = air_base
+					level = 5
+					province = 12299
+					instant_build = yes
+				}
+				set_building_level = {
+					type = bunker
+					level = 3
+					province = 9991
+					instant_build = yes
+				}
+				}
+				432 = {
+				set_building_level = {
+					type = bunker
+					level = 3
+					province = 997
+					instant_build = yes
+				}
+				set_building_level = {
+					type = bunker
+					level = 3
+					province = 10090
+					instant_build = yes
+				}
+				set_building_level = {
+					type = bunker
+					level = 3
+					province = 1581
+					instant_build = yes
+				}
+				}
+				990 = {
+					set_building_level = {
+					type = bunker
+					level = 3
+					province = 1553
+					instant_build = yes
+				}
+					set_building_level = {
+					type = bunker
+					level = 3
+					province = 1525
+					instant_build = yes
+				}
+					set_building_level = {
+					type = bunker
+					level = 3
+					province = 12322
+					instant_build = yes
+				}
+			}
+		}
     }
 
     focus = {
     id = ENG_mobilise_eastern_garrison
+	icon = GFX_focus_JAP_national_spiritual_mobilization_movement
     prerequisite = { focus = ENG_fortify_the_east }
     relative_position_id = ENG_fortify_the_east
     x = 0
     y = 1
 	cost = 2
+	completion_reward = {
+	RAJ= {
+	load_oob = RAJ_eastern_garrison
+	}
+	}
     }
 	
 	focus = {
@@ -4525,6 +4587,32 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
+			771 = {
+				set_building_level = {
+					type = bunker
+					level = 3
+					province = 1846
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 3
+					instant_build = yes
+				}
+			}
+			770 = {
+				set_building_level = {
+					type = bunker
+					level = 3
+					province = 13209
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 3
+					instant_build = yes
+				}
+			}
 		}
 	}
 	focus = {
@@ -4775,7 +4863,7 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			add_political_power = -50
+			add_political_power = -25
 			GER = { add_political_power = -100 }
 			set_rule = { can_send_volunteers = yes }
             add_ideas = ENG_volunteers_idea
@@ -4837,7 +4925,7 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_protest_anschluss
 		
-		cost = 5
+		cost = 4
 		
 		ai_will_do = {
 			factor = 1
@@ -4903,20 +4991,42 @@ focus_tree = {
 		}
 	}
 	focus = {
-		id = ENG_break_german_cryptology
-		icon = GFX_focus_AFG_work_with_german_inteligence
+		id = ENG_emergency_anglo_french_staff_talks
+		icon = GFX_focus_ARG_join_the_allies
 		prerequisite = { focus = ENG_protest_anschluss }
 		
 		x = 1
 		y = 1
 		relative_position_id = ENG_protest_anschluss
 		
-		cost = 10
+		cost = 3
 		
 		ai_will_do = {
 			factor = 1
 		}	
 		completion_reward = {
+			add_political_power = 50
+			army_experience = 25
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			FRA = {
+			add_political_power = 50
+			army_experience = 25
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			}
 		}
 	}
 	
@@ -4965,7 +5075,8 @@ focus_tree = {
 		relative_position_id = ENG_London_stock_exchange_reform
 
 		available = {
-			GER = { has_completed_focus = GER_anschluss }
+			has_completed_focus = ENG_general_rearmament
+			threat > 0.2
 		}
 		
 		cost = 5
@@ -4975,6 +5086,7 @@ focus_tree = {
 		}	
 		completion_reward = {
 			add_ideas = ENG_prepare_for_the_inevitable_idea
+			custom_effect_tooltip = MaxwellxChurchill_ENG
 		}
 	}
 	focus = {
@@ -4995,7 +5107,9 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+		add_dynamic_modifier = { modifier = BANK_OF_ENGLAND }
+		set_variable = { ENG_consumer_goods_expected_value = -0.025 tooltip = consumer_goods_expected_value_tt}
+		custom_effect_tooltip = BANK_OF_ENGLAND_1
 		}
 	}
 	focus = {
@@ -5016,7 +5130,22 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
 		}
 	}
 	focus = {
@@ -5059,6 +5188,14 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
         swap_ideas = {
 			add_idea = ENG_prepare_for_the_inevitable_2
 			remove_idea = ENG_prepare_for_the_inevitable_idea
@@ -5083,7 +5220,28 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			add_political_power = 25
+			add_stability = 0.05
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			GER = {
+			add_political_power = 25
+			add_stability = 0.05
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			}
 		}
 	}
 	focus = {
@@ -5096,7 +5254,7 @@ focus_tree = {
 		relative_position_id = ENG_bohemian_weapons
 
 		available = {
-			GER = { has_completed_focus = GER_fate_of_czechoslovakia }
+			GER = { has_completed_focus = GER_demand_sudetenland }
 		}
 		
 		cost = 5
@@ -5126,12 +5284,31 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			add_tech_bonus = {
+                name = tools_bonus
+                bonus = 0.5
+                uses = 2
+                #ahead_reduction = 0.2
+                technology = excavation1
+                technology = excavation2
+                technology = excavation3
+                technology = excavation4
+            }
+			add_resource = {
+				type = aluminium
+				amount = 150
+				state = 129
+			}
+			add_resource = {
+				type = aluminium
+				amount = 200
+				state = 130
+			}
 		}
 	}
 	focus = {
-		id = ENG_steel_mil_modernistaion
-		icon = GFX_focus_generic_steel
+		id = ENG_royal_ordnance
+		icon = GFX_focus_generic_industrial_experts
 		prerequisite = { focus = ENG_London_stock_exchange_reform }
 		
 		x = -2
@@ -5147,7 +5324,31 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			add_tech_bonus = {
+                name = tools_bonus
+                bonus = 0.5
+                uses = 2
+                #ahead_reduction = 0.2
+                technology = construction1
+                technology = construction2
+                technology = construction3
+                technology = construction4
+            }
+			random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+			add_building_construction = {
+				type = steel_refinery
+				level = 1
+				instant_build = yes
+			}
+			}
 		}
 	}
 
@@ -5188,7 +5389,7 @@ focus_tree = {
 	focus = {
 		id = ENG_appeasement_to_action
 		icon = GFX_focus_spr_the_anti_fascist_workers_revolution
-		prerequisite = { focus = ENG_embargo_germany focus = ENG_break_german_cryptology }
+		prerequisite = { focus = ENG_embargo_germany focus = ENG_emergency_anglo_french_staff_talks }
 		
 		available = {
 			OR = {
@@ -5201,7 +5402,7 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_embargo_germany
 		
-		cost = 5
+		cost = 4
 		
 		ai_will_do = {
 			factor = 1
@@ -5220,7 +5421,7 @@ focus_tree = {
 		x = 8
 		y = 0
 		
-		cost = 10
+		cost = 4
 		
 		ai_will_do = {
 			factor = 1
@@ -5772,7 +5973,7 @@ focus_tree = {
 			130 = {
 				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
-					type = arms_factory
+					type = industrial_complex
 					level = 2
 					instant_build = yes
 				}
@@ -5792,7 +5993,6 @@ focus_tree = {
 		icon = GFX_stonks
 		prerequisite = { focus = ENG_boost_construction }
 		prerequisite = { focus = ENG_utilise_holdings }
-		prerequisite = {focus = ENG_military_research_2}
 		
 		x = 0
 		y = 1
@@ -5929,7 +6129,7 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_oust_chamberlain
 		
-		cost = 7
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
@@ -6036,7 +6236,7 @@ focus_tree = {
 		relative_position_id = ENG_military_buildup
 
 		available = {
-			GER = { has_completed_focus = GER_molotov_ribbentrop_pact }
+			GER = { has_completed_focus = GER_fate_of_czechoslovakia }
 		}
 		
 		cost = 5
@@ -6045,7 +6245,23 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+		    random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+		    random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+        add_timed_idea = { idea = ENG_Emergency_production days = 90 }
 		}
 	}
 	focus = {
@@ -6058,6 +6274,8 @@ focus_tree = {
 		relative_position_id = ENG_military_buildup
 
 		available = {
+			has_completed_focus = ENG_general_rearmament
+			threat > 0.2
 		}
 		
 		cost = 5
@@ -6067,6 +6285,14 @@ focus_tree = {
 		}	
 		completion_reward = {
         custom_effect_tooltip = MaxwellxChurchill_ENG
+		random_core_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
 		}
 	}
 	focus = {
@@ -6079,6 +6305,7 @@ focus_tree = {
 		relative_position_id = ENG_military_buildup
 
 		available = {
+			threat > 0.2
 		}
 		
 		cost = 5
@@ -6102,7 +6329,7 @@ focus_tree = {
 		}
 	}
 	focus = {
-		id = ENG_give_poles_german_war_plans
+		id = ENG_study_german_war_plans
 		icon = GFX_GER_curtail_poland
 		prerequisite = { focus = ENG_military_buildup}
 		
@@ -6111,15 +6338,20 @@ focus_tree = {
 		relative_position_id = ENG_military_buildup
 
 		available = {
+			has_war = no
 		}
 		
-		cost = 1
+		cost = 2
 		
 		ai_will_do = {
 			factor = 1
 		}	
 		completion_reward = {
-
+		custom_effect_tooltip = Break_German_Crypto
+        add_timed_idea = { idea = ENG_Decyphered_German_War_Plans days = 90 }
+		hidden_effect = {
+        remove_ideas = ENG_Decyphered_German_War_Plans
+		}
 		}
 	}
 	focus = {
@@ -6199,6 +6431,10 @@ focus_tree = {
 					level = 4
 					instant_build = yes
 				}
+			}
+			add_timed_idea = {
+				idea = ENG_Domestic_Bonds
+				days = 270
 			}
 		}
 	}
@@ -6565,7 +6801,7 @@ focus_tree = {
 			threat > 0.2
 		}
 
-		cost = 5
+		cost = 4
 
 		ai_will_do = {
 			factor = 1
@@ -6650,12 +6886,12 @@ focus_tree = {
 		}
 		search_filters = {FOCUS_FILTER_MANPOWER}	
 		completion_reward = {
-			add_ideas = ENG_imperial_conscription_idea
+			add_ideas = ENG_imperial_conscription_idea2
 			every_country = {
 				limit = {
 					is_subject_of = ENG
 				}
-				add_ideas = ENG_imperial_conscription_idea
+				add_ideas = ENG_imperial_conscription_idea2
 			}
 		}
 	}
@@ -6667,16 +6903,18 @@ focus_tree = {
 
 		
 		available = {
-           GER = {
-            has_completed_focus = GER_danzig_or_war
-           }
+		   always = no
 		}
+
+        bypass = {
+            has_war_with = GER
+        }
 		
 		x = 5
 		y = 6
 		relative_position_id = ENG_appeasement
 
-		cost = 5
+		cost = 1
 		
 		ai_will_do = {
 			factor = 1
@@ -6684,30 +6922,10 @@ focus_tree = {
 		completion_reward = {
         add_war_support = 0.1
         add_stability = -0.05
-        add_ideas = war_preperation
+       
 		}
 	}
-	focus = {
-		id = ENG_v_for_victory
-		icon = GFX_determination
-		prerequisite = { focus = ENG_the_point_of_no_reutrn }
 
-		
-		available = {
-		}
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_the_point_of_no_reutrn
-
-		cost = 5
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-		}
-	}
 	
 	focus = {
 		id = ENG_special_research_department
@@ -6888,7 +7106,7 @@ focus_tree = {
 		id = ENG_african_industry
 		icon = GFX_focus_IRQ_liberate_north_africa
 		prerequisite = { focus = ENG_Churchill_war_cabinet}
-		prerequisite = {focus = ENG_v_for_victory }
+		prerequisite = {focus = ENG_home_defence }
 		
 		available = {
 			OR = {
@@ -6966,23 +7184,7 @@ focus_tree = {
 			}
 		}
 	}
-	focus = {
-		id = ENG_pax_britannica
-		icon = GFX_restore_pax_britannica
-		prerequisite = { focus = ENG_african_industry }
-		available = {				
-		} 
-		x = 0
-		y = 2
-		relative_position_id = ENG_african_industry
-		cost = 5
-		ai_will_do = {
-			factor = 1
-		}
-		search_filters = {FOCUS_FILTER_RESEARCH}	
-		completion_reward = {
-		}
-	}
+
 	
 	focus = {
 		id = ENG_tizard_mission
@@ -7078,6 +7280,12 @@ focus_tree = {
 		}
 		search_filters = {FOCUS_FILTER_RESEARCH}	
 		completion_reward = {
+			add_tech_bonus = {
+				name = tizard_mission_focus
+				bonus = 1
+				uses = 1
+				category = nuclear
+			}
 		}
 	}
 	
@@ -7250,47 +7458,11 @@ focus_tree = {
 		}
 	}
 	focus = {
-		id = ENG_operiation_dynamo
-		icon = GFX_operation_dynamo
-		prerequisite = { focus = ENG_Churchill_war_cabinet }
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_Churchill_war_cabinet
-		
-		cost = 5
-		
-		ai_will_do = {
-			factor = 1
-		}
-		
-		completion_reward = {
-		}
-	}
-	focus = {
 		id = ENG_Battle_of_britain
 		icon = GFX_battle_of_britain
-		prerequisite = { focus = ENG_operiation_dynamo}
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_operiation_dynamo
-		
-		cost = 5
-		
-		ai_will_do = {
-			factor = 1
-		}
-		
-		completion_reward = {
-		}
-	}
-	focus = {
-		id = ENG_operiation_compass
-		icon = GFX_operation_compass
 		prerequisite = { focus = ENG_Churchill_war_cabinet}
 		
-		x = 2
+		x = 0
 		y = 1
 		relative_position_id = ENG_Churchill_war_cabinet
 		
@@ -7301,16 +7473,17 @@ focus_tree = {
 		}
 		
 		completion_reward = {
+			custom_effect_tooltip = Battle_of_britain
 		}
 	}
 	focus = {
 		id = ENG_operiation_Torch
 		icon = GFX_operation_torch
-		prerequisite = { focus = ENG_operiation_compass}
+		prerequisite = { focus = ENG_Churchill_war_cabinet}
 		
-		x = 0
+		x = 2
 		y = 1
-		relative_position_id = ENG_operiation_compass
+		relative_position_id = ENG_Churchill_war_cabinet
 		
 		cost = 5
 		
@@ -7394,6 +7567,19 @@ focus_tree = {
 		}
 		
 		completion_reward = {
+			every_state = {
+				limit = {
+					OR = {
+						state = 14
+						state = 15
+						state = 30
+						state = 16
+						state = 24
+						state = 23
+					}
+				}
+				add_dynamic_modifier = { modifier = OPERATION_OVERLORD days = 90  }
+			}
 		}
 	}
 	focus = {
@@ -7412,6 +7598,21 @@ focus_tree = {
 		}
 		
 		completion_reward = {
+			every_state = {
+				limit = {
+					OR = {
+						state = 977
+						state = 35
+						state = 7
+						state = 36
+						state = 51
+						state = 42
+						state = 980
+						state = 8
+					}
+				}
+				add_dynamic_modifier = { modifier = OPERATION_MARKET_GARDEN days = 90  }
+			}
 		}
 	}
 	focus = {
