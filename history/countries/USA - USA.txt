@@ -1,4 +1,4 @@
-﻿capital = 361 # Washington DC
+capital = 361 # Washington DC
 
 oob = "USA_1936"
 
@@ -44,27 +44,16 @@ if = {
 	}
 }
 
-set_research_slots = 7
-set_stability = 0.75
+set_research_slots = 6
+set_stability = 0.50
 set_war_support = 0
 add_command_power = 20
-set_variable = { dockyard_major = 1 }
-set_variable = { var = senators_support value = 48 }
-set_variable = { var = senators_total value = 96 }
-set_variable = { var = representatives_support value = 218 }
-set_variable = { var = representatives_total value = 435 }
-set_variable = { var = quorum_low value = 39 }
-set_variable = { var = quorum_medium value = 49 }
-set_variable = { var = quorum_high value = 58 }
-#set_variable = { USA_poster_center_icon_frame = 1 }
-set_variable = { USA_new_propaganda_campaign = 0 } #Used to pick a poster slot
-set_variable = { USA_propaganda_campaign_to_remove = 0 } #Used to reset a poster slot
-#set_variable = { SOV_propaganda_locked_slot_index = 1 } #### === INSERT LOCKED SLOT INDEX IN STRIPE HERE === ####
-set_variable = { USA_propaganda_empty_slot_index = 1 } #### === INSERT EMPTY SLOT INDEX IN STRIPE HERE === ####
-set_variable = { USA_poster_left_icon_frame = USA_propaganda_empty_slot_index } #Set up the appropriate empty slot GFX
-set_variable = { USA_poster_center_icon_frame = USA_propaganda_empty_slot_index } #Set up the appropriate locked slot GFX
+set_rule = { can_join_factions = no }  # USA may only join the Allies via the December 7th focus
+# GUTTED: set_variable = { USA_propaganda_empty_slot_index = 1 } #### === INSERT EMPTY SLOT INDEX IN STRIPE HERE === ####
+# GUTTED: set_variable = { USA_poster_left_icon_frame = USA_propaganda_empty_slot_index } #Set up the appropriate empty slot GFX
+# GUTTED: set_variable = { USA_poster_center_icon_frame = USA_propaganda_empty_slot_index } #Set up the appropriate locked slot GFX
 #set_variable = { SOV_poster_right_icon_frame = SOV_propaganda_locked_slot_index } #Set up the appropriate locked slot GFX
-USA_recalc_congress_icon_frames = yes
+# GUTTED: USA_recalc_congress_icon_frames = yes
 # USA = {
 # 	country_event = { id = usa.50 days = 2 }
 # 	country_event = { id = usa.51 days = 2 }
@@ -164,7 +153,7 @@ if = {
 ##Monroe Doctrine - We are trying to just remove the dlc check and see what, if any, things break. Will ask QA and BETAs to test new system both with and without ToA
 #IF = {
 #	limit = { has_dlc = "Trial of Allegiance" }
-	add_ideas = USA_monroe_doctrine_enforcer
+# GUTTED(monroe): 	add_ideas = USA_monroe_doctrine_enforcer
 #}
 #IF = {
 #	limit = { NOT = { has_dlc = "Trial of Allegiance" }	}
@@ -206,18 +195,68 @@ set_popularities = {
 	communism = 1
 }
 
+set_rule = { can_join_factions = no }
+
 add_ideas = {
 	undisturbed_isolation
-	great_depression
-	disarmed_nation
+	USA_volunteer_army
 	free_trade
-	home_of_the_free
 	USA_island_hopping8
-	USA_neutrality_idea
-	new_deal
-	USA_armed_forces_desegregation
-	bureau_of_ordnance_spirit
+	USA_idea_isolationism
+# GUTTED(monroe): 	USA_monroe_doctrine_enforcer
+	USA_outdated_undertrained_underfunded
 }
+
+# USA_united_states_army — dynamic modifier. Variables must be set before adding.
+# Added here (not via on_startup) so the conscription_factor penalty is applied
+# during the initial manpower pool calculation, giving the intended 600-800k start.
+set_variable = { var = USA_army_conscription_bonus value = -0.50 }
+set_variable = { var = USA_army_xp_bonus           value = 0 }
+set_variable = { var = USA_army_promote_bonus      value = 0 }
+set_variable = { var = USA_army_planning_bonus     value = 0 }
+set_variable = { var = USA_army_armor_attack_bonus value = -0.15 }  # -15% drag; +0.15 net after Shatter the Panzers 5th Gen
+set_variable = { var = USA_army_mech_attack_bonus          value = 0 }
+set_variable = { var = USA_army_mech_defence_bonus         value = 0 }
+set_variable = { var = USA_army_supply_consumption_bonus   value = 0 }
+set_variable = { var = USA_army_artillery_attack_bonus    value = 0 }
+set_variable = { var = USA_army_artillery_defence_bonus   value = 0 }
+set_variable = { var = USA_army_breakthrough_bonus        value = 0 }
+set_variable = { var = USA_army_sf_cap_bonus              value = 0 }
+set_variable = { var = USA_army_marine_sf_cap_bonus       value = 0 }
+set_variable = { var = USA_army_acclim_hot_bonus          value = 0 }
+set_variable = { var = USA_army_acclim_cold_bonus         value = 0 }
+set_variable = { var = USA_army_terrain_bonus             value = 0 }
+set_variable = { var = USA_army_rangers_org_bonus         value = 0 }
+set_variable = { var = USA_army_mountaineer_sf_cap_bonus  value = 0 }
+set_variable = { var = USA_army_mountaineer_attack_bonus  value = 0 }
+set_variable = { var = USA_army_mountaineer_defence_bonus value = 0 }
+set_variable = { var = USA_army_ranger_attack_bonus         value = 0 }
+set_variable = { var = USA_army_ranger_coordination_bonus    value = 0 }
+set_variable = { var = USA_army_pentagon_cp_bonus         value = 0 }
+set_variable = { var = USA_army_training_time_bonus       value = 0 }
+set_variable = { var = USA_army_invasion_prep_bonus          value = 0 }
+set_variable = { var = USA_army_amphibious_inv_bonus          value = 0 }
+set_variable = { var = USA_army_naval_planning_speed_bonus    value = 0 }
+set_variable = { var = USA_army_naval_inv_capacity_bonus      value = 0 }
+set_variable = { var = USA_army_marine_supply_grace_bonus     value = 0 }
+add_dynamic_modifier = { modifier = USA_united_states_army }
+
+# USA_united_states_navy — variables must be set before add_dynamic_modifier.
+# Torpedo penalty values (naval_torpedo_hit_chance_factor, navy_carrier_air_attack_factor)
+# replace the old USA_torpedo_detonator_penalty static spirit.
+set_variable = { var = USA_navy_speed_bonus              value = -0.10 }
+set_variable = { var = USA_navy_aa_bonus                 value = -0.10 }
+set_variable = { var = USA_navy_capital_attack_bonus     value = 0.05 }
+set_variable = { var = USA_navy_capital_defence_bonus    value = 0.05 }
+set_variable = { var = USA_navy_heavy_gun_hit_bonus      value = -0.15 }
+set_variable = { var = USA_navy_carrier_traffic_bonus    value = -0.10 }
+set_variable = { var = USA_navy_torpedo_hit_bonus        value = -0.80 }
+set_variable = { var = USA_navy_carrier_air_attack_bonus value = -0.40 }
+set_variable = { var = USA_navy_carrier_air_agility_bonus value = 0 }
+set_variable = { var = USA_navy_carrier_air_defence_bonus value = 0 }
+set_variable = { var = USA_navy_max_range_bonus           value = 0 }
+set_variable = { var = USA_navy_sortie_efficiency_bonus   value = 0 }
+add_dynamic_modifier = { modifier = USA_united_states_navy }
 
 
 # DIPLOMACY
@@ -257,65 +296,49 @@ if = {
 }
 
 
-recruit_character = USA_franklin_delano_roosevelt
-recruit_character = USA_william_dudley_pelley
-recruit_character = USA_earl_browder
-recruit_character = USA_omar_bradley
-recruit_character = USA_geoffrey_keyes
-recruit_character = USA_lucian_truscott
-recruit_character = USA_mark_clark
-recruit_character = USA_douglas_macarthur
-recruit_character = USA_walter_krueger
-recruit_character = USA_lloyd_fredendall
-recruit_character = USA_leslie_mcnair
 #recruit_character = USA_jonathan_wainwright
-recruit_character = USA_russell_hartle
-recruit_character = USA_leonard_gerow
-recruit_character = USA_edward_brooks
-recruit_character = USA_clarence_huebner
-recruit_character = USA_alexander_patch
-recruit_character = USA_william_simpson
-recruit_character = USA_courtney_hodges
-recruit_character = USA_joseph_stilwell
-recruit_character = USA_oscar_griswold
-recruit_character = USA_maurice_rose
-recruit_character = USA_ernest_king
-recruit_character = USA_frank_jack_fletcher
-recruit_character = USA_harold_rainsford_stark
-recruit_character = USA_arleigh_burke
-recruit_character = USA_george_s_patton
-recruit_character = USA_dwight_d_eisenhower
-recruit_character = USA_j._lawton_collins
-recruit_character = USA_chester_w_nimitz
-recruit_character = USA_william_halsey_jr
-recruit_character = USA_raymond_a._spruance
-recruit_character = USA_charles_m._cooke_jr
-recruit_character = USA_hiram_schofield
-recruit_character = USA_robert_goddard
-recruit_character = USA_henry_morgenthau
-recruit_character = USA_robert_taft
-recruit_character = USA_raymond_spruance
-recruit_character = USA_cordell_hull
-recruit_character = USA_robert_oppenheimer
-recruit_character = USA_curtis_lemay
-recruit_character = USA_harold_ickes
-recruit_character = USA_thomas_kinkaid
-recruit_character = USA_james_byrne
-recruit_character = USA_henry_arnold
-recruit_character = USA_dewitt_clinton_ramsey
-recruit_character = USA_harold_mcclelland
-recruit_character = USA_john_winant
-recruit_character = USA_usa_william_donovan
-recruit_character = USA_donald_nelson
-recruit_character = USA_george_kenney
 #recruit_character = USA_william_halsey
-recruit_character = USA_john_cannon
-recruit_character = USA_carl_spaatz
-recruit_character = USA_george_marshall
-recruit_character = USA_marc_mitscher
-recruit_character = USA_henry_stimson
-recruit_character = USA_jimmy_doolittle
-recruit_character = USA_claire_lee_chennault
+
+# Mod Characters
+recruit_character = usa_franklin_d_roosevelt
+recruit_character = usa_alf_landon
+recruit_character = usa_wendell_willkie
+recruit_character = usa_william_dudley_pelley
+recruit_character = usa_earl_browder
+recruit_character = usa_omar_bradley
+recruit_character = usa_chester_w_nimitz
+recruit_character = usa_george_marshall
+recruit_character = usa_dwight_d_eisenhower
+recruit_character = usa_douglas_macarthur
+recruit_character = usa_walter_krueger
+recruit_character = usa_ernest_king
+recruit_character = usa_williamhaselyjr
+recruit_character = usa_henry_arnold
+recruit_character = usa_carl_spaatz
+recruit_character = usa_george_kenney
+recruit_character = usa_mark_clark
+recruit_character = USA_joseph_stilwell
+recruit_character = usa_george_s_patton
+recruit_character = usa_raymond_spruance
+recruit_character = usa_jimmy_doolittle
+recruit_character = usa_courtney_hodges
+recruit_character = usa_frank_jack_fletcher
+recruit_character = usa_john_k_cannon
+recruit_character = usa_claire_lee_chennault
+recruit_character = usa_bernard_baruch
+recruit_character = usa_daniel_roper
+recruit_character = usa_harry_hopkins
+recruit_character = usa_henry_l_stimson
+recruit_character = usa_henry_j_kaiser
+recruit_character = usa_william_borah
+recruit_character = usa_robert_taft
+recruit_character = usa_julius_krug
+recruit_character = usa_henry_morgenthau_jr
+recruit_character = usa_thomas_dewey
+
+# Scientists — unlocked from game start
+recruit_character = USA_robert_oppenheimer
+recruit_character = USA_robert_goddard
 recruit_character = USA_leslie_skinner
 recruit_character = USA_edward_curtis_wells
 recruit_character = USA_william_francis_gibbs

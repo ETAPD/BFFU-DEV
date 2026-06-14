@@ -1,0 +1,61 @@
+# USA Corporate Relations — Monthly Pulse
+# If Henry J. Kaiser is serving as political advisor,
+# Kaiser's Industries trust is always kept at Friendly (3).
+
+on_actions = {
+	on_monthly = {
+		effect = {
+			# Kaiser Industries trust — always Friendly if Henry J. Kaiser is advisor
+			if = {
+				limit = {
+					tag = USA
+					has_completed_focus = USA_reconcile_with_domestic_corporations
+					has_idea = usa_henry_j_kaiser
+				}
+				set_variable = { var = USA_kaiser_trust value = 3 }
+			}
+
+			# Big Gas wartime rubber — fires once when USA enters a war after completing the focus
+			if = {
+				limit = {
+					tag = USA
+					has_country_flag = USA_big_gas_rubber_pending
+					has_war = yes
+				}
+				modify_building_resources = {
+					building = synthetic_rubber_refinery
+					resource = rubber
+					amount = 10
+				}
+				clr_country_flag = USA_big_gas_rubber_pending
+			}
+
+			# War entry — UK loses London
+			# If Britain no longer controls London, USA is forced into the war
+			if = {
+				limit = {
+					tag = USA
+					NOT = { is_in_faction = yes }
+					ENG = { is_faction_leader = yes }
+					NOT = { 127 = { is_controlled_by = ENG } }
+				}
+				ENG = { add_to_faction = ROOT }
+				country_event = { id = usa.1006 }
+			}
+
+			# War entry — Jan 1st 1942 and USA still at peace
+			# Historical backstop: if Pearl Harbor never happened, USA joins anyway
+			if = {
+				limit = {
+					tag = USA
+					NOT = { is_in_faction = yes }
+					ENG = { is_faction_leader = yes }
+					date > 1941.12.31
+					NOT = { has_war = yes }
+				}
+				ENG = { add_to_faction = ROOT }
+				country_event = { id = usa.1006 }
+			}
+		}
+	}
+}

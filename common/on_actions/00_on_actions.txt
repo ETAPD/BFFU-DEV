@@ -2,6 +2,29 @@ on_actions = {
 	on_startup = {
 
 		effect = {
+			# Kick off the USA industrial reallocation scan (Landon / Willkie).
+			# The event guards its own conditions and reschedules itself every 30 days.
+			USA = {
+				country_event = { id = usa_realloc.1 days = 7 }
+			}
+		}
+
+		effect = {
+			# Activate the 1936 election polling bar on day 1 (1936 bookmark only).
+			USA = {
+				if = {
+					limit = { date < 1936.11.1 }
+					set_power_balance = {
+						id = USA_1936_election_bop
+						left_side = USA_roosevelt_side
+						right_side = USA_landon_side
+						set_value = -0.1
+					}
+				}
+			}
+		}
+
+		effect = {
 			# Add Canals
 			IF = {
 				limit = {
@@ -4828,52 +4851,13 @@ on_actions = {
 				}
 			}
 
-			PHI = {
-				IF = {
-					limit = {
-						OR = {
-							AND = {
-								is_historical_focus_on = no
-								has_game_rule = {
-									rule = PHI_AI_BEHAVIOR
-									option = DEFAULT
-								}
-							}
-							has_game_rule = {
-								rule = PHI_AI_BEHAVIOR
-								option = RANDOM
-							}
-						}
-					}
-					random_list = {
-						40 = {
-							PHI = { set_country_flag = PHI_AI_RANDOM_HISTORICAL }
-						}
-						15 = {
-							PHI = { set_country_flag = PHI_AI_RANDOM_FASCIST }
-						}
-						10 = {
-							PHI = { set_country_flag = PHI_AI_RANDOM_MONARCHIST }
-						}
-						25 = {
-							PHI = { set_country_flag = PHI_AI_RANDOM_COMMUNIST }
-						}
-						15 = {
-							PHI = { set_country_flag = PHI_AI_RANDOM_FLEXIBLE }
-						}
-						05 = {
-							PHI = { set_country_flag = PHI_AI_RANDOM_MACARTHUR }
-						}
-					}
-				}
-			}	
 		}
 	}
 
 
 	#ROOT = country that joined a war
 	#Fired when a country goes to war against anyone and is not fired again when it enters war against another country unless it went to peace first
-	on_war = { 
+	on_war = {
 		effect = {
 			if = {
 				limit = {
@@ -4883,6 +4867,18 @@ on_actions = {
 					has_country_leader = { character = USA_franklin_delano_roosevelt ruling_only = yes }
 				}
 				play_day_of_infamy_effect = yes
+				complete_national_focus = USA_december71941adatewhichwillliveininfamy
+			}
+			# Landon/Wilkie path — set the flag without firing Roosevelt-specific events
+			if = {
+				limit = {
+					tag = USA
+					has_war_with = JAP
+					NOT = { has_global_flag = day_of_infamy_happened }
+					NOT = { has_country_leader = { character = USA_franklin_delano_roosevelt ruling_only = yes } }
+				}
+				set_global_flag = day_of_infamy_happened
+				complete_national_focus = USA_december71941adatewhichwillliveininfamy
 			}
 			if = {
 				limit = {
@@ -5083,23 +5079,6 @@ on_actions = {
 					NOT = { has_global_flag = d_day_happened }
 				}
 				play_order_of_the_day_effect = yes
-			}
-			if = {
-				limit = {
-					tag = "PHI"
-					FROM = {
-						is_in_faction_with = JAP
-					}
-					FROM.FROM = {
-						is_core_of = "PHI"
-					}
-					"PHI" = {
-						has_capitulated = yes
-						is_in_faction_with = USA
-					}
-					NOT = { has_global_flag = i_have_returned_happened }
-				}
-				play_i_have_returned_effect = yes
 			}
 			if = {
 				limit = {
