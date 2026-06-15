@@ -75,6 +75,9 @@ focus_tree = {
 		
 		completion_reward = {
 			add_command_power = 15
+			complete_national_focus = ENG_raf
+			complete_national_focus = ENG_naval_rearmament
+			complete_national_focus = ENG_army_rearmament
 		}
 	}
 	
@@ -270,7 +273,7 @@ focus_tree = {
 	# Amphibious Branch - Island Warfare
 	focus = {
 		id = ENG_naval_invasion_tactics
-		icon = GFX_focus_generic_naval_invasion
+		icon = GFX_goal_generic_amphibious_assault
 		prerequisite = { focus = ENG_amphibious_special_forces }
 		x = 0
 		y = 1
@@ -285,7 +288,7 @@ focus_tree = {
 
 	focus = {
 		id = ENG_marine_training_program
-		icon = GFX_focus_generic_naval_invasion
+		icon = GFX_focus_SMB_tierra_del_fuego_training
 		prerequisite = { focus = ENG_naval_invasion_tactics }
 		x = -1
 		y = 1
@@ -310,7 +313,7 @@ focus_tree = {
 
 	focus = {
 		id = ENG_coastal_assault_doctrine
-		icon = GFX_focus_generic_naval_invasion
+		icon = GFX_focus_generic_coastal_fort
 		prerequisite = { focus = ENG_naval_invasion_tactics }
 		x = 1
 		y = 1
@@ -328,7 +331,7 @@ focus_tree = {
 
 	focus = {
 		id = ENG_royal_marines
-		icon = GFX_focus_generic_naval_invasion
+		icon = GFX_focus_NOR_the_royal_norwegian_navy
 		prerequisite = { focus = ENG_marine_training_program }
 		prerequisite = { focus = ENG_coastal_assault_doctrine }
 		x = 1
@@ -347,7 +350,7 @@ focus_tree = {
 	# Mountain Branch - India Campaign
 	focus = {
 		id = ENG_mountain_warfare_school
-		icon = GFX_focus_SMB_a_land_of_mountains
+		icon = GFX_focus_generic_mountain_fortification
 		prerequisite = { focus = ENG_mountain_special_forces }
 		x = 0
 		y = 1
@@ -361,7 +364,7 @@ focus_tree = {
 
 	focus = {
 		id = ENG_high_altitude_training
-		icon = GFX_focus_SMB_a_land_of_mountains
+		icon = GFX_focus_generic_mountain_troops
 		prerequisite = { focus = ENG_mountain_warfare_school }
 		x = -1
 		y = 1
@@ -378,7 +381,7 @@ focus_tree = {
 
 	focus = {
 		id = ENG_indian_frontier_tactics
-		icon = GFX_focus_SMB_a_land_of_mountains
+		icon = GFX_focus_RAJ_a_tiger_unchained
 		prerequisite = { focus = ENG_mountain_warfare_school }
 		x = 1
 		y = 1
@@ -402,7 +405,7 @@ focus_tree = {
 	}
 	focus = {
 		id = ENG_royal_mountaineers
-		icon = GFX_focus_SMB_a_land_of_mountains
+		icon = GFX_focus_generic_mountain_training
 		prerequisite = { focus = ENG_high_altitude_training }
 		prerequisite = { focus = ENG_indian_frontier_tactics }
 		x = -1
@@ -443,7 +446,7 @@ focus_tree = {
 	}
 	focus = {
 		id = ENG_air1
-		icon = GFX_red_devils
+		icon = GFX_focus_generic_paratrooper
 		prerequisite = { focus = ENG_special_air_service }
 		x = 0
 		y = 1
@@ -461,7 +464,7 @@ focus_tree = {
 	}
 	focus = {
 		id = ENG_air2
-		icon = GFX_red_devils
+		icon = GFX_focus_DEN_civilian_preparations
 		prerequisite = { focus = ENG_air1 }
 		x = 1
 		y = 1
@@ -479,7 +482,7 @@ focus_tree = {
 	}
 	focus = {
 		id = ENG_air3
-		icon = GFX_red_devils
+		icon = GFX_focus_CHI_popular_army
 		prerequisite = { focus = ENG_air1 }
 		x = -1
 		y = 1
@@ -505,7 +508,7 @@ focus_tree = {
 	}
 	focus = {
 		id = ENG_air4
-		icon = GFX_red_devils
+		icon = GFX_goal_generic_occupy_states_ongoing_war
 		prerequisite = { focus = ENG_air2 }
 		prerequisite = { focus = ENG_air3 }
 		x = -1
@@ -898,12 +901,12 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			hidden_effect = {
-				set_technology = {
-					infantry_tanks = 1
+			ENG_jock_campbell = {
+				limit = {
+					NOT = { has_trait = ranger }
 				}
+				add_unit_leader_trait = ranger 
 			}
-			custom_effect_tooltip = ENG_infantry_tank_tech
 		}
 	}
 	
@@ -952,12 +955,12 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			hidden_effect = {
-				set_technology = {
-					cruiser_tanks = 1
+			ENG_oliver_leese = {
+				limit = {
+					NOT = { has_trait = desert_fox  }
 				}
+				add_unit_leader_trait = desert_fox
 			}
-			custom_effect_tooltip = ENG_cruiser_tank_tech
 		}
 	}
 
@@ -5217,7 +5220,7 @@ focus_tree = {
 		available = {
 		}
 		
-		cost = 5
+		cost = 3
 		
 		ai_will_do = {
 			factor = 1
@@ -6355,6 +6358,29 @@ focus_tree = {
 		hidden_effect = {
         remove_ideas = ENG_Decyphered_German_War_Plans
 		}
+		}
+	}
+
+	focus = {
+		id = ENG_leave_the_treaties
+		icon = GFX_focus_renounce_the_treaty_of_trianon
+		prerequisite = { focus = ENG_military_buildup}
+		
+		x = 4
+		y = 1
+		relative_position_id = ENG_military_buildup
+
+		available = {
+			has_war = no
+		}
+		
+		cost = 3
+		
+		ai_will_do = {
+			factor = 1
+		}	
+		completion_reward = {
+        remove_ideas = MTG_naval_treaty_adherent
 		}
 	}
 	focus = {
