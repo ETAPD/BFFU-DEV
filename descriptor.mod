@@ -7,7 +7,7 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="Secret Rearmament"
+name="Frogs of Iron"
 picture="thumbnail.png"
 replace_path="common/ai_equipment"
 replace_path="common/ai_strategy"
