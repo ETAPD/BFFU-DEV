@@ -7,7 +7,7 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="Frogs of Iron"
+name="BFFU"
 picture="thumbnail.png"
 replace_path="common/ai_equipment"
 replace_path="common/ai_strategy"
