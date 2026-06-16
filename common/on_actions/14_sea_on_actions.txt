@@ -382,13 +382,6 @@ on_actions = {
 			}
 		}
 
-		effect = {
-			PRC = {
-				every_core_state = {
-					add_to_array = { global.PRC_starting_PRC_core_states = THIS }
-				}
-			}
-		}
 	}
 
 	#	ROOT is new controller, FROM is old controller, FROM.FROM is state ID.
@@ -562,10 +555,10 @@ on_actions = {
 						has_war_with = CHI
 						OR = {
 							original_tag = JAP
-							AND = {
-								original_tag = RNG
-								is_ally_with = JAP
-							}
+							# AND = {
+							# 	original_tag = RNG
+							# 	is_ally_with = JAP
+							# }
 							AND = {
 								original_tag = MAN
 								is_ally_with = JAP
@@ -586,69 +579,6 @@ on_actions = {
 					country_event = {
 						id = SEA_warlords.42
 						hours = 6
-					}
-				}
-			}
-		}
-
-		#We need to switch out Guerilla Bases to Sabotage Operations because Guerillas only operate on non-core territory - but the fight doesn't stop just because the state changes hands!
-		effect = {
-			if = {
-				limit = {
-					has_dlc = "No Compromise, No Surrender"
-					FROM.FROM = {
-						OR = {
-							is_core_of = PRC
-							is_core_of = CHI
-						}
-						is_core_of = ROOT
-						NOT = {
-							has_dynamic_modifier = {
-								modifier = PRC_anti_japanese_base
-							}
-						}
-						OR = {
-							has_dynamic_modifier = {
-								modifier = PRC_guerilla_cells_active_1
-							}
-							has_dynamic_modifier = {
-								modifier = PRC_guerilla_cells_active_2
-							}
-						}
-					}
-				}
-				if = {
-					limit = {
-						FROM.FROM = {
-							has_dynamic_modifier = {
-								modifier = PRC_guerilla_cells_active_1
-							}
-						}
-					}
-					FROM.FROM = {
-						remove_dynamic_modifier = {
-							modifier = PRC_guerilla_cells_active_1
-						}
-						add_dynamic_modifier = {
-							modifier = PRC_anti_japanese_base
-						}
-					}
-				}
-				else_if = {
-					limit = {
-						FROM.FROM = {
-							has_dynamic_modifier = {
-								modifier = PRC_guerilla_cells_active_2
-							}
-						}
-					}
-					FROM.FROM = {
-						remove_dynamic_modifier = {
-							modifier = PRC_guerilla_cells_active_2
-						}
-						add_dynamic_modifier = {
-							modifier = PRC_anti_japanese_base
-						}
 					}
 				}
 			}
@@ -844,23 +774,6 @@ on_actions = {
 			}
 		}
 
-		effect = {
-			if = {
-				limit = {
-					ROOT = {
-						original_tag = PRC
-						has_completed_focus = PRC_asian_democratic_union
-					}
-				}
-				ROOT = {
-					PRC_increase_asian_democratic_union_modfier_strength = yes
-				}
-				FROM = {
-					add_ideas = PRC_asian_democratic_union_idea
-				}
-			}
-		}
-
 	}
 
 	#FROM is faction leader on join faction requests. THIS DOES NOT FIRE ON ADD_TO_FACTION EFFECT! USE ON_OFFER_JOIN_FACTION!
@@ -895,22 +808,6 @@ on_actions = {
 					}
 				}
 				remove_ideas = JAP_POL_anti_soviet_pact
-			}
-		}
-		effect = {
-			if = {
-				limit = {
-					FROM = {
-						original_tag = PRC
-						has_completed_focus = PRC_asian_democratic_union
-					}
-				}
-				FROM = {
-					PRC_increase_asian_democratic_union_modfier_strength = yes
-				}
-				ROOT = {
-					add_ideas = PRC_asian_democratic_union_idea
-				}
 			}
 		}
 	}
@@ -1034,26 +931,6 @@ on_actions = {
 		}
 
 		effect = {
-			if = {
-				limit = {
-					FROM = {
-						original_tag = PRC
-						has_completed_focus = PRC_asian_democratic_union
-						NOT = {
-							is_in_faction_with = ROOT
-						}
-					}
-				}
-				FROM = {
-					PRC_increase_asian_democratic_union_modfier_strength = yes
-				}
-				ROOT = {
-					add_ideas = PRC_asian_democratic_union_idea
-				}
-			}
-		}
-
-		effect = {
 			IF = {
 				limit = {
 					ROOT = {
@@ -1072,25 +949,8 @@ on_actions = {
 
 	}
 
-	# FROM is the faction Leader, ROOT is the country leaving the faction 
+	# FROM is the faction Leader, ROOT is the country leaving the faction
 	on_leave_faction = {
-
-		effect = {
-			if = {
-				limit = {
-					FROM = {
-						original_tag = PRC
-						has_completed_focus = PRC_asian_democratic_union
-					}
-				}
-				FROM = {
-					PRC_decrease_asian_democratic_union_modfier_strength = yes
-				}
-				ROOT = {
-					remove_ideas = PRC_asian_democratic_union_idea
-				}
-			}
-		}
 
 	}
 
@@ -1596,405 +1456,6 @@ on_actions = {
 					 	idea = JAP_strike_south_idea
 					 	days = 180
 					 }
-				}
-			}
-		}
-
-		effect = {
-			if = { #Give Communist China some penalties for not fighting against the invaders! 
-				limit = {
-					has_dlc = "No Compromise, No Surrender"
-					PRC = {
-						is_subject = no
-						NOT = {
-							has_country_flag = PRC_passive_revolutionaries_flag
-							has_idea = PRC_passive_revolutionaries_idea
-							has_active_mission = PRC_the_peoples_doubt
-						}
-					}
-					
-					FROM = { #China, but not PRC, is attacked by an occupier
-						is_literally_china_not_prc = yes
-					}
-					ROOT = {
-						is_literally_china = no
-					}
-					PRC = {
-						NOT = { has_war_with = ROOT }
-					}
-				}
-				ROOT = {
-					set_country_flag = PRC_invading_china_flag
-				}
-				PRC = {
-					set_country_flag = PRC_passive_revolutionaries_flag
-					country_event = { id = SEA_PRC_misc_events.101 days = 30 random_days = 10 }
-				}
-			}
-
-			#Flip the Communist Infiltrated States to PRC
-			if = {
-				limit = {
-					OR = {
-						AND = {
-							ROOT = {
-								original_tag = PRC
-							}
-							FROM = {
-								any_controlled_state = {
-									is_core_of = PRC
-									has_dynamic_modifier = {
-										modifier = PRC_infiltrated_state_3
-										scope = PRC 
-									}		
-								}
-							}
-						}
-						AND = {
-							FROM = {
-								original_tag = PRC
-							}
-							ROOT = {
-								any_controlled_state = {
-									is_core_of = PRC
-									has_dynamic_modifier = {
-										modifier = PRC_infiltrated_state_3
-										scope = PRC 
-									}	
-								}
-							}
-						}
-					}
-				}
-				#log = "China at war!"
-				ROOT = {
-					division_template = {
-						name = "Mínbīng" # Represents militia units
-						division_names_group = PRC_MIL_02
-						template_counter = 118
-
-						regiments = {
-							militia = { x = 0 y = 0 }
-							militia = { x = 0 y = 1 }
-							militia = { x = 1 y = 0 }
-							militia = { x = 1 y = 1 }
-							militia = { x = 2 y = 0 }
-							militia = { x = 2 y = 1 }
-						}
-						priority = 1
-					}
-				}
-				
-
-				#ACHIEVEMENT CHECKS
-				if = {
-					limit = {
-						is_ironman = yes #This only applies if you can get achievements
-						PRC = {
-							NOT = {
-								any_enemy_country = {
-									is_literally_china_not_prc = yes
-									NOT = { tag = RNG }
-								}
-							}
-							all_controlled_state = {
-								OR = {
-									state = 1046 #Yulin
-									state = 622 #Shaanbei
-									state = 1032 #Yan'an
-								}
-							}
-							NOT = { has_country_flag = PRC_lock_master_infiltrator_flag } 
-						}
-					}
-					FROM = {
-						every_controlled_state = {
-							limit = {
-								is_core_of = PRC
-								has_dynamic_modifier = {
-									modifier = PRC_infiltrated_state_3
-									scope = PRC 
-								}	
-							}
-
-							add_to_temp_array = {
-								array = PRC.PRC_infiltrated_states_array
-								value = THIS
-							}
-						}
-					}
-					PRC = {
-						if = {
-							limit = {
-								check_variable = { PRC_infiltrated_states_array^num > 4 } 
-							}
-							set_global_flag = achievement_PRC_master_infiltrator
-						}
-						set_country_flag = PRC_lock_master_infiltrator_flag
-					}
-				}
-				
-				if = {
-					limit = {
-						FROM = {
-							NOT = {
-								original_tag = PRC
-							}
-							any_controlled_state = {
-								is_core_of = PRC
-								has_dynamic_modifier = {
-									modifier = PRC_infiltrated_state_3
-									scope = PRC 
-								}	
-							}
-						}
-					}
-					FROM = { ## Checks if all states are taken, fixes edge case with taking an entire nation resulting in not calling any allies
-						if = {
-							limit = {
-								all_controlled_state = {
-									is_core_of = PRC
-									has_dynamic_modifier = {
-										modifier = PRC_infiltrated_state_3
-										scope = PRC 
-									}	
-								}
-							}
-							every_allied_country = {
-								limit = {
-									NOT = {
-										has_war_with = PRC
-									}
-								}
-								add_to_war = {
-									targeted_alliance = PREV
-									enemy = PRC
-								}
-							}
-						}
-					}
-					#log = "PRC attacked!"
-					FROM = {
-						every_controlled_state = {
-							limit = {
-								is_core_of = PRC
-								has_dynamic_modifier = {
-									modifier = PRC_infiltrated_state_3
-									scope = PRC 
-								}	
-							}
-							transfer_state_to = ROOT
-							create_unit = {
-								division = "division_template = \"Mínbīng\" start_experience_factor = 0.5 start_equipment_factor = 0.5"
-								owner = ROOT
-								count = 2
-							}
-						}
-					}
-				}
-				else_if = {
-					limit = {
-						ROOT = {
-							NOT = {	
-								original_tag = PRC
-							}
-							any_controlled_state = {
-								is_core_of = PRC
-								has_dynamic_modifier = {
-									modifier = PRC_infiltrated_state_3
-									scope = PRC 
-								}	
-							}
-						}
-					}
-					FROM = { 
-						division_template = {
-							name = "Mínbīng" # Represents militia units
-							division_names_group = PRC_MIL_02
-							template_counter = 118
-
-							regiments = {
-								militia = { x = 0 y = 0 }
-								militia = { x = 0 y = 1 }
-								militia = { x = 1 y = 0 }
-								militia = { x = 1 y = 1 }
-								militia = { x = 2 y = 0 }
-								militia = { x = 2 y = 1 }
-							}
-							priority = 1
-						}
-					}
-					ROOT = { ## Checks if all states are taken, fixes edge case with taking an entire nation resulting in not calling any allies
-						if = {
-							limit = {
-								all_controlled_state = {
-									is_core_of = PRC
-									has_dynamic_modifier = {
-										modifier = PRC_infiltrated_state_3
-										scope = PRC 
-									}	
-								}
-							}
-							every_allied_country = {
-								limit = {
-									NOT = {
-										has_war_with = PRC
-									}
-								}
-								add_to_war = {
-									targeted_alliance = PREV
-									enemy = PRC
-								}
-							}
-						}
-					}
-					#log = "PRC defends!" 
-					ROOT = {
-						every_controlled_state = {
-							limit = {
-								is_core_of = PRC
-								has_dynamic_modifier = {
-									modifier = PRC_infiltrated_state_3
-									scope = PRC 
-								}	
-							}
-							transfer_state_to = FROM
-							create_unit = {
-								division = "division_template = \"Mínbīng\" start_experience_factor = 0.5 start_equipment_factor = 0.5"
-								owner = ROOT
-								count = 2
-							}
-						}
-					}
-				}
-			}
-			IF = { ## When war against CHI and PRC breaks out - some generals flip to PRC
-				limit = {
-					has_dlc = "No Compromise, No Surrender"
-					OR = { 
-						AND = {
-							ROOT = {
-								original_tag = PRC
-							}
-							FROM = {
-								original_tag = CHI
-							}
-						}
-						AND = {
-							FROM = {
-								original_tag = PRC
-							}
-							ROOT = {
-								original_tag = CHI
-							}
-						}
-					}
-				}
-
-				## array here of all not PRC, then check if has characters 
-				every_country = {
-					limit = {
-					 	is_literally_china = yes
-					 	NOT = { tag = PRC }
-					 	NOT = {
-					 		is_subject_of = PRC
-					 		is_in_faction_with = PRC
-					 	}
-					 	any_character = {
-							has_character_flag = can_flip_to_prc
-						}
-					}
-					 country_event = {
-						id = SEA_PRC_political_events.19 
-						hours = 2
-						random_hours = 3
-					}
-				}
-
-				PRC = {
-					country_event = {
-						id = SEA_PRC_political_events.20
-						days = 2
-					}
-				}
-			}
-		}
-
-		effect = {
-			if = {
-				limit = {
-					is_ironman = yes #This only applies if you can get achievements
-					date < 1940.1.1
-					NOT = { has_global_flag = achievement_PRC_battle_royale }
-					OR = {
-						AND = {
-							ROOT = {
-								OR = {
-									tag = PRC
-									tag = JAP
-								}
-							}
-							FROM = {
-								OR = {
-									tag = PRC
-									tag = JAP
-								}
-							}
-						}
-						AND = {
-							ROOT = {
-								OR = {
-									tag = PRC
-									tag = CHI
-								}
-							}
-							FROM = {
-								OR = {
-									tag = PRC
-									tag = CHI
-								}
-							}
-						}
-					}
-				}
-
-				if = {
-					limit = {
-						NOT = { has_global_flag = PRC_timed_window_for_war }
-						PRC = {
-							NOT = { has_country_flag = PRC_locK_timed_window_for_war }
-							OR = {
-								AND = {
-									has_war_with = CHI
-									NOT = { has_war_with = JAP }
-								}
-								AND = {
-									has_war_with = JAP
-									NOT = { has_war_with = CHI }
-								}
-							}
-						}
-					}
-
-					set_global_flag = {
-						flag = PRC_timed_window_for_war
-						days = 90
-						value = 1
-					}
-					PRC = { set_country_flag = PRC_locK_timed_window_for_war } #Lock the possibility to do all of this again
-				}
-				else_if = {
-					limit = {
-						has_global_flag = {
-							flag = PRC_timed_window_for_war
-							days < 91
-						}
-						PRC = {
-							has_war_with = CHI	
-							has_war_with = JAP
-						}
-					}
-					set_global_flag = achievement_PRC_battle_royale
 				}
 			}
 		}
@@ -3411,33 +2872,6 @@ on_actions = {
 			if = {
 				limit = {
 					is_ironman = yes #This only applies if you can get achievements
-					has_global_flag = achievement_PRC_battle_royale
-					FROM = {
-						tag = PRC #using tag here instead of original_tag because that's what the achievement needs
-					}
-					ROOT = {
-						OR = {
-							tag = CHI
-							tag = JAP
-						}
-					}
-				}
-				if = {
-					limit = {
-						ROOT = { tag = CHI}
-					}
-					FROM = { set_country_flag = PRC_capitulated_CHI }
-				}
-				if = {
-					limit = {
-						ROOT = { tag = JAP}
-					}
-					FROM = { set_country_flag = PRC_capitulated_JAP }
-				}
-			}
-			if = {
-				limit = {
-					is_ironman = yes #This only applies if you can get achievements
 					FROM = {
 						tag = JAP #using tag here instead of original_tag because that's what the achievement needs
 						has_government = democratic
@@ -3519,26 +2953,6 @@ on_actions = {
             }
         }
 
-        # CHI has lost and RNG has been validated as an actual China 
-        effect = {
-    		IF = {
-    			limit = {
-    				# The Reorganized National Government is a winner
-    				ROOT = {
-    					original_tag = RNG
-    				}
-    				# One of the losers if Nationalist China
-    				FROM = {
-    					original_tag = CHI 
-    	 			}
-    			}
-    			FROM = {
-    				every_core_state = {
-    					add_core_of = ROOT
-    				}
-    			}
-    		}
-        }
 
         # Merging of Japanese puppet governments into one (ONLY WHEN JAPAN IS AN AI)
         effect = {
