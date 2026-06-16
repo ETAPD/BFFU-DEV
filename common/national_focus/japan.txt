@@ -291,6 +291,14 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_kokiscabinetforms  }
+		completion_reward = {
+			# Education Reforms: +5% research speed for 180 days, after which the
+			# permanent Education Programs Success spirit replaces it (JAP_rework.100).
+			add_timed_idea = { idea = JAP_education_reforms days = 180 }
+			hidden_effect = {
+				country_event = { id = JAP_rework.100 days = 180 }
+			}
+		}
 	}
 
 	#Noborito Research Institute
@@ -305,6 +313,9 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_kyoikukaigicouncilestablished  }
+		completion_reward = {
+			add_research_slot = 1
+		}
 	}
 
 	#Hirota Out of Time...
@@ -351,6 +362,37 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_kyoikukaigicouncilestablished  } prerequisite = { focus = JAP_reformthekakushinkanryo  }
+		completion_reward = {
+			custom_effect_tooltip = JAP_rebuild_agriculture_tt
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { JAP_eco_consumer_goods_factor = -0.10 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			# +2 infrastructure across the rural mainland (home islands minus the
+			# Kanto/Kansai/Tokai industrial cores).
+			every_state = {
+				limit = {
+					is_owned_by = JAP
+					OR = {
+						state = 536  # Hokkaido
+						state = 533  # Kita-Tohoku
+						state = 1019 # Minami-Tohoku
+						state = 534  # Koshinetsu
+						state = 535  # Hokuriku
+						state = 530  # Shikoku
+						state = 529  # Sanyo
+						state = 1020 # Sanin
+						state = 528  # Hokubu Kyushu
+						state = 1018 # Minami Kyushu
+						state = 526  # Okinawa
+					}
+				}
+				add_building_construction = {
+					type = infrastructure
+					level = 2
+					instant_build = yes
+				}
+			}
+		}
 	}
 
 	#Renewed Ministries of Trade and Industry
@@ -365,6 +407,13 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_kokiscabinetforms  }
+		completion_reward = {
+			custom_effect_tooltip = JAP_renewed_ministries_tt
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { JAP_eco_production_speed_infrastructure_factor = 0.10 }
+			add_to_variable = { JAP_eco_production_speed_buildings_factor = 0.10 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
 	}
 
 	#Reform the Tax System
@@ -379,6 +428,12 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_renewed_ministries_of_trade_and_industry  }
+		completion_reward = {
+			custom_effect_tooltip = JAP_reform_tax_tt
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { JAP_eco_consumer_goods_factor = -0.15 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
 	}
 
 	#Address the Housing Crisis
@@ -393,6 +448,15 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_renewed_ministries_of_trade_and_industry  }
+		completion_reward = {
+			every_state = {
+				limit = {
+					is_owned_by = JAP
+					JAP_is_home_islands_state = yes
+				}
+				add_extra_state_shared_building_slots = 5
+			}
+		}
 	}
 
 	#Assure the Military of the Civilian Sector
@@ -407,6 +471,13 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_renewed_ministries_of_trade_and_industry  }
+		completion_reward = {
+			custom_effect_tooltip = JAP_assure_military_tt
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { JAP_eco_stability_factor = 0.075 }
+			add_to_variable = { JAP_eco_industrial_capacity_factory = 0.025 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
 	}
 
 	#Begin the Imperial Liaison Conferences
@@ -421,6 +492,12 @@ focus_tree = {
 			FOCUS_FILTER_POLITICAL
 		}
 		prerequisite = { focus = JAP_kokiscabinetforms  }
+		completion_reward = {
+			custom_effect_tooltip = JAP_liaison_conference_unlocked_tt
+			set_country_flag = JAP_liaison_conference_active
+			# Start the interservice balance neutral.
+			add_ideas = JAP_liaison_balanced
+		}
 	}
 
 	#Hayashi Enters Office

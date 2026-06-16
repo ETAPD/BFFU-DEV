@@ -1,0 +1,74 @@
+# Imperial Liaison Conference — Army/Navy interservice rivalry (HoO2 inspired).
+# Decisions tilt the balance along the JAP_liaison_* spirit ladder. Unlocked by
+# the "Begin the Imperial Liaison Conferences" focus (sets JAP_liaison_conference_active).
+
+JAP_imperial_liaison_conference = {
+
+	# Tilt the conference toward the Army.
+	JAP_liaison_favour_the_army = {
+		icon = GFX_decision_generic_army
+
+		cost = 35
+
+		available = {
+			NOT = { has_idea = JAP_liaison_army_dominant }
+		}
+
+		days_re_enable = 90
+
+		complete_effect = {
+			JAP_liaison_towards_army = yes
+			army_experience = 10
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# Tilt the conference toward the Navy.
+	JAP_liaison_favour_the_navy = {
+		icon = GFX_decision_generic_military
+
+		cost = 35
+
+		available = {
+			NOT = { has_idea = JAP_liaison_navy_dominant }
+		}
+
+		days_re_enable = 90
+
+		complete_effect = {
+			JAP_liaison_towards_navy = yes
+			navy_experience = 10
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+
+	# Broker a compromise — nudge whichever service dominates back toward balance.
+	JAP_liaison_seek_compromise = {
+		icon = GFX_decision_generic_military
+
+		cost = 50
+
+		available = {
+			NOT = { has_idea = JAP_liaison_balanced }
+		}
+
+		days_re_enable = 180
+
+		complete_effect = {
+			if = {
+				limit = { OR = { has_idea = JAP_liaison_army_favoured  has_idea = JAP_liaison_army_dominant } }
+				JAP_liaison_towards_navy = yes
+			}
+			else_if = {
+				limit = { OR = { has_idea = JAP_liaison_navy_favoured  has_idea = JAP_liaison_navy_dominant } }
+				JAP_liaison_towards_army = yes
+			}
+			add_political_power = 25
+			add_stability = 0.02
+		}
+
+		ai_will_do = { factor = 1 }
+	}
+}
