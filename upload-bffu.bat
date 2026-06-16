@@ -1,18 +1,21 @@
 @echo off
 REM ============================================================
-REM  Refresh the LOCAL BFFU test mod ("MAIN BRANCH" folder) from
-REM  git main, then enable "BFFU (Local)" in the HOI4 launcher.
+REM  Publish BFFU to the Steam Workshop (item 3745245470).
+REM  Exports git main into the MAIN BRANCH folder and stamps the
+REM  UPLOAD identity (name="BFFU", remote_file_id=3745245470), then
+REM  you upload it from the HOI4 launcher.
 REM
-REM  This stamps a LOCAL descriptor with NO remote_file_id, so it
-REM  never clashes with the subscribed Workshop BFFU (3745245470).
-REM  To PUBLISH to the Workshop instead, run upload-bffu.bat.
+REM  IMPORTANT: before uploading, DISABLE/unsubscribe the Workshop
+REM  "BFFU" in the launcher, or its remote_file_id will clash with
+REM  this folder. After uploading, run publish-bffu.bat to put
+REM  MAIN BRANCH back to its local "BFFU (Local)" descriptor.
 REM ============================================================
 setlocal
 set "HUB=C:\Users\Roberts (ME)\Documents\GitHub\Secret Rearmament"
 set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\MAIN BRANCH"
 set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\MAIN BRANCH.mod"
 
-echo Refreshing the local "BFFU (Local)" test mod from git main...
+echo Re-exporting "BFFU" (main) for Workshop upload...
 cd /d "%HUB%"
 
 if exist "%DEST%" rmdir /s /q "%DEST%"
@@ -26,22 +29,23 @@ if errorlevel 1 (
     exit /b 1
 )
 
-REM Strip dev-only files that git tracks but must NOT ship.
+REM Strip dev-only files that git tracks but must NOT ship to the Workshop.
 del /q "%DEST%\publish-bffu.bat" 2>nul
 del /q "%DEST%\upload-bffu.bat" 2>nul
 del /q "%DEST%\.gitignore" 2>nul
 del /q "%DEST%\.gitattributes" 2>nul
 
-REM --- LOCAL folder descriptor (no remote_file_id) ---
-call :write_descriptor "%DEST%\descriptor.mod" "BFFU (Local)"
-
-REM --- LOCAL launcher pointer (adds path, still no remote_file_id) ---
-call :write_descriptor "%MODFILE%" "BFFU (Local)"
+REM git main's descriptor.mod already carries the UPLOAD identity
+REM (name="BFFU", remote_file_id="3745245470"), so the folder is ready.
+REM Stamp the matching UPLOAD launcher pointer (root .mod).
+call :write_descriptor "%MODFILE%" "BFFU"
 >> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/MAIN BRANCH"
+>> "%MODFILE%" echo remote_file_id="3745245470"
 
 echo.
-echo Done. In the launcher, enable "BFFU (Local)" to test the latest main.
-echo (To publish to the Workshop instead, run upload-bffu.bat.)
+echo Done. 1) DISABLE the subscribed Workshop "BFFU" in the launcher.
+echo       2) Upload "BFFU" from the launcher (updates item 3745245470).
+echo       3) Run publish-bffu.bat afterwards to restore "BFFU (Local)".
 pause
 exit /b 0
 
