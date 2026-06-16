@@ -47,7 +47,7 @@ focus_tree = {
 	focus = {
 		id = ENG_rearmament
 		icon = GFX_goal_generic_build_tank
-		x = 70
+		x = 62
 		y = 0
 		cost = 8
 		ai_will_do = {
@@ -176,7 +176,7 @@ focus_tree = {
 		icon = GFX_royal_army
 		prerequisite = { focus = ENG_rearmament }
 		
-		x = -24
+		x = -20
 		y = 1
 		relative_position_id = ENG_rearmament
 		
@@ -614,7 +614,7 @@ focus_tree = {
 		
 		prerequisite = { focus = ENG_army_rearmament }
 		
-		x = -11
+		x = -8
 		y = 1
 		relative_position_id = ENG_army_rearmament
 		
@@ -817,7 +817,7 @@ focus_tree = {
 		icon = GFX_focus_generic_mechanized
 		prerequisite = { focus = ENG_army_rearmament }
 		
-		x = 12
+		x = 9
 		y = 1
 		relative_position_id = ENG_army_rearmament
 		
@@ -5157,7 +5157,7 @@ focus_tree = {
 		relative_position_id = ENG_dispersed_factories
 
 		available = {
-			has_completed_focus = ENG_finish_development
+			
 		}
 		
 		cost = 5
@@ -5187,6 +5187,7 @@ focus_tree = {
 		relative_position_id = ENG_prepare_for_the_inevitable
 
 		available = {
+		has_country_leader = { ruling_only = yes name = "Winston Churchill" }
 		GER = { has_completed_focus = GER_fate_of_czechoslovakia }
 		}
 		
@@ -5265,7 +5266,7 @@ focus_tree = {
 			GER = { has_completed_focus = GER_demand_sudetenland }
 		}
 		
-		cost = 5
+		cost = 4
 		
 		ai_will_do = {
 			factor = 1
@@ -7488,6 +7489,97 @@ focus_tree = {
 			add_ideas = ENG_war_cabinet_idea
 		}
 	}
+
+	focus = {
+		id = ENG_utilize_saudi_air_bases
+		icon = GFX_goal_generic_defence
+		prerequisite = { focus =  ENG_Churchill_war_cabinet }
+		
+		available = {
+			OR = {
+				has_war_with = GER
+				has_war_with = ITA
+			}
+			date > 1941.1.1
+		}
+
+		available_if_capitulated = yes
+
+		x = -6
+		y = 1
+		relative_position_id = ENG_Churchill_war_cabinet
+		cost = 1
+		ai_will_do = {
+			factor = 1
+		}	
+		completion_reward = {
+			IF = {
+				limit = {
+					679 = {
+						CONTROLLER = {
+							NOT = {
+								tag = ENG
+							}
+						}
+					}
+				}
+				transfer_state = 679
+				679 = {
+					add_building_construction = {
+						type = air_base
+						level = 5
+						instant_build = yes
+					}
+				}
+			}
+			IF = {
+				limit = {
+					855 = {
+						CONTROLLER = {
+							NOT = {
+								tag = ENG
+							}
+						}
+					}
+				}
+				transfer_state = 855
+				855 = {
+					add_building_construction = {
+						type = air_base
+						level = 5
+						instant_build = yes
+					}
+					add_building_construction = {
+						type = naval_base
+						level = 5
+						province = 1033
+						instant_build = yes
+					}
+				}
+				
+			}
+			IF = {
+				limit = {
+					856 = {
+						CONTROLLER = {
+							NOT = {
+								tag = ENG
+							}
+						}
+					}
+				}
+				transfer_state = 856
+				856 = {
+					add_building_construction = {
+						type = air_base
+						level = 5
+						instant_build = yes
+					}
+				}
+			}
+		}
+	}
+
 	focus = {
 		id = ENG_Battle_of_britain
 		icon = GFX_battle_of_britain
