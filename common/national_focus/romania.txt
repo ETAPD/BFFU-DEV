@@ -11,7 +11,6 @@ focus_tree = {
 
 	continuous_focus_position = { x = 600 y = 1400 }
 
-
 	default = no
   ############################
   ###### INDSUTRY BRANCH #####
@@ -1787,8 +1786,8 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = ROM_modify_iron_guard_dynamic_modifier
 			add_to_variable = {
-				ROM_iron_guard_stability_weekly = 0.002
-				tooltip = ROM_weekly_stab_2percent_tt
+				ROM_iron_guard_stability_weekly = 0.0015
+				tooltip = ROM_weekly_stab_15percent_tt
 			}
 			set_politics = {
 				ruling_party = fascism
@@ -2493,8 +2492,9 @@ focus_tree = {
 						}
 					}
 					promote_leader = yes
-				}
-				remove_unit_leader_role = yes
+				
+					
+				remove_unit_leader_role = no }
 			}
 			set_party_name = {
 				ideology = fascism
@@ -2547,54 +2547,67 @@ focus_tree = {
 		id = ROM_crush_legionnaires
 		icon = GFX_focus_eng_move_to_secure_the_dominions
 		prerequisite = { focus = ROM_force_abdication }
-		mutually_exclusive = { focus = ROM_execute_the_coup }
-		x = -1
+		x = 0
 		y = 1
 		relative_position_id = ROM_force_abdication
 		cost = 10
 		ai_will_do = { base = 1000000}
 		completion_reward = {
-			add_war_support = 0.05
-			custom_effect_tooltip = generic_skip_one_line_tt
-			country_event = DOD_romania.510
-			custom_effect_tooltip = generic_skip_one_line_tt
+	#		custom_effect_tooltip = generic_skip_one_line_tt
+	#		country_event = DOD_romania.510
+		#	custom_effect_tooltip = generic_skip_one_line_tt
 			remove_dynamic_modifier = { modifier = ROM_iron_guard }
+
+			if = {
+				limit = {
+					has_country_leader_with_trait = ROM_conductor
+				}
+				random_character = {
+					limit = {
+						is_country_leader = yes
+					}
+					swap_country_leader_traits = {
+						remove = ROM_conductor
+						add = ROM_conductor_coup
+					}
+				}
+			}
 		}
 	}
 
-	focus = {
-		id = ROM_execute_the_coup
-		icon = GFX_focus_generic_conspiracy
-		prerequisite = { focus = ROM_force_abdication }
-		mutually_exclusive = { focus = ROM_crush_legionnaires }
-		x = 1
-		y = 1
-		relative_position_id = ROM_force_abdication
-		cost = 10
-		ai_will_do = {}
-		available = { NOT = { has_country_leader = { character = ROM_corneliu_codreanu ruling_only = yes } } }
-		completion_reward = {
-			retire_character = ROM_ion_antonescu
-			custom_effect_tooltip = ROM_modify_iron_guard_dynamic_modifier
-			add_to_variable = {
-				ROM_iron_guard_stability_weekly = 0.001
-				tooltip = ROM_weekly_stab_1percent_tt
-			}
-			add_to_variable = {
-				ROM_iron_guard_war_support_weekly = 0.001
-				tooltip = ROM_weekly_ws_1percent_tt
-			}
-			
-		}
-	}
+	#focus = {
+	#	id = ROM_execute_the_coup
+	#	icon = GFX_focus_generic_conspiracy
+	#	prerequisite = { focus = ROM_force_abdication }
+	#	mutually_exclusive = { focus = ROM_crush_legionnaires }
+	#	x = 1
+	#	y = 1
+	#	relative_position_id = ROM_force_abdication
+	#	cost = 10
+	#	ai_will_do = {}
+	#	available = { NOT = { has_country_leader = { character = ROM_corneliu_codreanu ruling_only = yes } } }
+	#	completion_reward = {
+	#		retire_character = ROM_ion_antonescu
+	#		custom_effect_tooltip = ROM_modify_iron_guard_dynamic_modifier
+	#		add_to_variable = {
+	#			ROM_iron_guard_stability_weekly = 0.001
+	#			tooltip = ROM_weekly_stab_1percent_tt
+	#		}
+	#		add_to_variable = {
+	#			ROM_iron_guard_war_support_weekly = 0.001
+	#			tooltip = ROM_weekly_ws_1percent_tt
+	#		}
+	#		
+	#	}
+	#}
 
 	focus = {
 		id = ROM_recover_our_strengths
 		icon = GFX_focus_invite_romania
-		prerequisite = { focus = ROM_crush_legionnaires focus = ROM_execute_the_coup }
-		x = 1
+		x = 0
 		y = 1
 		relative_position_id = ROM_crush_legionnaires
+		prerequisite = { focus = ROM_crush_legionnaires }
 		cost = 10
 		ai_will_do = {}
 		available = {}
