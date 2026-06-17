@@ -405,13 +405,18 @@ USA_flood_control_cat = {
 				395 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
 				396 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
 				816 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
-				set_variable = { var = ohio_flood_act value = 4 }
+				# Acts IV & V never fire under Landon — the flood ends at Act III for him.
+				# (Provide Care Immediately is the active route; this is the passive base guarantee.)
 				if = {
-					limit = { has_country_flag = ohio_flood_rushed }
-					activate_mission = USA_flood_control_act_4_r
-				}
-				else = {
-					activate_mission = USA_flood_control_act_4
+					limit = { NOT = { has_country_leader = { ruling_only = yes character = usa_alf_landon } } }
+					set_variable = { var = ohio_flood_act value = 4 }
+					if = {
+						limit = { has_country_flag = ohio_flood_rushed }
+						activate_mission = USA_flood_control_act_4_r
+					}
+					else = {
+						activate_mission = USA_flood_control_act_4
+					}
 				}
 			}
 		}
