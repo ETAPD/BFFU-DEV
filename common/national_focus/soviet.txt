@@ -2181,7 +2181,18 @@
    		}
 
 		available = {
-
+			OR = {
+				OR = {
+					date > 1938.11.1
+					date < 1939.1.1
+				}
+				OR = {
+					date > 1939.11.1
+					date < 1940.2.1
+				}
+				date > 1940.10.1
+				POL = { has_capitulated = yes }
+			}
 		}
 
 		ai_will_do = {
@@ -2201,17 +2212,27 @@
 			}
 		}
 		completion_reward = {
-			add_state_claim = 146
-			add_state_claim = 147
-			declare_war_on = {
-				target = FIN
-				type = annex_everything
-			}
+			custom_effect_tooltip = SOV_declare_war_on_fin_tt
 			add_named_threat = { threat = 3 name = SOV_secure_leningrad }
 			activate_mission = SOV_winter_war
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_fin_victory_tip_tt
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_ideas = SOV_winter_war_soviet_nerf
 			#activate_mission = SOV_winter_war_lessons_mission
-			activate_mission = SOV_winter_war_catastrophe_mission
+			custom_effect_tooltip = SOV_generic_modify_red_army_tt
+			custom_effect_tooltip = SOV_red_army_land_mastery_gain_factor_15_tt
+			add_to_variable = { SOV_red_army_land_mastery_gain_factor_var = 0.15 }
 			hidden_effect = {
+				add_state_claim = 146
+				add_state_claim = 147
+				declare_war_on = {
+					target = FIN
+					type = annex_everything
+				}
+				OBG = {
+					activate_mission = SOV_winter_war_catastrophe_mission
+				}
 				MON = {
 					add_ideas = MON_brothers_war
 				}
@@ -2227,120 +2248,120 @@
 		}
 	}
 
-	focus = {
-		id = SOV_army_02
-		icon = GFX_focus_SWE_finnish_communists
-		prerequisite = { focus = SOV_secure_leningrad }
-		relative_position_id = SOV_secure_leningrad
-		x = -1
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
+	#focus = {
+	#	id = SOV_army_02
+	#	icon = GFX_focus_SWE_finnish_communists
+	#	prerequisite = { focus = SOV_secure_leningrad }
+	#	relative_position_id = SOV_secure_leningrad
+	#	x = -1
+	#	y = 1
+	#	cost = 3
+	#	ai_will_do = {
+	#		factor = 5
+	#	}
 
-		available_if_capitulated = yes
+	#	available_if_capitulated = yes
 
-		bypass = {
-			OR = {
-				has_global_flag = SOV_winter_war_loss
-				has_global_flag = SOV_winter_war_win
-				has_war_with = GER
-				OR = {
-					AND = {
-						owns_state = 146
-						owns_state = 147
-					}
-				}
-			}
-		}
+	#	bypass = {
+	#		OR = {
+	#			has_global_flag = SOV_winter_war_loss
+	#			has_global_flag = SOV_winter_war_win
+	#			has_war_with = GER
+	#			OR = {
+	#				AND = {
+	#					owns_state = 146
+	#					owns_state = 147
+	#				}
+	#			}
+	#		}
+	#	}
 
-		available_if_capitulated = yes
+	#	available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			 if = {
-				limit = {
-					NOT = { has_idea = SOV_break_finland_2 }
-				}
-				add_timed_idea = {
-					idea = SOV_break_finland_1
-					days = 180
-				}
-			} else_if = {
-				limit = {
-					has_idea = SOV_break_finland_2
-				}
-				swap_ideas = {
-					add_idea = SOV_break_finland_3
-					remove_idea = SOV_break_finland_2
-				}
-			}
-		}
-	}
+	#	search_filters = { FOCUS_FILTER_RESEARCH }
+	#	completion_reward = {
+	#		 if = {
+	#			limit = {
+	#				NOT = { has_idea = SOV_break_finland_2 }
+	#			}
+	#			add_timed_idea = {
+	#				idea = SOV_break_finland_1
+	#				days = 180
+	#			}
+	#		} else_if = {
+	#			limit = {
+	#				has_idea = SOV_break_finland_2
+	#			}
+	#			swap_ideas = {
+	#				add_idea = SOV_break_finland_3
+	#				remove_idea = SOV_break_finland_2
+	#			}
+	#		}
+	#	}
+	#}
 
-	focus = {
-		id = SOV_army_03
-		icon = GFX_focus_FIN_the_second_finnish_civil_war
-		prerequisite = { focus = SOV_secure_leningrad }
-		relative_position_id = SOV_secure_leningrad
-		x = 1
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
+	#focus = {
+	#	id = SOV_army_03
+	#	icon = GFX_focus_FIN_the_second_finnish_civil_war
+	#	prerequisite = { focus = SOV_secure_leningrad }
+	#	relative_position_id = SOV_secure_leningrad
+	#	x = 1
+	#	y = 1
+	#	cost = 3
+	#	ai_will_do = {
+	#		factor = 5
+	#	}
 
-		available_if_capitulated = yes
+	#	available_if_capitulated = yes
 
-		bypass = {
-			OR = {
-				has_global_flag = SOV_winter_war_loss
-				has_global_flag = SOV_winter_war_win
-				has_war_with = GER
-				OR = {
-					AND = {
-						owns_state = 146
-						owns_state = 147
-					}
-				}
-			}
-		}
+	#	bypass = {
+	#		OR = {
+	#			has_global_flag = SOV_winter_war_loss
+	#			has_global_flag = SOV_winter_war_win
+	#			has_war_with = GER
+	#			OR = {
+	#				AND = {
+	#					owns_state = 146
+	#					owns_state = 147
+	#				}
+	#			}
+	#		}
+	#	}
 
-		available_if_capitulated = yes
+	#	available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			if = {
-				limit = {
-					NOT = { has_idea = SOV_break_finland_1 }
-				}
-				add_timed_idea = {
-					idea = SOV_break_finland_2
-					days = 180
-				}
-			} else_if = {
-				limit = {
-					has_idea = SOV_break_finland_1
-				}
-				swap_ideas ={
-					add_idea = SOV_break_finland_3
-					remove_idea = SOV_break_finland_1
-				}
-			}
-		}
-	}
+	#	search_filters = { FOCUS_FILTER_RESEARCH }
+	#	completion_reward = {
+	#		if = {
+	#			limit = {
+	#				NOT = { has_idea = SOV_break_finland_1 }
+	#			}
+	#			add_timed_idea = {
+	#				idea = SOV_break_finland_2
+	#				days = 180
+	#			}
+	#		} else_if = {
+	#			limit = {
+	#				has_idea = SOV_break_finland_1
+	#			}
+	#			swap_ideas ={
+	#				add_idea = SOV_break_finland_3
+	#				remove_idea = SOV_break_finland_1
+	#			}
+	#		}
+	#	}
+	#}
 	
 	focus = {
 		id = SOV_pol_improve_new_conquests
 		icon = GFX_goal_generic_soviet_construction
-		prerequisite = { focus = SOV_army_02 focus = SOV_army_03}
-		x = 0
+		prerequisite = { focus = SOV_secure_leningrad }
+		x = -1
 		y = 1
 
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
-		relative_position_id = SOV_army_02
+		relative_position_id = SOV_secure_leningrad
 		mutually_exclusive = { focus = SOV_pol_plunder_new_conquests }
 		cost = 5
 		ai_will_do = {
@@ -2405,15 +2426,15 @@
 	focus = {
 		id = SOV_pol_plunder_new_conquests
 		icon = GFX_SOV_capitals_of_socialism_1
-		prerequisite = { focus = SOV_army_02 focus = SOV_army_03}
+		prerequisite = { focus = SOV_secure_leningrad }
 		mutually_exclusive = { focus = SOV_pol_improve_new_conquests }
 		cost = 5
-		x = 0
+		x = 1
 		y = 1
 
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
-		relative_position_id = SOV_army_03
+		relative_position_id = SOV_secure_leningrad
 
 		available = {
 			owns_state = 13

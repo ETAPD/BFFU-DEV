@@ -606,7 +606,27 @@ SOV_gosplan_decisions_category = {
 		}
 
 		ai_will_do = {
-			base = 0
+			factor = 0
+		}
+
+		visible = {
+			always = yes
+		}
+		fire_only_once = yes
+		complete_effect = {
+			annex_country = { target = MON transfer_troops = yes }
+			287 = { set_compliance = 60 }
+			329 = { set_compliance = 60 }
+			330 = { set_compliance = 60 }
+			617 = { set_compliance = 60 }
+			618 = { set_compliance = 60 }
+			619 = { set_compliance = 60 }
+			759 = { set_compliance = 60 }
+			760 = { set_compliance = 60 }
+			817 = { set_compliance = 60 }
+			818 = { set_compliance = 60 }
+			819 = { set_compliance = 60 }
+			820 = { set_compliance = 60 }
 		}
 	}
 
@@ -13102,10 +13122,14 @@ operations = {
 		available = {
 			146 = { is_controlled_by_ROOT_or_ally = yes }
 			147 = { is_controlled_by_ROOT_or_ally = yes }
-			has_war = no 
+			NOT = { has_war_with = FIN }  
 		}
 
-		days_mission_timeout = 210
+		cancel_trigger = {
+			GER = { has_war_with = ROOT } #Maybe this prevents weird winter war buggy stuff
+		}
+		
+		days_mission_timeout = 180
 		fire_only_once = yes
 		is_good = no
 
@@ -13116,6 +13140,7 @@ operations = {
 				idea = SOV_assure_competency
 				days = 150
 			}
+			white_peace = FIN
 			diplomatic_relation = {
 				country = FIN
 				relation = non_aggression_pact
@@ -13124,6 +13149,7 @@ operations = {
 			white_peace = FIN
 			set_global_flag = FIN_winter_victory
 			set_global_flag = SOV_winter_war_loss
+			# FIN = { country_event = finland.508 } TODO
 			hidden_effect = {
 				MON = {
 					remove_ideas = MON_brothers_war
@@ -13152,11 +13178,44 @@ operations = {
 		}
 	}
 
-	SOV_winter_war_catastrophe_mission = {
+	#made into a mission, disabled with always = no
+	SOV_winter_war_lessons = {
 		icon = generic_operation
+
+		allowed = {
+			original_tag = SOV
+			always = no
+		}
 
 		visible = {
 			has_active_mission = SOV_winter_war
+			always = no
+		}
+
+		available = {
+			has_war_with = FIN
+			casualties > 125000
+		}
+
+		fire_only_once = yes
+
+		days_remove = 7
+
+		remove_effect = {
+			add_timed_idea = {
+				idea = SOV_winter_war_adapt
+				days = 120
+				set_country_flag = SOV_winter_war_incompetency
+			}
+		}
+
+	}
+
+	SOV_winter_war_lessons_mission = { #These are moved to the impassable fake country to clog visuals less
+		icon = generic_operation
+
+		visible = {
+			SOV = { has_active_mission = SOV_winter_war }
 		}
 
 		allowed = {
@@ -13164,15 +13223,22 @@ operations = {
 		}
 
 		available = {
-			has_war_with = FIN
-			casualties > 250000
+			SOV = {
+				has_war_with = FIN
+				casualties > 125000
+			}
 		}
 
 		cancel_trigger = {
-        has_war = no
+			SOV = {
+				OR = {
+					has_war = no
+					GER = { has_war_with = SOV } #Big maybe this prevents weird winter war buggy stuff
+				}
+			}
     	}
 
-		days_mission_timeout = 210
+		days_mission_timeout = 180
 		fire_only_once = yes
 		is_good = no
 
@@ -13181,16 +13247,67 @@ operations = {
 		}
 
 		complete_effect = {
-			set_country_flag = SOV_winter_war_catastrophe
+			#add_timed_idea = { #Buff moved to focus tree
+			#	idea = SOV_winter_war_adapt
+			#	days = 120
+			#}
+			SOV = { set_country_flag = SOV_winter_war_incompetency }
 		}
 	}
 
+	SOV_winter_war_catastrophe_mission = { #These are moved to the impassable fake country to clog visuals less
+		icon = generic_operation
+
+		visible = {
+			SOV = { has_active_mission = SOV_winter_war }
+		}
+
+		allowed = {
+			always = no
+		}
+
+		available = {
+			SOV = {
+				has_war_with = FIN
+				casualties > 250000
+			}
+		}
+
+		cancel_trigger = {
+			SOV = {
+				OR = {
+					has_war = no
+					GER = { has_war_with = SOV } #Big maybe this prevents weird winter war buggy stuff
+				}
+			}
+    	}
+
+		days_mission_timeout = 180
+		fire_only_once = yes
+		is_good = no
+
+		timeout_effect = {
+			
+		}
+
+		complete_effect = {
+			SOV = { set_country_flag = SOV_winter_war_catastrophe }
+		}
+	}
+
+	
 	SOV_winter_war_victory = {
 		icon = generic_operation
 
 		allowed = {
 			original_tag = SOV
 		}
+
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		targets = {
+			111
+    	}
 
 		visible = {
 			has_active_mission = SOV_winter_war
@@ -13200,46 +13317,46 @@ operations = {
 			has_war_with = FIN
 			OR = {
 				FIN = {
-					casualties > 85000
+					casualties > 65000
 				}
 
 				FIN = {
 					surrender_progress > 0.25
 				}
+				
+				SOV = { controls_state = 146 }
 			}
-		}
+		} 
 
 		cancel_trigger = {
 			NOT = { has_war_with = FIN }
 		}
 
-		days_remove = 7
+		days_remove = 5
 		fire_only_once = yes
 
 		remove_effect = {
 			set_global_flag = SOV_winter_war_win
-			SOV = {
-				white_peace = FIN
+			FIN = { set_country_flag = winter_war_finished }
+			white_peace = FIN
+			#hidden_effect = { #Event for Finnish loss
+			#	FIN = { country_event = finland.507 } #This event now controls most effects (state transfer, NAP, Fortress removal, Finland debuffs)
+			#}
+			if = { #Move Remaining Military factories to Olonets
+				limit = { 
+					146 = {
+						arms_factory > 0
+					}
+				}
+				# country_event = finland.505
+			}
+			effect_tooltip = {
 				transfer_state = 146
 				transfer_state = 147
-			}
-			FIN = { set_country_flag = winter_war_finished }
-			diplomatic_relation = {
-				country = FIN
-				relation = non_aggression_pact
-			}
-			hidden_effect = {
-				MON = {
-					remove_ideas = MON_brothers_war
+				diplomatic_relation = {
+					country = FIN
+					relation = non_aggression_pact
 				}
-				# if = {
-				# 	limit = {
-				# 		country_exists = KSR
-				# 	}
-				# 	KSR = {
-				# 		remove_ideas = MON_brothers_war
-				# 	}
-				# }
 			}
 		}
 	}
