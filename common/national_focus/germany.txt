@@ -4324,7 +4324,7 @@ focus_tree = {
 				tooltip = supply_consumption_factor_tt
 			}
 			add_to_variable = { 
-				GER_military_army_fuel_consumption_factor = -0.05
+				GER_military_army_fuel_consumption_factor = -0.1
 				tooltip = army_fuel_consumption_factor_tt
 			}
 		}
@@ -10849,10 +10849,6 @@ focus_tree = {
 		relative_position_id = GER_fate_of_czechoslovakia
 		cost = 5
 		
-		bypass = {
-			SOV = { has_completed_focus = SOV_pol_triple_alliance }
-		}
-		
 		available = {
 			is_subject = no
 			has_government = fascism
@@ -10911,7 +10907,7 @@ focus_tree = {
 		x = -2
 		y = 1
 		relative_position_id = GER_molotov_ribbentrop_pact
-		cost = 5
+		cost = 2
 		
 		bypass = { 
 			OR = {
@@ -11049,74 +11045,6 @@ focus_tree = {
 					specialization = specialization_land
 					value = 1
 				}
-			}
-		}
-	}
-
-	#Peace For Our Time#
-	focus = { #All related content and local will be in Czech related files and local locations
-		id = GER_integrate_czech_manufacturers
-		icon = GFX_focus_PER_czech_tanks
-		prerequisite = { focus = GER_integrate_czechoslovakia  focus = GER_fate_of_czechoslovakia }
-
-			add_breakthrough_progress = {
-				specialization = specialization_land
-				value = 1
-			}
-
-			SOV = {
-				add_breakthrough_progress = {
-					specialization = specialization_land
-					value = 1
-				}
-				unlock_military_industrial_organization_tooltip = mio:CZE_skoda_works_german_organization
-				mio:CZE_skoda_works_german_organization = {
-					add_mio_size = 2
-					add_mio_funds_gain_factor = 0.25
-				}
-
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				unlock_military_industrial_organization_tooltip = mio:CZE_ceska_zbrojovka_uhersky_brod_organization
-				mio:CZE_ceska_zbrojovka_uhersky_brod_organization = {
-					add_mio_size = 2
-					add_mio_funds_gain_factor = 0.25
-				}
-
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				unlock_military_industrial_organization_tooltip = mio:CZE_bohmische_mahrische_maschinenfabrik_ag_german_organization
-				mio:CZE_bohmische_mahrische_maschinenfabrik_ag_german_organization = {
-					add_mio_size = 2
-					add_mio_funds_gain_factor = 0.25
-				}
-
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				unlock_military_industrial_organization_tooltip = mio:CZE_avia_german_organization
-				mio:CZE_avia_german_organization = {
-					add_mio_size = 2
-					add_mio_funds_gain_factor = 0.25
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				add_timed_idea = { idea = CZE_integrate_czech_manufacturers_GER_idea_aat days = 180 }
-			}
-			else = {
-				custom_effect_tooltip = GER_integrate_czech_manufacturers_no_aat_tt
-
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				# custom_effect_tooltip = available_industrial_concern
-				# show_ideas_tooltip = CZE_skoda_works_german_manufacturer
-				# custom_effect_tooltip = available_industrial_concern
-				# show_ideas_tooltip = CZE_ceska_zbrojovka_uhersky_brod
-				# custom_effect_tooltip = available_industrial_concern
-				# show_ideas_tooltip = CZE_zlin_aircraft
-				# custom_effect_tooltip = available_industrial_concern
-				# show_ideas_tooltip = CZE_bohmische_mahrische_maschinenfabrik_ag_german_manufacturer
-
-				add_timed_idea = { idea = CZE_integrate_czech_manufacturers_GER_idea_no_aat days = 180 }
 			}
 		}
 	}
@@ -14616,9 +14544,11 @@ focus_tree = {
 			else = {
 				GER_add_or_modify_military_intelligence_service = yes
 			}
-			add_timed_idea = {
-				idea = GER_swiss_gold
-				days = 545
+			add_to_variable = {
+				# GER_military_intelligence_service_consumer_goods_factor = -0.05
+				GER_military_intelligence_service_consumer_goods_factor = -0.2
+				# tooltip =  consumer_goods_expected_value_tt
+				tooltip = consumer_goods_factor_value_tt
 			}
 			if = {
 				limit = {
@@ -14642,49 +14572,6 @@ focus_tree = {
 					GER_military_intelligence_service_subversive_activites_upkeep = -0.2
 					tooltip = subversive_activites_upkeep_tt
 				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_invade_lithuania
-		prerequisite = { focus = GER_danzig_or_war}
-		icon = GFX_focus_GER_eastern_grand_duchies
-		x = 4
-		y = 1
-
-		search_filters = { FOCUS_FILTER_ANNEXATION }
-
-		relative_position_id = GER_danzig_or_war
-		cost = 1
-		ai_will_do = {
-			factor = 5
-		}
-		
-		available = {
-			NOT = { has_global_flag = sov_yes_pact }
-		}
-
-		available_if_capitulated = yes
-
-		bypass = {
-			AND = {
-				owns_state = 189
-				owns_state = 815
-				owns_state = 11
-				owns_state = 814
-			}
-		}
-
-		completion_reward = {
-			add_state_claim = 189
-			add_state_claim = 815
-			add_state_claim = 11
-			add_state_claim = 814
-			
-			declare_war_on = {
-				target = LIT
-				type = annex_everything
 			}
 		}
 	}
@@ -15767,22 +15654,21 @@ focus_tree = {
 	# 	icon = GFX_focus_FIN_right_wing_policies
 	# 	prerequisite = { focus = GER_anti_soviet_pact }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_anti_soviet_pact
-		cost = 5
-
-		available = {
-			is_subject = no
-			NOT = { is_ally_with = SOV }
-			NOT = {
-				has_war_with = FIN
-			}
-			FIN = {
-				exists = yes
-				has_war_with = SOV
-			}
-		}
+	# 	x = 0
+	# 	y = 1
+	# 	relative_position_id = GER_anti_soviet_pact
+	# 	cost = 5
+	# 	available = {
+	# 		is_subject = no
+	# 		NOT = { is_ally_with = SOV }
+	# 		NOT = {
+	# 			has_war_with = FIN
+	# 		}
+	# 		FIN = {
+	# 			exists = yes
+	# 			has_war_with = SOV
+	# 		}
+	# 	}
 
 	# 	search_filters = {}
 
@@ -15798,17 +15684,6 @@ focus_tree = {
 		id = GER_prepare_barb
 		icon = GFX_ger_prepare_to_invade_union
 		prerequisite = { focus = GER_anti_comintern_pact }
-
-		search_filters = { FOCUS_FILTER_HISTORICAL }
-
-		bypass = {
-			OR = {
-				has_war_with = SOV
-				SOV = {
-					exists = no
-				}
-			}
-		}
 		
 		available = {
 			98 = {
@@ -15906,332 +15781,79 @@ focus_tree = {
 			}
 		}	
 		completion_reward = {
-			custom_effect_tooltip = GER_start_barb_planning_tt
-			event_option_tooltip = germany.376.a
-		}
-	}
-
-	focus = {
-		id = GER_give_army_winter_coats
-		icon = GFX_focus_generic_winter_warfare
-		prerequisite = { focus = GER_prepare_barb }
-
-		available = {
-			NOT = { has_war_with = SOV }
-			has_political_power > 200
-		}
-				
-		x = -3
-		y = 1
-
-		relative_position_id = GER_prepare_barb
-		cost = 2
-		completion_reward = {
-			remove_ideas = GER_good_weather_army
-			custom_effect_tooltip = generic_skip_one_line_tt
-			add_war_support = -0.1
-			add_political_power = -200
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_generic_modify_barb_buff_tt
-			# custom_effect_tooltip = GER_barb_buff_army_org_factor_var_-5_tt
-			# add_to_variable = { var = GER_barb_buff_army_org_factor_var value = -0.05 }
-
-			# custom_effect_tooltip = GER_barb_buff_army_morale_factor_var_-5_tt
-			# add_to_variable = { var = GER_barb_buff_army_morale_factor_var value = -0.05 }
-
-			custom_effect_tooltip = GER_barb_buff_initiative_factor_var_-5_tt
-			add_to_variable = { var = GER_barb_buff_initiative_factor_var value = -0.05 }
-
-			custom_effect_tooltip = GER_barb_buff_supply_factor_var_-5_tt
-			add_to_variable = { var = GER_barb_buff_supply_factor_var value = -0.05 }
-		}
-	}
-
-	focus = {
-		id = GER_build_up_airfields
-		icon = GFX_focus_generic_air_bases
-		prerequisite = { focus = GER_prepare_barb }
-
-		available = {
-			NOT = { has_war_with = SOV }
-		}
-				
-		x = -1
-		y = 1
-
-		relative_position_id = GER_prepare_barb
-		cost = 2
-		completion_reward = {
-			188 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-			98 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-			88 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-			92 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-			73 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-			10 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-			763 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_stockpile_fuel
-		icon = GFX_focus_PER_increase_oil_sales
-		prerequisite = { focus = GER_prepare_barb }
-
-		available = {
-			NOT = { has_war_with = SOV }
-		}
-				
-		x = 1
-		y = 1
-
-		relative_position_id = GER_prepare_barb
-		cost = 2
-		completion_reward = {
-			59 = {
-				add_building_construction = {
-					type = fuel_silo
-					level = 2
-					instant_build = yes
-				}
-			}
-			57 = {
-				add_building_construction = {
-					type = fuel_silo
-					level = 2
-					instant_build = yes
-				}
-			}
-			55 = {
-				add_building_construction = {
-					type = fuel_silo
-					level = 2
-					instant_build = yes
-				}
-			}
-			65 = {
-				add_building_construction = {
-					type = fuel_silo
-					level = 2
-					instant_build = yes
-				}
-			}
-			54 = {
-				add_building_construction = {
-					type = fuel_silo
-					level = 2
-					instant_build = yes
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_intensify_otto_program
-		icon = GFX_focus_SOV_the_road_of_life
-		prerequisite = { focus = GER_prepare_barb }
-
-		available = {
-			NOT = { has_war_with = SOV }
-			has_political_power > 25
-		}
-				
-		x = 3
-		y = 1
-
-		relative_position_id = GER_prepare_barb
-		cost = 2
-		completion_reward = {
-			add_political_power = -25
-			add_equipment_to_stockpile = { type = train_equipment amount = -150 producer = GER }
-			42 = {	remove_building = { type = steel_refinery level = 1 } }
-			51 = {	remove_building = { type = steel_refinery level = 1 } }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			188 = {
-				add_building_construction = {
-					type = infrastructure
-					level = 3
-					instant_build = yes
-				}
-			}
+			complete_national_focus = GER_tripartite
 			98 = {
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 2
 					instant_build = yes
 				}
 			}
 			88 = {
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 2
 					instant_build = yes
 				}
 			}
 			92 = {
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
 					instant_build = yes
 				}
-			}
-			90 = {
 				add_building_construction = {
-					type = infrastructure
-					level = 3
+					type = air_base
+					level = 2
 					instant_build = yes
 				}
 			}
 			10 = {
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 2
 					instant_build = yes
 				}
 			}
 			5 = {
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 2
 					instant_build = yes
 				}
 			}
 			763 = {
 				add_building_construction = {
 					type = infrastructure
-					level = 3
+					level = 2
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = air_base
+					level = 2
 					instant_build = yes
 				}
 			}
-
-			if = {
-				limit = {
-					ROM = { controls_state = 80 }
-				}
-				80 = {
-					add_building_construction = {
-						type = infrastructure
-						level = 3
-						instant_build = yes
-					}
-				}
-			}
-
-			if = {
-				limit = {
-					ROM = { controls_state = 78 }
-				}
-				78 = {
-					add_building_construction = {
-						type = infrastructure
-						level = 3
-						instant_build = yes
-					}
-				}
-			}
-
-			if = {
-				limit = {
-					ROM = { controls_state = 766 }
-				}
-				766 = {
-					add_building_construction = {
-						type = infrastructure
-						level = 3
-						instant_build = yes
-					}
-				}
-			}
-
-			if = {
-				limit = {
-					ROM = { controls_state = 79 }
-				}
-				79 = {
-					add_building_construction = {
-						type = infrastructure
-						level = 3
-						instant_build = yes
-					}
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			custom_effect_tooltip = GER_new_railways1_tt
-			build_railway = {
-				level = 5
-				build_only_on_allied = yes
-				start_state = 64
-				target_state = 188
-			}
-			build_railway = {
-				level = 5
-				build_only_on_allied = yes
-				start_state = 64
-				target_state = 92
-			}
-			custom_effect_tooltip = GER_new_railways2_tt
-			build_railway = {
-				level = 5
-				build_only_on_allied = yes
-				start_state = 46
-				target_state = 78
-			}
-			build_railway = {
-				level = 5
-				build_only_on_allied = yes
-				start_state = 46
-				target_state = 80
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_generic_modify_barb_buff_tt
-			custom_effect_tooltip = GER_barb_buff_supply_factor_var_5_tt
-			add_to_variable = { var = GER_barb_buff_supply_factor_var value = 0.05 }
 		}
 	}
 
@@ -16262,46 +15884,47 @@ focus_tree = {
 		available_if_capitulated = no
 
 		available = {
-			if = {
-				limit = {
-					has_global_flag = axis_manpower_flag
-				}
-				has_army_manpower = { size > 1199999 } #80 div	
-			}
-			OR = {
-				AND = {
-					date > 1939.4.1
-					date < 1939.8.1
-				}
-				AND = {
-					date > 1940.4.1
-					date < 1940.8.1
-				}
-				AND = {
-					date > 1941.4.1
-					date < 1941.8.1
-				}
-				AND = {
-					date > 1942.4.1
-					date < 1942.8.1
-				}
-				AND = {
-					date > 1943.4.1
-					date < 1943.8.1
-				}
-				AND = {
-					date > 1944.4.1
-					date < 1944.8.1
-				}
-				AND = {
-					date > 1945.4.1
-					date < 1945.8.1
-				}
-				AND = {
-					date > 1946.4.1
-					date < 1946.8.1
-				}
-			}
+			# if = {
+			# 	limit = {
+			# 		has_global_flag = axis_manpower_flag
+			# 	}
+			# 	has_army_manpower = { size > 1199999 } #80 div	
+			# }
+			date > 1941.6.1
+			# OR = {
+			# 	AND = {
+			# 		date > 1939.3.1
+			# 		date < 1939.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1940.3.1
+			# 		date < 1940.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1941.3.1
+			# 		date < 1941.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1942.3.1
+			# 		date < 1942.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1943.3.1
+			# 		date < 1943.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1944.3.1
+			# 		date < 1944.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1945.3.1
+			# 		date < 1945.8.1
+			# 	}
+			# 	AND = {
+			# 		date > 1946.3.1
+			# 		date < 1946.8.1
+			# 	}
+			# }
 			if = {
 				limit = {
 					GER  = { is_ai = yes }
@@ -16369,17 +15992,16 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
 
 		completion_reward = {
+
 			declare_war_on = {
 				target = SOV
 				type = annex_everything
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			add_dynamic_modifier = {
-				modifier = GER_barb_buff_dynamic_modifier
-				days = 180
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			SOV = {
+			if = {
+				limit = {
+					date < 1941.8.1
+				}
+				custom_effect_tooltip = GER_barbarossa_too_late_tt
 				add_timed_idea = {
 					idea = GER_barbarossa
 					days = 150
@@ -16391,9 +16013,61 @@ focus_tree = {
 					}
 				}
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
+						if = {
+						limit = {
+							HUN = {
+									is_in_faction_with = GER
+								}
+							}
+						HUN = {
+							declare_war_on = { 
+								target = SOV
+								type = annex_everything
+							}
+						}
+					}
+					if = {
+						limit = {
+							ROM = {
+									is_in_faction_with = GER
+								}
+							}
+						ROM = {
+							declare_war_on = { 
+								target = SOV
+								type = annex_everything
+							}
+						}
+					}
+					if = {
+						limit = {
+							BUL = {
+									is_in_faction_with = GER
+								}
+							}
+						BUL = {
+							declare_war_on = { 
+								target = SOV
+								type = annex_everything
+							}
+						}
+					}
+					if = {
+						limit = {
+							YUG = {
+									is_in_faction_with = GER
+								}
+							}
+						YUG = {
+							declare_war_on = { 
+								target = SOV
+								type = annex_everything
+							}
+						}
+					}
+
+			remove_ideas = GER_good_weather_army
 			effect_tooltip = {
-				activate_mission = GER_barbarossa_timeline_mission
 				activate_mission = GER_barbarossa_mission_moscow
 				activate_mission = GER_barbarossa_mission_kiev
 				activate_mission = GER_barbarossa_mission_lenin
@@ -16404,11 +16078,48 @@ focus_tree = {
 
 		}
 	}
+
+	focus = {
+		id = GER_roa
+		icon = GFX_roa
+		prerequisite = { focus = GER_war_with_the_ussr }
+		
+		available = {
+			has_war_with = SOV
+		}
+
+		
+		x = 2
+		y = 1
+		relative_position_id = GER_war_with_the_ussr
+		cost = 5
+		completion_reward = {
+			custom_effect_tooltip = GER_ROA_TT
+
+			every_controlled_state = {
+				limit = {
+					is_core_of = SOV
+				}
+				add_compliance = 15
+			}
+			hidden_effect = {
+				GER = {
+					if = { 
+                        limit = {
+                            has_global_flag = allow_voice_lines_flag
+                        }
+					scoped_sound_effect = "ger_roa"
+					}
+				}
+			}
+			
+		}
+	}
 	
 	focus = {
 		id = GER_ostwall
 		icon = GFX_goal_generic_fortify_city
-		prerequisite = { focus = GER_war_with_the_ussr }
+		prerequisite = { focus = GER_roa }
 		available = {
 			any_country = {
 				OR = {
@@ -16430,9 +16141,9 @@ focus_tree = {
 				}
 			}
 		}
-		x = 2
+		x = 0
 		y = 1
-		relative_position_id = GER_war_with_the_ussr
+		relative_position_id = GER_roa
 		cost = 5
 		ai_will_do = {
 			factor = 1
@@ -16787,11 +16498,11 @@ focus_tree = {
 	focus = {
 		id = GER_alliance_with_the_ussr
 		icon = GFX_focus_GER_alliance_with_the_ussr
-		#prerequisite = { focus = GER_treaty_with_the_ussr }
+		prerequisite = { focus = GER_treaty_with_the_ussr }
 		mutually_exclusive = { focus = GER_war_with_the_ussr }
 		x = 0
 		y = 1
-		#relative_position_id = GER_treaty_with_the_ussr
+		relative_position_id = GER_treaty_with_the_ussr
 		cost = 5
 		
 		bypass = {
