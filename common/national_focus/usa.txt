@@ -238,7 +238,8 @@
 			clr_country_flag = USA_tva_active_merge # end the in-progress exemption
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
-			custom_effect_tooltip = USA_force_merge_tva_kaiser_tt
+			# Display the TVA-Kaiser Conglomerate concern's
+			show_ideas_tooltip = USA_tva_kaiser_conglomerate
 		}
 	}
 
@@ -389,27 +390,7 @@
 			date > 1938.11.1
 		}
 		completion_reward = {
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 2.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_3_to_2_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 1.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_2_to_1_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_1_to_0_tt
-			}
-			add_to_variable = { var = USA_depression_level value = -1 }
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 0 compare = less_than } }
-				set_variable = { var = USA_depression_level value = 0 }
-			}
+			USA_ease_depression = yes
 		}
 	}
 
@@ -594,7 +575,7 @@
 					add_idea = tva_upgraded
 				}
 			}
-			custom_effect_tooltip = USA_expand_tva_upgrades_tt
+			show_ideas_tooltip = tva_upgraded
 		}
 	}
 
@@ -613,27 +594,7 @@
 			date > 1937.6.1
 		}
 		completion_reward = {
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 2.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_3_to_2_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 1.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_2_to_1_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_1_to_0_tt
-			}
-			add_to_variable = { var = USA_depression_level value = -1 }
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 0 compare = less_than } }
-				set_variable = { var = USA_depression_level value = 0 }
-			}
+			USA_ease_depression = yes
 		}
 	}
 
@@ -805,6 +766,15 @@
 		mutually_exclusive = { focus = USA_work_within_congress  }
 		completion_reward = {
 			custom_effect_tooltip = USA_court_packing_how_it_works_tt
+			# On SUCCESS — show the resulting spirit's modifiers natively.
+			custom_effect_tooltip = USA_court_packing_success_outcome_tt
+			show_ideas_tooltip = USA_subdued_the_supreme_court
+			# On FAILURE — show the penalties natively (without applying them).
+			custom_effect_tooltip = USA_court_packing_failure_outcome_tt
+			effect_tooltip = {
+				add_stability = -0.15
+				USA_third_new_deal_court_failure = yes
+			}
 			hidden_effect = {
 				set_variable = { var = USA_court_packing_chance value = 0 }
 				set_variable = { var = USA_court_packing_pp value = 0 }
@@ -1271,27 +1241,7 @@
 		prerequisite = { focus = USA_civil_works_administration  } prerequisite = { focus = USA_found_the_office_of_prices_and_supply  } prerequisite = { focus = USA_begin_the_manhatten_project  } prerequisite = { focus = USA_finance_the_rubber_reserve_company  }
 		completion_reward = {
 			# Decrease depression by 1 level — tooltips shared with wealth tax focus
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 2.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_3_to_2_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 1.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_2_to_1_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_1_to_0_tt
-			}
-			add_to_variable = { var = USA_depression_level value = -1 }
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 0 compare = less_than } }
-				set_variable = { var = USA_depression_level value = 0 }
-			}
+			USA_ease_depression = yes
 		}
 	}
 
@@ -1497,6 +1447,8 @@
 		completion_reward = {
 			add_ideas = USA_fy40_funding
 			custom_effect_tooltip = USA_fy40_wartime_swap_tt
+			# Show the wartime replacement idea's real modifiers natively.
+			show_ideas_tooltip = USA_naval_funds_running_low
 		}
 	}
 
@@ -1534,6 +1486,8 @@
 		completion_reward = {
 			add_ideas = USA_long_term_funding
 			custom_effect_tooltip = USA_fy42_wartime_swap_tt
+			# Show the wartime replacement idea's real modifiers natively (no stale numbers).
+			show_ideas_tooltip = USA_superior_naval_shipbuilding
 		}
 	}
 
@@ -3048,28 +3002,7 @@
 		}
 		completion_reward = {
 			clr_country_flag = USA_tva_active_selloff # end the in-progress exemption
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 2.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_3_to_2_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 1.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_2_to_1_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_1_to_0_tt
-			}
-			hidden_effect = {
-				if = {
-					limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-					add_to_variable = { var = USA_depression_level value = -1 }
-				}
-			}
+			USA_ease_depression = yes
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
 		}
@@ -3212,28 +3145,7 @@
 		}
 		completion_reward = {
 			clr_country_flag = USA_tva_active_utilise # end the in-progress exemption
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 2.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_3_to_2_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 1.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_2_to_1_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_1_to_0_tt
-			}
-			hidden_effect = {
-				if = {
-					limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-					add_to_variable = { var = USA_depression_level value = -1 }
-				}
-			}
+			USA_ease_depression = yes
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
 		}
@@ -3251,28 +3163,7 @@
 		}
 		prerequisite = { focus = USA_give_north_american_aviation_military_contracts }
 		completion_reward = {
-			if = {
-				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 2.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_3_to_2_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 1.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_2_to_1_tt
-			}
-			else_if = {
-				limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-				custom_effect_tooltip = USA_wealth_tax_1_to_0_tt
-			}
-			hidden_effect = {
-				if = {
-					limit = { check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals } }
-					add_to_variable = { var = USA_depression_level value = -1 }
-				}
-			}
+			USA_ease_depression = yes
 		}
 	}
 
@@ -3337,8 +3228,19 @@
 			}
 			else = {
 				set_country_flag = USA_big_gas_rubber_pending
+				# Show the deferred +10 rubber/refinery natively (without applying it yet —
+				# it is granted at war start by usa_corporate_on_actions).
+				effect_tooltip = {
+					modify_building_resources = {
+						building = synthetic_rubber_refinery
+						resource = rubber
+						amount = 10
+					}
+				}
 			}
-			custom_effect_tooltip = USA_contracts_towards_big_gas_tt
+			# Display the Standard Oil concern
+			show_ideas_tooltip = standard_oil
+			show_ideas_tooltip = standard_oil_upgraded
 		}
 	}
 
@@ -3529,7 +3431,8 @@
 		prerequisite = { focus = USA_war_productions_board  }
 
 		completion_reward = {
-			custom_effect_tooltip = USA_transform_gm_upgrade_tt
+			# Display the upgraded General Motors concern's 
+			show_ideas_tooltip = general_motors_upgraded
 			# Unlock the upgraded General Motors concern for hiring
 			set_country_flag = USA_gm_upgraded_unlocked
 
@@ -3618,12 +3521,13 @@
 		prerequisite = { focus = USA_december71941adatewhichwillliveininfamy  }
 
 		completion_reward = {
-			# Remove The Great Depression (all 4 levels) and zero the variable
-			remove_dynamic_modifier = { modifier = USA_great_depression_4 }
-			remove_dynamic_modifier = { modifier = USA_great_depression_3 }
-			remove_dynamic_modifier = { modifier = USA_great_depression_2 }
-			remove_dynamic_modifier = { modifier = USA_great_depression_1 }
+			# Remove The Great Depression entirely and zero its variables
 			set_variable = { USA_depression_level = 0 }
+			set_variable = { USA_depression_cg = 0 }
+			set_variable = { USA_depression_resources = 0 }
+			set_variable = { USA_depression_conscription = 0 }
+			set_variable = { USA_depression_construction = 0 }
+			remove_dynamic_modifier = { modifier = USA_great_depression }
 
 			# Series E War Bonds spirit — -5% consumer goods
 			add_ideas = USA_series_e_war_bonds
@@ -3790,7 +3694,15 @@
 
 		completion_reward = {
 			custom_effect_tooltip = USA_Operation_Torch_tt
-			custom_effect_tooltip = USA_operation_torch_generals_tt
+			# Show the general upgrades natively (applied 48h later by usa.1004).
+			effect_tooltip = {
+				usa_george_s_patton = { add_skill_level = 1 add_attack = 1 }
+				add_corps_commander_role = {
+					character = usa_omar_bradley
+					traits = { brilliant_strategist infantry_leader trait_engineer }
+					skill = 6 attack_skill = 7 defense_skill = 6 planning_skill = 7 logistics_skill = 6
+				}
+			}
 			country_event = { id = usa.1004 hours = 48 }
 		}
 	}
@@ -4008,7 +3920,10 @@
 
 		completion_reward = {
 			custom_effect_tooltip = USA_Control_the_Philippines_tt
-			custom_effect_tooltip = USA_control_philippines_macarthur_tt
+			# Show MacArthur's upgrade natively (applied by usa.1005 on retaking the Philippines).
+			effect_tooltip = {
+				usa_douglas_macarthur = { add_skill_level = 1 }
+			}
 			country_event = { id = usa.1005 hours = 48 }
 		}
 	}
