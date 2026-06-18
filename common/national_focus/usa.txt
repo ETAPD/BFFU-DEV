@@ -1,4 +1,4 @@
-focus_tree = {
+﻿focus_tree = {
 	id = usa
 	continuous_focus_position = { x = 288 y = 1800 }
 	country = {
@@ -223,9 +223,19 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_appoint_dupont_to_the_tva  }
 		available = {
-			NOT = { has_country_flag = USA_tva_cooldown }
+			OR = {
+				NOT = { has_country_flag = USA_tva_cooldown }
+				has_country_flag = USA_tva_active_merge
+			}
+		}
+		select_effect = {
+			# Start the shared TVA cooldown the moment work begins, so a queued
+			# sibling TVA focus can't slip through the instant this one completes.
+			set_country_flag = { flag = USA_tva_cooldown days = 90 }
+			set_country_flag = USA_tva_active_merge
 		}
 		completion_reward = {
+			clr_country_flag = USA_tva_active_merge # end the in-progress exemption
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
 			custom_effect_tooltip = USA_force_merge_tva_kaiser_tt
@@ -2535,7 +2545,6 @@ focus_tree = {
 			# Unlock reform bonuses on the United States Army dynamic modifier
 			set_variable = { var = USA_army_xp_bonus       value = 0.25 tooltip = experience_gain_army_factor_tt }
 			set_variable = { var = USA_army_promote_bonus  value = -0.25 tooltip = promote_cost_factor_tt }
-			add_to_variable = { var = USA_army_planning_bonus value = 0.10 tooltip = max_planning_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -2941,8 +2950,7 @@ focus_tree = {
 		search_filters = {
 			FOCUS_FILTER_RESEARCH
 		}
-		prerequisite = { focus = USA_first_special_service_force  } prerequisite = { focus = USA_army_rangers  }
-
+		prerequisite = { focus = USA_first_special_service_force focus = USA_army_rangers }
 		completion_reward = {
 			custom_effect_tooltip = USA_commision_the_m29_tt
 			hidden_effect = {
@@ -3027,9 +3035,19 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_cancel_deficit_spending  }
 		available = {
-			NOT = { has_country_flag = USA_tva_cooldown }
+			OR = {
+				NOT = { has_country_flag = USA_tva_cooldown }
+				has_country_flag = USA_tva_active_selloff
+			}
+		}
+		select_effect = {
+			# Start the shared TVA cooldown the moment work begins, so a queued
+			# sibling TVA focus can't slip through the instant this one completes.
+			set_country_flag = { flag = USA_tva_cooldown days = 90 }
+			set_country_flag = USA_tva_active_selloff
 		}
 		completion_reward = {
+			clr_country_flag = USA_tva_active_selloff # end the in-progress exemption
 			if = {
 				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
 				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt
@@ -3181,9 +3199,19 @@ focus_tree = {
 		prerequisite = { focus = USA_appoint_dupont_to_the_tva  }
 		prerequisite = { focus = USA_sell_off_government_control_of_the_tva  }
 		available = {
-			NOT = { has_country_flag = USA_tva_cooldown }
+			OR = {
+				NOT = { has_country_flag = USA_tva_cooldown }
+				has_country_flag = USA_tva_active_utilise
+			}
+		}
+		select_effect = {
+			# Start the shared TVA cooldown the moment work begins, so a queued
+			# sibling TVA focus can't slip through the instant this one completes.
+			set_country_flag = { flag = USA_tva_cooldown days = 90 }
+			set_country_flag = USA_tva_active_utilise
 		}
 		completion_reward = {
+			clr_country_flag = USA_tva_active_utilise # end the in-progress exemption
 			if = {
 				limit = { check_variable = { var = USA_depression_level value = 3.5 compare = greater_than_or_equals } }
 				custom_effect_tooltip = USA_wealth_tax_4_to_3_tt

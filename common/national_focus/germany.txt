@@ -9995,9 +9995,20 @@ focus_tree = {
 							province = 9575
 							instant_build = yes
 						}
+						
 					}
 				}
-			}			
+			}	
+			42 = {
+			add_dynamic_modifier = {
+							modifier = westwall_defences
+						}	custom_effect_tooltip = GER_west_wall_forts
+			}		
+			978 = {
+			add_dynamic_modifier = {
+							modifier = westwall_defences
+						}	custom_effect_tooltip = GER_west_wall_forts
+			}		
 		}
 	}
 
@@ -10739,11 +10750,10 @@ focus_tree = {
 	focus = {
 		id = GER_second_vienna_award
 		icon = GFX_goal_generic_cavalry
-		#prerequisite = { focus = GER_fate_of_czechoslovakia focus = GER_integrate_czechoslovakia }
-		prerequisite = { focus = GER_fate_of_czechoslovakia }
-		x = 0
+				prerequisite = { focus = GER_danzig_or_war }
+		x = 2
 		y = 1
-		relative_position_id = GER_fate_of_czechoslovakia
+		relative_position_id = GER_danzig_or_war
 		cost = 2
 		ai_will_do = {
 			factor = 10
@@ -10887,7 +10897,7 @@ focus_tree = {
 		x = -1
 		y = 1
 		relative_position_id = GER_molotov_ribbentrop_pact
-		cost = 5
+		cost = 2
 		
 		bypass = { 
 			OR = {
@@ -12452,7 +12462,7 @@ focus_tree = {
 		x = 0
 		y = 5
 		relative_position_id = GER_reassert_eastern_claims
-		cost = 5
+		cost = 2
 
 		will_lead_to_war_with = POL
 		
@@ -12476,6 +12486,8 @@ focus_tree = {
 		continue_if_invalid = yes
 
 		available = {
+			date > 1939.6.1
+
 			is_subject = no
 			85 = {
 				owner = {
@@ -12814,7 +12826,6 @@ focus_tree = {
 	focus = {
 		id = GER_subjugate_romanian_economy
 		icon = GFX_focus_GER_subjugate_romanian_economy
-		#prerequisite = { focus = GER_danzig_for_slovakia focus = GER_danzig_or_war }
 		prerequisite = { focus = GER_danzig_or_war }
 		x = -2
 		y = 1
@@ -12867,232 +12878,9 @@ focus_tree = {
 		}
 	}
 	
-	# focus = {
-	# 	id = GER_influence_the_benelux
-	# 	icon = GFX_focus_generic_influence_benelux
-	# 	prerequisite = { focus = GER_danzig_for_slovakia focus = GER_danzig_or_war }
-	# 	mutually_exclusive = { focus = GER_around_maginot }
-	# 	x = 1
-	# 	y = 2
-	# 	relative_position_id = GER_danzig_for_slovakia
-	# 	cost = 5
-	# 	available = {
-	# 		is_subject = no
-	# 	}
-
-	# 	ai_will_do = {
-	# 		factor = 5
-	# 		modifier = {
-	# 			factor = 0
-	# 			OR = {
-	# 				has_government = democratic
-	# 				has_government = communism
-	# 			}
-	# 		}
-	# 	}
-
-	# 	search_filters = { FOCUS_FILTER_POLITICAL }
-
-	# 	completion_reward = {
-	# 		custom_effect_tooltip = GER_unlock_influence_countries_tt
-	# 	}
-	# }
 	
-	focus = {
-		id = GER_around_maginot
 
-		icon = GFX_focus_GER_around_maginot
-		alternate_icon = GFX_focus_GER_around_maginot_historical
-
-		prerequisite = { focus = GER_danzig_or_war }
-		x = -1
-		y = 2
-		relative_position_id = GER_danzig_or_war
-		cost = 1
-
-		will_lead_to_war_with = BEL
-		will_lead_to_war_with = HOL
-		will_lead_to_war_with = LUX
-		will_lead_to_war_with = FRA
-
-		bypass = {
-			HOL = {
-				OR = {
-					exists = no
-					is_in_faction_with = GER
-					has_war_with = ROOT
-				}
-			}
-			BEL = {
-				OR = {
-					exists = no
-					is_in_faction_with = GER
-					has_war_with = ROOT
-				}
-			}
-			LUX = {
-				OR = {
-					exists = no
-					is_in_faction_with = GER
-					has_war_with = ROOT
-				}
-			}
-		}
-
-		available = {
-			is_subject = no
-			OR = {
-				NOT = { HOL = { is_in_faction_with = GER } }
-				NOT = { BEL = { is_in_faction_with = GER } }
-				NOT = { LUX = { is_in_faction_with = GER } }
-			}
-		}
-
-		historical_ai = {
-			date > 1939.1.1
-			NOT = {
-				any_home_area_neighbor_country = {
-					NOT = { tag = FRA }
-					NOT = { tag = DEN }
-					has_war_with = ROOT
-					surrender_progress < 0.5
-				}
-			}
-		}
-
-		ai_will_do = {
-			factor = 10			
-			modifier = {
-				factor = 0.05
-				date < 1939.1.1
-			}			
-			modifier = {
-				factor = 0.2
-				any_home_area_neighbor_country = {
-					NOT = { tag = FRA }
-					has_war_with = ROOT
-					surrender_progress < 0.5
-				}
-			}
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
-
-		completion_reward = {
-			#limit wargoals to when it makes sense to give them. No faction, war or non exist
-			if = { 
-				limit = {
-					country_exists = BEL
-					NOT = { BEL = { is_in_faction_with = GER } }
-					NOT = { has_war_with = BEL }
-				}
-				declare_war_on = {
-					target = BEL
-					type = annex_everything
-				}
-				hidden_effect = {
-					ENG = { add_to_faction = BEL }					
-				}
-			}
-			if =  {
-				limit = {
-					country_exists = HOL
-					NOT = { HOL = { is_in_faction_with = GER } }
-					NOT = { has_war_with = HOL }
-				}
-				declare_war_on = {
-					target = HOL
-					type = annex_everything
-				}
-				hidden_effect = {
-					ENG = { add_to_faction = HOL }					
-				}
-			}
-			if = {
-				limit = {
-					country_exists = LUX
-					NOT = { LUX = { is_in_faction_with = GER } }
-					NOT = { has_war_with = LUX }
-				}
-				declare_war_on = {
-					target = LUX
-					type = annex_everything
-				}		
-				hidden_effect = {
-					ENG = { add_to_faction = LUX }					
-				}	
-				add_ai_strategy = { 
-					type = conquer
-					id = LUX
-					value = 100
-				}		
-			}
-			if = {
-						limit = {
-							HUN = {
-									is_in_faction_with = GER
-								}
-							}
-						HUN = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							ROM = {
-									is_in_faction_with = GER
-								}
-							}
-						ROM = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							BUL = {
-									is_in_faction_with = GER
-								}
-							}
-						BUL = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							YUG = {
-									is_in_faction_with = GER
-								}
-							}
-						YUG = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-						}
-					}
-			hidden_effect = {
-				news_event = { hours = 6 id = news.234 }
-			}
-		}
-	}
-
-	focus = {
+		focus = {
 		id = GER_operation_weserubung
 
 		icon = GFX_focus_GER_operation_wesserubung
@@ -13100,10 +12888,10 @@ focus_tree = {
 
 		prerequisite = { focus = GER_danzig_or_war }
 		mutually_exclusive = { focus = GER_utilize_the_nordliche_gesellschaft }
-		x = 2
+		x = 0
 		y = 1
 		relative_position_id = GER_danzig_or_war
-		cost = 1
+		cost = 2
 
 		will_lead_to_war_with = DEN 
 		will_lead_to_war_with = NOR
@@ -13192,12 +12980,15 @@ focus_tree = {
 
 		completion_reward = {
 
+			set_country_flag = GER_weser_start
+
 			if = {
 				limit = {
 					country_exists = DEN					
 				} 
 				ENG = {
 					transfer_state = 101
+					transfer_state = 100
 					transfer_state = 337
 				}
 				every_state = {
@@ -13295,6 +13086,267 @@ focus_tree = {
 	}
 
 	focus = {
+		id = GER_around_maginot
+
+		icon = GFX_focus_GER_around_maginot
+		alternate_icon = GFX_focus_GER_around_maginot_historical
+
+		prerequisite = { focus = GER_operation_weserubung }
+		x = 0
+		y = 1
+		relative_position_id = GER_operation_weserubung
+		cost = 1
+
+		will_lead_to_war_with = BEL
+		will_lead_to_war_with = HOL
+		will_lead_to_war_with = LUX
+		will_lead_to_war_with = FRA
+
+		bypass = {
+			HOL = {
+				OR = {
+					exists = no
+					is_in_faction_with = GER
+					has_war_with = ROOT
+				}
+			}
+			BEL = {
+				OR = {
+					exists = no
+					is_in_faction_with = GER
+					has_war_with = ROOT
+				}
+			}
+			LUX = {
+				OR = {
+					exists = no
+					is_in_faction_with = GER
+					has_war_with = ROOT
+				}
+			}
+		}
+
+		available = {
+			is_subject = no
+			OR = {
+				has_country_flag = {
+				flag = GER_weser_start
+				days > 45
+			}
+			custom_trigger_tooltip = {
+				tooltip = GER_weser_start_tt
+				has_country_flag ={
+					flag = GER_weser_start
+					days > 45
+				}
+			}
+			NOR = { has_capitulated = yes }
+			}
+			OR = {
+				NOT = { HOL = { is_in_faction_with = GER } }
+				NOT = { BEL = { is_in_faction_with = GER } }
+				NOT = { LUX = { is_in_faction_with = GER } }
+			}
+		}
+
+		historical_ai = {
+			date > 1939.1.1
+			NOT = {
+				any_home_area_neighbor_country = {
+					NOT = { tag = FRA }
+					NOT = { tag = DEN }
+					has_war_with = ROOT
+					surrender_progress < 0.5
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 10			
+			modifier = {
+				factor = 0.05
+				date < 1939.1.1
+			}			
+			modifier = {
+				factor = 0.2
+				any_home_area_neighbor_country = {
+					NOT = { tag = FRA }
+					has_war_with = ROOT
+					surrender_progress < 0.5
+				}
+			}
+			modifier = {
+				factor = 0
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			#limit wargoals to when it makes sense to give them. No faction, war or non exist
+			if = { 
+				limit = {
+					country_exists = BEL
+					NOT = { BEL = { is_in_faction_with = GER } }
+					NOT = { has_war_with = BEL }
+				}
+				declare_war_on = {
+					target = BEL
+					type = annex_everything
+				}
+				hidden_effect = {
+					ENG = { add_to_faction = BEL }					
+				}
+			}
+			if =  {
+				limit = {
+					country_exists = HOL
+					NOT = { HOL = { is_in_faction_with = GER } }
+					NOT = { has_war_with = HOL }
+				}
+				declare_war_on = {
+					target = HOL
+					type = annex_everything
+				}
+				hidden_effect = {
+					ENG = { add_to_faction = HOL }					
+				}
+			}
+			if = {
+				limit = {
+					country_exists = LUX
+					NOT = { LUX = { is_in_faction_with = GER } }
+					NOT = { has_war_with = LUX }
+				}
+				declare_war_on = {
+					target = LUX
+					type = annex_everything
+				}		
+				hidden_effect = {
+					ENG = { add_to_faction = LUX }					
+				}	
+				add_ai_strategy = { 
+					type = conquer
+					id = LUX
+					value = 100
+				}		
+			}
+			if = {
+				limit = {
+					country_exists = FRA
+					NOT = { FRA = { is_in_faction_with = GER } }
+					NOT = { has_war_with = FRA }
+				}
+				declare_war_on = {
+					target = FRA
+					type = annex_everything
+				}		
+				hidden_effect = {
+					ENG = { add_to_faction = FRA					
+				}	
+				add_ai_strategy = { 
+					type = conquer
+					id = FRA
+					value = 100
+				}		
+			}
+			}
+			if = {
+						limit = {
+							HUN = {
+									is_in_faction_with = GER
+								}
+							}
+						HUN = {
+							declare_war_on = { 
+								target = LUX
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = BEL
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = HOL
+								type = annex_everything
+							}
+						}
+						
+					}
+					if = {
+						limit = {
+							ROM = {
+									is_in_faction_with = GER
+								}
+							}
+						ROM = {
+							declare_war_on = { 
+								target = LUX
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = BEL
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = HOL
+								type = annex_everything
+							}
+						}
+					}
+					if = {
+						limit = {
+							BUL = {
+									is_in_faction_with = GER
+								}
+							}
+						BUL = {
+							declare_war_on = { 
+								target = LUX
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = BEL
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = HOL
+								type = annex_everything
+							}
+						}
+					}
+					if = {
+						limit = {
+							YUG = {
+									is_in_faction_with = GER
+								}
+							}
+						YUG = {
+							declare_war_on = { 
+								target = LUX
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = BEL
+								type = annex_everything
+							}
+							declare_war_on = { 
+								target = HOL
+								type = annex_everything
+							}
+						}
+					}
+			hidden_effect = {
+				news_event = { hours = 6 id = news.234 }
+			}
+		}
+	}
+
+	focus = {
 		id = GER_utilize_the_nordliche_gesellschaft
 		icon = GFX_focus_generic_scandinavia_flags
 		prerequisite = { focus = GER_influence_the_baltics }
@@ -13325,66 +13377,66 @@ focus_tree = {
 		}
 	}
 
-	focus = {
-		id = GER_war_with_france
-
-		icon = GFX_focus_attack_france
-		alternate_icon = GFX_focus_GER_war_with_france
-
-		prerequisite = { focus = GER_danzig_or_war }
-
-		x = 0
-		y = 1
-		relative_position_id = GER_danzig_or_war
-		cost = 1
-
-		bypass = {
-			OR = {
-				NOT = { country_exists = FRA }
-				has_war_with = FRA
-			}
-		}
-		
-		available = {
-			is_subject = no			
-			NOT = { is_in_faction_with = FRA }
-		}
-
-		historical_ai = {
-			date > 1939.1.1
-			NOT = {
-				any_neighbor_country = {
-					has_war_with = ROOT
-				}		
-			}
-		}
-
-		ai_will_do = {
-			factor = 10			
-			modifier = {
-				factor = 0.05
-				date < 1939.1.1
-			}
-		}
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
-
-		completion_reward = {
-			add_named_threat = { threat = 5 name = GER_war_with_france_threat }
- 			create_wargoal = {
- 				type = take_state_focus
- 				target = FRA
- 				expire = 0
- 				generator = { 28 }
- 			}
-		}
-	}
+#focus = {
+#	id = GER_war_with_france
+#
+#	icon = GFX_focus_attack_france
+#	alternate_icon = GFX_focus_GER_war_with_france
+#
+#	prerequisite = { focus = GER_danzig_or_war }
+#
+#	x = 2
+#	y = 1
+#	relative_position_id = GER_danzig_or_war
+#	cost = 1
+#
+#	bypass = {
+#		OR = {
+#			NOT = { country_exists = FRA }
+#			has_war_with = FRA
+#		}
+#	}
+#	
+#	available = {
+#		is_subject = no			
+#		NOT = { is_in_faction_with = FRA }
+#	}
+#
+#	historical_ai = {
+#		date > 1939.1.1
+#		NOT = {
+#			any_neighbor_country = {
+#				has_war_with = ROOT
+#			}		
+#		}
+#	}
+#
+#	ai_will_do = {
+#		factor = 10			
+#		modifier = {
+#			factor = 0.05
+#			date < 1939.1.1
+#		}
+#	}
+#	search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
+#
+#	completion_reward = {
+#		add_named_threat = { threat = 5 name = GER_war_with_france_threat }
+ #		create_wargoal = {
+ #			type = take_state_focus
+ #			target = FRA
+ #			expire = 0
+ #			generator = { 28 }
+ #		}
+#	}
+#}
 
 	focus = {
 		id = GER_demands_to_sweden
 		icon = GFX_focus_generic_invade_sweden
 		prerequisite = { focus = GER_operation_weserubung }
 
-		x = 0
+		x = -2
 		y = 1
 		relative_position_id = GER_operation_weserubung
 		cost = 5
@@ -13486,7 +13538,7 @@ focus_tree = {
 	focus = {
 		id = GER_avenge_versailles
 		icon = GFX_GER_curtail_france
-		prerequisite = { focus = GER_war_with_france }
+		prerequisite = { focus = GER_around_maginot }
 		available = {
 			has_full_control_of_state = 16
 		}
@@ -13494,8 +13546,8 @@ focus_tree = {
 		}
 		cancel_if_invalid = yes
 		x = 0
-		y = 3
-		relative_position_id = GER_war_with_france
+		y = 2
+		relative_position_id = GER_around_maginot
 		cost = 5
 		ai_will_do = {
 			factor = 10
@@ -13509,13 +13561,13 @@ focus_tree = {
 
 	focus = {
 		id = GER_reintegrate_luxemburg_and_alsace_lorraine
-		icon = GFX_goal_generic_position_armies
+		icon = GFX_focus_GER_reinstate_imperial_possessions
 		prerequisite = { focus = GER_avenge_versailles }
 
 		x = 0
 		y = 1
 		relative_position_id = GER_avenge_versailles
-		cost = 5
+		cost = 2
 
 		cancel_if_invalid = yes
 		
@@ -14294,7 +14346,7 @@ focus_tree = {
 		mutually_exclusive = { focus = GER_the_swiss_gold }
 		x = 1
 		y = 2
-		relative_position_id = GER_war_with_france
+		relative_position_id = GER_operation_weserubung
 		cost = 5
 
 		will_lead_to_war_with = SWI
@@ -14436,7 +14488,7 @@ focus_tree = {
 		mutually_exclusive = { focus = GER_operation_tannenbaum }
 		x = 3
 		y = 2
-		relative_position_id = GER_war_with_france
+		relative_position_id = GER_operation_weserubung
 		cost = 5
 
 		allow_branch = {

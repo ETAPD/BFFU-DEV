@@ -102,7 +102,7 @@ FIN_five_year_plan_category = {
 			add_to_variable = { FIN_production_speed_industrial_complex_factor = 0.125 tooltip = production_speed_industrial_complex_factor_tt }
 			add_to_variable = { FIN_production_speed_arms_factory_factor = -0.05 tooltip = production_speed_arms_factory_factor_tt }
 			add_to_variable = { FIN_consumer_goods_factor = -0.075 tooltip = consumer_goods_factor_tt }
-			add_to_variable = { FIN_cg_points = -0.075 } FIN_production_speed_arms_factory_factor
+			add_to_variable = { FIN_cg_points = -0.075 }
 
 			custom_effect_tooltip = generic_skip_one_line_tt
 		}
@@ -823,15 +823,20 @@ FIN_winter_war = {
 
 		available = {
 			OR = {
-				NOT = {
-					has_war_with = SOV
+				AND = {
+					NOT = {
+						has_war_with = SOV
+					}
+					NOT = {
+						has_country_flag = FIN_won_winter_war
+					}
 				}
 			surrender_progress > 0.25
 			NOT = { controls_province = 9206 }
 			}
 		}
 
-		days_mission_timeout = 209
+		days_mission_timeout = 205
 
 		is_good = no
 
@@ -840,6 +845,9 @@ FIN_winter_war = {
 
 			hidden_effect = {
 				white_peace = SOV
+				MON = {
+					remove_ideas = MON_brothers_war
+				}
 				SOV = {
 					transfer_state = 146
 					transfer_state = 147
@@ -861,10 +869,13 @@ FIN_winter_war = {
 
 		timeout_effect = {
 			hidden_effect = {
-				white_peace = SOV
 				complete_national_focus = FIN_national_humiliation
 				complete_national_focus = FIN_a_reliable_ally
+				MON = {
+					remove_ideas = MON_brothers_war
+				}
 			}
+			remove_mission = FIN_ongoing_winter_war
 			set_country_flag = FIN_won_winter_war
 			custom_effect_tooltip = FIN_victory_in_winter_war
 		}
