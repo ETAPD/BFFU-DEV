@@ -1738,6 +1738,70 @@ SOV_tankograd_plant_organization = {
 		}
 	}
 
+	#MZ T-37 Refit Program, Could also be added to navy mios?
+	trait = {  
+		token = generic_mio_trait_Refurbish_the_t37
+		name = generic_mio_trait_Refurbish_the_t37
+		icon = GFX_generic_mio_department_icon_ship_general_conversion
+
+		position = { x=2 y=1 }
+		available = {
+			FROM = {
+				has_tech = sov_light_tank_AMPH
+			}		
+		}
+		relative_position_id = generic_mio_trait_enemy_tank_refitting
+
+		any_parent = { generic_mio_trait_enemy_tank_refitting }
+
+		on_complete = {
+			FROM = {
+			    #Could give them the t-37 to increase usage 
+			    #set_technology = {
+	    	    #	sov_light_tank_AMPH = 1
+	    	    #}
+				add_equipment_to_stockpile = {
+					type = sov_light_tank_chassis_t37 
+					amount = 1000
+					producer = SOV
+				}
+				hidden_effect = {
+					create_equipment_variant = {
+						name = "T-37A"
+						type = light_tank_amphibious_chassissov_light_tank_chassis_t37 
+						parent_version = 0
+						modules = {
+							main_armament_slot = tank_heavy_machine_gun
+							turret_type_slot = tank_light_turret_amphib_USSR
+							suspension_type_slot = tank_bogie_suspension
+							armor_type_slot = tank_riveted_armor
+							engine_type_slot = tank_gasoline_engine
+						}  
+					}  
+				}
+			}
+		}		
+	}
+
+	trait = {  
+		token = generic_mio_trait_modern_t37
+		name = generic_mio_trait_modern_t37
+		icon = GFX_generic_mio_department_icon_tank_light_tank_production
+
+		position = { x=0 y=1 }
+		relative_position_id = generic_mio_trait_Refurbish_the_t37
+
+		any_parent = { generic_mio_trait_Refurbish_the_t37 }
+
+		on_complete = {
+			FROM = {
+				set_technology = {
+	    	  		light_amphibious_tank_recon_support_tech = 1
+	    	 	}
+			}
+		}		
+	}
+
 	trait = {
 		token = generic_mio_trait_efficient_scrap_recycling
 		name = generic_mio_trait_efficient_scrap_recycling
