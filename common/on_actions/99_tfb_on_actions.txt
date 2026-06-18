@@ -32,56 +32,17 @@ on_actions = {
 			}
 		}
 		
-		#effect = {
-		#	# First remove the traits
-		#	every_country = {
-		#		every_army_leader = {
-		#			limit = {
-		#				has_trait = volunteer_xp_debuff
-		#				NOT = {
-		#					OR = {
-		#						is_leading_volunteer_group_with_original_country = THIS
-		#						is_leading_volunteer_group = THIS
-		#					}
-		#				}
-		#			}
-		#			remove_unit_leader_trait = volunteer_xp_debuff 
-		#		}
-		#	}
-		#	# Then Re-Add Them
-		#	every_country = {
-		#		every_army_leader = {
-		#			limit = {
-		#				NOT = { has_trait = volunteer_xp_debuff }
-		#				OR = {
-		#					is_leading_volunteer_group_with_original_country = THIS
-		#					is_leading_volunteer_group = THIS
-		#				}
-		#			}
-
-		#			add_unit_leader_trait = volunteer_xp_debuff 
-		#		}
-		#	}
-		#}
-		# Update Dockyard Consumer Goods or Build Speed
-		#effect = {
-		#	if = {
-		#		limit = {
-		#			has_global_flag = dockyard_cg_enabled_flag
-		#		}
-		#		every_country = {
-		#			dockyard_cg_calculation = yes
-		#		}
-		#	}
-		#	else_if = {
-		#		limit = {
-		#			has_global_flag = dockyard_cg_build_speed_flag
-		#		}
-		#		every_country = {
-		#			dockyard_build_speed_calculation = yes
-		#		}
-		#	}
-		#}
+		# Update Stalin Air Weekly
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = soviet_air_changes_full_flag
+				}
+				SOV = {
+					SOV_stalins_air_needs = yes
+				}
+			}
+		}
 
 		# Reset Intel on Hotjoin
 		effect = {
@@ -2507,29 +2468,23 @@ on_actions = {
 		}
 	}
 
-						# Calculate factories on war dec
-						set_variable = { POL_num_of_war_civs = num_of_civilian_factories }
-						set_variable = { POL_num_of_war_mils = num_of_military_factories }
-						set_variable = { POL_num_of_war_docs = num_of_naval_factories }
-
-						# Subtract the war factories from starting ones to find the difference between starting/built
-						subtract_from_variable = { POL_num_of_war_civs = POL_num_of_starting_civs }
-						subtract_from_variable = { POL_num_of_war_mils = POL_num_of_starting_mils }
-						subtract_from_variable = { POL_num_of_war_docs = POL_num_of_starting_docs }
-
-						# Multiply the starting factories by the precent gained from focuses
-						multiply_variable = { POL_num_of_starting_civs = POL_extra_factories_precent } # Percentage from focuses
-						multiply_variable = { POL_num_of_starting_mils = POL_extra_factories_precent } # Percentage from focuses
-						multiply_variable = { POL_num_of_starting_docs = POL_extra_factories_precent } # Percentage from focuses
-
-						# Add them both together to get the total to be added
-						add_to_variable = { POL_num_of_war_civs = POL_num_of_starting_civs }
-						add_to_variable = { POL_num_of_war_mils = POL_num_of_starting_mils }
-						add_to_variable = { POL_num_of_war_docs = POL_num_of_starting_docs }
+	on_daily_ROM = {
+		effect = {
+			if = {
+				limit = {
+					OR = {
+						NOT = {owns_state = 76 }
+						NOT = {owns_state = 77 }
+						NOT = {owns_state = 78 }
 					}
+					NOT = { has_completed_focus = ROM_national_humiliation }
+					NOT = { has_completed_focus = ROM_preserve_greater_romania }
 				}
+				complete_national_focus = ROM_national_humiliation
 			}
 		}
+	}
+	on_declare_war = {
 		effect = {
 			if = {
 				limit = {
