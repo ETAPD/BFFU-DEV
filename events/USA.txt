@@ -1503,18 +1503,21 @@ country_event = {
 	picture = GFX_report_event_usa_macarthur_speech
 
 	is_triggered_only = yes
-	fire_only_once = yes
+	# can only succeed once, but the event may be (re)triggered each time the focus fires
+	# it or the USA retakes the Philippines
+	trigger = {
+		tag = USA
+		has_completed_focus = USA_control_the_phillippines
+		controls_state = 327  # Philippines
+		controls_state = 623  # Luzon
+		NOT = { has_country_flag = USA_macarthur_returned }
+	}
 
 	option = {
 		name = usa.1005.a
-		if = {
-			limit = {
-				controls_state = 327  # Philippines
-				controls_state = 623  # Luzon
-			}
-			usa_douglas_macarthur = {
-				add_skill_level = 1
-			}
+		usa_douglas_macarthur = {
+			add_skill_level = 1
 		}
+		set_country_flag = USA_macarthur_returned
 	}
 }

@@ -1,4 +1,4 @@
-on_actions = {
+﻿on_actions = {
 	# ── USA joins the Allied faction when ENG first goes to war with GER (Danzig or War) ──────
 	# ROOT = country that entered the war
 	on_war = {
@@ -41,6 +41,24 @@ on_actions = {
 					ROOT = { NOT = { original_tag = JAP } }
 				}
 				FROM = { white_peace = ROOT }
+			}
+		}
+	}
+
+	# MacArthur's Return — re-fire the upgrade event whenever the USA (re)takes the
+	# Philippines after completing the focus, until it has successfully fired once.
+	# ROOT is new controller, FROM is old controller, FROM.FROM is the state ID.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					tag = USA
+					has_completed_focus = USA_control_the_phillippines
+					NOT = { has_country_flag = USA_macarthur_returned }
+					controls_state = 327  # Philippines
+					controls_state = 623  # Luzon
+				}
+				country_event = { id = usa.1005 hours = 6 }
 			}
 		}
 	}
@@ -89,10 +107,12 @@ on_actions = {
 				add_ideas = USA_neutrality_no_war_call
 				# Great Depression — starts at level 4 (full crisis)
 				set_variable = { USA_depression_level = 4 }
-				add_dynamic_modifier = { modifier = USA_great_depression_4 }
-				add_dynamic_modifier = { modifier = USA_great_depression_3 }
-				add_dynamic_modifier = { modifier = USA_great_depression_2 }
-				add_dynamic_modifier = { modifier = USA_great_depression_1 }
+				# Level-4 (Full Crisis) starting values for the single var-driven modifier
+				set_variable = { USA_depression_cg = 0.20 }
+				set_variable = { USA_depression_resources = -0.40 }
+				set_variable = { USA_depression_conscription = -0.015 }
+				set_variable = { USA_depression_construction = -0.15 }
+				add_dynamic_modifier = { modifier = USA_great_depression }
 			}
 		}
 	}
