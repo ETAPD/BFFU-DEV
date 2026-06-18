@@ -5,6 +5,18 @@
 on_actions = {
 	on_monthly = {
 		effect = {
+			# Reclaim Democracy — fervour to liberate a fallen Britain. Granted once the
+			# UK has capitulated and the USA is at war; auto-removed when Britain is retaken.
+			if = {
+				limit = {
+					tag = USA
+					has_war = yes
+					ENG = { has_capitulated = yes }
+					NOT = { has_idea = USA_reclaim_democracy }
+				}
+				add_ideas = USA_reclaim_democracy
+			}
+
 			# Kaiser Industries trust — always Friendly if Henry J. Kaiser is advisor
 			if = {
 				limit = {
@@ -37,9 +49,28 @@ on_actions = {
 					tag = USA
 					NOT = { is_in_faction = yes }
 					ENG = { is_faction_leader = yes }
-					NOT = { 127 = { is_controlled_by = ENG } }
+					NOT = { 126 = { is_controlled_by = ENG } }
 				}
 				ENG = { add_to_faction = ROOT }
+				# Fortify the Atlantic stepping stones the USA already holds
+				if = {
+					limit = { controls_state = 100 } # Iceland
+					100 = {
+						add_extra_state_shared_building_slots = 15
+						set_building_level = { type = air_base level = 10 instant_build = yes }
+						set_building_level = { type = radar_station level = 3 instant_build = yes }
+						set_building_level = { type = naval_base level = 10 province = 12674 instant_build = yes }
+					}
+				}
+				if = {
+					limit = { controls_state = 101 } # Greenland
+					101 = {
+						add_extra_state_shared_building_slots = 15
+						set_building_level = { type = air_base level = 10 instant_build = yes }
+						set_building_level = { type = radar_station level = 3 instant_build = yes }
+						set_building_level = { type = naval_base level = 10 province = 12512 instant_build = yes }
+					}
+				}
 				country_event = { id = usa.1006 }
 			}
 
