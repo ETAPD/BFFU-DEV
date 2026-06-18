@@ -446,7 +446,7 @@ NDefines.NAir.DISRUPTION_SPEED_FACTOR = 1.5
 NDefines.NAir.DISRUPTION_AGILITY_FACTOR = 1.0
 NDefines.NAir.DISRUPTION_ATTACK_FACTOR = 1.0
 NDefines.NAir.DISRUPTION_DETECTION_FACTOR = 1.0
-NDefines.NAir.ESCORT_FACTOR = 5.75
+NDefines.NAir.ESCORT_FACTOR = 5.8
 NDefines.NAir.ESCORT_SPEED_FACTOR = 1.0
 NDefines.NAir.ESCORT_AGILITY_FACTOR = 2.0
 NDefines.NAir.ESCORT_ATTACK_FACTOR = 2.0
@@ -949,7 +949,7 @@ NDefines.NMilitary.TRAINING_MAX_LEVEL = 8
 NDefines.NMilitary.DEPLOY_TRAINING_MAX_LEVEL = 6
 NDefines.NMilitary.ARMY_EXP_BASE_LEVEL = 6
 -- NDefines.NMilitary.TRAINING_EXPERIENCE_SCALE = 80.0
-NDefines.NMilitary.UNIT_EXP_LEVELS = { 0.07, 0.14, 0.21, 0.28, 0.35, 0.42, 0.49, 0.56, 0.80, 0.95 }		-- Experience needed to progress to the next level
+NDefines.NMilitary.UNIT_EXP_LEVELS = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.89, 0.99 }		-- Experience needed to progress to the next level
 NDefines.NMilitary.EXPERIENCE_COMBAT_FACTOR = 0.05
 
 -------------------------    
