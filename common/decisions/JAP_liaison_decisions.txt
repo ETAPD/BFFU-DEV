@@ -1,61 +1,204 @@
 # Imperial Liaison Conference — Army/Navy interservice rivalry (HoO2 inspired).
-# Decisions tilt the balance along the JAP_liaison_* spirit ladder. Unlocked by
-# the "Begin the Imperial Liaison Conferences" focus (sets JAP_liaison_conference_active).
+# One liaison action may be taken per 120 days (shared JAP_liaison_cd cooldown).
+# Each tilts the JAP_liaison_* spirit ladder toward the Army or Navy and grants a
+# matching bonus. Unlocked by "Begin the Imperial Liaison Conferences".
+
+@liaison_cost = 40
 
 JAP_imperial_liaison_conference = {
 
-	# Tilt the conference toward the Army.
+	#########################  ARMY  #########################
+
+	# Pure tilt toward the Army.
 	JAP_liaison_favour_the_army = {
 		icon = GFX_decision_generic_army
-
-		cost = 35
-
+		cost = @liaison_cost
 		available = {
+			NOT = { has_country_flag = JAP_liaison_cd }
 			NOT = { has_idea = JAP_liaison_army_dominant }
 		}
-
-		days_re_enable = 90
-
 		complete_effect = {
 			JAP_liaison_towards_army = yes
-			army_experience = 10
+			army_experience = 25
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
 		}
-
 		ai_will_do = { factor = 1 }
 	}
 
-	# Tilt the conference toward the Navy.
+	# Divert steel and slipway labour to the arsenals.
+	JAP_liaison_steel_for_the_guns = {
+		icon = GFX_decision_generic_army
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_army = yes
+			random_owned_controlled_state = {
+				limit = { is_core_of = JAP }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			}
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Expand conscription to fill the Army's ranks.
+	JAP_liaison_everybody_serves = {
+		icon = GFX_decision_generic_army
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_army = yes
+			add_manpower = 50000
+			army_experience = 10
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Prioritise the Army Air Service.
+	JAP_liaison_army_aviation = {
+		icon = GFX_decision_generic_army
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_army = yes
+			air_experience = 25
+			army_experience = 10
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Stand up elite raiding and special-warfare regiments.
+	JAP_liaison_raiding_regiments = {
+		icon = GFX_decision_generic_army
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_army = yes
+			army_experience = 20
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 500 producer = JAP }
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Reward the Army's senior officers.
+	JAP_liaison_promote_the_generals = {
+		icon = GFX_decision_generic_army
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_army = yes
+			add_command_power = 50
+			army_experience = 15
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	#########################  NAVY  #########################
+
+	# Pure tilt toward the Navy.
 	JAP_liaison_favour_the_navy = {
 		icon = GFX_decision_generic_military
-
-		cost = 35
-
+		cost = @liaison_cost
 		available = {
+			NOT = { has_country_flag = JAP_liaison_cd }
 			NOT = { has_idea = JAP_liaison_navy_dominant }
 		}
-
-		days_re_enable = 90
-
 		complete_effect = {
 			JAP_liaison_towards_navy = yes
-			navy_experience = 10
+			navy_experience = 25
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
 		}
-
 		ai_will_do = { factor = 1 }
 	}
 
-	# Broker a compromise — nudge whichever service dominates back toward balance.
+	# Lay down new slipways for the fleet.
+	JAP_liaison_steel_for_the_ships = {
+		icon = GFX_decision_generic_military
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_navy = yes
+			random_owned_controlled_state = {
+				limit = { is_core_of = JAP  is_coastal = yes }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = dockyard level = 2 instant_build = yes }
+			}
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Exempt skilled shipyard workers from the draft.
+	JAP_liaison_shipyard_exemptions = {
+		icon = GFX_decision_generic_military
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_navy = yes
+			navy_experience = 15
+			add_equipment_to_stockpile = { type = convoy amount = 25 producer = JAP }
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Prioritise the Naval Air Service.
+	JAP_liaison_naval_aviation = {
+		icon = GFX_decision_generic_military
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_navy = yes
+			air_experience = 25
+			navy_experience = 10
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Expand the Special Naval Landing Forces.
+	JAP_liaison_special_naval_landing_force = {
+		icon = GFX_decision_generic_military
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_navy = yes
+			navy_experience = 20
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 300 producer = JAP }
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Reward the Navy's senior officers.
+	JAP_liaison_promote_the_admirals = {
+		icon = GFX_decision_generic_military
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			JAP_liaison_towards_navy = yes
+			add_command_power = 50
+			navy_experience = 15
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	#######################  NEUTRAL  #######################
+
+	# Pull the dominant service back toward balance.
 	JAP_liaison_seek_compromise = {
 		icon = GFX_decision_generic_military
-
 		cost = 50
-
 		available = {
+			NOT = { has_country_flag = JAP_liaison_cd }
 			NOT = { has_idea = JAP_liaison_balanced }
 		}
-
-		days_re_enable = 180
-
 		complete_effect = {
 			if = {
 				limit = { OR = { has_idea = JAP_liaison_army_favoured  has_idea = JAP_liaison_army_dominant } }
@@ -67,8 +210,22 @@ JAP_imperial_liaison_conference = {
 			}
 			add_political_power = 25
 			add_stability = 0.02
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
 		}
+		ai_will_do = { factor = 1 }
+	}
 
+	# Joint exercises — benefit both services without shifting the balance.
+	JAP_liaison_combined_arms_exercises = {
+		icon = GFX_decision_generic_military
+		cost = @liaison_cost
+		available = { NOT = { has_country_flag = JAP_liaison_cd } }
+		complete_effect = {
+			army_experience = 10
+			navy_experience = 10
+			add_war_support = 0.02
+			set_country_flag = { flag = JAP_liaison_cd value = 1 days = 120 }
+		}
 		ai_will_do = { factor = 1 }
 	}
 }
