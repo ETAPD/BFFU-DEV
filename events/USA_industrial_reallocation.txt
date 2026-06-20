@@ -1,0 +1,74 @@
+###########################################################
+# USA — Industrial Reallocation (Landon / Willkie only)   #
+# Self-rescheduling hidden scan, every 30 days.           #
+# Kicked off at game start by on_startup.                 #
+#                                                         #
+# From Jan 1940 onward, any core US state that is at its  #
+# absolute building maximum (no free slots, even locked)  #
+# and still holds civilian factories has those factories  #
+# removed from the map and an EQUAL number added as       #
+# off-map (offsite) civilian factories. Military          #
+# factories and dockyards are never touched.              #
+###########################################################
+
+add_namespace = usa_realloc
+
+country_event = {
+	id = usa_realloc.1
+	title = usa_realloc.1.t
+	desc = usa_realloc.1.d
+	hidden = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		# Only act once the scan window has opened (Jan 1940+)
+		# and a non-Roosevelt leader (Landon / Willkie) is ruling.
+		if = {
+			limit = {
+				date > 1940.1.1
+				NOT = { has_country_leader = { character = usa_franklin_d_roosevelt ruling_only = yes } }
+			}
+
+			set_variable = { USA_civ_to_offmap = 0 }
+
+			every_owned_state = {
+				limit = {
+					is_core_of = ROOT
+					is_fully_controlled_by = ROOT
+					# State still has on-map civilian factories
+					check_variable = { industrial_complex_level > 0 }
+					# State is at its absolute maximum — no free slots, even locked ones
+					NOT = {
+						free_building_slots = {
+							building = industrial_complex
+							size > 0
+							include_locked = yes
+						}
+					}
+				}
+
+				# Tally this state's civilian factories, then strip them from the map.
+				add_to_variable = { ROOT.USA_civ_to_offmap = industrial_complex_level }
+				set_building_level = {
+					type = industrial_complex
+					level = 0
+				}
+			}
+
+			# Re-add the exact same number as off-map civilian factories.
+			if = {
+				limit = { check_variable = { USA_civ_to_offmap > 0 } }
+				add_offsite_building = { type = industrial_complex level = USA_civ_to_offmap }
+			}
+		}
+
+		# Reschedule the next scan. The chain ends naturally only if the USA
+		# scope ceases to exist (annexation); otherwise it runs all game.
+		country_event = { id = usa_realloc.1 days = 30 }
+	}
+
+	option = {
+		name = usa_realloc.1.a
+	}
+}

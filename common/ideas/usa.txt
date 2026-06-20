@@ -1,0 +1,1901 @@
+ideas = {
+	hidden_ideas = {
+		# Auto-cancels (disappears) once Japan is at war with
+		# the USA, or Britain has been sealioned (ENG controls none of its own core states).
+		USA_neutrality_no_war_call = {
+			allowed = {
+				always = no
+			}
+			allowed_civil_war = {
+				always = no
+			}
+			removal_cost = -1
+
+			cancel = {
+				OR = {
+					has_war_with = JAP
+					ENG = {
+						NOT = {
+							any_controlled_state = { is_core_of = ENG }
+						}
+					}
+				}
+			}
+
+			modifier = {
+				cant_faction_call = 1
+				cant_faction_join = 1
+			}
+		}
+	}
+
+	industrial_concern = {
+
+		tva = {
+			picture = tva-897890
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			available = {
+				has_completed_focus = USA_form_the_alphabet_agencies
+				NOT = { has_completed_focus = USA_expand_the_tva }
+			}
+
+			modifier = {
+				political_power_factor = 0.05
+				stability_weekly = 0.001
+				political_power_cost = -0.15
+			}
+		}
+
+		tva_upgraded = {
+			picture = tva-897890
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			available = {
+				has_completed_focus = USA_expand_the_tva
+			}
+
+			modifier = {
+				political_power_factor = 0.15
+				stability_weekly = 0.0025
+				political_power_cost = -0.25
+				war_support_weekly = 0.001
+			}
+		}
+
+		USA_tva_kaiser_conglomerate = {
+			picture = tva_kaiser_conglomerate
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			available = {
+				has_completed_focus = USA_force_a_merge_between_tva_and_kaiser
+			}
+
+			on_add = {
+				capital_scope = {
+					add_resource = { type = steel amount = 2000 }
+				}
+			}
+
+			# Remove the same steel when the concern is no longer hired,
+			# so the on_add bonus does not stay permanently.
+			on_remove = {
+				capital_scope = {
+					add_resource = { type = steel amount = -2000 }
+				}
+			}
+
+			modifier = {
+				production_speed_buildings_factor = 0.15
+				global_building_slots_factor = 0.30
+			}
+		}
+
+		alcoa = {
+			picture = alcoa-897891
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			research_bonus = {
+				excavation_tech = 0.15
+			}
+
+			modifier = {
+				local_resources_factor = 0.15
+				production_speed_steel_refinery_factor = 0.30
+				production_speed_industrial_infrastructure_factor = 0.25
+				production_lack_of_resource_penalty_factor = -0.15
+			}
+		}
+
+		alcoa_upgraded = {
+			picture = alcoa-897891
+			cost = 150
+
+			allowed = {
+				original_tag = USA
+				has_country_flag = USA_alcoa_upgraded_unlocked
+			}
+
+			research_bonus = {
+				excavation_tech = 0.15
+			}
+
+			modifier = {
+				local_resources_factor = 0.20
+				production_speed_steel_refinery_factor = 0.30
+				production_speed_industrial_infrastructure_factor = 0.25
+				production_lack_of_resource_penalty_factor = -0.15
+				air_range_factor = 0.075
+			}
+		}
+
+		wpa = {
+			picture = wpa-897892
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			available = {
+				has_completed_focus = USA_form_the_alphabet_agencies
+			}
+
+			modifier = {
+				consumer_goods_factor = -0.075
+				production_speed_buildings_factor = 0.05
+				production_speed_infrastructure_factor = 0.05
+				research_speed_factor = 0.15
+			}
+		}
+
+		standard_oil = {
+			picture = standard_oil-1923
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			available = {
+				has_completed_focus = USA_contracts_towards_big_gas
+				NOT = { has_war = yes }
+			}
+
+			research_bonus = {
+				industry = 0.15
+			}
+
+			modifier = {
+				production_speed_synthetic_refinery_factor = 0.15
+				production_speed_fuel_silo_factor = 0.15
+			}
+		}
+
+		standard_oil_upgraded = {
+			picture = standard_oil-1923
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			available = {
+				has_war = yes
+				has_completed_focus = USA_contracts_towards_big_gas
+			}
+
+			research_bonus = {
+				industry = 0.15
+			}
+
+			modifier = {
+				production_speed_synthetic_refinery_factor = 0.30
+				production_speed_fuel_silo_factor = 0.30
+				fuel_gain_factor = 0.10
+			}
+		}
+
+		general_motors = {
+			picture = general_motors-2046
+			cost = 150
+
+			allowed = { original_tag = USA }
+
+			visible = {
+				NOT = { has_country_flag = USA_gm_upgraded_unlocked }
+			}
+
+			modifier = {
+				industrial_capacity_factory = 0.05
+			}
+		}
+
+		general_motors_upgraded = {
+			picture = general_motors-2046
+			cost = 150
+
+			allowed = {
+				original_tag = USA
+			}
+
+			visible = {
+				has_country_flag = USA_gm_upgraded_unlocked
+			}
+
+			modifier = {
+				industrial_capacity_factory = 0.15
+			}
+		}
+	}
+
+
+
+	country = {
+
+		# ── Manifest Destiny ─────────────────────────────────────────────────────
+		# Added by the "Manifest Destiny" focus (USA only).
+		USA_manifest_destiny_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_manifest_destiny_spirit
+
+			modifier = {
+				army_attack_factor  = 0.05
+				army_defence_factor = 0.05
+			}
+		}
+
+		# ── V for Victory ─────────────────────────────────────────────────────────
+		# Added by the "V for Victory" focus to all Allied nations + Soviet Union.
+		USA_v_for_victory_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_v_for_victory_spirit
+
+			modifier = {
+				industrial_capacity_factory                = 0.10
+				production_factory_start_efficiency_factor = 0.05
+			}
+		}
+
+		# ── War Powers Act ───────────────────────────────────────────────────────
+		# Added by the "War Powers Act" focus.
+		USA_war_powers_act_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_war_powers_act_spirit
+
+			modifier = {
+				political_power_gain  = 0.15
+				conscription_factor   = 0.05
+				stability_weekly      = -0.001
+			}
+		}
+
+		# ── Office of War Mobilisation ────────────────────────────────────────────
+		# Added by the "Office of War Mobilisation" focus.
+		USA_owm_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_owm_spirit
+
+			modifier = {
+				production_factory_efficiency_gain_factor  = 0.10   # +10% factory efficiency growth
+				production_factory_start_efficiency_factor = 0.10   # +10% base (starting) factory efficiency
+			}
+		}
+
+		# ── Office of War Information ─────────────────────────────────────────────
+		# Added by the "Office Of War Information" focus.
+		USA_owi_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_owi_spirit
+
+			modifier = {
+				war_support_weekly = 0.003
+				stability_weekly   = 0.002
+			}
+		}
+
+		# ── Emergency Price Control Act ───────────────────────────────────────────
+		# Added by the "Emergency Price Control Act" focus.
+		USA_epca_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_epca_spirit
+
+			modifier = {
+				consumer_goods_expected_value              = -0.05
+				production_factory_efficiency_gain_factor  = 0.05
+				stability_weekly                           = 0.001
+			}
+		}
+
+		# ── Operation Downfall ───────────────────────────────────────────────────
+		# Timed spirit (120 days) added by the "Operation Downfall" focus.
+		USA_operation_downfall_spirit = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = generic_japanese_conflict
+
+			targeted_modifier = {
+				tag = JAP
+				attack_bonus_against = 0.10
+			}
+			targeted_modifier = {
+				tag = MAN
+				attack_bonus_against = 0.10
+			}
+			targeted_modifier = {
+				tag = SIA
+				attack_bonus_against = 0.10
+			}
+		}
+
+		# ── Series E War Bonds ───────────────────────────────────────────────────
+		# Added by the "Issue War Bonds" focus.
+		USA_series_e_war_bonds = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = USA_series_e_war_bonds
+
+			modifier = {
+				consumer_goods_expected_value = -0.025
+			}
+		}
+
+		# ── TVA-ALCOA Power Compact ──────────────────────────────────────────────
+		# Added by the "Foster a TVA-ALCOA Deal" focus.
+		USA_tva_alcoa_power_compact = {
+			allowed           = { always = no }
+			removal_cost      = -1
+			cancel_if_invalid = no
+			picture           = alcoa-897891
+
+			on_add = {
+				capital_scope = {
+					add_resource = { type = aluminium amount = 1500 }
+				}
+			}
+
+			modifier = {
+				production_speed_arms_factory_factor = 0.05
+				industrial_capacity_factory          = 0.05
+			}
+		}
+
+		# NOTE: USA_united_states_army is now a dynamic modifier (common/dynamic_modifiers/USA_dynamic_modifiers.txt)
+		# It is added at game start via gmfu_usa_startup.txt and updated by USA_finish_the_final_army_reforms.
+
+		# ── Pre-War Army Penalties ───────────────────────────────────────────────
+
+		USA_outdated_undertrained_underfunded = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_army_problems
+
+			modifier = {
+				experience_gain_army_factor  = -0.350  # -35% Army XP Gain
+				land_mastery_gain_factor     = -0.500  # -50% Mastery Gain
+				promote_cost_factor          =   1.000 # +100% CP to Promote Generals
+				land_doctrine_cost_factor    =   0.500 # +50% Land Doctrine Cost
+			}
+		}
+
+		USA_outdated_undertrained_underfunded_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_army_problems
+
+			modifier = {
+				experience_gain_army_factor  = -0.263  # -26.25% Army XP Gain  (V1 × 0.75)
+				land_mastery_gain_factor     = -0.375  # -37.5%  Mastery Gain   (V1 × 0.75)
+				promote_cost_factor          =  0.750  # +75%    CP to Promote  (V1 × 0.75)
+				land_doctrine_cost_factor    =  0.375  # +37.5%  Land Doctrine  (V1 × 0.75)
+			}
+		}
+
+		USA_outdated_undertrained_underfunded_3 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_army_problems
+
+			modifier = {
+				experience_gain_army_factor  = -0.197  # -19.69% Army XP Gain  (V2 × 0.75)
+				land_mastery_gain_factor     = -0.281  # -28.13% Mastery Gain   (V2 × 0.75)
+				promote_cost_factor          =  0.563  # +56.25% CP to Promote  (V2 × 0.75)
+				land_doctrine_cost_factor    =  0.281  # +28.13% Land Doctrine  (V2 × 0.75)
+			}
+		}
+
+		USA_financing_the_rush = {
+			allowed = {
+				always = no
+			}
+			removal_cost = -1
+			picture = ARG_invest_in_railways
+
+			modifier = {
+				consumer_goods_factor = 0.075
+			}
+		}
+
+		# Corporate Relations — deal ideas (added when trust reaches Friendly via negotiations)
+
+		# ── Kaiser's Industries ─────────────────────────────────────────────────
+
+		USA_kaiser_contract_1 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = tva-897890
+			modifier = {
+				production_speed_buildings_factor = 0.05
+			}
+		}
+
+		USA_kaiser_contract_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = tva-897890
+			modifier = {
+				production_speed_buildings_factor = 0.10
+			}
+		}
+
+		USA_kaiser_contract_3 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = tva-897890
+			modifier = {
+				production_speed_buildings_factor = 0.15
+			}
+		}
+
+		# ── Ford / Chrysler ──────────────────────────────────────────────────────
+
+		USA_ford_chrysler_contract_1 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_production_bonus
+			equipment_bonus = {
+				motorized_equipment  = { build_cost_ic = -0.05 instant = yes }
+				mechanized_equipment = { build_cost_ic = -0.05 instant = yes }
+				light_tank_chassis   = { build_cost_ic = -0.05 instant = yes }
+				medium_tank_chassis  = { build_cost_ic = -0.05 instant = yes }
+				heavy_tank_chassis   = { build_cost_ic = -0.05 instant = yes }
+			}
+		}
+
+		USA_ford_chrysler_contract_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_production_bonus
+			equipment_bonus = {
+				motorized_equipment  = { build_cost_ic = -0.075 instant = yes }
+				mechanized_equipment = { build_cost_ic = -0.075 instant = yes }
+				light_tank_chassis   = { build_cost_ic = -0.075 instant = yes }
+				medium_tank_chassis  = { build_cost_ic = -0.075 instant = yes }
+				heavy_tank_chassis   = { build_cost_ic = -0.075 instant = yes }
+			}
+		}
+
+		USA_ford_chrysler_contract_3 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_production_bonus
+			equipment_bonus = {
+				motorized_equipment  = { build_cost_ic = -0.125 instant = yes }
+				mechanized_equipment = { build_cost_ic = -0.125 instant = yes }
+				light_tank_chassis   = { build_cost_ic = -0.125 instant = yes }
+				medium_tank_chassis  = { build_cost_ic = -0.125 instant = yes }
+				heavy_tank_chassis   = { build_cost_ic = -0.125 instant = yes }
+			}
+		}
+
+		# ── Armour Programme ─────────────────────────────────────────────────────
+
+		# Added by Give Pershing Full Support — -7.5% IC on M6 heavy chassis
+		USA_m6_production_support = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_production_bonus
+			equipment_bonus = {
+				usa_heavy_tank_chassis_hm6 = { build_cost_ic = -0.075 instant = yes }
+			}
+		}
+
+		# Added by Streamline the Sherman Family — -10% IC on M4 Sherman chassis
+		USA_streamlined_sherman_production = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_production_bonus
+			equipment_bonus = {
+				usa_medium_tank_chassis_mm4 = { build_cost_ic = -0.10 instant = yes }
+			}
+		}
+
+		# Added by Rush the First MBTs — -7.5% IC on M26 Pershing chassis (all variants incl. amphibious modules on M26 base)
+		USA_pershing_production_priority = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_production_bonus
+			equipment_bonus = {
+				usa_medium_tank_chassis_m26 = { build_cost_ic = -0.075 instant = yes }
+			}
+		}
+
+		# ── GM / DuPont ──────────────────────────────────────────────────────────
+
+		USA_gm_dupont_contract_1 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = general_motors-2046
+			modifier = {
+				research_speed_factor = 0.05
+				production_factory_start_efficiency_factor = 0.025
+			}
+		}
+
+		USA_gm_dupont_contract_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = general_motors-2046
+			modifier = {
+				research_speed_factor = 0.10
+				production_factory_start_efficiency_factor = 0.05
+			}
+		}
+
+		USA_gm_dupont_contract_3 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = general_motors-2046
+			modifier = {
+				research_speed_factor = 0.175
+				production_factory_start_efficiency_factor = 0.075
+			}
+		}
+
+		# ── J.P. Morgan ───────────────────────────────────────────────────────────
+
+		USA_jpmorgan_contract_1 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_economic_increase
+			modifier = {
+				political_power_gain = 0.05
+				consumer_goods_factor = -0.02
+			}
+		}
+
+		USA_jpmorgan_contract_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_economic_increase
+			modifier = {
+				political_power_gain = 0.10
+				consumer_goods_factor = -0.05
+			}
+		}
+
+		USA_jpmorgan_contract_3 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_economic_increase
+			modifier = {
+				political_power_gain = 0.15
+				consumer_goods_factor = -0.125
+			}
+		}
+
+		# ── Paying Off Veterans — timed 50-week spirit ───────────────────────────
+
+		USA_paying_off_veterans = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_manpower_bonus
+
+			modifier = {
+				stability_weekly = 0.005
+			}
+		}
+
+		# ── PWA Dismantled — PP drain from reduced federal engagement ────────────
+
+		USA_pwa_dismantled = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = GFX_USA_stopthepwasspending-897258
+
+			modifier = {
+				political_power_factor = -0.10
+			}
+		}
+
+		USA_nye_committee_denounced = {
+			allowed = {
+				always = no
+			}
+			removal_cost = -1
+			picture = generic_production_bonus
+
+			modifier = {
+				consumer_goods_factor = -0.25
+			}
+
+			equipment_bonus = {
+				# Land equipment
+				infantry_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				support_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				artillery_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				anti_tank_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				anti_air_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				motorized_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				mechanized_equipment = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				light_tank_chassis = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				medium_tank_chassis = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				heavy_tank_chassis = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				armored_car_chassis = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				# Air equipment
+				small_plane_airframe = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				medium_plane_airframe = {
+					build_cost_ic = 0.10 instant = yes
+				}
+				large_plane_airframe = {
+					build_cost_ic = 0.10 instant = yes
+				}
+			}
+		}
+
+		USA_subdued_the_supreme_court = {
+			allowed = {
+				always = no
+			}
+			removal_cost = -1
+			picture = GFX_idea_new_deal
+
+			modifier = {
+				political_power_gain = 0.10
+				stability_factor = 0.10
+				war_support_factor = 0.10
+				political_power_cost = -0.05
+			}
+		}
+		# Granted when the USA enters the war to liberate a fallen Britain
+		# (UK has lost London).
+		USA_reclaim_democracy = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = GFX_idea_new_deal
+
+			# Auto-removes once Britain is fully liberated — ENG controls every
+			# Great Britain mainland core state again.
+			cancel = {
+				ENG = {
+					controls_state = 120
+					controls_state = 121
+					controls_state = 122
+					controls_state = 123
+					controls_state = 125
+					controls_state = 126
+					controls_state = 127
+					controls_state = 128
+					controls_state = 129
+					controls_state = 130
+					controls_state = 131
+				}
+			}
+
+			modifier = {
+				army_attack_factor = 0.15
+			}
+		}
+
+
+		USA_island_hopping1 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = 0.3
+				political_power_gain = -0.35
+				war_support_factor = -0.20
+				stability_factor = -0.20
+			}
+		}
+		USA_island_hopping2 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = 0.25
+				political_power_gain = -0.35
+				war_support_factor = -0.20
+				stability_factor = -0.20
+			}
+		}
+		USA_island_hopping3 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = 0.40
+				political_power_gain = -0.25
+				war_support_factor = -0.25
+				stability_factor = -0.25
+			}
+		}
+		USA_island_hopping4 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = 0.20
+				political_power_gain = -0.20
+				war_support_factor = -0.20
+				stability_factor = -0.20
+				#army_core_attack_factor = -0.2
+				#army_core_defence_factor = -0.2 
+				#industrial_capacity_factory = -0.10
+			}
+			targeted_modifier = {
+				tag = GER
+				attack_bonus_against = -0.15
+				defense_bonus_against = -0.15
+			}
+			targeted_modifier = {
+				tag = ITA
+				attack_bonus_against = -0.15
+				defense_bonus_against = -0.15
+			}
+			targeted_modifier = {
+				tag = SPA
+				attack_bonus_against = -0.15
+				defense_bonus_against = -0.15
+			}
+			targeted_modifier = {
+				tag = ROM
+				attack_bonus_against = -0.15
+				defense_bonus_against = -0.15
+			}
+			targeted_modifier = {
+				tag = HUN
+				attack_bonus_against = -0.15
+				defense_bonus_against = -0.15
+			}
+			targeted_modifier = {
+				tag = BUL
+				attack_bonus_against = -0.15
+				defense_bonus_against = -0.15
+			}			
+		}
+		USA_island_hopping5 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = 0.15
+				political_power_gain = -0.15
+				war_support_factor = -0.15
+				stability_factor = -0.15
+				#army_core_attack_factor = -0.1
+				#army_core_defence_factor = -0.1 
+				#industrial_capacity_factory = -0.05
+			}
+			targeted_modifier = {
+				tag = GER
+				attack_bonus_against = -0.1
+				defense_bonus_against = -0.1
+			}
+			targeted_modifier = {
+				tag = ITA
+				attack_bonus_against = -0.1
+				defense_bonus_against = -0.1
+			}
+			targeted_modifier = {
+				tag = SPA
+				attack_bonus_against = -0.1
+				defense_bonus_against = -0.1
+			}
+			targeted_modifier = {
+				tag = ROM
+				attack_bonus_against = -0.1
+				defense_bonus_against = -0.1
+			}
+			targeted_modifier = {
+				tag = HUN
+				attack_bonus_against = -0.1
+				defense_bonus_against = -0.1
+			}
+			targeted_modifier = {
+				tag = BUL
+				attack_bonus_against = -0.1
+				defense_bonus_against = -0.1
+			}	
+		}
+		USA_island_hopping6 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = 0.075
+				political_power_gain = -0.1
+				war_support_factor = -0.10
+				stability_factor = -0.10
+			}
+			targeted_modifier = {
+				tag = GER
+				attack_bonus_against = -0.05
+				defense_bonus_against = -0.05
+			}
+			targeted_modifier = {
+				tag = ITA
+				attack_bonus_against = -0.05
+				defense_bonus_against = -0.05
+			}
+			targeted_modifier = {
+				tag = SPA
+				attack_bonus_against = -0.05
+				defense_bonus_against = -0.05
+			}
+			targeted_modifier = {
+				tag = ROM
+				attack_bonus_against = -0.05
+				defense_bonus_against = -0.05
+			}
+			targeted_modifier = {
+				tag = HUN
+				attack_bonus_against = -0.05
+				defense_bonus_against = -0.05
+			}
+			targeted_modifier = {
+				tag = BUL
+				attack_bonus_against = -0.05
+				defense_bonus_against = -0.05
+			}		
+		}
+		USA_island_hopping7 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+			    consumer_goods_factor = 0.03
+				political_power_gain = -0.05
+				war_support_factor = -0.05
+				stability_factor = -0.05
+				#army_core_attack_factor = 0.25
+				#army_core_defence_factor = 0.25
+			}
+			targeted_modifier = {
+				tag = GER
+				attack_bonus_against = -0.025
+				defense_bonus_against = -0.025
+			}
+			targeted_modifier = {
+				tag = ITA
+				attack_bonus_against = -0.025
+				defense_bonus_against = -0.025
+			}
+			targeted_modifier = {
+				tag = SPA
+				attack_bonus_against = -0.025
+				defense_bonus_against = -0.025
+			}
+			targeted_modifier = {
+				tag = ROM
+				attack_bonus_against = -0.025
+				defense_bonus_against = -0.025
+			}
+			targeted_modifier = {
+				tag = HUN
+				attack_bonus_against = -0.025
+				defense_bonus_against = -0.025
+			}
+			targeted_modifier = {
+				tag = BUL
+				attack_bonus_against = -0.025
+				defense_bonus_against = -0.025
+			}
+		}
+		USA_island_hopping8 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				political_power_gain = 0
+				war_support_factor = 0
+				stability_factor = 0
+				#army_core_attack_factor = 0.5
+				#army_core_defence_factor = 0.5
+			}
+		}
+		USA_island_hopping9 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = -0.03
+				political_power_gain = 0.05
+				war_support_factor = 0.05
+				stability_factor = 0.05
+				#army_core_attack_factor = 0.6
+				#army_core_defence_factor = 0.6
+			}
+		}
+		USA_island_hopping10 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = -0.06
+				political_power_gain = 0.10
+				war_support_factor = 0.10
+				stability_factor = 0.10
+				#army_core_attack_factor = 0.7
+				#army_core_defence_factor = 0.7
+			}
+		}
+		USA_island_hopping11 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = -0.09
+				political_power_gain = 0.15
+				war_support_factor = 0.15
+				stability_factor = 0.15
+				#army_core_attack_factor = 0.8
+				#army_core_defence_factor = 0.8
+			}
+		}
+		USA_island_hopping12 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = -0.12
+				political_power_gain = 0.20
+				war_support_factor = 0.20
+				stability_factor = 0.20
+				#army_core_attack_factor = 0.8
+				#army_core_defence_factor = 0.8
+			}
+		}
+		USA_island_hopping13 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+			consumer_goods_factor = -0.15
+				political_power_gain = 0.25
+				war_support_factor = 0.25
+				stability_factor = 0.25
+				#army_core_attack_factor = 0.8
+				#army_core_defence_factor = 0.8
+			}
+		}
+		USA_island_hopping14 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = -0.18
+				political_power_gain = 0.30
+				war_support_factor = 0.18
+				stability_factor = 0.18
+				#army_core_attack_factor = 0.8
+				#army_core_defence_factor = 0.8
+			}
+		}
+		USA_island_hopping15 = {
+			allowed = {
+				always = no
+			}
+			picture = usa_island_hopping
+			removal_cost = -1
+
+			modifier = {
+				consumer_goods_factor = -0.21
+				political_power_gain = 0.35
+				war_support_factor = 0.20
+				stability_factor = 0.20
+				#army_core_attack_factor = 0.8
+				#army_core_defence_factor = 0.8
+			}
+		}
+
+		USA_two_ocean_navy_act = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_navy_bonus
+
+			modifier = {
+				industrial_capacity_dockyard      = 0.05
+				production_speed_dockyard_factor  = 0.05
+			}
+		}
+
+		USA_bureau_of_ships = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = USA_bureau_of_ships
+
+			modifier = {
+				industrial_capacity_dockyard      = 0.25
+				production_speed_dockyard_factor  = 0.20
+				consumer_goods_factor             = 0.15
+			}
+		}
+
+		# Naval Future event spirits — added after Bureau of Ships fires USA_naval.1
+
+		USA_fy40_funding = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_navy_bonus
+
+			modifier = {
+				industrial_capacity_dockyard     = 0.40
+				production_speed_dockyard_factor = 0.35
+			}
+			equipment_bonus = {
+				ship_hull_light = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+				ship_hull_heavy = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+				ship_hull_carrier = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+				ship_hull_submarine = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+			}
+		}
+
+		USA_naval_funds_running_low = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_navy_bonus
+
+			modifier = {
+				industrial_capacity_dockyard = -0.50
+			}
+			equipment_bonus = {
+				ship_hull_light       = { build_cost_ic = 0.05 instant = yes }
+				ship_hull_cruiser     = { build_cost_ic = 0.05 instant = yes }
+				ship_hull_heavy       = { build_cost_ic = 0.05 instant = yes }
+				ship_hull_carrier     = { build_cost_ic = 0.05 instant = yes }
+				ship_hull_submarine   = { build_cost_ic = 0.05 instant = yes }
+				ship_hull_super_heavy = { build_cost_ic = 0.05 instant = yes }
+			}
+		}
+
+		USA_middle_ground_naval_programme = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_navy_bonus
+
+			modifier = {
+				industrial_capacity_dockyard     = 0.15
+				production_speed_dockyard_factor = 0.15
+			}
+		}
+
+		USA_long_term_funding = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_navy_bonus
+
+			modifier = {
+				production_speed_dockyard_factor = 0.05
+				industrial_capacity_dockyard = -0.30
+				consumer_goods_factor = 0.15
+				political_power_cost = 0.15
+			}
+			equipment_bonus = {
+				ship_hull_light = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+				ship_hull_heavy = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+				ship_hull_carrier = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+				ship_hull_submarine = {
+					build_cost_ic = 0.05
+					instant = yes
+				}
+			}
+		}
+
+		USA_superior_naval_shipbuilding = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_navy_bonus
+
+			modifier = {
+				industrial_capacity_dockyard     = 0.35
+				production_speed_dockyard_factor = 0.30
+			}
+			equipment_bonus = {
+				ship_hull_light = {
+					build_cost_ic = -0.05
+					instant = yes
+				}
+				ship_hull_heavy = {
+					build_cost_ic = -0.05
+					instant = yes
+				}
+				ship_hull_carrier = {
+					build_cost_ic = -0.05
+					instant = yes
+				}
+				ship_hull_submarine = {
+					build_cost_ic = -0.05
+					instant = yes
+				}
+			}
+		}
+
+		# Liberty Ship spirit (from Procure the Liberty Ship focus)
+		USA_liberty_ship = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = USA_liberty_ship
+
+			equipment_bonus = {
+				convoy = {
+					instant = yes
+					build_cost_ic = -0.5
+				}
+			}
+		}
+
+		# Expanded Repair Yards spirit (from Expand the Repair Yards focus)
+		USA_expanded_repair_yards = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = USA_expanded_repair_yards
+
+			modifier = {
+				refit_speed = 0.10
+				repair_speed_factor = 0.2
+			}
+		}
+
+		# Modern Super Heavy Designs spirit (timed — 730 days from Lay Down the Montana-Class)
+		USA_modern_super_heavy_designs = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = USA_modern_super_heavy_designs
+
+			equipment_bonus = {
+				ship_hull_super_heavy_1 = {
+					build_cost_ic = -0.2
+					instant = yes
+				}
+			}
+		}
+
+		# Research New Ship Classes spirit
+		USA_new_ship_classes_research_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_research_bonus
+
+			research_bonus = {
+				naval_equipment = 0.30
+				ship_modules_tech = 0.30
+			}
+		}
+
+		USA_naval_treaty = {
+			allowed = {
+				always = no
+			}
+			picture = SOV_purged_junior_navy_officers
+			removal_cost = -1
+
+			available = {
+				date < 1939.4.15
+			}
+			cancel_if_invalid = yes
+
+			modifier = {
+				industrial_capacity_dockyard = -0.15
+				production_speed_dockyard_factor = -0.10
+				production_speed_coastal_bunker_factor = -0.75
+			}
+		}
+
+		# (Removed: USA_torpedo_detonator_penalty — deprecated static spirit, never
+		#  added; its modifiers were absorbed into the USA_united_states_navy dynamic modifier.)
+
+		USA_dust_bowl = {
+			allowed = {
+				always = no
+			}
+			picture = RAJ_state_of_famine_country
+			removal_cost = -1
+
+			modifier = {
+				stability_factor = -0.15
+				political_power_cost = 0.20
+				stability_weekly = -0.005
+			}
+		}
+
+		USA_political_corruption = {
+			allowed = {
+				always = no
+			}
+			picture = ARG_anti_american_propaganda
+			removal_cost = -1
+
+			modifier = {
+				political_power_cost = 0.15
+				stability_factor = -0.20
+			}
+		}
+
+		USA_new_deal = {
+			allowed = {
+				always = no
+			}
+			picture = new_deal
+			removal_cost = -1
+
+			modifier = {
+				production_speed_infrastructure_factor = 0.40
+				production_speed_industrial_complex_factor = 0.15
+				political_power_cost = 0.10
+			}
+		}
+
+		USA_neutrality_1937 = {
+			allowed = {
+				always = no
+			}
+			picture = neutrality_idea
+			removal_cost = -1
+
+			modifier = {
+				join_faction_tension = 1.00
+				lend_lease_tension = 1.00
+			}
+		}
+
+		USA_neutrality_1939 = {
+			allowed = {
+				always = no
+			}
+			picture = CHI_lend_lease_american
+			removal_cost = -1
+
+			modifier = {
+				join_faction_tension = 1.00
+				lend_lease_tension = -0.20
+			}
+		}
+
+		USA_emerging_interventionism = {
+			allowed = {
+				always = no
+			}
+			picture = MEX_callistas
+			removal_cost = -1
+			cancel_if_invalid = yes
+			cancel = {
+				has_war = yes
+			}
+
+			modifier = {
+				industrial_capacity_factory = 0.15
+				war_support_factor = 0.20
+			}
+		}
+
+		USA_inefficient_airforce_bureaucracy = {
+			allowed = {
+				always = no
+			}
+			picture = USA_inefficient_airforce_bureaucracy
+			removal_cost = -1
+
+			modifier = {
+				political_power_cost = 0.1
+				air_chief_cost_factor = 0.50
+				air_mission_xp_gain_factor = -0.1
+				air_training_xp_gain_factor = -0.1
+				air_mission_efficiency = -0.1
+				air_doctrine_cost_factor = 0.1
+				experience_gain_air_factor = -0.5
+			}
+		}
+
+		USA_airforce_crushed_morale = {
+			allowed = {
+				always = no
+			}
+			picture = generic_air_interception
+			removal_cost = -1
+
+			modifier = {
+				air_chief_cost_factor = 0.50
+				air_mission_xp_gain_factor = -0.1
+				air_training_xp_gain_factor = -0.1
+				experience_gain_air_factor = -0.15
+			}
+		}
+
+		USA_decentralised_army_air_integration = {
+			allowed = {
+				always = no
+			}
+			picture = generic_air_interception
+			removal_cost = -1
+
+			modifier = {
+				air_chief_cost_factor = 1.0
+				air_mission_xp_gain_factor = -0.15
+				air_training_xp_gain_factor = -0.15
+				air_cas_present_factor = 0.10
+				air_superiority_bonus_in_combat = 0.075
+				ground_attack_factor = 0.05
+			}
+		}
+
+		# ── Timed production cost spirits ───────────────────────────────────────
+
+		USA_big_week_air_push = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_air_bonus
+			equipment_bonus = {
+				strat_bomber_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+			}
+		}
+
+		USA_compromise_procurement = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_air_interception
+			equipment_bonus = {
+				tac_bomber_equipment = {
+					instant = yes
+					build_cost_ic = -0.075
+				}
+				heavy_fighter_equipment = {
+					instant = yes
+					build_cost_ic = -0.075
+				}
+			}
+		}
+
+		USA_fighter_armaments_push = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_air_bonus
+			equipment_bonus = {
+				fighter_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+				cv_fighter_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+				heavy_fighter_equipment = {
+					instant = yes
+					build_cost_ic = -0.10
+				}
+			}
+		}
+
+		USA_strike_aircraft_push = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_air_interception
+			equipment_bonus = {
+				CAS_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+				cv_CAS_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+				nav_bomber_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+				cv_nav_bomber_equipment = {
+					instant = yes
+					build_cost_ic = -0.15
+				}
+			}
+		}
+
+		USA_heroes_mighty_eighth = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = combined_bomber_offensive
+			modifier = {
+				air_strategic_bomber_defence_factor  = 0.125   # +12.5%
+				air_mission_efficiency               = 0.075   # +7.5%
+				strategic_bomb_visibility            = -0.050  # -5%
+			}
+		}
+
+		USA_heroes_mighty_eighth_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = combined_bomber_offensive
+			modifier = {
+				air_strategic_bomber_bombing_factor  = 0.200   # +20%
+				air_strategic_bomber_defence_factor  = 0.125   # +12.5%
+				air_mission_efficiency               = 0.075   # +7.5%
+				strategic_bomb_visibility            = -0.050  # -5%
+			}
+		}
+
+		USA_4th_fighter_group = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_air_bonus
+			modifier = {
+				air_ace_generation_chance_factor = 0.10
+				ace_effectiveness_factor         = 0.075
+			}
+			equipment_bonus = {
+				fighter_equipment = {
+					instant = yes
+					air_agility  = 0.075
+					air_attack   = 0.05
+					air_defence  = 0.05
+				}
+				cv_fighter_equipment = {
+					instant = yes
+					air_agility  = 0.075
+					air_attack   = 0.05
+					air_defence  = 0.05
+				}
+				heavy_fighter_equipment = {
+					instant = yes
+					air_agility  = 0.075
+					air_attack   = 0.05
+					air_defence  = 0.05
+				}
+			}
+		}
+
+		USA_airforce_desire_for_independence = {
+			allowed = {
+				always = no
+			}
+			picture = generic_air_bonus
+			removal_cost = -1
+
+			modifier = {
+				political_power_cost = 0.1
+				air_chief_cost_factor = 0.25
+				air_mission_xp_gain_factor = -0.05
+				air_training_xp_gain_factor = -0.05
+				experience_gain_air_factor = -0.1
+			}
+		}
+
+		USA_usaaf_established = {
+			allowed = {
+				always = no
+			}
+			picture = USA_usaaf_established
+			removal_cost = -1
+
+			modifier = {
+				air_doctrine_cost_factor = -0.25
+				air_chief_cost_factor = -0.1
+				air_mission_xp_gain_factor = 0.05
+				air_training_xp_gain_factor = 0.05
+				air_range_factor = 0.15
+				air_detection = 0.10
+			}
+		}
+
+		USA_nlrb = {
+			allowed = {
+				always = no
+			}
+			picture = generic_production_bonus
+			removal_cost = -1
+
+			modifier = {
+				production_factory_max_efficiency_factor = 0.075
+				production_factory_efficiency_gain_factor = 0.05
+				production_factory_start_efficiency_factor = 0.05
+			}
+		}
+
+		USA_ccc = {
+			allowed = {
+				always = no
+			}
+			picture = generic_build_infrastructure
+			removal_cost = -1
+
+			modifier = {
+				production_speed_buildings_factor = 0.15
+				local_building_slots_factor = 0.15
+				local_resources_factor = 0.10
+			}
+		}
+
+		# ── Federal Project One ─────────────────────────────────────────────────
+
+		USA_federal_project_one_1 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = federal_project_number_one
+			modifier = {
+				stability_factor = 0.05
+				war_support_factor = 0.03
+			}
+		}
+
+		USA_federal_project_one_2 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = federal_project_number_one
+			modifier = {
+				stability_factor = 0.05
+				war_support_factor = 0.03
+				war_support_weekly = 0.0005
+				non_core_manpower = 0.05
+			}
+		}
+
+		USA_federal_project_one_3 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = federal_project_number_one
+			modifier = {
+				stability_factor = 0.05
+				war_support_factor = 0.08
+				war_support_weekly = 0.0005
+				non_core_manpower = 0.05
+				political_power_gain = 0.10
+			}
+		}
+
+		USA_federal_project_one_4 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = federal_project_number_one
+			modifier = {
+				stability_factor = 0.08
+				war_support_factor = 0.08
+				war_support_weekly = 0.0005
+				non_core_manpower = 0.05
+				political_power_gain = 0.10
+				research_speed_factor = 0.03
+			}
+		}
+
+		USA_federal_project_one_5 = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = federal_project_number_one
+			modifier = {
+				stability_factor = 0.08
+				war_support_factor = 0.08
+				war_support_weekly = 0.0005
+				non_core_manpower = 0.05
+				political_power_gain = 0.10
+				research_speed_factor = 0.03
+				operative_slot = 1
+				agency_upgrade_time = -0.15
+			}
+		}
+
+		# ── US Army Corps of Engineers ──────────────────────────────────────────
+
+		USA_usace_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_build_infrastructure
+
+			modifier = {
+				production_speed_supply_node_factor      = 0.15
+				production_speed_rail_way_factor         = 0.15
+				production_speed_naval_base_factor       = 0.15
+				production_speed_bunker_factor           = 0.15
+				production_speed_coastal_bunker_factor   = 0.15
+				production_speed_air_base_factor         = 0.15
+				production_speed_anti_air_building_factor = 0.15
+				production_speed_radar_station_factor    = 0.15
+			}
+		}
+
+		# ── Reconstruction Finance Corporation ──────────────────────────────────
+
+		USA_rfc_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_pp_unity_bonus
+
+			modifier = {
+				consumer_goods_factor = -0.05
+				production_factory_max_efficiency_factor = 0.05
+				political_power_gain = 0.05
+			}
+		}
+
+		USA_einstein_szilard_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = USA_einstein_szilard_spirit
+
+			modifier = {
+				research_speed_factor = 0.25
+			}
+		}
+
+		USA_ops_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = ARG_resource_extration_focus
+
+			modifier = {
+				min_export = -0.15
+				local_resources_factor = 0.05
+			}
+		}
+
+		# ── CWA Direction (mutually exclusive — set by event usa.307) ─────────
+
+		USA_cwa_engineers_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_build_infrastructure
+
+			modifier = {
+				consumer_goods_factor = -0.075
+				industrial_capacity_dockyard = 0.075
+			}
+		}
+
+		USA_cwa_social_workers_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_pp_unity_bonus
+
+			modifier = {
+				industrial_capacity_factory = 0.05
+				stability_factor = 0.05
+			}
+		}
+
+		# ── New Deal Fiscal Events ───────────────────────────────────────────────
+
+		USA_deficit_spending = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_pp_unity_bonus
+			modifier = {
+				production_speed_industrial_complex_factor = 0.30
+				production_speed_infrastructure_factor = 0.30
+			}
+		}
+
+		USA_reprioritise_new_deal = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_war_preparation
+			modifier = {
+				production_speed_arms_factory_factor = 0.25
+				production_speed_dockyard_factor = 0.15
+			}
+		}
+
+		USA_dupont_expertise = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_research_bonus
+			research_bonus = {
+				electronics = 0.25
+				industry = 0.15
+			}
+		}
+
+		USA_rural_electrification_administration_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_radar
+			modifier = {
+				consumer_goods_factor = -0.075
+				production_speed_buildings_factor = 0.05
+				local_resources_factor = 0.075
+			}
+		}
+
+		USA_domestic_economy_growth_achieved = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = HABSBURG_economy
+			modifier = {
+				production_speed_buildings_factor = 0.15
+				stability_factor = 0.20
+				war_support_factor = 0.15
+				consumer_goods_factor = -0.15
+			}
+		}
+
+		# ── Manhattan Project ────────────────────────────────────────────────────
+
+		USA_manhattan_project_spirit = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_research_bonus
+
+			modifier = {
+				specialization_nuclear_speed_factor = 0.05
+				production_speed_nuclear_reactor_factor = 0.10
+				production_speed_nuclear_reactor_heavy_water_factor = 0.10
+			}
+		}
+
+		USA_heavy_investment_manhattan_project = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_research_bonus
+
+			modifier = {
+				consumer_goods_factor = 0.125
+				specialization_nuclear_speed_factor = 0.25
+				production_speed_nuclear_reactor_factor = 0.125
+				production_speed_nuclear_reactor_heavy_water_factor = 0.125
+			}
+		}
+
+		# ── Willkie Peacetime Aid ─────────────────────────────────────────────────
+
+		# Applied to minor Allied nations by USA_total_peacetime_support_for_the_allies
+		USA_willkies_funding = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_pp_unity_bonus
+
+			modifier = {
+				industrial_capacity_factory = 0.075
+			}
+		}
+
+		# Applied to USA (timed 730 days) by USA_total_peacetime_support_for_the_allies
+		USA_funding_the_allies = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = generic_economic_crisis
+
+			modifier = {
+				consumer_goods_factor = 0.25
+			}
+		}
+
+		# Applied to USA by USA_support_from_the_cio
+		USA_cio_union_backing = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = SPR_collectivized_society
+
+			modifier = {
+				production_factory_max_efficiency_factor = 0.10
+				production_factory_start_efficiency_factor = 0.10
+			}
+		}
+
+		# Applied to USA by USA_continued_tax_breaks_for_big_business; removed on war entry via usa.503
+		USA_backed_by_big_business = {
+			allowed = { always = no }
+			removal_cost = -1
+			picture = PRC_silver_dollar_promoted
+
+			modifier = {
+				stability_factor = -0.10
+				consumer_goods_factor = -0.25
+			}
+		}
+
+	}
+
+}

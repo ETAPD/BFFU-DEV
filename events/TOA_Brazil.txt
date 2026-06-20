@@ -1,0 +1,1005 @@
+###########################
+# Brazil Events
+###########################
+
+add_namespace = JUNO_brazil_news
+add_namespace = JUNO_brazil_events
+
+
+country_event = { #BRA requests tech sharing
+	id = JUNO_brazil_events.120
+	title = JUNO_brazil_events.120.t
+	desc = JUNO_brazil_events.120.desc
+	picture = GFX_report_event_physics_lab_01
+	is_triggered_only = yes
+	# Sure
+	option = { 
+		name = JUNO_brazil_events.120.a 
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = 10
+				has_opinion = {
+					target = FROM
+					value > 0.5
+				}
+			}
+			modifier = {
+				factor = 100
+				is_in_faction_with = FROM
+			}
+			modifier = {
+				factor = 5
+				has_government = FROM
+			}
+			modifier = {
+				factor = 0
+				has_war_with = FROM
+			}
+		}
+		FROM = {
+			country_event = {
+				id = JUNO_brazil_events.121
+				hours = 1
+			}
+		}
+		effect_tooltip = {
+			IF = {
+				limit = {
+					FROM = {
+						has_completed_focus = BRA_us_brazil_technology_exchange
+					}
+				}
+			
+				add_to_tech_sharing_group = BRA_USA_tech_sharing_group
+				FROM = {
+					add_to_tech_sharing_group = BRA_USA_tech_sharing_group
+				}
+			}
+		}
+	}
+
+	# Nope
+	option = { 
+		name = JUNO_brazil_events.120.b
+		ai_chance = {
+			base = 1
+		}
+		FROM = {
+			country_event = {
+				id = JUNO_brazil_events.122
+				hours = 1
+			}
+		}
+		effect_tooltip = {
+			FROM = {
+				add_cic = 1000
+			}
+		}
+	}
+}
+
+country_event = { #USA agrees to share tech
+	id = JUNO_brazil_events.121
+	title = JUNO_brazil_events.121.t
+	desc = JUNO_brazil_events.121.desc
+	picture = GFX_report_event_physics_lab_01
+	is_triggered_only = yes
+
+	# Sure
+	option = { 
+		name = JUNO_brazil_events.121.a 
+		ai_chance = {
+			base = 1
+		}
+		IF = {
+			limit = {
+				FROM = {
+					has_completed_focus = BRA_us_brazil_technology_exchange
+				}
+			}
+		
+			add_to_tech_sharing_group = BRA_USA_tech_sharing_group
+			FROM = {
+				add_to_tech_sharing_group = BRA_USA_tech_sharing_group
+			}
+		}
+	}
+}
+
+country_event = { #USA refuses to share tech
+	id = JUNO_brazil_events.122
+	title = JUNO_brazil_events.122.t
+	desc = JUNO_brazil_events.122.desc
+	picture = GFX_report_event_physics_lab_01
+	is_triggered_only = yes
+
+	# Better than nothing
+	option = { 
+		name = JUNO_brazil_events.122.a
+		ai_chance = {
+			base = 1
+		}
+		add_cic = 1000
+	}
+}
+
+
+
+
+country_event = { #FROM countering communism influence
+	id = JUNO_brazil_events.144
+	title = JUNO_brazil_events.144.t
+	desc = JUNO_brazil_events.144.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	# unfortunate
+	option = {
+		name = JUNO_brazil_events.144.a
+		ai_chance = {
+			base = 1
+		}
+	}
+}
+
+country_event = { #cangaceiro raid/spread
+	id = JUNO_brazil_events.150
+	title = JUNO_brazil_events.150.t
+	desc = {
+		text = JUNO_brazil_events.150.desc.a
+		trigger = {
+			OR = {
+				has_country_flag = BRA_cangaceiro_small_raid_flag
+				has_country_flag = BRA_cangaceiro_big_raid_flag
+			}
+		}
+	}
+	desc = {
+		text = JUNO_brazil_events.150.desc.b
+		trigger = {
+			has_country_flag = BRA_cangaceiro_spread_flag
+		}
+	}
+	picture = GFX_report_event_BRA_cangaco
+	is_triggered_only = yes
+
+	option = {
+		name = JUNO_brazil_events.150.a
+		trigger = {
+			has_country_flag = BRA_cangaceiro_small_raid_flag
+		}
+		ai_chance = {
+			base = 1
+		}
+		add_stability = -0.02
+		clr_country_flag = BRA_cangaceiro_small_raid_flag
+		hidden_effect = {
+			activate_mission = BRA_cangaceiro_mission
+		}
+	}
+	option = {
+		name = JUNO_brazil_events.150.b
+		trigger = {
+			has_country_flag = BRA_cangaceiro_big_raid_flag
+		}
+		ai_chance = {
+			base = 1
+		}
+		add_stability = -0.05
+		clr_country_flag = BRA_cangaceiro_big_raid_flag
+		hidden_effect = {
+			activate_mission = BRA_cangaceiro_mission
+		}
+	}
+	option = {
+		name = JUNO_brazil_events.150.c
+		trigger = {
+			has_country_flag = BRA_cangaceiro_spread_flag
+		}
+		ai_chance = {
+			base = 1
+		}
+		random_owned_controlled_state = {
+			limit = {
+				OR = {
+					state = 937
+					state = 935
+					state = 498
+					state = 936
+					state = 499
+				}
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = BRA_cangaceiro_state
+					}
+				}
+			}
+			add_dynamic_modifier = {
+				modifier = BRA_cangaceiro_state
+			}
+		}
+		clr_country_flag = BRA_cangaceiro_spread_flag
+		hidden_effect = {
+			activate_mission = BRA_cangaceiro_mission
+		}
+	}
+}
+
+country_event = { #Anti-cangaceiro operation success
+	id = JUNO_brazil_events.151
+	title = JUNO_brazil_events.151.t
+	desc = JUNO_brazil_events.151.desc
+	picture = GFX_report_event_BRA_cangaco
+	is_triggered_only = yes
+
+	# great
+	option = {
+		name = JUNO_brazil_events.151.a
+		ai_chance = {
+			base = 1
+		}
+	}
+}
+
+country_event = {
+	id = JUNO_brazil_events.152
+	title = JUNO_brazil_events.152.t
+	desc = JUNO_brazil_events.152.desc
+	picture = GFX_report_event_BRA_cangaco
+	is_triggered_only = yes
+
+	# great
+	option = {
+		name = JUNO_brazil_events.152.a
+		ai_chance = {
+			base = 1
+		}
+		custom_effect_tooltip = BRA_end_of_cangaco_tt
+		add_stability = 0.05
+		add_political_power = 100
+		army_experience = 50
+	}
+}
+
+country_event = {
+	id = JUNO_brazil_events.153
+	title = JUNO_brazil_events.153.t
+	desc = JUNO_brazil_events.153.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	# ok
+	option = {
+		name = JUNO_brazil_events.153.a
+		ai_chance = {
+			base = 1
+		}
+		custom_effect_tooltip = JUNO_brazil_events_153_tt
+	}
+}
+
+#Brazil wants MIO
+country_event = {
+	id = JUNO_brazil_events.160
+	title = JUNO_brazil_events.160.t
+	desc = JUNO_brazil_events.160.desc
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	# yes
+	option = {
+		name = JUNO_brazil_events.160.a
+		ai_chance = {
+			base = 5
+			modifier = {
+				factor = 10
+				has_opinion = {
+					target = FROM
+					value > 50
+				}
+			}
+			modifier = {
+				factor = 0
+				has_opinion = {
+					target = FROM
+					value < 0
+				}
+			}
+			modifier = {
+				factor = 5
+				is_in_faction_with = FROM
+			}
+		}
+		FROM = {
+			country_event = {
+				id = JUNO_brazil_events.161
+				hours = 1
+			}
+		}	
+		add_offsite_building = { type = industrial_complex level = 1 }
+		effect_tooltip = {
+			IF = {
+				limit = {
+					original_tag = USA
+				}
+				custom_effect_tooltip = JUNO_brazil_events_160_tt
+				show_mio_tooltip = USA_marmon_herrington_organization
+				show_mio_tooltip = USA_north_american_aviation_organization
+				show_mio_tooltip = USA_newport_news_shipbuilding_organization
+			}
+			IF = {
+				limit = {
+					original_tag = ENG
+				}
+				custom_effect_tooltip = JUNO_brazil_events_160_tt
+				show_mio_tooltip = ENG_vauxhall_organization
+				show_mio_tooltip = ENG_cammell_laird_organization
+				show_mio_tooltip = ENG_avro_organization
+			}
+			IF = {
+				limit = {
+					original_tag = FRA
+				}
+				custom_effect_tooltip = JUNO_brazil_events_160_tt
+				show_mio_tooltip = FRA_acf_organization
+				show_mio_tooltip = FRA_bloch_organization
+				show_mio_tooltip = FRA_renault_organization
+			}
+			IF = {
+				limit = {
+					original_tag = SWE
+				}
+				custom_effect_tooltip = JUNO_brazil_events_160_tt
+				show_mio_tooltip = SWE_saab_organization			
+				show_mio_tooltip = SWE_landsverk_organization
+				show_mio_tooltip = SWE_gotaverken_organization
+				show_mio_tooltip = SWE_scania_vabis_organization
+			}
+		}
+	}
+
+}
+
+country_event = {
+	id = JUNO_brazil_events.161
+	title = JUNO_brazil_events.161.t
+	desc = JUNO_brazil_events.161.desc
+	picture = GFX_report_event_generic_factory
+	is_triggered_only = yes
+
+	# army
+	option = {
+		name = JUNO_brazil_events.161.a
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = 5
+				has_completed_focus = SMB_foreign_advisors
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = USA
+				}
+			}
+		}
+		clr_country_flag = BRA_invite_company_in_progress
+		BRA_mio_military_factory = yes
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = USA
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_marmon_herrington_mio_flag
+			show_mio_tooltip = USA_marmon_herrington_organization
+			mio:USA_marmon_herrington_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = ENG
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_vauxhall_mio_flag
+			show_mio_tooltip = ENG_vauxhall_organization
+			mio:ENG_vauxhall_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = FRA
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_renault_mio_flag
+			show_mio_tooltip = FRA_renault_organization
+			mio:FRA_renault_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF ={
+			limit = {
+				FROM = {
+					original_tag = SWE
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_landsverk_mio_flag
+			show_mio_tooltip = SWE_landsverk_organization
+			mio:SWE_landsverk_organization = {
+				add_mio_size = 2
+			}
+		}
+	}
+	# airforce
+	option = {
+		name = JUNO_brazil_events.161.b
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = 5 
+				has_completed_focus = SMB_flying_fortress
+			}
+		}
+		clr_country_flag = BRA_invite_company_in_progress
+		BRA_mio_military_factory = yes
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = USA
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_invited_north_american_aviation_mio_flag
+			show_mio_tooltip = USA_north_american_aviation_organization
+			mio:USA_north_american_aviation_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = ENG
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_avro_mio_flag
+			show_mio_tooltip = ENG_avro_organization
+			mio:ENG_avro_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = FRA
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_bloch_mio_flag
+			show_mio_tooltip = FRA_bloch_organization
+			mio:FRA_bloch_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF ={
+			limit = {
+				FROM = {
+					original_tag = SWE
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_saab_mio_flag
+			show_mio_tooltip = SWE_saab_organization
+			mio:SWE_saab_organization = {
+				add_mio_size = 2
+			}
+		}
+	}
+	# navy
+	option = {
+		name = JUNO_brazil_events.161.c
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = 5
+				has_completed_focus = SMB_reescalate_the_naval_arms_race
+			}
+		}
+		clr_country_flag = BRA_invite_company_in_progress
+		random_owned_controlled_state = {
+			limit = { 
+				is_coastal = yes 
+				free_building_slots = {
+					building = dockyard
+					size > 1
+					include_locked = yes
+				}
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = BRA_neglected_state_dynamic_modifier
+					}
+				}
+			}
+			add_building_construction = {
+				type = dockyard
+				level = 1
+				instant_build = yes
+			}
+			add_extra_state_shared_building_slots = 1
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = USA
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_newport_news_shipbuilding_mio_flag
+			show_mio_tooltip = USA_newport_news_shipbuilding_organization
+			mio:USA_newport_news_shipbuilding_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = ENG
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_cammell_laird_mio_flag
+			show_mio_tooltip = ENG_cammell_laird_organization
+			mio:ENG_cammell_laird_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF = {
+			limit = {
+				FROM = {
+					original_tag = FRA
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_acf_mio_flag
+			show_mio_tooltip = FRA_acf_organization
+			mio:FRA_acf_organization = {
+				add_mio_size = 2
+			}
+		}
+		IF ={
+			limit = {
+				FROM = {
+					original_tag = SWE
+				}
+			}
+			FROM = {
+				set_country_flag = BRA_already_sent_mio
+			}
+			set_country_flag = has_gotaverken_mio_flag
+			show_mio_tooltip = SWE_gotaverken_organization
+			mio:SWE_gotaverken_organization = {
+				add_mio_size = 2
+			}
+		}
+	}
+
+	# armored car
+	option = {
+		name = JUNO_brazil_events.161.d
+		trigger = {
+			has_dlc = "La Resistance"
+			FROM = {
+				original_tag = SWE
+			}
+		}
+		ai_chance = {
+			base = 1
+		}
+		clr_country_flag = BRA_invite_company_in_progress
+		BRA_mio_military_factory = yes
+		FROM = {
+			set_country_flag = BRA_already_sent_mio
+		}
+		set_country_flag = has_scania_vabis_mio_flag
+		show_mio_tooltip = SWE_scania_vabis_organization
+		mio:SWE_scania_vabis_organization = {
+			add_mio_size = 2
+		}		
+	}
+}
+
+
+
+country_event = {
+	id = JUNO_brazil_events.163
+	title = JUNO_brazil_events.163.t
+	desc = JUNO_brazil_events.163.desc
+	picture = GFX_report_event_worker_protests
+	is_triggered_only = yes
+
+	# pro-labor
+	option = {
+		name = JUNO_brazil_events.163.a
+		ai_chance = {
+			base = 1
+		}
+		add_ideas = BRA_pro_labor_agreement
+	}
+	# anti-labor
+	option = {
+		name = JUNO_brazil_events.163.b
+		ai_chance = {
+			base = 100
+		}
+		BRA_mio_military_factory = yes
+		BRA_mio_military_factory = yes
+		BRA_mio_military_factory = yes
+		add_war_support = 0.15
+		add_stability = -0.05
+	}
+}
+
+
+
+
+
+
+country_event = {
+	id = JUNO_brazil_events.200
+	title = JUNO_brazil_events.200.t
+	desc = JUNO_brazil_events.200.desc
+	picture = GFX_report_event_election_vote
+	is_triggered_only = yes
+	# BRA_ansio_teixeira
+	immediate = {
+		BRA_select_leader_flag = yes
+		hidden_effect = {
+			set_politics = {
+				ruling_party = democratic
+				election_frequency = 48
+				elections_allowed = yes
+			}
+			country_event = {
+				id = JUNO_brazil_events.202
+				months = 48
+			}
+		}
+	}
+	option = {
+		name = JUNO_brazil_events.200.a
+		ai_chance = {
+			base = 10
+		}
+		IF = {
+			limit = {
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = BRA_anisio_teixeira
+					}
+				}
+			}
+			add_country_leader_role = {
+				character = BRA_anisio_teixeira
+				promote_leader = yes
+				country_leader = {
+					ideology = liberalism
+					expire = "1965.1.1"
+					traits =  { BRA_education_pioneer }
+				}
+			}
+			BRA_clr_country_leader_role = yes
+			BRA_clear_leader_flags = yes
+	
+		}
+	}
+	# BRA_armando_de_sales_oliveira
+	option = {
+		name = JUNO_brazil_events.200.b
+		ai_chance = {
+			base = 10
+		}
+		IF = {
+			limit = {
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = BRA_armando_de_sales_oliveira
+					}
+				}
+			}
+
+			add_country_leader_role = {
+				character = BRA_armando_de_sales_oliveira
+				promote_leader = yes
+				country_leader = {
+					ideology = liberalism
+					expire = "1965.1.1"
+					traits =  { BRA_democratic_engineer }
+				}
+			}
+			BRA_clr_country_leader_role = yes
+			BRA_clear_leader_flags = yes
+
+		}
+	}	
+	# BRA_minervino_de_oliveira
+	option = {
+		name = JUNO_brazil_events.200.c
+		trigger = {
+				has_completed_focus = BRA_free_speech
+		}
+		ai_chance = {
+			base = 0
+		}
+		IF = {
+			limit = {
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = BRA_minervino_de_oliveira
+					}
+				}
+			}
+			add_country_leader_role = {
+				character = BRA_minervino_de_oliveira
+				promote_leader = yes
+				country_leader = {
+					ideology = socialism
+					expire = "1965.1.1"
+					traits =  { ICE_trade_unionist }
+				}
+			}
+			BRA_clr_country_leader_role = yes
+			BRA_clear_leader_flags = yes
+		}
+	}	
+	# BRA_lindolfo_collor
+	option = {
+		name = JUNO_brazil_events.200.d
+		ai_chance = {
+			base = 10
+		}
+		IF = {
+			limit = {
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = BRA_lindolfo_collor
+					}
+				}
+			}
+			add_country_leader_role = {
+				character = BRA_lindolfo_collor
+				promote_leader = yes
+				country_leader = {
+					ideology = liberalism
+					expire = "1965.1.1"
+					traits =  { BRA_anti_authoritarian }
+				}
+			}
+			BRA_clr_country_leader_role = yes
+			BRA_clear_leader_flags = yes
+		}
+	}
+	# BRA_eurico_gaspar_dutra
+	option = {
+		name = JUNO_brazil_events.200.e
+		trigger = {
+			has_completed_focus = BRA_posts_for_generals
+		}
+		ai_chance = {
+			base = 0
+		}
+		IF = {
+			limit = {
+				NOT = {
+					has_country_leader = {
+						ruling_only = yes
+						character = BRA_eurico_gaspar_dutra
+					}
+				}
+			}
+			add_country_leader_role = {
+				character = BRA_eurico_gaspar_dutra
+				promote_leader = yes
+				country_leader = {
+					ideology = conservatism
+					expire = "1965.1.1"
+					traits =  { war_industrialist }
+				}
+			}
+			BRA_clr_country_leader_role = yes
+			BRA_clear_leader_flags = yes
+		}
+	}	
+}
+
+country_event = {
+	id = JUNO_brazil_events.201
+	title = JUNO_brazil_events.201.t
+	desc = JUNO_brazil_events.201.d
+	picture = GFX_report_event_election_vote
+
+	trigger = {
+		has_dlc = "Trial of Allegiance"
+		original_tag = BRA
+		# Testing Date		
+		#date > 1936.02.01
+
+		# Actual Date
+		date > 1938.07.01
+
+		has_government = democratic
+		has_completed_focus	= BRA_repeal_the_national_security_law
+		NOT = {
+				has_completed_focus = BRA_tribunal_de_seguranca_nacional
+		}
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	hidden = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		country_event = {
+			id = JUNO_brazil_events.200
+			days = 1
+			#random_days = 5
+		}
+	}
+}
+
+country_event = {
+	id = JUNO_brazil_events.202
+	title = JUNO_brazil_events.202.t
+	desc = JUNO_brazil_events.202.d
+	picture = GFX_report_event_election_vote
+
+	mean_time_to_happen = { days = 1 }
+
+	hidden = yes
+
+	fire_only_once = no
+	is_triggered_only = yes
+
+	immediate = {
+		IF = {
+			limit = {
+				has_government = democratic
+				has_completed_focus = BRA_repeal_the_national_security_law
+			}
+			country_event = {
+				id = JUNO_brazil_events.200
+				days = 1
+			}
+		}
+	}
+}
+
+# Brazil taking dominate americas path - news
+news_event = {
+	id = JUNO_brazil_news.1
+	title = JUNO_brazil_news.1.t
+	desc = JUNO_brazil_news.1.d
+	picture = GFX_news_event_german_speech
+	
+	major = no
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = JUNO_brazil_news.1.a
+	}
+} 
+
+news_event = { # Brazil finishes Constitutional Monarchy focus
+	id = JUNO_brazil_news.2
+	title = JUNO_brazil_news.2.t
+	desc = JUNO_brazil_news.2.d
+	picture = GFX_news_event_por_return_of_monarchy
+
+	major = no
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = JUNO_brazil_news.2.a
+	}
+} 
+
+news_event = {
+	id = JUNO_brazil_news.3
+	title = JUNO_brazil_news.3.t
+	desc = JUNO_brazil_news.3.d
+	picture = GFX_news_event_por_return_of_monarchy
+
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = JUNO_brazil_news.3.a
+	}
+
+}
+
+news_event = {
+	id = JUNO_brazil_news.4
+	title = JUNO_brazil_news.4.t
+	desc = JUNO_brazil_news.4.d
+	picture = GFX_news_event_por_return_of_monarchy
+
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = JUNO_brazil_news.4.a
+	}
+}
+
+news_event = {
+	id = JUNO_brazil_news.5
+	title = JUNO_brazil_news.5.t
+	desc = JUNO_brazil_news.5.d
+	picture = GFX_news_event_soviet_soldiers_ruins
+
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = JUNO_brazil_news.5.a
+	}
+}
+
+news_event = {
+	id = JUNO_brazil_news.6
+	title = JUNO_brazil_news.6.t
+	desc = JUNO_brazil_news.6.d
+	picture = GFX_news_event_soviet_soldiers_ruins
+
+	major = yes
+
+	is_triggered_only = yes
+
+	option = {
+		name = JUNO_brazil_news.6.a
+	}
+}
+

@@ -1,0 +1,2862 @@
+operations = {
+
+	USA_annex_mex = {
+
+		allowed = {
+			original_tag = USA
+		}
+
+		available = {
+			MEX = { is_ai = yes }
+			OR = {
+				JAP = { has_war_with = ENG }
+				GER = { has_war_with = SOV }
+				USA = { has_war = yes }
+			}
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+
+		visible = {
+			always = yes
+			country_exists = MEX
+		}
+
+		fire_only_once = yes
+
+		complete_effect = {
+			annex_country = { target = MEX transfer_troops = yes }
+			every_owned_state = {
+				limit = { is_core_of = MEX }
+				set_compliance = 60
+			}
+		}
+	}
+
+	USA_annex_bra = {
+
+		allowed = {
+			original_tag = USA
+		}
+
+		available = {
+			BRA = { is_ai = yes }
+			OR = {
+				JAP = { has_war_with = ENG }
+				GER = { has_war_with = SOV }
+				USA = { has_war = yes }
+			}
+		}
+
+		ai_will_do = {
+			factor = 0
+		}
+
+		visible = {
+			always = yes
+			country_exists = BRA
+		}
+
+		fire_only_once = yes
+
+		complete_effect = {
+			annex_country = { target = BRA transfer_troops = yes }
+			every_owned_state = {
+				limit = { is_core_of = BRA }
+				set_compliance = 60
+				if = {
+					limit = { has_dynamic_modifier = { modifier = BRA_neglected_state_dynamic_modifier } }
+					remove_dynamic_modifier = { modifier = BRA_neglected_state_dynamic_modifier }
+				}
+				if = {
+					limit = { has_dynamic_modifier = { modifier = BRA_cangaceiro_state } }
+					remove_dynamic_modifier = { modifier = BRA_cangaceiro_state }
+				}
+			}
+		}
+	}
+
+	USA_initiate_the_greenland_patrol = {
+
+		icon = generic_operation
+
+		allowed = {
+			tag = USA
+		}
+
+		available = {
+			OR = {
+				has_government = democratic
+				has_government = neutrality
+			}
+			101 = {
+				is_owned_and_controlled_by = DEN
+			}
+			DEN = {
+				is_subject = yes
+			}
+			IF = {
+				limit = {
+					DEN = { is_subject = yes }
+				}
+				DEN = {
+					overlord = {
+						NOT = {
+							has_government = democratic
+							has_war_with = USA
+							is_in_faction_with = ROOT
+						}
+					}
+				}
+			}
+		}
+
+		cost = 50
+		fire_only_once = yes
+
+		ai_will_do = {
+			base = 1
+			modifier = {
+				factor = 50
+				DEN = {
+					overlord = {
+						OR = {
+							has_government = fascism
+							has_government = communism
+						}
+					}
+				}
+			}
+			modifier = {
+				factor = 2
+				is_historical_focus_on = yes
+				ENG = {
+					has_war_with = GER
+					has_subject = CAN
+				}
+				GER = {
+					has_government = fascism
+					has_subject = DEN
+				}
+			}
+		}
+
+		visible = {
+			tag = USA
+			OR = {
+				has_government = democratic
+				has_government = neutrality
+			}
+			101 = {
+				is_owned_and_controlled_by = DEN
+			}
+			DEN = {
+				is_subject = yes
+				overlord = {
+					is_major = yes
+					NOT = {
+						has_government = democratic
+						has_war_with = USA
+						is_in_faction_with = ROOT
+					}
+				}
+			}
+			has_dlc = "Arms Against Tyranny"
+		}
+
+		complete_effect = {
+			DEN = { country_event = { id = AAT_USA_events.01 days = 2 } }
+			ROOT = { transfer_state = 101 }
+			hidden_effect = {
+				set_global_flag = USA_occupied_DEN_greenland
+			}
+		}
+	}
+}
+
+###########################
+# Ohio River Flood Recovery — Mission Chain
+###########################
+
+USA_flood_control_cat = {
+
+	# Rush: Accelerate all remaining acts by 60 days
+	USA_rush_flood_control = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			NOT = { has_country_flag = ohio_flood_rushed }
+		}
+
+		available = {
+			has_country_flag = ohio_flood_recovery_active
+			has_completed_focus = USA_rush_the_flood_control_acts
+		}
+
+		fire_only_once = yes
+		cost = 50
+
+		ai_will_do = { factor = 100 }
+
+		complete_effect = {
+			add_stability = 0.15
+			set_country_flag = ohio_flood_rushed
+		}
+	}
+
+	# Provide Care Immediately (Landon path)
+	USA_landon_provide_care_immediately = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			has_completed_focus = USA_propose_the_the_responsible_waters_management_act
+		}
+
+		available = {
+			has_country_flag = ohio_flood_recovery_active
+			has_completed_focus = USA_propose_the_the_responsible_waters_management_act
+		}
+
+		fire_only_once = yes
+		cost = 150
+
+		ai_will_do = { factor = 100 }
+
+		complete_effect = {
+			261 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			360 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			369 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			395 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			396 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			816 = {
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood } } remove_dynamic_modifier = { modifier = ohio_flood } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_2 } } remove_dynamic_modifier = { modifier = ohio_flood_2 } }
+				if = { limit = { has_dynamic_modifier = { modifier = ohio_flood_3 } } remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			}
+			set_variable = { var = ohio_flood_act value = 4 }
+			set_country_flag = USA_landon_flood_care_provided
+			clr_country_flag = ohio_flood_recovery_active
+		}
+	}
+
+	# Act I: Full → Two-thirds penalty
+	USA_flood_control_act_1 = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 1 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_country_flag = USA_landon_flood_care_provided } }
+				261 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				360 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				369 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				395 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				396 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				816 = {
+					remove_dynamic_modifier = { modifier = ohio_flood }
+					add_dynamic_modifier = { modifier = ohio_flood_2 }
+				}
+				set_variable = { var = ohio_flood_act value = 2 }
+				if = {
+					limit = { has_country_flag = ohio_flood_rushed }
+					activate_mission = USA_flood_control_act_2_r
+				}
+				else = {
+					activate_mission = USA_flood_control_act_2
+				}
+			}
+		}
+	}
+
+	# Act II: Two-thirds → One-third penalty
+	USA_flood_control_act_2 = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 2 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_country_flag = USA_landon_flood_care_provided } }
+				261 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				360 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				369 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				395 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				396 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				816 = {
+					remove_dynamic_modifier = { modifier = ohio_flood_2 }
+					add_dynamic_modifier = { modifier = ohio_flood_3 }
+				}
+				set_variable = { var = ohio_flood_act value = 3 }
+				if = {
+					limit = { has_country_flag = ohio_flood_rushed }
+					activate_mission = USA_flood_control_act_3_r
+				}
+				else = {
+					activate_mission = USA_flood_control_act_3
+				}
+			}
+		}
+	}
+
+	# Act III: One-third → Flood debuff fully cleared
+	USA_flood_control_act_3 = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 3 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_country_flag = USA_landon_flood_care_provided } }
+				261 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				360 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				369 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				395 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				396 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				816 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+				# Acts IV & V never fire under Landon — the flood ends at Act III for him.
+				# (Provide Care Immediately is the active route; this is the passive base guarantee.)
+				if = {
+					limit = { NOT = { has_country_leader = { ruling_only = yes character = usa_alf_landon } } }
+					set_variable = { var = ohio_flood_act value = 4 }
+					if = {
+						limit = { has_country_flag = ohio_flood_rushed }
+						activate_mission = USA_flood_control_act_4_r
+					}
+					else = {
+						activate_mission = USA_flood_control_act_4
+					}
+				}
+			}
+		}
+	}
+
+	# Act IV: Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_4 = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 4 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			set_variable = { var = ohio_flood_act value = 5 }
+			if = {
+				limit = { has_country_flag = ohio_flood_rushed }
+				activate_mission = USA_flood_control_act_5_r
+			}
+			else = {
+				activate_mission = USA_flood_control_act_5
+			}
+		}
+	}
+
+	# Act V: Final Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_5 = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 5 compare = equals }
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			clear_variable = ohio_flood_act
+			clr_country_flag = ohio_flood_recovery_active
+		}
+	}
+
+	###########################
+	# Rushed Variants (120 days)
+	###########################
+
+	# Act II (Rushed): Two-thirds → One-third penalty
+	USA_flood_control_act_2_r = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 2 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			261 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			360 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			369 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			395 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			396 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			816 = {
+				remove_dynamic_modifier = { modifier = ohio_flood_2 }
+				add_dynamic_modifier = { modifier = ohio_flood_3 }
+			}
+			set_variable = { var = ohio_flood_act value = 3 }
+			activate_mission = USA_flood_control_act_3_r
+		}
+	}
+
+	# Act III (Rushed): One-third → Flood debuff fully cleared
+	USA_flood_control_act_3_r = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 3 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			261 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			360 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			369 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			395 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			396 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			816 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
+			set_variable = { var = ohio_flood_act value = 4 }
+			activate_mission = USA_flood_control_act_4_r
+		}
+	}
+
+	# Act IV (Rushed): Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_4_r = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 4 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			set_variable = { var = ohio_flood_act value = 5 }
+			activate_mission = USA_flood_control_act_5_r
+		}
+	}
+
+	# Act V (Rushed): Final Reconstruction — 10 civs across 4 random core states
+	USA_flood_control_act_5_r = {
+		icon = GFX_decision_generic_factory
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 5 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = USA }
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			clear_variable = ohio_flood_act
+			clr_country_flag = ohio_flood_rushed
+			clr_country_flag = ohio_flood_recovery_active
+		}
+	}
+}
+
+USA_special_research = {
+	USA_prox_fuse = {
+	
+		icon = generic_construction
+
+		available = {
+			NOT = { has_country_flag = USA_special_research_ongoing }
+			has_tech = advanced_computing_machine
+		}
+
+		cost = 50
+		fire_only_once = yes
+
+		ai_will_do = {
+			factor = 0
+		}
+		visible = {
+			always = no
+		}
+		days_remove = 180
+		modifier = {
+			civilian_factory_use = 5
+		}
+		remove_effect = {
+			set_country_flag = USA_prox_fuse_done
+		}
+		complete_effect = {
+			set_country_flag = { flag = USA_researching_flag value = 1 days = 180 }
+		}
+	}
+}
+
+###########################
+# North American Aviation Military Contracts
+###########################
+
+###########################
+# Federal Project One (WPA Arts)
+###########################
+
+USA_federal_project_one_cat = {
+
+	USA_federal_art_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_art_project_tt
+		}
+	}
+
+	USA_federal_music_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_music_project_tt
+		}
+	}
+
+	USA_federal_theatre_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_theatre_project_tt
+		}
+	}
+
+	USA_federal_writers_project = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_federal_writers_project_tt
+		}
+	}
+
+	USA_historical_records_survey = {
+		icon = generic_political_advisor
+		allowed = { original_tag = USA }
+		visible = { has_completed_focus = USA_promote_american_craftsmans }
+		available = { NOT = { has_idea = USA_federal_project_one_5 } }
+		fire_only_once = yes
+		cost = 50
+		ai_will_do = { factor = 10 }
+
+		complete_effect = {
+			if = { limit = { has_idea = USA_federal_project_one_4 }
+				swap_ideas = { remove_idea = USA_federal_project_one_4 add_idea = USA_federal_project_one_5 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_3 }
+				swap_ideas = { remove_idea = USA_federal_project_one_3 add_idea = USA_federal_project_one_4 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_2 }
+				swap_ideas = { remove_idea = USA_federal_project_one_2 add_idea = USA_federal_project_one_3 }
+			}
+			else_if = { limit = { has_idea = USA_federal_project_one_1 }
+				swap_ideas = { remove_idea = USA_federal_project_one_1 add_idea = USA_federal_project_one_2 }
+			}
+			else = { add_ideas = USA_federal_project_one_1 }
+			custom_effect_tooltip = USA_historical_records_survey_tt
+		}
+	}
+}
+
+USA_military_contracts_cat = {
+
+	USA_north_american_aviation_contracts_mission = {
+
+		icon = generic_industry
+		is_good = yes
+
+		allowed = { tag = USA }
+
+		visible = {
+			has_completed_focus = USA_give_north_american_aviation_military_contracts
+		}
+
+		activation = { always = no }
+		available = { always = no }
+
+		days_mission_timeout = 180
+
+		timeout_effect = {
+			if = {
+				limit = {
+					NOT = { has_war = yes }
+					date < 1941.1.29
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+				random_owned_controlled_state = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+				activate_mission = USA_north_american_aviation_contracts_mission
+			}
+		}
+	}
+}
+
+############################################################
+# Operation Torch — On-Map Softening Decisions
+# Unlocked by completing USA_operation_torch.
+# Each decision applies a 30-day province+state debuff
+# to reduce entrenchment and defence on the target state.
+############################################################
+USA_operation_torch_cat = {
+
+	# ── Casablanca (state 461) ────────────────────────────────────────────────
+	USA_torch_soften_casablanca = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 461 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_torch
+			461 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_torch
+			461 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				461 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 461 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Marrakech (state 462) ─────────────────────────────────────────────────
+	USA_torch_soften_marrakech = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 462 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_torch
+			462 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_torch
+			462 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				462 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 462 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Algiers (state 459) ───────────────────────────────────────────────────
+	USA_torch_soften_algiers = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 459 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_torch
+			459 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_torch
+			459 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				459 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 459 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Kasserine Pass — On-Map Softening Decisions
+# Unlocked by completing USA_kaiserrine_pass.
+# Mirrors the Operation Torch system for Tunisia and Gabès.
+############################################################
+USA_kaiserrine_pass_cat = {
+
+	# ── Tunisia (state 458) ───────────────────────────────────────────────────
+	USA_kaiserrine_soften_tunisia = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 458 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_kaiserrine_pass
+			458 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_kaiserrine_pass
+			458 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				458 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 458 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Gabès (state 665) ─────────────────────────────────────────────────────
+	USA_kaiserrine_soften_gabes = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 665 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_kaiserrine_pass
+			665 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_kaiserrine_pass
+			665 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				665 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 665 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Husky — On-Map Softening Decisions
+# Unlocked by completing USA_operation_husky.
+# Mirrors the Operation Torch system for Sicily.
+############################################################
+USA_operation_husky_cat = {
+
+	# ── Sicily (state 115) ────────────────────────────────────────────────────
+	USA_husky_soften_sicily = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 115 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_husky
+			115 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_husky
+			115 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				115 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 115 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Avalanche — On-Map Softening Decisions
+# Unlocked by completing USA_operation_avalanche.
+# Mirrors the Operation Torch system for Piemonte and Toscana.
+############################################################
+USA_operation_avalanche_cat = {
+
+	# ── Piemonte (state 158) ──────────────────────────────────────────────────
+	USA_avalanche_soften_piemonte = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 158 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_avalanche
+			158 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_avalanche
+			158 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				158 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 158 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Toscana (state 162) ───────────────────────────────────────────────────
+	USA_avalanche_soften_toscana = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 162 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_avalanche
+			162 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_avalanche
+			162 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				162 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 162 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Manna — On-Map Softening Decisions
+# Unlocked by completing USA_operation_manna.
+# Mirrors the Operation Torch system for Greece.
+############################################################
+USA_operation_manna_cat = {
+
+	# ── Attica / Greece (state 47) ────────────────────────────────────────────
+	USA_manna_soften_attica = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 47 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			47 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			47 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				47 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 47 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Peloponnese (state 186) ───────────────────────────────────────────────
+	USA_manna_soften_peloponnese = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 186 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			186 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			186 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				186 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 186 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Crete (state 182) ─────────────────────────────────────────────────────
+	USA_manna_soften_crete = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 182 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			182 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			182 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				182 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 182 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Dodecanese (state 164) ────────────────────────────────────────────────
+	USA_manna_soften_dodecanese = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 164 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			164 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			164 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				164 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 164 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Aegean Islands (state 187) ────────────────────────────────────────────
+	USA_manna_soften_aegean = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 187 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_manna
+			187 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_manna
+			187 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				187 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 187 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Dragoon — On-Map Softening Decisions
+# Unlocked by completing USA_operation_dragoon.
+# Targets southern France: Bouches-du-Rhône, Var, Savoy, Roussillon.
+############################################################
+USA_operation_dragoon_cat = {
+
+	# ── Bouches-du-Rhône (state 21) ──────────────────────────────────────────
+	USA_dragoon_soften_bouches = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 21 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			21 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			21 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				21 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 21 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Var (state 851) ───────────────────────────────────────────────────────
+	USA_dragoon_soften_var = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 851 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			851 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			851 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				851 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 851 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Savoy (state 735) ─────────────────────────────────────────────────────
+	USA_dragoon_soften_savoy = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 735 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			735 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			735 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				735 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 735 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Roussillon (state 22) ─────────────────────────────────────────────────
+	USA_dragoon_soften_roussillon = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 22 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_dragoon
+			22 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_dragoon
+			22 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				22 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 22 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Overlord — On-Map Softening Decisions
+# Unlocked by completing USA_operatation_overlord.
+# Targets northern France and Brest.
+############################################################
+USA_operatation_overlord_cat = {
+
+	# ── Normandy (state 15) ───────────────────────────────────────────────────
+	USA_overlord_soften_normandy = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 15 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			15 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			15 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				15 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 15 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Pas-de-Calais (state 29) ──────────────────────────────────────────────
+	USA_overlord_soften_pas_de_calais = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 29 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			29 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			29 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				29 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 29 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Picardy (state 785) ───────────────────────────────────────────────────
+	USA_overlord_soften_picardy = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 785 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			785 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			785 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				785 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 785 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Brittany (state 14) ───────────────────────────────────────────────────
+	USA_overlord_soften_brittany = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 14 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			14 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			14 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				14 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 14 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Brest (state 204) ─────────────────────────────────────────────────────
+	USA_overlord_soften_brest = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 204 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operatation_overlord
+			204 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operatation_overlord
+			204 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				204 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 204 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+
+}
+
+############################################################
+# Break the Initiative — On-Map Softening Decisions
+# Unlocked by completing USA_break_the_initative.
+# Targets Japanese-held Pacific territories.
+############################################################
+USA_break_the_initative_cat = {
+
+	# ── Papua (state 523) ─────────────────────────────────────────────────────
+	USA_break_soften_papua = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 523 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			523 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			523 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				523 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 523 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Kaiser-Wilhelmsland (state 979) ───────────────────────────────────────
+	USA_break_soften_kaiser_wilhelmsland = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 979 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			979 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			979 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				979 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 979 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── West Papua (state 669) ────────────────────────────────────────────────
+	USA_break_soften_west_papua = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 669 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			669 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			669 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				669 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 669 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Bismarck Archipelago (state 737) ──────────────────────────────────────
+	USA_break_soften_bismarck = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 737 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			737 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			737 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				737 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 737 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Solomon Islands (state 634) ──────────────────────────────────────────
+	USA_break_soften_solomons = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 634 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_break_the_initative
+			634 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_break_the_initative
+			634 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				634 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 634 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Control The Philippines — On-Map Softening Decisions
+# Unlocked by completing USA_control_the_phillippines.
+############################################################
+USA_control_the_phillippines_cat = {
+
+	# ── Manila / Philippines (state 327) ──────────────────────────────────────
+	USA_philippines_soften_manila = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 327 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			327 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			327 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				327 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 327 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Luzon (state 623) ─────────────────────────────────────────────────────
+	USA_philippines_soften_luzon = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 623 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			623 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			623 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				623 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 623 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Palawan (state 626) ───────────────────────────────────────────────────
+	USA_philippines_soften_palawan = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 626 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			626 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			626 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				626 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 626 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Mindanao (state 627) ──────────────────────────────────────────────────
+	USA_philippines_soften_mindanao = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 627 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			627 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			627 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				627 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 627 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Cebu (state 628) ──────────────────────────────────────────────────────
+	USA_philippines_soften_cebu = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 628 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			628 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			628 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				628 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 628 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── North Mindanao (state 1026) ───────────────────────────────────────────
+	USA_philippines_soften_north_mindanao = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 1026 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_control_the_phillippines
+			1026 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_control_the_phillippines
+			1026 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				1026 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 1026 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Iceberg — On-Map Softening Decisions
+# Unlocked by completing USA_operation_iceberg.
+# Targets Japanese-held Central Pacific islands.
+############################################################
+USA_operation_iceberg_cat = {
+
+	# ── Guam (state 638) ──────────────────────────────────────────────────────
+	USA_iceberg_soften_guam = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 638 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			638 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			638 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				638 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 638 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Saipan (state 646) ────────────────────────────────────────────────────
+	USA_iceberg_soften_saipan = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 646 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			646 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			646 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				646 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 646 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Caroline Islands (state 684) ──────────────────────────────────────────
+	USA_iceberg_soften_carolines = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 684 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			684 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			684 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				684 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 684 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Minamitorishima / Marcus Island (state 648) ───────────────────────────
+	USA_iceberg_soften_minamitorishima = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 648 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			648 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			648 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				648 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 648 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Wake Island (state 632) ───────────────────────────────────────────────
+	USA_iceberg_soften_wake = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 632 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			632 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			632 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				632 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 632 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Palau (state 647) ─────────────────────────────────────────────────────
+	USA_iceberg_soften_palau = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 647 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_iceberg
+			647 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_iceberg
+			647 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				647 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 647 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+
+############################################################
+# Operation Causeway — On-Map Softening Decisions
+# Unlocked by completing USA_operation_causeway.
+# Targets Taiwan and Okinawa.
+############################################################
+USA_operation_causeway_cat = {
+
+	# ── Taiwan (state 524) ────────────────────────────────────────────────────
+	USA_causeway_soften_taiwan = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 524 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_causeway
+			524 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_causeway
+			524 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				524 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 524 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+
+	# ── Okinawa (state 526) ───────────────────────────────────────────────────
+	USA_causeway_soften_okinawa = {
+		name = "Soften Up the Defences"
+		icon = { key = generic_operation }
+
+		highlight_states = {
+			highlight_state_targets = { state = 526 }
+		}
+
+		on_map_mode = map_only
+
+		visible = {
+			has_completed_focus = USA_operation_causeway
+			526 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		available = {
+			has_completed_focus = USA_operation_causeway
+			526 = { NOT = { is_fully_controlled_by = ROOT } }
+		}
+
+		fire_only_once = no
+		days_re_enable = 30
+		cancel_if_not_visible = yes
+
+		complete_effect = {
+			custom_effect_tooltip = Allied_bombardment
+			hidden_effect = {
+				526 = {
+					add_province_modifier = {
+						static_modifiers = { USA_torch_bombardment_static }
+						province = { all_provinces = yes }
+					}
+				}
+				every_state = {
+					limit = { state = 526 }
+					add_dynamic_modifier = { modifier = USA_torch_bombardment days = 30 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 5 }
+	}
+}
+

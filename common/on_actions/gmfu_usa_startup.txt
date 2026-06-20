@@ -1,0 +1,119 @@
+on_actions = {
+	# ── USA joins the Allied faction when ENG first goes to war with GER (Danzig or War) ──────
+	# ROOT = country that entered the war
+	on_war = {
+		effect = {
+			if = {
+				limit = {
+					original_tag = ENG
+					has_war_with = GER
+					is_faction_leader = yes
+					NOT = { has_global_flag = usa_joined_allies }
+					USA = {
+						NOT = { is_in_faction = yes }
+						NOT = { has_war = yes }
+					}
+				}
+				add_to_faction = USA
+				set_global_flag = usa_joined_allies
+			}
+		}
+	}
+
+	# ── USA non-interventionism: auto white-peace any non-Japan war before Pearl Harbor ───────
+	# ROOT = attacking side, FROM = defending side
+	on_war_relation_added = {
+		effect = {
+			# USA drawn in against Axis (not Japan)
+			if = {
+				limit = {
+					ROOT = { tag = USA }
+					NOT = { has_global_flag = day_of_infamy_happened }
+					FROM = { NOT = { original_tag = JAP } }
+				}
+				ROOT = { white_peace = FROM }
+			}
+			# Axis (not Japan) declares on USA
+			if = {
+				limit = {
+					FROM = { tag = USA }
+					NOT = { has_global_flag = day_of_infamy_happened }
+					ROOT = { NOT = { original_tag = JAP } }
+				}
+				FROM = { white_peace = ROOT }
+			}
+		}
+	}
+
+	# MacArthur's Return — re-fire the upgrade event whenever the USA (re)takes the
+	# Philippines after completing the focus, until it has successfully fired once.
+	# ROOT is new controller, FROM is old controller, FROM.FROM is the state ID.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					tag = USA
+					has_completed_focus = USA_control_the_phillippines
+					NOT = { has_country_flag = USA_macarthur_returned }
+					controls_state = 327  # Philippines
+					controls_state = 623  # Luzon
+				}
+				country_event = { id = usa.1005 hours = 6 }
+			}
+		}
+	}
+
+	# Bradley theorist mastery gain — fires monthly for USA if Bradley is hired as theorist.
+	on_monthly = {
+		effect = {
+			if = {
+				limit = {
+					tag = USA
+					any_character = {
+						is_character = usa_omar_bradley
+						is_hired_as_advisor = yes
+						has_advisor_role = theorist
+					}
+				}
+				add_mastery = { amount = 9 track = infantry }
+				add_mastery = { amount = 9 track = armor }
+				add_mastery = { amount = 9 track = combat_support }
+				add_mastery = { amount = 9 track = operations }
+			}
+		}
+	}
+
+	# Initialise election score variables for USA at game start
+	on_startup = {
+		effect = {
+			every_country = {
+				limit = { tag = USA }
+				# Election variables
+				set_variable = { var = USA_landon_score value = 0 }
+				set_variable = { var = USA_roosevelt_score value = 0 }
+				# Starting spirits
+				# NOTE: USA_united_states_army variables and add_dynamic_modifier are in
+				# the country history file (USA - USA.txt) so the conscription_factor
+				# applies during initial manpower pool calculation.
+				add_ideas = USA_naval_treaty
+				# USA_torpedo_detonator_penalty removed — absorbed into USA_united_states_navy dynamic modifier
+				add_ideas = USA_inefficient_airforce_bureaucracy
+				add_ideas = USA_dust_bowl
+				add_ideas = USA_political_corruption
+				add_ideas = USA_new_deal
+				# Non-interventionism: hard-blocks being called to / joining faction wars
+				# (cant_faction_call/join). Auto-cancels when at war with Japan or when
+				# Britain is sealioned.
+				add_ideas = USA_neutrality_no_war_call
+				# Great Depression — starts at level 4 (full crisis)
+				set_variable = { USA_depression_level = 4 }
+				# Level-4 (Full Crisis) starting values for the single var-driven modifier
+				set_variable = { USA_depression_cg = 0.20 }
+				set_variable = { USA_depression_resources = -0.40 }
+				set_variable = { USA_depression_conscription = -0.015 }
+				set_variable = { USA_depression_construction = -0.15 }
+				add_dynamic_modifier = { modifier = USA_great_depression }
+			}
+		}
+	}
+}

@@ -1,0 +1,367 @@
+
+POL_war_missions = {
+    POL_warsaw_the_capital = {
+        icon = GFX_decision_SWI_no_elected_president
+		allowed = {
+			tag = POL
+		}
+		visible = {
+			has_war = yes
+			has_capitulated = no			
+		}
+		cost = 0
+		 
+        available = { 
+			10 = {is_controlled_by = POL}
+		}
+        fire_only_once = no
+		complete_effect = {
+			set_capital =  { state = 10 }
+		}
+
+
+    }
+
+		POL_1st_september_radio_announcement = {
+		icon = generic_operation
+        fire_only_once = yes		
+		activation = {
+        		POL = {
+				has_war_with = GER
+				has_capitulated = no
+				date < 1941.6.6
+			}
+		}
+		
+		visible = {
+			    POL = {
+				has_war_with = GER
+				has_capitulated = no
+			}
+		}
+		is_good = yes
+		days_mission_timeout = 0
+		
+		cancel_trigger = {
+			always = no
+		}
+		available = {
+				has_war_with = GER
+				has_capitulated = yes
+				is_government_in_exile = yes
+		}		
+
+		
+		timeout_effect = {
+		play_song = "Komunikat_o_wybuchu_wojny_MMCT"  
+	
+		}
+		
+		complete_effect = {
+
+		}
+		
+	}
+	
+	POL_fall_of_warsaw = {
+		icon = generic_operation
+        fire_only_once = yes		
+		activation = {
+        		POL = {
+					has_war_with = GER
+					OR = {
+						has_capitulated = no
+					}
+					has_capitulated = no
+					date < 1941.6.6
+					NOT = { POL = { controls_province = 3544}}
+			}
+		}
+		
+		visible = {
+			    POL = {
+				has_war_with = GER
+				has_capitulated = no
+			}
+		}
+		is_good = yes
+		days_mission_timeout = 0
+		
+		cancel_trigger = {
+			always = no
+		}
+		available = {
+				has_war_with = GER
+				has_capitulated = yes
+				is_government_in_exile = yes
+		}		
+
+		
+		timeout_effect = {
+		play_song = "Ostatni_Komunikat_MMCT"  
+	
+		}
+		
+		complete_effect = {
+
+		}
+		
+	}	
+	
+	POL_morale_loop_mission = {
+		icon = generic_operation
+		
+		activation = {
+        		POL = {
+				has_war_with = GER
+				has_capitulated = no
+				date < 1941.6.6
+				NOT = {
+				has_global_flag = POL_IOC_koniec_demoralizacji_mlodziezy
+				}
+			}
+		}
+		
+		visible = {
+			    POL = {
+				has_war_with = GER
+				has_capitulated = no
+			}
+		}
+		is_good = yes
+		days_mission_timeout = 7
+		
+		cancel_trigger = {
+			always = no
+		}
+		available = {
+				has_war_with = GER
+				has_capitulated = yes
+				is_government_in_exile = yes
+				days_since_capitulated > 1
+		}		
+
+		
+		timeout_effect = {
+			if = {
+				limit = { 
+					has_capitulated = no
+					has_war_with = GER
+					has_completed_focus = POL_ozon
+				}
+				add_to_variable = { POL_reconstruction_tokens = 1 }
+				add_to_variable = { POL_army_recruitment_tokens = 1 }
+				add_to_variable = { POL_legitimacy_gain_calc = -1 }			
+				
+			}		
+			if = {
+				limit = { 
+					has_capitulated = no
+					has_war_with = GER
+					check_variable = { POL_morale_var > -0.95 }
+				}
+				add_to_variable = { POL_morale_var = -0.05 }
+				add_to_variable = { POL_legitimacy_gain_calc = 2 }			
+				
+			}
+			if = {
+				limit = { 
+					has_capitulated = no
+					has_war_with = GER
+				}
+				activate_mission = POL_morale_loop_mission
+				
+			}
+			if = {
+				limit = { 
+					has_capitulated = yes
+					has_war_with = GER
+				}
+						POL = {
+				if = {
+					limit = { has_idea = POL_desperate_defense_idea }
+					remove_ideas = POL_desperate_defense_idea
+				}
+				
+				remove_dynamic_modifier = { modifier = POL_dynamic_morale_penalty }
+				set_variable = { POL_morale_var = 0 }
+			}
+			}	
+	
+		}
+		
+		complete_effect = {
+		set_global_flag = POL_IOC_koniec_demoralizacji_mlodziezy
+		country_event = poland.25				
+		if = {
+			limit = { has_legitimacy < 40 }
+			add_legitimacy  =5
+		}	
+		if = {
+			limit = { 
+				is_ai = no
+				298 = {
+					controller = {
+						NOT = {is_in_faction_with = ROOT}
+					}
+				}
+			}
+				298 = { 
+					transfer_state_to = POL 
+					set_compliance = 75
+				}			
+		}
+		if = {
+			limit = { 
+				is_ai = no
+				701 = {
+					controller = {
+						NOT = {is_in_faction_with = ROOT}
+					}
+				}
+			}
+				701 = { 
+					transfer_state_to = POL 
+					set_compliance = 75 
+				}			
+		}			
+		if = {
+			limit = { 
+				is_ai = no
+				689 = {
+					controller = {
+						NOT = {is_in_faction_with = ROOT}
+					}
+				}
+			}
+				689= { 
+					transfer_state_to = POL 
+					set_compliance = 75  
+				}			
+		}	
+		if = {
+			limit = { 
+				is_ai = no
+				690 = {
+					controller = {
+						NOT = {is_in_faction_with = ROOT}
+					}
+				}
+			}
+				690= { 
+					transfer_state_to = POL 
+					set_compliance = 75 
+				}			
+		}	
+		if = {
+			limit = { 
+				is_ai = no
+				693 = {
+					controller = {
+						NOT = {is_in_faction_with = ROOT}
+					}
+				}
+			}
+				693= { 
+					transfer_state_to = POL 
+					set_compliance = 75 
+				}			
+		}	
+		
+		if = {
+			limit = { 
+				is_ai = no
+				700 = {
+					controller = {
+						NOT = {is_in_faction_with = ROOT}
+					}
+				}
+			}	
+				700 = { 
+					transfer_state_to = POL 
+					set_compliance = 75 
+				}			
+		}		
+		add_legitimacy = POL_legitimacy_gain_calc
+				# if = {
+					# limit = { has_completed_focus = POL_habsburg }
+					# #recruit_character = POL_karl_albrecht
+					# promote_character = POL_karl_albrecht
+				# }
+				# if = {
+					# limit = { has_completed_focus = POL_cossack_king }
+					# #recruit_character = POL_pavel_bermondt_avalov
+					# promote_character = POL_pavel_bermondt_avalov
+				# }
+				# if = {
+					# limit = { has_completed_focus = POL_claiming_lithuania }
+					# #recruit_character = POL_friedrich_christian
+					# promote_character = POL_friedrich_christian
+				# }
+				
+				POL = {
+				if = {
+					limit = { has_idea = POL_desperate_defense_idea }
+					remove_ideas = POL_desperate_defense_idea
+				}
+				remove_dynamic_modifier = { modifier = POL_dynamic_morale_penalty }
+				set_variable = { POL_morale_var = 0 }
+			}
+		
+		}
+		
+	}
+	
+	
+		POL_exiled_leader_mission = {
+		icon = generic_operation
+		
+		activation = {
+			POL = {
+				is_government_in_exile = yes
+				any_unit_leader = {
+						has_trait = exiled_leader
+				}
+			}
+		}
+		
+		visible = {
+			POL = {
+				is_government_in_exile = yes
+			}
+		}
+		is_good = yes
+		days_mission_timeout = 1
+		
+		cancel_trigger = {
+			always = no
+		}
+		available = {
+			POL = {	
+				NOT = {
+					any_unit_leader = {
+							has_trait = exiled_leader
+					}
+				}
+			}
+		}		
+
+		
+		timeout_effect = {
+		
+			every_unit_leader = {
+				limit = {
+					has_trait = exiled_leader
+				}
+				retire = yes
+			}
+	
+		}
+		
+		complete_effect = {
+
+		
+		}
+		
+	}
+}

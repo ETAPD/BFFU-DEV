@@ -1,0 +1,321 @@
+on_actions = {
+	on_startup = {
+		#effect = {
+		#	GER = { add_ideas = SPA_civil_war_volunteer_limit }
+		#	ITA = { add_ideas = SPA_civil_war_volunteer_limit }
+		#	JAP = { add_ideas = SPA_civil_war_volunteer_limit }
+		#	SOV = { add_ideas = SPA_civil_war_volunteer_limit }
+		#	FRA = { add_ideas = SPA_civil_war_volunteer_limit }
+		#}
+		#anticwelmeasurements
+		effect = {
+			every_country = {
+				limit = {
+					#is_ai = no
+					NOT = { has_idea = father_check}
+					OR = {
+						#ALLIES
+						#tag = NZL
+						tag = RAJ
+						tag = AST
+						tag = CAN
+						tag = SAF
+						
+						tag = MEX
+						tag = BRA
+						tag = HOL
+						tag = BEL
+						tag = POL
+						tag = MON
+						
+						tag = GRE
+						tag = NOR		
+						#AXIS
+						tag = SIA
+						tag = MAN	
+
+						tag = DEN
+						tag = AUS
+						tag = HUN
+						tag = VIC
+						tag = ROM
+						tag = YUG
+						tag = ROM
+						tag = SPR
+						tag = FIN
+						tag = BUL
+					}
+				}
+				add_ideas = { father_check }
+			}
+		}		
+		effect = {
+        	GER = {
+            	army_experience = 30
+        	}
+			SOV = {
+				army_experience = 30
+			}
+			FRA = {
+				army_experience = 10
+			}
+    	}
+		effect = {	
+			if = {
+				limit = {
+					BUL = {
+						is_ai = yes
+					}
+				}
+				BUL = { add_ideas = SPA_civil_war_volunteer_limit_BUL }
+			}
+		}
+		effect = {
+			MAN = {
+				# COMINTERN
+				send_embargo = SOV
+				send_embargo = MON
+				
+				# ALLIES
+				send_embargo = CAN
+				send_embargo = USA
+				send_embargo = MEX
+				send_embargo = BRA
+				send_embargo = IRE
+				send_embargo = ENG
+				send_embargo = FRA
+				send_embargo = HOL
+				send_embargo = POL
+				send_embargo = RAJ
+				send_embargo = AST
+				send_embargo = NZL
+				send_embargo = SAF
+			}
+
+		}
+		# Set all of the flags from GameRules for easier setup:
+		effect = {
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = easy_china
+						option = ENABLED
+					}
+				}
+				JAP = {
+					add_timed_idea = {
+						 idea = JAP_easy_china
+						days = 1825
+					}
+				}
+			}
+		}
+
+		effect = {
+			NOR = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_ideas = neutrality_idea2
+				}
+			}
+			ICE = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_timed_idea = {
+						idea = neutrality_idea2
+						days = 1825
+					}
+				}
+			}
+			DEN = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_timed_idea = {
+						idea = neutrality_idea2
+						days = 1825
+					}
+				}
+			}
+			YUG = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_ideas = neutrality_idea2
+				}
+			}
+			GRE = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_ideas = neutrality_idea2
+				}
+			}
+			BEL = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_ideas = neutrality_idea2
+				}
+			}
+			LUX = {
+				IF = {
+					limit = {
+						is_ai = yes
+					}
+					add_ideas = neutrality_idea2
+				}
+			}
+		}
+		#PEACE TRAINING IDEA
+		effect = {
+			every_country = {
+				limit = {
+					exists = yes
+					has_war = no
+					NOT = { has_idea = peace_training_idea }
+				}
+
+				add_ideas = peace_training_idea
+			}
+		}		
+		
+		#EXTRA SPY
+		effect = {
+            every_country = {
+                limit = {
+                    OR = {
+                        tag = USA
+                        tag = ENG
+                        tag = JAP
+                        tag = FRA
+                        tag = GER
+                        tag = ITA
+                        tag = SOV
+                    }
+
+                    NOT = {
+                        has_idea = extra_spy_idea
+                    }
+                }
+
+                add_ideas = extra_spy_idea
+            }
+        }
+
+		#Unlock Theater 
+		effect = {
+			every_country = {
+				limit = {
+					is_faction_leader = yes
+				}
+				set_faction_military_unlocked = yes
+			}
+		}
+	}	
+
+	on_war = { 
+		effect = {
+			if = {
+				limit = {
+					original_tag = GER
+				}
+				if = {
+					limit = {
+						has_idea = GER_mefo_air
+					}
+					remove_ideas = GER_mefo_air
+				}
+			}
+		}
+	}
+
+	on_weekly = {
+		#Peace Training Idea
+        effect = {
+            every_country = {
+                limit = {
+                    has_idea = peace_training_idea
+
+                    OR = {
+                        AND = {
+							date > 1941.4.1
+							OR = {
+								tag = JAP
+								tag = USA
+								tag = SPA
+							}
+						}
+						AND = {
+							tag = ITA
+							date > 1939.5.31
+						}
+                    }
+                }
+
+                remove_ideas = peace_training_idea
+            }
+
+            every_country = {
+                limit = {
+                    has_war = no
+                    NOT = { has_idea = peace_training_idea }
+
+                    OR = {
+                        tag = JAP
+                        tag = SPA
+						tag = ITA
+                    }
+                    date < 1941.3.30
+                }
+
+                add_ideas = peace_training_idea
+            }
+        }
+    }
+
+	on_capitulation = {
+		  effect = {
+            if = {
+                limit = {
+                    ROOT = { tag = SOV }
+                    FROM = {
+                        OR = {
+                            tag = GER
+                            is_in_faction_with = GER
+                            is_subject_of = GER
+                        }
+                    }
+                    NOT = { has_global_flag = GER_soviet_ural_peace_done }
+                }
+
+                GER_soviet_peace_effect = yes
+            }
+        }
+		effect = {
+			if = {
+				limit = {
+					ROOT = { tag = JAP }
+					FROM = {
+						OR = {
+							tag = USA
+							is_in_faction_with = USA
+							tag = SOV
+							is_in_faction_with = SOV
+						}
+					}
+				}
+
+				set_global_flag = JAP_lost_asia
+			}
+		}
+	}
+}

@@ -1,0 +1,1539 @@
+###########################
+# USA Events
+###########################
+
+add_namespace = usa
+
+###########################
+# 1936 Election Resolution (Hidden)
+###########################
+
+# Event 200: Election result — autocompletes the winning candidate's branch
+country_event = {
+	id = usa.200
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_politics = { ruling_party = democratic elections_allowed = no }
+		# The polling bar is the source of truth: cursor on the Landon (right)
+		# side wins it for him, otherwise Roosevelt holds. The cursor can never
+		# rest exactly on 0 (initial -0.1, steps of +/-0.12), so there is no draw.
+		if = {
+			limit = {
+				power_balance_value = {
+					id = USA_1936_election_bop
+					value > 0
+				}
+			}
+			complete_national_focus = USA_landonsuproar
+		}
+		else = {
+			complete_national_focus = USA_on_the_shoulder_of_giants
+		}
+		remove_power_balance = { id = USA_1936_election_bop }
+	}
+
+	option = { name = usa.200.a }
+}
+
+###########################
+# 1936 Election Campaign Events
+###########################
+
+# Event 1: The Literary Digest Poll (mid-January 1936)
+country_event = {
+	id = usa.201
+	title = usa.201.t
+	desc = usa.201.d
+	picture = GFX_usa_literary_digest_poll
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.1.2
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = { # A flawed forecast!
+		name = usa.201.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = { # A sign of changing times!
+		name = usa.201.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 217: The Liberty League Dinner (January 25, 1936)
+country_event = {
+	id = usa.217
+	title = usa.217.t
+	desc = usa.217.d
+	picture = GFX_report_event_usa_macarthur_speech
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.1.24
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 2 }
+
+	option = { # The party of organised money stands revealed
+		name = usa.217.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = { # Constitutional liberty must be restored
+		name = usa.217.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 2: National Conventions (June 1936)
+country_event = {
+	id = usa.202
+	title = usa.202.t
+	desc = usa.202.d
+	picture = GFX_usa_national_conventions_1936
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.6.8
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = { # Roosevelt defends the New Deal!
+		name = usa.202.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = { # Landon defeats Vandenburg!
+		name = usa.202.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 3: Landon delivers a major address at Chautauqua (August 26 1936)
+country_event = {
+	id = usa.203
+	title = usa.203.t
+	desc = usa.203.d
+	picture = GFX_usa_landon_chautauqua
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.8.25
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = { # Roosevelt shuts down the critiques
+		name = usa.203.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = { # Roosevelt on edge?
+		name = usa.203.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 218: FDR's Madison Square Garden Rally (October 31, 1936)
+country_event = {
+	id = usa.218
+	title = usa.218.t
+	desc = usa.218.d
+	picture = GFX_usa_msg_rally_1936
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.10.10
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	option = { # The crowd roars — Roosevelt's defiance electrifies the nation
+		name = usa.218.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = { # Divisive rhetoric — moderates recoil at the combative tone
+		name = usa.218.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 219: Supreme Court Strikes Down the AAA (January 6, 1936 — news reverberates through February)
+country_event = {
+	id = usa.219
+	title = usa.219.t
+	desc = usa.219.d
+	picture = GFX_usa_1936_supreme_court
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.3.1
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 2 }
+
+	option = {
+		name = usa.219.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = {
+		name = usa.219.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 220: The Townsend Plan Movement (May 1936)
+country_event = {
+	id = usa.220
+	title = usa.220.t
+	desc = usa.220.d
+	picture = GFX_usa_1936_townsend
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.5.1
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 2 }
+
+	option = {
+		name = usa.220.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = {
+		name = usa.220.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 221: Father Coughlin's Union Party (July 1936)
+country_event = {
+	id = usa.221
+	title = usa.221.t
+	desc = usa.221.d
+	picture = GFX_usa_1936_union_party
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.7.4
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 2 }
+
+	option = {
+		name = usa.221.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = {
+		name = usa.221.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 222: The September Campaign Swing (September 1936)
+country_event = {
+	id = usa.222
+	title = usa.222.t
+	desc = usa.222.d
+	picture = GFX_usa_1936_september_swing
+
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1936.9.7
+		NOT = { has_completed_focus = USA_the_1936_election }
+	}
+
+	mean_time_to_happen = { days = 2 }
+
+	option = {
+		name = usa.222.a
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_roosevelt_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		custom_effect_tooltip = usa_election_score_roosevelt_tt
+	}
+	option = {
+		name = usa.222.b
+		ai_chance = { factor = 50 }
+		add_to_variable = { USA_landon_score = 1 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		custom_effect_tooltip = usa_election_score_landon_tt
+	}
+}
+
+# Event 204: The Fair Labour Standards Act
+country_event = {
+	id = usa.204
+	title = usa.204.t
+	desc = usa.204.d
+	picture = GFX_report_event_generic_handshake
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.204.a
+			custom_effect_tooltip = USA_modify_third_new_deal_tt
+			USA_third_new_deal_upgrade_to_flsa = yes
+	}
+}
+
+###########################
+# Rise of Evil — Economic Law Events
+###########################
+
+# Event 205: Gearing the Economy (Roosevelt — Keynesianism)
+country_event = {
+	id = usa.205
+	title = usa.205.t
+	desc = usa.205.d
+	picture = GFX_report_event_hitler_croatia_handshake
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.205.a
+		add_ideas = keynesianism
+	}
+}
+
+# Event 206: Gearing the Economy (Landon — Laissez-Faire)
+country_event = {
+	id = usa.206
+	title = usa.206.t
+	desc = usa.206.d
+	picture = GFX_report_event_hitler_croatia_handshake
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.206.a
+		add_ideas = laissez_faire
+	}
+}
+
+###########################
+# Ohio River Flood (1937)
+###########################
+
+# Event 207: Hidden — Autocomplete Ohio Superflood focus on Feb 1st 1937
+country_event = {
+	id = usa.207
+	hidden = yes
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		date > 1937.2.1
+		NOT = { has_completed_focus = USA_ohio_superflood_of_1937 }
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	immediate = {
+		complete_national_focus = USA_ohio_superflood_of_1937
+	}
+
+	option = { name = usa.207.a }
+}
+
+# Event 208: Floods Hit Ohio
+country_event = {
+	id = usa.208
+	title = usa.208.t
+	desc = usa.208.d
+	picture = GFX_usa_ohio_river_flood
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.208.a
+		add_stability = -0.10
+		261 = { add_dynamic_modifier = { modifier = ohio_flood } }
+		360 = { add_dynamic_modifier = { modifier = ohio_flood } }
+		369 = { add_dynamic_modifier = { modifier = ohio_flood } }
+		395 = { add_dynamic_modifier = { modifier = ohio_flood } }
+		396 = { add_dynamic_modifier = { modifier = ohio_flood } }
+		816 = { add_dynamic_modifier = { modifier = ohio_flood } }
+		set_country_flag = ohio_flood_recovery_active
+		set_variable = { var = ohio_flood_act value = 1 }
+		activate_mission = USA_flood_control_act_1
+	}
+}
+
+###########################
+# Court Packing Chain (1937)
+###########################
+
+# Event 209: The Judicial Procedures Reform Bill
+country_event = {
+	id = usa.209
+	title = usa.209.t
+	desc = usa.209.d
+	picture = GFX_report_event_usa_election_landon_roosevelt
+
+	is_triggered_only = yes
+
+	option = {
+		# Take to the airwaves (0 PP, +10%)
+		name = usa.209.a
+		add_to_variable = { var = USA_court_packing_chance value = 10 }
+		country_event = { id = usa.210 days = 21 }
+	}
+	option = {
+		# Secure Capitol Hill (50 PP, +20%)
+		name = usa.209.b
+		add_political_power = -50
+		add_to_variable = { var = USA_court_packing_pp value = 50 }
+		add_to_variable = { var = USA_court_packing_chance value = 20 }
+		country_event = { id = usa.210 days = 21 }
+	}
+}
+
+# Event 210: The Hughes Letter
+country_event = {
+	id = usa.210
+	title = usa.210.t
+	desc = usa.210.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	option = {
+		# Dismiss it as partisan overreach (0 PP, +10%)
+		name = usa.210.a
+		add_to_variable = { var = USA_court_packing_chance value = 10 }
+		country_event = { id = usa.211 days = 21 }
+	}
+	option = {
+		# Commission a counter-report (50 PP, +20%)
+		name = usa.210.b
+		add_political_power = -50
+		add_to_variable = { var = USA_court_packing_pp value = 50 }
+		add_to_variable = { var = USA_court_packing_chance value = 20 }
+		country_event = { id = usa.211 days = 21 }
+	}
+}
+
+# Event 211: The Switch in Time
+country_event = {
+	id = usa.211
+	title = usa.211.t
+	desc = usa.211.d
+	picture = GFX_report_event_generic_handshake
+
+	is_triggered_only = yes
+
+	option = {
+		# Capitalise on the shift (0 PP, +10%)
+		name = usa.211.a
+		add_to_variable = { var = USA_court_packing_chance value = 10 }
+		country_event = { id = usa.212 days = 21 }
+	}
+	option = {
+		# Press the political advantage (50 PP, +20%)
+		name = usa.211.b
+		add_political_power = -50
+		add_to_variable = { var = USA_court_packing_pp value = 50 }
+		add_to_variable = { var = USA_court_packing_chance value = 20 }
+		country_event = { id = usa.212 days = 21 }
+	}
+}
+
+# Event 212: Van Devanter Retires
+country_event = {
+	id = usa.212
+	title = usa.212.t
+	desc = usa.212.d
+	picture = GFX_report_event_generic_sign_treaty1
+
+	is_triggered_only = yes
+
+	option = {
+		# Accept it as progress (0 PP, +10%)
+		name = usa.212.a
+		add_to_variable = { var = USA_court_packing_chance value = 10 }
+		country_event = { id = usa.213 days = 21 }
+	}
+	option = {
+		# Use the vacancy as leverage (50 PP, +20%)
+		name = usa.212.b
+		add_political_power = -50
+		add_to_variable = { var = USA_court_packing_pp value = 50 }
+		add_to_variable = { var = USA_court_packing_chance value = 20 }
+		country_event = { id = usa.213 days = 21 }
+	}
+}
+
+# Event 213: Robinson's Final Campaign
+country_event = {
+	id = usa.213
+	title = usa.213.t
+	desc = usa.213.d
+	picture = GFX_report_event_generic_rally2
+
+	is_triggered_only = yes
+
+	option = {
+		# Trust Robinson to close the deal (0 PP, +10%)
+		name = usa.213.a
+		add_to_variable = { var = USA_court_packing_chance value = 10 }
+		country_event = { id = usa.214 days = 21 }
+	}
+	option = {
+		# Flood the floor with resources (50 PP, +20%)
+		name = usa.213.b
+		add_political_power = -50
+		add_to_variable = { var = USA_court_packing_pp value = 50 }
+		add_to_variable = { var = USA_court_packing_chance value = 20 }
+		country_event = { id = usa.214 days = 21 }
+	}
+}
+
+# Event 214: The Court's Verdict
+# Chance range: 50 (all option A) to 100 (all option B)
+# random_list: success weight = USA_court_packing_chance, failure weight = 100 - USA_court_packing_chance
+country_event = {
+	id = usa.214
+	title = usa.214.t
+	desc = {
+		trigger = { has_country_flag = court_packing_success }
+		text = usa.214.d.success
+	}
+	desc = {
+		trigger = { NOT = { has_country_flag = court_packing_success } }
+		text = usa.214.d.failure
+	}
+	picture = GFX_report_event_usa_election_generic
+
+	is_triggered_only = yes
+
+	immediate = {
+		# Compute failure weight = 100 - chance (range: 0–50)
+		set_variable = { var = USA_court_packing_failure value = 100 }
+		subtract_from_variable = { var = USA_court_packing_failure value = USA_court_packing_chance }
+		random_list = {
+			USA_court_packing_chance = {
+				set_country_flag = court_packing_success
+			}
+			USA_court_packing_failure = {
+			}
+		}
+	}
+
+	option = {
+		name = usa.214.a
+		if = {
+			limit = { has_country_flag = court_packing_success }
+			add_ideas = USA_subdued_the_supreme_court
+			multiply_variable = { var = USA_court_packing_pp value = 0.50 }
+			round_variable = USA_court_packing_pp
+			add_political_power = USA_court_packing_pp
+			clr_country_flag = court_packing_success
+		}
+		else = {
+			add_stability = -0.15
+			multiply_variable = { var = USA_court_packing_pp value = 0.25 }
+			round_variable = USA_court_packing_pp
+			add_political_power = USA_court_packing_pp
+			if = {
+				# The Third New Deal has already been defunded/reprioritised — the
+				# rebuke lands on those funds rather than resurrecting the deal.
+				limit = { has_idea = USA_reprioritise_new_deal }
+				custom_effect_tooltip = usa_214_reprioritise_failure_tt
+			}
+			else_if = {
+					limit = { has_dynamic_modifier = { modifier = USA_third_new_deal } }
+					custom_effect_tooltip = USA_modify_third_new_deal_tt
+					USA_third_new_deal_court_failure = yes
+				}
+			}
+			clear_variable = USA_court_packing_pp
+		clear_variable = USA_court_packing_chance
+		clear_variable = USA_court_packing_failure
+	}
+}
+
+###########################
+# The Quarantine Speech (1937)
+###########################
+
+# Event 215: The Quarantine Speech
+country_event = {
+	id = usa.215
+	title = usa.215.t
+	desc = usa.215.d
+	picture = GFX_report_event_generic_rally2
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.215.a
+	}
+}
+
+###########################
+# The Nye Committee Rebuked (Landon)
+###########################
+
+# Event 216: The Nye Committee Rebuked
+country_event = {
+	id = usa.216
+	title = usa.216.t
+	desc = usa.216.d
+	picture = GFX_usa_nye_committee
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.216.a
+		add_ideas = USA_nye_committee_denounced
+	}
+}
+
+###########################
+# Manhattan Project — Nuclear Intelligence
+###########################
+
+# Event 300 (hidden): Polls until Germany's Uranverein is complete or January 1941 arrives,
+# then fires the player-facing popup (usa.301).
+country_event = {
+	id = usa.300
+	hidden = yes
+	is_triggered_only = no
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		has_country_flag = USA_manhattan_project_active
+		has_idea = USA_manhattan_project_spirit
+		OR = {
+			GER = { has_completed_focus = GER_uranverein }
+			date > 1940.12.31
+		}
+	}
+
+	mean_time_to_happen = {
+		days = 7
+	}
+
+	immediate = {
+		country_event = { id = usa.301 days = 1 }
+	}
+}
+
+# Event 301: The Atomic Race — player-facing popup with options.
+country_event = {
+	id = usa.301
+	title = usa.300.t
+	desc = usa.300.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	# Option A — Heavy investment: accelerate the programme at industrial cost
+	option = {
+		name = usa.300.a
+		swap_ideas = {
+			remove_idea = USA_manhattan_project_spirit
+			add_idea = USA_heavy_investment_manhattan_project
+		}
+		add_breakthrough_progress = {
+			specialization = specialization_nuclear
+			value = 0.20
+		}
+		ai_chance = { factor = 75 }
+	}
+
+	# Option B — Continue at our own pace
+	option = {
+		name = usa.300.b
+		ai_chance = { factor = 25 }
+	}
+}
+
+###########################
+# New Deal Fiscal Events
+###########################
+
+# Event 302: Congressional warning — fires ~mid-October 1938
+country_event = {
+	id = usa.302
+	title = usa.302.t
+	desc = usa.302.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		has_country_leader = { character = usa_franklin_d_roosevelt }
+		date > 1939.1.1
+	}
+
+	mean_time_to_happen = { days = 3 }
+
+	option = {
+		name = usa.302.a
+	}
+}
+
+# Event 303: Defund the New Deal — fires ~mid-November 1938
+country_event = {
+	id = usa.303
+	title = usa.303.t
+	desc = usa.303.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		has_country_leader = { character = usa_franklin_d_roosevelt }
+		date > 1939.1.15
+	}
+
+	mean_time_to_happen = { days = 3 }
+
+	# Option A — Stretch the Coffers
+	option = {
+		name = usa.303.a
+		add_political_power = -100
+		add_timed_idea = {
+			idea = USA_deficit_spending
+			days = 180
+		}
+		hidden_effect = {
+			set_country_flag = USA_stretch_coffers_chosen
+			country_event = { id = usa.304 days = 181 }
+		}
+		ai_chance = { factor = 40 }
+	}
+
+	# Option B — Reprioritise New Deal Funds
+	option = {
+		name = usa.303.b
+		USA_remove_all_third_new_deal = yes
+		add_timed_idea = {
+			idea = USA_reprioritise_new_deal
+			days = 720
+		}
+		custom_effect_tooltip = usa_303_third_new_deal_removed_tt
+		ai_chance = { factor = 60 }
+	}
+}
+
+# Event 304: Deficit Spending expires — grants Reprioritise spirit (player acknowledgment)
+country_event = {
+	id = usa.304
+	title = usa.304.t
+	desc = usa.304.d
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	immediate = {
+		USA_remove_all_third_new_deal = yes
+		add_timed_idea = {
+			idea = USA_reprioritise_new_deal
+			days = 720
+		}
+		clr_country_flag = USA_stretch_coffers_chosen
+	}
+
+	option = {
+		name = usa.304.a
+		custom_effect_tooltip = usa_304_third_new_deal_removed_tt
+	}
+}
+
+###########################
+# Rubber Reserve Company
+###########################
+
+# Event 305 (auto-fires): Triggers when USA enters a war after completing the Rubber Reserve focus.
+# Spawns level 3 synthetic rubber refineries in Kentucky, Louisiana, and Texas,
+# adds base 600 rubber across the three states, plus an early-completion bonus,
+# then schedules the 90-day removal event (usa.306).
+country_event = {
+	id = usa.305
+	title = usa.305.t
+	desc = usa.305.d
+	picture = GFX_report_event_usa_industry
+
+	is_triggered_only = no
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		has_completed_focus = USA_finance_the_rubber_reserve_company
+		has_war = yes
+		NOT = { has_country_flag = USA_rubber_reserve_deployed }
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	immediate = {
+		set_country_flag = USA_rubber_reserve_deployed
+
+		# ── Kentucky (369) ──────────────────────────────────────────
+		369 = {
+			add_extra_state_shared_building_slots = 3
+			add_building_construction = {
+				type = synthetic_rubber_refinery
+				level = 3
+				instant_build = yes
+			}
+			add_resource = { type = rubber amount = 200 }
+		}
+
+		# ── Louisiana (371) ─────────────────────────────────────────
+		371 = {
+			add_extra_state_shared_building_slots = 3
+			add_building_construction = {
+				type = synthetic_rubber_refinery
+				level = 3
+				instant_build = yes
+			}
+			add_resource = { type = rubber amount = 200 }
+		}
+
+		# ── Texas (375) ─────────────────────────────────────────────
+		375 = {
+			add_extra_state_shared_building_slots = 3
+			add_building_construction = {
+				type = synthetic_rubber_refinery
+				level = 3
+				instant_build = yes
+			}
+			add_resource = { type = rubber amount = 200 }
+		}
+
+		# ── Early-completion bonus rubber (added to Kentucky) ────────
+		if = { limit = { has_country_flag = USA_rubber_reserve_1938 }
+			369 = { add_resource = { type = rubber amount = 300 } }  # +300 (3 years early)
+		}
+		else_if = { limit = { has_country_flag = USA_rubber_reserve_1939 }
+			369 = { add_resource = { type = rubber amount = 200 } }  # +200 (2 years early)
+		}
+		else_if = { limit = { has_country_flag = USA_rubber_reserve_1940 }
+			369 = { add_resource = { type = rubber amount = 100 } }  # +100 (1 year early)
+		}
+
+		# Schedule dismantlement after 90 days (3 months)
+		country_event = { id = usa.306 days = 90 }
+	}
+
+	option = {
+		name = usa.305.a
+	}
+}
+
+# Event 306 (triggered): Fires 90 days after usa.305. Removes the temporary
+# synthetic rubber refineries and resource deposits from all three states.
+country_event = {
+	id = usa.306
+	title = usa.306.t
+	desc = usa.306.d
+	picture = GFX_report_event_usa_industry
+
+	is_triggered_only = yes
+
+	immediate = {
+		# ── Kentucky (369) ──────────────────────────────────────────
+		369 = {
+			set_building_level = { type = synthetic_rubber_refinery level = 0 }
+			add_extra_state_shared_building_slots = -3
+			add_resource = { type = rubber amount = -200 }
+			# Remove early bonus rubber if it was granted
+			if = { limit = { ROOT = { has_country_flag = USA_rubber_reserve_1938 } }
+				add_resource = { type = rubber amount = -300 }
+			}
+			else_if = { limit = { ROOT = { has_country_flag = USA_rubber_reserve_1939 } }
+				add_resource = { type = rubber amount = -200 }
+			}
+			else_if = { limit = { ROOT = { has_country_flag = USA_rubber_reserve_1940 } }
+				add_resource = { type = rubber amount = -100 }
+			}
+		}
+
+		# ── Louisiana (371) ─────────────────────────────────────────
+		371 = {
+			set_building_level = { type = synthetic_rubber_refinery level = 0 }
+			add_extra_state_shared_building_slots = -3
+			add_resource = { type = rubber amount = -200 }
+		}
+
+		# ── Texas (375) ─────────────────────────────────────────────
+		375 = {
+			set_building_level = { type = synthetic_rubber_refinery level = 0 }
+			add_extra_state_shared_building_slots = -3
+			add_resource = { type = rubber amount = -200 }
+		}
+	}
+
+	option = {
+		name = usa.306.a
+	}
+}
+
+###########################
+# Louisiana Maneuvers Chain
+###########################
+
+# Event 400: Phase I — triggered 1 day after completing USA_commence_the_louisiana_maneuvers
+country_event = {
+	id = usa.400
+	title = usa.400.t
+	desc = usa.400.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	# Option A — Acknowledge the report
+	option = {
+		name = usa.400.a
+		ai_chance = { factor = 50 }
+		country_event = { id = usa.411 days = 30 }
+	}
+
+	# Option B — Further Investigate (100 PP + 50 Army XP — 1 random general gains 3 random pips)
+	option = {
+		name = usa.400.b
+		ai_chance = { factor = 50 }
+		add_political_power = -100
+		army_experience = -50
+		random_army_leader = {
+			save_global_event_target_as = lm_promoted_general
+			random_list = {
+				25 = { add_attack = 1    ROOT = { set_country_flag = lm_pip1_atk } }
+				25 = { add_defense = 1   ROOT = { set_country_flag = lm_pip1_def } }
+				25 = { add_planning = 1  ROOT = { set_country_flag = lm_pip1_pln } }
+				25 = { add_logistics = 1 ROOT = { set_country_flag = lm_pip1_log } }
+			}
+			random_list = {
+				25 = { add_attack = 1    ROOT = { set_country_flag = lm_pip2_atk } }
+				25 = { add_defense = 1   ROOT = { set_country_flag = lm_pip2_def } }
+				25 = { add_planning = 1  ROOT = { set_country_flag = lm_pip2_pln } }
+				25 = { add_logistics = 1 ROOT = { set_country_flag = lm_pip2_log } }
+			}
+			random_list = {
+				25 = { add_attack = 1    ROOT = { set_country_flag = lm_pip3_atk } }
+				25 = { add_defense = 1   ROOT = { set_country_flag = lm_pip3_def } }
+				25 = { add_planning = 1  ROOT = { set_country_flag = lm_pip3_pln } }
+				25 = { add_logistics = 1 ROOT = { set_country_flag = lm_pip3_log } }
+			}
+		}
+		country_event = { id = usa.403 days = 0 }
+		country_event = { id = usa.411 days = 30 }
+	}
+}
+
+# Event 411: Phase II — triggered 30 days after usa.400
+country_event = {
+	id = usa.411
+	title = usa.411.t
+	desc = usa.411.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	# Option A — Note the lessons and move on
+	option = {
+		name = usa.411.a
+		ai_chance = { factor = 50 }
+		country_event = { id = usa.402 days = 30 }
+	}
+
+	# Option B — Press the evaluation teams for every detail (100 PP + 50 Army XP — 1 random general gains 3 random pips)
+	option = {
+		name = usa.411.b
+		ai_chance = { factor = 50 }
+		add_political_power = -100
+		army_experience = -50
+		random_army_leader = {
+			save_global_event_target_as = lm_promoted_general
+			random_list = {
+				25 = { add_attack = 1    ROOT = { set_country_flag = lm_pip1_atk } }
+				25 = { add_defense = 1   ROOT = { set_country_flag = lm_pip1_def } }
+				25 = { add_planning = 1  ROOT = { set_country_flag = lm_pip1_pln } }
+				25 = { add_logistics = 1 ROOT = { set_country_flag = lm_pip1_log } }
+			}
+			random_list = {
+				25 = { add_attack = 1    ROOT = { set_country_flag = lm_pip2_atk } }
+				25 = { add_defense = 1   ROOT = { set_country_flag = lm_pip2_def } }
+				25 = { add_planning = 1  ROOT = { set_country_flag = lm_pip2_pln } }
+				25 = { add_logistics = 1 ROOT = { set_country_flag = lm_pip2_log } }
+			}
+			random_list = {
+				25 = { add_attack = 1    ROOT = { set_country_flag = lm_pip3_atk } }
+				25 = { add_defense = 1   ROOT = { set_country_flag = lm_pip3_def } }
+				25 = { add_planning = 1  ROOT = { set_country_flag = lm_pip3_pln } }
+				25 = { add_logistics = 1 ROOT = { set_country_flag = lm_pip3_log } }
+			}
+		}
+		country_event = { id = usa.403 days = 0 }
+		country_event = { id = usa.402 days = 30 }
+	}
+}
+
+# Event 402: Lessons Learned — triggered 30 days after usa.411. Autocompletes USA_final_army_reforms.
+country_event = {
+	id = usa.402
+	title = usa.402.t
+	desc = usa.402.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.402.a
+		complete_national_focus = USA_finish_the_final_army_reforms
+	}
+}
+
+# Event 403: General Promotion Popup — fires immediately when Option B is chosen in usa.400 or usa.411.
+# Reads pip flags set during the random_army_leader block and clears them on acknowledge.
+country_event = {
+	id = usa.403
+	title = usa.403.t
+	desc = usa.403.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.403.a
+		# ── Pip 1 ──────────────────────────────────────────────────────────────
+		if = {
+			limit = { has_country_flag = lm_pip1_atk }
+			custom_effect_tooltip = lm_pip_atk_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip1_def }
+			custom_effect_tooltip = lm_pip_def_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip1_pln }
+			custom_effect_tooltip = lm_pip_pln_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip1_log }
+			custom_effect_tooltip = lm_pip_log_tt
+		}
+		# ── Pip 2 ──────────────────────────────────────────────────────────────
+		if = {
+			limit = { has_country_flag = lm_pip2_atk }
+			custom_effect_tooltip = lm_pip_atk_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip2_def }
+			custom_effect_tooltip = lm_pip_def_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip2_pln }
+			custom_effect_tooltip = lm_pip_pln_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip2_log }
+			custom_effect_tooltip = lm_pip_log_tt
+		}
+		# ── Pip 3 ──────────────────────────────────────────────────────────────
+		if = {
+			limit = { has_country_flag = lm_pip3_atk }
+			custom_effect_tooltip = lm_pip_atk_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip3_def }
+			custom_effect_tooltip = lm_pip_def_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip3_pln }
+			custom_effect_tooltip = lm_pip_pln_tt
+		}
+		else_if = {
+			limit = { has_country_flag = lm_pip3_log }
+			custom_effect_tooltip = lm_pip_log_tt
+		}
+		# ── Cleanup ─────────────────────────────────────────────────────────────
+		clr_country_flag = lm_pip1_atk
+		clr_country_flag = lm_pip1_def
+		clr_country_flag = lm_pip1_pln
+		clr_country_flag = lm_pip1_log
+		clr_country_flag = lm_pip2_atk
+		clr_country_flag = lm_pip2_def
+		clr_country_flag = lm_pip2_pln
+		clr_country_flag = lm_pip2_log
+		clr_country_flag = lm_pip3_atk
+		clr_country_flag = lm_pip3_def
+		clr_country_flag = lm_pip3_pln
+		clr_country_flag = lm_pip3_log
+		clear_global_event_target = lm_promoted_general
+	}
+}
+
+###########################
+# Civil Works Administration
+###########################
+
+# Event 307: Dispute Over CWA Direction — player chooses between the engineers'
+# industrial vision and the social workers' welfare-first approach.
+country_event = {
+	id = usa.307
+	title = usa.307.t
+	desc = usa.307.d
+	picture = GFX_report_event_usa_industry
+
+	is_triggered_only = yes
+
+	option = {
+		# Side with the engineers — industrial efficiency and naval output
+		name = usa.307.a
+		add_ideas = USA_cwa_engineers_spirit
+		ai_chance = { factor = 50 }
+	}
+
+	option = {
+		# Side with the social workers — factory output and national morale
+		name = usa.307.b
+		add_ideas = USA_cwa_social_workers_spirit
+		ai_chance = { factor = 50 }
+	}
+}
+
+###########################
+# Forward Naval Basing — Hawaii fortification
+###########################
+
+# Event 308: Fortify Hawaii — fires 180 days after USA_propose_foward_naval_basing.
+country_event = {
+	id = usa.308
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		629 = {
+			# 2-level land fortress on Honolulu / Pearl Harbor (province 4180)
+			add_building_construction = {
+				type = bunker
+				level = 2
+				instant_build = yes
+				province = { id = 4180 }
+			}
+			# 3-level coastal forts on every coastal province of Hawaii
+			add_building_construction = {
+				type = coastal_bunker
+				level = 3
+				instant_build = yes
+				province = {
+					all_provinces = yes
+					limit_to_coastal = yes
+				}
+			}
+		}
+	}
+
+	option = { name = usa.308.a }
+}
+
+###########################
+# 1940 Presidential Election
+###########################
+
+# Event 500: Hidden gateway — fires ~2 weeks before Election Day (Oct 22, 1940).
+# Autocompletes the 1940 Elections gate focus, then fires the appropriate
+# flavour event depending on who won the 1936 election.
+country_event = {
+	id = usa.500
+	hidden = yes
+	is_triggered_only = no
+	fire_only_once = yes
+
+	trigger = {
+		tag = USA
+		date > 1940.10.21
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	immediate = {
+		if = {
+			limit = { NOT = { has_completed_focus = USA_the_1940_elections } }
+			complete_national_focus = USA_the_1940_elections
+		}
+		if = {
+			limit = { has_completed_focus = USA_landonsuproar }
+			country_event = { id = usa.502 days = 1 }
+		}
+		else = {
+			country_event = { id = usa.501 days = 1 }
+		}
+	}
+
+	option = { name = usa.500.a }
+}
+
+# Event 501: Roosevelt — An Unprecedented Third Term
+# Fires when Roosevelt won the 1936 election.
+country_event = {
+	id = usa.501
+	title = usa.501.t
+	desc = usa.501.d
+	picture = GFX_report_event_usa_election_generic
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.501.a
+		complete_national_focus = USA_roosevelt_historical_third_term
+	}
+}
+
+# Event 502: Willkie's Ascension
+# Fires when Landon won the 1936 election.
+country_event = {
+	id = usa.502
+	title = usa.502.t
+	desc = usa.502.d
+	picture = GFX_report_event_usa_election_generic
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.502.a
+		complete_national_focus = USA_wilkiebreaksthestreak
+	}
+}
+
+# Event 503: Backed By Big Business — Remove on War Entry
+# Hidden event; fires once USA enters any war while holding the spirit.
+country_event = {
+	id = usa.503
+	hidden = yes
+	fire_only_once = yes
+
+	trigger = {
+		original_tag = USA
+		has_idea = USA_backed_by_big_business
+		has_war = yes
+	}
+
+	mean_time_to_happen = { days = 1 }
+
+	immediate = {
+		remove_ideas = USA_backed_by_big_business
+	}
+}
+
+###############################################
+# usa.504 — The Arcadia Conference
+# Fires 30 days after completing the
+# December 7th focus (USA enters the war).
+# Autocompletes USA_arcadia_conference.
+###############################################
+country_event = {
+	id = usa.504
+	title = usa.504.t
+	desc = usa.504.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.504.a
+		complete_national_focus = USA_arcadia_conference
+	}
+}
+
+###############################################
+# Destroyers for Bases
+# Ported from vanilla — fired by ENG_destroyers_for_bases focus
+###############################################
+
+# usa.4 — USA receives the offer (fires on USA, initiated by ENG focus)
+country_event = {
+	id = usa.4
+	title = usa.4.t
+	desc = usa.4.d
+	picture = GFX_report_event_usa_british_sailors_destroyers
+
+	is_triggered_only = yes
+
+	# Accept
+	option = {
+		name = usa.4.a
+		custom_effect_tooltip = usa.4.a.tt
+		hidden_effect = {
+			if = {
+				limit = { not = { has_dlc = "Man the Guns" } }
+				ENG = { load_oob = "ENG_destroyers_for_bases" }
+				CAN = { load_oob = "CAN_destroyers_for_bases" }
+			}
+			else = {
+				ENG = { load_oob = "ENG_destroyers_for_bases_mtg" }
+				CAN = { load_oob = "CAN_destroyers_for_bases_mtg" }
+			}
+			ENG = {
+				if = { limit = { 696 = { is_controlled_by = ENG } } remove_state_core = 696 }
+				if = { limit = { 331 = { is_controlled_by = ENG } } remove_state_core = 331 }
+				if = { limit = { 308 = { is_controlled_by = ENG } } remove_state_core = 308 }
+				if = { limit = { 693 = { is_controlled_by = ENG } } remove_state_core = 693 }
+				if = { limit = { 689 = { is_controlled_by = ENG } } remove_state_core = 689 }
+				if = { limit = { 691 = { is_controlled_by = ENG } } remove_state_core = 691 }
+			}
+		}
+		USA = {
+			if = { limit = { 696 = { is_controlled_by = ENG } } transfer_state = 696 }
+			if = { limit = { 331 = { is_controlled_by = ENG } } transfer_state = 331 }
+			if = { limit = { 308 = { is_controlled_by = ENG } } transfer_state = 308 }
+			if = { limit = { 693 = { is_controlled_by = ENG } } transfer_state = 693 }
+			if = { limit = { 689 = { is_controlled_by = ENG } } transfer_state = 689 }
+			if = { limit = { 691 = { is_controlled_by = ENG } } transfer_state = 691 }
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = destroyers_for_bases_opinion
+			}
+			country_event = { id = usa.401 days = 3 }
+		}
+	}
+
+	# Decline
+	option = {
+		name = usa.4.b
+		USA = { country_event = { id = usa.5 days = 1 } }
+		ai_chance = { factor = 0 }
+	}
+}
+
+# usa.401 — Britain confirms the deal (fires back on USA)
+country_event = {
+	id = usa.401
+	title = usa.401.t
+	desc = usa.401.desc
+	picture = GFX_report_event_usa_destroyers
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.401.a
+	}
+}
+
+# usa.5 — Britain's offer rejected
+country_event = {
+	id = usa.5
+	title = usa.5.t
+	desc = usa.5.d
+	picture = GFX_report_event_usa_destroyers
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.5.a
+	}
+}
+
+
+# usa.1006 — USA automatically joins the Allies (on_action notification)
+country_event = {
+	id = usa.1006
+	title = usa.1006.t
+	desc = usa.1006.d
+	picture = GFX_report_event_generic_sign_treaty3
+
+	is_triggered_only = yes
+
+	immediate = {
+		# joins every war agaisnt allies
+		every_country = {
+			limit = {
+				has_war_with = ENG
+				NOT = { tag = USA }
+			}
+			ROOT = {
+				add_to_war = {
+					targeted_alliance = ENG
+					enemy = PREV
+				}
+			}
+		}
+	}
+
+	option = {
+		name = usa.1006.a
+	}
+}
+
+# usa.1001 — 1936 Election Results
+country_event = {
+	id = usa.1001
+	title = usa.1001.t
+	desc = usa.1001.d
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.1001.a
+	}
+}
+
+# usa.1002 — 1940 Election Results
+country_event = {
+	id = usa.1002
+	title = usa.1002.t
+	desc = usa.1002.d
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.1002.a
+	}
+}
+
+# usa.1003 — 1944 Election Results
+country_event = {
+	id = usa.1003
+	title = usa.1003.t
+	desc = usa.1003.d
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+
+	option = {
+		name = usa.1003.a
+	}
+}
+
+# usa.1004 — Operation Torch: Patton & Bradley Take the Field
+country_event = {
+	id = usa.1004
+	title = usa.1004.t
+	desc = usa.1004.d
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = usa.1004.a
+		# Patton leads Western Task Force — first major combat command
+		usa_george_s_patton = {
+			add_skill_level = 1
+			add_attack = 1
+		}
+		# Bradley committed to active field command
+		add_corps_commander_role = {
+			character = usa_omar_bradley
+			traits = { brilliant_strategist infantry_leader trait_engineer }
+			skill = 6
+			attack_skill = 7
+			defense_skill = 6
+			planning_skill = 7
+			logistics_skill = 6
+		}
+	}
+}
+
+# usa.1005 — Control The Philippines: MacArthur's Return
+country_event = {
+	id = usa.1005
+	title = usa.1005.t
+	desc = usa.1005.d
+	picture = GFX_report_event_usa_macarthur_speech
+
+	is_triggered_only = yes
+	# can only succeed once, but the event may be (re)triggered each time the focus fires
+	# it or the USA retakes the Philippines
+	trigger = {
+		tag = USA
+		has_completed_focus = USA_control_the_phillippines
+		controls_state = 327  # Philippines
+		controls_state = 623  # Luzon
+		NOT = { has_country_flag = USA_macarthur_returned }
+	}
+
+	option = {
+		name = usa.1005.a
+		usa_douglas_macarthur = {
+			add_skill_level = 1
+		}
+		set_country_flag = USA_macarthur_returned
+	}
+}

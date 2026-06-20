@@ -1,0 +1,92 @@
+# USA Corporate Relations — Monthly Pulse
+# If Henry J. Kaiser is serving as political advisor,
+# Kaiser's Industries trust is always kept at Friendly (3).
+
+on_actions = {
+	on_monthly = {
+		effect = {
+			# Reclaim Democracy — fervour to liberate a fallen Britain. Granted once the
+			# UK has capitulated and the USA is at war; auto-removed when Britain is retaken.
+			if = {
+				limit = {
+					tag = USA
+					has_war = yes
+					ENG = { has_capitulated = yes }
+					NOT = { has_idea = USA_reclaim_democracy }
+				}
+				add_ideas = USA_reclaim_democracy
+			}
+
+			# Kaiser Industries trust — always Friendly if Henry J. Kaiser is advisor
+			if = {
+				limit = {
+					tag = USA
+					has_completed_focus = USA_reconcile_with_domestic_corporations
+					has_idea = usa_henry_j_kaiser
+				}
+				set_variable = { var = USA_kaiser_trust value = 3 }
+			}
+
+			# Big Gas wartime rubber — fires once when USA enters a war after completing the focus
+			if = {
+				limit = {
+					tag = USA
+					has_country_flag = USA_big_gas_rubber_pending
+					has_war = yes
+				}
+				modify_building_resources = {
+					building = synthetic_rubber_refinery
+					resource = rubber
+					amount = 10
+				}
+				clr_country_flag = USA_big_gas_rubber_pending
+			}
+
+			# War entry — UK loses London
+			# If Britain no longer controls London, USA is forced into the war
+			if = {
+				limit = {
+					tag = USA
+					NOT = { is_in_faction = yes }
+					ENG = { is_faction_leader = yes }
+					NOT = { 126 = { is_controlled_by = ENG } }
+				}
+				ENG = { add_to_faction = ROOT }
+				# Fortify the Atlantic stepping stones the USA already holds
+				if = {
+					limit = { controls_state = 100 } # Iceland
+					100 = {
+						add_extra_state_shared_building_slots = 15
+						set_building_level = { type = air_base level = 10 instant_build = yes }
+						set_building_level = { type = radar_station level = 3 instant_build = yes }
+						set_building_level = { type = naval_base level = 10 province = 12674 instant_build = yes }
+					}
+				}
+				if = {
+					limit = { controls_state = 101 } # Greenland
+					101 = {
+						add_extra_state_shared_building_slots = 15
+						set_building_level = { type = air_base level = 10 instant_build = yes }
+						set_building_level = { type = radar_station level = 3 instant_build = yes }
+						set_building_level = { type = naval_base level = 10 province = 12512 instant_build = yes }
+					}
+				}
+				country_event = { id = usa.1006 }
+			}
+
+			# War entry — Jan 1st 1942 and USA still at peace
+			# Historical backstop: if Pearl Harbor never happened, USA joins anyway
+			if = {
+				limit = {
+					tag = USA
+					NOT = { is_in_faction = yes }
+					ENG = { is_faction_leader = yes }
+					date > 1941.12.31
+					NOT = { has_war = yes }
+				}
+				ENG = { add_to_faction = ROOT }
+				country_event = { id = usa.1006 }
+			}
+		}
+	}
+}

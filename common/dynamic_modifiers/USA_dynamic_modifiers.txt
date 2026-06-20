@@ -1,0 +1,215 @@
+############################################################
+# USA Dynamic Modifiers
+############################################################
+
+# United States Navy — absorbs Torpedo Reliability Issues (USA_torpedo_detonator_penalty).
+# All values are variable-driven so focuses/events can improve them with add_to_variable.
+# Variables initialised in history/countries/USA - USA.txt before add_dynamic_modifier.
+USA_united_states_navy = {
+	icon = GFX_idea_USA_the_united_states_navy
+
+	naval_speed_factor                = var:USA_navy_speed_bonus              # -0.10 base
+	navy_anti_air_attack_factor       = var:USA_navy_aa_bonus                 # -0.10 base
+	navy_capital_ship_attack_factor   = var:USA_navy_capital_attack_bonus     # +0.05 base
+	navy_capital_ship_defence_factor  = var:USA_navy_capital_defence_bonus    # +0.05 base
+	naval_heavy_gun_hit_chance_factor = var:USA_navy_heavy_gun_hit_bonus      # -0.15 base
+	carrier_traffic                   = var:USA_navy_carrier_traffic_bonus    # -0.10 base
+	naval_torpedo_hit_chance_factor   = var:USA_navy_torpedo_hit_bonus        # -0.80 base  (replaces Torpedo Reliability Issues)
+	navy_carrier_air_attack_factor    = var:USA_navy_carrier_air_attack_bonus # -0.40 base  (replaces Torpedo Reliability Issues)
+	navy_carrier_air_agility_factor   = var:USA_navy_carrier_air_agility_bonus # 0.0 base
+	navy_carrier_air_targetting_factor = var:USA_navy_carrier_air_defence_bonus # 0.0 base
+	navy_max_range_factor             = var:USA_navy_max_range_bonus           # 0.0 base
+	sortie_efficiency                  = var:USA_navy_sortie_efficiency_bonus   # 0.0 base
+}
+
+# United States Army — replaces the static spirit.
+# conscription_factor is always active. The three reform bonuses
+# (XP, promote cost, planning) are driven by variables initialised
+# to 0 in gmfu_usa_startup.txt and set to their final values by the
+# USA_finish_the_final_army_reforms focus completion reward.
+USA_united_states_army = {
+	icon = GFX_idea_MEX_politicised_army
+
+	conscription_factor         = var:USA_army_conscription_bonus    # -0.50 base; -0.35 after Women's Army Corps
+
+	experience_gain_army_factor = var:USA_army_xp_bonus            # 0 until reforms; 0.25 after
+	promote_cost_factor         = var:USA_army_promote_bonus       # 0 until reforms; -0.25 after
+	max_planning                = var:USA_army_planning_bonus      # 0 until reforms; 0.10 after
+
+	army_armor_attack_factor    = var:USA_army_armor_attack_bonus       # -0.15 base; +0.15 net after Shatter the Panzers 5th Gen
+	mechanized_attack_factor    = var:USA_army_mech_attack_bonus       # 0 until Shatter the Panzers 5th Gen; 0.075 after
+	mechanized_defence_factor   = var:USA_army_mech_defence_bonus      # 0 until Shatter the Panzers 5th Gen; 0.075 after
+
+	supply_consumption_factor     = var:USA_army_supply_consumption_bonus  # 0 until Transportation Corps; -0.10 after
+
+	army_artillery_attack_factor  = var:USA_army_artillery_attack_bonus   # 0 until Time-on-Target; 0.10 after
+	army_artillery_defence_factor = var:USA_army_artillery_defence_bonus  # 0 until Time-on-Target; 0.05 after
+	breakthrough_factor           = var:USA_army_breakthrough_bonus        # 0 until Time-on-Target; 0.05 after
+
+	special_forces_cap                          = var:USA_army_sf_cap_bonus             # 0 until Fifth Army; 0.05 after
+	marines_special_forces_contribution_factor  = var:USA_army_marine_sf_cap_bonus      # 0 until Expand the USMC; -0.25 after
+
+	acclimatization_hot_climate_gain_factor  = var:USA_army_acclim_hot_bonus    # 0 until First Special Service Force; 0.20 after
+	acclimatization_cold_climate_gain_factor = var:USA_army_acclim_cold_bonus   # 0 until First Special Service Force; 0.20 after
+	terrain_penalty_reduction                = var:USA_army_terrain_bonus        # 0 until First Special Service Force; 0.05 after
+
+	army_org_factor                                    = var:USA_army_rangers_org_bonus             # 0 until Army Rangers; 0.075 after
+	mountaineers_special_forces_contribution_factor    = var:USA_army_mountaineer_sf_cap_bonus      # 0 until Army Rangers; -0.25 after
+	modifier_army_sub_unit_mountaineers_attack_factor  = var:USA_army_mountaineer_attack_bonus      # 0 until Army Rangers; 0.10 after
+	modifier_army_sub_unit_mountaineers_defence_factor = var:USA_army_mountaineer_defence_bonus     # 0 until Army Rangers; 0.10 after
+	special_forces_attack_factor                        = var:USA_army_ranger_attack_bonus         # 0 until Army Rangers; +5% (all special forces, incl. rangers)
+	coordination_bonus                                  = var:USA_army_ranger_coordination_bonus   # 0 until Army Rangers; +2% after
+
+	command_power_gain_mult      = var:USA_army_pentagon_cp_bonus       # 0 until Plans for the Pentagon; 0.15 after
+	training_time_army_factor    = var:USA_army_training_time_bonus     # 0 until The US Army; -0.05 after
+
+	invasion_preparation                = var:USA_army_invasion_prep_bonus          # 0 until either; +0.50 after Large Scale Invasion (slower prep, tradeoff); -1.00 after Island Campaign (faster). Negative = faster.
+	naval_invasion_penalty              = var:USA_army_amphibious_inv_bonus          # 0 until Large Scale Invasion; -0.075 after
+	naval_invasion_planning_bonus_speed = var:USA_army_naval_planning_speed_bonus    # 0 until Large Scale Invasion; 0.10 after
+	naval_invasion_capacity             = var:USA_army_naval_inv_capacity_bonus      # 0 until Island Campaign; 6 after
+	extra_marine_supply_grace           = var:USA_army_marine_supply_grace_bonus     # 0 until Island Campaign; 72 after
+}
+
+# Great Depression — single variable-driven modifier. The four severity levels
+# (4 = Full Crisis … 0 = recovered) are expressed through the vars below, set in
+# gmfu_usa_startup on_startup and eased via the USA_ease_depression scripted effect,
+USA_great_depression = {
+	icon = "GFX_idea_generic_economic_crisis"
+	enable = {
+		tag = USA
+		check_variable = { var = USA_depression_level value = 0.5 compare = greater_than_or_equals }
+	}
+
+	consumer_goods_expected_value     = var:USA_depression_cg
+	local_resources_factor            = var:USA_depression_resources
+	conscription                      = var:USA_depression_conscription
+	production_speed_buildings_factor = var:USA_depression_construction
+}
+
+# Third New Deal — base
+USA_third_new_deal = {
+	icon = "GFX_idea_PER_fund_state_intelligence_idea"
+	enable = { tag = USA }
+
+	stability_factor                           = var:USA_tnd_stability
+	production_speed_infrastructure_factor     = var:USA_tnd_infra
+	production_speed_industrial_complex_factor = var:USA_tnd_ic
+	political_power_cost                        = var:USA_tnd_ppcost
+	consumer_goods_factor                      = var:USA_tnd_consumer
+	industrial_capacity_factory                = var:USA_tnd_factory
+}
+
+# The New Business Deal (Landon) - single variable-driven spirit.
+USA_new_business_deal = {
+	icon = "GFX_idea_USA_new_business_deal"
+	enable = { tag = USA }
+
+	production_cost_industrial_complex_factor  = var:USA_nbd_costic
+	production_speed_infrastructure_factor     = var:USA_nbd_infra
+	production_speed_industrial_complex_factor = var:USA_nbd_ic
+	stability_factor                           = var:USA_nbd_stability
+	political_power_cost                       = var:USA_nbd_ppcost
+	consumer_goods_factor                      = var:USA_nbd_consumer
+}
+# Ohio River Flood — State-level penalties for affected states
+
+# Stage 1 — Full penalty
+ohio_flood = {
+	icon = "GFX_modifiers_flooded_icon"
+	enable = { always = yes }
+	production_speed_buildings_factor = -0.15
+	local_resources_factor = -0.15
+}
+
+# Stage 2 — Two-thirds penalty
+ohio_flood_2 = {
+	icon = "GFX_modifiers_flooded_icon"
+	enable = { always = yes }
+	production_speed_buildings_factor = -0.10
+	local_resources_factor = -0.10
+}
+
+# Stage 3 — One-third penalty
+ohio_flood_3 = {
+	icon = "GFX_modifiers_flooded_icon"
+	enable = { always = yes }
+	production_speed_buildings_factor = -0.05
+	local_resources_factor = -0.05
+}
+
+# War Economy — Added by the December 7 1941 focus chain
+USA_war_economy = {
+	icon = GFX_idea_war_economy
+	enable = { tag = USA }
+
+	industrial_capacity_factory          = 0.20
+	production_speed_arms_factory_factor = 0.25
+	consumer_goods_factor                = -0.10
+	global_building_slots_factor         = 2.0
+}
+
+# War Economy + Big Business Subsidies (fallback — applied if war economy was already active before subsidies)
+USA_war_economy_subsidies = {
+	icon = GFX_idea_war_economy
+	enable = { tag = USA }
+
+	industrial_capacity_factory               = 0.20
+	production_speed_arms_factory_factor      = 0.25
+	consumer_goods_factor                     = -0.10
+	production_factory_max_efficiency_factor  = 0.10
+	production_factory_efficiency_gain_factor = 0.05
+	global_building_slots_factor              = 2.0
+}
+
+# War Economy — Roosevelt path
+USA_war_economy_fdr = {
+	icon = GFX_idea_war_economy
+	enable = { tag = USA }
+
+	industrial_capacity_factory          = 0.35   # 0.20 base + 0.15 FDR bonus
+	production_speed_arms_factory_factor = 0.70   # 0.25 base + 0.45 FDR bonus
+	consumer_goods_factor                = -0.10
+	production_speed_dockyard_factor     = 0.35
+	global_building_slots_factor         = 2.0
+}
+
+# War Economy — Landon/Willkie path (no subsidies)
+USA_war_economy_landon = {
+	icon = GFX_idea_war_economy
+	enable = { tag = USA }
+
+	industrial_capacity_factory          = 0.45   # 0.20 base + 0.25 Landon bonus
+	production_speed_arms_factory_factor = 0.50   # 0.25 base + 0.25 Landon bonus
+	consumer_goods_factor                = -0.10
+	production_cost_arms_factory_factor  = -0.15
+	production_speed_dockyard_factor     = 0.40
+	global_building_slots_factor         = 2.0
+}
+
+# War Economy — Landon/Willkie path + Big Business Subsidies
+USA_war_economy_subsidies_landon = {
+	icon = GFX_idea_war_economy
+	enable = { tag = USA }
+
+	industrial_capacity_factory               = 0.45   # same as landon base
+	production_speed_arms_factory_factor      = 0.50   # same as landon base
+	consumer_goods_factor                     = -0.10  # same as landon base
+	production_cost_arms_factory_factor       = -0.15  # same as landon base
+	production_speed_dockyard_factor          = 0.40   # same as landon base
+	production_factory_max_efficiency_factor  = 0.10   # subsidies bonus
+	production_factory_efficiency_gain_factor = 0.05   # subsidies bonus
+	global_building_slots_factor              = 2.0
+}
+
+############################################################
+# Operation Torch — State Bombardment Modifier
+# Applied to target states (461/462/459) for 30 days by on-map decisions.
+# Reduces entrenchment and fortification to soften coastal defences.
+############################################################
+USA_torch_bombardment = {
+	enable = { always = yes }
+	icon = GFX_idea_generic_air_bonus
+
+	max_dig_in_factor    = -0.5
+	fortification_damage = 0.4
+}

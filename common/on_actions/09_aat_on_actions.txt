@@ -1,0 +1,367 @@
+
+on_actions = {
+
+	# #### MIO on actions
+	# # ROOT is MIO
+	# on_mio_size_increased = {
+	# 	effect = {
+	# 			if = {
+	# 				limit = {
+	# 					ROOT = { has_mio_size < 5 }
+	# 				}
+	# 				add_mio_task_capacity = 1
+	# 			}
+	# 	}
+	# }
+	# NB : all the following also exist at MIO level
+	# use on-action here if the purpose is to execute for any MIO
+	# use on-action at MIO level to execute just for one precise MIO
+	# i.e. don't use this here : if = { limit = { is_military_industrial_organisation = ... } } }
+	on_mio_design_team_assigned_to_tech = {}
+	on_mio_design_team_assigned_to_variant = {}
+	on_mio_industrial_manufacturer_assigned = {}
+	on_mio_tech_research_cancelled = {}
+	on_mio_tech_research_completed = {}
+	on_mio_industrial_manufacturer_unassigned = {}
+
+
+	#Not run on a specific country.
+	on_startup = {
+		effect= {
+			if = {
+				limit = { 
+					is_historical_focus_on = yes
+				}
+
+				every_possible_country = {
+
+					SWE = {
+						add_ai_strategy = {
+							type = protect
+							id = PREV
+							value = -1000
+						}
+
+						add_ai_strategy = {
+							type = alliance
+							id = PREV
+							value = -50
+						}	
+					}
+				}
+			}
+		}
+		#SET UP MIO SIZE IN 1939 BOOKMARK
+		effect = {
+			if = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+					date > 1939.01.01 #1939 Bookmark
+				}
+				every_country = {
+					limit = {
+						is_major = yes
+					}
+					every_military_industrial_organization = {
+						add_mio_size = 4
+					}
+				}
+				every_country = {
+					limit = {
+						is_major = no
+					}
+					every_military_industrial_organization = {
+						add_mio_size = 3
+					}
+				}
+			}
+		}
+
+		effect = {
+			NOR = {
+			}
+		}
+
+
+		effect = {
+			GER = {
+				find_global_platonic_countries = yes # This is so platonic country variables are updated in game start and doesn't show as "Norway"
+			}
+		}
+	}
+
+
+	
+	# ROOT is capitulated country, FROM is winner
+	on_capitulation = {
+		effect = { #Achievement Two Arms Against Tyranny
+			if = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+					FROM = {
+						OR = {
+							original_tag = FIN
+							is_in_faction_with = FIN
+						}
+						num_faction_members < 3
+						num_faction_members > 1
+						any_allied_country = {
+						}
+					}
+
+					ROOT = {
+						original_tag = SOV
+					}
+				}
+			}
+			if = { #Flag locking Achievement "Everything is Awesome"
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+					ROOT = {
+						original_tag = DEN
+					}
+				}
+				set_global_flag = achievement_den_has_never_been_capitulated
+			}
+		}
+	}
+
+	##ROOT is affected country
+	on_uncapitulation = {
+		effect = { # Setting Oslo as capital of Oslo again 
+			if = {
+				limit = {
+					ROOT = { 
+						original_tag = NOR
+						has_government = democratic
+						has_variable = NOR_mobile_government_hq
+						NOT = {
+							check_variable = {
+								NOR_mobile_government_hq = 110 # Checking that the state is not Oslo 
+							}  
+						}
+					}
+				}
+				ROOT = {
+					set_capital = { state = 110}
+					set_variable = { NOR_mobile_government_hq = 110 }
+				}
+			}
+		}
+	}
+
+	# FROM is the country that is hosting the government in exile.
+	# ROOT is the government in exile
+
+	on_create_faction = {
+		effect = {
+			if = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+					ROOT = { original_tag = FIN }
+				}
+				set_global_flag = achievement_FIN_has_joined_a_faction
+			}
+		}	
+	}
+
+	on_liberate = {
+		effect = {
+			IF = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+					ROOT = { original_tag = DEN }
+				}
+				#This checks various Danish Occupation set ups and removing them if they are true, such as the Occupation tag, making Denmark able to join wars and facitons again, and restoring the Welfare/Warfare BoP
+			}
+		}
+	}
+ 	#ROOT is the nation being released, FROM is the overlord
+	on_release_as_free = { 
+
+
+		effect = {
+			if = {
+				limit = {
+					ROOT = {
+						tag = SMI
+						owns_state = 148
+					}
+				}
+				148 = {
+					add_victory_points = {
+						province = 6142
+						value = 2
+					}
+				}	
+			}
+		}
+
+		effect = { # Jan Mayen's Rebirth 
+			if = {
+				limit = {
+					ROOT = { tag = JAN }
+					NOT = {	has_global_flag = JAN_mayen_has_risen } 
+				}
+				914 = { # YES! You, Jan Mayen, let's see what you got.  
+					add_extra_state_shared_building_slots = 25
+					add_manpower = 7000
+					remove_core_of = NOR 
+					force_disable_resistance = yes 
+				}
+				set_global_flag = JAN_mayen_has_risen
+				news_event = AAT_norway_news.99
+			}
+		}
+		effect = {
+			IF = {
+				limit = {
+					original_tag = DEN
+					has_dlc = "Arms Against Tyranny"
+				}
+				if = {
+					limit = {
+						ROOT = {
+							has_cosmetic_tag = DEN_occupied_denmark
+						}
+					}
+					ROOT = {
+						drop_cosmetic_tag = yes
+					}
+				}
+				if = {
+					limit = {
+						ROOT = {
+							has_country_flag = DEN_is_protectorate_flag
+						}
+					}
+					ROOT = {
+						clr_country_flag = DEN_is_protectorate_flag
+					}
+				}
+				if = {
+					limit = {	
+						has_country_flag = DEN_cannot_join_factions_flag
+					}
+					set_rule = { can_join_factions = yes }
+					set_rule = { can_decline_call_to_war = no }
+					clr_country_flag = DEN_cannot_join_factions_flag
+				}
+			}
+		}
+		effect = {
+			IF = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+					ROOT = { original_tag = DEN }
+				}
+				#This checks various Danish Occupation set ups and removing them if they are true, such as the Occupation tag, making Denmark able to join wars and facitons again, and restoring the Welfare/Warfare BoP
+			}
+		}
+		effect = {
+			if = {
+				limit = {
+					ROOT = {
+						original_tag = NOR
+						has_government = communism
+					}
+				}
+			}
+			if = {
+				limit = {
+					ROOT = {
+						has_template = "Våpenfolket"
+					}
+				}
+				ROOT = {
+					delete_unit_template_and_units = {
+					    division_template = "Våpenfolket"
+					    disband = yes #will refund equipment and manpower
+					}
+				}
+			}
+			if = {
+				limit = {
+					ROOT = {
+						has_template = "Folkets Hær"
+					}
+				}
+				ROOT = {
+					delete_unit_template_and_units = {
+					    division_template = "Folkets Hær"
+					    disband = yes #will refund equipment and manpower
+					}
+				}
+			}
+		}
+	}
+
+
+	on_monthly_NOR = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { 
+						has_global_flag = NOR_the_norwegian_queen_is_dead 
+						has_global_flag = NOR_the_norwegian_king_is_dead 
+						has_government = communism
+						has_government = fascism  
+					}
+				}
+				if = {
+					limit = {
+						exists = yes 
+						date > 1938.10.29 # 20 days before Queen Maud death. 
+					}
+					if = { # The King Dies
+						limit = {
+							has_country_flag = NOR_has_a_rikstanken
+							has_completed_focus = NOR_the_chamberlains_overture
+						}
+						if = { # The King Dies
+							limit = {
+								has_completed_focus = NOR_shield_of_the_north
+								has_war = yes
+								surrender_progress > 0.2
+							}
+							country_event = { 
+								id = AAT_norway_monarchist.2
+								days = 20 
+							}	
+							every_country = {
+								limit = {
+									OR = {
+										is_major = yes 
+									}
+									NOT = { original_tag = NOR }
+								}
+								news_event = {
+									id = AAT_norway_news.3
+									days = 20 
+								}
+							}
+						}
+					}
+					else = { # The Queen Dies
+						country_event = { 
+							id = AAT_norway.20
+							days = 20 
+						}	
+						every_country = {
+							limit = {
+								OR = {
+									is_major = yes 
+								}
+								NOT = { original_tag = NOR }
+							}
+							news_event = {
+								id = AAT_norway_news.2
+								days = 20 
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
