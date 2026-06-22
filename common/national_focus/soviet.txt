@@ -1603,14 +1603,53 @@
 			add_to_variable = { SOV_command_economy_conversion_cost_civ_to_mil_factor_var = -0.2 }
 		}
 	}
+
+	focus = {
+		id = SOV_pol_prepare_germany
+		icon = GFX_focus_SOV_the_supreme_soviet
+
+		prerequisite = { focus = SOV_pol_dismantle_stalin_line focus = SOV_pol_improve_fortifications }
+		x = 3
+		y = 3
+
+		relative_position_id = SOV_pol_embargo_axis
+		cost = 1
+
+		available = { 
+			OR = {
+				ENG = {
+					has_capitulated = yes
+				}
+				AND = {
+					has_war = no
+					# OR = {
+					date > 1941.8.1
+						# ENG = {
+						# 	has_capitulated = yes
+						# }
+					# }
+				}	
+				AND = {
+					has_war = yes
+					date > 1942.1.1
+					surrender_progress < 0.05
+				}
+			}
+			
+		}
+
+		completion_reward = {
+			add_ideas = SOV_germans_are_coming_idea
+		}
+	}
 	
 	focus = {
 		id = SOV_pol_invade_germany
 		icon = GFX_SOV_drive_out_the_fascists
 
-		prerequisite = { focus = SOV_pol_embargo_axis }
-		x = 0
-		y = 1
+		prerequisite = { focus = SOV_pol_prepare_germany }
+		x = 3
+		y = 4
 
 		relative_position_id = SOV_pol_embargo_axis
 		cost = 1
