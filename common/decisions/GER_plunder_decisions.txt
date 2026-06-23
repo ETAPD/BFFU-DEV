@@ -1,29 +1,68 @@
 GER_plunder_economy_category = {
 
-	GER_plunder_of_europe = {
+	GER_plunder_of_poland = {
 		icon = GFX_decision_generic_construction
+
 		allowed = {
 			tag = GER
 		}
 
-		activation = {
-			
+		visible = {
+			tag = GER
 		}
 
-		visible = {
-			
-    	}
+		#days_mission_timeout = GER_days_till_plunder
+		days_mission_timeout = 3
+
+		is_good = yes
+
+		activation = {
+			has_completed_focus = GER_plunder_of_europe_focus 
+
+			any_controlled_state = {
+               	is_core_of = POL
+               	industrial_complex > 0
+			}
+		}
 
 		available = {
-			has_completed_focus = GER_plunder_of_europe_focus 
+			all_controlled_state = {
+				is_core_of = POL
+				industrial_complex < 1
+			}
 		}
 
-		is_good = no
-
-		days_mission_timeout = 100
-
 		timeout_effect = {
-			
+			random_controlled_state = {
+				limit = {
+					is_core_of = POL
+					industrial_complex > 0
+				}
+
+				remove_building = {
+					type = industrial_complex
+					level = 1
+				}
+
+				add_building_construction = {
+					type = arms_factory
+					level = 1
+				}
+				add_resistance = 5
+				add_compliance = -5
+			}
+			hidden_effect = {
+				if = {
+        			limit = {
+            			any_controlled_state = {
+               				is_core_of = POL
+               				industrial_complex > 0
+						}
+					}
+
+				activate_mission = GER_plunder_of_poland
+				}
+			}
 		}
 	}
 }
