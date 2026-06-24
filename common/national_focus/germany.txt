@@ -95,12 +95,12 @@ focus_tree = {
 
 	inlay_window = {
 		id = ger_autarky_inlay_window
-		position = { x = 3518 y = 800 }
+		position = { x = 3518 y = 1000 }
 	}
 
 	inlay_window = {
 		id = ger_inner_circle_inlay_window
-		position = { x = 3500 y = 1100 }
+		position = { x = 3500 y = 1400 }
 	}
 	
 	default = no
@@ -951,7 +951,24 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
+			add_tech_bonus = {
+				name = GER_hermann_goring_werke
+				bonus = 1
+				uses = 2
+				category = excavation_tech
+			}
 
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = GER_unlock_reichswerke_tt
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_add_or_modify_wehrwirtschaft = yes
+			add_to_variable = { 
+				GER_wehrwirtschaft_local_resources_factor = 0.05
+				tooltip = local_resources_factor_tt
+			}
 		}
 	}
 
@@ -972,7 +989,20 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_tech_bonus = {
+				name = GER_empower_siemens
+				bonus = 0.5
+				uses = 2
+				category = industry
+			}
+			54 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = arms_factory
+					level = 3
+					instant_build = yes
+				}
+			}
 		}
 	}
 
@@ -994,15 +1024,28 @@ focus_tree = {
 
 		completion_reward = {
 
+			add_tech_bonus = {
+				name = GER_empower_siemens
+				bonus = 1
+				uses = 2
+				category = electronics
+			}
+			53 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+
 		}
 	}
 
 	focus = {
-		id = GER_plunder_of_europe_focus
+		id = GER_crush_uprisings
 		icon = GFX_focus_GER_fuhrerprinzip_goring
-		prerequisite = { focus = GER_empower_krupp }
-		prerequisite = { focus = GER_empower_siemens }
-		prerequisite = { focus = GER_hermann_goring_werke }
+		prerequisite = { focus = GER_empower_krupp focus = GER_hermann_goring_werke focus = GER_empower_siemens }
 
 		x = 0
 		y = 1
@@ -1016,8 +1059,18 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
+			custom_effect_tooltip = GER_crush_uprisings_tt
 			set_variable = { 
 				GER_days_till_plunder = 30
+			}
+			every_controlled_state = {
+				limit = {
+					AND = {
+						resistance > 20
+						NOT = { is_core_of = GER }
+					}
+				}
+				add_resistance = -20
 			}
 		}
 	}
@@ -1954,7 +2007,7 @@ focus_tree = {
 						include_locked = yes
 					}
 				}
-				random_select_amount = 3
+				random_select_amount = 2
 				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = arms_factory
@@ -2195,11 +2248,11 @@ focus_tree = {
 	focus = {
 		id = GER_create_rustungsstab
 		icon = GFX_focus_generic_mass_production
-		prerequisite = { focus = GER_zentrale_planung }
+		prerequisite = { focus = GER_empower_siemens }
 
 		x = 1
 		y = 1
-		relative_position_id = GER_zentrale_planung
+		relative_position_id = GER_empower_siemens
 		cost = 5
 		available = {
 		}
@@ -2216,11 +2269,11 @@ focus_tree = {
 						include_locked = yes
 					}
 				}
-				random_select_amount = 2
-				add_extra_state_shared_building_slots = 2
+				random_select_amount = 1
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = arms_factory
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -2247,11 +2300,11 @@ focus_tree = {
 	focus = {
 		id = GER_armament_rationalization
 		icon = GFX_focus_generic_military_industry
-		prerequisite = { focus = GER_zentrale_planung }
+		prerequisite = { focus = GER_empower_krupp }
 
 		x = -1
 		y = 1
-		relative_position_id = GER_zentrale_planung
+		relative_position_id = GER_empower_krupp
 		cost = 5
 		available = {
 		}
@@ -2290,12 +2343,12 @@ focus_tree = {
 	focus = {
 		id = GER_totaler_krieg
 		icon = GFX_GER_total_war
-		prerequisite = { focus = GER_create_rustungsstab }
 		prerequisite = { focus = GER_armament_rationalization }
+		prerequisite = { focus = GER_develop_heraeus_facilities }
 
-		x = 1
+		x = 0
 		y = 1
-		relative_position_id = GER_armament_rationalization
+		relative_position_id = GER_develop_heraeus_facilities
 		cost = 5
 		available = {
 			has_war_with = SOV
@@ -3771,10 +3824,10 @@ focus_tree = {
 		id = GER_uranverein
 		icon = GFX_focus_wonderweapons
 		#prerequisite = { focus = GER_improve_the_logistics_system focus = GER_defend_the_vaterland }
-		prerequisite = { focus = GER_develop_heraeus_facilities }
-		x = 0
+		prerequisite = { focus = GER_molotov_ribbentrop_pact }
+		x = 1
 		y = 1
-		relative_position_id = GER_develop_heraeus_facilities
+		relative_position_id = GER_molotov_ribbentrop_pact
 		cost = 5
 		available = {
 			# has_war_with_major = yes
@@ -7772,7 +7825,7 @@ focus_tree = {
 			}
 		}
 
-		x = 31
+		x = 32
 		y = 0
 		relative_position_id = GER_prioritize_economic_growth
 
@@ -19982,8 +20035,8 @@ focus_tree = {
 		icon = GFX_focus_GER_support_the_fuhrer
 
 		prerequisite = { focus = GER_remilitarize_the_rhineland }
-		x = -16
-		y = 15
+		x = -17
+		y = 10
 		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		available = {
