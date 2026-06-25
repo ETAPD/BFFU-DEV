@@ -930,7 +930,10 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_timed_idea = {
+				idea = GER_rapid_mobilisation
+				days = 500
+			}
 		}
 	}
 
@@ -966,7 +969,7 @@ focus_tree = {
 
 			GER_add_or_modify_wehrwirtschaft = yes
 			add_to_variable = { 
-				GER_wehrwirtschaft_local_resources_factor = 0.05
+				GER_wehrwirtschaft_local_resources_factor = 0.1
 				tooltip = local_resources_factor_tt
 			}
 		}
@@ -1031,10 +1034,10 @@ focus_tree = {
 				category = electronics
 			}
 			53 = {
-				add_extra_state_shared_building_slots = 3
+				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = industrial_complex
-					level = 3
+					level = 4
 					instant_build = yes
 				}
 			}
@@ -1044,7 +1047,7 @@ focus_tree = {
 
 	focus = {
 		id = GER_crush_uprisings
-		icon = GFX_focus_GER_fuhrerprinzip_goring
+		icon = GFX_focus_GER_end_european_communism
 		prerequisite = { focus = GER_empower_krupp focus = GER_hermann_goring_werke focus = GER_empower_siemens }
 
 		x = 0
@@ -1054,6 +1057,7 @@ focus_tree = {
 
 		cost = 5
 		available = {
+			has_completed_focus = GER_reorganize_secret_services
 		}
 
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
@@ -1063,14 +1067,16 @@ focus_tree = {
 			set_variable = { 
 				GER_days_till_plunder = 30
 			}
+			GER_add_or_modify_military_intelligence_service = yes
+			add_to_variable = { GER_military_intelligence_root_out_resistance_effectiveness_factor = 0.25 tooltip = root_out_resistance_effectiveness_factor_tt}
 			every_controlled_state = {
 				limit = {
 					AND = {
-						resistance > 20
+						resistance > 25
 						NOT = { is_core_of = GER }
 					}
 				}
-				add_resistance = -20
+				add_resistance = -25
 			}
 		}
 	}
@@ -1789,13 +1795,13 @@ focus_tree = {
 	focus = {
 		id = GER_autarky_achieved
 		icon = GFX_focus_GER_autarky_achieved
-		prerequisite = { focus = GER_seize_foreign_industries }
+		prerequisite = { focus = GER_create_rustungsstab focus = GER_crush_uprisings }
+		prerequisite = { focus = GER_armament_rationalization }
 
-		# mutually_exclusive = { focus = GER_partial_autarky }
 
-		x = 2
+		x = 0
 		y = 1
-		relative_position_id = GER_seize_foreign_industries
+		relative_position_id = GER_crush_uprisings
 		cost = 5
 		available = {
 			all_core_state = {
@@ -1960,7 +1966,7 @@ focus_tree = {
 						include_locked = yes
 					}
 				}
-				random_select_amount = 5
+				random_select_amount = 4
 				add_extra_state_shared_building_slots = 1
 				add_building_construction = {
 					type = arms_factory
@@ -2008,10 +2014,10 @@ focus_tree = {
 					}
 				}
 				random_select_amount = 2
-				add_extra_state_shared_building_slots = 3
+				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = arms_factory
-					level = 3
+					level = 4
 					instant_build = yes
 				}
 			}
@@ -2182,11 +2188,14 @@ focus_tree = {
 	focus = {
 		id = GER_zentrale_planung
 		icon = GFX_focus_generic_central_planning
-		prerequisite = { }
+		prerequisite = { focus = GER_develop_heraeus_facilities }
+		prerequisite = { focus = GER_armament_rationalization }
 
-		x = 20
-		y = 5
+		x = 0
+		y = 1
 		
+		relative_position_id = GER_develop_heraeus_facilities
+
 		cost = 5
 		available = {
 			has_war_with_major = yes
@@ -2200,7 +2209,7 @@ focus_tree = {
 		completion_reward = {
 			if = {
 				limit = { #Must be one economy law away from the next one and fulfill the next law's criterias
-					has_idea = partial_economic_mobilisation
+					has_idea = war_economy
 					has_war_support > 0.5
 					OR = {
 						has_government = fascism
@@ -2217,10 +2226,10 @@ focus_tree = {
 						}
 					}
 				}
-				add_ideas = war_economy
+				add_ideas = tot_economic_mobilisation
 			}
 			else = {
-				custom_effect_tooltip = GER_criteria_for_economy_laws_tt
+				custom_effect_tooltip = GER_criteria_for_economy_laws_ttt
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -2307,6 +2316,8 @@ focus_tree = {
 		relative_position_id = GER_empower_krupp
 		cost = 5
 		available = {
+			has_war_with_major = yes
+			has_civil_war = no
 		}
 
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
@@ -2343,11 +2354,10 @@ focus_tree = {
 	focus = {
 		id = GER_totaler_krieg
 		icon = GFX_GER_total_war
-		prerequisite = { focus = GER_armament_rationalization }
-		prerequisite = { focus = GER_develop_heraeus_facilities }
+		prerequisite = { focus = GER_zentrale_planung }
 
 		x = 0
-		y = 1
+		y = 2
 		relative_position_id = GER_develop_heraeus_facilities
 		cost = 5
 		available = {
