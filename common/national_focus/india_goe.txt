@@ -1827,7 +1827,8 @@ focus_tree = {
                 category = land_doctrine
                 name = RAJ_inclusive_nationalism
             }
-
+            add_stability = -0.1
+            add_war_support = 0.1
             add_ideas = idea_RAJ_inclusive_nationalism
 
         }
@@ -1963,6 +1964,56 @@ focus_tree = {
             add_ideas = idea_RAJ_tryst_with_destiny
         }
     }
+     focus = {
+        id = RAJ_hedgemony_of_the_subcontinent
+        icon = GFX_focus_spa_the_spanish_miracle
+        x = 0
+        y = 1
+        relative_position_id = RAJ_tryst_with_destiny
+        prerequisite = {focus = RAJ_tryst_with_destiny } 
+        cost = 5
+        available = {
+            if = {
+                limit = {
+                    PAK = {
+                        exists = yes
+                    }
+                }
+                OR = {
+                    check_variable = { RAJ.num_of_factories >  pak_factories tooltip = pak_factories_tt }
+                    check_variable = { RAJ.num_researched_technologies > pak_researched_techs tooltip = pak_tech_tt }
+                }
+            }
+            else = {
+                custom_trigger_tooltip = {
+                    tooltip = RAJ_hedgemony_of_the_subcontinent_tt
+                    all_of_scopes = {
+                      array = RAJ.owned_states_at_game_start
+                      is_owned_by = ROOT 
+                    }
+                }
+            }
+        }
+
+        ai_will_do = {
+            factor = 20
+        }
+        
+        available = {
+            
+        }
+
+        bypass = {
+
+
+        }
+
+        search_filters = {FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH}
+
+        completion_reward = {
+            add_ideas = idea_RAJ_hedgemony_of_the_subcontinent
+        }
+    }
 
     focus = {
         id = RAJ_united_bengal
@@ -2050,64 +2101,14 @@ focus_tree = {
             }
         }
     }
-
-    focus = {
-        id = RAJ_hedgemony_of_the_subcontinent
-        icon = GFX_focus_spa_the_spanish_miracle
-        x = 0
-        y = 1
-        relative_position_id = RAJ_an_economy_unbound
-        prerequisite = {focus = RAJ_an_economy_unbound } 
-        cost = 5
-        available = {
-            if = {
-                limit = {
-                    PAK = {
-                        exists = yes
-                    }
-                }
-                OR = {
-                    check_variable = { RAJ.num_of_factories >  pak_factories tooltip = pak_factories_tt }
-                    check_variable = { RAJ.num_researched_technologies > pak_researched_techs tooltip = pak_tech_tt }
-                }
-            }
-            else = {
-                custom_trigger_tooltip = {
-                    tooltip = RAJ_hedgemony_of_the_subcontinent_tt
-                    all_of_scopes = {
-                      array = RAJ.owned_states_at_game_start
-                      is_owned_by = ROOT 
-                    }
-                }
-            }
-        }
-
-        ai_will_do = {
-            factor = 20
-        }
-        
-        available = {
-            is_subject = no
-        }
-
-        bypass = {
-
-
-        }
-
-        search_filters = {FOCUS_FILTER_ARMY_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH}
-
-        completion_reward = {
-            add_ideas = idea_RAJ_hedgemony_of_the_subcontinent
-        }
-    }
+   
     focus = {
         id = RAJ_india_indivisible
         icon = GFX_focus_RAJ_all_india_forward_bloc
-        prerequisite = { focus = RAJ_hedgemony_of_the_subcontinent }
+        prerequisite = { focus = RAJ_an_economy_unbound }
         x = 0
         y = 1
-        relative_position_id = RAJ_hedgemony_of_the_subcontinent
+        relative_position_id = RAJ_an_economy_unbound
         
         cost = 5
 
@@ -3034,33 +3035,16 @@ focus_tree = {
         }
     }
 
-    focus = {
-        id = RAJ_confer_with_the_congress
-        icon = GFX_focus_RAJ_a_congress_resurgent
-        prerequisite = { focus = RAJ_concessions_to_the_industrialists focus = RAJ_empower_provincial_authorities }
 
-        x = 1
-        y = 1
-        relative_position_id = RAJ_concessions_to_the_industrialists 
-        cost = 5
-
-        search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_WAR_SUPPORT }
-
-        completion_reward = {
-            add_political_power = 100
-
-            unlock_decision_category_tooltip = RAJ_concessions_to_the_congress_cat
-        }
-    }
 
     focus = {
         id = RAJ_favor_the_muslim_league
         icon = GFX_focus_RAJ_seek_allies_with_the_muslim_league
-        prerequisite = { focus = RAJ_confer_with_the_congress }
+        prerequisite = { focus = RAJ_empower_provincial_authorities }
 
-        x = -1
+        x = 0
         y = 1
-        relative_position_id = RAJ_confer_with_the_congress 
+        relative_position_id = RAJ_empower_provincial_authorities 
         cost = 10
 
         mutually_exclusive = { focus = RAJ_court_the_princes }
@@ -3092,7 +3076,7 @@ focus_tree = {
         icon = GFX_focus_generic_improve_the_administration
         prerequisite = { focus = RAJ_favor_the_muslim_league focus = RAJ_court_the_princes }
 
-        x = 0
+        x = -2
         y = 1
         relative_position_id = RAJ_favor_the_muslim_league 
         cost = 10
@@ -3127,11 +3111,11 @@ focus_tree = {
     focus = {
         id = RAJ_court_the_princes
         icon = GFX_focus_RAJ_war_taxes
-        prerequisite = { focus = RAJ_confer_with_the_congress }
+        prerequisite = { focus = RAJ_concessions_to_the_industrialists }
 
-        x = 1
+        x = 0
         y = 1
-        relative_position_id = RAJ_confer_with_the_congress 
+        relative_position_id = RAJ_concessions_to_the_industrialists 
         cost = 5
 
         mutually_exclusive = { focus = RAJ_favor_the_muslim_league }
@@ -3169,7 +3153,7 @@ focus_tree = {
         icon = GFX_focus_usa_voter_registration_act
         prerequisite = { focus = RAJ_court_the_princes focus = RAJ_favor_the_muslim_league }
 
-        x = 2
+        x = 0
         y = 1
         relative_position_id = RAJ_favor_the_muslim_league 
         cost = 10
@@ -3301,7 +3285,7 @@ focus_tree = {
         icon = GFX_goal_generic_improve_relations
         prerequisite = { focus = RAJ_court_the_princes }
 
-        x = 1
+        x = -1
         y = 2
         relative_position_id = RAJ_court_the_princes 
         cost = 5
@@ -3323,8 +3307,8 @@ focus_tree = {
         icon = GFX_focus_RAJ_the_jewel_becomes_the_crown
         prerequisite = { focus = RAJ_the_indian_parliament focus = RAJ_the_integrity_of_india_act }
 
-        x = -1
-        y = 1
+        x = -2
+        y = 2
         relative_position_id = RAJ_the_indian_parliament 
         cost = 10
 
@@ -3550,8 +3534,8 @@ focus_tree = {
         icon = GFX_goal_generic_construct_mil_factory
         prerequisite = { focus = RAJ_raise_import_duties }
         
-        x = -1
-        y = 1
+        x = 0
+        y = 2
         relative_position_id = RAJ_raise_import_duties 
         cost = 10
 
@@ -3614,13 +3598,13 @@ focus_tree = {
         prerequisite = { focus = RAJ_imperial_industry_initiative }
         prerequisite = { focus = RAJ_rural_development_plan }
         
-        x = 1
+        x = -1
         y = 1
         relative_position_id = RAJ_imperial_industry_initiative 
         cost = 10
 
         available = {
-            industrial_complex > 59
+            industrial_complex > 49
         }
 
         search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
