@@ -1001,6 +1001,70 @@ country_event = {
 	}
 }
 
+#RAJ white peaces ENG, Jap can also white peace
+country_event = {
+	id = GOE_RAJ.25
+	title = GOE_RAJ.25.t	
+	desc = GOE_RAJ.25.desc	
+	picture = GFX_report_event_merchant_ship_01
+	is_triggered_only = yes
+	option = {
+		ai_chance = {
+			base = 1
+		}
+		name = GOE_RAJ.25.a
+		add_timed_idea = {
+		 	idea = idea_RAJ_japanese_supremacy
+		 	days = 120
+		 } 
+		 white_peace = {
+		 	tag = ENG
+		 }
+		 every_enemy_country = {
+		 	limit = {
+		 		is_in_faction_with = ENG
+		 		NOT = { original_tag = USA }
+		 	}
+
+			 white_peace = {
+			 	tag = THIS
+			 }
+		 }
+	 }
+	 option = {
+	 	name = GOE_RAJ.25.b
+		ai_chance = {
+			base = 0
+		}
+	 }
+}
+
+#Bose Freed from prison
+country_event = {
+	id = GOE_RAJ.26
+	title = GOE_RAJ.26.t	
+	desc = GOE_RAJ.26.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	option = {
+		name = GOE_RAJ.26.a
+		if = {
+			limit = { 					
+				AND = {
+					has_dlc = "Graveyard of Empires"
+					is_using_old_raj = no
+				} 
+			}
+			RAJ_subhas_chanda_bose = {
+				swap_country_leader_traits = {
+					remove = in_prison 
+					add = nationalistic_freedom_fighter
+				}
+			}
+		}
+
+	 }
+}
 
 #RAJ wants to white peace
 country_event = {
@@ -1092,6 +1156,244 @@ country_event = {
 	}
 }
 
+#UK independence
+country_event = {
+	id = GOE_RAJ.30
+	title = GOE_RAJ.30.t	
+	desc = GOE_RAJ.30.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	option = {
+		name = GOE_RAJ.30.a 
+		ai_chance = {
+			base = 1
+		}
+		was_raj_a_subject = yes
+		add_ideas = idea_RAJ_the_long_goodbye
+		if = {
+			limit = {
+				is_subject = yes
+				OVERLORD = { has_government = fascism }
+				NOT = {
+					has_autonomy_state = autonomy_satellite
+				}
+			}
+			OVERLORD = {
+				set_autonomy = {
+					target=RAJ
+					autonomy_state = autonomy_satellite
+					freedom_level = 0 # 0-1 
+					end_wars  = no # default yes. will not cancel non civil wars if set to no
+					end_civil_wars = no # default yes. will not cancel civil wars if set to no
+				}
+			}
+			raj_was_a_subject_reset_party_ideology_after_independence = yes
+		}
+	}
+
+	#Keep current leader, for some reason
+	option = {
+		name = GOE_RAJ.30.b
+		ai_chance = {
+			base = 0
+
+
+		}
+	}
+}
+
+
+#UK independence
+country_event = {
+	id = GOE_RAJ.31
+	title = GOE_RAJ.31.t	
+	desc = GOE_RAJ.31.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	option = {
+		name = GOE_RAJ.31.a
+		ai_chance = {
+			base = 1
+		}
+		add_timed_idea = {
+			idea = idea_RAJ_sold_parts_of_india_to_private_investors
+			days = 365
+		}
+		custom_effect_tooltip =  GOE_RAJ.31.a_tt
+	}
+
+	option = {
+		name = GOE_RAJ.31.b
+		trigger = {
+			is_ai = no
+			FROM = { is_ai = yes }
+		}
+
+		ai_chance = {
+			base = 0
+		}
+
+		add_timed_idea = {
+			idea = idea_RAJ_great_depression_1
+			days = 365
+		}
+
+		if = {
+			limit = {
+				FROM = { has_completed_focus = RAJ_great_depression_price_controls }
+			}
+			FROM = {	
+				uncomplete_national_focus = {
+					focus = RAJ_great_depression_price_controls
+					uncomplete_children = yes
+					refund_political_power = yes
+				}
+			}
+		}
+
+		FROM = { set_country_flag = ENG_rejected_eic } #activate the other AI strat
+
+
+		if = {
+			limit = {
+				FROM = { has_idea = idea_RAJ_price_controls }
+			}
+			remove_ideas = {
+				idea_RAJ_price_controls
+			}
+		} 
+
+		if = {
+			limit = {
+				FROM = { has_idea = idea_RAJ_price_controls_2 }
+			}
+			remove_ideas = {
+				idea_RAJ_price_controls_2
+			}
+		} 
+
+
+	}
+}
+
+#UK hand over Aden
+country_event = {
+	id = GOE_RAJ.32
+	title = GOE_RAJ.32.t	
+	desc = GOE_RAJ.32.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	option = {
+		name = GOE_RAJ.32.a
+		ai_chance = {
+			base = 1
+		}
+
+
+        ENG = { 
+            country_event = { id = GOE_RAJ.16 hours = 2 } 
+            #event_option_tooltip = GOE_RAJ.16.a
+        }
+        if = {
+        	limit = {
+        		has_completed_focus = RAJ_look_to_the_future 
+        	}
+
+        	429 = {
+        		add_extra_state_shared_building_slots = 1
+	        	add_building_construction = {
+	        		type = industrial_complex
+	        		level = 1
+	        		instant_build = yes
+	        	}
+        	}
+
+        }
+        else_if = {
+        	limit = {
+        		has_completed_focus = RAJ_look_to_the_past
+        	}
+        	988 = {
+        		add_extra_state_shared_building_slots = 1
+	        	add_building_construction = {
+	        		type = industrial_complex
+	        		level = 1
+	        		instant_build = yes
+	        	}
+        	}
+        }
+        else = {
+	        random_core_state = {
+	        	limit = {
+	        		is_controlled_by = ROOT
+	        	}
+	        	prioritize = { 439 } 
+	        	add_extra_state_shared_building_slots = 1
+	        	add_building_construction = {
+	        		type = industrial_complex
+	        		level = 1
+	        		instant_build = yes
+	        	}
+	        	
+	        }
+        }
+
+        effect_tooltip = {
+            RAJ = {
+                add_autonomy_score = { 
+                    value = 80
+                }
+            }
+            
+            ENG = {
+                transfer_state = 992
+                # 659 = { # Now all of Aden encompasses the Federation of South Arabia
+                #     add_core_of = FSA
+                # }
+                # 1016 = {
+                #     add_core_of = FSA
+                #     add_claim_by = YEM
+                # }
+            }
+        }
+	}
+
+	option = {
+		name = GOE_RAJ.32.b
+
+	}
+}
+
+#UK - Mughal uprising
+country_event = {
+	id = GOE_RAJ.33
+	title = GOE_RAJ.33.t	
+	desc = GOE_RAJ.33.desc	
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+	option = {
+		name = GOE_RAJ.33.a
+		ai_chance = {
+			base = 1
+		}
+		custom_effect_tooltip = 6_month_timer_mughal_tt
+		trigger = {
+			NOT = {
+				TAG = RAJ
+			}
+		}
+	}
+	option = {
+		name = GOE_RAJ.33.c
+		ai_chance = {
+			base = 1
+		}
+		custom_effect_tooltip = GOE_RAJ_33_c_tt
+		trigger = {
+			TAG = RAJ
+		}
+	}
+}
 
 #UK 
 country_event = {
@@ -1165,6 +1467,72 @@ country_event = {
 	}
 }
 
+country_event = {  #Warn about garrison not being set, hidden event
+	id = GOE_RAJ.36
+	is_triggered_only = yes
+	hidden = yes
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = RAJ_only_send_one_event
+			}
+			clr_country_flag = RAJ_only_send_one_event
+		}
+		
+		every_owned_state = {
+			limit = { has_resistance = yes }
+			if = {
+				limit = { 
+					RAJ = { NOT = { has_country_flag = RAJ_only_send_one_event } } 
+				}
+
+				if = {
+					limit = { occupation_law = no_garrison }
+					RAJ = { set_country_flag = RAJ_only_send_one_event }
+					if = {
+						limit = {
+							RAJ = { NOT = { has_country_flag = RAJ_has_been_warned_about_garrison } }
+						}
+						RAJ = { 
+							set_country_flag = RAJ_has_been_warned_about_garrison 
+							country_event = {
+								id = GOE_RAJ.37
+								hours = 2
+							}
+						} 
+					}
+					else = {
+						RAJ = { 
+							country_event = {
+								id = GOE_RAJ.38
+								hours = 2
+							}
+						} 
+					}
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				NOT = { has_completed_focus = RAJ_give_me_blood_and_i_will_grant_you_freedom } #Invoke itself
+			}
+
+			country_event = {
+				id = GOE_RAJ.36
+				days = 22
+				random_days = 15 
+			}
+		}
+
+		if = {
+			limit = {
+				has_country_flag = RAJ_only_send_one_event
+			}
+			clr_country_flag = RAJ_only_send_one_event
+		}
+	}
+}
 
 country_event = { #Warn once about garrison not being set 
 	id = GOE_RAJ.37
@@ -1294,6 +1662,333 @@ country_event = {
 
 		}
 	}
+}
+
+country_event = {
+	id = GOE_RAJ_partition.2
+	title = GOE_RAJ_partition.2.t	
+	desc = GOE_RAJ_partition.2.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	
+
+
+	is_triggered_only = yes
+
+	option = {
+		name =  GOE_RAJ_partition.2.a
+		if = {
+			limit = {
+				is_ai = yes	
+			}
+			var:RAJ.unrest_target_state = { 
+				add_resistance = 15 
+				custom_effect_tooltip = currentStateResistance
+			}
+
+		}
+		else = {
+			var:RAJ.unrest_target_state = { 
+				add_resistance = 30 
+				custom_effect_tooltip = currentStateResistance
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				var:RAJ.unrest_target_state = { 
+					resistance < 25 
+				}
+				add = 1
+			}
+		}
+		clear_variable = RAJ.unrest_target_state
+		hidden_effect = {
+			check_painful_memory = yes
+		}
+		custom_effect_tooltip = GOE_RAJ_partition_become_free_to_stop_the_chaos_tt
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				if = {
+					limit = { check_variable = { RAJ_war_support_increased < 51 } }
+				}
+				add_war_support = 0.05
+				add_to_variable = { var = RAJ_war_support_increased value = 5}
+				custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+			}
+		}
+	}
+
+	option = {
+		name =  GOE_RAJ_partition.2.b
+		ai_chance = {
+			base = 1
+			modifier = {
+				var:RAJ.unrest_target_state = { 
+					resistance > 39 
+				}
+				factor = 100
+			}
+		}
+		trigger = { 
+			OR = {
+				var:RAJ.unrest_target_state = { 
+					compliance > 24 
+				}
+
+				var:RAJ.unrest_target_state = { 
+					resistance > 24 
+				}
+			}
+		}
+
+		if = {
+			limit = {
+				is_ai = yes	
+			}
+			var:RAJ.unrest_target_state = { 
+				add_resistance = 5 
+				custom_effect_tooltip = currentStateResistance
+				custom_effect_tooltip = newline_tt
+				add_compliance = -10
+				custom_effect_tooltip = currentStateCompliance
+			}
+
+		}
+		else = {
+			var:RAJ.unrest_target_state = { 
+				add_resistance = 15 
+				custom_effect_tooltip = currentStateResistance
+				custom_effect_tooltip = newline_tt
+				add_compliance = -25
+				custom_effect_tooltip = currentStateCompliance
+			}
+		}
+		clear_variable = RAJ.unrest_target_state
+		hidden_effect = {
+			check_painful_memory = yes
+		}
+
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				add_war_support = 0.05
+			}
+			custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+		}
+		custom_effect_tooltip = GOE_RAJ_partition_become_free_to_stop_the_chaos_tt
+		
+	}
+}
+
+
+#riots 
+country_event = {
+	id = GOE_RAJ_partition.3
+	title = GOE_RAJ_partition.3.t	
+	desc = GOE_RAJ_partition.3.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	
+	is_triggered_only = yes
+
+	option = {
+		name =  GOE_RAJ_partition.3.a
+		var:RAJ.unrest_target_state = {
+			if = {
+				limit = {
+					industrial_complex > 0
+				}
+				damage_building = {
+					type = industrial_complex 
+					damage = 3 # levels of damage 
+				}
+			}
+
+			if = {
+				limit = {
+					arms_factory > 0
+				}
+				damage_building = {
+					type = arms_factory 
+					damage = 3 # levels of damage 
+				}
+			}
+
+			if = {
+				limit = {
+					dockyard > 0
+				}
+				damage_building = {
+					type = dockyard 
+					damage = 3 # levels of damage 
+				}
+			}
+
+
+			if = {
+				limit = {
+					infrastructure > 0
+				}
+				damage_building = {
+					type = infrastructure 
+					damage = 3 # levels of damage 
+				}
+			}
+		}
+		clear_variable = RAJ.unrest_target_state
+		hidden_effect = {
+			check_painful_memory = yes
+		}
+
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				add_war_support = 0.05
+			}
+			custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+		}
+		custom_effect_tooltip = GOE_RAJ_partition_become_free_to_stop_the_chaos_tt
+	}
+}
+
+country_event = {
+	id = GOE_RAJ_partition.4
+	title = GOE_RAJ_partition.4.t	
+	desc = GOE_RAJ_partition.4.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	
+
+
+
+	is_triggered_only = yes
+
+	option = {
+		name =  GOE_RAJ_partition.4.a
+		add_stability = -0.045
+		clear_variable = RAJ.unrest_target_state
+		hidden_effect = {
+			check_painful_memory = yes
+		}
+
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				add_war_support = 0.05
+			}
+			custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+		}
+		custom_effect_tooltip = GOE_RAJ_partition_become_free_to_stop_the_chaos_tt
+	}
+
+	option = {
+		name =  GOE_RAJ_partition.4.b
+		add_stability = -0.02
+		add_political_power = -35
+		clear_variable = RAJ.unrest_target_state
+		hidden_effect = {
+			check_painful_memory = yes
+		}
+
+		custom_effect_tooltip = GOE_RAJ_partition_become_free_to_stop_the_chaos_tt
+	}
+
+	option = {
+		name =  GOE_RAJ_partition.4.c
+		if = {
+			limit = {
+				is_ai = yes
+			}
+			var:RAJ.unrest_target_state = {
+				add_resistance = 5
+				custom_effect_tooltip = currentStateResistance
+				custom_effect_tooltip = newline_tt
+				add_compliance = -5
+				custom_effect_tooltip = currentStateCompliance
+			}
+		}
+		else = {
+
+			var:RAJ.unrest_target_state = {
+				add_resistance = 15
+				custom_effect_tooltip = currentStateResistance
+				custom_effect_tooltip = newline_tt
+				add_compliance = -15
+				custom_effect_tooltip = currentStateCompliance
+			}
+		}
+
+
+		trigger = {
+			var:RAJ.unrest_target_state = {
+				compliance > 20
+				resistance < 80
+			}
+		}
+		clear_variable = RAJ.unrest_target_state
+
+		hidden_effect = {
+			check_painful_memory = yes
+		}
+
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				add_war_support = 0.05
+			}
+			custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+		}
+		custom_effect_tooltip = GOE_RAJ_partition_become_free_to_stop_the_chaos_tt
+
+	}
+}
+
+#Clashes between Muslims and Hindus
+country_event = {
+	id = GOE_RAJ_partition.5
+	title = GOE_RAJ_partition.5.t	
+	desc = GOE_RAJ_partition.5.desc	
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	option = { #do nothing
+		name =  GOE_RAJ_partition.5.a
+		every_controlled_state = {
+			limit = {
+				is_in_array = {
+					array = RAJ.owned_states_at_game_start
+					value = THIS
+				}
+
+				has_resistance = yes
+			}
+
+			add_compliance = -5
+			add_resistance = 5
+			
+		}
+
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				add_war_support = 0.05
+			}
+			custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+		}
+	}
+
+	option = { #intervene
+		name =  GOE_RAJ_partition.5.b
+		add_political_power = -40
+
+		if = {
+			limit = { has_completed_focus = RAJ_league_against_gandhism }
+			hidden_effect = {
+				add_war_support = 0.05
+			}
+			custom_effect_tooltip = RAJ_league_against_gandhism_tt_event
+		}
+	}
+	
 }
 
 
@@ -2963,6 +3658,150 @@ country_event = {
 		hidden_effect = { controlled_civilian_factories_excluding_trade = yes }
 	}
 }
+
+# pick a leader - the legacy of babur
+country_event = {
+	id = GOE_RAJ_princely.1
+	title = GOE_RAJ_princely.1.t
+	desc = GOE_RAJ_princely.1.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_indian_soldiers
+	option = {
+		name = GOE_RAJ_princely.1.a
+		HYD = {
+			RAJ_mir_osman_ali_khan = {
+				set_nationality = RAJ
+				set_character_flag = is_mughal_emperor
+			}
+			promote_character = RAJ_mir_osman_ali_khan
+		}	
+	}
+	option = {
+		name = GOE_RAJ_princely.1.b
+			RAJ = {
+			    add_country_leader_role = {
+				    character = RAJ_mirza_khurshid_jah_bahadur
+				    promote_leader = yes
+				    country_leader = {
+				        ideology = despotism
+				        expire = "1965.1.1.1"
+				        traits = { RAJ_heir_of_the_empire }
+				        id=-1
+				    }
+				}
+			}
+			#retire_country_leader = yes
+	}
+	option = {
+		name = GOE_RAJ_princely.1.c
+		KLT = {
+			RAJ_ahmad_yar_khan = {
+				set_nationality = RAJ
+				set_character_flag = is_mughal_emperor
+			}
+			promote_character = RAJ_ahmad_yar_khan
+		}	
+	}
+	option = {
+		name = GOE_RAJ_princely.1.d
+		BAN = {
+			RAJ_huseyn_shaheed_suhrawardy = {
+				set_nationality = RAJ
+				set_character_flag = is_mughal_emperor
+			}
+			promote_character = RAJ_huseyn_shaheed_suhrawardy
+		}	
+	}
+}
+
+country_event = {
+	id = GOE_RAJ_princely.2
+	title = GOE_RAJ_princely.2.t
+	desc = GOE_RAJ_princely.2.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_indian_soldiers
+	option = {
+		name = GOE_RAJ_princely.2.a
+		BAN = {
+			RAJ_huseyn_shaheed_suhrawardy = {
+				set_nationality = RAJ
+				set_character_flag = is_mughal_emperor
+			}
+			promote_character = RAJ_huseyn_shaheed_suhrawardy
+		}	
+	}
+	#option = {
+	#	name = GOE_RAJ_princely.2.b
+	#	KAS = {
+	#		RAJ_maharaja_hari_singh = {
+	#			set_nationality = RAJ
+	#			set_character_flag = is_mughal_emperor
+	#		}
+	#		promote_character = RAJ_maharaja_hari_singh
+	#	}	
+	#}
+	#option = {
+	#	name = GOE_RAJ_princely.2.c
+	#	MPU = {
+	#		RAJ_bodh_chandra_singh = {
+	#			set_nationality = RAJ
+	#			set_character_flag = is_mughal_emperor
+	#		}
+	#		promote_character = RAJ_bodh_chandra_singh
+	#	}	
+	#}
+	option = {
+		name = GOE_RAJ_princely.2.d
+		ROOT = {
+			country_event = { id = GOE_RAJ_princely.1 }
+		}
+	}
+}
+
+#country_event = {
+#	id = GOE_RAJ_princely.3
+#	title = GOE_RAJ_princely.3.t
+#	desc = GOE_RAJ_princely.3.desc
+#	is_triggered_only = yes
+#	picture = GFX_report_event_indian_soldiers
+	#option = {
+	#	name = GOE_RAJ_princely.3.a
+	#	RJP = {
+	#		RAJ_umed_singh = {
+	#			set_nationality = RAJ
+	#			set_character_flag = is_mughal_emperor
+	#		}
+	#		promote_character = RAJ_umed_singh
+	#	}	
+	#}
+	#option = {
+	#	name = GOE_RAJ_princely.3.b
+	#	WIS = {
+	#		RAJ_pratap_singh_rao_gaekwad = {
+	#			set_nationality = RAJ
+	#			set_character_flag = is_mughal_emperor
+	#		}
+	#		promote_character = RAJ_pratap_singh_rao_gaekwad
+	#	}	
+	#}
+	#option = {
+	#	name = GOE_RAJ_princely.3.c
+	#	MYS = {
+	#		RAJ_maharaja_jayachamarajendra_wadiyar = {
+	#			set_nationality = RAJ
+	#			set_character_flag = is_mughal_emperor
+	#		}
+	#		promote_character = RAJ_maharaja_jayachamarajendra_wadiyar
+	#	}	
+	#}
+#	option = {
+#		name = GOE_RAJ_princely.3.d
+#		ROOT = {
+#			country_event = { id = GOE_RAJ_princely.1 }
+#		}
+#	}
+#}
+
 
 # (RAJ) proposes naval agreement
 country_event = {
