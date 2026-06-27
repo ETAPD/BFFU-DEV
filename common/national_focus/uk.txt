@@ -554,7 +554,7 @@ focus_tree = {
 		mutually_exclusive = { focus = ENG_containment }
 		
 		available = {
-			GER = { has_completed_focus = GER_remilitarize_the_rhineland }
+			
 		}
 		
 		x = -5
@@ -608,7 +608,7 @@ focus_tree = {
 		y = 1
 		relative_position_id = shadow_scheme
 		
-		cost = 6
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
@@ -649,12 +649,14 @@ focus_tree = {
 			
 		}
 		
-		cost = 6
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
 		}	
 		completion_reward = {
+			add_political_power = 35
+			add_stability = 0.05
 			add_ideas = ENG_London_Reform
 			120 = {
 				add_extra_state_shared_building_slots = 2
@@ -5071,6 +5073,38 @@ focus_tree = {
 			}
 		}
 	}
+
+	focus = {
+		id = ENG_Scramble_from_Africa
+		prerequisite = { focus = ENG_fortify_suez }
+		icon = GFX_focus_BEL_koningshooikt_wavre_line
+		x = -1
+		y = 1
+		relative_position_id = ENG_fortify_suez
+		cost = 0.5
+		ai_will_do = {
+			factor = 1
+		}
+
+		available = {
+		    1047 = {
+				NOT = {
+				CONTROLLER = {
+					OR = {
+						tag = ENG
+						is_subject_of = ENG
+					}
+				}
+				}
+			}
+		}
+
+		available_if_capitulated = yes
+
+		completion_reward = {
+        add_timed_idea = { idea = ENG_scramble_from_africa days = 60 }
+		}
+	}
 	
 	focus = {
 		id = ENG_suez_base
@@ -5317,7 +5351,7 @@ focus_tree = {
 		mutually_exclusive = { focus = ENG_appeasement }
 		
 		available = {
-			GER = { has_completed_focus = GER_remilitarize_the_rhineland }
+			
 			
 		}
 		
@@ -5475,7 +5509,7 @@ focus_tree = {
 		}
 		
 		completion_reward = {
-			add_political_power = 75
+			add_political_power = 100
 			GER = { add_political_power = 50 }
 		}
 	}
@@ -5520,17 +5554,17 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_allow_anschluss
 		
-		cost = 5
+		cost = 4
 		
 		ai_will_do = {
 			factor = 1
 		}	
 		completion_reward = {
 			128 = {
-				add_extra_state_shared_building_slots = 3
+				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = arms_factory
-					level = 3
+					level = 4
 					instant_build = yes
 				}
 			}
@@ -5677,7 +5711,7 @@ focus_tree = {
 		has_completed_focus = ENG_rearmament
 		}
 		
-		cost = 6
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
@@ -5761,7 +5795,7 @@ focus_tree = {
 		available = {
 		}
 		
-		cost = 6
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
@@ -5786,6 +5820,31 @@ focus_tree = {
 		}
 	}
 	focus = {
+		id = ENG_Foreign_Investors
+		icon = GFX_SOV_paced_industrialization_ccp_2d_sov_compatibility
+		prerequisite = { focus = ENG_bank_of_england focus = ENG_London_financial_hub }
+		
+		x = 1
+		y = 1
+		relative_position_id = ENG_London_financial_hub
+
+		available = {
+		}
+		
+		cost = 5
+		
+		ai_will_do = {
+			factor = 1
+		}	
+		completion_reward = {
+		hidden_effect = {
+		add_dynamic_modifier = { modifier = FOREIGN_INVESTORS }
+		}
+		#set_variable = { ENG_industrial_capacity_factory = 0 tooltip = industrial_capacity_factory_tt}
+		custom_effect_tooltip = FOREIGN_INVESTORS2
+		}
+	}
+	focus = {
 		id = ENG_prevent_another_war
 		icon = GFX_leftside
 		prerequisite = { focus = ENG_prepare_for_the_inevitable }
@@ -5799,7 +5858,7 @@ focus_tree = {
 		GER = { has_completed_focus = GER_fate_of_czechoslovakia }
 		}
 		
-		cost = 8
+		cost = 6
 		
 		ai_will_do = {
 			factor = 1
@@ -5973,14 +6032,14 @@ focus_tree = {
 
 	focus = {
 		id = ENG_military_buildup
-		icon = GFX_goal_generic_construct_mil_factory
+		icon = GFX_SOV_expand_the_aircraft_industry_ccp_2d_sov_compatibility
 		prerequisite = { focus = ENG_early_mobilisation }
 		
 		x = 0
 		y = 1
 		relative_position_id = ENG_early_mobilisation
 		
-		cost = 6
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
@@ -6834,7 +6893,7 @@ focus_tree = {
 	}
 	focus = {
 		id = ENG_emergency_rearmament_programme
-		icon = GFX_rightside
+		icon = GFX_SOV_national_unification_ccp_2d_sov_compatibility
 		prerequisite = { focus = ENG_more_funding_from_house_of_commons}
 		
 		x = 0
@@ -7068,7 +7127,44 @@ focus_tree = {
 		}
 	}
 	
-	
+	focus = {
+		id = ENG_naval_funding
+		icon = GFX_SOV_rebuild_the_far_eastern_fleet_ccp_2d_sov_compatibility
+		prerequisite = { focus = ENG_boost_domestic_construction focus = ENG_bring_more_funding }
+		
+		x = -1
+		y = 1
+		relative_position_id = ENG_boost_domestic_construction
+
+		available = {
+		}
+		
+		cost = 4
+		
+		ai_will_do = {
+			factor = 1
+		}	
+		completion_reward = {
+			136 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = dockyard
+					level = 2
+					instant_build = yes
+				}
+			}
+			122 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = dockyard
+					level = 2
+					instant_build = yes
+				}
+			}
+			add_ideas = ENG_Navy_Budget
+			custom_effect_tooltip = Containment_ENG2
+		}
+	}
 	
 	
 	
