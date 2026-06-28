@@ -10756,83 +10756,6 @@ focus_tree = {
 			}
 		}
 	}
-
-	focus = {
-		id = GER_second_vienna_award
-		icon = GFX_goal_generic_cavalry
-				prerequisite = { focus = GER_danzig_or_war }
-		x = 2
-		y = 2
-		relative_position_id = GER_danzig_or_war
-		cost = 2
-		ai_will_do = {
-			factor = 10
-		}
-		available = {
-			#is_puppet = no
-			#has_army_manpower = { size > 749999 }
-			#has_capitulated = no
-			OR = {
-				FRA = { has_capitulated = yes }
-				date > 1940.1.1
-			}
-		}
-		bypass = {
-			OR = {
-				AND = {
-					OR = {
-						HUN = {
-							NOT = { has_government = fascism }
-							is_friend_or_potential_friend_of_GER = no
-						}
-						ROM = {
-							OR = {
-								AND = {
-									NOT = { controls_state = 76 }
-									NOT = { controls_state = 83 }
-									NOT = { controls_state = 84 }
-								}
-								has_war_with = HUN
-								AND = {
-									is_in_faction_with = GER
-									HUN = { NOT = { is_in_faction_with = GER } }#GER should not want to give territory to Hungary if Romania joined the axis early.
-								}
-							}
-						}
-					}
-					OR = {
-						BUL = { is_friend_or_potential_friend_of_GER = no }
-						ROM = {
-							OR = {
-								NOT = { controls_state = 77 }
-								has_war_with = BUL					
-							}
-						}					
-					}
-				}
-				HUN = { exists = no } 
-				ROM = { exists = no	}
-				HUN = { has_capitulated = yes }
-				ROM = { has_capitulated = yes }
-				HUN = { is_subject_of = ROM } #just rude
-			}
-		}
-		completion_reward = {
-			if = {
-				limit = {
-					HUN = {
-						is_friend_or_potential_friend_of_GER = yes
-					}
-					ROM = {
-						controls_state = 76
-						NOT = { has_war_with = HUN }
-					}
-				}
-				country_event = { id = germany.20 }
-			}
-		}
-	}
-
 	
 	focus = {
 		id = GER_molotov_ribbentrop_pact
@@ -12767,6 +12690,82 @@ focus_tree = {
 			}
 		}
 	}
+
+	focus = {
+		id = GER_second_vienna_award
+		icon = GFX_goal_generic_cavalry
+				prerequisite = { focus = GER_danzig_or_war }
+		x = 2
+		y = 2
+		relative_position_id = GER_danzig_or_war
+		cost = 2
+		ai_will_do = {
+			factor = 10
+		}
+		available = {
+			#is_puppet = no
+			#has_army_manpower = { size > 749999 }
+			#has_capitulated = no
+			OR = {
+				FRA = { has_capitulated = yes }
+				date > 1940.1.1
+			}
+		}
+		bypass = {
+			OR = {
+				AND = {
+					OR = {
+						HUN = {
+							NOT = { has_government = fascism }
+							is_friend_or_potential_friend_of_GER = no
+						}
+						ROM = {
+							OR = {
+								AND = {
+									NOT = { controls_state = 76 }
+									NOT = { controls_state = 83 }
+									NOT = { controls_state = 84 }
+								}
+								has_war_with = HUN
+								AND = {
+									is_in_faction_with = GER
+									HUN = { NOT = { is_in_faction_with = GER } }#GER should not want to give territory to Hungary if Romania joined the axis early.
+								}
+							}
+						}
+					}
+					OR = {
+						BUL = { is_friend_or_potential_friend_of_GER = no }
+						ROM = {
+							OR = {
+								NOT = { controls_state = 77 }
+								has_war_with = BUL					
+							}
+						}					
+					}
+				}
+				HUN = { exists = no } 
+				ROM = { exists = no	}
+				HUN = { has_capitulated = yes }
+				ROM = { has_capitulated = yes }
+				HUN = { is_subject_of = ROM } #just rude
+			}
+		}
+		completion_reward = {
+			if = {
+				limit = {
+					HUN = {
+						is_friend_or_potential_friend_of_GER = yes
+					}
+					ROM = {
+						controls_state = 76
+						NOT = { has_war_with = HUN }
+					}
+				}
+				country_event = { id = germany.20 }
+			}
+		}
+	}
 	
 	# focus = {
 	# 	id = GER_befriend_poland
@@ -13109,7 +13108,6 @@ focus_tree = {
 
 		will_lead_to_war_with = BEL
 		will_lead_to_war_with = HOL
-		will_lead_to_war_with = LUX
 		will_lead_to_war_with = FRA
 
 		bypass = {
@@ -13121,13 +13119,6 @@ focus_tree = {
 				}
 			}
 			BEL = {
-				OR = {
-					exists = no
-					is_in_faction_with = GER
-					has_war_with = ROOT
-				}
-			}
-			LUX = {
 				OR = {
 					exists = no
 					is_in_faction_with = GER
@@ -13225,25 +13216,6 @@ focus_tree = {
 				hidden_effect = {
 					ENG = { add_to_faction = HOL }					
 				}
-			}
-			if = {
-				limit = {
-					country_exists = LUX
-					NOT = { LUX = { is_in_faction_with = GER } }
-					NOT = { has_war_with = LUX }
-				}
-				declare_war_on = {
-					target = LUX
-					type = annex_everything
-				}		
-				hidden_effect = {
-					ENG = { add_to_faction = LUX }					
-				}	
-				add_ai_strategy = { 
-					type = conquer
-					id = LUX
-					value = 100
-				}		
 			}
 			if = {
 				limit = {
@@ -13387,59 +13359,63 @@ focus_tree = {
 		}
 	}
 
-#focus = {
-#	id = GER_war_with_france
-#
-#	icon = GFX_focus_attack_france
-#	alternate_icon = GFX_focus_GER_war_with_france
-#
-#	prerequisite = { focus = GER_danzig_or_war }
-#
-#	x = 2
-#	y = 1
-#	relative_position_id = GER_danzig_or_war
-#	cost = 1
-#
-#	bypass = {
-#		OR = {
-#			NOT = { country_exists = FRA }
-#			has_war_with = FRA
-#		}
-#	}
-#	
-#	available = {
-#		is_subject = no			
-#		NOT = { is_in_faction_with = FRA }
-#	}
-#
-#	historical_ai = {
-#		date > 1939.1.1
-#		NOT = {
-#			any_neighbor_country = {
-#				has_war_with = ROOT
-#			}		
-#		}
-#	}
-#
-#	ai_will_do = {
-#		factor = 10			
-#		modifier = {
-#			factor = 0.05
-#			date < 1939.1.1
-#		}
-#	}
-#	search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
-#
-#	completion_reward = {
-#		add_named_threat = { threat = 5 name = GER_war_with_france_threat }
- #		create_wargoal = {
- #			type = take_state_focus
- #			target = FRA
- #			expire = 0
- #			generator = { 28 }
- #		}
-#	}
-#}
+	focus = {
+		id = GER_war_with_france
+
+		icon = GFX_focus_attack_france
+		alternate_icon = GFX_focus_GER_war_with_france
+
+		prerequisite = { focus = GER_danzig_or_war }
+
+		x = 2
+		y = 1
+		relative_position_id = GER_danzig_or_war
+		cost = 1
+
+		allow_branch = {
+			always = no
+		}
+
+		bypass = {
+			OR = {
+				NOT = { country_exists = FRA }
+				has_war_with = FRA
+			}
+		}
+		
+		available = {
+			is_subject = no			
+			NOT = { is_in_faction_with = FRA }
+		}
+
+		historical_ai = {
+			date > 1939.1.1
+			NOT = {
+				any_neighbor_country = {
+					has_war_with = ROOT
+				}		
+			}
+		}
+
+		ai_will_do = {
+			factor = 10			
+			modifier = {
+				factor = 0.05
+				date < 1939.1.1
+			}
+		}
+		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
+
+		completion_reward = {
+			add_named_threat = { threat = 5 name = GER_war_with_france_threat }
+			create_wargoal = {
+				type = take_state_focus
+				target = FRA
+				expire = 0
+				generator = { 28 }
+			}
+		}
+	}
 
 	focus = {
 		id = GER_demands_to_sweden
@@ -14576,685 +14552,6 @@ focus_tree = {
 		}
 	}
 	
-	focus = {
-		id = GER_secure_finland
-
-		icon = GFX_focus_FIN_keepers_of_the_north
-
-		prerequisite = { focus = GER_operation_weserubung focus = GER_utilize_the_nordliche_gesellschaft }
-
-		x = 0
-		y = 1
-		relative_position_id = GER_utilize_the_nordliche_gesellschaft
-
-		cost = 5
-
-		ai_will_do = {
-			factor = 10
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		allow_branch = {
-			always = no
-		}
-
-		available = {
-			is_subject = no
-			NOT = { has_war_with = FIN }
-			NOT = { is_ally_with = FIN }
-			NOT = { has_guaranteed = FIN }
-			NOT = { has_non_aggression_pact_with = FIN }
-			country_exists = FIN 
-			FIN = {
-				NOT = { is_ally_with = SOV }
-				NOT = { is_guaranteed_by = SOV }
-				NOT = { has_non_aggression_pact_with = SOV }
-			}
-		}
-
-		will_lead_to_war_with = FIN
-
-		search_filters = { FOCUS_FILTER_ANNEXATION }
-
-		completion_reward = {
-			if = {
-				limit = {
-					FIN = {
-						is_subject = no
-						is_in_faction = no
-					}
-				}
-				FIN = {
-					country_event = { id = wuw_GER_realpolitik.1 days = 1 }
-				}
-				custom_effect_tooltip = if_they_accept_tt
-				effect_tooltip = {
-					GER = {
-						add_to_faction = FIN
-					}
-				}
-
-				custom_effect_tooltip = if_they_refuse_tt
-				effect_tooltip = {
-					GER = {
-						create_wargoal = {
-							type = annex_everything
-							target = FIN
-						}
-					}
-				}
-			}
-			else = {
-				create_wargoal = {
-					type = annex_everything
-					target = FIN
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_operation_sea_lion
-		icon = GFX_focus_generic_naval_invasion
-		#prerequisite = { focus = GER_war_with_france focus = GER_invade_italy }
-		prerequisite = { focus = GER_war_with_france }
-
-		x = -1
-		y = 1
-		relative_position_id = GER_war_with_france
-		cost = 5
-
-		available = {
-			has_war_with = ENG
-			if = {
-				limit = {
-					has_global_flag = axis_manpower_flag
-				}
-				has_army_manpower = { size > 999999 } #80 div	
-			}
-			custom_trigger_tooltip = {
-			 	tooltip = GER_sea_lion_eq_trigger_tt
-			 	check_variable = { num_equipment_in_armies_k@infantry_equipment > 90 }
-			}
-		}
-
-		allow_branch = {
-			always = no
-		}
-
-		bypass = {
-			ENG = {
-				OR = {
-					is_in_faction_with = ROOT
-					is_subject_of = ROOT
-					exists = no
-				}
-			}
-		}
-
-		search_filters = {}
-
-		completion_reward = {
-			add_timed_idea = {
-				idea = GER_operation_sea_lion_ns
-				days = 180
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			
-			if = {
-				limit = {
-					has_dlc = "La Resistance"
-				}
-				if = { #This is so that it shows "Modify NS" by default, since most likely Anschluss will be completed and NS will be there. But if Anschluss is bypassed without getting the DM, the tooltip will be adjusted.
-					limit = {
-						NOT = { has_completed_focus = GER_anschluss }
-					}
-					custom_effect_tooltip = GER_modify_military_intelligence_service_modifier_tt
-				}
-				else = {
-					GER_add_or_modify_military_intelligence_service = yes
-				}
-				add_to_variable = { 
-					GER_military_intelligence_service_operative_slot = 1
-					tooltip = operative_slot_tt
-				}
-				GER_create_operative_norman_stewart = yes
-			}
-		}
-	}
-
-	focus = {
-		id = GER_operation_green
-		icon = GFX_goal_generic_occupy_states_ongoing_war
-		prerequisite = { focus = GER_operation_sea_lion }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_operation_sea_lion
-		cost = 4
-
-		ai_will_do = {
-			factor = 10
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		will_lead_to_war_with = IRE
-
-		available = {
-			is_subject = no
-			OR = {
-				IRE = {
-					exists = yes
-					NOT = { is_ally_with = ROOT }
-					NOT = { is_guaranteed_by = ROOT }
-					NOT = { has_non_aggression_pact_with = ROOT }
-				}
-				# NIR = {
-				# 	exists = yes
-				# 	NOT = { is_ally_with = ROOT }
-				# 	NOT = { is_guaranteed_by = ROOT }
-				# 	NOT = { has_non_aggression_pact_with = ROOT }
-				# }
-			}
-			OR = {
-				has_war_with = ENG
-				NOT = { country_exists = ENG }
-				is_ally_with = ENG
-				has_subject = RGB
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_ANNEXATION }
-
-		completion_reward = {
-
-			if = {
-				limit = {
-					IRE = {
-						exists = yes
-						NOT = { has_war_with = ROOT }
-						NOT = { is_ally_with = ROOT }
-						NOT = { is_guaranteed_by = ROOT }
-						NOT = { has_non_aggression_pact_with = ROOT }
-					}
-				}
-				create_wargoal = {
-					type = puppet_wargoal_focus
-					target = IRE
-					expire = 0
-				}
-			}
-			# if = {
-			# 	limit = {
-			# 		NIR = {
-			# 			exists = yes
-			# 			NOT = { has_war_with = ROOT }
-			# 			NOT = { is_ally_with = ROOT }
-			# 			NOT = { is_guaranteed_by = ROOT }
-			# 			NOT = { has_non_aggression_pact_with = ROOT }
-			# 		}
-			# 	}
-			# 	create_wargoal = {
-			# 		type = puppet_wargoal_focus
-			# 		target = NIR
-			# 		expire = 0
-			# 	}
-			# }
-		}
-	}
-	
-	focus = {
-		id = GER_crossing_the_atlantic
-		icon = GFX_goal_generic_build_navy
-		prerequisite = { focus = GER_operation_sea_lion }
-
-		x = 0
-		y = 2
-		relative_position_id = GER_operation_sea_lion
-		cost = 5
-
-		cancel_if_invalid = yes
-		
-		available = {
-			is_subject = no
-			custom_trigger_tooltip = {
-				tooltip = GER_crossing_the_atlantic_trigger_tt
-				NOT = {
-					any_enemy_country = {
-						is_major = yes
-						any_controlled_state = { 
-							is_on_continent = europe
-						}
-					}
-				}
-			}
-		}
-
-		bypass = {
-			USA = {
-				exists = no
-			}
-		}
-
-		will_lead_to_war_with = USA
-
-		ai_will_do = {
-			factor = 10
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			IF = {
-				limit = {
-					NOT = {
-						OR = {
-							has_war_with = USA
-							has_wargoal_against = {
-								target = USA
-							}
-						}
-					}
-
-				}
-				create_wargoal = {
-					type = annex_everything
-					target = USA
-				}
-
-				custom_effect_tooltip = generic_skip_one_line_tt
-			}
-
-			add_tech_bonus = {
-				bonus = 0.75
-				uses = 1
-				category = marine_tech
-				name = GER_crossing_the_atlantic
-			}
-
-			IF = {
-				limit = {
-					has_dlc = "Arms Against Tyranny"
-				}
-				add_doctrine_cost_reduction = {
-					cost_reduction = 0.5
-					uses = 2
-					category = cat_marines_doctrine
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ideas = GER_crossing_the_atlantic_ns
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			# Add Dockyards and Replace Mils - Cap is 10 states (20 dockyards gained & 20 mils removed) -> cap defined in variable crossing_the_atlantic_max_states_for_dockyards set in history file
-			custom_effect_tooltip = GER_crossing_the_atlantic_dockyards_tt
-
-			if = { #Tooltip so players can know where the hell the dockyards were added
-				limit = {
-					check_variable = { number_of_states_getting_dockyards > 0 }
-				}
-				custom_effect_tooltip = generic_states_affected_tt
-				every_controlled_state = {
-					limit = { has_state_flag = GER_crossing_the_atlantic_dockyards_built_flag }
-					display_individual_scopes = yes
-					add_building_construction = {
-						type = dockyard
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-
-			hidden_effect = {
-				every_controlled_state = { #Prio "self-sufficient" coastal states, with 2 mils
-					limit = {
-						is_fully_controlled_by = ROOT
-						is_on_continent = europe
-						is_coastal = yes
-						arms_factory > 1
-						NOT = { has_state_flag = GER_crossing_the_atlantic_dockyards_built_flag }
-					}
-					if = {
-						limit = {
-							check_variable = { ROOT.number_of_states_getting_dockyards < ROOT.crossing_the_atlantic_max_states_for_dockyards }
-						}
-						remove_building = {
-							type = arms_factory
-							level = 2
-						}
-						add_building_construction = {
-							type = dockyard
-							level = 2
-							instant_build = yes
-						}
-
-						set_state_flag = GER_crossing_the_atlantic_dockyards_built_flag
-						add_to_variable = { ROOT.number_of_states_getting_dockyards = 1 }
-						#log = "Number [?ROOT.number_of_states_getting_dockyards] - Built in [THIS.GetName] - Coastal with 2 mils" #Debug tool
-					}
-				}
-
-				every_controlled_state = { #Next prio coastal states with only 1 mil
-					limit = {
-						is_fully_controlled_by = ROOT
-						is_on_continent = europe
-						is_coastal = yes
-						AND = {
-							arms_factory < 2
-							arms_factory > 0
-						}
-						NOT = { has_state_flag = GER_crossing_the_atlantic_dockyards_built_flag }
-					}
-					if = {
-						limit = {
-							check_variable = { ROOT.number_of_states_getting_dockyards < ROOT.crossing_the_atlantic_max_states_for_dockyards }
-						}
-						add_extra_state_shared_building_slots = 1
-						remove_building = {
-							type = arms_factory
-							level = 1
-						}
-						add_building_construction = {
-							type = dockyard
-							level = 2
-							instant_build = yes
-						}
-						custom_effect_tooltip = GER_crossing_the_atlantic_1_factory_tt
-						hidden_effect = {
-							ROOT = {
-								random_controlled_state = {
-									limit = {
-										is_fully_controlled_by = ROOT
-										is_on_continent = europe
-										NOT = { is_coastal = yes }
-										arms_factory > 0
-									}
-									remove_building = {
-										type = arms_factory
-										level = 1
-									}
-								}
-							}
-
-							set_state_flag = GER_crossing_the_atlantic_dockyards_built_flag
-							add_to_variable = { ROOT.number_of_states_getting_dockyards = 1 }
-							#log = "Number [?ROOT.number_of_states_getting_dockyards] - Built in [THIS.GetName] - Coastal with 1 mil" #Debug tool
-						}
-					}
-				}
-
-				every_controlled_state = { #Last are coastal states with no mils on them
-					limit = {
-						is_fully_controlled_by = ROOT
-						is_on_continent = europe
-						is_coastal = yes
-						arms_factory < 1
-						NOT = { has_state_flag = GER_crossing_the_atlantic_dockyards_built_flag }
-					}
-					if = {
-						limit = {
-							check_variable = { ROOT.number_of_states_getting_dockyards < ROOT.crossing_the_atlantic_max_states_for_dockyards }
-						}
-						add_extra_state_shared_building_slots = 2
-						add_building_construction = {
-							type = dockyard
-							level = 2
-							instant_build = yes
-						}
-						custom_effect_tooltip = GER_crossing_the_atlantic_2_factories_tt
-						hidden_effect = {
-							ROOT = {
-								random_controlled_state = {
-									limit = {
-										is_fully_controlled_by = ROOT
-										is_on_continent = europe
-										NOT = { is_coastal = yes }
-										arms_factory > 1
-									}
-									remove_building = {
-										type = arms_factory
-										level = 2
-									}
-								}
-							}
-
-							set_state_flag = GER_crossing_the_atlantic_dockyards_built_flag
-							add_to_variable = { ROOT.number_of_states_getting_dockyards = 1 }
-							#log = "Number [?ROOT.number_of_states_getting_dockyards] - Built in [THIS.GetName] - Coastal with 0 mils" #Debug tool
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_challenge_the_monroe_doctrine
-
-		icon = GFX_focus_por_recover_latin_america
-
-		prerequisite = { focus = GER_crossing_the_atlantic }
-
-		x = -1
-		y = 1
-		relative_position_id = GER_crossing_the_atlantic
-
-		cost = 5
-
-		available = {
-			NOT = {
-				has_war_with = USA
-				is_in_faction_with = USA
-			}
-			is_subject = no
-			has_government = fascism
-			USA = {
-				NOT = {
-					has_government = fascism
-					has_government = neutrality 
-				}
-			}
-
-			custom_trigger_tooltip = {
-				tooltip = GER_challenge_the_monroe_doctrine_tt_2
-				check_variable = { global.monroe_doctrine_countries_to_destabilize^num > 6}
-			}
-			
-		}
-
-		ai_will_do = {
-			factor = 5
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_POLITICAL }
-
-		select_effect = {
-# GUTTED(monroe): 			GER_setup_monroe_doctrine_countries_to_destabilize_array = yes
-		}
-
-		completion_reward = {
-
-			set_country_flag = GER_destabilize_monroe_flag
-
-			custom_effect_tooltip = GER_challenge_the_monroe_doctrine_tt
-
-			hidden_effect = {
-				IF = {
-					limit = {
-						USA = {
-							OR = {
-								has_government = democratic
-								has_government = communism
-							}
-						}
-					}
-					USA = {
-						country_event = {
-							id = wuw_GER_monroe.1
-							hours = 12
-						}
-					}
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					has_dlc = "La Resistance"
-				}
-				if = { #This is so that it shows "Modify NS" by default, since most likely Anschluss will be completed and NS will be there. But if Anschluss is bypassed without getting the DM, the tooltip will be adjusted.
-					limit = {
-						NOT = { has_completed_focus = GER_anschluss }
-					}
-					custom_effect_tooltip = GER_modify_military_intelligence_service_modifier_tt
-				}
-				else = {
-					GER_add_or_modify_military_intelligence_service = yes
-				}
-				add_to_variable = { 
-					GER_military_intelligence_service_operative_slot = 1
-					tooltip = operative_slot_tt
-				}
-				GER_create_operative_johannes_becker = yes
-			}
-		}
-	}
-
-	focus = {
-		id = GER_shatter_usas_hegemony
-		icon = GFX_focus_GER_shatter_usas_hegemony
-		prerequisite = { focus = GER_crossing_the_atlantic }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_crossing_the_atlantic
-		cost = 5
-		available = {
-			is_subject = no
-			OR = {
-				has_wargoal_against = USA
-				has_war_with = USA
-			}
-		}
-
-		ai_will_do = {
-			factor = 10
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		bypass = {
-			USA = {
-				exists = no
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_ANNEXATION }
-
-		completion_reward = {
-
-			add_timed_idea = {
-				idea = GER_shatter_USA_hegemony_ns
-				days = 365
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_establish_protectorates_in_america
-		icon = GFX_focus_GER_establish_protectorates_in_america
-		prerequisite = { focus = GER_challenge_the_monroe_doctrine focus = GER_shatter_usas_hegemony }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_challenge_the_monroe_doctrine
-		cost = 5
-		available = {
-			is_subject = no
-			has_government = fascism
-			has_completed_focus = GER_uplift_the_rosenberg_office
-			any_controlled_state = {
-				OR = {
-					is_on_continent = south_america
-					is_on_continent = north_america
-				}
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_ANNEXATION }
-
-		ai_will_do = {
-			factor = 10
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		completion_reward = {
-
-			every_state = {
-				limit = {
-					is_on_continent = south_america 
-					OWNER = {
-						capital_scope = {
-							NOT = {
-								is_on_continent = south_america 
-							}
-						}
-					}
-					NOT = {
-						OR = {
-							is_claimed_by = ROOT
-							is_core_of = ROOT
-							is_owned_by = ROOT
-						}
-					}
-				}
-				add_claim_by = ROOT
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			# unlock_decision_tooltip = GER_reichskommissariat_klein_venedig
-			# unlock_decision_tooltip = GER_reichskommissariat_anden
-			# unlock_decision_tooltip = GER_reichskommissariat_kolumbus
-			#unlock_decision_tooltip = GER_reichskommissariat_nordamerika
-
-		}
-	}
-
 		focus = {
 		id = GER_reorganize_the_wehrmacht #von Ribbentrop
 

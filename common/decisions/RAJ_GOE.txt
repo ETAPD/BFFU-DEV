@@ -52,6 +52,7 @@ RAJ_GOE_independence_movement = {
 			}
 		}
 	}
+}
 
 RAJ_GOE_tea_exports_cat = {
 
@@ -97,7 +98,6 @@ RAJ_GOE_tea_exports_cat = {
 
 		}
 	}
-}
 
 	RAJ_GOE_export_tea_free = {
 		icon = generic_construction
@@ -516,133 +516,52 @@ RAJ_GOE_famine_cat = {
 		}
 	}
 }
-
-political_actions = {
-
-	mughal_west_britain_company_dec = {
-
-		icon = generic_form_nation
-		fire_only_once = yes
-		allowed = {
-			original_tag = RAJ 
-		}
-
-		visible = {
-			original_tag = RAJ 
-			has_completed_focus = RAJ_revisiting_inquities
-		}
-
-		available = {
-			has_full_control_of_state = 122
-		}
-		cost = 50
-		on_map_mode = decision_view_only
-
-		highlight_states = { 
-			highlight_state_targets = {
-				state = 122
-			}
-		}
-
-		complete_effect = {
-			custom_effect_tooltip = create_mwbc_tt
-			hidden_effect = {
-				create_dynamic_country = {
-					original_tag = RAJ
-					save_event_target_as = west_britain_company
-					122 = {
-						event_target:west_britain_company = { transfer_state = PREV }
-						add_core_of = event_target:west_britain_company
-					}
-					every_state = {
-						limit = {
-							OR = {
-								state = 123
-								state = 338
-								state = 127
-								state = 126
-								state = 125
-								state = 129
-								state = 128
-								state = 132
-								state = 130
-								state = 931
-								state = 131
-							}
-						}
-						add_core_of = PREV
-					}
-					set_capital = { state = 122 }
-					set_politics = {
-						ruling_party = neutrality
-						elections_allowed = no
-					}
-					set_cosmetic_tag = mughal_west_britain_company
-                    RAJ = {
-                        set_autonomy = {
-                            target=PREV
-                            autonomy_state = autonomy_integrated_puppet
-                            freedom_level = 0.5 # 0-1 
-                            end_wars  = no # default yes. will not cancel non civil wars if set to no
-                            end_civil_wars = no # default yes. will not cancel civil wars if set to no
-                        }
-                    }
-				}
-			}
-		}
-
-		ai_will_do = {
-			base = 2000
-		}
-	}
-	
 	
 
 propaganda_efforts = {
-RAJ_GOE_campaign_against_agrarian_societys = {
-	name = RAJ_campaign_against_agrarian_societys
-	icon = GFX_decision_eng_install_government
-		allowed = { 
-			is_raj_or_raj_inheritor = yes
-		}
+	RAJ_GOE_campaign_against_agrarian_societys = {
+		name = RAJ_campaign_against_agrarian_societys
+		icon = GFX_decision_eng_install_government
+			allowed = { 
+				is_raj_or_raj_inheritor = yes
+			}
 
-		visible = {
-			has_completed_focus = RAJ_campaign_against_agrarian_societys
-			has_dynamic_modifier = {
-				modifier = idea_RAJ_agrarian_society
+			visible = {
+				has_completed_focus = RAJ_campaign_against_agrarian_societys
+				has_dynamic_modifier = {
+					modifier = idea_RAJ_agrarian_society
+				}
+			}
+
+			available = {
+				has_dynamic_modifier = {
+					modifier = idea_RAJ_agrarian_society
+				}
+				OR = {
+					has_stability > 0.69
+					has_war_support > 0.79
+				}
+			}
+
+			cost = 350
+			days_re_enable = 0 
+			ai_will_do = {
+				factor = 1
+				modifier = {
+					has_political_power > 399
+					has_manpower < 90000
+					factor = 20
+				}
+			}
+
+			complete_effect = {
+				custom_effect_tooltip = RAJ_relax_agrarian_society_criteria_tt
+				
+				add_to_variable = { RAJ_agrarian_society_conscription_factor = 0.03 tooltip = conscription_factor_tt }
+				add_to_variable = { RAJ_agrarian_society_mobilization_speed = 0.03  tooltip = mobilization_speed_tt }
+				add_to_variable = { RAJ_agrarian_society_mobilization_laws_cost_factor = -0.09 tooltip = mobilization_laws_cost_factor_tt }
 			}
 		}
-
-		available = {
-			has_dynamic_modifier = {
-				modifier = idea_RAJ_agrarian_society
-			}
-			OR = {
-				has_stability > 0.69
-				has_war_support > 0.79
-			}
-		}
-
-		cost = 350
-		days_re_enable = 0 
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				has_political_power > 399
-				has_manpower < 90000
-				factor = 20
-			}
-		}
-
-		complete_effect = {
-            custom_effect_tooltip = RAJ_relax_agrarian_society_criteria_tt
-            
-            add_to_variable = { RAJ_agrarian_society_conscription_factor = 0.03 tooltip = conscription_factor_tt }
-            add_to_variable = { RAJ_agrarian_society_mobilization_speed = 0.03  tooltip = mobilization_speed_tt }
-            add_to_variable = { RAJ_agrarian_society_mobilization_laws_cost_factor = -0.09 tooltip = mobilization_laws_cost_factor_tt }
-            remove_agrarian_society_if_void = yes
-		}
-	}
 }
 
 RAJ_GOE_partition_cat = {
@@ -827,19 +746,6 @@ RAJ_GOE_partition_cat = {
 		    	}
     		}
 
-
-
-    		hidden_effect = {
-    			if = {
-    				limit = {
-    					NOT = { has_completed_focus = RAJ_i_am_death }
-    				}
-
-					set_rule = { can_declare_war_on_same_ideology = no }
-					set_rule = { can_only_justify_war_on_threat_country = yes }
-    			}
-    		}
-
     		if = {
     			limit = {
     				has_idea = idea_RAJ_princely_state_aggression
@@ -901,76 +807,33 @@ RAJ_GOE_partition_cat = {
 	    }
 	}
 
-	RAJ_GOE_eng_is_getting_involved_in_war = {
-		priority = 30
-	    activation = {
-	    	always = no #enabled by on_action
-	    }
-	    available = {
-			always = no
-	    }
+	# RAJ_GOE_eng_is_getting_involved_in_war = {
+	# 	priority = 30
+	#     activation = {
+	#     	always = no #enabled by on_action
+	#     }
+	#     available = {
+	# 		always = no
+	#     }
 
-	    icon = GFX_decision_mission_icon     # For GFX_decision_mission_icon
-	    is_good = no
-	    days_mission_timeout = 40
-	    selectable_mission = no
+	#     icon = GFX_decision_mission_icon     # For GFX_decision_mission_icon
+	#     is_good = no
+	#     days_mission_timeout = 40
+	#     selectable_mission = no
 
-	    timeout_effect = {
-	    	if = {
-	    		limit = {
-	    			ENG = {
-	    				exists = yes
-	    				is_subject = no
-	    			}
-	    		}
+	#     timeout_effect = {
+	#     	if = {
+	#     		limit = {
+	#     			ENG = {
+	#     				exists = yes
+	#     				is_subject = no
+	#     			}
+	#     		}
 
-	    		ENG = { country_event = { id = GOE_RAJ_partition.10 } }
-	    	}
-	    }
-	}
-
-
-	RAJ_GOE_cease_hostilities = {
-		priority = 30
-
-	    available = {
-	    	has_war_with = PAK
-	    	
-	    }
-	    visible = {
-	    	
-	    	NOT = { has_completed_focus = RAJ_india_united }
-	    	NOT = { has_global_flag = RAJ_GOE_partition_is_over }
-	    }
-
-	    cost = 0
-
-	    complete_effect = {
-	    	every_other_country = {
-	    		limit = {
-		    		is_in_array = {
-		    			array = RAJ.raj_releasables
-		    			value = THIS
-		    		}
-
-		    		has_war_with = ROOT
-	    		}
-
-	    		white_peace = {
-	    			tag = ROOT
-	    		}
-
-	    		if = {
-	    			limit = {
-	    				has_active_mission = RAJ_GOE_eng_is_getting_involved_in_war
-	    			}
-	    			remove_mission = RAJ_GOE_eng_is_getting_involved_in_war	
-	    		}
-	    	}
-
-	    	remove_mission = RAJ_GOE_eng_is_getting_involved_in_war
-	    }
-	}
+	#     		ENG = { country_event = { id = GOE_RAJ_partition.10 } }
+	#     	}
+	#     }
+	# }
 
 
 	RAJ_GOE_vie_for_princes = {
@@ -1169,48 +1032,6 @@ RAJ_GOE_eic_cat = {
 				remove_dynamic_modifier = { modifier = idea_RAJ_eic_taxes }
 			}
 		}
-	}
-
-	RAJ_GOE_provide_working_opportunities = {
-
-		priority = 100
-		fire_only_once = yes
-	    activation = {
-	    	always = no #triggered
-	    }
-	    available = {
-    		ROOT = {
-    			OR = {
-    				infrastructure > 63
-    				industrial_complex > 18
-    				arms_factory > 12
-    			}
-    		}
-	    }
-
-	    is_good = no
-	    days_mission_timeout = 1800
-	    selectable_mission = no
-
-	    complete_effect = {
-	    	add_timed_idea = {
-	    		idea = idea_RAJ_military_into_the_workforce
-	    		days = 400
-	    	}
-
-	    	add_tech_bonus = {
-	    		bonus = 0.25
-	    		uses = 2
-	    		category = industry # optional 
-	    		# technology  = technology_id # optional
-	    	}
-	    }
-
-	    timeout_effect = {
-	    	#add_stability = -0.05
-
-	    }
-	    
 	}
 
 	RAJ_GOE_default_on_debt = {
@@ -1450,15 +1271,6 @@ RAJ_GOE_eic_cat = {
 						}
 					}
 				}
-				if = {
-					limit = {
-						NOT = { has_idea = idea_RAJ_sudden_spending_increase }
-					}
-					add_timed_idea = {
-						idea = idea_RAJ_sudden_spending_increase
-						days = 210
-					}
-				}
 			}
 
 			hidden_effect = {
@@ -1474,7 +1286,6 @@ RAJ_GOE_eic_cat = {
 			base = 0
 		}
 	}
-}
 
 	RAJ_GOE_enforced_peace_decision_eng = {
 		icon = GFX_decision_revolt
@@ -1551,8 +1362,6 @@ RAJ_GOE_eic_cat = {
 			custom_effect_tooltip = RAJ_GOE_enforced_peace_decision_desc_eng_tt
 		}
 	}
-
-
 }
 
 ### LOYALIST BRANCH ###
