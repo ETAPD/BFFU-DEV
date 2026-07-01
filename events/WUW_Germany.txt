@@ -7893,7 +7893,16 @@ country_event = {
 				
 			}
 
-			
+			IF = {
+				limit = {
+					COG = {
+						has_idea = BEL_albert_de_vleeschauwer
+					}
+				}
+				COG = {
+					remove_ideas = BEL_albert_de_vleeschauwer
+				}
+			}
 
 			COG = {
 				set_party_name = {
@@ -8817,7 +8826,12 @@ country_event = {
 						}
 					}
 				}
-				
+				BEL = {
+					set_nationality = {
+					    target_country = RKB
+					    character = BEL_leon_degrelle
+					}
+				}
 			}
 		}
 	}
@@ -8843,7 +8857,12 @@ country_event = {
 						}
 					}
 				}
-				
+				RKB = {
+					set_nationality = {
+					    target_country = BEL
+					    character = BEL_leon_degrelle
+					}
+				}
 			}
 		}
 		hidden_effect = {
@@ -8868,7 +8887,13 @@ country_event = {
 			base = 15
 		}		
 		
-		
+		RKB = {
+			BEL_leon_degrelle = {
+				promote_character = yes 
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_ideas = GER_local_controlled_reichskommissariat
+		}
 		hidden_effect = {
 			RKB = {
 				every_controlled_state = {
@@ -12638,6 +12663,79 @@ country_event = {
 			}
 		}
 	}
+
+	option = { # It might be wise to use a local puppet
+		name = wuw_GER_reichskommissariats.25.b
+		trigger = {
+			RAJ = {
+				NOT = {
+					AND = {
+						has_government = fascism
+						exists = yes
+					}
+				}
+			}
+		}
+		ai_chance = {
+			base = 95
+		}		
+		
+		RHD = {
+			RAJ_v_d_savarkar = {
+				remove_country_leader_role = {
+					ideology = nazism
+				}	
+				add_country_leader_role = {
+					promote_leader = yes
+					country_leader = {
+						ideology = nazism
+						expire = 1960.1.1
+						traits = { GER_reichskommissar_trait } 
+					}
+				}	
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_ideas = GER_local_controlled_reichskommissariat
+		}
+
+		hidden_effect = {
+			
+			IF = {
+				limit = {
+					WUR = {
+						NOT = {
+							AND = {
+								has_government = neutrality
+								exists = yes
+							}
+						}
+					}
+				}
+				RHD = {
+					set_nationality = {
+					    target_country = WUR
+					    character = WUR_philipp_albrecht
+					}
+				}
+			}
+			ELSE = {
+				RHD = {
+					set_nationality = {
+					    target_country = GER
+					    character = GER_alfred_saalwachter
+					}
+				}
+			}
+			
+		}
+		hidden_effect = {
+			RHD = {
+				every_controlled_state = {
+					set_compliance = 25
+				}
+			}
+		}
+	}
 }
 
 
@@ -14041,6 +14139,10 @@ country_event = {
 				}
 				is_controlled_by_ROOT_or_subject = yes
 			}
+			add_dynamic_modifier = {
+				modifier = GER_lokot_autonomy_modifier
+				scope = GER
+			}		
 		}
 
 		custom_effect_tooltip = generic_skip_one_line_tt
@@ -14121,6 +14223,10 @@ country_event = {
 						state = 222 # Orel
 					}
 				}
+				add_dynamic_modifier = {
+					modifier = GER_lokot_autonomy_modifier
+					scope = GER
+				}		
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -14199,6 +14305,10 @@ country_event = {
 						state = 222 # Orel
 					}
 				}
+				remove_dynamic_modifier = {
+					modifier = GER_lokot_autonomy_modifier
+					scope = GER
+				}			
 			}
 		}
 
@@ -15599,6 +15709,9 @@ country_event = {
 
 		if = {
 			limit = {
+				FROM = {
+					has_completed_focus = GER_secure_finland
+				}
 				ROOT = {
 					original_tag = FIN
 				}
@@ -15649,6 +15762,9 @@ country_event = { # FROM rejects our faction invitation - event for GER
 
 		if = {
 			limit = {
+				ROOT = {
+					has_completed_focus = GER_secure_finland
+				}
 				FROM = {
 					original_tag = FIN
 				}
@@ -16047,6 +16163,283 @@ country_event = {
 				target = FROM
 			}	
 		}
+
+	}
+
+}
+
+
+# Germany wants to puppet us (monarchist) - event for FIN
+country_event = {
+	id = wuw_GER_realpolitik.10
+	title = wuw_GER_realpolitik.10.t
+	desc = wuw_GER_realpolitik.10.desc
+	picture = GFX_report_event_finnish_letter 
+
+	is_triggered_only = yes
+
+	option = { # There isn't much we can do to stop them...
+		name = wuw_GER_realpolitik.10.a
+		ai_chance = {
+			base = 80
+		}
+		
+		FROM = {
+			# Finland caves to our demands
+			country_event = {
+				id = wuw_GER_realpolitik.11
+				hours = 6
+				random_hours = 12
+			}	
+		}
+		effect_tooltip = {
+			FROM = {
+				puppet = ROOT
+			}
+			
+			add_country_leader_role = {
+				character =  FIN_prince_wolfgang_von_hesse
+				promote_leader = yes
+				country_leader = {
+					ideology = despotism
+					expire = "1965.1.1.1"
+					traits = { crown_prince_of_finland personal_agenda_von_hesse }
+				}
+			}
+
+			set_party_name = {
+				ideology = neutrality
+				long_name = FIN_neutrality_party_monarchist_long
+				name = FIN_neutrality_party_monarchist
+			}
+
+			add_popularity = {
+				ideology = neutrality
+				popularity = 0.1
+			}
+
+			IF = {
+				limit = {
+					has_completed_focus = FIN_greater_finland
+				}
+				set_cosmetic_tag = FIN_greater_kingdom_of_finland
+			}
+			ELSE = {
+				set_cosmetic_tag = FIN_kingdom_of_finland
+			}
+			
+		}
+
+	}
+	option = { # We will never give up our freedom!
+		name = wuw_GER_realpolitik.10.b
+		ai_chance = {
+			base = 20
+		}
+		
+		FROM = {
+			# Finland refuses our demands
+			country_event = {
+				id = wuw_GER_realpolitik.12
+				hours = 6
+				random_hours = 12
+			}	
+		}
+
+		effect_tooltip = {
+			FROM = {
+				create_wargoal = {
+					type = puppet_wargoal_focus
+					target = ROOT
+				}	
+			}
+		}
+
+	}
+}
+
+# Finland accepts their fate - event for GER
+country_event = {
+	id = wuw_GER_realpolitik.11
+	title = wuw_GER_realpolitik.11.t
+	desc = wuw_GER_realpolitik.11.desc
+	picture = GFX_report_event_finnish_letter 
+
+	is_triggered_only = yes
+
+	option = { # Perfect!
+		name = wuw_GER_realpolitik.11.a
+		ai_chance = {
+			base = 100
+		}
+		
+		puppet = FROM
+
+		GER_lower_CGFF_small = yes
+		
+		FROM = {
+			add_country_leader_role = {
+				character =  FIN_prince_wolfgang_von_hesse
+				promote_leader = yes
+				country_leader = {
+					ideology = despotism
+					expire = "1965.1.1.1"
+					traits = { crown_prince_of_finland personal_agenda_von_hesse }
+				}
+			}
+
+			set_party_name = {
+				ideology = neutrality
+				long_name = FIN_neutrality_party_monarchist_long
+				name = FIN_neutrality_party_monarchist
+			}
+
+			add_popularity = {
+				ideology = neutrality
+				popularity = 0.1
+			}
+
+			IF = {
+				limit = {
+					has_completed_focus = FIN_greater_finland
+				}
+				set_cosmetic_tag = FIN_greater_kingdom_of_finland
+			}
+			ELSE = {
+				set_cosmetic_tag = FIN_kingdom_of_finland
+			}
+		} 
+		
+
+	}
+
+}
+
+# Finland rejects our demands - event for GER
+country_event = {
+	id = wuw_GER_realpolitik.12
+	title = wuw_GER_realpolitik.12.t
+	desc = wuw_GER_realpolitik.12.desc
+	picture = GFX_report_event_finnish_letter 
+
+	is_triggered_only = yes
+
+	option = { # How dare they?!?!?
+		name = wuw_GER_realpolitik.12.a
+		ai_chance = {
+			base = 100
+		}
+		
+		create_wargoal = {
+			type = puppet_wargoal_focus
+			target = FROM
+		}	
+
+	}
+
+}
+
+# Germany wants to puppet us (NOT monarchist) - event for FIN
+country_event = {
+	id = wuw_GER_realpolitik.13
+	title = wuw_GER_realpolitik.13.t
+	desc = wuw_GER_realpolitik.13.desc
+	picture = GFX_report_event_finnish_letter 
+
+	is_triggered_only = yes
+
+	option = { # There isn't much we can do to stop them...
+		name = wuw_GER_realpolitik.13.a
+		ai_chance = {
+			base = 80
+		}
+		
+		FROM = {
+			# Finland caves to our demands
+			country_event = {
+				id = wuw_GER_realpolitik.14
+				hours = 6
+				random_hours = 12
+			}	
+		}
+
+		effect_tooltip = {
+			FROM = {
+				puppet = ROOT
+			}
+		}
+
+	}
+	option = { # We will never give up our freedom!
+		name = wuw_GER_realpolitik.13.b
+		ai_chance = {
+			base = 20
+		}
+		
+		FROM = {
+			# Finland refuses our demands
+			country_event = {
+				id = wuw_GER_realpolitik.15
+				hours = 6
+				random_hours = 12
+			}	
+		}
+
+		effect_tooltip = {
+			FROM = {
+				create_wargoal = {
+					type = puppet_wargoal_focus
+					target = ROOT
+				}	
+			}
+		}
+
+	}
+}
+
+# Finland accepts their fate - event for GER
+country_event = {
+	id = wuw_GER_realpolitik.14
+	title = wuw_GER_realpolitik.14.t
+	desc = wuw_GER_realpolitik.14.desc
+	picture = GFX_report_event_finnish_letter 
+
+	is_triggered_only = yes
+
+	option = { # Perfect!
+		name = wuw_GER_realpolitik.14.a
+		ai_chance = {
+			base = 100
+		}
+		
+		add_political_power = 75
+
+		puppet = FROM
+
+		GER_lower_CGFF_small = yes
+
+	}
+}
+
+# Finland rejects our demands - event for GER
+country_event = {
+	id = wuw_GER_realpolitik.15
+	title = wuw_GER_realpolitik.15.t
+	desc = wuw_GER_realpolitik.15.desc
+	picture = GFX_report_event_finnish_letter 
+
+	is_triggered_only = yes
+
+	option = { # How dare they?!?!?
+		name = wuw_GER_realpolitik.15.a
+		ai_chance = {
+			base = 100
+		}
+		
+		create_wargoal = {
+			type = puppet_wargoal_focus
+			target = FROM
+		}	
 
 	}
 
@@ -21163,11 +21556,11 @@ country_event = {
 
 # CONSTANT FOR INNER CIRCLE TIMES (These needs to be x7 compared to the Focus cost in the focus file) - NEEDS TO MATCH THE SAME CONSTANTS USED IN THE FOCUS FILE x7
 @inner_circle_time_tier_1 = 140
-@inner_circle_time_tier_2 = 140
+@inner_circle_time_tier_2 = 280
 @inner_circle_time_tier_3 = 280
 # FLAG CONSTANTS (It is 1 day more so the tooltip and days shown in the focus about Focus Progress match exactly the moment when the focus is completed)
 @inner_circle_time_tier_1_flag = 141
-@inner_circle_time_tier_2_flag = 141
+@inner_circle_time_tier_2_flag = 281
 @inner_circle_time_tier_3_flag = 281
 
 
@@ -23202,34 +23595,68 @@ country_event = {
 	immediate = {
 		if = {
 			limit = {
-				NOT = { has_completed_focus = GER_prioritize_the_four_year_plan }
+				GER_hermann_goring = { has_character_flag = GER_goring_eco_path_flag }
 			}
-			activate_shine_on_focus = GER_prioritize_the_four_year_plan
-			set_country_flag = { flag = GER_prioritize_the_four_year_plan_in_progress_flag days = @inner_circle_time_tier_1_flag value = 1 }
-			country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_1 }
+			# ECO PATH - Four Year Plan branch
+			if = {
+				limit = {
+					NOT = { has_completed_focus = GER_prioritize_the_four_year_plan }
+				}
+				activate_shine_on_focus = GER_prioritize_the_four_year_plan
+				set_country_flag = { flag = GER_prioritize_the_four_year_plan_in_progress_flag days = @inner_circle_time_tier_1_flag value = 1 }
+				country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_1 }
+			}
+			else_if = {
+				limit = {
+					NOT = { has_completed_focus = GER_plenipotentiary_of_the_four_year_plan }
+					NOT = { check_variable = { GER_industrialist_prevailed = 1 } } #Todt Prevailed in the Industrialist Intrigue
+					NOT = { check_variable = { GER_industrialist_prevailed = 2 } } #Speer Prevailed in the Industrialist Intrigue
+				}
+				activate_shine_on_focus = GER_plenipotentiary_of_the_four_year_plan
+				set_country_flag = { flag = GER_plenipotentiary_of_the_four_year_plan_in_progress_flag days = @inner_circle_time_tier_2_flag value = 1 }
+				country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_2 }
+			}
+			else_if = {
+				limit = {
+					NOT = { has_completed_focus = GER_integration_of_puppet_economies }
+					NOT = { check_variable = { GER_industrialist_prevailed = 1 } } #Todt Prevailed in the Industrialist Intrigue
+					NOT = { check_variable = { GER_industrialist_prevailed = 2 } } #Speer Prevailed in the Industrialist Intrigue
+				}
+				activate_shine_on_focus = GER_integration_of_puppet_economies
+				set_country_flag = { flag = GER_integration_of_puppet_economies_in_progress_flag days = @inner_circle_time_tier_3_flag value = 1 }
+				country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_3 }
+			}
+			else = { #Debug logs
+				#log = "SOMETHING WENT WRONG WITH GÖRING's ECO FOCUS BRANCH - Cannot start new focus"
+			}
 		}
 		else_if = {
 			limit = {
-				NOT = { has_completed_focus = GER_plenipotentiary_of_the_four_year_plan }
-				NOT = { check_variable = { GER_industrialist_prevailed = 1 } } #Todt Prevailed in the Industrialist Intrigue
-				NOT = { check_variable = { GER_industrialist_prevailed = 2 } } #Speer Prevailed in the Industrialist Intrigue
+				GER_hermann_goring = { has_character_flag = GER_goring_air_path_flag }
 			}
-			activate_shine_on_focus = GER_plenipotentiary_of_the_four_year_plan
-			set_country_flag = { flag = GER_plenipotentiary_of_the_four_year_plan_in_progress_flag days = @inner_circle_time_tier_2_flag value = 1 }
-			country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_2 }
-		}
-		else_if = {
-			limit = {
-				NOT = { has_completed_focus = GER_integration_of_puppet_economies }
-				NOT = { check_variable = { GER_industrialist_prevailed = 1 } } #Todt Prevailed in the Industrialist Intrigue
-				NOT = { check_variable = { GER_industrialist_prevailed = 2 } } #Speer Prevailed in the Industrialist Intrigue
+			# AIR PATH - Luftwaffe branch
+			if = {
+				limit = {
+					NOT = { has_completed_focus = GER_placeholder_1 }
+				}
+				activate_shine_on_focus = GER_placeholder_1
+				set_country_flag = { flag = GER_placeholder_1_in_progress_flag days = @inner_circle_time_tier_1_flag value = 1 }
+				country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_1 }
 			}
-			activate_shine_on_focus = GER_integration_of_puppet_economies
-			set_country_flag = { flag = GER_integration_of_puppet_economies_in_progress_flag days = @inner_circle_time_tier_3_flag value = 1 }
-			country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_3 }
+			else_if = {
+				limit = {
+					NOT = { has_completed_focus = GER_placeholder_2 }
+				}
+				activate_shine_on_focus = GER_placeholder_2
+				set_country_flag = { flag = GER_placeholder_2_in_progress_flag days = @inner_circle_time_tier_2_flag value = 1 }
+				country_event = { id = GER_inner_circle_goring.02 days = @inner_circle_time_tier_2 }
+			}
+			else = { #Debug logs
+				#log = "SOMETHING WENT WRONG WITH GÖRING's AIR FOCUS BRANCH - Cannot start new focus"
+			}
 		}
-		else = { #Debug logs
-			#log = "SOMETHING WENT WRONG WITH GÖRING's FOCUS BRANCH - Cannot start new focus"
+		else = { #No path flag set yet - waiting for .00 event to be answered
+			#log = "GÖRING path flag not set - awaiting branch selection"
 		}
 	}
 }
@@ -23286,6 +23713,29 @@ country_event = {
 				originator_name = GER_hermann_goring
 			}
 			clr_country_flag = GER_integration_of_puppet_economies_in_progress_flag
+		}
+		else_if = {
+			limit = {
+				has_shine_effect_on_focus = GER_placeholder_1
+			}
+			complete_national_focus = {
+				focus = GER_placeholder_1
+				use_side_message = yes
+				originator_name = GER_hermann_goring
+			}
+			clr_country_flag = GER_placeholder_1_in_progress_flag
+			country_event = { id = GER_inner_circle_goring.01 days = GER_inner_circle_days_to_start_focus random_days = GER_inner_circle_random_days }
+		}
+		else_if = {
+			limit = {
+				has_shine_effect_on_focus = GER_placeholder_2
+			}
+			complete_national_focus = {
+				focus = GER_placeholder_2
+				use_side_message = yes
+				originator_name = GER_hermann_goring
+			}
+			clr_country_flag = GER_placeholder_2_in_progress_flag
 		}
 		else = { #Debug logs
 			#log = "SOMETHING WENT WRONG WITH GÖRING's FOCUS BRANCH - Cannot complete focus"
@@ -23992,4 +24442,128 @@ country_event = { #[FROM.GetNameDefCap] Rejects our Demands
 		add_political_power = 50
 
 	}
+}
+
+# GÖRING - Pick branch
+country_event = {
+	id = GER_inner_circle_goring.00
+	title = GER_inner_circle_goring.00.t
+	desc = GER_inner_circle_goring.00.desc
+	picture = GFX_report_event_GER_goring
+
+	fire_only_once = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			set_country_flag = GER_inner_circle_event_pending_flag
+		}
+	}
+
+	option = { # Economy / Four Year Plan
+		name = GER_inner_circle_goring.00.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 5
+				GER_is_historical_ai = yes
+			}
+		}
+		custom_effect_tooltip = GER_inner_circle_goring_eco_tt
+		add_ideas = GER_goring_four_year_plan_architect
+
+		hidden_effect = {
+			GER_hermann_goring = {
+				set_character_flag = GER_goring_eco_path_flag
+			}
+			country_event = { id = GER_inner_circle_goring.01 days = GER_inner_circle_days_to_start_focus random_days = GER_inner_circle_random_days }
+			clr_country_flag = GER_inner_circle_event_pending_flag
+		}
+	}
+
+	option = { # Air / Luftwaffe
+		name = GER_inner_circle_goring.00.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0.01
+				GER_is_historical_ai = yes
+			}
+		}
+		custom_effect_tooltip = GER_inner_circle_goring_air_tt
+		swap_ideas = {
+			remove_idea = GER_mefo_air
+			add_idea = GER_goring_luftwaffe_commander
+		}
+
+		hidden_effect = {
+			GER_hermann_goring = {
+				set_character_flag = GER_goring_air_path_flag
+			}
+			country_event = { id = GER_inner_circle_goring.01 days = GER_inner_circle_days_to_start_focus random_days = GER_inner_circle_random_days }
+			clr_country_flag = GER_inner_circle_event_pending_flag
+		}
+	}
+}
+
+country_event = {
+    id = germany.901
+    title = germany.901.t
+    desc = germany.901.d
+    picture = GFX_report_event_german_parade_paris
+
+    is_triggered_only = yes
+
+    option = {
+        # Accept – become a puppet of Germany and receive an idea
+        name = germany.901.a
+        add_ideas = {
+			GER_development_of_economic_relations_ns 
+			GER_goring_integrating_economy
+		}
+        
+    }
+
+    option = {
+        # Refuse – nothing happens
+        name = germany.901.b
+    }
+}
+
+country_event = {
+    id = germany.902
+    title = germany.902.t
+    desc = germany.902.d
+    picture = GFX_report_event_HUN_hungary_occupies_area
+
+    is_triggered_only = yes
+
+    option = {
+       
+        name = germany.902.a
+    	add_dynamic_modifier = {
+        modifier = GER_Occupation_Costs 
+		}
+		set_variable = { GER2_industrial_consumer_goods_expected_value = 0 tooltip = consumer_goods_expected_value_tt }
+    }
+}
+
+country_event = {
+    id = germany.903
+    title = germany.903.t
+    desc = germany.903.d
+    picture = GFX_report_event_HUN_hungary_occupies_area
+
+    is_triggered_only = yes
+
+    option = {
+        
+        name = germany.903.a
+		custom_effect_tooltip = GER_plunder_tt
+        add_to_variable = { 
+			GER2_industrial_consumer_goods_expected_value = 0.03
+			tooltip = consumer_goods_expected_value_tt
+		}
+    }
 }
