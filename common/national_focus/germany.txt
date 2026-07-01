@@ -931,12 +931,28 @@ focus_tree = {
 
 		completion_reward = {
 			set_variable = { 
-				GER_days_till_plunder = 30
+				GER_days_till_plunder = 25
 			}
-			add_timed_idea = {
-				idea = GER_rapid_mobilisation
-				days = 500
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_speed_industrial_complex_factor = -0.35
+				tooltip = production_speed_industrial_complex_factor_tt
 			}
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.15 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { 
+				GER_industrial_production_speed_dockyard_factor = 0.05
+				tooltip = production_speed_dockyard_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				tooltip = production_factory_start_efficiency_factor_tt
+			}
+			#add_timed_idea = {
+			#	idea = GER_rapid_mobilisation
+			#	days = 500
+			#}
 		}
 	}
 
@@ -964,8 +980,6 @@ focus_tree = {
 				category = excavation_tech
 			}
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			custom_effect_tooltip = GER_unlock_reichswerke_tt
 
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -974,6 +988,14 @@ focus_tree = {
 			add_to_variable = { 
 				GER_wehrwirtschaft_local_resources_factor = 0.1
 				tooltip = local_resources_factor_tt
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				tooltip = production_factory_start_efficiency_factor_tt
 			}
 		}
 	}
@@ -995,6 +1017,17 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_factory_efficiency_gain_factor = 0.015
+				tooltip = production_factory_efficiency_gain_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				tooltip = production_factory_start_efficiency_factor_tt
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_tech_bonus = {
 				name = GER_empower_siemens
 				bonus = 0.5
@@ -1029,7 +1062,12 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_factory_max_efficiency_factor = 0.025
+				tooltip = production_factory_max_efficiency_factor_tt
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_tech_bonus = {
 				name = GER_empower_siemens
 				bonus = 1
@@ -1044,7 +1082,6 @@ focus_tree = {
 					instant_build = yes
 				}
 			}
-
 		}
 	}
 
@@ -1061,6 +1098,7 @@ focus_tree = {
 		cost = 5
 		available = {
 			has_completed_focus = GER_reorganize_secret_services
+			has_war_with_major = yes
 		}
 
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
@@ -1791,16 +1829,227 @@ focus_tree = {
 			}
 		}
 	}
+
+	focus = {
+		id = GER_occupation_poland
+		icon = GFX_GER_curtail_poland
+		prerequisite = { focus = GER_create_rustungsstab focus = GER_armament_rationalization focus = GER_crush_uprisings}
+
+
+		x = 1
+		y = 1
+		relative_position_id = GER_crush_uprisings
+		cost = 3
+		available = {
+		POL = { has_capitulated = yes }
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+	completion_reward = {
+	10 = {
+		remove_building = { type = industrial_complex level = 3 }
+	}
+	90 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	88 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	87 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	86 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	92 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	762 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+		GER = { add_offsite_building = { type = arms_factory level = 15 } }
+		custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_plunder_tt
+            add_to_variable = { 
+			GER2_industrial_consumer_goods_expected_value = -0.03
+			tooltip = consumer_goods_expected_value_tt
+		}
+	}
+}
+
+	focus = {
+		id = GER_occupation_france
+		icon = GFX_GER_curtail_france
+		prerequisite = { focus = GER_create_rustungsstab focus = GER_armament_rationalization focus = GER_crush_uprisings}
+
+
+		x = 3
+		y = 1
+		relative_position_id = GER_crush_uprisings
+		cost = 3
+		available = {
+		FRA = { has_capitulated = yes }
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+	completion_reward = {
+	16 = {
+		remove_building = { type = industrial_complex level = 4 }
+	}
+	14 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	29 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	28 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+		GER = { add_offsite_building = { type = arms_factory level = 10 } }
+		custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_plunder_tt
+            add_to_variable = { 
+			GER2_industrial_consumer_goods_expected_value = -0.03
+			tooltip = consumer_goods_expected_value_tt
+		}
+	}
+	}
+
+	focus = {
+		id = GER_occupation_benelux
+		icon = GFX_GER_curtail_benelux
+		prerequisite = { focus = GER_create_rustungsstab focus = GER_armament_rationalization focus = GER_crush_uprisings}
+
+
+		x = -1
+		y = 1
+		relative_position_id = GER_crush_uprisings
+		cost = 3
+		available = {
+		BEL = { has_capitulated = yes }
+		HOL = { has_capitulated = yes }
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+	completion_reward = {
+	35 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	36 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	7 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	977 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	34 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	6 = {
+		remove_building = { type = industrial_complex level = 2 }
+	}
+	8 = {
+		remove_building = { type = industrial_complex level = 3 }
+	}
+		GER = { add_offsite_building = { type = arms_factory level = 15 } }
+		custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_plunder_tt
+            add_to_variable = { 
+			GER2_industrial_consumer_goods_expected_value = -0.03
+			tooltip = consumer_goods_expected_value_tt
+		}
+	}
+	}
+
+	focus = {
+		id = GER_occupation_denmark
+		icon = GFX_SOV_move_industry_to_the_urals_ccp_2d_sov_compatibility
+		prerequisite = { focus = GER_create_rustungsstab focus = GER_armament_rationalization focus = GER_crush_uprisings}
+
+
+		x = -3
+		y = 1
+		relative_position_id = GER_crush_uprisings
+		cost = 3
+		available = {
+        has_completed_focus = GER_operation_weserubung
+		controls_state = 37
+		controls_state = 911
+		controls_state = 912
+		controls_state = 99
+	    }
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+completion_reward = {
+	custom_effect_tooltip = GER_norway_tt
+	# Check if Norway has capitulated
+	if = {
+		limit = {
+			NOR = { has_capitulated = yes }
+		}
+		# Rewards if Norway HAS capitulated: Remove factories from 110/115, get 15 mils instead
+		110 = {
+			remove_building = { type = industrial_complex level = 3 }
+		}
+		115 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		37 = {
+			remove_building = { type = industrial_complex level = 4 }
+		}
+		911 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		912 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		99 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		GER = { add_offsite_building = { type = arms_factory level = 15 } }
+	}
+	else = {
+		37 = {
+			remove_building = { type = industrial_complex level = 4 }
+		}
+		911 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		912 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		99 = {
+			remove_building = { type = industrial_complex level = 2 }
+		}
+		GER = { add_offsite_building = { type = arms_factory level = 10 } }
+	}
+
+	custom_effect_tooltip = generic_skip_one_line_tt
+	custom_effect_tooltip = GER_plunder_tt
+	add_to_variable = { 
+		GER2_industrial_consumer_goods_expected_value = -0.03
+		tooltip = consumer_goods_expected_value_tt
+	}
+}
+}
 	
 	focus = {
 		id = GER_autarky_achieved
 		icon = GFX_focus_GER_autarky_achieved
-		prerequisite = { focus = GER_create_rustungsstab focus = GER_crush_uprisings }
-		prerequisite = { focus = GER_armament_rationalization }
+		prerequisite = { focus = GER_occupation_benelux}
+		prerequisite = { focus = GER_occupation_poland}
+		prerequisite = { focus = GER_occupation_denmark}
+		prerequisite = { focus = GER_occupation_france}
 
 
 		x = 0
-		y = 1
+		y = 2
 		relative_position_id = GER_crush_uprisings
 		cost = 5
 		available = {
@@ -2092,15 +2341,15 @@ focus_tree = {
 
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { 
-				GER_industrial_production_factory_max_efficiency_factor = 0.05
+				GER_industrial_production_factory_max_efficiency_factor = 0.025
 				tooltip = production_factory_max_efficiency_factor_tt
 			}
 			add_to_variable = { 
-				GER_industrial_production_factory_efficiency_gain_factor = 0.05
+				GER_industrial_production_factory_efficiency_gain_factor = 0.035
 				tooltip = production_factory_efficiency_gain_factor_tt
 			}
 			add_to_variable = { 
-				GER_industrial_production_factory_start_efficiency_factor = 0.1
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
 				tooltip = production_factory_start_efficiency_factor_tt
 			}
 			add_to_variable = { 
@@ -2264,6 +2513,8 @@ focus_tree = {
 		relative_position_id = GER_empower_siemens
 		cost = 5
 		available = {
+			has_war_with_major = yes
+			has_civil_war = no
 		}
 
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
@@ -16835,6 +17086,7 @@ focus_tree = {
 
 		available = {
 			NOT = { has_war_with = ROM }
+			has_war_with_major = yes
 		}
 
 		bypass = {
@@ -16846,6 +17098,12 @@ focus_tree = {
 		completion_reward = {
 			ROM = {			
 				give_resource_rights = { receiver = GER state = 46 }
+			}
+			46 = {
+			add_resource = {
+				type = oil
+				amount = 200
+			}
 			}
 		}
 	}
