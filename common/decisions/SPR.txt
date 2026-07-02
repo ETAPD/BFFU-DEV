@@ -569,8 +569,8 @@ SPR_expand_resource_extraction = {
 		ai_will_do = {
 			factor = 1
 		}
-		remove_effect = { 
-			41 = { set_state_flag = madrid_aluminium_developed } 
+		remove_effect = {
+			41 = { set_state_flag = madrid_aluminium_developed }
 			41 = {
 				add_resource = {
 					type = aluminium
@@ -580,4 +580,103 @@ SPR_expand_resource_extraction = {
 		}
 	}
 
+}
+
+SPR_balance_of_power_category = {
+
+	SPR_diplomatic_appeasement = {
+		icon = generic_propaganda
+
+		cost = SPR_appeasement_decision_cost
+
+		days_re_enable = 30
+
+		complete_effect = {
+			add_power_balance_value = {
+				id = SPR_spain_appeasement_struggle
+				value = -0.1
+			}
+			multiply_variable = {
+				var = SPR_appeasement_decision_cost
+				value = 4
+			}
+		}
+	}
+
+	SPR_trade_with_allies = {
+		icon = generic_propaganda
+
+		cost = SPR_trade_with_allies_cost
+
+		available = {
+			NOT = { has_global_flag = allies_embargoed_SPR_flag }
+			num_of_civilian_factories_available_for_projects > 5
+		}
+
+		days_re_enable = 160
+
+		days_remove = 120
+
+		modifier = {
+			civilian_factory_use = 5
+		}
+
+		remove_effect = {
+			add_power_balance_value = {
+				id = SPR_spain_appeasement_struggle
+				value = -0.15
+			}
+			multiply_variable = {
+				var = SPR_trade_with_allies_cost
+				value = 4
+			}
+		}
+	}
+
+	SPR_loosen_press_laws = {
+		icon = generic_propaganda
+
+		cost = 50
+
+		available = {
+			NOT = { has_global_flag = allies_embargoed_SPR_flag }
+			num_of_civilian_factories_available_for_projects > 2
+		}
+
+		fire_only_once = yes
+
+		days_remove = 120
+
+		complete_effect = {
+			add_power_balance_value = {
+				id = SPR_spain_appeasement_struggle
+				value = -0.1
+			}
+			add_stability = -0.075
+			add_popularity = {
+				ideology = democratic
+				popularity = 0.1
+			}
+			add_popularity = {
+				ideology = communism
+				popularity = 0.05
+			}
+		}
+	}
+
+	SPR_reduce_defense_budget = {
+		icon = generic_propaganda
+
+		cost = 0
+
+		fire_only_once = yes
+
+		days_remove = 180
+
+		modifier = {
+			production_speed_arms_factory_factor = -0.2
+			industrial_capacity_factory = -0.25
+			power_balance_weekly = -0.0075
+		}
+	}
 }
