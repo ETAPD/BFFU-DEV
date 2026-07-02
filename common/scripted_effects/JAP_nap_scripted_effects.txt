@@ -1,0 +1,50 @@
+# Non-aggression pact system for the Japan rework.
+# A pact is a country flag (JAP_nap_with_<TAG>) plus a mutual +100 opinion modifier.
+# AI is steered away from war by common/ai_strategy/JAP_nap_ai_strategy.txt.
+# The engine cannot hard-block a human war declaration; the break decision is the sanctioned path.
+
+# Abandon Ties to the West: sign a non-aggression pact with Germany and Italy.
+JAP_form_nap_with_GER_ITA = {
+	if = {
+		limit = { country_exists = GER NOT = { has_country_flag = JAP_nap_with_GER } }
+		set_country_flag = JAP_nap_with_GER
+		add_opinion_modifier = { target = GER modifier = JAP_non_aggression_pact }
+		GER = { add_opinion_modifier = { target = JAP modifier = JAP_non_aggression_pact } }
+	}
+	if = {
+		limit = { country_exists = ITA NOT = { has_country_flag = JAP_nap_with_ITA } }
+		set_country_flag = JAP_nap_with_ITA
+		add_opinion_modifier = { target = ITA modifier = JAP_non_aggression_pact }
+		ITA = { add_opinion_modifier = { target = JAP modifier = JAP_non_aggression_pact } }
+	}
+}
+
+# Non-Aggression Pact with the USSR focus: form the pact, protect SOV from embargo, +100 PP each.
+# The truce hard-blocks a war declaration in either direction; on_monthly_JAP renews it while the
+# pact flag is set, so it lasts until the break decision clears the flag (then it lapses).
+JAP_form_nap_with_SOV = {
+	set_country_flag = JAP_nap_with_SOV
+	set_country_flag = JAP_nap_protect_SOV_embargo
+	add_political_power = 100
+	add_opinion_modifier = { target = SOV modifier = JAP_non_aggression_pact }
+	if = {
+		limit = { country_exists = SOV }
+		set_truce = { target = SOV days = 45 }
+		SOV = {
+			add_political_power = 100
+			add_opinion_modifier = { target = JAP modifier = JAP_non_aggression_pact }
+		}
+	}
+}
+
+# Break the Soviet pact (decision-gated on war + control of Hawaii/NSW/Delhi).
+JAP_break_nap_with_SOV = {
+	clr_country_flag = JAP_nap_with_SOV
+	clr_country_flag = JAP_nap_protect_SOV_embargo
+	set_country_flag = JAP_broke_nap_with_SOV
+	remove_opinion_modifier = { target = SOV modifier = JAP_non_aggression_pact }
+	if = {
+		limit = { country_exists = SOV }
+		SOV = { remove_opinion_modifier = { target = JAP modifier = JAP_non_aggression_pact } }
+	}
+}

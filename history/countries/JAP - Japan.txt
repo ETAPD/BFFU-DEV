@@ -3,8 +3,8 @@ capital = 282 # Tokyo/Kanto
 oob = "JAP_1936"
 
 # Starting Stats
-set_stability = 0.5
-set_war_support = 0.8
+set_stability = 0.10
+set_war_support = 0.50
 
 set_research_slots = 5
 set_fuel_ratio = 1.0
@@ -12,7 +12,7 @@ set_fuel_ratio = 1.0
 ### Core Spirits ###
 # Economy spirit variables — MUST be set before add_dynamic_modifier.
 # Accumulated by zaibatsu decisions (and later focuses/events).
-set_variable = { JAP_eco_consumer_goods_factor = 0 }
+set_variable = { JAP_eco_consumer_goods_factor = 0.05 } 
 set_variable = { JAP_eco_political_power_factor = 0 }
 set_variable = { JAP_eco_stability_factor = 0 }
 set_variable = { JAP_eco_local_resources_factor = 0 }
@@ -25,9 +25,15 @@ set_variable = { JAP_eco_industrial_capacity_factory = 0 }
 set_variable = { JAP_eco_industrial_capacity_dockyard = 0 }
 set_variable = { JAP_eco_production_factory_max_efficiency_factor = 0 }
 set_variable = { JAP_eco_production_factory_efficiency_gain_factor = 0 }
+set_variable = { JAP_eco_production_factory_start_efficiency_factor = 0 }
+set_variable = { JAP_eco_line_change_production_efficiency_factor = 0 }
 set_variable = { JAP_eco_production_lack_of_resource_penalty_factor = 0 }
 set_variable = { JAP_eco_conversion_cost_civ_to_mil_factor = 0 }
 set_variable = { JAP_eco_research_speed_factor = 0 }
+set_variable = { JAP_eco_stability_weekly = 0 }
+set_variable = { JAP_eco_war_support_weekly = 0 }
+set_variable = { JAP_eco_conscription = 0 }
+set_variable = { JAP_eco_compliance_growth = 0 }
 
 # Zaibatsu favor (0-100). The Big 4 are established; Nissan and Nakajima are
 # young shinko zaibatsu still building their standing.
@@ -38,8 +44,15 @@ set_variable = { JAP_zaibatsu_yasuda_favor = 15 }
 set_variable = { JAP_zaibatsu_nissan_favor = 5 }
 set_variable = { JAP_zaibatsu_nakajima_favor = 5 }
 
-add_dynamic_modifier = { modifier = JAP_imperial_japanese_army }
-add_dynamic_modifier = { modifier = JAP_imperial_japanese_navy }
+# Imperial Army doctrine baselines - shown on the army spirit (focus rewards add on top of these).
+set_variable = { JAP_army_army_defence_factor = -0.10 }
+set_variable = { JAP_army_army_org_factor = 0.10 }
+set_variable = { JAP_army_planning_speed = -0.20 }
+set_variable = { JAP_army_max_planning_factor = -0.10 }
+set_variable = { JAP_army_experience_gain_army_factor = -0.20 }
+set_technology = { JAP_army_hp_doctrine = 1 } # day-1 -1.0 battalion HP (inf/mot/mech)
+add_dynamic_modifier = { modifier = JAP_imperial_army_dm } # populated army spirit (Imperial Army)
+add_dynamic_modifier = { modifier = JAP_imperial_navy_dm } # populated navy spirit (Imperial Navy); swapped with JAP_japanese_navy_dm by government via 14_sea_on_actions
 add_dynamic_modifier = { modifier = JAP_imperial_japanese_economy }
 
 ### Association to Help the Throne (Imperial Rule Assistance Association) ###
@@ -51,6 +64,7 @@ add_ideas = {
 	limited_exports
 	limited_conscription
 	partial_economic_mobilisation
+	JAP_hirohito
 }
 
 IF = {
@@ -82,6 +96,7 @@ set_technology = {
 	motorised_infantry = 1
 	tech_trucks = 1
 	marines = 1
+	mtg_landing_craft = 1 # Floating Harbour available from day 1
 	armored_car1 = 1
 	jap_light_tank_1 = 1
 	gw_artillery = 1
@@ -204,6 +219,10 @@ set_autonomy = {
 	autonomous_state = autonomy_wtt_imperial_protectorate
 }
 
+# Greater East Asia Co-Prosperity Sphere — Japan & Manchukuo from the start
+create_faction_from_template = faction_template_dai_toa_kyoeiken
+add_to_faction = MAN
+
 
 # Setup Politics
 set_politics = {
@@ -229,30 +248,20 @@ recruit_character = JAP_tetsu_katayama
 	recruit_character = JAP_Fusanosuke_Kuhara
 	recruit_character = JAP_Gindziro_Fudzivara
 	recruit_character = JAP_Hachiro_Arita
-	recruit_character = JAP_Hideki_Todze
-	recruit_character = JAP_Hirota_Koki
 	recruit_character = JAP_Iemasa_Tokugawa
 	recruit_character = JAP_Ikeda_Shigeaki
 	recruit_character = JAP_Kadzuo_Aoki
-	recruit_character = JAP_Kaya_Okinori
 	recruit_character = JAP_Ken_Inukai
-	recruit_character = JAP_Kenzo_Adachi
-	recruit_character = JAP_Kijuro_Shidehara
 	recruit_character = JAP_Kitisaburo_Nomura
 	recruit_character = JAP_Kiyoshi_Akito
-	recruit_character = JAP_Machida_Chuji
 	recruit_character = JAP_Mamoru_Sigemitsu
 	recruit_character = JAP_Masatsune_Ogura
 	recruit_character = JAP_Mineo_Osumi
-	recruit_character = JAP_Prince_Naruhito
-	recruit_character = JAP_Rehei_Uchida
 	recruit_character = JAP_Renya_Mutaguchi
 	recruit_character = JAP_Ryutaro_Nagai
 	recruit_character = JAP_Suehiko_Shiono
-	recruit_character = JAP_Sunroku_Hata
 	recruit_character = JAP_Tadziri_Seigo
 	recruit_character = JAP_Tatsonusuke_Yamazaki
-	recruit_character = JAP_Tosio_Siratori
 
 recruit_character = JAP_kyuichi_tokuda
 recruit_character = JAP_emperor_hirohito

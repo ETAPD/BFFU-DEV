@@ -1,0 +1,138 @@
+# Nanshin-ron Pacific war: opener + the monthly objective recompute that drives the Tora Tora
+# clock, Germany's Festung Europa, and the Allied diversion.
+
+# Strike South decision: open the Pacific war against the Allied factions and grant Tora Tora.
+JAP_strike_south = {
+	set_country_flag = JAP_pacific_war_active
+	complete_national_focus = JAP_Srike_The_West   # auto-complete the focus when the war opens
+	add_ideas = JAP_tora_tora_tora_idea
+
+	# The army turns south - the China-war XP strain and the Kwantung generals' veto are lifted (back to the -20% baseline).
+	if = {
+		limit = { has_country_flag = JAP_china_war_xp_applied }
+		clr_country_flag = JAP_china_war_xp_applied
+		add_to_variable = { JAP_army_experience_gain_army_factor = 0.65 }
+		add_to_variable = { JAP_army_experience_gain_army_unit_factor = 0.40 }
+		hidden_effect = { force_update_dynamic_modifier = yes }
+	}
+	every_army_leader = { remove_unit_leader_trait = jap_kwantung_veto }
+
+	# Seed the island-hopping spirit at the mid tier, exactly as oak does at the Pacific war start.
+	# The USA gets the mirrored spirit at the same tier; from here the two move in opposite directions
+	# (every island Japan takes drops the USA a tier, every island the Allies retake raises it).
+	add_ideas = JAP_island_hopping8
+	if = { limit = { country_exists = USA } USA = { add_ideas = USA_island_hopping8 } }
+
+	declare_war_on = { target = USA type = annex_everything }
+	declare_war_on = { target = ENG type = annex_everything }
+	declare_war_on = { target = HOL type = annex_everything }
+
+	# Festung Europa - stand up the display on Europe's coast and the real penalty on the Allies.
+	# Globals start at 0 and are scaled to the islands held by the first recompute below.
+	set_variable = { global.JAP_festung_inv = 0 }
+	set_variable = { global.JAP_festung_islands = 0 }
+	if = { limit = { country_exists = USA } USA = { add_dynamic_modifier = { modifier = JAP_festung_allied_diversion } } }
+	if = { limit = { country_exists = ENG } ENG = { add_dynamic_modifier = { modifier = JAP_festung_allied_diversion } } }
+	every_state = {
+		limit = { is_on_continent = europe is_coastal = yes }
+		add_dynamic_modifier = { modifier = JAP_festung_europa }
+	}
+	# The inherited "State of the Pacific" state modifiers (0_dynamic_modifiers.txt /
+	# 98_hopping_on_actions.txt) remain a separate per-controller layer.
+
+	set_variable = { JAP_pacific_objectives_taken = 0 }
+	set_variable = { JAP_pac_islands = 0 }
+	set_variable = { JAP_pac_caps = 0 }
+	set_country_flag = JAP_pacific_baseline
+	JAP_pacific_recompute = yes
+	set_variable = { JAP_tora_days_left = 120 }
+	activate_mission = JAP_tora_tora_countdown
+}
+
+# Recompute every month while the Pacific war is on. Tallies islands held + capitulations,
+# trims Tora Tora by 20 days per newly-taken objective, and rescales Festung Europa / Diversion.
+JAP_pacific_recompute = {
+	# --- islands held by Japan ---
+	set_temp_variable = { isl = 0 }
+	if = { limit = { 638 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Guam
+	if = { limit = { 631 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Midway
+	if = { limit = { 632 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Wake
+	if = { limit = { 629 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Hawaii
+	if = { limit = { 645 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Iwo Jima
+	if = { limit = { 646 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Saipan
+	if = { limit = { 526 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Okinawa
+	if = { limit = { 634 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Solomons
+	if = { limit = { 523 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Papua
+	if = { limit = { 524 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Taiwan
+	if = { limit = { 647 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Palau
+	if = { limit = { 684 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Caroline / Truk
+	if = { limit = { 326 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Hong Kong
+	set_variable = { JAP_pac_islands = isl }
+
+	# --- Festung Europa: scale the Allied naval invasion penalty with islands held (oak's token) ---
+	# Each island held: +3% Allied naval invasion penalty (max ~+39% with all 13).
+	set_variable = { global.JAP_festung_islands = isl }
+	set_variable = { global.JAP_festung_inv = isl }
+	multiply_variable = { global.JAP_festung_inv = 0.03 }
+
+	# --- capitulated objective nations (Dutch East Indies tracked by control of Java) ---
+	set_temp_variable = { caps = 0 }
+	if = { limit = { country_exists = RAJ RAJ = { has_capitulated = yes } } add_to_temp_variable = { caps = 1 } }
+	if = { limit = { 327 = { is_controlled_by = JAP } } add_to_temp_variable = { caps = 1 } } # Philippines (no PHI tag in this mod; track by control of the Manila state)
+	if = { limit = { country_exists = AST AST = { has_capitulated = yes } } add_to_temp_variable = { caps = 1 } }
+	if = { limit = { 335 = { is_controlled_by = JAP } 672 = { is_controlled_by = JAP } 334 = { is_controlled_by = JAP } 1022 = { is_controlled_by = JAP } } add_to_temp_variable = { caps = 1 } } # Dutch East Indies (Java, Sumatra, Borneo, Kalimantan)
+	set_variable = { JAP_pac_caps = caps }
+
+	# --- Secondary effect: the Allies' "The Pacific War" attack debuff vs the European Axis ---
+	# Tier scales with the Allied powers Japan has knocked out (caps) plus heavy island dominance.
+	# It is eroded one level from 1 Jan 1942 and fully lifted from 1 Jan 1943, as the Allies finally
+	# mobilise against Asia. Applied to every Allied nation (oak applies it faction-wide).
+	set_temp_variable = { atier = caps }
+	if = { limit = { check_variable = { isl > 9 } } add_to_temp_variable = { atier = 1 } }
+	if = { limit = { date > 1942.1.1 } subtract_from_temp_variable = { atier = 1 } }
+	if = { limit = { date > 1943.1.1 } set_temp_variable = { atier = 0 } }
+	if = { limit = { check_variable = { atier < 0 } } set_temp_variable = { atier = 0 } }
+	if = { limit = { check_variable = { atier > 5 } } set_temp_variable = { atier = 5 } }
+	set_variable = { global.ALLIES_pacific_tier = atier }
+	every_country = {
+		limit = { OR = { is_in_faction_with = ENG is_in_faction_with = USA tag = ENG tag = USA } }
+		JAP_apply_allies_pacific_war = yes
+	}
+
+	# --- Tora Tora: 20 days off per newly-taken objective ---
+	set_temp_variable = { total = isl }
+	add_to_temp_variable = { total = caps }
+	set_temp_variable = { delta = total }
+	subtract_from_temp_variable = { delta = JAP_pacific_objectives_taken }
+	if = {
+		limit = { NOT = { has_country_flag = JAP_pacific_baseline } check_variable = { delta > 0 } has_idea = JAP_tora_tora_tora_idea }
+		set_temp_variable = { cut = delta }
+		multiply_temp_variable = { cut = 20 }
+		subtract_from_variable = { JAP_tora_days_left = cut }
+		clamp_variable = { var = JAP_tora_days_left min = 0 }
+		# Refresh the countdown mission so its timer reflects the shortened window.
+		remove_mission = JAP_tora_tora_countdown
+		activate_mission = JAP_tora_tora_countdown
+	}
+	set_variable = { JAP_pacific_objectives_taken = total }
+	# Clear the opening-baseline guard so subsequent monthly recomputes trim normally.
+	clr_country_flag = JAP_pacific_baseline
+
+	# Europe is handled by the "State of the Pacific" state modifiers (driven separately by
+	# on_state_control_changed), so nothing cross-theatre is rescaled here.
+}
+
+# Sets the holder's "The Pacific War" debuff tier to match global.ALLIES_pacific_tier (0 = none).
+# Only swaps when the tier actually changes (ALLIES_pacific_applied guard) to avoid monthly churn.
+JAP_apply_allies_pacific_war = {
+	if = {
+		limit = { NOT = { check_variable = { var = ALLIES_pacific_applied value = global.ALLIES_pacific_tier compare = equals } } }
+		remove_ideas = { ALLIES_pacific_war_1 ALLIES_pacific_war_2 ALLIES_pacific_war_3 ALLIES_pacific_war_4 ALLIES_pacific_war_5 }
+		if =      { limit = { check_variable = { global.ALLIES_pacific_tier = 1 } } add_ideas = ALLIES_pacific_war_1 }
+		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 2 } } add_ideas = ALLIES_pacific_war_2 }
+		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 3 } } add_ideas = ALLIES_pacific_war_3 }
+		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 4 } } add_ideas = ALLIES_pacific_war_4 }
+		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 5 } } add_ideas = ALLIES_pacific_war_5 }
+		set_variable = { ALLIES_pacific_applied = global.ALLIES_pacific_tier }
+	}
+}

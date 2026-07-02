@@ -1,0 +1,106 @@
+# Kwantung Escalation - city objectives during the war with China (opens 29 Dec 1937).
+# Each city is a mission with a desired capture window:
+#   - Taken too early: world tension (Nanjing none, Guangzhou/Wuhan +5%, Chongqing +30%).
+#   - Taken during the window: world tension (Guangzhou/Wuhan +2%, others nothing).
+#   - Not taken by the window's end (mission timeout): -7.5% stability + a Kwantung Desires
+#     spirit for that front (+10% attack, +10% breakthrough).
+# Timeouts run from the war's start (29 Dec 1937).
+
+JAP_kwantung_escalation = {
+
+	# Nanjing (state 1035) - desired Jan-Mar 1938, no early penalty. Timeout 31 Mar 1938 (92d).
+	JAP_take_nanjing_mission = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		visible = { has_war_with = CHI }
+		activation = { has_war_with = CHI date > 1937.12.28 }
+		available = { 1035 = { is_controlled_by = JAP } }
+		days_mission_timeout = 92
+		fire_only_once = yes
+		is_good = yes
+		cancel_trigger = { NOT = { has_war_with = CHI } }
+		timeout_effect = {
+			add_stability = -0.075
+			1035 = { add_dynamic_modifier = { modifier = JAP_kwantung_desires } }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Guangzhou (state 592) - early before Mar 1938 = +2% tension; desired Apr-Aug 1938. Timeout 31 Aug 1938 (245d).
+	JAP_take_guangzhou_mission = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		visible = { has_war_with = CHI }
+		activation = { has_war_with = CHI date > 1937.12.28 }
+		available = { 592 = { is_controlled_by = JAP } }
+		days_mission_timeout = 245
+		fire_only_once = yes
+		is_good = yes
+		cancel_trigger = { NOT = { has_war_with = CHI } }
+		complete_effect = {
+			if = {
+				limit = { NOT = { date > 1938.2.28 } } # taken early (before March 1938)
+				add_named_threat = { threat = 5 name = JAP_kwantung_escalation }
+			}
+			else = {
+				add_named_threat = { threat = 2 name = JAP_kwantung_escalation } # taken on time
+			}
+		}
+		timeout_effect = {
+			add_stability = -0.075
+			592 = { add_dynamic_modifier = { modifier = JAP_kwantung_desires } }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Wuhan (state 1036) - early before Jun 1938 = +2% tension; desired Jul-Sep 1938. Timeout 30 Sep 1938 (275d).
+	JAP_take_wuhan_mission = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		visible = { has_war_with = CHI }
+		activation = { has_war_with = CHI date > 1937.12.28 }
+		available = { 1036 = { is_controlled_by = JAP } }
+		days_mission_timeout = 275
+		fire_only_once = yes
+		is_good = yes
+		cancel_trigger = { NOT = { has_war_with = CHI } }
+		complete_effect = {
+			if = {
+				limit = { NOT = { date > 1938.5.31 } } # taken early (before June 1938)
+				add_named_threat = { threat = 5 name = JAP_kwantung_escalation }
+			}
+			else = {
+				add_named_threat = { threat = 2 name = JAP_kwantung_escalation } # taken on time
+			}
+		}
+		timeout_effect = {
+			add_stability = -0.075
+			1036 = { add_dynamic_modifier = { modifier = JAP_kwantung_desires } }
+		}
+		ai_will_do = { factor = 1 }
+	}
+
+	# Chongqing (state 1037) - early before 1 Jan 1939 = +30% tension; desired Jan-Mar 1939. Timeout 31 Mar 1939 (457d).
+	JAP_take_chongqing_mission = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		visible = { has_war_with = CHI }
+		activation = { has_war_with = CHI date > 1937.12.28 }
+		available = { 1037 = { is_controlled_by = JAP } }
+		days_mission_timeout = 457
+		fire_only_once = yes
+		is_good = yes
+		cancel_trigger = { NOT = { has_war_with = CHI } }
+		complete_effect = {
+			if = {
+				limit = { NOT = { date > 1938.12.31 } } # taken before 1 Jan 1939
+				add_named_threat = { threat = 30 name = JAP_kwantung_escalation }
+			}
+		}
+		timeout_effect = {
+			add_stability = -0.075
+			1037 = { add_dynamic_modifier = { modifier = JAP_kwantung_desires } }
+		}
+		ai_will_do = { factor = 1 }
+	}
+}

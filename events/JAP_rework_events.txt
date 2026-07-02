@@ -43,6 +43,80 @@ country_event = {
 	}
 }
 
+# -- Historical cabinet transitions --
+# Each fires on its scheduled day (see JAP_rework_on_actions.txt) and force-
+# completes the relevant cabinet focus, whose completion_reward installs the new
+# Prime Minister as country leader. Hidden + guarded so they only fire on the
+# historical cabinet path.
+
+# Konoe's First Cabinet - 5 June 1937 (Hayashi resigns after ~123 days)
+country_event = {
+	id = JAP_rework.3
+	hidden = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_completed_focus = JAP_hayashi_enters_office
+		NOT = { has_completed_focus = JAP_anotherresignation }
+	}
+
+	immediate = {
+		complete_national_focus = JAP_anotherresignation
+	}
+}
+
+# Hiranuma Cabinet - 5 January 1939 (end of Konoe's first term)
+country_event = {
+	id = JAP_rework.4
+	hidden = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_completed_focus = JAP_ichiyoraifuk
+		NOT = { has_completed_focus = JAP_no_time_for_reform }
+	}
+
+	immediate = {
+		complete_national_focus = JAP_no_time_for_reform
+	}
+}
+
+# Konoe's Second Cabinet - 30 August 1939 (the prince returns)
+country_event = {
+	id = JAP_rework.5
+	hidden = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_completed_focus = JAP_hiranuma_cabinet_forms
+		NOT = { has_completed_focus = JAP_the_prince_returns }
+	}
+
+	immediate = {
+		complete_national_focus = JAP_the_prince_returns
+	}
+}
+
+# Tojo's Cabinet - 1 January 1941 (Tojo outmaneuvers Konoe)
+country_event = {
+	id = JAP_rework.6
+	hidden = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_completed_focus = JAP_the_prince_returns
+		NOT = { has_completed_focus = JAP_tojo_outmaneuvers_konoe }
+	}
+
+	immediate = {
+		complete_national_focus = JAP_tojo_outmaneuvers_konoe
+	}
+}
+
 # Education Programs Success - fires 180 days after JAP_kyoikukaigicouncilestablished.
 # The temporary Education Reforms drive matures into a permanent research bonus.
 country_event = {
@@ -62,5 +136,204 @@ country_event = {
 			remove_ideas = JAP_education_reforms
 		}
 		add_ideas = JAP_education_programs_success
+	}
+}
+
+
+# ===== The Melancholy Prince - Konoe's second-term decline (JAP_rework.20-.24) =====
+# Fired from JAP_the_prince_returns. Konoe begins on tier 1 and decays: tier 2 after
+# 140 days, tier 3 after a further 189 days, tier 4 gated to 22 July 1940 (the hidden
+# poller JAP_rework.24, scheduled at startup, holds tier 4 until both that date has
+# passed and tier 3 has been reached). All stages stop if Konoe is no longer leader.
+
+# Tier 1 - The prince returns in renewed vigour
+country_event = {
+	id = JAP_rework.20
+	title = JAP_rework.20.t
+	desc = JAP_rework.20.desc
+	picture = GFX_report_event_japanese_politicians
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_country_leader = { character = JAP_fumimaro_konoe ruling_only = yes }
+	}
+
+	immediate = {
+		remove_country_leader_trait = JAP_ambitious_political_views
+		add_country_leader_trait = JAP_melancholy_prince_1
+		country_event = { id = JAP_rework.21 days = 140 }
+	}
+
+	option = {
+		name = JAP_rework.20.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# Tier 2 - the first shadows return
+country_event = {
+	id = JAP_rework.21
+	title = JAP_rework.21.t
+	desc = JAP_rework.21.desc
+	picture = GFX_report_event_japanese_politicians
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_country_leader = { character = JAP_fumimaro_konoe ruling_only = yes }
+		has_country_leader_with_trait = JAP_melancholy_prince_1
+	}
+
+	immediate = {
+		remove_country_leader_trait = JAP_melancholy_prince_1
+		add_country_leader_trait = JAP_melancholy_prince_2
+		country_event = { id = JAP_rework.22 days = 189 }
+	}
+
+	option = {
+		name = JAP_rework.21.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# Tier 3 - the melancholic prince pleads ill health
+country_event = {
+	id = JAP_rework.22
+	title = JAP_rework.22.t
+	desc = JAP_rework.22.desc
+	picture = GFX_report_event_japanese_politicians
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_country_leader = { character = JAP_fumimaro_konoe ruling_only = yes }
+		has_country_leader_with_trait = JAP_melancholy_prince_2
+	}
+
+	immediate = {
+		remove_country_leader_trait = JAP_melancholy_prince_2
+		add_country_leader_trait = JAP_melancholy_prince_3
+		# Tier 4 is held to 22 July 1940 by the hidden poller JAP_rework.24
+	}
+
+	option = {
+		name = JAP_rework.22.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# Tier 4 - the collapse of will (22 July 1940 or once tier 3 is reached, whichever is later)
+country_event = {
+	id = JAP_rework.23
+	title = JAP_rework.23.t
+	desc = JAP_rework.23.desc
+	picture = GFX_report_event_japanese_politicians
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		has_country_leader = { character = JAP_fumimaro_konoe ruling_only = yes }
+		has_country_leader_with_trait = JAP_melancholy_prince_3
+	}
+
+	immediate = {
+		remove_country_leader_trait = JAP_melancholy_prince_3
+		add_country_leader_trait = JAP_melancholy_prince_4
+	}
+
+	option = {
+		name = JAP_rework.23.a
+		ai_chance = { base = 1 }
+	}
+}
+
+# Hidden date-gate for tier 4. Scheduled at startup for 22 July 1940 (day 1664).
+# Fires tier 4 if Konoe rules and has reached tier 3; if tier 3 has not yet been
+# reached on that date it re-checks every few days until it has.
+country_event = {
+	id = JAP_rework.24
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_leader = { character = JAP_fumimaro_konoe ruling_only = yes }
+				has_country_leader_with_trait = JAP_melancholy_prince_3
+			}
+			country_event = { id = JAP_rework.23 hours = 4 }
+		}
+		else_if = {
+			limit = {
+				has_country_leader = { character = JAP_fumimaro_konoe ruling_only = yes }
+				OR = {
+					has_country_leader_with_trait = JAP_melancholy_prince_1
+					has_country_leader_with_trait = JAP_melancholy_prince_2
+				}
+			}
+			country_event = { id = JAP_rework.24 days = 3 }
+		}
+	}
+}
+
+# Japan opens the war with China - 29 December 1937 (Second Sino-Japanese War).
+# Scheduled at startup (JAP_rework_on_actions). The declaration trips on_declare_war
+# (test_on_actions) which plays the speech/song and applies the Surprise Invasion idea.
+country_event = {
+	id = JAP_rework.30
+	hidden = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	trigger = {
+		tag = JAP
+		CHI = { exists = yes }
+		NOT = { has_war_with = CHI }
+	}
+
+	immediate = {
+		declare_war_on = { target = CHI type = annex_everything }
+		# The China-war army strain (-65% XP / -40% division XP) and the Kwantung veto are applied by the
+		# on_declare_war handler (test_on_actions), so they fire for ANY JAP->CHI declaration - this scheduled
+		# fallback declare or the historical japan.1 Marco Polo Bridge chain.
+	}
+}
+
+# Commission a Study in Germany - import one German technology programme (fired by JAP_commision_a_study_in_germany).
+country_event = {
+	id = JAP_rework.40
+	title = JAP_rework.40.t
+	desc = JAP_rework.40.d
+	picture = GFX_report_event_german_tanks_at_factory
+	is_triggered_only = yes
+
+	option = { # German Rocketry
+		name = JAP_rework.40.a
+		add_tech_bonus = { name = JAP_german_rocketry bonus = 0.75 uses = 1 category = rocketry }
+	}
+	option = { # German Armour
+		name = JAP_rework.40.b
+		add_tech_bonus = { name = JAP_german_armour bonus = 1.0 uses = 1 category = armor }
+	}
+	option = { # German Fighters
+		name = JAP_rework.40.c
+		mio:JAP_mitsubishi_organization = { add_mio_funds = 3000 }
+	}
+}
+
+# Chosen Project completes - a year of investment lifts Korean resistance and opens
+# Economic Unification (fired 365 days after JAP_begin_the_chosen_proejct).
+country_event = {
+	id = JAP_rework.101
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_country_flag = JAP_chosen_project_complete
 	}
 }

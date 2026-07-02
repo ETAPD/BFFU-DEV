@@ -1,16 +1,71 @@
 on_actions = {
 
-	# Schedule the Hirota-era events at game start.
+	# Schedule the historical cabinet-transition events at game start.
 	on_startup = {
 		effect = {
 			if = {
 				limit = { country_exists = JAP }
 				JAP = {
-					country_event = { id = JAP_rework.1 days = 56 }  # 26 Feb 1936 - February 26 Incident
-					country_event = { id = JAP_rework.2 days = 398 } # 2 Feb 1937 - Hirota's cabinet falls
+					country_event = { id = JAP_rework.1 days = 56 }   # 26 Feb 1936 - February 26 Incident
+					country_event = { id = JAP_rework.2 days = 398 }  # 2 Feb 1937 - Hirota's cabinet falls
+					country_event = { id = JAP_rework.3 days = 521 }  # 5 Jun 1937 - Konoe forms his first cabinet (Hayashi out after ~123 days)
+					country_event = { id = JAP_rework.4 days = 1100 } # 5 Jan 1939 - Hiranuma cabinet forms
+					country_event = { id = JAP_rework.5 days = 1337 } # 30 Aug 1939 - Konoe returns for his second cabinet
+					country_event = { id = JAP_rework.6 days = 1827 } # 1 Jan 1941 - Tojo outmaneuvers Konoe
+					country_event = { id = JAP_rework.24 days = 1664 } # 22 Jul 1940 - gate The Melancholy Prince to its final stage
+					country_event = { id = JAP_rework.30 days = 728 }  # 29 Dec 1937 - Japan opens the war with China
 				}
 			}
 		}
 	}
 
+
+	# Auto-complete Abandon Ties to the West once the Allies (UK/USA) embargo Japan.
+	on_weekly_JAP = {
+		effect = {
+			if = {
+				limit = {
+					has_completed_focus = JAP_hiranuma_cabinet_forms
+					NOT = { has_completed_focus = JAP_abandon_ties_to_the_west }
+					OR = { is_embargoed_by = ENG is_embargoed_by = USA }
+				}
+				complete_national_focus = JAP_abandon_ties_to_the_west
+			}
+		}
+	}
+
+	# Keep the Soviet non-aggression truce alive while the pact stands. Renewed monthly at 45 days
+	# (always longer than the month between checks), so it never lapses until the break decision
+	# clears the flag - then it expires on its own within ~6 weeks.
+	on_monthly_JAP = {
+		effect = {
+			if = {
+				limit = {
+					has_country_flag = JAP_nap_with_SOV
+					country_exists = SOV
+				}
+				set_truce = { target = SOV days = 45 }
+			}
+			# Recompute Pacific objectives (Tora trim, Festung Europa, Allied diversion).
+			if = {
+				limit = { has_country_flag = JAP_pacific_war_active }
+				JAP_pacific_recompute = yes
+			}
+		}
+	}
+
+	# When China capitulates, lift Imperial Directive 501 (the escalation spirit).
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = { tag = CHI }
+				JAP = {
+					if = {
+						limit = { has_idea = JAP_imperial_directive_501 }
+						remove_ideas = JAP_imperial_directive_501
+					}
+				}
+			}
+		}
+	}
 }

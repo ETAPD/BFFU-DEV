@@ -86,6 +86,7 @@ ideas = {
 				original_tag = USA
 			}
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				always = no
 			}
 			removal_cost = -1
@@ -116,6 +117,7 @@ ideas = {
 				original_tag = USA
 			}
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				always = no
 			}
 			removal_cost = -1
@@ -147,6 +149,7 @@ ideas = {
 				original_tag = USA
 			}
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				always = no
 			}
 			removal_cost = -1
@@ -182,6 +185,7 @@ ideas = {
 				original_tag = USA
 			}
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				always = no
 			}
 			removal_cost = -1
@@ -217,6 +221,7 @@ ideas = {
 				original_tag = USA
 			}
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				always = no
 			}
 			removal_cost = -1
@@ -248,6 +253,10 @@ ideas = {
 				NOT = { original_tag = USA }
 			}
 
+			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
+			}
+
 			cost = 150
 			removal_cost = -1
 
@@ -273,6 +282,7 @@ ideas = {
 			}
 
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				has_war_support > 0.25
 				if = {
 					limit = {
@@ -388,6 +398,7 @@ ideas = {
 			}
 
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				has_war_support > 0.35
 
 				IF = {
@@ -522,6 +533,7 @@ ideas = {
 			}
 
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 			    OR = {
 					has_war = yes
 					threat > 0.30
@@ -635,6 +647,7 @@ ideas = {
 			}
 
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				has_war = yes
 				has_war_support > 0.8
 				any_enemy_country = {
@@ -738,6 +751,7 @@ ideas = {
 			}
 
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				has_completed_focus = GER_totaler_krieg
 				has_war_with_major = yes
 				has_war_support > 0.8
@@ -781,6 +795,7 @@ ideas = {
 			}
 
 			available = {
+				if = { limit = { original_tag = JAP } custom_trigger_tooltip = { tooltip = JAP_economy_locked_tt always = no } } # Japan economy is focus-driven - no manual law switching
 				OR = {
 					always = no
 					always = no
@@ -809,6 +824,44 @@ ideas = {
 				stability_weekly = -0.002
 				war_support_weekly = -0.001
 				factory_energy_consumption = 0.2
+			}
+			cancel_if_invalid = no
+		}
+
+		# New Economic Structure - Japan's total-war planning economy (Abandon Ties to the West focus).
+		# allowed = always no, so it is never manually selectable; the focus adds it and it stays until a focus swaps it.
+		JAP_new_economic_structure = {
+			picture = SPR_collectivized_society
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				political_power_gain = -0.1
+				consumer_goods_expected_value = 0.15
+				conscription = -0.03
+				stability_weekly = -0.003
+				industry_repair_factor = 0.1
+				production_speed_industrial_complex_factor = 0.05
+				production_speed_arms_factory_factor = 0.1
+				industrial_capacity_factory = 0.1
+				global_building_slots_factor = 0.1
+			}
+			cancel_if_invalid = no
+		}
+
+		# National Mobilisation Law - wartime economy short of total war (Enact the National Mobilisation Law focus).
+		# allowed = always no, so it is never manually selectable; the focus adds it and it stays until a focus swaps it.
+		JAP_national_mobilisation_law = {
+			picture = JAP_press_association_idea
+			allowed = { always = no }
+			removal_cost = -1
+			modifier = {
+				political_power_gain = -0.1
+				consumer_goods_expected_value = 0.2
+				conscription = -0.02
+				stability_weekly = -0.002
+				production_speed_arms_factory_factor = 0.0
+				industrial_capacity_factory = 0.05
+				global_building_slots_factor = 0.05
 			}
 			cancel_if_invalid = no
 		}
@@ -1016,6 +1069,8 @@ ideas = {
 		free_trade = {
 
 			available = {
+				# Japan is locked into the Yen Block trade law until 1942 (Create the Yen Block focus).
+				NOT = { AND = { original_tag = JAP date < 1942.1.1 OR = { has_idea = JAP_yen_block has_idea = JAP_yen_block_tripartite } } }
 				OR = {
 					AND = {
 						NOT = {
@@ -1103,6 +1158,8 @@ ideas = {
 		export_focus = {
 
 			available = {
+				# Japan is locked into the Yen Block trade law until 1942 (Create the Yen Block focus).
+				NOT = { AND = { original_tag = JAP date < 1942.1.1 OR = { has_idea = JAP_yen_block has_idea = JAP_yen_block_tripartite } } }
 
 				if = {
 					limit = {
@@ -1174,6 +1231,8 @@ ideas = {
 
 		limited_exports = {
 			available = {
+				# Japan is locked into the Yen Block trade law until 1942 (Create the Yen Block focus).
+				NOT = { AND = { original_tag = JAP date < 1942.1.1 OR = { has_idea = JAP_yen_block has_idea = JAP_yen_block_tripartite } } }
 				OR = {
 					AND = {
 						has_government = democratic
@@ -1372,6 +1431,8 @@ ideas = {
 
 
 			available = {
+				# Japan is locked into the Yen Block trade law until 1942 (Create the Yen Block focus).
+				NOT = { AND = { original_tag = JAP date < 1942.1.1 OR = { has_idea = JAP_yen_block has_idea = JAP_yen_block_tripartite } } }
 
 				has_war = yes
 
@@ -1567,6 +1628,62 @@ ideas = {
 			allowed_to_remove = {
 				always = no
 			}
+			cancel_if_invalid = no
+		}
+
+		# Yen Block - Japan's autarkic trade law, granted by the Create the Yen Block focus.
+		# Same profile as limited_exports but only 10% of resources to market, plus heavy
+		# preferential trade with the continental sphere (Manchukuo and Siam).
+		JAP_yen_block = {
+			picture = JAP_national_defense_state
+			allowed = { original_tag = JAP }
+			available = {
+				has_country_flag = JAP_yen_block_unlocked
+				NOT = { has_country_flag = JAP_tripartite_pact_active }
+			}
+			cost = 150
+			removal_cost = -1
+			modifier = {
+				min_export = 0.10
+				industrial_capacity_factory = 0.05
+				industrial_capacity_dockyard = 0.05
+				production_speed_buildings_factor = 0.05
+				research_speed_factor = 0.05
+				civilian_intel_to_others = 5.0
+				navy_intel_to_others = 3
+				lend_lease_tension = 0.05
+				cic_construction_boost = -0.05
+			}
+			targeted_modifier = { tag = MAN extra_trade_to_target_factor = 0.75 }
+			targeted_modifier = { tag = SIA extra_trade_to_target_factor = 0.75 }
+			cancel_if_invalid = no
+		}
+
+		# Yen Block (Tripartite) - upgrades once the Tripartite Pact is formed, adding strong
+		# preferential trade with Germany and Italy on top of the sphere bonuses.
+		JAP_yen_block_tripartite = {
+			picture = JAP_national_defense_state
+			allowed = { original_tag = JAP }
+			available = {
+				has_country_flag = JAP_tripartite_pact_active
+			}
+			cost = 150
+			removal_cost = -1
+			modifier = {
+				min_export = 0.10
+				industrial_capacity_factory = 0.05
+				industrial_capacity_dockyard = 0.05
+				production_speed_buildings_factor = 0.05
+				research_speed_factor = 0.05
+				civilian_intel_to_others = 5.0
+				navy_intel_to_others = 3
+				lend_lease_tension = 0.05
+				cic_construction_boost = -0.05
+			}
+			targeted_modifier = { tag = MAN extra_trade_to_target_factor = 0.75 }
+			targeted_modifier = { tag = SIA extra_trade_to_target_factor = 0.75 }
+			targeted_modifier = { tag = GER extra_trade_to_target_factor = 0.20 }
+			targeted_modifier = { tag = ITA extra_trade_to_target_factor = 0.20 }
 			cancel_if_invalid = no
 		}
 	}

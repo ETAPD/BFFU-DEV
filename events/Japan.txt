@@ -335,19 +335,6 @@ country_event = {
 		# 	custom_effect_tooltip = generic_skip_one_line_tt
 		# }
 
-		IF = {
-			limit = {
-				NOT = {
-					always = no
-				}
-			}
-			
-			add_timed_idea = {
-				idea = JAP_surprise_invasion_idea
-				days = 245 
-			}	
-			
-		}
 
 		hidden_effect = {
 			country_event = { days = 5 id = news.1 }
@@ -720,3 +707,93 @@ country_event = {
 
 # GUTTED for Japan rework: japan.3-18 and japan.506-507 removed (Soviet border conflict, Indochina demands, etc.).
 # Kept: japan.1 (China refuses concessions -> declare war) and japan.2 (China accepts concessions).
+
+country_event = {
+	id = japan.12
+	title = japan.12.t
+	desc = japan.12.d
+	picture = GFX_report_event_japanese_officers
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = japan.12.a
+		ai_chance = {
+			factor = 90 
+			modifier = {
+				#If they have a fighting chance, they should stand their ground
+				factor = 0
+				strength_ratio = {
+					tag = JAP
+					ratio > 0.75
+				}
+			}
+		}
+		JAP = { 
+			country_event = { id = japan.13 }
+			effect_tooltip = { puppet = SIA }
+		}
+	}
+
+	option = {
+		name = japan.12.b
+		ai_chance = { factor = 10 }
+		JAP = { 
+			country_event = { id = japan.14 }
+			effect_tooltip = {
+				declare_war_on = {
+					target = SIA
+					type = puppet_wargoal_focus
+				}
+			}
+		}
+	}
+}
+
+# Siam accepts and is puppeted
+country_event = {
+	id = japan.13
+	title = japan.13.t
+	desc = japan.13.d
+	picture = GFX_report_event_japanese_siam_politicians
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = japan.13.a
+        annex_country = {
+            target = SIA
+            transfer_troops = yes
+     }
+		724 = {
+			add_compliance = 60
+		}
+		289 = {
+			add_compliance = 60
+		}
+		868 = {
+			add_compliance = 60
+		}
+		869 = {
+			add_compliance = 60
+		}
+	}
+}
+
+# Siam refuses, nations go to war 
+country_event = {
+	id = japan.14
+	title = japan.14.t
+	desc = japan.14.d
+	picture = GFX_report_event_japanese_chinese_surrender
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = japan.14.a
+		declare_war_on = {
+			target = SIA
+			type = puppet_wargoal_focus
+		}
+	}
+}

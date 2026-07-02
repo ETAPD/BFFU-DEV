@@ -1,0 +1,28 @@
+on_actions = {
+	# Keep JAP's faction_members array (used by the GEACPS member-list GUI) up to date.
+	on_startup = {
+		effect = {
+			if = {
+				limit = { country_exists = JAP }
+				JAP = {
+					JAP_refresh_faction_members = yes
+					country_event = { id = JAP_geacps.1 days = 3 }
+				}
+			}
+		}
+	}
+	on_weekly = {
+		effect = {
+			if = {
+				limit = { original_tag = JAP }
+				JAP_refresh_faction_members = yes
+			}
+		}
+	}
+	# Also refresh whenever faction membership changes.
+	on_join_faction = {
+		effect = {
+			if = { limit = { original_tag = JAP } JAP_refresh_faction_members = yes }
+		}
+	}
+}

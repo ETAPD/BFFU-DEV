@@ -1,0 +1,163 @@
+JAP_nanshin_war = {
+
+	JAP_betray_the_soviets = {
+		icon = GFX_decision_generic_nationalism
+		allowed = { original_tag = JAP }
+		visible = { has_country_flag = JAP_nap_with_SOV }
+		available = {
+			has_war = yes
+			custom_trigger_tooltip = {
+				tooltip = JAP_break_nap_sov_states_tt
+				629 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
+				285 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
+				439 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
+			}
+		}
+		cost = 0
+		fire_only_once = yes
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			JAP_break_nap_with_SOV = yes
+			declare_war_on = { target = SOV type = annex_everything }
+			if = {
+				limit = { is_in_faction_with = MAN }
+				MAN = { declare_war_on = { target = SOV type = annex_everything } }
+			}
+		}
+	}
+
+	# Island Convert - raise a 40-width infantry-only garrison ("Island Convert") at regular
+	# experience on the mandate islands. No equipment is granted; divisions draw from stockpile.
+	JAP_island_convert = {
+		icon = GFX_decision_generic_construction
+		allowed = { original_tag = JAP }
+		fire_only_once = yes
+		ai_will_do = { factor = 1 }
+		available = {
+			has_full_control_of_state = 633 # Marshall
+			has_full_control_of_state = 684 # Caroline
+			has_full_control_of_state = 646 # Saipan / Marianas
+			has_full_control_of_state = 647 # Palau
+		}
+		complete_effect = {
+			custom_effect_tooltip = JAP_island_convert_tt
+			hidden_effect = {
+				division_template = {
+					name = "Island Convert"
+					is_locked = no
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 0 y = 3 }
+						infantry = { x = 0 y = 4 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+						infantry = { x = 1 y = 3 }
+						infantry = { x = 1 y = 4 }
+						infantry = { x = 2 y = 0 }
+						infantry = { x = 2 y = 1 }
+						infantry = { x = 2 y = 2 }
+						infantry = { x = 2 y = 3 }
+						infantry = { x = 2 y = 4 }
+						infantry = { x = 3 y = 0 }
+						infantry = { x = 3 y = 1 }
+						infantry = { x = 3 y = 2 }
+						infantry = { x = 3 y = 3 }
+						infantry = { x = 3 y = 4 }
+					}
+				}
+				633 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
+				684 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
+				646 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
+				647 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
+			}
+		}
+	}
+
+	# Demand Indochina - extort the Indochina states (286 Tonkin, 670 Laos, 671 Annam, 741
+	# Cambodia) from a defeated France, the way the reference demanded them from the colonial tag.
+	JAP_demand_indochina = {
+		icon = GFX_decision_generic_political_discourse
+		allowed = { original_tag = JAP }
+		visible = { has_country_flag = JAP_demand_indochina_unlocked } # unlocked by the Demand Indochina focus
+		fire_only_once = yes
+		ai_will_do = { factor = 1 }
+		available = {
+			country_exists = FRA
+			FRA = { has_capitulated = yes }
+			NOT = { has_war_with = FRA }
+			286 = { is_owned_by = FRA }
+		}
+		days_remove = 35
+		remove_effect = {
+			add_named_threat = { threat = 5 name = JAP_demand_indochina }
+			every_state = {
+				limit = { OR = { state = 286 state = 670 state = 671 state = 741 } }
+				set_compliance = 30
+				set_resistance = 0
+			}
+			if = { limit = { 286 = { is_owned_by = FRA } } transfer_state = 286 }
+			if = { limit = { 670 = { is_owned_by = FRA } } transfer_state = 670 }
+			if = { limit = { 671 = { is_owned_by = FRA } } transfer_state = 671 }
+			if = { limit = { 741 = { is_owned_by = FRA } } transfer_state = 741 }
+		}
+	}
+
+	# Strike South - open the Pacific war against the USA, UK and Netherlands (their whole
+	# factions are dragged in), unleash Tora Tora and begin Pacific objective tracking.
+	JAP_strike_south = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		visible = { NOT = { has_country_flag = JAP_pacific_war_active } }
+		available = {
+			# Tojo takes power on 1 Jan 1941; the strike waits for his cabinet.
+			has_country_leader = { character = JAP_hideki_tojo ruling_only = yes }
+			NOT = { has_war_with = USA }
+			NOT = { has_war_with = ENG }
+		}
+		fire_only_once = yes
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			JAP_strike_south = yes
+		}
+	}
+
+	# Tora Tora countdown - the visible timer for the surprise-attack spirit. Activated by Strike
+	# South; its length is var:JAP_tora_days_left (cut 20 per objective). On timeout the spirit lifts.
+	JAP_tora_tora_countdown = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		is_good = yes
+		fire_only_once = no
+		days_mission_timeout = var:JAP_tora_days_left
+		timeout_effect = {
+			remove_ideas = JAP_tora_tora_tora_idea
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	# Island Hopping - reference card for the war bonus that scales with the islands held above.
+	# Shows the milestone tiers so the player can see what each captured island is worth. Mirrors
+	# oak 2's island-hopping explanation decision.
+	JAP_island_hopping_reference = {
+		icon = GFX_decision_generic_military
+		allowed = { original_tag = JAP }
+		visible = { has_country_flag = JAP_pacific_war_active }
+		available = { always = no }
+		fire_only_once = no
+		ai_will_do = { factor = 0 }
+		complete_effect = {
+			custom_effect_tooltip = JAP_island_hopping_reference_tt
+			show_ideas_tooltip = JAP_island_hopping0
+			show_ideas_tooltip = JAP_island_hopping4
+			show_ideas_tooltip = JAP_island_hopping8
+			show_ideas_tooltip = JAP_island_hopping12
+			show_ideas_tooltip = JAP_island_hopping17
+		}
+	}
+}
