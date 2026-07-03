@@ -291,8 +291,6 @@ focus_tree = {
             add_to_variable = { RAJ_autonomy_gain_independence_movement = 0.1 tooltip = autonomy_gain_tt }
             add_to_variable = { RAJ_resistance_activity_independence_movement = 0.05 tooltip =  resistance_activity_tt }
             add_to_variable = { RAJ_resistance_target_independence_movement = 0.05 tooltip =  resistance_target_tt }
-
-            set_country_flag = RAJ_quit_india_movement
         }
     }
 
@@ -2855,7 +2853,6 @@ focus_tree = {
             custom_effect_tooltip = RAJ_his_majestys_loyal_government_break_free_tt
 
             hidden_effect = {
-                #country_event = { id = GOE_RAJ_partition.1 days = 80 } # Unrest event
                 country_event = { id = GOE_RAJ.29 days = 38 }  #April 18ish #Freeman retires
             }
 
@@ -3358,15 +3355,6 @@ focus_tree = {
                 }
             }
 
-            if = { #Just a fail safe
-                limit = {
-                    ENG = {
-                        has_character = ENG_winston_churchill
-                    }
-                }
-                custom_effect_tooltip = generic_skip_one_line_tt
-                country_event = { id = GOE_RAJ_loyalist.11 hours = 36 random_hours = 12 }
-            }
         }
     }
 
@@ -4408,18 +4396,6 @@ focus_tree = {
 
             custom_effect_tooltip = generic_skip_one_line_tt
 
-            if = {
-                limit = {
-                    has_dlc = "Arms Against Tyranny"
-                }
-                add_ideas = RAJ_war_industry
-            }
-            else = {
-                add_ideas = RAJ_war_industry_no_aat
-            }
-
-            custom_effect_tooltip = generic_skip_one_line_tt
-
             random_owned_controlled_state = {
                 limit = {
                     is_fully_controlled_by = ROOT
@@ -4880,7 +4856,6 @@ focus_tree = {
                 limit = {
                     is_subject_of = ENG
                 }
-                ENG = { country_event = { id = GOE_RAJ_loyalist.03 hours = 4 random_hours = 1 } }
                 custom_effect_tooltip = if_they_accept_tt
                 effect_tooltip = {
                     declare_war_on = {
@@ -5801,49 +5776,26 @@ focus_tree = {
             }
 
 
-            #Event to annex Malay
-            if = { # MAL is independent -> Send event to them
+            #Claim Malaya - annex it directly if still independent, otherwise take its states from whoever holds them
+            custom_effect_tooltip = generic_skip_one_line_tt
+            if = { # MAL still exists independently -> annex it outright, no refusal
                 limit = {
                     MAL = {
-                        exists = yes 
-                        controls_state = 336 #SINGAPORE
-                        OR = { #To avoid transferring states controlled by enemy, messing up the controller.
-                            has_war = no
-                            all_enemy_country = {
-                                has_war_with = ROOT	
-                            }
-                        }
-                        is_subject = no
-                        is_in_faction = no
-                        is_ai = yes #No point on sending an event to get annexed to a player, would be just clickbait
-                    }
-                    NOT = {
-                        has_war_with = MAL
-                        any_allied_country = { has_war_with = MAL }
+                        exists = yes
                     }
                 }
-                custom_effect_tooltip = generic_skip_one_line_tt
-                MAL = { save_event_target_as = RAJ_annexing_country_target }
-                MAL = { country_event = { id = GOE_RAJ_loyalist.07 hours = 8 random_hours = 4 } }
+                annex_country = {
+                    target = MAL
+                    transfer_troops = yes
+                }
             }
-            else_if = { # MAL is subject of an ally -> Send event to overlord
-                limit = {
-                    is_ally_with = MAL.OVERLORD
-                    MAL = {
-                        is_ai = yes #Do not annex a player without they having a say
-                        exists = yes 
-                        controls_state = 336 #SINGAPORE
-                        OR = { #To avoid transferring states controlled by enemy, messing up the controller.
-                            has_war = no
-                            all_enemy_country = {
-                                has_war_with = ROOT	
-                            }
-                        }
-                    }
+            else = { # MAL already annexed (e.g. by ENG) -> take its states directly
+                336 = { #SINGAPORE
+                    transfer_state_to = RAJ
                 }
-                custom_effect_tooltip = generic_skip_one_line_tt
-                MAL = { save_event_target_as = RAJ_annexing_country_target }
-                var:MAL.OVERLORD = { country_event = { id = GOE_RAJ_loyalist.08 hours = 8 random_hours = 4 } }
+                1021 = { #KUALA LUMPUR
+                    transfer_state_to = RAJ
+                }
             }
         }
     }
@@ -6280,52 +6232,6 @@ focus_tree = {
                 }
             }
 
-            #Event to annex Burma
-            if = { # BRM is independent -> Send event to them
-                limit = {
-                    BRM = {
-                        exists = yes 
-                        controls_state = 995 # PEGU (Rangoon)
-                        controls_state = 998 # SAGAING (Myitkyina)
-                        OR = { #To avoid transferring states controlled by enemy, messing up the controller.
-                            has_war = no
-                            all_enemy_country = {
-                                has_war_with = ROOT	
-                            }
-                        }
-                        is_subject = no
-                        is_in_faction = no
-                        is_ai = yes #No point on sending an event to get annexed to a player, would be just clickbait
-                    }
-                    NOT = {
-                        has_war_with = BRM
-                        any_allied_country = { has_war_with = BRM }
-                    }
-                }
-                custom_effect_tooltip = generic_skip_one_line_tt
-                BRM = { save_event_target_as = RAJ_annexing_country_target }
-                BRM = { country_event = { id = GOE_RAJ_loyalist.77 hours = 8 random_hours = 4 } }
-            }
-            else_if = { # BRM is subject of an ally -> Send event to overlord
-                limit = {
-                    is_ally_with = BRM.OVERLORD
-                    BRM = {
-                        is_ai = yes #Do not annex a player without they having a say
-                        exists = yes 
-                        controls_state = 995 # PEGU (Rangoon)
-                        controls_state = 998 # SAGAING (Myitkyina)
-                        OR = { #To avoid transferring states controlled by enemy, messing up the controller.
-                            has_war = no
-                            all_enemy_country = {
-                                has_war_with = ROOT	
-                            }
-                        }
-                    }
-                }
-                custom_effect_tooltip = generic_skip_one_line_tt
-                BRM = { save_event_target_as = RAJ_annexing_country_target }
-                var:BRM.OVERLORD = { country_event = { id = GOE_RAJ_loyalist.88 hours = 8 random_hours = 4 } }
-            }
         }
     }
 
