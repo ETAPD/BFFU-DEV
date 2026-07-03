@@ -1721,10 +1721,10 @@ focus_tree = {
 				category = industry
 			}
 			54 = {
-				add_extra_state_shared_building_slots = 2
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = arms_factory
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -1957,277 +1957,7 @@ focus_tree = {
 			custom_effect_tooltip = GER_unlock_price_controls_decision_tt
 		}
 	}
-	
-	focus = {
-		id = GER_establish_the_reichswerke
-		icon = GFX_goal_generic_construct_civ_factory
 
-		x = -5
-		y = 20
-
-		cost = 5
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = GER_industrial_consumer_goods_factor_limit_tt
-				check_variable = { GER_industrial_consumer_goods_factor < 0.9 }
-			}
-		}
-
-		continue_if_invalid = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			random_core_state = {
-				limit = {
-					is_fully_controlled_by = ROOT
-					free_building_slots = {
-						building = industrial_complex
-						size > 3
-						include_locked = yes
-					}
-				}
-				prioritize = { 59 }
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = industrial_complex
-					level = 4
-					instant_build = yes
-				}
-				add_resource = {
-					type = steel
-					amount = 60
-				}
-			}
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_establish_the_reichswerke
-				bonus = 1
-				uses = 1
-				category = excavation_tech
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			custom_effect_tooltip = GER_unlock_reichswerke_tt
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			custom_effect_tooltip = GER_increase_consumer_goods_tt
-
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = 0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			if = {
-				limit = {
-					OR = {
-						has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-						has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-					}
-				}
-				GER_add_mefo_bills_penalty = yes
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_add_or_modify_wehrwirtschaft = yes
-			add_to_variable = { 
-				GER_wehrwirtschaft_local_resources_factor = 0.05
-				tooltip = local_resources_factor_tt
-			}
-
-		}
-	}
-	
-	focus = {
-		id = GER_seize_foreign_industries
-		icon = GFX_focus_DEN_heavy_regulations
-		prerequisite = { focus = GER_establish_the_reichswerke }
-
-		x = -1
-		y = 1
-		relative_position_id = GER_establish_the_reichswerke
-		cost = 5
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = GER_industrial_consumer_goods_factor_limit_tt
-				check_variable = { GER_industrial_consumer_goods_factor < 0.9 }
-			}
-			any_controlled_state = {
-				NOT = { is_core_of = ROOT }
-				is_fully_controlled_by = ROOT
-				OR = {
-					steel > 240
-					aluminium > 190
-					oil > 140
-					tungsten > 90
-					chromium > 90
-				}
-			}
-		}
-
-		cancel = {
-			NOT = {
-				any_controlled_state = {
-					is_core_of = ROOT
-					OR = {
-						steel > 250
-						aluminium > 200
-						oil > 150
-						tungsten > 100
-						chromium > 100
-					}
-				}
-			}
-		}
-
-		bypass = {
-			OR = {
-				has_resources_in_collection = {
-					collection = collection:country_and_all_subjects
-					resource = steel
-					amount > 7999
-					extracted = yes
-				}
-			}
-			OR = {
-				has_resources_in_collection = {
-					collection = collection:country_and_all_subjects
-					resource = aluminium
-					amount > 4999
-					extracted = yes
-				}
-			}
-			OR = {
-				has_resources_in_collection = {
-					collection = collection:country_and_all_subjects
-					resource = tungsten
-					amount > 999
-					extracted = yes
-				}
-			}
-			OR = {
-				has_resources_in_collection = {
-					collection = collection:country_and_all_subjects
-					resource = chromium
-					amount > 999
-					extracted = yes
-				}
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			random_controlled_state = {
-				limit = {
-					NOT = { is_core_of = ROOT }
-					is_fully_controlled_by = ROOT
-					free_building_slots = {
-						building = industrial_complex
-						size > 1
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = industrial_complex
-					level = 2
-					instant_build = yes
-				}
-			}
-			random_controlled_state = {
-				limit = {
-					NOT = { is_core_of = ROOT }
-					is_fully_controlled_by = ROOT
-					free_building_slots = {
-						building = arms_factory
-						size > 1
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			every_controlled_state = {
-				limit = {
-					NOT = { 
-						is_core_of = ROOT 
-						any_neighbor_state = {
-							controller = {
-								has_war_with = ROOT
-							}
-						}	
-					}
-					is_fully_controlled_by = ROOT
-					is_on_continent = europe
-					OR = {
-						steel > 190
-						aluminium > 100
-						oil > 90
-						tungsten > 90
-						chromium > 90
-					}
-				}
-				random_select_amount = 5
-				add_dynamic_modifier = { 
-					modifier = GER_nationalized_industries_modifier
-					scope = GER
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_seize_foreign_industries
-				bonus = 0.5
-				uses = 1
-				category = excavation_tech
-			}
-			add_equipment_to_stockpile = {
-				type = train_equipment
-				amount = 20
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			custom_effect_tooltip = GER_increase_consumer_goods_tt
-
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = 0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			if = {
-				limit = {
-					OR = {
-						has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-						has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-					}
-				}
-				GER_add_mefo_bills_penalty = yes
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			custom_effect_tooltip = GER_modify_wehrwirtschaft_modifier_tt
-			add_to_variable = { 
-				GER_wehrwirtschaft_local_resources_factor = 0.05
-				tooltip = local_resources_factor_tt
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-		}
-	}
-	
 	focus = {
 		id = GER_coal_liquefaction
 		icon = GFX_goal_generic_oil_refinery
@@ -2538,28 +2268,219 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 	completion_reward = {
-	10 = {
-		remove_building = { type = industrial_complex level = 3 }
-	}
-	90 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	88 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	87 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	86 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	92 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	762 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-		GER = { add_offsite_building = { type = arms_factory level = 15 } }
+		custom_effect_tooltip = GER_conversion_POL
+		hidden_effect = {
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = POL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+        }
 		custom_effect_tooltip = generic_skip_one_line_tt
 				custom_effect_tooltip = GER_plunder_tt
             add_to_variable = { 
@@ -2600,25 +2521,156 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 	completion_reward = {
-	16 = {
-		remove_building = { type = industrial_complex level = 4 }
-	}
-	14 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	29 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	28 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-		GER = { add_offsite_building = { type = arms_factory level = 10 } }
+		custom_effect_tooltip = GER_conversion_FRA
+		hidden_effect = {
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = FRA
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+        }
 		custom_effect_tooltip = generic_skip_one_line_tt
 				custom_effect_tooltip = GER_plunder_tt
             add_to_variable = { 
 			GER2_industrial_consumer_goods_expected_value = -0.03
 			tooltip = consumer_goods_expected_value_tt
 		}
+
 	custom_effect_tooltip = generic_skip_one_line_tt
 	GER_modify_industrial_modifier = yes
 	add_to_variable = { 
@@ -2654,28 +2706,219 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 	completion_reward = {
-	35 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	36 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	7 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	977 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	34 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	6 = {
-		remove_building = { type = industrial_complex level = 2 }
-	}
-	8 = {
-		remove_building = { type = industrial_complex level = 3 }
-	}
-		GER = { add_offsite_building = { type = arms_factory level = 15 } }
+		custom_effect_tooltip = GER_conversion_BEN
+		hidden_effect = {
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = BEL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = HOL
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+        }
 		custom_effect_tooltip = generic_skip_one_line_tt
 				custom_effect_tooltip = GER_plunder_tt
             add_to_variable = { 
@@ -2720,47 +2963,369 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 completion_reward = {
-	custom_effect_tooltip = GER_norway_tt
+	custom_effect_tooltip = GER_conversion_DEN
 	# Check if Norway has capitulated
 	if = {
 		limit = {
 			NOR = { has_capitulated = yes }
 		}
 		# Rewards if Norway HAS capitulated: Remove factories from 110/115, get 15 mils instead
-		110 = {
-			remove_building = { type = industrial_complex level = 3 }
+		hidden_effect = {
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		115 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		37 = {
-			remove_building = { type = industrial_complex level = 4 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		911 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		912 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		99 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		GER = { add_offsite_building = { type = arms_factory level = 15 } }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = NOR
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = NOR
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = NOR
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = NOR
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = NOR
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+        }
 	}
 	else = {
-		37 = {
-			remove_building = { type = industrial_complex level = 4 }
+		hidden_effect = {
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		911 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		912 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		99 = {
-			remove_building = { type = industrial_complex level = 2 }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
 		}
-		GER = { add_offsite_building = { type = arms_factory level = 10 } }
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = DEN
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		}
 	}
 
 	custom_effect_tooltip = generic_skip_one_line_tt
@@ -15592,6 +16157,8 @@ completion_reward = {
 		completion_reward = {
 			ROM = {			
 				give_resource_rights = { receiver = GER state = 46 }
+				add_offsite_building = { type = industrial_complex level = 3 }
+
 			}
 		}
 	}
