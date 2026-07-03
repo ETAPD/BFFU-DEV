@@ -1,3 +1,5 @@
+# Betray the Soviets - dissolves the non-aggression pact AND declares war on the USSR.
+# Replaces the old standalone "Break the Pact" decision; lives in the Nanshin-ron tab.
 JAP_nanshin_war = {
 
 	JAP_betray_the_soviets = {
@@ -26,8 +28,7 @@ JAP_nanshin_war = {
 		}
 	}
 
-	# Island Convert - raise a 40-width infantry-only garrison ("Island Convert") at regular
-	# experience on the mandate islands. No equipment is granted; divisions draw from stockpile.
+	# Island Convert - raise a 40-width infantry-only garrison ("Island Convert")
 	JAP_island_convert = {
 		icon = GFX_decision_generic_construction
 		allowed = { original_tag = JAP }
@@ -38,6 +39,9 @@ JAP_nanshin_war = {
 			has_full_control_of_state = 684 # Caroline
 			has_full_control_of_state = 646 # Saipan / Marianas
 			has_full_control_of_state = 647 # Palau
+			has_full_control_of_state = 645 # Iwo Jima
+			has_full_control_of_state = 648 # Marcus Island
+			has_full_control_of_state = 526 # Okinawa
 		}
 		complete_effect = {
 			custom_effect_tooltip = JAP_island_convert_tt
@@ -68,10 +72,9 @@ JAP_nanshin_war = {
 						infantry = { x = 3 y = 4 }
 					}
 				}
-				633 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
-				684 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
-				646 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
-				647 = { create_unit = { division = "division_template = \"Island Convert\" start_experience_factor = 0.5 start_equipment_factor = 0" owner = JAP count = 1 } }
+				# create_unit referencing this template must wait a tick - the template
+				# isn't registered on JAP yet if called in the same instant (JAP_rework.102).
+				country_event = { id = JAP_rework.102 hours = 1 }
 			}
 		}
 	}
