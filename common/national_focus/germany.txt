@@ -1554,10 +1554,8 @@ focus_tree = {
 		icon = GFX_focus_GER_the_four_year_plan
 		alternate_icon = GFX_focus_GER_the_four_year_plan_historical
 
-		mutually_exclusive = { focus = GER_prioritize_economic_growth }
 		x = 4
 		y = 0
-		relative_position_id = GER_prioritize_economic_growth
 		cost = 5
 		available = {
 			if = {
@@ -1643,6 +1641,87 @@ focus_tree = {
 	}
 
 	focus = {
+		id = GER_accelerate_the_rearmament_program
+		icon = GFX_focus_generic_combined_arms
+		prerequisite = { focus = GER_goring_plan }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_goring_plan
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = arms_factory
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = arms_factory
+					level = 1
+					instant_build = yes
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_speed_arms_factory_factor = 0.05
+				tooltip = production_speed_arms_factory_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_speed_dockyard_factor = 0.05
+				tooltip = production_speed_dockyard_factor_tt
+			}
+		}
+	}
+	
+	focus = {
+		id = GER_concentrated_armament_program
+		icon = GFX_focus_generic_reorient_production
+		prerequisite = { focus = GER_accelerate_the_rearmament_program }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_accelerate_the_rearmament_program
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = arms_factory
+						size > 2
+						include_locked = yes
+					}
+				}
+				random_select_amount = 2
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = arms_factory
+					level = 4
+					instant_build = yes
+				}
+			}
+		}
+	}
+	focus = {
 		id = GER_hermann_goring_werke
 		icon = GFX_focus_GER_fuhrerprinzip_goring
 		prerequisite = { focus = GER_concentrated_armament_program focus = GER_establish_production_targets }
@@ -1689,7 +1768,7 @@ focus_tree = {
 	focus = {
 		id = GER_empower_krupp
 		icon = GFX_focus_generic_industrial_experts
-		prerequisite = { focus = GER_concentrated_armament_program focus = GER_establish_production_targets focus = GER_ }
+		prerequisite = { focus = GER_concentrated_armament_program focus = GER_establish_production_targets }
 
 		x = -1
 		y = 1
@@ -1734,7 +1813,7 @@ focus_tree = {
 	focus = {
 		id = GER_empower_siemens
 		icon = GFX_focus_generic_industrialists
-		prerequisite = { focus = GER_concentrated_armament_program focus = GER_establish_production_targets focus = GER_ }
+		prerequisite = { focus = GER_concentrated_armament_program focus = GER_establish_production_targets }
 
 		x = 3
 		y = 1
@@ -1820,7 +1899,7 @@ focus_tree = {
 		relative_position_id = GER_the_four_year_plan
 		cost = 5
 		available = {
-			always = false
+			always = no
 		}
 
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
@@ -3504,88 +3583,6 @@ completion_reward = {
 
 
 	focus = {
-		id = GER_accelerate_the_rearmament_program
-		icon = GFX_focus_generic_combined_arms
-		prerequisite = { focus = GER_goring_plan }
-
-		x = 0
-		y = 1
-		relative_position_id = GER_goring_plan
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			every_core_state = {
-				limit = {
-					is_fully_controlled_by = ROOT
-					free_building_slots = {
-						building = arms_factory
-						size > 0
-						include_locked = yes
-					}
-				}
-				random_select_amount = 3
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = arms_factory
-					level = 1
-					instant_build = yes
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_production_speed_arms_factory_factor = 0.05
-				tooltip = production_speed_arms_factory_factor_tt
-			}
-			add_to_variable = { 
-				GER_industrial_production_speed_dockyard_factor = 0.05
-				tooltip = production_speed_dockyard_factor_tt
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_concentrated_armament_program
-		icon = GFX_focus_generic_reorient_production
-		prerequisite = { focus = GER_accelerate_the_rearmament_program }
-
-		x = -1
-		y = 1
-		relative_position_id = GER_accelerate_the_rearmament_program
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			every_core_state = {
-				limit = {
-					is_fully_controlled_by = ROOT
-					free_building_slots = {
-						building = arms_factory
-						size > 2
-						include_locked = yes
-					}
-				}
-				random_select_amount = 2
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = arms_factory
-					level = 4
-					instant_build = yes
-				}
-			}
-		}
-	}
-	
-	focus = {
 		id = GER_establish_production_targets
 		icon = GFX_goal_generic_construct_mil_factory
 		prerequisite = { focus = GER_accelerate_the_rearmament_program }
@@ -3746,6 +3743,230 @@ completion_reward = {
 	#	}
 	#}
 	
+	focus = {
+		id = GER_construct_the_reichsautobahn
+		icon = GFX_focus_generic_road_investment
+		prerequisite = { focus = GER_follow_speers_plan focus = GER_goring_plan }
+
+		x = 5
+		y = 1
+		relative_position_id = GER_follow_speers_plan
+		cost = 3
+		available = {
+			OR = {
+				has_full_control_of_state = 64 #Brandenburg
+				has_full_control_of_state = 59 #Hannover
+				has_full_control_of_state = 60 #Thüringen
+				has_full_control_of_state = 54 #Franken
+			}
+		}
+		bypass = {
+			has_civil_war = no
+			NOT = { has_full_control_of_state = 64 }
+			NOT = {	has_full_control_of_state = 59 }
+			NOT = {	has_full_control_of_state = 60 }
+			NOT = {	has_full_control_of_state = 54 }
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			custom_effect_tooltip = GER_autobahn_tt
+			hidden_effect = {
+				64 = {
+					if = {
+						limit = { is_controlled_by = ROOT }
+						add_building_construction = {
+							type = infrastructure
+							level = 5
+							instant_build = yes
+						}
+					}
+				}
+				59 = {
+					if = {
+						limit = { is_controlled_by = ROOT }
+
+						add_building_construction = {
+							type = infrastructure
+							level = 5
+							instant_build = yes
+						}
+					}
+				}
+				60 = {
+					if = {
+						limit = { is_controlled_by = ROOT }
+						add_building_construction = {
+							type = infrastructure
+							level = 5
+							instant_build = yes
+						}
+					}
+				}
+				54 = {
+					if = {
+						limit = { is_controlled_by = ROOT }
+						add_building_construction = {
+							type = infrastructure
+							level = 5
+							instant_build = yes
+						}
+					}
+				}
+			}		
+		}
+	}
+	focus = {
+		id = GER_kdf_wagen_factories
+		icon = GFX_focus_GER_kdf_wagen
+		prerequisite = { focus = GER_construct_the_reichsautobahn }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_construct_the_reichsautobahn
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			custom_effect_tooltip = unlock_propaganda_campaign_tt
+			unlock_decision_tooltip = GER_reichsarbeit_prop
+
+			if = {
+				limit = {
+					has_war = yes
+				}
+				if = {
+					limit = {
+						59 = {
+							is_fully_controlled_by = ROOT
+							free_building_slots = {
+								building = arms_factory
+								size > 3
+								include_locked = yes
+							}
+						}
+					}
+					59 = { #Hannover
+						add_extra_state_shared_building_slots = 4
+						add_building_construction = {
+							type = arms_factory
+							level = 4
+							instant_build = yes
+						}
+					}
+				}
+				else = {
+					random_owned_state = {
+						limit = {
+							is_controlled_by = ROOT
+							free_building_slots = {
+								building = arms_factory
+								size > 3
+								include_locked = yes
+							}
+						}
+						add_extra_state_shared_building_slots = 4
+						add_building_construction = {
+							type = arms_factory
+							level = 4
+							instant_build = yes
+						}
+					}
+				}
+			}
+			else_if = { #if at peace
+				if = {
+					limit = {
+						59 = {
+							is_fully_controlled_by = ROOT
+							free_building_slots = {
+								building = arms_factory
+								size > 3
+								include_locked = yes
+							}
+						}
+					}
+					59 = { #Hannover
+						add_extra_state_shared_building_slots = 4
+						add_building_construction = {
+							type = industrial_complex
+							level = 4
+							instant_build = yes
+						}
+					}
+				}
+				else = {
+					random_owned_state = {
+						limit = {
+							is_controlled_by = ROOT
+							free_building_slots = {
+								building = industrial_complex
+								size > 3
+								include_locked = yes
+							}
+						}
+						add_extra_state_shared_building_slots = 4
+						add_building_construction = {
+							type = industrial_complex
+							level = 4
+							instant_build = yes
+						}
+					}
+				}
+			}
+		}
+	}
+	focus = {
+		id = GER_develop_heraeus_facilities
+		icon = GFX_focus_research
+		prerequisite = { focus = GER_kdf_wagen_factories }
+
+		x = 0
+		y = 2
+		relative_position_id = GER_kdf_wagen_factories
+		cost = 5
+		available = {
+			industrial_complex > 124
+		}
+
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+			add_research_slot = 1
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+				}
+				prioritize = { 56 }
+				add_resource = {
+					type = tungsten
+					amount = 200
+				}
+				add_resource = {
+					type = chromium
+					amount = 200
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_tech_bonus = {
+				name = GER_develop_heraeus_facilities
+				bonus = 1
+				uses = 1
+				category = electronics
+			}
+
+		}
+	}
 	focus = {
 		id = GER_zentrale_planung
 		icon = GFX_focus_generic_central_planning
@@ -3986,84 +4207,9 @@ completion_reward = {
 	}
 
 	focus = {
-		id = GER_construct_the_reichsautobahn
-		icon = GFX_focus_generic_road_investment
-		prerequisite = { focus = GER_follow_speers_plan focus = GER_goring_plan }
-
-		x = 5
-		y = 1
-		relative_position_id = GER_follow_speers_plan
-		cost = 3
-		available = {
-			OR = {
-				has_full_control_of_state = 64 #Brandenburg
-				has_full_control_of_state = 59 #Hannover
-				has_full_control_of_state = 60 #Thüringen
-				has_full_control_of_state = 54 #Franken
-			}
-		}
-		bypass = {
-			has_civil_war = no
-			NOT = { has_full_control_of_state = 64 }
-			NOT = {	has_full_control_of_state = 59 }
-			NOT = {	has_full_control_of_state = 60 }
-			NOT = {	has_full_control_of_state = 54 }
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			custom_effect_tooltip = GER_autobahn_tt
-			hidden_effect = {
-				64 = {
-					if = {
-						limit = { is_controlled_by = ROOT }
-						add_building_construction = {
-							type = infrastructure
-							level = 5
-							instant_build = yes
-						}
-					}
-				}
-				59 = {
-					if = {
-						limit = { is_controlled_by = ROOT }
-
-						add_building_construction = {
-							type = infrastructure
-							level = 5
-							instant_build = yes
-						}
-					}
-				}
-				60 = {
-					if = {
-						limit = { is_controlled_by = ROOT }
-						add_building_construction = {
-							type = infrastructure
-							level = 5
-							instant_build = yes
-						}
-					}
-				}
-				54 = {
-					if = {
-						limit = { is_controlled_by = ROOT }
-						add_building_construction = {
-							type = infrastructure
-							level = 5
-							instant_build = yes
-						}
-					}
-				}
-			}		
-		}
-	}
-	
-	focus = {
 		id = GER_build_the_rur_dam
 		icon = GFX_focus_generic_hydroelectric_energy
-		prerequisite = { focus = GER_construct_the_reichsautobahn focus = GER_currency_reforms }
+		prerequisite = { focus = GER_construct_the_reichsautobahn }
 
 		x = -2
 		y = 1
@@ -4157,110 +4303,6 @@ completion_reward = {
 					}
 				}
 				custom_effect_tooltip = war_will_cancel_deal_tt
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_kdf_wagen_factories
-		icon = GFX_focus_GER_kdf_wagen
-		prerequisite = { focus = GER_construct_the_reichsautobahn }
-
-		x = 0
-		y = 1
-		relative_position_id = GER_construct_the_reichsautobahn
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			custom_effect_tooltip = unlock_propaganda_campaign_tt
-			unlock_decision_tooltip = GER_reichsarbeit_prop
-
-			if = {
-				limit = {
-					has_war = yes
-				}
-				if = {
-					limit = {
-						59 = {
-							is_fully_controlled_by = ROOT
-							free_building_slots = {
-								building = arms_factory
-								size > 3
-								include_locked = yes
-							}
-						}
-					}
-					59 = { #Hannover
-						add_extra_state_shared_building_slots = 4
-						add_building_construction = {
-							type = arms_factory
-							level = 4
-							instant_build = yes
-						}
-					}
-				}
-				else = {
-					random_owned_state = {
-						limit = {
-							is_controlled_by = ROOT
-							free_building_slots = {
-								building = arms_factory
-								size > 3
-								include_locked = yes
-							}
-						}
-						add_extra_state_shared_building_slots = 4
-						add_building_construction = {
-							type = arms_factory
-							level = 4
-							instant_build = yes
-						}
-					}
-				}
-			}
-			else_if = { #if at peace
-				if = {
-					limit = {
-						59 = {
-							is_fully_controlled_by = ROOT
-							free_building_slots = {
-								building = arms_factory
-								size > 3
-								include_locked = yes
-							}
-						}
-					}
-					59 = { #Hannover
-						add_extra_state_shared_building_slots = 4
-						add_building_construction = {
-							type = industrial_complex
-							level = 4
-							instant_build = yes
-						}
-					}
-				}
-				else = {
-					random_owned_state = {
-						limit = {
-							is_controlled_by = ROOT
-							free_building_slots = {
-								building = industrial_complex
-								size > 3
-								include_locked = yes
-							}
-						}
-						add_extra_state_shared_building_slots = 4
-						add_building_construction = {
-							type = industrial_complex
-							level = 4
-							instant_build = yes
-						}
-					}
-				}
 			}
 		}
 	}
@@ -4547,54 +4589,6 @@ completion_reward = {
 		}
 	}
 
-	focus = {
-		id = GER_develop_heraeus_facilities
-		icon = GFX_focus_research
-		prerequisite = { focus = GER_kdf_wagen_factories }
-
-		x = 0
-		y = 2
-		relative_position_id = GER_kdf_wagen_factories
-		cost = 5
-		available = {
-			industrial_complex > 124
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-
-			add_research_slot = 1
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			random_core_state = {
-				limit = {
-					is_fully_controlled_by = ROOT
-				}
-				prioritize = { 56 }
-				add_resource = {
-					type = tungsten
-					amount = 200
-				}
-				add_resource = {
-					type = chromium
-					amount = 200
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_develop_heraeus_facilities
-				bonus = 1
-				uses = 1
-				category = electronics
-			}
-
-		}
-	}
-	
 	focus = {
 		id = GER_adopt_new_panzer_doctrine
 
@@ -8519,7 +8513,6 @@ completion_reward = {
 
 		x = 31
 		y = 0
-		relative_position_id = GER_prioritize_economic_growth
 
 		cost = 5
 
@@ -22697,7 +22690,6 @@ completion_reward = {
 
 		x = 72
 		y = 0
-		relative_position_id = GER_prioritize_economic_growth
 
 		cost = 5
 
