@@ -975,6 +975,38 @@ on_actions = {
 				}
 				drop_cosmetic_tag = yes
 			}
-		}	
+		}
+	}
+
+	# SPAIN FAMINE APPLY IF AT WAR WITH ENG
+	on_daily_SPR = {
+		effect = {
+            if = {
+				limit = {
+					SPR = { has_war_with = ENG }
+				}
+
+                SPR = {
+                    hidden_effect = {
+                        set_global_flag = spr_allied_war_active
+
+                    	if = {
+                            limit = { has_any_power_balance = yes }
+                            add_power_balance_value = {
+								id = SPR_spain_appeasement_struggle
+								value = 2
+							}
+                        }
+                    }
+                    country_event = { id = lar_spain.658 days = 10 }
+                }
+            }
+        }
+	}
+
+	on_weekly_SPR = {
+		effect = {
+			SPR_calculate_appeasement_ticking = yes
+        }
 	}
 }
