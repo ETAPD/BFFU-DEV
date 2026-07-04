@@ -25,6 +25,95 @@ add_namespace = AAT_germany
 # 	}
 # }
 
+country_event = {
+	id = germany.355 # I hope this ID isnt used / never gets used
+	title = germany.355.t
+	desc = germany.355.d
+	picture = GFX_report_event_military_planning
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	timeout_days = 3
+
+	option = {
+		name = germany.355.a		
+		# if = {
+		# 	limit = {
+		# 		NOT = { has_country_flag = GER_army_equipped_for_winter }
+		# 	}
+		# 	add_timed_idea = {
+		# 		idea = GER_barb_winter_debuff
+		# 		days = 120
+		# 	}
+		# 	custom_effect_tooltip = generic_skip_one_line_tt
+		# }
+
+		remove_dynamic_modifier = { modifier = GER_barb_buff_dynamic_modifier }
+	}
+}
+
+
+country_event = {
+	id = germany.375 # I hope this ID isnt used / never gets used
+	title = germany.375.t
+	desc = germany.375.d
+	picture = GFX_report_event_military_planning
+
+	is_triggered_only = yes
+
+	option = {
+		name = germany.375.a
+		add_political_power = 10
+		hidden_effect = {
+			country_event = { id = germany.376 days = 90 } # make this 90
+		}
+	}
+	option = {
+		name = germany.375.b
+		army_experience = 5
+		hidden_effect = {
+			country_event = { id = germany.376 days = 90 } # make this 90
+		}
+	}
+	option = {
+		name = germany.375.c
+		add_stability = 0.01
+		hidden_effect = {
+			country_event = { id = germany.376 days = 90 } # make this 90
+		}
+	}
+}
+
+# No matter your choice in the first even, wargames always end in failure
+country_event = {
+	id = germany.376 # I hope this ID isnt used / never gets used
+	title = germany.376.t
+	desc = germany.376.d
+	picture = GFX_report_event_soviet_tanks
+
+	is_triggered_only = yes
+
+	option = {
+		name = germany.376.a
+		add_political_power = -35
+		add_war_support = -0.05
+		custom_effect_tooltip = GER_generic_modify_barb_buff_tt
+
+		custom_effect_tooltip = GER_barb_buff_coordination_bonus_var_5_tt
+		add_to_variable = { var = GER_barb_buff_coordination_bonus_var value = 0.05 }
+
+		custom_effect_tooltip = GER_barb_buff_planning_speed_var_5_tt
+		add_to_variable = { var = GER_barb_buff_planning_speed_var value = 0.05 }
+
+		custom_effect_tooltip = GER_barb_buff_max_planning_factor_var_5_tt
+		add_to_variable = { var = GER_barb_buff_max_planning_factor_var value = 0.05 }
+
+		# custom_effect_tooltip = GER_barb_buff_org_loss_when_moving_var_-5_tt
+		# add_to_variable = { var = GER_barb_buff_org_loss_when_moving_var value = -0.05 }
+	}
+}
+
 
 # Austrian Anschluss Completed
 country_event = {
@@ -297,6 +386,9 @@ country_event = {
 			country_event = { days = 1 id = germany.13 }
 		}
 		set_global_flag = sov_no_pact
+		SOV = {
+			complete_national_focus = SOV_pol_triple_alliance
+		}
 	}
 }
 
@@ -355,6 +447,7 @@ country_event = {
 	fire_only_once = yes
 
 	trigger = {
+		always = no
 		tag = GER
 		has_global_flag = sov_yes_pact
 		SOV = { exists = yes }
