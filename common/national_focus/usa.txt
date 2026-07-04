@@ -283,6 +283,35 @@
 		completion_reward = {
 			custom_effect_tooltip = USA_rush_flood_acts_speed_tt
 			add_timed_idea = { idea = USA_financing_the_rush days = 365 }
+			add_stability = 0.15
+			set_country_flag = ohio_flood_rushed
+			# Swap whichever act is currently running onto its 120-day rushed timer
+			# immediately, instead of only speeding up acts that haven't started yet.
+			if = {
+				limit = { check_variable = { var = ohio_flood_act value = 1 compare = equals } }
+				remove_mission = USA_flood_control_act_1
+				activate_mission = USA_flood_control_act_1_r
+			}
+			if = {
+				limit = { check_variable = { var = ohio_flood_act value = 2 compare = equals } }
+				remove_mission = USA_flood_control_act_2
+				activate_mission = USA_flood_control_act_2_r
+			}
+			if = {
+				limit = { check_variable = { var = ohio_flood_act value = 3 compare = equals } }
+				remove_mission = USA_flood_control_act_3
+				activate_mission = USA_flood_control_act_3_r
+			}
+			if = {
+				limit = { check_variable = { var = ohio_flood_act value = 4 compare = equals } }
+				remove_mission = USA_flood_control_act_4
+				activate_mission = USA_flood_control_act_4_r
+			}
+			if = {
+				limit = { check_variable = { var = ohio_flood_act value = 5 compare = equals } }
+				remove_mission = USA_flood_control_act_5
+				activate_mission = USA_flood_control_act_5_r
+			}
 		}
 	}
 
@@ -390,6 +419,7 @@
 			date > 1938.11.1
 		}
 		completion_reward = {
+			custom_effect_tooltip = USA_modify_great_depression_tt
 			USA_ease_depression = yes
 		}
 	}
@@ -413,12 +443,12 @@
 			if = {
 				limit = { has_country_leader = { character = usa_franklin_d_roosevelt } }
 				custom_effect_tooltip = USA_rise_of_evil_fdr_economy_tt
-				country_event = { id = usa.205 }
+				add_ideas = keynesianism
 			}
 			else_if = {
 				limit = { has_country_leader = { character = usa_alf_landon } }
 				custom_effect_tooltip = USA_rise_of_evil_landon_economy_tt
-				country_event = { id = usa.206 }
+				add_ideas = laissez_faire
 			}
 		}
 	}
@@ -594,6 +624,7 @@
 			date > 1937.6.1
 		}
 		completion_reward = {
+			custom_effect_tooltip = USA_modify_great_depression_tt
 			USA_ease_depression = yes
 		}
 	}
@@ -1241,6 +1272,7 @@
 		prerequisite = { focus = USA_civil_works_administration  } prerequisite = { focus = USA_found_the_office_of_prices_and_supply  } prerequisite = { focus = USA_begin_the_manhatten_project  } prerequisite = { focus = USA_finance_the_rubber_reserve_company  }
 		completion_reward = {
 			# Decrease depression by 1 level — tooltips shared with wealth tax focus
+			custom_effect_tooltip = USA_modify_great_depression_tt
 			USA_ease_depression = yes
 		}
 	}
@@ -2943,14 +2975,14 @@
 		completion_reward = {
 				hidden_effect = { set_variable = { var = USA_jpmorgan_trust value = 1 } }
 				custom_effect_tooltip = USA_look_towards_jp_morgan_corp_tt
+				custom_effect_tooltip = USA_modify_new_business_deal_tt
 				if = {
 					limit = { has_dynamic_modifier = { modifier = USA_new_business_deal } }
-					custom_effect_tooltip = USA_modify_new_business_deal_tt
 					USA_new_business_deal_upgrade_jpm = yes
 				}
 				else = {
-					custom_effect_tooltip = USA_look_towards_jp_morgan_nbd_tt
-				hidden_effect = { set_country_flag = USA_jpm_nbd_upgrade_pending }
+					effect_tooltip = { USA_new_business_deal_upgrade_jpm = yes }
+					hidden_effect = { set_country_flag = USA_jpm_nbd_upgrade_pending }
 				}
 			}
 	}
@@ -3002,6 +3034,7 @@
 		}
 		completion_reward = {
 			clr_country_flag = USA_tva_active_selloff # end the in-progress exemption
+			custom_effect_tooltip = USA_modify_great_depression_tt
 			USA_ease_depression = yes
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
@@ -3145,6 +3178,7 @@
 		}
 		completion_reward = {
 			clr_country_flag = USA_tva_active_utilise # end the in-progress exemption
+			custom_effect_tooltip = USA_modify_great_depression_tt
 			USA_ease_depression = yes
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
@@ -3163,6 +3197,7 @@
 		}
 		prerequisite = { focus = USA_give_north_american_aviation_military_contracts }
 		completion_reward = {
+			custom_effect_tooltip = USA_modify_great_depression_tt
 			USA_ease_depression = yes
 		}
 	}
@@ -3647,34 +3682,31 @@
 		}
 		prerequisite = { focus = USA_wilkiebreaksthestreak  focus = USA_roosevelt_historical_third_term  }
 		completion_reward = {
-			custom_effect_tooltip = USA_good_neighbor_policy_civs_tt
-			hidden_effect = {
-				# British Columbia (Canada)
-				473 = {
-					add_extra_state_shared_building_slots = 5
-					add_building_construction = {
-						type = industrial_complex
-						level = 5
-						instant_build = yes
-					}
+			# British Columbia (Canada)
+			473 = {
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = industrial_complex
+					level = 5
+					instant_build = yes
 				}
-				# Baja California (Mexico)
-				484 = {
-					add_extra_state_shared_building_slots = 5
-					add_building_construction = {
-						type = industrial_complex
-						level = 5
-						instant_build = yes
-					}
+			}
+			# Baja California (Mexico)
+			484 = {
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = industrial_complex
+					level = 5
+					instant_build = yes
 				}
-				# Pernambuco (Brazil)
-				936 = {
-					add_extra_state_shared_building_slots = 5
-					add_building_construction = {
-						type = industrial_complex
-						level = 5
-						instant_build = yes
-					}
+			}
+			# Pernambuco (Brazil)
+			936 = {
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = industrial_complex
+					level = 5
+					instant_build = yes
 				}
 			}
 		}
