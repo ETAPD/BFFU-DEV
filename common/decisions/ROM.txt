@@ -1,5 +1,43 @@
 operations = {
 
+	ROM_expand_greater_romania = {
+
+		icon = generic_nationalism
+
+		allowed = {
+			original_tag = ROM
+		}
+
+		fire_only_once = yes
+		
+		available = {
+
+			ROM = { has_completed_focus = ROM_the_transnistria_compromise }
+			has_full_control_of_state = 192
+			has_full_control_of_state = 198
+			has_full_control_of_state = 834
+		}
+
+		visible = {
+			always = no
+		}
+		
+		complete_effect = {
+			add_state_core = 192
+			add_state_core = 198
+			add_state_core = 834
+
+			192 = {			
+				add_dynamic_modifier = { modifier = ROM_unintegrated_territory }
+			}
+			198 = {			
+				add_dynamic_modifier = { modifier = ROM_unintegrated_territory }
+				}
+			834 = {			
+				add_dynamic_modifier = { modifier = ROM_unintegrated_territory }
+				}
+		}
+	}
 
 	ROM_reclaim_territory = {
 
@@ -111,8 +149,7 @@ operations = {
 		fire_only_once = yes
 		
 		visible = {
-			has_war_with = SOV
-			NOT = { has_country_flag = bessarabia_finished  }
+			SOV = { has_active_mission = SOV_besserabia_war }
 		}
 
 		days_remove = 7
@@ -125,7 +162,7 @@ operations = {
 				casualties > 50000
 				surrender_progress > 0.20
 				NOT = {
-					78 = {
+					79 = {
 						CONTROLLER = {
 							OR = {
 								tag = ROM
@@ -145,6 +182,7 @@ operations = {
  				transfer_state = 766
 			}
 			ROM = { set_country_flag = bessarabia_finished }
+			ROM = { set_country_flag = ROM_lost_bessarabia }
 			diplomatic_relation = {
 				country = SOV
 				relation = non_aggression_pact
@@ -169,10 +207,15 @@ operations = {
 		}
 		fire_only_once = yes
 		visible = {
-			has_war_with = SOV
-			NOT = { has_country_flag = bessarabia_finished  }
+			SOV = { has_active_mission = SOV_besserabia_war }
 		}
 		fire_only_once = yes
+
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		targets = {
+			192
+    	}
 
 		available = {
 			has_war_with = SOV
@@ -181,7 +224,7 @@ operations = {
 				SOV = {
 					casualties > 250000
 				}
-				202 = {
+				192 = {
 					CONTROLLER = {
 						OR = {
 							tag = ROM
@@ -193,8 +236,16 @@ operations = {
 		}
 		days_remove = 7
 		remove_effect = {
-			SOV = {
-				white_peace = ROM
+			hidden_effect = {
+				SOV = {
+					white_peace = ROM
+					add_stability = -0.15
+					add_war_support = -0.15
+					add_timed_idea = {
+						idea = SOV_assure_competency
+						days = 150
+					} 
+				}
 			}
 			ROM = { 
 				set_country_flag = bessarabia_finished
@@ -216,5 +267,64 @@ operations = {
 			factor = 200
 		}
 	}
+
+	ROM_bessarabia_war_timer = {
+		icon = generic_nationalism
+		allowed = {
+			always = no
+		}
+		available = {
+			AND = {
+				NOT = { ROM = { has_war_with = SOV } }
+				SOV = { has_war_with = GER }
+			}
+		}
+		days_mission_timeout = 180
+		fire_only_once = yes
+
+		timeout_effect = {
+			custom_effect_tooltip = ROM_victory_soviets
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = ROM_surrender_soviets
+		}
+	}
+
+	# ROM_iron_guard_coup = {
+	# 	icon = generic_nationalism
+	# 	allowed = {
+	# 		original_tag = ROM
+	# 	}
+	# 	visible = {
+	# 		has_completed_focus = ROM_force_abdication
+	# 	}
+
+	# 	available = {
+	# 		hidden_trigger = {
+	# 			always = no
+	# 		}
+	# 	}
+
+	# 	cancel_trigger = {
+	# 		OR = {
+	# 			has_completed_focus = ROM_execute_the_coup
+	# 			has_completed_focus = ROM_crush_legionnaires
+	# 		}
+	# 	}
+	# 	fire_only_once = yes
+
+	# 	activation = {
+	# 		has_completed_focus = ROM_force_abdication
+	# 	}
+		
+	# 	days_mission_timeout = 140
+
+	# 	timeout_effect = {
+	# 		start_civil_war = {
+	# 			ideology = fascism
+	# 		}
+	# 	}
+	# }
 }
 
