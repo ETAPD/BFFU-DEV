@@ -13023,89 +13023,38 @@ completion_reward = {
 
 			if = {
 				limit = {
-					country_exists = DEN					
-				} 
-				ENG = {
-					transfer_state = 101
-					transfer_state = 100
-					transfer_state = 337
-				}
-				every_state = {
-					limit = {
-						is_owned_by = ENG
-						is_core_of = DEN
-					}
-					add_compliance = 80
-				}
-				annex_country = { 
-					target = DEN 
-				}
-				add_ideas = DEN_sahnefront_ns
-			}
-
-			if = {
-				limit = {
 					NOT = { NOR = { is_in_faction_with = GER } }
-					country_exists = NOR					
-				} 
+					country_exists = NOR
+				}
 				declare_war_on = {
 					target = NOR
 					type = annex_everything
 				}
 			}
-			
-			if = {
-						limit = {
-							HUN = {
-									is_in_faction_with = GER
-								}
-							}
-						HUN = {
-							declare_war_on = { 
-								target = NOR
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							ROM = {
-									is_in_faction_with = GER
-								}
-							}
-						ROM = {
-							declare_war_on = { 
-								target = NOR
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							BUL = {
-									is_in_faction_with = GER
-								}
-							}
-						BUL = {
-							declare_war_on = { 
-								target = NOR
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							YUG = {
-									is_in_faction_with = GER
-								}
-							}
-						YUG = {
-							declare_war_on = { 
-								target = NOR
-								type = annex_everything
-							}
-						}
-					}
+
+			# Denmark annexation and Axis ally war declarations are staggered
+			# over the following hours instead of resolving on this same tick
+			# (reduces the single-tick MP load spike that caused desyncs here).
+			hidden_effect = {
+				country_event = { id = germany.905 hours = 2 }
+
+				if = {
+					limit = { HUN = { is_in_faction_with = GER } }
+					HUN = { country_event = { id = germany.906 hours = 4 } }
+				}
+				if = {
+					limit = { ROM = { is_in_faction_with = GER } }
+					ROM = { country_event = { id = germany.906 hours = 6 } }
+				}
+				if = {
+					limit = { BUL = { is_in_faction_with = GER } }
+					BUL = { country_event = { id = germany.906 hours = 8 } }
+				}
+				if = {
+					limit = { YUG = { is_in_faction_with = GER } }
+					YUG = { country_event = { id = germany.906 hours = 10 } }
+				}
+			}
 
 			add_tech_bonus = {
 				name = tp_bonus
@@ -13267,92 +13216,27 @@ completion_reward = {
 				}		
 			}
 			}
-			if = {
-						limit = {
-							HUN = {
-									is_in_faction_with = GER
-								}
-							}
-						HUN = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = BEL
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = HOL
-								type = annex_everything
-							}
-						}
-						
-					}
-					if = {
-						limit = {
-							ROM = {
-									is_in_faction_with = GER
-								}
-							}
-						ROM = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = BEL
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = HOL
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							BUL = {
-									is_in_faction_with = GER
-								}
-							}
-						BUL = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = BEL
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = HOL
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							YUG = {
-									is_in_faction_with = GER
-								}
-							}
-						YUG = {
-							declare_war_on = { 
-								target = LUX
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = BEL
-								type = annex_everything
-							}
-							declare_war_on = { 
-								target = HOL
-								type = annex_everything
-							}
-						}
-					}
+			# Axis ally war declarations on the Low Countries are staggered over
+			# the following hours instead of resolving on this same tick
+			# (reduces the single-tick MP load spike that caused desyncs here).
 			hidden_effect = {
+				if = {
+					limit = { HUN = { is_in_faction_with = GER } }
+					HUN = { country_event = { id = germany.907 hours = 4 } }
+				}
+				if = {
+					limit = { ROM = { is_in_faction_with = GER } }
+					ROM = { country_event = { id = germany.907 hours = 6 } }
+				}
+				if = {
+					limit = { BUL = { is_in_faction_with = GER } }
+					BUL = { country_event = { id = germany.907 hours = 8 } }
+				}
+				if = {
+					limit = { YUG = { is_in_faction_with = GER } }
+					YUG = { country_event = { id = germany.907 hours = 10 } }
+				}
+
 				news_event = { hours = 6 id = news.234 }
 			}
 		}

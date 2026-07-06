@@ -9788,3 +9788,123 @@ country_event = {
 		}
 	}
 }
+
+# Hidden - Weserubung: Denmark annexation package (staggered off the focus completion tick to spread MP load)
+country_event = {
+	id = germany.905
+	hidden = yes
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	immediate = {
+		if = {
+			limit = {
+				country_exists = DEN
+				NOT = { DEN = { is_in_faction_with = ROOT } }
+			}
+			ENG = {
+				transfer_state = 101
+				transfer_state = 100
+				transfer_state = 337
+			}
+			every_state = {
+				limit = {
+					is_owned_by = ENG
+					is_core_of = DEN
+				}
+				add_compliance = 80
+			}
+			annex_country = {
+				target = DEN
+			}
+			add_ideas = DEN_sahnefront_ns
+		}
+	}
+
+	option = { }
+}
+
+# Hidden - Weserubung: an Axis ally joins the war against Norway (fired per ally with staggered delays)
+country_event = {
+	id = germany.906
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_in_faction_with = GER
+				NOR = {
+					exists = yes
+					NOT = { is_in_faction_with = ROOT }
+				}
+				NOT = { has_war_with = NOR }
+				GER = { has_war_with = NOR }
+			}
+			declare_war_on = {
+				target = NOR
+				type = annex_everything
+			}
+		}
+	}
+
+	option = { }
+}
+
+# Hidden - Fall Gelb: an Axis ally joins the war against the Low Countries (fired per ally with staggered delays)
+country_event = {
+	id = germany.907
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				is_in_faction_with = GER
+			}
+			if = {
+				limit = {
+					LUX = {
+						exists = yes
+						NOT = { is_in_faction_with = ROOT }
+					}
+					NOT = { has_war_with = LUX }
+				}
+				declare_war_on = {
+					target = LUX
+					type = annex_everything
+				}
+			}
+			if = {
+				limit = {
+					BEL = {
+						exists = yes
+						NOT = { is_in_faction_with = ROOT }
+					}
+					NOT = { has_war_with = BEL }
+					GER = { has_war_with = BEL }
+				}
+				declare_war_on = {
+					target = BEL
+					type = annex_everything
+				}
+			}
+			if = {
+				limit = {
+					HOL = {
+						exists = yes
+						NOT = { is_in_faction_with = ROOT }
+					}
+					NOT = { has_war_with = HOL }
+					GER = { has_war_with = HOL }
+				}
+				declare_war_on = {
+					target = HOL
+					type = annex_everything
+				}
+			}
+		}
+	}
+
+	option = { }
+}
