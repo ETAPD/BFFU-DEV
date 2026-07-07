@@ -46,7 +46,7 @@ on_actions = {
 
 		# Reset Intel on Hotjoin
 		effect = {
-			every_country = {
+			# each country processes its own intel arrays on its own weekly tick
 				for_each_scope_loop = {
 					array = THIS.CIVILIAN
 					if = {
@@ -82,7 +82,6 @@ on_actions = {
 						PREV = { add_operation_token = { tag = PREV token = token_resistance_contacts } }
 					}
 				}
-			}
 			# JAP = {
 			# 	if = {
 			# 		limit = { always = no }
@@ -158,6 +157,7 @@ on_actions = {
 			# Axis / East Asia Co Prosperity Sphere
 			if = {
 				limit = {
+					tag = JAP # anchor: run this block only once per week (was executed by every country's weekly tick)
 					OR = {
 						NOT = { has_global_flag = intel_share_time_flag }
 						has_global_flag = japan_is_at_war_with_allies
@@ -186,9 +186,9 @@ on_actions = {
 					}
 				}
 				for_each_scope_loop = {
-					array = JAP.faction_intel_shared
+					array = GER.faction_intel_shared
 					for_each_scope_loop = {
-						array = GER.faction_intel_shared
+						array = JAP.faction_intel_shared
 						if = {
 							limit = {  NOT = { PREV = { has_operation_token = { tag = PREV token = token_airforce_friendly } } } }
 							PREV = { add_operation_token = { tag = PREV token = token_airforce_friendly } }
@@ -212,6 +212,7 @@ on_actions = {
 			# Allies / Comintern
 			if = {
 				limit = {
+					tag = ENG # anchor: run this block only once per week (was executed by every country's weekly tick)
 					OR = {
 						NOT = { has_global_flag = intel_share_time_flag }
 						has_global_flag = soviets_are_at_war_with_germany
@@ -264,31 +265,9 @@ on_actions = {
 			}
 		}
 	}
-	on_monthly_GER = {
-		effect = {
-			if = {
-				limit = {
-					GER = { NOT = { has_completed_focus = GER_the_four_year_plan }}
-				}
-				GER = {
-					add_to_variable = { GER_resource_check_counter = 1 }
-					if = {
-						limit = {
-							check_variable = { GER_resource_check_counter > 1 }
-						}
-						set_variable = { GER_resource_check_counter = 0 }
-						# Update German Stuff
-						GER_check_steel = yes
-						GER_check_aluminium = yes
-						GER_check_rubber = yes
-						GER_check_tungsten = yes
-						GER_check_chromium = yes
-						GER_check_oil = yes
-					}
-				}
-			}
-		}
-	}
+	# The autarky resource counts are no longer tick-updated here; the autarky
+	# window has a manual Refresh button (see ger_inner_circle_inlay_window.txt).
+	# Initial values still come from on_startup below.
 	on_weekly = {
 		effect = {
 			if = {
@@ -435,6 +414,21 @@ on_actions = {
 			add_power_balance_modifier = {
 				id = SOV_purge_bop    # The ID of the balance of power
 				modifier = SOV_purge1 # The modifier to add
+			}
+		}
+		effect = {
+			if = {
+				limit = {
+					always = yes
+				}
+				every_country = {
+					limit = {
+						always = yes
+					}
+					add_ideas = {
+						DISABLE_MARKET
+					}
+				}
 			}
 		}
 		# Set all of the flags from GameRules for easier setup:
@@ -2442,23 +2436,6 @@ on_actions = {
 						}
 					}
 				}
-			}
-		}
-	}
-
-	on_daily_ROM = {
-		effect = {
-			if = {
-				limit = {
-					OR = {
-						NOT = {owns_state = 76 }
-						NOT = {owns_state = 77 }
-						NOT = {owns_state = 78 }
-					}
-					NOT = { has_completed_focus = ROM_national_humiliation }
-					NOT = { has_completed_focus = ROM_preserve_greater_romania }
-				}
-				complete_national_focus = ROM_national_humiliation
 			}
 		}
 	}
