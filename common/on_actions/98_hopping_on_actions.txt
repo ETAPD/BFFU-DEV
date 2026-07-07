@@ -380,12 +380,20 @@ on_actions = {
 
 	#Commonwealth Debuff for the Pacific
 	on_state_control_changed = {
+		# Only update the state that actually changed hands (a full 95-state
+		# array re-sweep on every European control change was a major load
+		# spike during Barbarossa). A weekly full sweep below catches
+		# faction-membership edge cases.
 		effect = {
 			if = {
 				limit = {
-					FROM.FROM = { is_on_continent = europe }
+					GER = { has_war_with = SOV }
+					FROM.FROM = {
+						is_on_continent = europe
+						is_in_array = { global.pacific_modifier_states_europe = THIS }
+					}
 				}
-				PACIFIC_state_swap = yes
+				FROM.FROM = { PACIFIC_state_swap_single = yes }
 			}
 		}
 
@@ -484,6 +492,21 @@ on_actions = {
 						value = 1
 					}
 				}
+			}
+		}
+	}
+
+	# Weekly consistency sweep of the Pacific/Commonwealth europe-state modifiers.
+	# The hot path (state control changes) only updates the flipped state, so this
+	# catches the rare cases a state's modifier goes stale without a control change
+	# (e.g. its controller joins or leaves a faction).
+	on_weekly_USA = {
+		effect = {
+			if = {
+				limit = {
+					GER = { has_war_with = SOV }
+				}
+				PACIFIC_state_swap = yes
 			}
 		}
 	}
