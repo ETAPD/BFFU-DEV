@@ -11590,8 +11590,19 @@ country_event = {
 	title = SEA_imperial_influence_events.1.t
 	desc = SEA_imperial_influence_events.1.desc
 	picture = GFX_report_event_JAP_imperial_influence
-	
+
 	is_triggered_only = yes
+
+	trigger = {
+		#Guards against a stale/redundant firing (e.g. two factions hit tier 3 within the same hour,
+		#the first firing already demoted one back below tier 3 before this one resolves)
+		OR = {
+			JAP_army_faction_is_tier_3 = yes
+			JAP_naval_faction_is_tier_3 = yes
+			has_idea = JAP_zaibatsu_faction_tier_3
+			has_idea = JAP_government_faction_tier_3
+		}
+	}
 
 	#Demote the Army Faction
 	option = { 
