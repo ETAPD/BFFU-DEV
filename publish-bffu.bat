@@ -1,6 +1,6 @@
 @echo off
 REM ============================================================
-REM  Refresh the LOCAL BFFU test mod ("MAIN BRANCH" folder) from
+REM  Refresh the LOCAL BFFU test mod ("uk-rework" folder) from
 REM  git main, then enable "BFFU (Local)" in the HOI4 launcher.
 REM
 REM  This stamps a LOCAL descriptor with NO remote_file_id, so it
@@ -9,8 +9,8 @@ REM  To PUBLISH to the Workshop instead, run upload-bffu.bat.
 REM ============================================================
 setlocal
 set "HUB=C:\Users\Roberts (ME)\Documents\GitHub\BFFU-DEV"
-set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\MAIN BRANCH"
-set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\MAIN BRANCH.mod"
+set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework"
+set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework.mod"
 
 echo Refreshing the local "BFFU (Local)" test mod from git main...
 cd /d "%HUB%"
@@ -38,7 +38,7 @@ call :write_descriptor "%DEST%\descriptor.mod" "BFFU (Local)"
 
 REM --- LOCAL launcher pointer (adds path, still no remote_file_id) ---
 call :write_descriptor "%MODFILE%" "BFFU (Local)"
->> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/MAIN BRANCH"
+>> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/uk-rework"
 
 echo.
 echo Done. In the launcher, enable "BFFU (Local)" to test the latest main.

@@ -1,19 +1,19 @@
 @echo off
 REM ============================================================
 REM  Publish BFFU to the Steam Workshop (item 3745245470).
-REM  Exports git main into the MAIN BRANCH folder and stamps the
+REM  Exports git main into the uk-rework folder and stamps the
 REM  UPLOAD identity (name="BFFU", remote_file_id=3745245470), then
 REM  you upload it from the HOI4 launcher.
 REM
 REM  IMPORTANT: before uploading, DISABLE/unsubscribe the Workshop
 REM  "BFFU" in the launcher, or its remote_file_id will clash with
 REM  this folder. After uploading, run publish-bffu.bat to put
-REM  MAIN BRANCH back to its local "BFFU (Local)" descriptor.
+REM  uk-rework back to its local "BFFU (Local)" descriptor.
 REM ============================================================
 setlocal
 set "HUB=C:\Users\Roberts (ME)\Documents\GitHub\BFFU-DEV"
-set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\MAIN BRANCH"
-set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\MAIN BRANCH.mod"
+set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework"
+set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework.mod"
 
 echo Re-exporting "BFFU" (main) for Workshop upload...
 cd /d "%HUB%"
@@ -43,7 +43,7 @@ call :write_descriptor "%DEST%\descriptor.mod" "BFFU"
 >> "%DEST%\descriptor.mod" echo remote_file_id="3745245470"
 
 call :write_descriptor "%MODFILE%" "BFFU"
->> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/MAIN BRANCH"
+>> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/uk-rework"
 >> "%MODFILE%" echo remote_file_id="3745245470"
 
 echo.
