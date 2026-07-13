@@ -1,8 +1,6 @@
 SPR_calculate_appeasement_ticking = {
+    set_variable = { spanish_tick = 0 }
     if = {
-        limit = { NOT = { has_any_power_balance = yes } }
-    }
-    else_if = {
         limit = {  # D-Day
             GER = {
                 OR = {
@@ -23,16 +21,17 @@ SPR_calculate_appeasement_ticking = {
                 value > 0
             }
         }
-        # Ticking paused - no change
+        # Tick stays at 0
+        set_variable = { spanish_tick = 0 }
     }
     else_if = { # Carlist
         limit = {
             has_completed_focus = SPA_supremacy_of_the_communion
         }
-        add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.00195 }
+        set_variable = { spanish_tick = 0.00195 }
     }
     else = {  # Franco
-        add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0012 }
+        set_variable = { spanish_tick = 0.0012 }
 
         # Cairo (0.03)
         if = {
@@ -53,7 +52,7 @@ SPR_calculate_appeasement_ticking = {
                     }
                 }
             }
-            add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0003 }
+            add_to_variable = { spanish_tick = 0.0003 }
         }
         # Port Sudan (0.03)
         if = {
@@ -74,7 +73,7 @@ SPR_calculate_appeasement_ticking = {
                     }
                 }
             }
-            add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0003 }
+            add_to_variable = { spanish_tick = 0.0003 }
         }
         # Algiers (0.03)
         if = {
@@ -108,7 +107,7 @@ SPR_calculate_appeasement_ticking = {
                     }
                 }
             }
-            add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0003 }
+            add_to_variable = { spanish_tick = 0.0003 }
         }
         # Aden (0.06)
         if = {
@@ -129,7 +128,7 @@ SPR_calculate_appeasement_ticking = {
                     }
                 }
             }
-            add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0006 }
+            add_to_variable = { spanish_tick = 0.0006 }
         }
         # Gibraltar (0.12)
         if = {
@@ -150,7 +149,7 @@ SPR_calculate_appeasement_ticking = {
                     }
                 }
             }
-            add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0012 }
+            add_to_variable = { spanish_tick = 0.0012 }
         }
         # Cape Town (0.12)
         if = {
@@ -171,7 +170,9 @@ SPR_calculate_appeasement_ticking = {
                     }
                 }
             }
-            add_power_balance_value = { id = SPR_spain_appeasement_struggle value = 0.0012 }
+            add_to_variable = { spanish_tick = 0.0012 }
         }
     }
+
+    SPR = { set_variable = { SPR_power_balance_daily = spanish_tick } }
 }
