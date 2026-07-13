@@ -13,6 +13,66 @@ add_namespace = SEA_border_incidents_events
 
 add_namespace = SEA_imperial_influence_events
 
+# Strike the Southern Road - staggered war declarations (JAP_strike_the_southern_road completion)
+# Split into waves to avoid declaring war on up to 13 nations in a single script tick.
+country_event = {
+	id = SEA_japan.900
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		IF = { limit = { USA = { exists = yes } } declare_war_on = { target = USA type = annex_everything } }
+		IF = { limit = { HOL = { exists = yes } } declare_war_on = { target = HOL type = annex_everything } }
+		IF = { limit = { ENG = { exists = yes } } declare_war_on = { target = ENG type = annex_everything } }
+		country_event = { id = SEA_japan.901 hours = 3 }
+	}
+}
+
+country_event = {
+	id = SEA_japan.901
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		IF = { limit = { AST = { exists = yes } } declare_war_on = { target = AST type = annex_everything } }
+		IF = { limit = { RAJ = { exists = yes } } declare_war_on = { target = RAJ type = annex_everything } }
+		IF = { limit = { NZL = { exists = yes } } declare_war_on = { target = NZL type = annex_everything } }
+		country_event = { id = SEA_japan.902 hours = 3 }
+	}
+}
+
+country_event = {
+	id = SEA_japan.902
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		IF = { limit = { MAL = { exists = yes } } declare_war_on = { target = MAL type = annex_everything } }
+		IF = { limit = { INS = { exists = yes } } declare_war_on = { target = INS type = annex_everything } }
+		IF = { limit = { FRA = { exists = yes } } declare_war_on = { target = FRA type = annex_everything } }
+		country_event = { id = SEA_japan.903 hours = 3 }
+	}
+}
+
+country_event = {
+	id = SEA_japan.903
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		IF = { limit = { POL = { exists = yes } } declare_war_on = { target = POL type = annex_everything } }
+		IF = { limit = { SAF = { exists = yes } } declare_war_on = { target = SAF type = annex_everything } }
+		IF = { limit = { CAN = { exists = yes } } declare_war_on = { target = CAN type = annex_everything } }
+		country_event = { id = SEA_japan.904 hours = 3 }
+	}
+}
+
+country_event = {
+	id = SEA_japan.904
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		IF = { limit = { BRA = { exists = yes } } declare_war_on = { target = BRA type = annex_everything } }
+		IF = { limit = { MEX = { exists = yes } } declare_war_on = { target = MEX type = annex_everything } }
+	}
+}
+
 # The February 26 Incident - event for Japan, base version of the Kodoha event
 country_event = {
 	id = SEA_japan.1
@@ -11590,8 +11650,19 @@ country_event = {
 	title = SEA_imperial_influence_events.1.t
 	desc = SEA_imperial_influence_events.1.desc
 	picture = GFX_report_event_JAP_imperial_influence
-	
+
 	is_triggered_only = yes
+
+	trigger = {
+		#Guards against a stale/redundant firing (e.g. two factions hit tier 3 within the same hour,
+		#the first firing already demoted one back below tier 3 before this one resolves)
+		OR = {
+			JAP_army_faction_is_tier_3 = yes
+			JAP_naval_faction_is_tier_3 = yes
+			has_idea = JAP_zaibatsu_faction_tier_3
+			has_idea = JAP_government_faction_tier_3
+		}
+	}
 
 	#Demote the Army Faction
 	option = { 
