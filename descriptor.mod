@@ -9,6 +9,7 @@ tags={
 }
 name="1.1.9 Update"
 picture="thumbnail.png"
+replace_path="common/units/names_divisions"
 replace_path="common/ai_equipment"
 replace_path="common/ai_strategy"
 replace_path="common/ai_strategy_plans"
