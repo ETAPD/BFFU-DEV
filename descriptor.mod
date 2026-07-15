@@ -1,4 +1,4 @@
-version="1.17.3.0"
+version="1.19"
 tags={
 	"Balance"
 	"Events"
@@ -7,12 +7,13 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="BFFU-DEV"
+name="1.1.9 Update"
 picture="thumbnail.png"
+replace_path="common/units/names_divisions"
 replace_path="common/ai_equipment"
 replace_path="common/ai_strategy"
 replace_path="common/ai_strategy_plans"
 replace_path="common/ai_templates"
 replace_path="gfx/interface/equipmentdesigner/tanks/designer"
 replace_path="history/countries"
-supported_version="1.17.3.0"
+supported_version="1.19.*"
