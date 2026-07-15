@@ -86,7 +86,6 @@ leader_traits = {
 		non_shared_modifier = {
 			experience_gain_factor = -0.20
 		}
-
 		new_commander_weight = {
 			factor = 1
 
@@ -288,11 +287,10 @@ leader_traits = {
 		logistics_skill_factor = 1
 	}
 
-	trait_cautious = {
+	trait_cautious = { 
 		type = land
 		trait_type = personality_trait
-		leader_default_proximity_offset = 1
-
+		
 		modifier = {
 			planning_speed = -0.20
 			wounded_chance_factor = -0.5
@@ -325,11 +323,10 @@ leader_traits = {
 		logistics_skill_factor = 1
 	}
 
-	trait_reckless = {
+	trait_reckless = { 
 		type = land
 		trait_type = personality_trait
-		leader_default_proximity_offset = -1
-
+		
 		modifier = {
 			planning_speed = 0.20
 			wounded_chance_factor = 0.25  # +25% chance to get wounded
@@ -525,7 +522,7 @@ leader_traits = {
 		trait_type = personality_trait
 		unit_type = {
 			type = cavalry
-			type = camelry
+			#type = camelry
 			type = motorized
 			type = mechanized
 		}
@@ -533,7 +530,7 @@ leader_traits = {
 		unit_trigger = {
 			OR = {
 				division_has_majority_template = cavalry
-				division_has_majority_template = camelry
+				#division_has_majority_template = camelry
 				division_has_majority_template = motorized
 				division_has_majority_template = mechanized
 			}
@@ -721,14 +718,14 @@ leader_traits = {
 
 		unit_type = {
 			type = cavalry
-			type = camelry
+			#type = camelry
 			type = irregular_infantry
 		}
 
 		unit_trigger = {
 			OR = {
 				division_has_majority_template = cavalry
-				division_has_majority_template = camelry
+				#division_has_majority_template = camelry
 				division_has_majority_template = irregular_infantry
 			}
 			owner = {
@@ -1430,12 +1427,12 @@ leader_traits = {
 				# }
 				has_trait = panzer_leader
 			}
-			check_expr = {
-				value = num_cavalry
-				add = num_motorized
-				add = num_mechanized
-				greater_than = { value = num_units  multiply = 0.9 }
-			}
+			set_temp_variable = { temp = num_units }
+			multiply_temp_variable = { temp = 0.90 }
+			set_temp_variable = { cmm = num_cavalry }
+			add_to_temp_variable = { cmm = num_motorized }
+			add_to_temp_variable = { cmm = num_mechanized }
+			check_variable = { cmm > temp }
 		}
 		custom_gain_xp_trigger_tooltip = cavalary_ratio_over_40
 		
@@ -1478,10 +1475,9 @@ leader_traits = {
 	infantry_leader = { 
 		type = corps_commander
 		gain_xp = {
-			check_expr = {
-				value = num_infantry
-				greater_than = { value = num_units  multiply = 0.9 }
-			}
+			set_temp_variable = { temp = num_units }
+			multiply_temp_variable = { temp = 0.90 }
+			check_variable = { num_infantry > temp }
 		}
 		custom_gain_xp_trigger_tooltip = infantry_ratio_over_80
 		
@@ -1699,10 +1695,9 @@ leader_traits = {
 				# }
 				has_trait = cavalry_leader
 			}
-			check_expr = {
-				value = num_armored
-				greater_than = { value = num_units  multiply = 0.9 }
-			}
+			set_temp_variable = { temp = num_units }
+			multiply_temp_variable = { temp = 0.90 }
+			check_variable = { num_armored > temp }
 		}
 		custom_gain_xp_trigger_tooltip = armored_ratio_over_40
 		cost = 400
@@ -3512,7 +3507,7 @@ leader_traits = {
 			
 		}
 		trait_xp_factor = {
-			ironside = 1     #+100%
+			ironside = 0.5     #+100%
 		}
 		new_commander_weight = {
 			factor = 1  
@@ -3701,7 +3696,7 @@ leader_traits = {
 			
 		}
 		trait_xp_factor = {
-			air_controller = 1     #+100%
+			air_controller = 0.5     #+100%
 		}
 		new_commander_weight = {
 			factor = 1  
@@ -3801,253 +3796,6 @@ leader_traits = {
 		ai_will_do = {
 			factor = 1
 		}
-	}
-
-#################################
-# Ship Captains
-#################################
-
-	submarine_officer = {
-		type = navy
-		trait_type = personality_trait
-
-		country_trigger = {
-			NOT = {
-				OR = {
-					has_idea = best_of_the_best_naval_academy_spirit
-					has_idea = naval_academy_scholarships_spirit
-					has_idea = SOV_purged_junior_navy_officers_3 
-				}
-			}
-		}
-
-		allowed_ship_equipments = {
-			ship_hull_submarine
-		}
-
-		trait_xp_factor = {
-			seawolf = 0.5
-			spotter = 0.5
-		}
-		new_commander_weight = {
-			factor = 1  
-			modifier = {
-				FROM = { has_idea = best_of_the_best_naval_academy_spirit }
-				factor = 0
-			}
-			modifier = {
-				FROM = { has_idea = naval_academy_scholarships_spirit }
-				factor = 0
-			}
-			modifier = { #Purged Junior Navy Officers
-				FROM = { has_idea = SOV_purged_junior_navy_officers_3 }
-				factor = 0
-			}
-			modifier = {
-				FROM = { 
-					has_dlc = "Thunder at Our Gates"
-				}
-				factor = 0
-			}
-		}
-		ai_will_do = {
-			factor = 1
-		}
-	}
-
-	destroyer_officer = {
-		type = navy
-		trait_type = personality_trait
-
-		country_trigger = {
-			NOT = {
-				OR = {
-					has_idea = best_of_the_best_naval_academy_spirit
-					has_idea = naval_academy_scholarships_spirit
-					has_idea = SOV_purged_junior_navy_officers_3 
-				}
-			}
-		}
-
-		allowed_ship_equipments = {
-			ship_hull_light
-		}
-
-		trait_xp_factor	= {
-			blockade_runner = 0.5
-			fleet_protector = 0.5
-		}
-		new_commander_weight = {
-			factor = 1  
-			modifier = {
-				FROM = { has_idea = best_of_the_best_naval_academy_spirit }
-				factor = 0
-			}
-			modifier = {
-				FROM = { has_idea = naval_academy_scholarships_spirit }
-				factor = 0
-			}
-			modifier = { #Purged Junior Navy Officers
-				FROM = { has_idea = SOV_purged_junior_navy_officers_3 }
-				factor = 0
-			}
-			modifier = {
-				FROM = { 
-					has_dlc = "Thunder at Our Gates"
-				}
-				factor = 0
-			}
-		}		
-		ai_will_do = {
-			factor = 1
-		}
-
-	}
-
-	cruiser_officer = {
-		type = navy
-		trait_type = personality_trait
-
-		country_trigger = {
-			NOT = {
-				OR = {
-					has_idea = best_of_the_best_naval_academy_spirit
-					has_idea = naval_academy_scholarships_spirit
-					has_idea = SOV_purged_junior_navy_officers_3 
-				}
-			}
-		}
-
-		allowed_ship_equipments = {
-			ship_hull_cruiser
-		}
-
-		trait_xp_factor	= {
-			superior_tactician = 0.5
-			fleet_protector = 0.5
-		}
-		new_commander_weight = {
-			factor = 1  
-			modifier = {
-				FROM = { has_idea = best_of_the_best_naval_academy_spirit }
-				factor = 0
-			}
-			modifier = {
-				FROM = { has_idea = naval_academy_scholarships_spirit }
-				factor = 0
-			}
-			modifier = { #Purged Junior Navy Officers
-				FROM = { has_idea = SOV_purged_junior_navy_officers_3 }
-				factor = 0
-			}
-			modifier = {
-				FROM = { 
-					has_dlc = "Thunder at Our Gates"
-				}
-				factor = 0
-			}
-		}		
-		ai_will_do = {
-			factor = 1
-		}
-
-	}
-
-	heavy_ship_officer = {
-		type = navy
-		trait_type = personality_trait
-
-		country_trigger = {
-			NOT = {
-				OR = {
-					has_idea = best_of_the_best_naval_academy_spirit
-					has_idea = naval_academy_scholarships_spirit
-					has_idea = SOV_purged_junior_navy_officers_3 
-				}
-			}
-		}
-
-		allowed_ship_equipments = {
-			ship_hull_heavy
-		}
-
-		trait_xp_factor	= {
-			superior_tactician = 0.5
-			ironside = 0.5
-		}
-		new_commander_weight = {
-			factor = 1  
-			modifier = {
-				FROM = { has_idea = best_of_the_best_naval_academy_spirit }
-				factor = 0
-			}
-			modifier = {
-				FROM = { has_idea = naval_academy_scholarships_spirit }
-				factor = 0
-			}
-			modifier = { #Purged Junior Navy Officers
-				FROM = { has_idea = SOV_purged_junior_navy_officers_3 }
-				factor = 0
-			}
-			modifier = {
-				FROM = { 
-					has_dlc = "Thunder at Our Gates"
-				}
-				factor = 0
-			}
-		}		
-		ai_will_do = {
-			factor = 1
-		}
-
-	}
-
-	carrier_officer = {
-		type = navy
-		trait_type = personality_trait
-
-		country_trigger = {
-			NOT = {
-				OR = {
-					has_idea = best_of_the_best_naval_academy_spirit
-					has_idea = naval_academy_scholarships_spirit
-					has_idea = SOV_purged_junior_navy_officers_3 
-				}
-			}
-		}
-
-		allowed_ship_equipments = {
-			ship_hull_carrier
-		}
-
-		trait_xp_factor	= {
-			air_controller = 0.5
-			spotter = 0.5
-		}
-		new_commander_weight = {
-			factor = 1  
-			modifier = {
-				FROM = { has_idea = best_of_the_best_naval_academy_spirit }
-				factor = 0
-			}
-			modifier = {
-				FROM = { has_idea = naval_academy_scholarships_spirit }
-				factor = 0
-			}
-			modifier = { #Purged Junior Navy Officers
-				FROM = { has_idea = SOV_purged_junior_navy_officers_3 }
-				factor = 0
-			}
-			modifier = {
-				FROM = { 
-					has_dlc = "Thunder at Our Gates"
-				}
-				factor = 0
-			}
-		}		
-		ai_will_do = {
-			factor = 1
-		}		
 	}
 
 ##################################
@@ -4540,32 +4288,6 @@ leader_traits = {
 
 	}
 
-	expeditionary_leader_trait = {
-		type = land
-		trait_type = personality_trait
-		gain_xp = {
-			always = no # not gainable
-		}
-		
-		modifier = {
-			max_commander_army_size = -18
-			max_army_group_size = -4
-			army_non_core_attack_factor = 0.15
-			army_non_core_defence_factor = 0.15
-		}
-		
-		ai_will_do = {
-			factor = 1
-		}
-
-		new_commander_weight = {
-			factor = 0
-		}
-	}
-
-
-
-
 ##################################
 # operative traits
 ##################################
@@ -4956,31 +4678,6 @@ leader_traits = {
 		
 	}
 
-	INS_loyalty_to_indonesia = {
-		type = { land }
-		trait_type = personality_trait
-		
-		new_commander_weight = {
-			factor = 0  
-		}
-	}
 
-	INS_loyalty_to_netherlands = {
-		type = { land }
-		trait_type = personality_trait
-		
-		new_commander_weight = {
-			factor = 0  
-		}
-	}
-
-	INS_secret_commander = {
-		type = { land }
-		trait_type = status_trait
-		
-		new_commander_weight = {
-			factor = 0  
-		}
-	}
 
 }
