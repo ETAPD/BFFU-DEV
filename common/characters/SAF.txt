@@ -391,9 +391,22 @@ characters={
 	}
 
 	### HIGH COMMAND ######################################################
-	# NB: every one of the previous file's five high_command advisors was an
+	# Every one of the previous file's five high_command advisors was an
 	# invented character (lion_king, van_osterkamp, de_la_tourier, palmer,
-	# du_toit). These are documented officers instead.
+	# du_toit). These are documented officers carrying the SAME traits,
+	# costs and ledgers, so the slot is mechanically unchanged:
+	#
+	#   lion_king        army_cavalry_3    150 army  -> SAF_dan_pienaar
+	#   van_osterkamp    army_infantry_3   150 army  -> SAF_george_edwin_brink
+	#   de_la_tourier    navy_screen_2     100 navy  -> SAF_james_dalgleish
+	#   robert_palmer    army_regrouping_2 100 army  -> SAF_frank_theron
+	#   du_toit          army_armored_2    100 army  -> SAF_evered_poole
+	#
+	# Klopper and Venter below are additions, not replacements.
+	#
+	# NOT mirrored: lion_king carried `allowed = { has_dlc = "Man the Guns" }`
+	# on an ARMY CAVALRY advisor, which hid him from anyone without the naval
+	# DLC. That is a copy-paste bug, not a design choice, so it is dropped.
 
 	# Frank Theron - Major General, head of the South African Military
 	# Mission in the Middle East. The Union's divisions ate because of him.
@@ -407,7 +420,7 @@ characters={
 				original_tag = SAF
 			}
 			traits = {
-				army_logistics_2
+				army_regrouping_2
 			}
 			cost = 100
 			ai_will_do = {
@@ -417,6 +430,32 @@ characters={
 		portraits={
 			army={
 				small="GFX_idea_generic_army_europe_1"
+			}
+		}
+	}
+
+	# James Dalgleish - Commodore, Director of the South African Naval
+	# Forces. Built a navy out of converted whalers and borrowed trawlers.
+	SAF_james_dalgleish={
+		name=SAF_james_dalgleish
+		advisor={
+			slot = high_command
+			idea_token = SAF_james_dalgleish
+			ledger = navy
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				navy_screen_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_navy_europe_2"
 			}
 		}
 	}
@@ -629,6 +668,10 @@ characters={
 	### FIELD COMMANDERS ##################################################
 
 	# Also high_command: he raised and trained 1st SA Division.
+	# Mirrors the old SAF_marinus_van_osterkamp: army_infantry_3, cost 150.
+	# Deliberately NOT gated on the infantry branch - the three army branch
+	# heads are mutually exclusive, so a branch gate would permanently lock
+	# this out for two thirds of playthroughs. The original had no gate.
 	SAF_george_edwin_brink={
 		name=SAF_george_edwin_brink
 		advisor={
@@ -638,13 +681,10 @@ characters={
 			allowed = {
 				original_tag = SAF
 			}
-			available = {
-				has_completed_focus = SAF_the_first_sa_infantry_brigade
-			}
 			traits = {
-				army_infantry_2
+				army_infantry_3
 			}
-			cost = 100
+			cost = 150
 			ai_will_do = {
 				factor = 1.000
 			}
@@ -667,6 +707,8 @@ characters={
 	}
 
 	# Also high_command: 6th SA Armoured Division, Italy.
+	# Mirrors the old SAF_c_de_weenburg_du_toit: army_armored_2, cost 100,
+	# ungated (see the note on Brink about mutually exclusive branches).
 	SAF_evered_poole={
 		name="Evered Poole"
 		advisor={
@@ -675,9 +717,6 @@ characters={
 			ledger = army
 			allowed = {
 				original_tag = SAF
-			}
-			available = {
-				has_completed_focus = SAF_armour_effort
 			}
 			traits = {
 				army_armored_2
@@ -707,6 +746,9 @@ characters={
 	}
 
 	# Also a high_command advisor, granted by the motorised branch.
+	# Mirrors the old SAF_lion_king: army_cavalry_3, cost 150, gated on the
+	# Cape Motor Divisions focus. Fits Pienaar - the commando tradition is
+	# mounted infantry, and he fought the desert the same way.
 	SAF_dan_pienaar={
 		name="Dan Pienaar"
 		advisor={
@@ -720,9 +762,9 @@ characters={
 				has_completed_focus = SAF_the_cape_motor_divisions
 			}
 			traits = {
-				army_regrouping_2
+				army_cavalry_3
 			}
-			cost = 100
+			cost = 150
 			ai_will_do = {
 				factor = 1.000
 			}
