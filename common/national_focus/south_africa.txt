@@ -911,6 +911,9 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL }
 		completion_reward = {
 			add_political_power = 100
+			custom_effect_tooltip = SAF_modify_eco_tt
+			add_to_variable = { var = SAF_eco_political_power_factor_var value = 0.05 tooltip = political_power_factor_tt }
+			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -1007,6 +1010,19 @@ focus_tree = {
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_stability_factor_var value = -0.05 tooltip = stability_factor_tt }
 			force_update_dynamic_modifier = yes
+			random_owned_controlled_state = {
+				prioritize = { 275 }
+				limit = {
+					is_core_of = ROOT
+					NOT = { has_state_flag = SAF_conciliation_act_target }
+				}
+				set_state_flag = SAF_conciliation_act_target
+				add_building_construction = {
+					type = arms_factory
+					level = 4
+					instant_build = yes
+				}
+			}
 		}
 	}
 
@@ -1058,6 +1074,8 @@ focus_tree = {
 			add_popularity = { ideology = neutrality popularity = -0.05 }
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_war_support_factor_var value = 0.05 tooltip = war_support_factor_tt }
+			custom_effect_tooltip = SAF_modify_eco_tt
+			add_to_variable = { var = SAF_eco_political_power_factor_var value = 0.10 tooltip = political_power_factor_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -1103,6 +1121,7 @@ focus_tree = {
 			add_war_support = 0.10
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_war_support_factor_var value = 0.05 tooltip = war_support_factor_tt }
+			add_to_variable = { var = SAF_afr_stability_factor_var value = 0.05 tooltip = stability_factor_tt }
 			custom_effect_tooltip = SAF_modify_eco_tt
 			add_to_variable = { var = SAF_eco_industrial_capacity_dockyard_var value = 0.05 tooltip = industrial_capacity_dockyard_tt }
 			force_update_dynamic_modifier = yes
@@ -1153,6 +1172,30 @@ focus_tree = {
 			add_stability = 0.05
 			custom_effect_tooltip = SAF_modify_eco_tt
 			add_to_variable = { var = SAF_eco_stability_factor_var value = 0.05 tooltip = stability_factor_tt }
+			force_update_dynamic_modifier = yes
+		}
+	}
+
+
+	focus = {
+		id = SAF_the_1939_defence_estimates
+		icon = GFX_goal_SAF_rearm_the_union
+		prerequisite = { focus = SAF_the_1938_election }
+		relative_position_id = SAF_the_union_in_crisis
+		x = 0
+		y = 6
+		cost = 4
+		ai_will_do = { factor = 10 }
+		available = { date > 1939.1.1 }
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP }
+		completion_reward = {
+			add_political_power = 50
+			custom_effect_tooltip = SAF_modify_udf_tt
+			add_to_variable = { var = SAF_udf_command_power_gain_mult_var value = 0.05 tooltip = command_power_gain_mult_tt }
+			add_to_variable = { var = SAF_udf_max_command_power_var value = 5 tooltip = max_command_power_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -1424,7 +1467,7 @@ focus_tree = {
 		y = 5
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = { date > 1938.7.1 }
+		available = { date > 1938.1.1 }
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -1436,6 +1479,7 @@ focus_tree = {
 			add_to_variable = { var = SAF_udf_land_doctrine_cost_factor_var value = -0.05 tooltip = land_doctrine_cost_factor_tt }
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_war_support_factor_var value = 0.03 tooltip = war_support_factor_tt }
+			add_to_variable = { var = SAF_afr_stability_factor_var value = 0.05 tooltip = stability_factor_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -1709,6 +1753,9 @@ focus_tree = {
 			add_political_power = 120
 			add_research_slot = 1
 			ENG = { add_opinion_modifier = { target = SAF modifier = SAF_loyal_dominion } }
+			custom_effect_tooltip = SAF_modify_udf_tt
+			add_to_variable = { var = SAF_udf_max_command_power_var value = 10 tooltip = max_command_power_tt }
+			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2114,13 +2161,13 @@ focus_tree = {
 		completion_reward = {
 			if = {
 				limit = { has_dlc = "Arms Against Tyranny" }
-				mio:ENG_crossley_motors_organization = {
+				mio:SAF_marmon_herrington_organization = {
 					add_mio_size = 1
 					add_mio_funds = 1000
 				}
 			}
 			else = {
-				custom_effect_tooltip = SAF_no_aat_crossley_tt
+				custom_effect_tooltip = SAF_no_aat_marmon_herrington_tt
 			}
 			custom_effect_tooltip = SAF_modify_udf_tt
 			add_to_variable = { var = SAF_udf_mio_funds_gain_var value = 0.05 tooltip = military_industrial_organization_funds_gain_tt }
@@ -2196,13 +2243,14 @@ focus_tree = {
 			}
 			if = {
 				limit = { has_dlc = "Arms Against Tyranny" }
-				mio:ENG_crossley_motors_organization = {
+				mio:SAF_marmon_herrington_organization = {
+					complete_mio_trait = SAF_weaponising_the_jackal
 					add_mio_size = 1
 					add_mio_funds = 1000
 				}
 			}
 			else = {
-				custom_effect_tooltip = SAF_no_aat_crossley_tt
+				custom_effect_tooltip = SAF_no_aat_marmon_herrington_tt
 			}
 		}
 	}
@@ -2401,6 +2449,7 @@ focus_tree = {
 			add_to_variable = { var = SAF_udf_land_doctrine_cost_factor_var value = -0.05 tooltip = land_doctrine_cost_factor_tt }
 			add_to_variable = { var = SAF_udf_max_planning_var value = 0.05 tooltip = max_planning_tt }
 			add_to_variable = { var = SAF_udf_planning_speed_var value = 0.05 tooltip = planning_speed_tt }
+			add_to_variable = { var = SAF_udf_max_command_power_var value = 10 tooltip = max_command_power_tt }
 			# Whichever branch got you here, the College graduates a real
 			# army: this fully neutralises the 1936 skeleton's attack and
 			# defence penalties. Every branch's own focuses stack their
