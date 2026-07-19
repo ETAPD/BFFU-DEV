@@ -1,65 +1,39 @@
+###########################################################################
+# South Africa - characters
+# Advisors are gated on focuses wherever the tree grants them; exclusion
+# between overlapping economic advisors is done with has_idea_with_trait
+# rather than mutually_exclusive.
+###########################################################################
+
 characters={
-	SAF_moses_kotane={
-		name=SAF_moses_kotane
+
+	### COUNTRY LEADERS ###################################################
+
+	# Starting Prime Minister. Fusion cabinet, neutrality man.
+	SAF_j._b._m._hertzog={
+		name="J. B. M. Hertzog"
 		portraits={
 			civilian={
-				large="GFX_SAF_moses_kotane"
+				large="GFX_SAF_james_hertzog"
 			}
 		}
 		country_leader={
-			ideology=marxism
+			ideology=conservatism
 			expire="1965.1.1.1"
 			id=-1
 		}
 	}
 
-	SAF_pixley_ka_isaka_seme={
-		name=SAF_pixley_ka_isaka_seme
-		portraits={
-			civilian={
-				large=GFX_portrait_SAF_pixley_ka_isaka_seme
-			}
-		}
-		country_leader={
-			ideology=centrism
-			expire="1965.1.1.1"
-			id=-1
-		}
-	}
-
-
-    SAF_lion_king = {
-        advisor={
-			slot = high_command
-			idea_token = SAF_lion_king
-			ledger = army
-			allowed = {
-				original_tag = SAF
-				has_dlc = "Man the Guns"
-			}
-			available = {
-				has_completed_focus = SAF_cape_motor_divisions
-			}
-			traits = {
-				army_cavalry_3
-			}
-			cost = 150
-			ai_will_do = {
-				factor = 1.000
-			}
-		}
-		name="SAF_lion_king"
-		portraits={
-			army={
-				small="GFX_idea_SWE_the_lion_of_the_north"
-			}
-		}
-	}
-
+	# Smuts holds no country_leader role at start - he is Hertzog's deputy
+	# and field marshal. SAF_the_september_1939_vote promotes him via
+	# add_country_leader_role on BOTH political paths (4 Sept 1939).
 	SAF_jan_smuts = {
 		name=SAF_jan_smuts
 		portraits={
 			civilian={
+				large=GFX_portrait_SAF_jan_smuts
+			}
+			army={
 				large=GFX_portrait_SAF_jan_smuts
 			}
 		}
@@ -74,8 +48,659 @@ characters={
 		}
 	}
 
+	### POLITICAL ADVISORS ################################################
+
+	# D. F. Malan - Purified National Party. Available to the Hertzog line
+	# only; the Smuts line has broken with him by definition.
+	SAF_d_f_malan={
+		name=SAF_d_f_malan
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_d_f_malan
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				NOT = { has_completed_focus = SAF_the_smuts_line }
+			}
+			traits = {
+				SAF_purified_nationalist
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 0.000
+			}
+		}
+		portraits={
+			civilian={
+				large="GFX_SAF_daniel_malan"
+			}
+			army={
+				small=GFX_portrait_SAF_d_f_malan_small
+			}
+		}
+	}
+
+	# Nicolaas Havenga - Minister of Finance. Excluded by van der Bijl's
+	# war-supplies portfolio: the Union cannot run both at once.
+	SAF_nicolaas_havenga={
+		name=SAF_nicolaas_havenga
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_nicolaas_havenga
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_the_hertzog_bills_carried
+				NOT = { has_idea_with_trait = SAF_state_industrialist }
+			}
+			traits = {
+				SAF_orthodox_treasurer
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_2"
+			}
+		}
+	}
+
+	# Charles Stallard - Dominion Party. Granted by opposing the bills.
+	SAF_charles_stallard={
+		name=SAF_charles_stallard
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_charles_stallard
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_oppose_the_native_bills
+			}
+			traits = {
+				SAF_dominion_loyalist
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_1"
+			}
+		}
+	}
+
+	# Hendrik van der Bijl - ISCOR/IDC, later Director-General of War
+	# Supplies. Excluded by Havenga's orthodoxy.
+	SAF_hendrik_van_der_bijl={
+		name=SAF_hendrik_van_der_bijl
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_hendrik_van_der_bijl
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_van_der_bijls_vision
+				NOT = { has_idea_with_trait = SAF_orthodox_treasurer }
+			}
+			traits = {
+				SAF_state_industrialist
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_3"
+			}
+		}
+	}
+
+	# Oswald Pirow - New Order. Hertzog-era Minister of Defence.
+	SAF_oswald_pirow={
+		name=SAF_oswald_pirow
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_oswald_pirow
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_the_fusion_compact
+			}
+			traits = {
+				SAF_new_order_civilian
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 0.500
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_1"
+			}
+		}
+	}
+
+	# Moses Kotane - general secretary, Communist Party of South Africa.
+	SAF_moses_kotane={
+		name=SAF_moses_kotane
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_moses_kotane
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_amend_the_industrial_conciliation_act
+			}
+			traits = {
+				SAF_labour_organiser
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 0.500
+			}
+		}
+		portraits={
+			civilian={
+				large="GFX_SAF_moses_kotane"
+			}
+			army={
+				small="GFX_idea_generic_political_advisor_europe_2"
+			}
+		}
+	}
+
+	# Ernest Oppenheimer - Anglo American Corporation and De Beers. The
+	# Smuts line's production advisor: no state ministry, just the deepest
+	# pockets on the Rand, and they are already pointed at the war effort.
+	SAF_ernest_oppenheimer={
+		name=SAF_ernest_oppenheimer
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_ernest_oppenheimer
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_the_smuts_hofmeyr_axis
+			}
+			traits = {
+				SAF_mining_magnate
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_4"
+			}
+		}
+	}
+
+	# Jan Hofmeyr - Minister of Finance and Education, and the only man in
+	# the cabinet who voted against the segregation bills. Smuts's heir
+	# apparent, and the reason the platteland never trusted Smuts.
+	SAF_jan_hendrik_hofmeyr={
+		name=SAF_jan_hendrik_hofmeyr
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_jan_hendrik_hofmeyr
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				SAF_minister_of_education
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_3"
+			}
+		}
+	}
+
+	# Richard Stuttaford - Minister of Commerce and Industries, and a
+	# department-store magnate who ran the war economy like a shop floor.
+	SAF_richard_stuttaford={
+		name=SAF_richard_stuttaford
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_richard_stuttaford
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				SAF_minister_of_commerce
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_2"
+			}
+		}
+	}
+
+	# Deneys Reitz - Boer commando at seventeen, wrote the memoir every
+	# South African schoolboy read, then spent the war as Minister of
+	# Native Affairs finding the men the colour bar would not enlist.
+	SAF_deneys_reitz={
+		name=SAF_deneys_reitz
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_deneys_reitz
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				SAF_minister_of_native_affairs
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_1"
+			}
+		}
+	}
+
+	# E. G. Malherbe - educationist turned Director of Military
+	# Intelligence. Ran the census, then ran the spies.
+	SAF_e_g_malherbe={
+		name=SAF_e_g_malherbe
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_e_g_malherbe
+			allowed = {
+				original_tag = SAF
+				has_dlc = "La Resistance"
+			}
+			available = {
+				has_completed_focus = SAF_directorate_of_military_intelligence
+			}
+			traits = {
+				head_of_intelligence
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_3"
+			}
+		}
+	}
+
+	### THEORIST ##########################################################
+
+	# Basil Schonland - built the Union's radar from nothing; later
+	# founded the CSIR.
+	SAF_basil_schonland={
+		name=SAF_basil_schonland
+		advisor={
+			slot = theorist
+			idea_token = SAF_basil_schonland
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_the_csir_precursor
+			}
+			traits = {
+				SAF_radar_pioneer
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_3"
+			}
+		}
+	}
+
+	# J. F. van Rensburg - Ossewabrandwag Kommandant-Generaal. Kept as a
+	# character so SAF_intern_the_ossewabrandwag has a face, not as a
+	# recruitable advisor or leader.
+	SAF_j_f_van_rensburg={
+		name=SAF_j_f_van_rensburg
+		advisor={
+			slot = political_advisor
+			idea_token = SAF_j_f_van_rensburg
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_idea = SAF_ossewabrandwag
+				NOT = { has_completed_focus = SAF_intern_the_ossewabrandwag }
+			}
+			traits = {
+				SAF_purified_nationalist
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 0.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_political_advisor_europe_1"
+			}
+		}
+	}
+
+	### HIGH COMMAND ######################################################
+	# Frank Theron - Major General, head of the South African Military
+	# Mission in the Middle East. The Union's divisions ate because of him.
+	SAF_frank_theron={
+		name=SAF_frank_theron
+		advisor={
+			slot = high_command
+			idea_token = SAF_frank_theron
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				army_regrouping_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_army_europe_1"
+			}
+		}
+	}
+
+	# James Dalgleish - Commodore, Director of the South African Naval
+	# Forces. Built a navy out of converted whalers and borrowed trawlers.
+	SAF_james_dalgleish={
+		name=SAF_james_dalgleish
+		advisor={
+			slot = high_command
+			idea_token = SAF_james_dalgleish
+			ledger = navy
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				navy_screen_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_navy_europe_2"
+			}
+		}
+	}
+
+	# Hendrik Klopper - Major General, 2nd SA Division. Held the Tobruk
+	# perimeter with a garrison he had commanded for three weeks.
+	SAF_hendrik_klopper={
+		name=SAF_hendrik_klopper
+		advisor={
+			slot = high_command
+			idea_token = SAF_hendrik_klopper
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				army_entrenchment_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_army_europe_2"
+			}
+		}
+		corps_commander={
+			traits={ trait_engineer }
+			skill=2
+			attack_skill=1
+			defense_skill=3
+			planning_skill=2
+			logistics_skill=2
+			legacy_id=-1
+		}
+	}
+
+	# Christoffel "Boetie" Venter - SAAF Major General; took a bomber group
+	# over Europe at an age when most men had stopped flying.
+	SAF_christoffel_venter={
+		name=SAF_christoffel_venter
+		advisor={
+			slot = high_command
+			idea_token = SAF_christoffel_venter
+			ledger = air
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				air_close_air_support_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_air_europe_2"
+			}
+		}
+	}
+
+	### ARMY CHIEF ########################################################
+
+	SAF_leonard_beyers={
+		name=SAF_leonard_beyers
+		advisor={
+			slot = army_chief
+			idea_token = SAF_leonard_beyers
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				army_chief_offensive_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_army_europe_2"
+			}
+		}
+	}
+
+	SAF_james_mitchell_baker={
+		name=SAF_james_mitchell_baker
+		advisor={
+			slot = army_chief
+			idea_token = SAF_james_mitchell_baker
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				army_chief_maneuver_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_army_europe_1"
+			}
+		}
+	}
+
+	### AIR ###############################################################
+
+	# Pierre van Ryneveld - founder and chief of the SAAF.
+	SAF_pierre_van_ryneveld={
+		name=SAF_pierre_van_ryneveld
+		advisor={
+			slot = air_chief
+			idea_token = SAF_pierre_van_ryneveld
+			ledger = air
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				air_chief_ground_support_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_air_europe_2"
+			}
+		}
+	}
+
+	# "Sailor" Malan - the Union's most famous fighter pilot.
+	SAF_adolf_malan={
+		name=SAF_adolf_malan
+		advisor={
+			slot = air_chief
+			idea_token = SAF_adolf_malan
+			ledger = air
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_retain_experienced_pilots
+			}
+			traits = {
+				air_chief_all_weather_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				small="GFX_idea_generic_air_europe_1"
+			}
+		}
+	}
+
+	### NAVY ##############################################################
+
+	SAF_guy_hallifax={
+		name=SAF_guy_hallifax
+		advisor={
+			slot = navy_chief
+			idea_token = SAF_guy_hallifax
+			ledger = navy
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_the_south_atlantic_command
+			}
+			traits = {
+				navy_chief_decisive_battle_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
+		portraits={
+			army={
+				large="GFX_SAF_guy_halifax"
+				small=GFX_portrait_SAF_guy_hallifax_small
+			}
+		}
+		navy_leader={
+			traits={ battleship_adherent }
+			skill=3
+			attack_skill=4
+			defense_skill=2
+			maneuvering_skill=1
+			coordination_skill=1
+			legacy_id=-1
+		}
+	}
+
+	### FIELD COMMANDERS ##################################################
+
+	# Also high_command: he raised and trained 1st SA Division.
+	# Mirrors the old SAF_marinus_van_osterkamp: army_infantry_3, cost 150.
+	# Deliberately NOT gated on the infantry branch - the three army branch
+	# heads are mutually exclusive, so a branch gate would permanently lock
+	# this out for two thirds of playthroughs. The original had no gate.
 	SAF_george_edwin_brink={
 		name=SAF_george_edwin_brink
+		advisor={
+			slot = high_command
+			idea_token = SAF_george_edwin_brink
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				army_infantry_3
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
 		portraits={
 			army={
 				large="GFX_SAF_george_edwin_brink"
@@ -93,68 +718,26 @@ characters={
 		}
 	}
 
-	SAF_guy_hallifax={
-		name=SAF_guy_hallifax
-		portraits={
-			army={
-				large="GFX_SAF_guy_halifax"
-				small=GFX_portrait_SAF_guy_hallifax_small
-			}
-		}
-		navy_leader={
-			traits={ battleship_adherent }
-			skill=3
-			attack_skill=4
-			defense_skill=2
-			maneuvering_skill=1
-			coordination_skill=1
-			legacy_id=-1
-		}
-	}
-	SAF_j._b._m._hertzog={
-		name="J. B. M. Hertzog"
-		portraits={
-			civilian={
-				large="GFX_SAF_james_hertzog"
-			}
-		}
-		country_leader={
-			ideology=conservatism
-			expire="1965.1.1.1"
-			id=-1
-		}
-	}
-	SAF_d_f_malan={
-		name=SAF_d_f_malan
-		advisor={
-			slot = political_advisor
-			idea_token = SAF_d_f_malan
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				backroom_backstabber 
-			}
-			ai_will_do  = {
-				factor  = 0.000
-			}
-		}
-		portraits={
-			civilian={
-				large="GFX_SAF_daniel_malan"
-			}
-			army={
-				small=GFX_portrait_SAF_d_f_malan_small
-			}
-		}
-		country_leader={
-			ideology=fascism_ideology
-			expire="1965.1.1.1"
-			id=-1
-		}
-	}
+	# Also high_command: 6th SA Armoured Division, Italy.
+	# Mirrors the old SAF_c_de_weenburg_du_toit: army_armored_2, cost 100,
+	# ungated (see the note on Brink about mutually exclusive branches).
 	SAF_evered_poole={
 		name="Evered Poole"
+		advisor={
+			slot = high_command
+			idea_token = SAF_evered_poole
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			traits = {
+				army_armored_2
+			}
+			cost = 100
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
 		portraits={
 			army={
 				small="GFX_Portrait_Britain_Generic_land_5_small"
@@ -173,8 +756,31 @@ characters={
 			legacy_id=-1
 		}
 	}
+
+	# Also a high_command advisor, granted by the motorised branch.
+	# Mirrors the old SAF_lion_king: army_cavalry_3, cost 150, gated on the
+	# Cape Motor Divisions focus. Fits Pienaar - the commando tradition is
+	# mounted infantry, and he fought the desert the same way.
 	SAF_dan_pienaar={
 		name="Dan Pienaar"
+		advisor={
+			slot = high_command
+			idea_token = SAF_dan_pienaar
+			ledger = army
+			allowed = {
+				original_tag = SAF
+			}
+			available = {
+				has_completed_focus = SAF_the_cape_motor_divisions
+			}
+			traits = {
+				army_cavalry_3
+			}
+			cost = 150
+			ai_will_do = {
+				factor = 1.000
+			}
+		}
 		portraits={
 			army={
 				small="GFX_Portrait_Britain_Generic_land_6_small"
@@ -185,352 +791,12 @@ characters={
 		}
 		corps_commander={
 			traits={ trait_cautious }
-			skill=1
-			attack_skill=1
-			defense_skill=1
-			planning_skill=1
-			logistics_skill=1
+			skill=3
+			attack_skill=3
+			defense_skill=2
+			planning_skill=2
+			logistics_skill=3
 			legacy_id=-1
-		}
-	}
-	SAF_pierre_oliver_knoll={
-		advisor={
-			slot = navy_chief
-			idea_token = SAF_pierre_oliver_knoll
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				navy_chief_maneuver_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_pierre_oliver_knoll"
-		portraits={
-			army={
-				small="GFX_idea_generic_navy_europe_2"
-			}
-		}
-	}
-	SAF_cornelis_van_zuigenbrogge={
-		advisor={
-			slot = navy_chief
-			idea_token = SAF_cornelis_van_zuigenbrogge
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				navy_chief_commerce_raiding_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_cornelis_van_zuigenbrogge"
-		portraits={
-			army={
-				small="GFX_idea_generic_navy_europe_1"
-			}
-		}
-	}
-	SAF_e_g_jansen={
-		advisor={
-			slot = political_advisor
-			idea_token = SAF_e_g_jansen
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				war_industrialist 
-			}
-		}
-		name="SAF_e_g_jansen"
-		portraits={
-			army={
-				small="GFX_idea_generic_political_advisor_europe_3"
-			}
-		}
-	}
-	SAF_adolf_malan={
-		advisor={
-			slot = air_chief
-			idea_token = SAF_adolf_malan
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				air_chief_all_weather_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_adolf_malan"
-		portraits={
-			army={
-				small="GFX_idea_generic_air_europe_3"
-			}
-		}
-	}
-	SAF_marinus_van_osterkamp={
-		advisor={
-			slot = high_command
-			idea_token = SAF_marinus_van_osterkamp
-			ledger  = army 
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				army_infantry_3 
-			}
-			cost = 150
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_marinus_van_osterkamp"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_europe_3"
-			}
-		}
-	}
-	SAF_nicolaas_havenga={
-		advisor={
-			slot = political_advisor
-			idea_token = SAF_nicolaas_havenga
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				captain_of_industry 
-			}
-		}
-		name="SAF_nicolaas_havenga"
-		portraits={
-			army={
-				small="GFX_idea_generic_political_advisor_europe_2"
-			}
-		}
-	}
-	SAF_sir_patrick_duncan={
-		advisor={
-			slot = political_advisor
-			idea_token = SAF_sir_patrick_duncan
-			allowed  = {
-				original_tag  = SAF
-			}
-			available  = {
-				if  = {
-					limit  = {
-						has_dlc = "Together for Victory"
-					}
-					has_completed_focus  = SAF_support_the_policy_of_appeasement 
-				}
-				if  = {
-					limit  = {
-						has_dlc = "Man the Guns"
-					}
-					not  = {
-						has_autonomy_state  = autonomy_supervised_state
-					}
-				}
-			}
-			traits  = {
-				democratic_reformer 
-			}
-			do_effect  = {
-				not  = {
-					has_government  = democratic 
-				}
-			}
-			ai_will_do  = {
-				factor  = 0.000
-			}
-		}
-		name="SAF_sir_patrick_duncan"
-		portraits={
-			army={
-				small="GFX_idea_generic_democratic_reformer_western_european_2d"
-			}
-		}
-	}
-	SAF_jeannot_de_la_tourier={
-		advisor={
-			slot = high_command
-			idea_token = SAF_jeannot_de_la_tourier
-			ledger  = navy 
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				navy_screen_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_jeannot_de_la_tourier"
-		portraits={
-			army={
-				small="GFX_idea_generic_navy_europe_2"
-			}
-		}
-	}
-	SAF_j_f_van_rensburg={
-		advisor={
-			slot = theorist
-			idea_token = SAF_j_f_van_rensburg
-			ledger  = army 
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				military_theorist 
-			}
-		}
-		name="SAF_j_f_van_rensburg"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_europe_2"
-			}
-		}
-	}
-	SAF_pierre_van_ryneveld={
-		advisor={
-			slot = air_chief
-			idea_token = SAF_pierre_van_ryneveld
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				air_chief_ground_support_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_pierre_van_ryneveld"
-		portraits={
-			army={
-				small="GFX_idea_generic_air_europe_2"
-			}
-		}
-	}
-	SAF_s_p_le_roux={
-		advisor={
-			slot = theorist
-			idea_token = SAF_s_p_le_roux
-			ledger  = air 
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				air_warfare_theorist 
-			}
-		}
-		name="SAF_s_p_le_roux"
-		portraits={
-			army={
-				small="GFX_idea_generic_air_europe_1"
-			}
-		}
-	}
-	SAF_robert_palmer={
-		advisor={
-			slot = high_command
-			idea_token = SAF_robert_palmer
-			ledger  = army 
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				army_regrouping_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_robert_palmer"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_europe_1"
-			}
-		}
-	}
-	SAF_leonard_beyers={
-		advisor={
-			slot = army_chief
-			idea_token = SAF_leonard_beyers
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				army_chief_defensive_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_leonard_beyers"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_europe_4"
-			}
-		}
-	}
-	SAF_c_de_weenburg_du_toit={
-		advisor={
-			slot = high_command
-			idea_token = SAF_c_de_weenburg_du_toit
-			ledger  = army 
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				army_armored_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_c_de_weenburg_du_toit"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_europe_5"
-			}
-		}
-	}
-	SAF_james_mitchell_baker={
-		advisor={
-			slot = army_chief
-			idea_token = SAF_james_mitchell_baker
-			allowed  = {
-				original_tag  = SAF
-			}
-			traits  = {
-				army_chief_maneuver_2 
-			}
-			cost = 100
-			ai_will_do  = {
-				factor  = 1.000
-			}
-		}
-		name="SAF_james_mitchell_baker"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_europe_3"
-			}
 		}
 	}
 }
