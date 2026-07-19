@@ -7,7 +7,7 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="BFFU-DEV"
+name="1.1.9 Update"
 picture="thumbnail.png"
 replace_path="common/units/names_divisions"
 replace_path="common/ai_equipment"
