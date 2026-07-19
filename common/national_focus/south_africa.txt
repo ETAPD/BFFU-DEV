@@ -1444,7 +1444,6 @@ focus_tree = {
 		cost = 5
 		ai_will_do = { factor = 10 }
 		available = {
-			RAJ = { exists = yes is_puppet = no }
 			CAN = { exists = yes is_puppet = no }
 			NZL = { exists = yes is_puppet = no }
 			AST = { exists = yes is_puppet = no }
@@ -1457,12 +1456,18 @@ focus_tree = {
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = SAF_ernest_oppenheimer
 			custom_effect_tooltip = SAF_smuts_hofmeyr_axis_industry_tt
-			RAJ = {
-				random_owned_controlled_state = {
-					limit = { is_core_of = RAJ }
-					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
-					add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			if = {
+				limit = { RAJ = { exists = yes is_puppet = no } }
+				RAJ = {
+					random_owned_controlled_state = {
+						limit = { is_core_of = RAJ }
+						add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+						add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+					}
 				}
+			}
+			else = {
+				custom_effect_tooltip = SAF_raj_not_independent_tt
 			}
 			CAN = {
 				random_owned_controlled_state = {
