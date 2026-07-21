@@ -172,6 +172,7 @@ foreign_civilian_oversight = {
 	icon = 3
 	sound_effect = "Martial_Law_Interface_Foreign_Cvilian_Oversight"
 
+
 	state_modifier = {
 		#resistance_target 				= -0.10
 		required_garrison_factor 		= -0.40	
@@ -438,6 +439,7 @@ harsh_quotas_occupation = {
 		NOT = {
 			OR = {
 				original_tag = JAP
+				original_tag = GER
 				original_tag = MAN
 				has_government = democratic
 			}
@@ -455,6 +457,50 @@ harsh_quotas_occupation = {
 
 		repair_speed_arms_factory_factor = 0.35
 		repair_speed_industrial_complex_factor = 0.35
+		
+		custom_modifier_tooltip = "factory_sabotage_decrease_tooltip"
+	}
+
+	ai_will_do = {
+		# enabled if has damaged factories
+		# gets higher score if more are damaged
+		base = 0
+
+		modifier = {
+			set_temp_variable = { num_damaged = damaged_building_level@arms_factory }
+			add_to_temp_variable = { num_damaged = damaged_building_level@industrial_complex }
+
+			check_variable = { num_damaged > 0 }
+			clamp_temp_variable = { var = num_damaged max = 4 }
+			multiply_temp_variable = { num_damaged = 50 }
+			add_to_temp_variable = { num_damaged = 150 }
+
+			add = num_damaged
+		}
+	}
+}
+
+GER_harsh_quotas_occupation = {
+	icon = 9
+	sound_effect = "Martial_Law_Interface_Harsh_Quotas_Occupation"
+
+	visible = {
+		original_tag = GER
+		GER = { has_completed_focus = GER_goring_plan }
+	}
+
+	state_modifier = {
+		resistance_target 				= -0.4 #-0.50
+		compliance_gain 				= -0.1
+		required_garrison_factor 		= 0.80
+		resistance_damage_to_garrison 	= 0.65
+		resistance_target = -0.10
+	
+		local_factories 				= 0.35
+		local_resources 				= 0.05
+
+		repair_speed_arms_factory_factor = 0.15
+		repair_speed_industrial_complex_factor = 0.15
 		
 		custom_modifier_tooltip = "factory_sabotage_decrease_tooltip"
 	}
