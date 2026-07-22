@@ -2247,7 +2247,6 @@ focus_tree = {
         free_building_slots = {
             building = infrastructure
             size > 0
-            include_locked = yes
         }
     }
     add_building_construction = {
@@ -2567,7 +2566,7 @@ focus_tree = {
 
 	focus = {
 		id = GER_place_holder1
-		icon = GFX_GER_curtail_the_steel_barons2
+		icon = GFX_focus_GER_european_confederation
 		prerequisite = { focus = GER_for_a_greater_germany }
 		x = 5
 		y = 1
@@ -2580,7 +2579,23 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_finance_europa_tt
+			every_country = {
+				limit = {
+					NOT = { tag = GER }
+					is_in_faction_with = GER
+					is_major = no
+				}
+				capital_scope = {
+					add_extra_state_shared_building_slots = 4
+					add_building_construction = {
+						type = arms_factory
+						level = 4
+						instant_build = yes
+					}
+				}
+			}
 		}
 	}
 
@@ -2666,21 +2681,21 @@ focus_tree = {
 
 		completion_reward = {
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.15 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.25 tooltip = production_speed_arms_factory_factor_tt }
 			add_to_variable = { 
-				GER_industrial_industrial_capacity_factory = 0.05
+				GER_industrial_industrial_capacity_factory = 0.075
 				tooltip = industrial_capacity_factory_tt
 			}
 			add_to_variable = { 
-				GER_industrial_industrial_capacity_dockyard = 0.05
+				GER_industrial_industrial_capacity_dockyard = 0.1
 				tooltip = industrial_capacity_dockyard_tt
 			}
 			add_to_variable = { 
-				GER_industrial_production_factory_max_efficiency_factor = 0.05
+				GER_industrial_production_factory_max_efficiency_factor = 0.065
 				tooltip = production_factory_max_efficiency_factor_tt
 			}
 			add_to_variable = { 
-				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				GER_industrial_production_factory_start_efficiency_factor = 0.05
 				tooltip = production_factory_start_efficiency_factor_tt
 			}
 			add_to_variable = { 
@@ -2793,13 +2808,13 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_resource_trade_cost_bonus_per_factory = 0.15
+			add_to_variable = {
+				GER_industrial_resource_trade_cost_bonus_per_factory = 10
 				tooltip = resource_trade_cost_bonus_per_factory_tt
 			}
 		}
 	}
-	
+
 	focus = {
 		id = GER_autarky_efforts
 		icon = GFX_focus_GER_autarky_ambitions
@@ -19453,6 +19468,8 @@ completion_reward = {
 				CHARACTER = GER_albert_speer
 			}
 			show_ideas_tooltip = GER_speer_reich_architect
+
+			add_ideas = GER_philipp_holzmann
 
 			custom_effect_tooltip = generic_skip_one_line_tt
 
