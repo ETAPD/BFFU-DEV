@@ -132,7 +132,7 @@ focus_tree = {
 		icon = GFX_focus_GER_army
 		#prerequisite = { focus = }
 
-		x = -35
+		x = -37
 		y = 0
 		#relative_position_id = GER_prioritize_economic_growth
 		cost = 5
@@ -1620,17 +1620,13 @@ focus_tree = {
 
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { 
-				GER_industrial_production_speed_industrial_complex_factor = -0.35
+				GER_industrial_production_speed_industrial_complex_factor = -0.20
 				tooltip = production_speed_industrial_complex_factor_tt
 			}
 			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.15 tooltip = production_speed_arms_factory_factor_tt }
 			add_to_variable = { 
 				GER_industrial_production_speed_dockyard_factor = 0.05
 				tooltip = production_speed_dockyard_factor_tt
-			}
-			add_to_variable = { 
-				GER_industrial_production_factory_start_efficiency_factor = 0.025
-				tooltip = production_factory_start_efficiency_factor_tt
 			}
 			#add_timed_idea = {
 			#	idea = GER_rapid_mobilisation
@@ -1755,12 +1751,6 @@ focus_tree = {
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_production_factory_start_efficiency_factor = 0.025
-				tooltip = production_factory_start_efficiency_factor_tt
-			}
 			every_core_state = {
 				limit = {
 					is_fully_controlled_by = ROOT
@@ -1845,8 +1835,8 @@ focus_tree = {
 		completion_reward = {
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { 
-				GER_industrial_production_speed_industrial_complex_factor = 0.05
-				tooltip = production_speed_industrial_complex_factor_tt
+				GER_industrial_research_speed_factor = 0.05
+				tooltip = research_speed_factor_tt
 			}
 			add_to_variable = { 
 				GER_industrial_production_factory_max_efficiency_factor = 0.015
@@ -1872,7 +1862,7 @@ focus_tree = {
 
 	focus = {
 		id = GER_follow_speers_plan
-		icon = GFX_rearm_slow
+		icon = GFX_GER_establish_collaborationist_government
 		prerequisite = { focus = GER_the_four_year_plan  }
 		mutually_exclusive = { focus = GER_goring_plan }
 
@@ -1881,16 +1871,950 @@ focus_tree = {
 		relative_position_id = GER_the_four_year_plan
 		cost = 5
 		available = {
-			always = no
 		}
 
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-        custom_effect_tooltip = GER_WIP
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 2
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			if = { 
+				limit = {
+					has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_Speer_Path
+			GER_stop_rearmament = yes
 		}
 	}
+
+	focus = {
+		id = GER_currency_reforms
+		icon = GFX_focus_generic_monetary_union
+		prerequisite = { focus = GER_follow_speers_plan }
+
+		x = 0
+		y = 1
+		relative_position_id = GER_follow_speers_plan
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 4
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_consumer_goods_factor = -0.05
+				tooltip = consumer_goods_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_economy_cost_factor = -0.1
+				tooltip = economy_cost_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_trade_laws_cost_factor = -0.1
+				tooltip = trade_laws_cost_factor_tt
+			}
+
+        custom_effect_tooltip = generic_skip_one_line_tt
+
+        add_tech_bonus = {
+        name = construction_industry_bonus
+        bonus = 0.50
+        uses = 2
+		technology = construction1
+		technology = construction2
+        technology = construction3
+		technology = construction4
+        }
+		}
+	}
+
+	focus = {
+		id = GER_ig_farben
+		icon = GFX_ig_farben
+		prerequisite = { focus = GER_follow_speers_plan }
+
+		x = -4
+		y = 1
+		relative_position_id = GER_follow_speers_plan
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = synthetic_refinery
+						size > 1
+						include_locked = yes
+					}
+				}
+				prioritize = { 65 }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = synthetic_refinery
+						size > 1
+						include_locked = yes
+					}
+				}
+				prioritize = { 60 }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = fuel_silo
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = synthetic_refinery
+						size > 1
+						include_locked = yes
+					}
+				}
+				prioritize = { 65 }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = synthetic_refinery
+						size > 1
+						include_locked = yes
+					}
+				}
+				prioritize = { 60 }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = fuel_silo
+					level = 2
+					instant_build = yes
+				}
+			}
+			
+			custom_effect_tooltip = generic_skip_one_line_tt
+			
+			add_tech_bonus = {
+				name = GER_coal_liquefaction
+				bonus = 1
+				uses = 1
+				category = synth_resources
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
 	
+			if = {
+				limit = {
+					has_idea = ig_faben
+				}
+				swap_ideas = {
+					remove_idea = ig_faben
+					add_idea = GER_ig_faben_improved
+				}
+			}
+			else = {
+				effect_tooltip = {
+					swap_ideas = {
+						remove_idea = ig_faben
+						add_idea = GER_ig_faben_improved
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_invest_in_electrical_grids
+		icon = GFX_focus_generic_electrification
+		prerequisite = { focus = GER_ig_farben }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_ig_farben
+		cost = 5
+		available = {
+
+		}
+
+		continue_if_invalid = yes
+
+		bypass = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+        random_core_state = {
+	    prioritize = { 42 }
+	    add_extra_state_shared_building_slots = 1
+	    add_building_construction = {
+		type = industrial_infrastructure
+		level = 1
+		instant_build = yes
+	    }
+        }
+
+        random_core_state = {
+	    prioritize = { 64 }
+	    add_extra_state_shared_building_slots = 1
+	    add_building_construction = {
+		type = energy_infrastructure
+		level = 1
+		instant_build = yes
+	    }
+        }
+
+        random_core_state = {
+	    prioritize = { 65 }
+	    add_extra_state_shared_building_slots = 1
+	    add_building_construction = {
+		type = industrial_infrastructure
+		level = 1
+		instant_build = yes
+	    }
+        }
+
+        random_core_state = {
+	    prioritize = { 56 }
+	    add_extra_state_shared_building_slots = 1
+	    add_building_construction = {
+		type = energy_infrastructure
+		level = 1
+		instant_build = yes
+	    }
+        }
+    }
+	}
+	
+	focus = {
+		id = GER_establish_buna_werke2
+		icon = GFX_SOV_synthetic_rubber_ccp_2d_sov_compatibility
+		prerequisite = { focus = GER_ig_farben }
+
+		x = 1
+		y = 1
+		relative_position_id = GER_ig_farben
+		cost = 5
+		available = {
+		}
+
+		continue_if_invalid = yes
+
+		bypass = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+        	random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = synthetic_refinery
+						size > 1
+						include_locked = yes
+					}
+				}
+				prioritize = { 65 }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_rubber_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+        	random_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = synthetic_refinery
+						size > 1
+						include_locked = yes
+					}
+				}
+				prioritize = { 64 }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_rubber_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			modify_building_resources = {
+        	   building = synthetic_rubber_refinery
+        	   resource = rubber
+        	   amount = 20
+        	}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_tech_bonus = {
+				name = GER_establish_buna_werke
+				bonus = 1
+				uses = 2
+				category = synth_resources
+			}
+		}
+	}
+
+	focus = {
+		id = GER_Expand_The_Autobahn
+		icon = GFX_GER_autobahn
+		prerequisite = { focus = GER_follow_speers_plan }
+
+		x = -2
+		y = 1
+		relative_position_id = GER_follow_speers_plan
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+    every_owned_state = {
+    limit = {
+        is_core_of = GER
+        free_building_slots = {
+            building = infrastructure
+            size > 0
+        }
+    }
+    add_building_construction = {
+        type = infrastructure
+        level = 1
+        instant_build = yes
+    }
+    }
+	custom_effect_tooltip = generic_skip_one_line_tt
+		GER_modify_industrial_modifier = yes
+		add_to_variable = { 
+			GER_industrial_production_speed_infrastructure_factor = 0.1
+			tooltip = production_speed_infrastructure_factor_tt
+		}
+	}
+	}
+
+	focus = {
+		id = GER_Empower_Steel_Barons
+		icon = GFX_GER_curtail_the_steel_barons
+		prerequisite = { focus = GER_currency_reforms }
+
+		x = 1
+		y = 2
+		relative_position_id = GER_follow_speers_plan
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 2
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_stability = 0.05
+			add_popularity = {
+			    ideology = ROOT
+			    popularity = 0.05
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_speed_industrial_complex_factor = 0.1
+				tooltip = production_speed_industrial_complex_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_research_speed_factor = 0.05
+				tooltip = research_speed_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = GER_Support_Siemens
+		icon = GFX_focus_GER_factories_for_resources
+		prerequisite = { focus = GER_currency_reforms }
+
+		x = -1
+		y = 2
+		relative_position_id = GER_follow_speers_plan
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+        add_research_slot = 1
+		custom_effect_tooltip = generic_skip_one_line_tt
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 2
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+		custom_effect_tooltip = generic_skip_one_line_tt
+		GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_speed_industrial_complex_factor = 0.05
+				tooltip = production_speed_industrial_complex_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_research_speed_factor = 0.05
+				tooltip = research_speed_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				tooltip = production_factory_start_efficiency_factor_tt
+			}
+            custom_effect_tooltip = generic_skip_one_line_tt
+			add_tech_bonus = {
+				name = GER_industry_bonus
+				bonus = 1
+				uses = 2
+				category = electronics
+			}
+		}
+	}
+
+	focus = {
+		id = GER_Expand_Rheinmetall
+		icon = GFX_ger_rheinmetall_merger
+		prerequisite = { focus = GER_Support_Siemens }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_Support_Siemens
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+        random_core_state = {
+	    prioritize = { 909 }
+	    add_extra_state_shared_building_slots = 2
+	    add_building_construction = {
+		type = steel_refinery
+		level = 2
+		instant_build = yes
+	    }
+        }
+
+        random_core_state = {
+	    prioritize = { 62 }
+	    add_extra_state_shared_building_slots = 2
+	    add_building_construction = {
+		type = steel_refinery
+		level = 2
+		instant_build = yes
+	    }
+        }
+
+        random_core_state = {
+	    prioritize = { 59 }
+	    add_extra_state_shared_building_slots = 2
+	    add_building_construction = {
+		type = arms_factory
+		level = 2
+		instant_build = yes
+	    }
+        }
+
+        random_core_state = {
+	    prioritize = { 66 }
+	    add_extra_state_shared_building_slots = 2
+	    add_building_construction = {
+		type = arms_factory
+		level = 2
+		instant_build = yes
+	    }
+        }
+		}
+	}
+
+	focus = {
+		id = GER_for_a_greater_germany
+		icon = GFX_rearm_slow
+		prerequisite = { focus = GER_Empower_Steel_Barons }
+
+		x = 3
+		y = 1
+		relative_position_id = GER_Support_Siemens
+		cost = 5
+		available = {
+
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			every_core_state = {
+				limit = {
+					is_fully_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 0
+						include_locked = yes
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+
+        custom_effect_tooltip = generic_skip_one_line_tt
+
+		GER_modify_industrial_modifier = yes
+			add_to_variable = { 
+				GER_industrial_production_speed_buildings_factor = 0.05
+				tooltip = production_speed_buildings_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_efficiency_gain_factor = 0.05
+				tooltip = production_factory_efficiency_gain_factor_tt
+			}
+
+        custom_effect_tooltip = generic_skip_one_line_tt
+
+        add_tech_bonus = {
+        name = dispersed_industry_bonus
+        bonus = 0.50
+        uses = 2
+		technology = dispersed_industry
+		technology = dispersed_industry2
+        technology = dispersed_industry3
+		technology = dispersed_industry4
+        }
+		}
+	}
+
+	focus = {
+		id = GER_curtail_the_steel_baronss
+		icon = GFX_GER_krupp_monopoly_industrial
+		prerequisite = { focus = GER_Support_Siemens focus = GER_Empower_Steel_Barons }
+		x = 1
+		y = 1
+		relative_position_id = GER_Support_Siemens
+		cost = 5
+		available = {
+        has_completed_focus = GER_fate_of_czechoslovakia
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			GER_modify_industrial_modifier = yes
+			#add_to_variable = { 
+			#	GER_industrial_consumer_goods_factor = -0.05
+			#	tooltip = consumer_goods_factor_tt
+			#}
+			add_to_variable = {
+				GER_industrial_consumer_goods_expected_value = 0.015
+				tooltip = consumer_goods_expected_value_tt
+			}
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_factory = 0.05
+				tooltip = industrial_capacity_factory_tt
+			}
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_dockyard = 0.05
+				tooltip = industrial_capacity_dockyard_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_max_efficiency_factor = 0.025
+				tooltip = production_factory_max_efficiency_factor_tt
+			}
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.50 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { 
+				GER_industrial_production_speed_dockyard_factor = 0.50
+				tooltip = production_speed_dockyard_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_speed_industrial_complex_factor = -0.50
+				tooltip = production_speed_industrial_complex_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_conversion_cost_civ_to_mil_factor = 1
+				tooltip = conversion_cost_civ_to_mil_factor_tt
+			}
+			hidden_effect = { 
+				remove_dynamic_modifier = { modifier = GER_recovering_economy_modifier }
+				add_dynamic_modifier = { modifier = GER_wirtschaftswunder_modifier }
+			}
+		}
+	}
+
+	focus = {
+		id = GER_place_holder1
+		icon = GFX_focus_GER_european_confederation
+		prerequisite = { focus = GER_for_a_greater_germany }
+		x = 5
+		y = 1
+		relative_position_id = GER_Expand_Rheinmetall
+		cost = 5
+		available = {
+        has_completed_focus = GER_fate_of_czechoslovakia
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_finance_europa_tt
+			every_country = {
+				limit = {
+					NOT = { tag = GER }
+					is_in_faction_with = GER
+					is_major = no
+				}
+				capital_scope = {
+					add_extra_state_shared_building_slots = 4
+					add_building_construction = {
+						type = arms_factory
+						level = 4
+						instant_build = yes
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_place_holder2
+		icon = GFX_focus_GER_customs_union
+		prerequisite = { focus = GER_Expand_Rheinmetall }
+		x = -1
+		y = 1
+		relative_position_id = GER_Expand_Rheinmetall
+		cost = 5
+		available = {
+        has_completed_focus = GER_fate_of_czechoslovakia
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_ideas = GER_the_armaments_union
+		}
+	}
+
+	focus = {
+		id = GER_Private_Military_Complex
+		icon = GFX_goal_ammunitions
+		prerequisite = { focus = GER_curtail_the_steel_baronss }
+		prerequisite = { focus = GER_place_holder2 }
+		prerequisite = { focus = GER_place_holder1 }
+		x = -1
+		y = 2
+		relative_position_id = GER_curtail_the_steel_baronss
+		cost = 5
+		available = {
+			OR = {
+				controls_state = 907 # Cairo
+				controls_state = 144 # Nordland
+			}
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			random_core_state = {
+				prioritize = { 909 }
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = arms_factory
+					level = 5
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+				prioritize = { 62 }
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = arms_factory
+					level = 5
+					instant_build = yes
+				}
+			}
+			random_core_state = {
+				prioritize = { 59 }
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = arms_factory
+					level = 5
+					instant_build = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_Private_Military_Contracts
+		icon = GFX_goal_gerpropaganda
+		prerequisite = { focus = GER_curtail_the_steel_baronss }
+		prerequisite = { focus = GER_place_holder1 }
+		prerequisite = { focus = GER_place_holder2 }
+		x = 1
+		y = 2
+		relative_position_id = GER_curtail_the_steel_baronss
+		cost = 5
+		available = {
+		FRA = {
+        has_capitulated = yes
+		    }
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			GER_modify_industrial_modifier = yes
+			add_to_variable = {
+				GER_industrial_consumer_goods_expected_value = 0.015
+				tooltip = consumer_goods_expected_value_tt
+			}
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.1 tooltip = production_speed_arms_factory_factor_tt }
+			#add_to_variable = { 
+			#	GER_industrial_production_speed_buildings_factor = 0.05
+			#	tooltip = production_speed_buildings_factor_tt
+			#}
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_factory = 0.05
+				tooltip = industrial_capacity_factory_tt
+			}
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_dockyard = 0.05
+				tooltip = industrial_capacity_dockyard_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_max_efficiency_factor = 0.05
+				tooltip = production_factory_max_efficiency_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.025
+				tooltip = production_factory_start_efficiency_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_efficiency_gain_factor = 0.05
+				tooltip = production_factory_efficiency_gain_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = GER_Reorganize_The_Armaments_Industry
+		icon = GFX_GER_new_plan
+		prerequisite = { focus = GER_Private_Military_Contracts focus = GER_Private_Military_Complex }
+		x = -1
+		y = 1
+		relative_position_id = GER_Private_Military_Contracts
+		cost = 5
+		available = {
+        has_war_with = SOV
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			GER_modify_industrial_modifier = yes
+            add_to_variable = { 
+			GER_industrial_consumer_goods_expected_value = 0.02
+			tooltip = consumer_goods_expected_value_tt
+		    }
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.1 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { 
+				GER_industrial_industrial_capacity_factory = 0.10
+				tooltip = industrial_capacity_factory_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_max_efficiency_factor = 0.05
+				tooltip = production_factory_max_efficiency_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_start_efficiency_factor = 0.05
+				tooltip = production_factory_start_efficiency_factor_tt
+			}
+			add_to_variable = { 
+				GER_industrial_production_factory_efficiency_gain_factor = 0.05
+				tooltip = production_factory_efficiency_gain_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = GER_essen_combine
+		icon = GFX_r56_goal_generic_national_arsenal
+		prerequisite = { focus = GER_curtail_the_steel_baronss }
+		x = 0
+		y = 1
+		relative_position_id = GER_curtail_the_steel_baronss
+		cost = 5
+		available = {
+		FRA = {
+        has_capitulated = yes
+		    }
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+			add_tech_bonus = {
+				name = GER_essen_combine_artillery
+				bonus = 0.5
+				ahead_reduction = 0.5
+				uses = 1
+				category = artillery
+			}
+			add_tech_bonus = {
+				name = GER_essen_combine_infantry_weapons
+				bonus = 0.5
+				ahead_reduction = 0.5
+				uses = 1
+				category = infantry_weapons
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_tech_bonus = {
+				name = GER_essen_combine_industry
+				bonus = 1.5
+				uses = 1
+				category = industry
+			}
+		}
+	}
+
+	focus = {
+		id = GER_increased_trade
+		icon = GFX_focus_generic_german_trade
+		prerequisite = { focus = GER_follow_speers_plan }
+
+		x = 2
+		y = 1
+		relative_position_id = GER_follow_speers_plan
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
+
+		completion_reward = {
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = {
+				GER_industrial_resource_trade_cost_bonus_per_factory = 10
+				tooltip = resource_trade_cost_bonus_per_factory_tt
+			}
+		}
+	}
+
 	focus = {
 		id = GER_autarky_efforts
 		icon = GFX_focus_GER_autarky_ambitions
@@ -2830,13 +3754,14 @@ focus_tree = {
 	focus = {
 		id = GER_occupation_czechia
 		icon = GFX_ger_new_subsidiaries
-		prerequisite = { focus = GER_empower_krupp focus = GER_hermann_goring_werke focus = GER_empower_siemens }
+		prerequisite = { focus = GER_empower_krupp focus = GER_hermann_goring_werke focus = GER_empower_siemens}
 
 		x = 0
 		y = 1
 		relative_position_id = GER_hermann_goring_werke
 		cost = 3
 		available = {
+			has_completed_focus = GER_fate_of_czechoslovakia 
 		}
 
 		search_filters = { FOCUS_FILTER_INDUSTRY }
@@ -2978,13 +3903,6 @@ focus_tree = {
 			}
 		}
         }
-		custom_effect_tooltip = generic_skip_one_line_tt
-				custom_effect_tooltip = GER_plunder_tt
-            add_to_variable = { 
-			GER2_industrial_consumer_goods_expected_value = -0.02
-			tooltip = consumer_goods_expected_value_tt
-		}
-
 	custom_effect_tooltip = generic_skip_one_line_tt
 	GER_modify_industrial_modifier = yes
 	add_to_variable = { 
@@ -4219,8 +5137,7 @@ completion_reward = {
 	focus = {
 		id = GER_zentrale_planung
 		icon = GFX_focus_generic_central_planning
-		prerequisite = { focus = GER_develop_heraeus_facilities }
-		prerequisite = { focus = GER_armament_rationalization }
+		prerequisite = { focus = GER_armament_rationalization focus = GER_place_holder1 }
 
 		x = 0
 		y = 1
@@ -4278,10 +5195,6 @@ completion_reward = {
 				GER_industrial_industrial_capacity_dockyard = 0.05
 				tooltip = industrial_capacity_dockyard_tt
 			}
-			add_to_variable = { 
-				GER_industrial_conversion_cost_civ_to_mil_factor = -0.2
-				tooltip = conversion_cost_civ_to_mil_factor_tt
-			}
 		}
 	}
 
@@ -4312,10 +5225,10 @@ completion_reward = {
 					}
 				}
 				random_select_amount = 1
-				add_extra_state_shared_building_slots = 5
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = arms_factory
-					level = 5
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -4366,10 +5279,10 @@ completion_reward = {
 					}
 				}
 				random_select_amount = 1
-				add_extra_state_shared_building_slots = 5
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = arms_factory
-					level = 5
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -9451,7 +10364,12 @@ completion_reward = {
 		available = {
 			has_war = no
 			is_subject = no
-			date > 1937.1.1
+			if = {
+				limit = {
+					NOT = { GER = { has_completed_focus = GER_follow_speers_plan }}
+				}
+				date > 1937.1.1
+			}
 		
 			# IF = {
 			# 	limit = { has_dlc = "Gotterdammerung" }
@@ -9483,7 +10401,13 @@ completion_reward = {
 					AUS = { has_idea = SWI_swiss_democratic_propaganda }
 				}
 			}
-
+			if = {
+				limit = {
+					GER = { has_completed_focus = GER_follow_speers_plan }
+				}
+				date > 1937.3.1
+			}
+            
 			# if = {
 			# 	limit = {
 			# 		has_global_flag = axis_manpower_flag
@@ -10804,6 +11728,12 @@ completion_reward = {
 		
 		available = { 
 			is_subject = no
+			if = {
+				limit = {
+					GER = { has_completed_focus = GER_follow_speers_plan }
+				}
+				date > 1938.5.1
+			}
 			# if = {
 			# 	limit = {
 			# 		has_global_flag = axis_manpower_flag
@@ -12569,7 +13499,18 @@ completion_reward = {
 		continue_if_invalid = yes
 
 		available = {
-			date > 1939.6.1
+			if = {
+				limit = {
+					NOT = { GER = { has_completed_focus = GER_follow_speers_plan }}
+				}
+				date > 1939.6.1
+			}
+			if = {
+				limit = {
+					GER = { has_completed_focus = GER_follow_speers_plan }
+				}
+				date > 1939.9.1
+			}
 
 			is_subject = no
 			85 = {
@@ -13292,9 +14233,12 @@ completion_reward = {
 					NOT = { BEL = { is_in_faction_with = GER } }
 					NOT = { has_war_with = BEL }
 				}
-				declare_war_on = {
-					target = BEL
-					type = annex_everything
+				BEL = {
+					add_to_war = {
+						targeted_alliance = ENG
+						enemy = GER
+						hostility_reason = asked_to_join
+					}
 				}
 				hidden_effect = {
 					ENG = { add_to_faction = BEL }					
@@ -13306,9 +14250,12 @@ completion_reward = {
 					NOT = { HOL = { is_in_faction_with = GER } }
 					NOT = { has_war_with = HOL }
 				}
-				declare_war_on = {
-					target = HOL
-					type = annex_everything
+				HOL = {
+					add_to_war = {
+						targeted_alliance = ENG
+						enemy = GER
+						hostility_reason = asked_to_join
+					}
 				}
 				hidden_effect = {
 					ENG = { add_to_faction = HOL }					
@@ -13320,9 +14267,12 @@ completion_reward = {
 					NOT = { FRA = { is_in_faction_with = GER } }
 					NOT = { has_war_with = FRA }
 				}
-				declare_war_on = {
-					target = FRA
-					type = annex_everything
+				FRA = {
+					add_to_war = {
+						targeted_alliance = ENG
+						enemy = GER
+						hostility_reason = asked_to_join
+					}
 				}		
 				hidden_effect = {
 					ENG = { add_to_faction = FRA					
@@ -13334,32 +14284,8 @@ completion_reward = {
 				}		
 			}
 			}
-			# Axis ally war declarations on the Low Countries are staggered over
-			# the following hours instead of resolving on this same tick
-			# (reduces the single-tick MP load spike that caused desyncs here).
 			hidden_effect = {
-				if = {
-					limit = { HUN = { is_in_faction_with = GER } }
-					HUN = { country_event = { id = germany.907 hours = 6 } }
-					HUN = { country_event = { id = germany.908 days = 3 hours = 6 } }
-				}
-				if = {
-					limit = { ROM = { is_in_faction_with = GER } }
-					ROM = { country_event = { id = germany.907 hours = 12 } }
-					ROM = { country_event = { id = germany.908 days = 3 hours = 18 } }
-				}
-				if = {
-					limit = { BUL = { is_in_faction_with = GER } }
-					BUL = { country_event = { id = germany.907 hours = 18 } }
-					BUL = { country_event = { id = germany.908 days = 4 hours = 6 } }
-				}
-				if = {
-					limit = { YUG = { is_in_faction_with = GER } }
-					YUG = { country_event = { id = germany.907 hours = 24 } }
-					YUG = { country_event = { id = germany.908 days = 4 hours = 18 } }
-				}
-
-				news_event = { hours = 6 id = news.234 }
+				news_event = { id = news.234 hours = 6 }
 			}
 		}
 	}
@@ -14530,13 +15456,6 @@ completion_reward = {
 			}
 		}
         }
-		custom_effect_tooltip = generic_skip_one_line_tt
-				custom_effect_tooltip = GER_plunder_tt
-            add_to_variable = { 
-			GER2_industrial_consumer_goods_expected_value = -0.02
-			tooltip = consumer_goods_expected_value_tt
-		}
-
 	custom_effect_tooltip = generic_skip_one_line_tt
 	GER_modify_industrial_modifier = yes
 	add_to_variable = { 
@@ -14593,41 +15512,42 @@ completion_reward = {
 			else = {
 				GER_add_or_modify_military_intelligence_service = yes
 			}
-			add_to_variable = {
-				# GER_military_intelligence_service_consumer_goods_factor = -0.05
-				GER_military_intelligence_service_consumer_goods_factor = -0.2
-				# tooltip =  consumer_goods_expected_value_tt
-				tooltip = consumer_goods_factor_value_tt
-			}
 			if = {
 				limit = {
 					has_dlc = "La Resistance"
 				}
-				add_to_variable = { 
+				add_to_variable = {
 					GER_military_intelligence_service_decryption_power = 0.15
 					tooltip = decryption_factor_tt
 				}
-				add_to_variable = { 
+				add_to_variable = {
 					GER_military_intelligence_service_intel_network_gain_factor = 0.1
 					tooltip = intel_network_gain_factor_tt
 				}
 			}
 			else = {
-				add_to_variable = { 
+				add_to_variable = {
 					GER_military_intelligence_service_decryption_factor = 0.1
 					tooltip = decryption_factor_tt
 				}
-				add_to_variable = { 
+				add_to_variable = {
 					GER_military_intelligence_service_subversive_activites_upkeep = -0.2
 					tooltip = subversive_activites_upkeep_tt
 				}
 			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			GER_modify_industrial_modifier = yes
+			add_to_variable = {
+				GER_industrial_consumer_goods_expected_value = -0.015
+				tooltip = consumer_goods_expected_value_tt
+			}
+
 		custom_effect_tooltip = generic_skip_one_line_tt
-				custom_effect_tooltip = GER_plunder_tt
-            add_to_variable = { 
-			GER2_industrial_consumer_goods_expected_value = -0.02
-			tooltip = consumer_goods_expected_value_tt
-		}
+			SWI = {
+				add_ideas = SWI_swiss_gold_trade_agreement
+			}
 		}
 	}
 	
@@ -15450,6 +16370,19 @@ completion_reward = {
 				activate_mission = GER_barbarossa_mission_smolensk
 				activate_mission = GER_barbarossa_mission_riga
 				activate_mission = GER_barbarossa_mission_minsk
+			}
+
+			if = {
+				limit = {
+					has_completed_focus = GER_follow_speers_plan
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_barbarossa_economic_missions_tt
+				add_dynamic_modifier = { modifier = GER_barbarossa_mission_kiev_pending }
+				add_dynamic_modifier = { modifier = GER_barbarossa_mission_minsk_pending }
+				add_dynamic_modifier = { modifier = GER_barbarossa_mission_riga_pending }
+				set_country_flag = GER_barbarossa_missions_active_flag
+				set_variable = { GER_barbarossa_mission_days_elapsed = 0 }
 			}
 
 		}
@@ -18066,7 +18999,7 @@ completion_reward = {
 
 		prerequisite = { focus = GER_remilitarize_the_rhineland }
 		x = -16
-		y = 9
+		y = 8
 		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		available = {
@@ -18351,21 +19284,8 @@ completion_reward = {
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
-			if = {
-				limit = {
-					has_idea = GER_philipp_holzmann
-				}
-				swap_ideas = {
-					remove_idea = GER_philipp_holzmann
-					add_idea = GER_organization_todt
-				}
-			}
-			else = {
-				effect_tooltip = {
-					custom_effect_tooltip = available_designer
-					show_ideas_tooltip = GER_organization_todt
-				}
-			}
+			custom_effect_tooltip = available_designer
+			show_ideas_tooltip = GER_organization_todt
 		}
 	}
 
@@ -18530,7 +19450,8 @@ completion_reward = {
 				}
 				NOT = { has_country_flag = GER_inner_circle_event_pending_flag }
 			}
-
+            has_completed_focus = GER_follow_speers_plan
+			NOT = { has_completed_focus = GER_goring_plan }
 			GER_inner_circle_is_ascension_cd_over = yes
 			if = {
 				limit = {
@@ -18559,6 +19480,8 @@ completion_reward = {
 				CHARACTER = GER_albert_speer
 			}
 			show_ideas_tooltip = GER_speer_reich_architect
+
+			add_ideas = GER_philipp_holzmann
 
 			custom_effect_tooltip = generic_skip_one_line_tt
 
@@ -19021,6 +19944,7 @@ completion_reward = {
 				}
 			}
 			has_completed_focus = GER_goring_plan
+			NOT = { has_completed_focus = GER_follow_speers_plan }
 			if = {
 				limit = {
 					has_country_flag = GER_inner_circle_event_pending_flag

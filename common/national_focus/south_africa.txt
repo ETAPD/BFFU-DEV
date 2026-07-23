@@ -36,35 +36,16 @@ focus_tree = {
 # Both converge on SAF_the_september_1939_vote. The Hertzog player LOSES
 # that vote - the motion falls 80-67, Hertzog resigns, Smuts is installed
 # over him - and inherits Smuts's Afrikaner problem. That is the point.
-#
-# LAYOUT: x = 0..40. The shared Commonwealth tree sits at x = 45 for SAF
-# (commonwealth_shared.txt gives SAF offset x = -5 against x = 50).
-# Nothing here may exceed x = 40.
-#     x=1..3   INDUSTRY
-#     x=5..19  POLITICAL (Hertzog 5..11 | Smuts 13..19)
-#     x=9..15  WARTIME TAIL (below the vote at x=12)
-#     x=20..30 ARMY
-#     x=31..35 AIR
-#     x=36..40 NAVY
-#
 # FROZEN IDS - renaming these silently breaks other files:
 #   SAF_king_of_the_desert  / SAF_queen_of_the_desert
 #     -> read by SAF_organization.txt as has_completed_focus gates.
 #   mio:SAF_iscor_organization / mio:SAF_cope_organization
 #     -> read by commonwealth_shared.txt:402,582.
-#
-# SPAWN-IN RULES (enforced): factories, building slots and research slots
-# only. No equipment, no divisions, no manpower. Exactly one division
-# template (SAF_the_coastal_garrison_scheme), shipped locked.
-# ahead_reduction and complete_mio_trait appear ONLY in the army tree.
 ###########################################################################
 
 
 ###########################################################################
 #                            INDUSTRY  (root x=2)
-# No dynamic modifier panel. Industry pays in factories, slots, MIO funds
-# and swap_ideas ladders - all inherently permanent, so it needs no panel.
-# Pre-war top half; bottom six gated behind the war vote.
 ###########################################################################
 
 	focus = {
@@ -118,12 +99,6 @@ focus_tree = {
 		y = 2
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = arms_factory size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -240,12 +215,6 @@ focus_tree = {
 		y = 2
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = industrial_complex size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -283,12 +252,6 @@ focus_tree = {
 		y = 3
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = arms_factory size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -375,12 +338,6 @@ focus_tree = {
 		y = 4
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = industrial_complex size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -418,10 +375,6 @@ focus_tree = {
 		ai_will_do = { factor = 10 }
 		available = {
 			has_completed_focus = SAF_the_september_1939_vote
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = arms_factory size > 0 include_locked = yes }
-			}
 		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
@@ -521,12 +474,6 @@ focus_tree = {
 		y = 8
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = arms_factory size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -814,7 +761,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		completion_reward = {
 			custom_effect_tooltip = SAF_modify_eco_tt
-			add_to_variable = { var = SAF_eco_production_speed_industrial_complex_factor_var value = 0.10 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { var = SAF_eco_production_speed_industrial_complex_factor_var value = 0.15 tooltip = production_speed_industrial_complex_factor_tt }
 			add_to_variable = { var = SAF_eco_production_speed_infrastructure_factor_var value = 0.10 tooltip = production_speed_infrastructure_factor_tt }
 			force_update_dynamic_modifier = yes
 		}
@@ -835,6 +782,15 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
 		completion_reward = {
 			add_stability = 0.05
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT }
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
 			custom_effect_tooltip = SAF_modify_eco_tt
 			add_to_variable = { var = SAF_eco_consumer_goods_var value = -0.03 tooltip = consumer_goods_expected_value_tt }
 			add_to_variable = { var = SAF_eco_local_resources_factor_var value = 0.15 tooltip = local_resources_factor_tt }
@@ -880,6 +836,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL }
 		completion_reward = {
 			add_political_power = 50
+			add_war_support = 0.10
 			custom_effect_tooltip = SAF_modify_eco_tt
 			add_to_variable = { var = SAF_eco_political_power_factor_var value = 0.10 tooltip = political_power_factor_tt }
 			force_update_dynamic_modifier = yes
@@ -941,12 +898,6 @@ focus_tree = {
 		y = 1
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = arms_factory size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -1111,6 +1062,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL }
 		completion_reward = {
 			add_political_power = 50
+			add_stability = 0.05
 			add_ideas = SAF_counter_intelligence_watch
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_subversive_var value = -0.10 tooltip = foreign_subversive_activites_tt }
@@ -1128,13 +1080,14 @@ focus_tree = {
 		y = 5
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = { date > 1939.8.1 }
+		available = { date > 1939.6.1 }
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL }
 		completion_reward = {
 			add_war_support = 0.10
+			add_stability = 0.10
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_war_support_factor_var value = 0.05 tooltip = war_support_factor_tt }
 			add_to_variable = { var = SAF_afr_stability_factor_var value = 0.05 tooltip = stability_factor_tt }
@@ -1313,6 +1266,7 @@ focus_tree = {
 		available_if_capitulated = no
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL }
 		completion_reward = {
+			add_political_power = 100
 			custom_effect_tooltip = SAF_modify_afr_tt
 			add_to_variable = { var = SAF_afr_stability_factor_var value = 0.05 tooltip = stability_factor_tt }
 			add_to_variable = { var = SAF_afr_political_power_cost_var value = -0.03 tooltip = political_power_cost_tt }
@@ -1354,12 +1308,6 @@ focus_tree = {
 		y = 5
 		cost = 5
 		ai_will_do = { factor = 10 }
-		available = {
-			any_owned_state = {
-				is_core_of = ROOT
-				free_building_slots = { building = industrial_complex size > 0 include_locked = yes }
-			}
-		}
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
@@ -1403,7 +1351,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
 		completion_reward = {
 			custom_effect_tooltip = SAF_modify_afr_tt
-			add_to_variable = { var = SAF_afr_conscription_factor_var value = 0.05 tooltip = conscription_factor_tt }
+			add_to_variable = { var = SAF_afr_conscription_var value = 0.015 tooltip = conscription_tt }
 			add_to_variable = { var = SAF_afr_stability_factor_var value = -0.03 tooltip = stability_factor_tt }
 			force_update_dynamic_modifier = yes
 		}
@@ -1864,8 +1812,7 @@ focus_tree = {
 			# Break glass. The Union stops arguing about who may serve.
 			add_stability = -0.30
 			custom_effect_tooltip = SAF_modify_afr_tt
-			set_variable = { var = SAF_afr_conscription_factor_var value = 0 tooltip = conscription_factor_tt }
-			set_variable = { var = SAF_afr_stability_factor_var value = 0 tooltip = stability_factor_tt }
+			set_variable = { var = SAF_afr_conscription_factor_var value = 0.25 tooltip = conscription_factor_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
