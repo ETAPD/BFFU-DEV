@@ -523,6 +523,52 @@ GER_harsh_quotas_occupation = {
 	}
 }
 
+GER_speer_law = {
+	icon = 9
+	sound_effect = "Martial_Law_Interface_Harsh_Quotas_Occupation"
+
+	visible = {
+		original_tag = GER
+		GER = { has_completed_focus = GER_follow_speers_plan }
+	}
+	
+	state_modifier = {
+		resistance_target 				= -0.3 #-0.50
+		compliance_gain 				= -0.08
+		required_garrison_factor 		= 0.50
+		resistance_damage_to_garrison 	= 0.35
+
+		local_factories 				= 0.15
+		local_resources 				= 0.15
+
+		repair_speed_arms_factory_factor = 0.25
+		repair_speed_industrial_complex_factor = 0.25
+	}
+
+
+	ai_will_do = {
+		base = 100
+		modifier = {
+			check_variable  = { resistance_target_without_law > 0.44}
+			add = 200
+		}
+
+
+		modifier = {
+			check_variable  = { resistance_target_without_law > 0.44}
+
+			set_temp_variable = { requirement_limit = 0.35 }
+			if = {
+				limit = { occupation_law = local_police_force_garrison }
+				set_temp_variable = { requirement_limit = 0.55 }
+			}
+			check_variable = { garrison_min_support_ratio < requirement_limit }
+
+			add = 350
+		}
+	}
+}
+
 brutally_oppressive_occupation = {
 	icon = 10
 	sound_effect = "Martial_Law_Interface_Brutally_Oppressive_Occupation_Unique_FAS"
