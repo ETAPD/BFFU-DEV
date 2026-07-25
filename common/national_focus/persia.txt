@@ -2358,12 +2358,11 @@ focus_tree = {
 		}
 
 		completion_reward = {
-
-			IF = {
+			if = {
 				limit = {
 					NOT = { has_facility_specialization = specialization_land }
 				}
-				IF = {
+				if = {
 					limit = {
 						266 = {
 							is_fully_controlled_by = ROOT
@@ -2378,12 +2377,8 @@ focus_tree = {
 							province = 10768
 						}
 					}
-					add_breakthrough_progress = {
-						specialization = specialization_land
-						value = 0.25
-					}
 				}
-				ELSE = {
+				else = {
 					random_owned_controlled_state = {
 						limit = {
 							can_construct_building = land_facility
@@ -2392,19 +2387,8 @@ focus_tree = {
 							land_facility = 1
 						}
 					}
-					add_breakthrough_progress = {
-						specialization = specialization_land
-						value = 0.25
-					}
 				}
 			}
-			ELSE = {
-				add_breakthrough_progress = {
-					specialization = specialization_land
-					value = 1
-				}
-			}
-
 		}
 	}
 
@@ -2444,15 +2428,11 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			add_tech_bonus = {
-				name = nuclear_bonus
-				bonus = 0.5
-				uses = 1
-				category = nuclear
-			}
-			add_breakthrough_progress = {
-				specialization = specialization_nuclear
-				value = 0.25
+				add_tech_bonus = {
+					name = nuclear_bonus
+					bonus = 0.5
+					uses = 1
+					category = nuclear
 			}
 		}
 	}
@@ -2479,55 +2459,12 @@ focus_tree = {
 		}
 
 		completion_reward = {
-
-			IF = {
-				limit = {
-					NOT = { has_facility_specialization = specialization_nuclear }
-				}
-				IF = {
-					limit = {
-						266 = {
-							is_fully_controlled_by = ROOT
-							can_construct_building = nuclear_facility
-						}
-					}
-					266 = {
-						add_building_construction = {
-							type = nuclear_facility
-							level = 1
-							instant_build = yes
-							province = 10768
-						}
-					}
-					custom_effect_tooltip = generic_skip_one_line_tt
-					add_breakthrough_progress = {
-						specialization = specialization_nuclear
-						value = 0.5
-					}
-				}
-				ELSE = {
-					random_owned_controlled_state = {
-						limit = {
-							can_construct_building = nuclear_facility
-						}
-						construct_building_in_random_province = {
-							nuclear_facility = 1
-						}
-					}
-					custom_effect_tooltip = generic_skip_one_line_tt
-					add_breakthrough_progress = {
-						specialization = specialization_nuclear
-						value = 0.5
-					}
-				}
+			add_tech_bonus = {
+				name = PER_nuclear_program
+				bonus = 1
+				uses = 1
+				category = nuclear
 			}
-			ELSE = {
-				add_breakthrough_progress = {
-					specialization = specialization_nuclear
-					value = 1
-				}
-			}
-
 		}
 	}
 
@@ -9614,67 +9551,47 @@ focus_tree = {
 		}
 
 		completion_reward = {
-
-			effect_tooltip = {
-				set_politics = { 
-					ruling_party = democratic
-					elections_allowed = yes
+			IF = {
+				limit = {
+					neutrality > 0.5
 				}
-				
+				start_civil_war = {
+					ruling_party = democratic
+					ideology = neutrality #SPLITTING TAG
+					size = party_popularity@neutrality
+					states = all  #these will be filtered, not to worry!
+					states_filter = { #only states that do not have this modifier goes to 		non-communist
+						OR = {
+							#state = 64
+							NOT = {
+								has_dynamic_modifier = {
+									modifier = PER_opposition_cell
+								}
+							}
+						}	
+					}
+				}
+				hidden_effect = {
+					set_global_flag = PER_civil_war_happened
+				}
 				set_party_name = {
 					ideology = democratic
 					name = PER_provisional_government
 					long_name = PER_provisional_government_long
 				}
-
-				custom_effect_tooltip = PER_force_abdication_tt
 			}
-
-			hidden_effect = {
-				IF = {
-					limit = {
-						neutrality > 0.5
-					}
-					start_civil_war = {
-						ruling_party = democratic
-						ideology = neutrality #SPLITTING TAG
-						size = party_popularity@neutrality
-						states = all  #these will be filtered, not to worry!
-						states_filter = { #only states that do not have this modifier goes to 		non-communist
-							OR = {
-								#state = 64
-								NOT = {
-									has_dynamic_modifier = {
-										modifier = PER_opposition_cell
-									}
-								}
-							}	
-						}
-					}
-					hidden_effect = {
-						set_global_flag = PER_civil_war_happened
-					}
-					set_party_name = {
-						ideology = democratic
-						name = PER_provisional_government
-						long_name = PER_provisional_government_long
-					}
+			ELSE = {
+				set_party_name = {
+					ideology = democratic
+					name = PER_provisional_government
+					long_name = PER_provisional_government_long
 				}
-				ELSE = {
-					set_party_name = {
-						ideology = democratic
-						name = PER_provisional_government
-						long_name = PER_provisional_government_long
-					}
-					set_politics = {
-						ruling_party = democratic
-						elections_allowed = yes
-					}
+				set_politics = {
+					ruling_party = democratic
+					elections_allowed = yes
 				}
-				remove_dynamic_modifier = { modifier = PER_opposition_modifier }
 			}
-
-			
+			remove_dynamic_modifier = { modifier = PER_opposition_modifier }
 		}
 	}
 
@@ -11007,18 +10924,6 @@ focus_tree = {
 						}
 					}
 					set_state_flag = PER_state_supports_communists
-					IF = {
-						limit = {
-							NOT = {
-								has_dynamic_modifier = {
-									modifier = PER_opposition_cell
-								}	
-							}
-						}
-						add_dynamic_modifier = {
-							modifier = PER_opposition_cell
-						}
-					}
 				}
 			}
 		}
@@ -11101,61 +11006,48 @@ focus_tree = {
 		}
 
 		completion_reward = {
-
-			effect_tooltip = {
+			remove_dynamic_modifier = { modifier = PER_opposition_modifier }
+			IF = {
+				limit = {	
+					communism < 0.5
+				}
+				start_civil_war = {
+					ruling_party = communism
+					ideology = neutrality #SPLITTING TAG
+					size = party_popularity@neutrality
+					states = all  #these will be filtered, not to worry!
+					states_filter = { #only states that do not have this modifier goes to 		non-communist
+						OR = {
+							#state = 64
+							NOT = {
+								has_dynamic_modifier = {
+									modifier = PER_opposition_cell
+								}
+								has_state_flag = PER_state_supports_communists
+							}
+						}	
+					}
+				}
+				hidden_effect = {
+					set_global_flag = PER_civil_war_happened
+				}
+				every_state = {
+					limit = {
+						has_dynamic_modifier = { modifier = PER_opposition_cell }
+					}
+					remove_dynamic_modifier = { modifier = PER_opposition_cell }
+				}
+			}
+			ELSE = {
 				set_politics = { 
 					ruling_party = communism
 					elections_allowed = no
 				}
 
-				custom_effect_tooltip = PER_iranian_socialist_revolution_tt
-			}
-
-			hidden_effect = {
-				remove_dynamic_modifier = { modifier = PER_opposition_modifier }
-				IF = {
-					limit = {	
-						communism < 0.5
-					}
-					start_civil_war = {
-						ruling_party = communism
-						ideology = neutrality #SPLITTING TAG
-						size = party_popularity@neutrality
-						states = all  #these will be filtered, not to worry!
-						states_filter = { #only states that do not have this modifier goes to 		non-communist
-							OR = {
-								#state = 64
-								NOT = {
-									has_dynamic_modifier = {
-										modifier = PER_opposition_cell
-									}
-									has_state_flag = PER_state_supports_communists
-								}
-							}	
-						}
-					}
-					hidden_effect = {
-						set_global_flag = PER_civil_war_happened
-					}
-					every_state = {
-						limit = {
-							has_dynamic_modifier = { modifier = PER_opposition_cell }
-						}
-						remove_dynamic_modifier = { modifier = PER_opposition_cell }
-					}
-				}
-				ELSE = {
-					set_politics = { 
-						ruling_party = communism
-						elections_allowed = no
-					}
-
-					hidden_effect = {
-						set_country_flag = PER_civil_war_was_bypassed
-					}
+				hidden_effect = {
+					set_country_flag = PER_civil_war_was_bypassed
 				}
 			}
-			
 		}
 	}
 
@@ -11215,15 +11107,6 @@ focus_tree = {
 						id = ROOT
 						value = 300
 					}
-					add_ai_strategy = { 
-						type = befriend 
-						id = ROOT
-						value = 300
-					}
-					add_opinion_modifier = {
-						target = ROOT
-						modifier = large_increase
-					}	
 				}
 			}
 			ELSE_IF = {
@@ -11517,13 +11400,8 @@ focus_tree = {
 				}
 			}
 			remove_ideas = PER_azerbaijan_resistance_idea
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			remove_ideas = PER_kurdistan_resistance_idea
-
 		}
-		
 	}
 
 	focus = { #COMMUNIST
