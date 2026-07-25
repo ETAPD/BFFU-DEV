@@ -17,3 +17,509 @@ faction_goal_the_atomic_race = {
 	}
 	
 }
+
+### Added from vanilla 1.19 (referenced by kept faction templates) ###
+faction_goal_resource_control = {
+	name = resource_control_goal_name
+	description = resource_control_goal_desc
+	category = long_term
+	group = resources_to_market_icon
+	visible = {
+
+	}
+	available = {
+		
+	}
+	completed = {
+		has_resources_in_collection = {
+			collection = {
+					input = game:scope
+					operators =  { faction_members }
+					name = FACTION
+			}
+			resource = oil
+			amount > 499
+			extracted = yes 
+		}
+		has_resources_in_collection = {
+			collection = {
+					input = game:scope
+					operators =  { faction_members }
+					name = FACTION
+			}
+			resource = coal
+			amount > 499
+			extracted = yes 
+		}
+		has_resources_in_collection = {
+			collection = {
+					input = game:scope
+					operators =  { faction_members }
+					name = FACTION
+			}
+			resource = rubber
+			amount > 199
+			extracted = yes 
+		}
+		has_resources_in_collection = {
+			collection = {
+					input = game:scope
+					operators =  { faction_members }
+					name = FACTION
+			}
+			resource = aluminium
+			amount > 199
+			extracted = yes 
+		}
+		has_resources_in_collection = {
+			collection = {
+					input = game:scope
+					operators =  { faction_members }
+					name = FACTION
+			}
+			resource = chromium
+			amount > 199
+			extracted = yes 
+		}
+		has_resources_in_collection = {
+			collection = {
+					input = game:scope
+					operators =  { faction_members }
+					name = FACTION
+			}
+			resource = tungsten
+			amount > 199
+			extracted = yes 
+		}
+	
+
+	}
+	complete_effect = {
+		add_faction_power_projection = 500
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = THE_FACTION_LEADER
+		add_faction_initiative = 1
+		custom_effect_tooltip = generic_skip_one_line_tt
+		every_faction_member = {
+			tooltip = INFLUENCE_TOP_THREE
+			visible_when_empty = yes
+			limit = {
+				faction_influence_rank < 4
+			}
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_resource_control } }
+				add_political_power = 100
+			}
+		}
+	}
+	ai_will_do = {
+		base = 1
+	}
+}
+faction_goal_eliminate_the_twin_threats = {
+	name = eliminate_the_twin_threats_goal_name
+	description = eliminate_the_twin_threats_goal_desc
+	category = long_term
+	group = FOCUS_FILTER_POLITICAL_CHARACTER
+	visible = {
+		FROM = { 
+			original_tag = POL 
+			NOT = { is_in_faction_with = SOV }
+			NOT = { is_in_faction_with = GER }
+		}
+	}
+	completed = {
+		SOV = {
+			OR = {
+				exists = no
+				is_in_faction_with = ROOT 
+			}
+		}
+		GER = {
+			OR = {
+				exists = no
+				is_in_faction_with = ROOT 
+			}
+		}
+	}
+	complete_effect = {
+		add_faction_power_projection = 1000
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = INFLUENCE_ABOVE_30_PERCENT
+		every_faction_member = {
+			limit = { faction_influence_ratio > 0.3 }
+			add_faction_initiative = 1
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_eliminate_the_twin_threats } }
+				add_political_power = 200
+			}
+		}
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+faction_goal_disarm_aggression_central_powers = {
+	name = disarm_aggression_central_powers_goal_name
+	description = disarm_aggression_central_powers_goal_desc
+	category = long_term
+	group = FOCUS_FILTER_POLITICAL_CHARACTER
+	visible = {
+		FROM = {
+			OR = {
+				original_tag = FRA
+				original_tag = CZE
+			}
+			has_government = democratic
+		}
+		OR = {
+			any_country_with_original_tag = {
+				original_tag_to_check = GER
+				NOT = { has_government = democratic }
+			}
+			any_country_with_original_tag = {
+				original_tag_to_check = HUN
+				NOT = { has_government = democratic }
+			}
+			any_country_with_original_tag = {
+				original_tag_to_check = AUS
+				NOT = { has_government = democratic }
+			}
+			any_country_with_original_tag = {
+				original_tag_to_check = BUL
+				NOT = { has_government = democratic }
+			}
+		}
+	}
+	completed = {
+		OR = {
+			any_country_with_original_tag = {
+				original_tag_to_check = GER
+				OR = {
+					is_in_faction_with = ROOT
+					has_government = democratic
+				}
+			}
+			GER = { exists = no }
+		}
+		OR = {
+			any_country_with_original_tag = {
+				original_tag_to_check = HUN
+				OR = {
+					is_in_faction_with = ROOT
+					has_government = democratic
+				}
+			}
+			HUN = { exists = no }
+		}
+		OR = {
+			any_country_with_original_tag = {
+				original_tag_to_check = AUS
+				OR = {
+					is_in_faction_with = ROOT
+					has_government = democratic
+				}
+			}
+			AUS = { exists = no }
+		}
+		OR = {
+			any_country_with_original_tag = {
+				original_tag_to_check = BUL
+				OR = {
+					is_in_faction_with = ROOT
+					has_government = democratic
+				}
+			}
+			BUL = { exists = no }
+		}
+	}
+	complete_effect = {
+		add_faction_power_projection = 1000
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = INFLUENCE_ABOVE_30_PERCENT
+		every_faction_member = {
+			limit = { faction_influence_ratio > 0.3 }
+			add_faction_initiative = 1
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_disarm_aggression_central_powers } }
+				add_political_power = 200
+			}
+		}
+	}
+	ai_will_do = {
+		base = 0
+	}
+}
+faction_goal_liberate_territory = {
+	name = liberate_territory_goal_name
+	description = liberate_territory_goal_desc
+	category = long_term
+	group = FOCUS_FILTER_ANNEXATION
+	visible = {
+		collection_size = {
+			input = {
+				input = collection:faction_owned_core_states
+				operators = {
+					limit = {
+						NOT = { is_fully_controlled_by = OWNER }
+					}
+				}
+				name = FACTION_CORE_STATES_NOT_FULLY_CONTROLLED
+			}
+			value > 0
+		}
+	}
+	completed = {
+		collection_size = {
+			input = {
+				input = collection:faction_owned_core_states
+				operators = {
+					limit = {
+						NOT = { is_fully_controlled_by = OWNER }
+					}
+				}
+				name = FACTION_CORE_STATES_NOT_FULLY_CONTROLLED
+			}
+			value < 1
+		}
+	}
+	complete_effect = {
+		add_faction_power_projection = 100
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = THE_FACTION_LEADER
+		add_faction_initiative = 1
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = ALL_FACTION_MEMBERS
+		every_faction_member = {
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_liberate_territory } }
+				add_stability = 0.1
+			}
+		}
+	}
+	ai_will_do = {
+		base = 1
+		modifier = {
+			add = 4 
+			collection_size = {
+				input = {
+					input = collection:faction_owned_core_states
+					operators = {
+						limit = {
+							NOT = { is_fully_controlled_by = OWNER }
+						}
+					}
+					name = FACTION_CORE_STATES_NOT_FULLY_CONTROLLED
+				}
+				value > 4
+			}
+		}
+		modifier = {  
+			add = 5 
+			collection_size = {
+				input = {
+					input = collection:faction_owned_core_states
+					operators = {
+						limit = {
+							NOT = { is_fully_controlled_by = OWNER }
+						}
+					}
+					name = FACTION_CORE_STATES_NOT_FULLY_CONTROLLED
+				}
+				value > 10
+			}
+		}
+	}
+}
+faction_goal_defeating_our_enemies = {
+	name = defeating_our_enemies_goal_name
+	description = defeating_our_enemies_goal_desc
+	group = FOCUS_FILTER_ANNEXATION
+	category = long_term
+	visible = {
+		NOT = { has_country_flag = peace_winner_flag}
+	}
+	completed = {
+		custom_trigger_tooltip = {
+			tooltip = is_victor_in_pc_tt
+			has_country_flag = peace_winner_flag
+		}
+		
+	}
+	complete_effect = {
+		add_faction_power_projection = 200
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = ALL_FACTION_MEMBERS
+		every_faction_member = {
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_defeating_our_enemies } }
+				add_war_support = 0.1
+			}
+		}
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = PEACE_CONFERENCE_WINNERS
+		every_faction_member = {
+			visible_when_empty = yes
+			limit = {
+				has_country_flag = peace_winner_flag
+			}
+			add_faction_initiative = 1
+		}
+	}
+}
+faction_goal_industrial_domination = {
+	name = industrial_domination_goal_name
+	description = industrial_domination_goal_desc
+	category = long_term
+	group = FOCUS_FILTER_INDUSTRY
+	visible = {
+		count_in_collection = {
+			collection = {
+				input = game:scope
+				operators = { faction_members }
+				name = FACTION_NAME
+			}
+			buildings = { industrial_complex arms_factory dockyard }
+			size > 100
+		}
+	}
+	completed = {
+		count_in_collection = {
+			collection = {
+				input = game:scope
+				operators = { faction_members }
+				name = FACTION_NAME
+			}
+			buildings = {  industrial_complex arms_factory dockyard }
+			size > 1000
+		}
+	}
+	complete_effect = {
+		add_faction_power_projection = 200
+		custom_effect_tooltip = generic_skip_one_line_tt
+		every_faction_member = {
+			tooltip = AT_LEAST_500_FACTORIES
+			visible_when_empty = yes 
+			limit = {
+				num_of_controlled_factories > 500
+			}
+			add_faction_initiative = 1
+		}
+	}
+	ai_will_do = {
+		base = 1
+		modifier = {
+			add = 1 
+			is_major = yes
+		}
+		modifier = {
+			add = 1 
+			num_of_controlled_factories > 200
+		}
+	}
+}
+faction_goal_defeat_of_communism = {
+	name = defeat_of_communism_goal_name
+	description = defeat_of_communism_goal_desc
+	group = FOCUS_FILTER_CONSOLIDATION
+	category = long_term
+	visible = {
+		collection_size = {
+			input = {
+				input = game:scope
+				operators = {
+					faction_members
+					limit = {
+						has_government = communism
+					}
+				}
+				name = FACTION
+			}
+			value < 1
+		}
+	}
+	locked_goal = yes
+	available = {
+
+	}
+	completed = {
+		collection_size = {
+			input = {
+				input = collection:communist_controlled_states_my_continent
+				name = COLLECTION_AMOUNT_OF_COMMUNIST_CONTROLLED_STATES_SAME_CONTINENT
+			}
+			value < 1
+		}
+		
+	}
+	complete_effect = {
+		add_faction_power_projection = 500
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = THE_FACTION_LEADER
+		add_faction_initiative = 1
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = ALL_FACTION_MEMBERS
+		every_faction_member = {
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_defeat_of_communism } }
+				add_popularity = {
+					ideology = communism
+					popularity = -0.15
+				}
+				add_political_power = 100
+			}
+		}
+	}
+}
+faction_goal_defeat_of_fascism = {
+	name = defeat_of_fascism_goal_name
+	description = defeat_of_fascism_goal_desc
+	category = long_term
+	group = FOCUS_FILTER_CONSOLIDATION
+	visible = {
+		collection_size = {
+			input = {
+				input = game:scope
+				operators = {
+					faction_members
+					limit = {
+						has_government = fascism
+					}
+				}
+				name = FACTION
+			}
+			value < 1
+		}
+	}
+	available = {
+
+	}
+	completed = {
+		collection_size = {
+			input = {
+				input = collection:fascist_controlled_states_my_continent
+				name = COLLECTION_AMOUNT_OF_FASCIST_CONTROLLED_STATES_SAME_CONTINENT
+			}
+			value < 1
+		}
+		
+	}
+	complete_effect = {
+		add_faction_power_projection = 500
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = THE_FACTION_LEADER
+		add_faction_initiative = 1
+		custom_effect_tooltip = generic_skip_one_line_tt
+		custom_effect_tooltip = ALL_FACTION_MEMBERS
+		every_faction_member = {
+			IF = {
+				limit = { NOT = { has_completed_goal = faction_goal_defeat_of_fascism } }
+				add_popularity = {
+					ideology = fascism
+					popularity = -0.15
+				}
+				add_political_power = 100
+			}
+		}
+	}
+}
