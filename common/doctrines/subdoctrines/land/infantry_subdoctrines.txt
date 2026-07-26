@@ -7,37 +7,28 @@ mobile_infantry = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = mobile_infantry_doctrine_check }
-    }
 
-    ai_will_do = { 
-        base = 1
-        modifier = {
-            factor = 95
-            original_tag = GER
-        }
-        modifier = {
-            factor = 0.25
-            is_major = no
-        }
-    
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = MOBILE_INFANTRY_MASTERY_GAIN
-            sub_doctrine = mobile_infantry				
+        if = {
+            limit = { 
+                NOT = {
+                    has_country_flag = mobile_infantry_doctrine_selected
+                }
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+            add_daily_mastery = {
+                amount = 0.4						
+                days = 1250						
+                name = MOBILE_INFANTRY_MASTERY_GAIN
+                sub_doctrine = mobile_infantry				
+            }
+            set_country_flag = {
+                flag = mobile_infantry_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        # set_country_flag = {
-        #     flag = mobile_infantry_doctrine_check
-        #     days = 1250
-        #     value = 1
-        # }
     }
 
     category_vehicle_infantry = {
@@ -45,7 +36,6 @@ mobile_infantry = {
         hard_attack = 0.03
         defense = 0.03
     }
-    
     
     enable_tactic = tactic_infantry_charge
 
@@ -57,19 +47,20 @@ mobile_infantry = {
             infantry_mot = {
                 maximum_speed = 0.05
             }
-            category_vehicle_infantry = {
-                max_organisation = 3
+            motorized = {
+                maximum_speed = 0.05
             }
         }
+
         combined_arms_planning = {
             category_vehicle_infantry = {
-                max_organisation = 5
                 default_morale = 0.04
             }
             infantry_mot = {
                 maximum_speed = 0.05
             }   
         }
+
         decisive_operations = {
             category_all_infantry = {
                 max_organisation = 2
@@ -80,6 +71,7 @@ mobile_infantry = {
                 defense = 0.03
             }
         }
+
         delegated_authority = {
             category_vehicle_infantry = {
                 default_morale = 0.06
@@ -89,12 +81,14 @@ mobile_infantry = {
                 maximum_speed = 0.05
             } 
         }
+
         maneuver_warfare = {
             category_vehicle_infantry = {
                 soft_attack = 0.04
                 hard_attack = 0.04
                 defense = 0.04
                 default_morale = 0.1
+                hardness = 0.05
             }
             category_all_infantry = {
                 max_organisation = 4
@@ -102,14 +96,7 @@ mobile_infantry = {
             infantry_mot = {
                 maximum_speed = 0.1
             }   
-            motorized = {
-                hardness = 0.05
-            }
-            mechanized = {
-                hardness = 0.05
-            }
         }
-
     }
 }
 
@@ -122,42 +109,28 @@ defensive_postures = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = defensive_postures_doctrine_check }
-    }
-
-    ai_will_do = {
-        base = 1
-        modifier = {
-            factor = 95
-            OR = {
-                original_tag = ENG
-                original_tag = AST
-                original_tag = NZL
-                original_tag = CAN
-                original_tag = SAF
-                original_tag = ITA
-            }
-        }
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = DEFENSIVE_POSTURES_MASTERY_GAIN
-            sub_doctrine = defensive_postures				
-        }
-        set_country_flag = {
-            flag = defensive_postures_doctrine_check
-            days = 1250
-            value = 1
+        if = {
+            limit = { 
+                NOT = {
+                    has_country_flag = defensive_posture_doctrine_selected
+                }
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = DEFENSIVE_POSTURES_MASTERY_GAIN
+                sub_doctrine = defensive_postures				
+            }
+            set_country_flag = {
+                flag = defensive_posture_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
     }
-
-    #OTHER BASE REWARDS
 
     category_all_infantry = {
         defense = 0.05
@@ -167,212 +140,139 @@ defensive_postures = {
     enable_tactic = tactic_elastic_defense
 
     rewards = {
-        improvised_fighting_position = { #not finished - needs more work/rework
+        improvised_fighting_position = {
             dig_in_speed_factor = 0.1
-            pioneer_support = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.01
-                }
-            }
-            engineer = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.01
-                }
+            category_all_infantry = {
+                entrenchment = 0.01
             }
         }
+
         elastic_operations = {
             category_all_infantry = {
                 max_organisation = 5
-                defense = 0.05
                 hard_attack = 0.05
             }
         }
+
         developed_trench_networking = {
-            # category_all_infantry = {
-            #     entrenchment = 0.1
-            # }
             dig_in_speed_factor = 0.1
-            pioneer_support = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.02
-                    
-                }
-            }
-            engineer = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.02
-                }
-            }
-            pioneer_support = {
-                battalion_mult = {
-                    category = category_cavalry
-                    entrenchment = 0.02
-                }
-            }
-            engineer = {
-                battalion_mult = {
-                    category = category_cavalry
-                    entrenchment = 0.02
-                }
+            category_all_infantry = {
+                entrenchment = 0.02
             }
         }
+
         field_emplacements = {
             category_all_infantry = {
                 hard_attack = 0.05
                 max_organisation = 5
             }
         }
+
         field_construction_training = {
             dig_in_speed_factor = 0.1
             category_all_infantry = {
                 hard_attack = 0.05
                 defense = 0.05
-            }
-            pioneer_support = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.02
-                }
-            }
-            engineer = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.02
-                }
-            }
-            pioneer_support = {
-                battalion_mult = {
-                    category = category_cavalry
-                    entrenchment = 0.02
-                }
-            }
-            engineer = {
-                battalion_mult = {
-                    category = category_cavalry
-                    entrenchment = 0.02
-                }
+                entrenchment = 0.02
             }
         }
-
     }
 }
 
-large_unit_tactics = {
+infiltration_tactics = {
     track = infantry
-    name = SUBDOCTRINE_LARGE_UNIT_TACTICS
-    description = SUBDOCTRINE_LARGE_UNIT_TACTICS_DESC
-    icon = GFX_doctrine_human_infantry_offensive_medium
+    name = SUBDOCTRINE_INFILTRATION_TACTICS
+    description = SUBDOCTRINE_INFILTRATION_TACTICS_DESC
+    icon = GFX_doctrine_infiltration_assault_medium
 
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = large_unit_tactics_doctrine_check }
-    }
-
-    ai_will_do = {
-        base = 1
-        modifier = {
-            factor = 95
-            OR = {
-                original_tag = SOV
-                original_tag = CHI
-                original_tag = JAP
-            }
-        }
-        modifier = {
-            factor = 0.25
-            is_major = no
-        }
-
-
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = LARGE_UNIT_TACTICS_MASTERY_GAIN
-            sub_doctrine = large_unit_tactics				
-        }
-        set_country_flag = {
-            flag = large_unit_tactics_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-   
-    #OTHER BASE REWARDS
-    
-    infantry ={
-        night = {
-            attack = 0.05                
+        if = {
+            limit = { 
+                NOT = {
+                    has_country_flag = infiltration_tactics_doctrine_selected
+                }
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+            add_daily_mastery = {
+                amount = 0.4						
+                days = 1250						
+                name = INFILTRATION_TACTICS_MASTERY_GAIN
+                sub_doctrine = infiltration_tactics
+            }
+            set_country_flag = {
+                flag = infiltration_tactics_doctrine_selected
+                value = 1
+                days = 1250
+            }    
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
     }
 
+    infantry = {
+        night = {
+            attack = 0.05
+        }
+    }
+    cavalry = {
+        night = {
+            attack = 0.05
+        }
+    }
+    enable_tactic = tactic_infantry_charge
 
     rewards = {
-        wide_trench_networks = {
+        infiltration_assault = {
             category_light_infantry = {
                 maximum_speed = 0.05
             }
-            category_cavalry = {
-                maximum_speed = 0.05
-            }
         }
-        flexible_division_structures = {
-        #2
-           recon_factor = 0.50
-           category_light_infantry = {
-                maximum_speed = 0.05
-            }
-            category_cavalry = {
-                maximum_speed = 0.05
-            }
-        }
-        unit_knowledge_sharing = {
-        #3
+
+        nightly_assaults = {
+            recon_factor = 0.50
             category_light_infantry = {
                 maximum_speed = 0.05
             }
-            category_cavalry = {
+            infantry = {
+                night = {
+                    attack = 0.05
+                }
+            }
+            cavalry = {
+                night = {
+                    attack = 0.05
+                }
+            }
+        }
+
+        self_sustaining_infiltration_units = {
+            category_light_infantry = {
                 maximum_speed = 0.05
             }
-            equipment_capture = 0.01
+            equipment_capture = 0.02
         }
-        large_front_offensive = {
-        #4
+
+        terrain_and_situation_assessment = {
             recon_factor = 0.25
             category_light_infantry = {
                 maximum_speed = 0.05
             }
-            category_cavalry = {
-                maximum_speed = 0.05
-            }
-            
         }
-        motorization_initiative = {
-        #5
-           infantry ={
+
+        infiltration_in_depth = {
+            infantry = {
                 night = {
-                    attack = 0.05                
+                    attack = 0.1
                 }
             }
-            cavalry ={
+            cavalry = {
                 night = {
-                    attack = 0.05                
+                    attack = 0.1
                 }
             }
             category_light_infantry = {
-                maximum_speed = 0.05
-            }
-            category_cavalry = {
                 maximum_speed = 0.05
             }
             recon_factor = 0.25
@@ -389,248 +289,77 @@ assault_infantry = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = assault_infantry_doctrine_check }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 95
-            original_tag = USA
-        }
-        modifier = {
-            factor = 0.25
-            is_major = no
-        }
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = ASSAULT_INFANTRY_MASTERY_GAIN
-            sub_doctrine = assault_infantry				
-        }
-        set_country_flag = {
-            flag = assault_infantry_doctrine_check
-            days = 1250
-            value = 1
+        if = {
+            limit = { 
+                NOT = {
+                    has_country_flag = assault_infantry_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4						
+                days = 1250						
+                name = ASSAULT_INFANTRY_MASTERY_GAIN
+                sub_doctrine = assault_infantry				
+            }
+            set_country_flag = {
+                flag = assault_infantry_doctrine_selected
+                value = 1
+                days = 1250
+            }  
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
     }
 
-    #OTHER BASE REWARDS
-    category_light_infantry = {   #not finished - needs more work/rework
+    
+    category_light_infantry = {
         soft_attack = 0.03
     }
-    category_cavalry = {   
+    category_cavalry = {
         soft_attack = 0.03
     }
 
     rewards = {
         low_echelon_fire_support = {
-        #1
-            category_light_infantry = {   
-                soft_attack = 0.03
-            }
-            category_cavalry = {   
-                soft_attack = 0.03
+            signal_company = {
+                initiative = 0.05
             }
         }
-        organic_battalion_fire_support = {
-        #2
-            category_light_infantry = {   
-                soft_attack = 0.03
-            }
-            category_cavalry = {   
-                soft_attack = 0.03
-            }
 
+        organic_battalion_fire_support = {
+            category_light_infantry = {
+                soft_attack = 0.02
+            }
+            category_cavalry = {
+                soft_attack = 0.02
+            }
         }
 
         integrated_support_batteries = {
-        #3
-            category_light_infantry = {   
-                soft_attack = 0.03
-            }
-            category_cavalry = {   
-                soft_attack = 0.03
+            signal_company = {
+                initiative = 0.05
             }
         }
+
         breakthrough_fireteams = {
-        #4
-            category_light_infantry = {   
-                soft_attack = 0.03
+            category_light_infantry = {
+                soft_attack = 0.02
             }
-            category_cavalry = {   
-                soft_attack = 0.03
+            category_cavalry = {
+                soft_attack = 0.02
             }
-
         }
-        assault_detachments = {
-        #5
-            category_light_infantry = {   
-                soft_attack = 0.05
-            }
-            category_cavalry = {   
-                soft_attack = 0.05
-            }
-            signal_company = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    initiative = 0.01
-                }
-            }
-            signal_company = {
-                battalion_mult = {
-                    category = category_cavalry
-                    initiative = 0.01
-                }
-            }
 
+        assault_detachments = {
+            category_light_infantry = {
+                breakthrough = 0.05
+            }
+            category_cavalry = {
+                breakthrough = 0.05
+            }
         }
     }
 }
-
-# mounted_infantry = {
-#     track = infantry
-#     name = SUBDOCTRINE_MOUNTED_INFANTRY
-#     description = SUBDOCTRINE_MOUNTED_INFANTRY_DESC
-#     icon = GFX_doctrine_mounted_infantry_medium
-
-#     xp_cost = 100
-#     xp_type = army
-
-
-#     mastery = {
-#         categories = {
-#             category_cavalry
-#             category_all_infantry
-#         }
-#     }
-#     available = {
-#         # always = yes
-#         NOT = { has_country_flag = mounted_infantry_doctrine_check }
-#     }
-#     visible = {
-#         has_dlc = "No Compromise, No Surrender"
-#     }
-
-#     ai_will_do = { 
-#         base = 1
-#         modifier = {
-#             factor = 0.25
-#             is_major = yes
-#         }
-#     }
-#     category_cavalry = {
-#         soft_attack = 0.03
-#         breakthrough = 0.05
-#     }
-
-#     unit_cavalry_design_cost_factor = -1
-
-#     # EFFECTS
-#     effect = {
-#         add_daily_mastery = {
-#             amount = 0.4						
-#             days = 1250						
-#             name = MOUNTED_INFANTRY_MASTERY_GAIN
-#             sub_doctrine = mounted_infantry				
-#         }
-#         set_country_flag = {
-#             flag = mounted_infantry_doctrine_check
-#             days = 1250
-#             value = 1
-#         }
-#     }
-
-#     rewards = {
-#         dragoon_traditions = {
-#             category_cavalry = {
-#                 breakthrough = 0.10
-#                 defense = 0.05
-#             }
-#         }
-#         mounted_skirmish_groups = {
-#             recon = {
-#                max_organisation = 3
-#                 soft_attack = 0.08
-#                 battalion_mult = {
-#                     category = category_light_infantry
-#                     soft_attack = 0.03
-#                     defense = 0.05
-#                 }
-#                 battalion_mult = {
-#                     category = category_light_infantry
-#                     max_organisation = 2.5
-#                     add = yes
-#                 }
-#                 battalion_mult = {
-#                     category = category_cavalry
-#                     soft_attack = 0.03
-#                     defense = 0.05
-#                 }
-#                 battalion_mult = {
-#                     category = category_cavalry
-#                     max_organisation = 2.5
-#                     add = yes
-#                 }
-#             } 
-#             category_cavalry = {
-#                 max_organisation = 2.5
-#             }
-#         }
-#         anti_mechanized_cavalry_groups = {
-#             category_cavalry = {
-#                 hard_attack = 0.1
-#                 ap_attack = 0.1
-#             }
-#         }
-#         beasts_of_war = {
-#             category_cavalry = {
-#                 maximum_speed = 0.25 
-#                 max_strength = 1.00 
-#             }
-#             recon = {
-#                 maximum_speed = 0.25
-#             }
-#         }
-#         limbered_combat_support = {
-#             pack_artillery_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             artillery_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             heavy_artillery_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             rocket_artillery_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             pack_antitank_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             anti_tank_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             heavy_anti_tank_brigade = {
-#                 maximum_speed = 0.1
-#             }
-#             anti_air = {
-#                 maximum_speed = 0.1
-#             }
-#             heavy_anti_air = {
-#                 maximum_speed = 0.1
-#             }
-#         }
-
-#     }
-# }
 
 commandos = {
     track = infantry
@@ -641,200 +370,67 @@ commandos = {
     xp_cost = 100
     xp_type = army
 
-
-
-    ai_will_do = { base = 0 }
-    # enable_tactic = tactic_infantry_charge
-    
-    automatic_grant_medal_chance = 0.15
-    category_all_infantry = {
-        experience_loss_factor = -0.1 #need to find the right one
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = COMMANDOS_MASTERY_GAIN
-            sub_doctrine = commandos				
+        if = {
+            limit = { 
+                NOT = {
+                    has_country_flag = commandos_doctrine_selected
+                }
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+            add_daily_mastery = {
+                amount = 0.4						
+                days = 1250						
+                name = COMMANDOS_MASTERY_GAIN
+                sub_doctrine = commandos				
+            }
+            set_country_flag = {
+                flag = commandos_doctrine_selected
+                value = 1
+                days = 1250
+            }
+
         }
     }
+
+    automatic_grant_medal_chance = 0.15
+    winter_attrition_factor = -0.20
 
     rewards = {
-        isolated_combat_elements = { 
-            category_all_infantry = {
-                casualty_trickleback = 0.05
-            }           
+        isolated_combat_elements = {
+            heat_attrition_factor = -0.20
             automatic_grant_medal_chance = 0.05
-
         }
+
         security_zone_operations = {
-
-            special_forces_cap_flat = 8
             special_forces_training_time_factor = 0.2
-            special_forces_attack_factor = 0.05
-            special_forces_defence_factor = 0.05
-             
+            special_forces_attack_factor = 0.025
+            special_forces_defence_factor = 0.025
         }
+
         rigorous_training_regimen = {
-            category_special_forces_leg_infantry = {
-                max_strength = 0.05
-            }
-             category_all_infantry = {
-                experience_loss_factor = -0.05 #need to find the right one
-                casualty_trickleback = 0.05
-            }  
+            heat_attrition_factor = -0.30
+            winter_attrition_factor = -0.30
         }
 
         field_intel_retrieval = {
-            category_all_infantry = {
-                experience_loss_factor = -0.05 #need to find the right one
-                casualty_trickleback = 0.05
-            }
-            
-            
+            intel_from_combat_factor = 0.05
+            army_intel_factor = 0.05
             automatic_grant_medal_chance = 0.05
         }
 
         integrated_assaults = {
-            category_special_forces_leg_infantry = {
-                max_strength = 0.05
-            }
+            special_forces_attack_factor = 0.025
+            special_forces_defence_factor = 0.025
             special_forces_training_time_factor = 0.1
             automatic_grant_medal_chance = 0.05
-            special_forces_cap_flat = 4
             category_all_infantry = {
-                experience_loss_factor = -0.1 #need to find the right one
-                casualty_trickleback = 0.05
+                casualty_trickleback = 0.03
+                experience_loss_factor = -0.03
             }    
         }
     }
 }
-
-# irregulars = {
-#     track = infantry
-#     name = SUBDOCTRINE_IRREGULARS
-#     description = SUBDOCTRINE_IRREGULARS_DESC
-#     icon = GFX_doctrine_irregulars_medium
-
-#     xp_cost = 100
-#     xp_type = army
-
-#     available = {
-#         NOT = { has_country_flag = irregulars_doctrine_check }
-#     }
-#     visible = {
-#         has_dlc = "No Compromise, No Surrender"
-#     }
-
-
-#     ai_will_do = { 
-#         base = 1
-#         modifier = {
-#             factor = 1000
-#             original_tag = CHI
-#         }
-#         modifier = {
-#             factor = 0
-#             AND = {
-#                 is_major = no
-#                 NOT = { original_tag = CHI }
-#             }
-            
-#         }
-#         modifier = {
-#             factor = 0
-#             NOT = {
-#                 AND = {
-#                     original_tag = CHI
-#                     OR = {
-#                         has_template_containing_unit = irregular_infantry
-#                         has_template_containing_unit = militia
-#                     }
-#                 }
-#             }
-#         }
-#     }
-#     irregular_infantry = {
-#         defense = 0.05
-#         supply_consumption = -0.05
-#     }
-#     militia = {
-#         defense = 0.05
-#         supply_consumption = -0.01
-#     }
-#     garrison = {
-#         defense = 0.05
-#         supply_consumption = -0.01
-#     }
-#     penal_battalion = {
-#         soft_attack = 0.03
-#         defense = 0.1
-#     }
-
-#     effect = {
-# 		set_technology = {
-# 				militia_tech = 1
-# 			}	
-#         add_daily_mastery = {
-#             amount = 0.4						
-#             days = 1250						
-#             name = IRREGULARS_MASTERY_GAIN
-#             sub_doctrine = irregulars				
-#         }
-#         set_country_flag = {
-#             flag = irregulars_doctrine_check
-#             days = 1250
-#             value = 1
-#         }
-#     }
-
-#     rewards = {
-#         service_by_lot = { 
-#             mobilization_speed = 0.05
-#         }
-#         partisan_regiments = {
-#             irregular_infantry = {
-#                 combat_width = -0.2
-#             }
-#             militia = {
-#                 combat_width = -0.2
-#             }
-#             garrison = {
-#                 combat_width = -0.2
-#             }
-#             category_light_infantry = {
-#                 defense = 0.05
-#             }
-#         }        
-#         improvised_officer_groups = {
-#             category_light_infantry = {
-#                max_organisation = 3
-#                 soft_attack = 0.03
-#                 breakthrough = 0.05
-#             }
-#         }
-#         levee_en_masse = {
-#             conscription = 0.02
-#             mobilization_speed = 0.05
-#         }
-#         standardization_efforts = {
-#             category_light_infantry = {
-#                max_organisation = 3
-#                 soft_attack = 0.03
-#             }
-#             effect = {
-#                 add_tech_bonus = {
-#                     bonus = 0.25
-#                     uses = 2
-#                     category = support_tech
-#                     name = SUBDOCTRINE_IRREGULARS
-#                 }
-#             }
-#         }
-#     }
-# }
 
 peoples_war = {
     track = infantry
@@ -845,168 +441,79 @@ peoples_war = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # has_government = communism
-        NOT = { has_country_flag = peoples_war_doctrine_check }
-    }
-    visible = {
-        has_dlc = "No Compromise, No Surrender"
-    }
-    ai_will_do = {
-
-        base = 0
-
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1000						
-            name = PEOPLES_WAR_MASTERY_GAIN
-            sub_doctrine = peoples_war				
-        }
-        set_country_flag = {
-            flag = peoples_war_doctrine_check
-            days = 1000
-            value = 1
+        if = {
+            limit = { 
+                NOT = {
+                    has_country_flag = peoples_war_doctrine_selected
+                }
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+            add_daily_mastery = {
+                amount = 0.4						
+                days = 1250						
+                name = PEOPLES_WAR_MASTERY_GAIN
+                sub_doctrine = peoples_war				
+            }
+            set_country_flag = {
+                flag = peoples_war_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
     }
-    enable_tactic = tactic_guerrilla_tactics
 
+    enable_tactic = tactic_guerrilla_tactics
     category_light_infantry = {
-        max_organisation = 2
-        default_morale = 0.02
+        max_organisation = 3
+        default_morale = 0.05
     }
+
     land_reinforce_rate = 0.02
 
     rewards = {
         revolutionary_base_area = {
-        #1
-            infantry = {
-                combat_width = -0.1
+            milestone = 1 
+            category_light_infantry = {
+                max_organisation = 5
+                default_morale = 0.1
             }
+            land_reinforce_rate = 0.05
         }
+
         destruction_over_land_gains = {
-        #2
+            milestone = 2
             category_light_infantry = {
                 default_morale = 0.1
             }
             land_reinforce_rate = 0.03
         }
+
         quick_decision_offensive_warfare = {
-        #3
+            milestone = 3
             category_light_infantry = {
-                max_organisation = 1
-                default_morale = 0.02
+                max_organisation = 5
+                default_morale = 0.1
             }
         }
-        xxxxx = {
-            
+
+        mobile_revolutionary_cells = {
+            milestone = 4
+            effect = {
+                unlock_subunit = militia
+            }
             infantry = {
-                combat_width = -0.1
+                combat_width = -0.2
             }
         }
-        people_not_things = {
-        #4
-            category_light_infantry = {
-                max_organisation = 2
-                default_morale = 0.02
-            }
-            land_reinforce_rate = 0.05
-           
-        }
+
+        # people_not_things = {
+        #     category_light_infantry = {
+        #         max_organisation = 2
+        #         default_morale = 0.02
+        #     }
+        #     land_reinforce_rate = 0.05
+        # }
     }
 }
-
-# great_war_infantry = {
-#     track = infantry
-#     name = SUBDOCTRINE_GREAT_WAR_INFANTRY
-#     description = SUBDOCTRINE_GREAT_WAR_INFANTRY_DESC
-#     icon = GFX_doctrine_great_war_infantry_medium
-
-#     xp_cost = 100
-#     xp_type = army
-
-#     available = {
-#         # always = yes
-#         NOT = { has_country_flag = great_war_infantry_doctrine_check }
-
-#     }
-
-#     ai_will_do = {
-#         base = 1
-#         modifier = {
-#             factor = 95
-#             original_tag = FRA
-#         }
-#     }
-
-#     # EFFECTS
-#     effect = {
-#         add_daily_mastery = {
-#             amount = 0.4						
-#             days = 1250						
-#             name = GREAT_WAR_INFANTRY_MASTERY_GAIN
-#             sub_doctrine = great_war_infantry				
-#         }
-#         set_country_flag = {
-#             flag = great_war_infantry_doctrine_check
-#             days = 1250
-#             value = 1
-#         }
-#     }
-
-#     #OTHER BASE REWARDS
-#     category_cavalry = {
-#         supply_consumption = -0.02
-#     }
-#     category_light_infantry = {
-#         defense = 0.05
-#     }
-#     production_speed_bunker_factor = 0.15
-
-#     rewards = {
-#         traverse_digging = {
-#             dig_in_speed_factor = 0.05
-#             engineer = {
-#                 battalion_mult = {
-#                     category = category_light_infantry
-#                     entrenchment = 0.05
-#                 }
-#             }
-            
-#         }
-#         sapping_operations = {
-#             category_light_infantry = {
-#                 defense = 0.05
-#             }
-#             field_hospital = {
-#                 casualty_trickleback = 0.05
-#             }
-#         }
-#         centralized_artillery_control = {
-#             category_line_artillery = {
-#                 soft_attack = 0.03
-#             }
-#             hq_company = {
-#                 battalion_mult = {
-#                     category = category_light_infantry
-#                     soft_attack = 0.06
-#                     breakthrough = 0.1
-#                 }
-#             }
-#         }
-#         field_fortification_emphasis = {
-#             category_light_infantry = {
-#                 reliability = 0.05
-#                 defense = 0.05
-#                 max_organisation = 2.5
-#             }
-#         }
-#         redoubt_networks = {
-#             dig_in_speed_factor = 0.050
-#         }
-
-#     }
-# }

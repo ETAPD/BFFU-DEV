@@ -1,285 +1,311 @@
-armored_spearhead = {
+armored_breakthrough = {
     track = armor
-    name = SUBDOCTRINE_ARMORED_SPEARHEAD
-    description = SUBDOCTRINE_ARMORED_SPEARHEAD_DESC
+    name = SUBDOCTRINE_ARMORED_BREAKTHROUGH
+    description = SUBDOCTRINE_ARMORED_BREAKTHROUGH_DESC
     icon = GFX_doctrine_armored_spearhead_medium
 
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = armored_spearhead_doctrine_check }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 25
-            original_tag = GER
-        }
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = ARMORED_SPEARHEAD_MASTERY_GAIN
-            sub_doctrine = armored_spearhead				
+        custom_effect_tooltip = generic_skip_one_line_tt
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = armored_breakthrough_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = ARMORED_BREAKTHROUGH_MASTERY_GAIN
+                sub_doctrine = armored_breakthrough
+            }
+            set_country_flag = {
+                flag = armored_breakthrough_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        set_country_flag = {
-            flag = armored_spearhead_doctrine_check
-            days = 1250
-            value = 1
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = armored_standardization_doctrine_check
+                }
+                set_technology = { flexible_armored_battalions_equipment_req = 0 popup = no }
+                clr_country_flag = armored_standardization_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = streamlined_deployment_doctrine_check
+                }
+                set_technology = { streamline_production_mech = 0 popup = no }
+                set_technology = { streamline_production_tank = 0 popup = no }
+                clr_country_flag = streamlined_deployment_doctrine_check
+            }
         }
     }
 
     category_all_armor = {
         max_organisation = 3
         breakthrough = 0.04
+
     }
+
     enable_tactic = tactic_breakthrough
 
     rewards = {
-        force_concentration = {
-        #1
+        armored_force_concentration = {
             category_all_armor = {
-                maximum_speed = 0.04
                 default_morale = 0.1
             }
         }
-        armored_breakthrough_exploits = {
-        #2
+
+        breakthrough_exploitation = {
             category_all_armor = {
                 max_organisation = 2
                 breakthrough = 0.04
             }
         }
-        local_reserves = {
-        #3
+
+        mobile_armored_reserves = {
             category_all_armor = {
-                default_morale = 0.1
-                maximum_speed = 0.06
+                max_organisation = 3
             }
         }
-        tactical_reconnaissance = {
-        #4
+
+        armored_reconnaissance = {
             category_all_armor = {
                 max_organisation = 2
-                breakthrough = 0.05
+                breakthrough = 0.03
             }
         }
-        assault_detachments = {
-        #5
+
+        armored_assault_detachments = {
             signal_company = {
-                battalion_mult = {
-                    category = category_all_armor
-                    initiative = 0.02 #not finished change it to 2 flat
-                }
+                initiative = 0.05
+            }
+            armored_signal = {
+                initiative = 0.05
             }
             category_all_armor = {
-                maximum_speed = 0.05
-                breakthrough = 0.07
-                max_organisation = 3
-                default_morale = 0.1
+                breakthrough = 0.05
             }
         }
     }
 }
 
-armored_spearhead_no_lar = {
+armored_standardization = {
     track = armor
-    name = SUBDOCTRINE_ARMORED_SPEARHEAD
-    description = SUBDOCTRINE_ARMORED_SPEARHEAD_DESC
-    icon = GFX_doctrine_armored_spearhead_medium
+    name = SUBDOCTRINE_ARMORED_STANDARDIZATION
+    description = SUBDOCTRINE_ARMORED_STANDARDIZATION_DESC
+    icon = GFX_doctrine_armored_standardization_medium
 
     xp_cost = 100
     xp_type = army
 
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 25
-            original_tag = GER
-        }
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
-    }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = ARMORED_SPEARHEAD_NO_LAR_MASTERY_GAIN
-            sub_doctrine = armored_spearhead_no_lar				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = armored_standardization_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = ARMORED_STANDARDIZATION_MASTERY_GAIN
+                sub_doctrine = armored_standardization
+            }
+            set_country_flag = {
+                flag = armored_standardization_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+        set_country_flag =  armored_standardization_doctrine_check
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = streamlined_deployment_doctrine_check
+                }
+                set_technology = { streamline_production_mech = 0 popup = no }
+                set_technology = { streamline_production_tank = 0 popup = no }
+                clr_country_flag = streamlined_deployment_doctrine_check
+            }
         }
     }
-
-    
 
     category_all_armor = {
-        soft_attack = 0.02
-        hard_attack = 0.02
+        soft_attack = 0.04
+        hard_attack = 0.04
     }
 
     rewards = {
-        force_concentration = {
-        #1
+        standardized_tank_battalions = {
             category_all_armor = {
                 breakthrough = 0.03
             }
-            #add 2 more tanks
             effect = {
-                set_technology = {
-                    flexible_armored_battalions_equipment_req = 1
-                    popup = no
+                custom_effect_tooltip = flexible_armored_battalions_equipment_req_tt
+                hidden_effect = {
+                    set_technology = {
+                        flexible_armored_battalions_equipment_req = 1
+                        popup = no
+                    }
                 }
             }
         }
-        armored_breakthrough_exploits = {
-        #2
+
+        unified_gunnery_training = {
             category_all_armor = {
                 soft_attack = 0.02
                 hard_attack = 0.02
+                default_morale = 0.05
             }
         }
-        local_reserves = {
-        #3
+
+        armored_repair_pools = {
             category_all_armor = {
                 reliability = 0.05
+                max_strength = 2
+                default_morale = 0.03
             }
         }
-        tactical_reconnaissance = {
-        #4
+
+        armored_scout_sections = {
             category_all_armor = {
                 breakthrough = 0.03
-                reliability = 0.01
+                reliability = 0.02
             }
         }
-        assault_detachments = {
-        #5
-            
+
+        standardized_assault_groups = {
             category_all_armor = {
-                soft_attack = 0.02
-                hard_attack = 0.02
-                reliability = 0.04
+                soft_attack = 0.04
+                hard_attack = 0.04
+                reliability = 0.05
+                max_strength = 2
+                default_morale = 0.05
             }
         }
     }
 }
 
-armored_infantry_support = {
+infantry_tank_support = {
     track = armor
-    name = SUBDOCTRINE_ARMORED_INFANTRY_SUPPORT
-    description = SUBDOCTRINE_ARMORED_INFANTRY_SUPPORT_DESC
+    name = SUBDOCTRINE_INFANTRY_TANK_SUPPORT
+    description = SUBDOCTRINE_INFANTRY_TANK_SUPPORT_DESC
     icon = GFX_doctrine_armored_infantry_support_medium
 
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = armored_infantry_support_doctrine_check }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 25
-            OR = {
-               original_tag = ENG
-               original_tag = FRA
+    effect = {
+        custom_effect_tooltip = generic_skip_one_line_tt
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = infantry_tank_support_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = INFANTRY_TANK_SUPPORT_MASTERY_GAIN
+                sub_doctrine = infantry_tank_support
+            }
+            set_country_flag = {
+                flag = infantry_tank_support_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = armored_standardization_doctrine_check
+                }
+                set_technology = { flexible_armored_battalions_equipment_req = 0 popup = no }
+                clr_country_flag = armored_standardization_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = streamlined_deployment_doctrine_check
+                }
+                set_technology = { streamline_production_mech = 0 popup = no }
+                set_technology = { streamline_production_tank = 0 popup = no }
+                clr_country_flag = streamlined_deployment_doctrine_check
             }
         }
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
     }
 
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = ARMORED_INFANTRY_SUPPORT_MASTERY_GAIN
-            sub_doctrine = armored_infantry_support				
-        }
-        set_country_flag = {
-            flag = armored_infantry_support_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-
-
-    # effect = {
-    #     add_tech_bonus = {
-    #         bonus = 1
-    #         uses = 1
-    #         category = cat_heavy_armor
-    #         name = SUBDOCTRINE_ARMORED_INFANTRY_SUPPORT
-    #     }
-    # }
-
-    #TODO jack look if you can make a script effect for production bonuses
     category_all_armor = {
         breakthrough = 0.05
     }
-    enable_tactic = tactic_breakthrough
+
+    enable_tactic = tactic_blitz
 
     rewards = {
-        mobile_reserves = {
-        #1
+        armored_reserve_groups = {
             category_all_armor = {
-                fuel_consumption_factor = 0.03 #idk if thi is the right one 
+                fuel_consumption_factor = -0.03
                 hardness = 0.03
-                breakthrough = 0.05
-            }
-            
-        }
-        armored_cohorts = {
-        #2
-            category_all_armor = {
-                armor_value = 0.02
-                fuel_consumption_factor = 0.03
             }
         }
-        maintenance_routines = {
-        #3
+
+        infantry_tank_cohorts = {
             category_all_armor = {
                 armor_value = 0.02
-                fuel_consumption_factor = 0.03
+                fuel_consumption_factor = -0.03
+            }
+        }
+
+        armored_maintenance_drills = {
+            category_all_armor = {
+                armor_value = 0.02
+                fuel_consumption_factor = -0.03
                 hardness = 0.03
-                breakthrough = 0.03
+                defense = 0.03
+            }
+            mot_recon = {
+                battalion_mult = {
+                    category = category_all_infantry
+                    defense = 0.05
+                    breakthrough = 0.05
+                }
+            }
+            armored_car_recon = {
+                battalion_mult = {
+                    category = category_all_infantry
+                    defense = 0.05
+                    breakthrough = 0.05
+                }
             }
         }
-        fuel_rationing = {
-        #4
+
+        fuel_allocation_protocols = {
             category_all_armor = {
                 armor_value = 0.02
-                fuel_consumption_factor = 0.03
+                fuel_consumption_factor = -0.03
             }
         }
+
         mobile_armored_strongpoints = {
-        #5
             category_all_armor = {
                 armor_value = 0.02
-                fuel_consumption_factor = 0.03
+                fuel_consumption_factor = -0.03
                 hardness = 0.04
-                breakthrough = 0.05
+            }
+            light_tank_recon = {
+                battalion_mult = {
+                    category = category_all_infantry
+                    soft_attack = 0.05
+                    hard_attack = 0.05
+                }
             }
         }
     }
@@ -294,452 +320,169 @@ streamlined_deployment = {
     xp_cost = 100
     xp_type = army
 
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = STREAMLINED_DEPLOYMENT_MASTERY_GAIN
-            sub_doctrine = streamlined_deployment				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = streamlined_deployment_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = STREAMLINED_DEPLOYMENT_MASTERY_GAIN
+                sub_doctrine = streamlined_deployment
+            }
+            set_country_flag = {
+                flag = streamlined_deployment_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-
+        set_country_flag = streamlined_deployment_doctrine_check
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = armored_standardization_doctrine_check
+                }
+                set_technology = { flexible_armored_battalions_equipment_req = 0 popup = no }
+                clr_country_flag = armored_standardization_doctrine_check
+            }
+        }
     }
 
     category_all_armor = {
-        soft_attack = -0.02
-        hard_attack = -0.02
+        soft_attack = 0.02
+        hard_attack = 0.02
     }
-    
+
     rewards = {
         flexible_armored_battalions = {
-
-            category_all_armor = {
-                breakthrough = -0.03
-                max_strength = 0.05
-            }
-            # effect = {
-            #     set_technology = {
-            #         flexible_armored_battalions_equipment_req = 1
-            #         popup = no
-            #     }
-            # }
-        }
-        mechanized_wave = {
-            category_vehicle_infantry = {
-                soft_attack = -0.02
-                hard_attack = -0.02
-                hardness = -0.05
-                #5 less mech
-            }
-            effect = {
-                set_technology = {
-                    streamline_production_mech = 1
-                    popup = no
-                }
-            }
-        }
-        tank_desant = {
-            category_all_armor = {
-                breakthrough = -0.03
-                hard_attack = -0.02
-                max_organisation = 2
-                
-            }
-            effect = {
-                set_technology = {
-                    streamline_production_tank = 1
-                    popup = no
-                }
-            }
-        }
-        full_front_deployment = {
             category_all_armor = {
                 breakthrough = 0.03
-                reliability = 0.01
+                max_organisation = 2
+                max_strength = -2
+                reliability = -0.1
             }
-
         }
-        continuous_offensives = {
-            category_all_armor = {
-                soft_attack = 0.02
-                hard_attack = 0.02
+
+        mechanized_wave = {
+            category_vehicle_infantry = {
+                hardness = -0.1
+                max_strength = -5
                 reliability = -0.1
                 max_organisation = 2
-                default_morale = 0.1
-                #5 less mech
-                #2 less tanks
+                default_morale = 0.05
             }
-        }
-    }
-
-
-}
-
-mobile_defense = {
-    track = armor
-    name = SUBDOCTRINE_MOBILE_DEFENSE
-    description = SUBDOCTRINE_MOBILE_DEFENSE_DESC
-    icon = GFX_doctrine_mobile_defense_medium
-
-    xp_cost = 100
-    xp_type = army
-
-    available = {
-        # always = yes
-        NOT = { has_country_flag = mobile_defense_doctrine_check }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 25
-            original_tag = USA
-        }
-
-        modifier = {
-            factor = 0.5
-            is_major = no
-        }
-
-    }
-
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = MOBILE_DEFENSE_MASTERY_GAIN
-            sub_doctrine = mobile_defense				
-        }
-        set_country_flag = {
-            flag = mobile_defense_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-
-    armored_engineer = {
-        battalion_mult = {
-            category = category_all_armor
-            entrenchment = 0.05
-        }
-    }
-    category_all_armor = {
-        defense = 0.05
-    }
-
-    rewards = {
-
-        mechanized_offensive = {
-            mechanized = {
-                defense = 0.05
-                soft_attack = 0.03
-            }
-        }
-        advance_under_fire = {
-            light_armor = {
-                breakthrough = 0.05
-                default_morale = 0.1
-            }
-            medium_armor = {
-                breakthrough = 0.05
-                default_morale = 0.1
-            }
-        }
-        attached_support = {
-            assault_engineer = {
-               max_organisation = 3
-            }
-            armored_engineer = {
-               max_organisation = 3
-            }
-            armored_signal = {
-               max_organisation = 3
-            }
-
-        }
-        combined_anti_armor = {
-            anti_tank_brigade = {
-                battalion_mult = {
-                    category = category_all_armor
-                    hard_attack = 0.025
-                    ap_attack = 0.025
+            effect = {
+                custom_effect_tooltip = streamline_production_mech_tt
+                hidden_effect = {
+                    set_technology = {
+                        streamline_production_mech = 1
+                        popup = no
+                    }
                 }
             }
-            heavy_anti_tank_brigade = {
-                battalion_mult = {
-                    category = category_all_armor
-                    hard_attack = 0.025
-                    ap_attack = 0.025
-                }
-            }
-
         }
-        tank_on_tank_engagement = {
+
+        tank_desant = {
             category_all_armor = {
-                hard_attack = 0.05
-                soft_attack = 0.03
-                ap_attack = 0.025
+                default_morale = 0.1
+                max_organisation = 2
             }
-        }    
-    }
-}
-
-armored_cavalry = {
-    track = armor
-    name = SUBDOCTRINE_ARMORED_CAVALRY
-    description = SUBDOCTRINE_ARMORED_CAVALRY_DESC
-    icon = GFX_doctrine_armored_cavalry_medium
-
-    xp_cost = 100
-    xp_type = army
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 25
-            OR = {
-                original_tag = ITA 
-                original_tag = JAP 
+            effect = {
+                custom_effect_tooltip = streamline_production_tank_tt
+                hidden_effect = {
+                    set_technology = {
+                        streamline_production_tank = 1
+                        popup = no
+                    }
+                }
             }
         }
 
-    }
-
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = ARMORED_CAVALRY_MASTERY_GAIN
-            sub_doctrine = armored_cavalry				
-        }
-        set_country_flag = {
-            flag = armored_cavalry_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-
-    category_all_armor = {
-        max_organisation = 4
-    }
-    no_supply_grace = 16
-    enable_tactic = tactic_masterful_blitz
-    rewards = {
-        cruiser_tanks = {
-            no_supply_grace = 16
-            army_fuel_capacity_factor = 0.1
-        }
-        quick_response_force = {
-            light_armor = {
-                supply_consumption = -0.005
+        full_front_deployment = {
+            training_time_factor = -0.05
+            category_all_armor = {
+                max_organisation = 2
+                default_morale = 0.2
             }
+        }
+
+        continuous_offensives = {
             no_supply_grace = 8
-        }
-        speed_as_armour = {
-            medium_armor = {
-                supply_consumption = -0.01
+            category_all_armor = {
+                soft_attack = 0.02
             }
-            army_fuel_capacity_factor = 0.1
-        }
-        fighting_reconnaissance = {
-            heavy_armor = {
-                supply_consumption = -0.01
+            category_vehicle_infantry = {
+                max_organisation = 5
             }
-            army_fuel_capacity_factor = 0.1
-        }
-        sustained_deployments = {
-            heavy_armor = {
-                supply_consumption = -0.015
-            }
-            medium_armor = {
-                supply_consumption = -0.01
-            }
-            light_armor = {
-                supply_consumption = -0.005
-            }
-            army_fuel_capacity_factor = 0.2
-            no_supply_grace = 32
         }
     }
 }
 
-# armored_cavalry_no_lar = {
-#     track = armor
-#     name = SUBDOCTRINE_ARMORED_CAVALRY
-#     description = SUBDOCTRINE_ARMORED_CAVALRY_DESC
-#     icon = GFX_doctrine_armored_cavalry_medium
-
-#     xp_cost = 100
-#     xp_type = army
-
-#     available = {
-#         # always = yes
-#         NOT = { has_country_flag = armored_cavalry_no_lar }
-#     }
-#     visible = {
-#         has_dlc = "No Compromise, No Surrender"
-#         NOT = {
-#             has_dlc = "La Resistance"
-#         }
-#     }
-
-#     ai_will_do = {
-
-#         base = 1
-#         modifier = {
-#             factor = 25
-#             OR = {
-#                 original_tag = ITA 
-#                 original_tag = JAP 
-#             }
-#         }
-
-#     }
-
-#     # EFFECTS
-#     effect = {
-#         add_daily_mastery = {
-#             amount = 0.4						
-#             days = 1250						
-#             name = ARMORED_CAVALRY_NO_LAR_MASTERY_GAIN
-#             sub_doctrine = armored_cavalry_no_lar				
-#         }
-#         set_country_flag = {
-#             flag = armored_cavalry_no_lar_doctrine_check
-#             days = 1250
-#             value = 1
-#         }
-#     }
-
-#     motorized = {
-#        max_organisation = 3
-#         defense = 0.1
-#     }
-#     mechanized =  {
-#        max_organisation = 3
-#         defense = 0.05
-#     }
-    
-#     rewards = {
-#         cruiser_tanks = {
-#             light_armor = {
-#                 maximum_speed = 0.05
-#                 max_organisation = 2.5
-#                 breakthrough = 0.05
-#             }
-#         }
-#         quick_response_force = {
-#             motorized_military_police = {
-#                 battalion_mult = {
-#                     category = category_vehicle_infantry
-#                     suppression_factor = 0.05
-#                 }
-    
-#             }
-            
-#         }
-#         speed_as_armour = {
-#             light_armor = {
-#                 maximum_speed = 0.05
-#                 breakthrough = 0.05
-#             }
-#             motorized = {
-#                 maximum_speed = 0.05
-    
-#             }
-#             mechanized = {
-#                 maximum_speed = 0.05
-#                 breakthrough = 0.05
-#             }
-#         }
-#         fighting_reconnaissance = {
-#             recon = {
-#                 max_organisation = 1.5
-#                  soft_attack = 0.03
-#             }
-#             light_tank_recon = {
-#                 max_organisation = 1
-#                 soft_attack = 0.03
-#             }
-#         }
-#         sustained_deployments = {
-#             light_armor = {
-#                 max_organisation = 2.5
-#                 soft_attack = 0.03
-#                 hard_attack = 0.05
-#                 default_morale = 0.1
-#             }
-#             mechanized = {
-#                 max_organisation = 2.5
-#                 soft_attack = 0.03
-#                 default_morale = 0.1 
-#             }
-#             motorized = {
-#                 max_organisation = 2.5
-#                 soft_attack = 0.03
-#                 default_morale = 0.1 
-#             }
-#         }
-#     }
-# }
-
-tank_destroyer_force = {
-     track = armor
-    name = SUBDOCTRINE_TANK_DESTROYER_FORCE
-    description = SUBDOCTRINE_TANK_DESTROYER_FORCE_DESC
-    icon = GFX_doctrine_tank_destroyer_force_medium
+self_propelled_support = {
+    track = armor
+    name = SUBDOCTRINE_SELF_PROPELLED_SUPPORT
+    description = SUBDOCTRINE_SELF_PROPELLED_SUPPORT_DESC
+    icon = GFX_doctrine_self_propelled_support_medium
 
     xp_cost = 100
     xp_type = army
 
-    available = {
-        NOT = { has_country_flag = tank_destroyer_force_doctrine_check }
-    }
+    ai_will_do = { base = 0 }
 
-    visible = {
-        has_dlc = "No Compromise, No Surrender"
-    }
-
-    ai_will_do = {
-
-        base = 0
-
-    }
-    
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = TANK_DESTROYER_FORCE_MASTERY_GAIN
-            sub_doctrine = tank_destroyer_force				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = self_propelled_support_doctrine_check
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = SELF_PROPELLED_SUPPORT_MASTERY_GAIN
+                sub_doctrine = self_propelled_support
+            }
+            set_country_flag = {
+                flag = self_propelled_support_doctrine_check
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = armored_standardization_doctrine_check
+                }
+                set_technology = { flexible_armored_battalions_equipment_req = 0 popup = no }
+                clr_country_flag = armored_standardization_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = streamlined_deployment_doctrine_check
+                }
+                set_technology = { streamline_production_mech = 0 popup = no }
+                set_technology = { streamline_production_tank = 0 popup = no }
+                clr_country_flag = streamlined_deployment_doctrine_check
+            }
         }
     }
 
-    category_tank_destroyers = {
+    category_self_propelled_artillery = {
         defense = 0.05
         hard_attack = 0.05
         ap_attack = 0.05
     }
+
     category_self_propelled_anti_air = {
         anti_air_attack = 0.05
     }
+
     rewards = {
-
-        mobile_anti_tank = {
-            category_tank_destroyers = {
-                max_organisation = 3
-                soft_attack = -0.05
-                hard_attack = 0.05
-                ap_attack = 0.05
-            }
-
-        }
         committed_operational_units = {
             category_self_propelled_artillery = {
                 max_organisation = 3
@@ -747,20 +490,33 @@ tank_destroyer_force = {
                 hard_attack = -0.05
             }
         }
-        redeployment_priority = {
-            category_self_propelled_anti_air = {
-                anti_air_attack = 0.05
-                ap_attack = 0.05
+
+        armored_fire_support_sections = {
+            category_self_propelled_artillery = {
+                defense = 0.03
+            }
+            category_tanks = {
+                hard_attack = -0.1
+                soft_attack = 0.04
+                breakthrough = -0.5
             }
         }
 
         independent_counterattacks = {
-            category_tank_destroyers = {
-                max_organisation = 3
-                initiative = 0.02
-            }
             category_self_propelled_artillery = {
                 max_organisation = 3
+                initiative = 0.02
+                max_strength = 3
+            }
+        }
+
+        assault_gun_coordination = {
+            category_self_propelled_artillery = {
+                breakthrough = 0.03
+            }
+            category_self_propelled_anti_air = {
+                anti_air_attack = 0.05
+                ap_attack = 0.05
                 initiative = 0.02
             }
         }
@@ -773,10 +529,115 @@ tank_destroyer_force = {
                 initiative = 0.02
                 ap_attack = 0.05
             }
+            category_self_propelled_anti_air = {
+                anti_air_attack = 0.05
+                hard_attack = 0.05
+                ap_attack = 0.05
+            }
+        }
+    }
+}
+
+tank_destroyer_force = {
+    track = armor
+    name = SUBDOCTRINE_TANK_DESTROYER_FORCE
+    description = SUBDOCTRINE_TANK_DESTROYER_FORCE_DESC
+    icon = GFX_doctrine_tank_destroyer_force_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    effect = {
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = tank_destroyer_force_doctrine_check
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = TANK_DESTROYER_FORCE_MASTERY_GAIN
+                sub_doctrine = tank_destroyer_force
+            }
+            set_country_flag = {
+                flag = tank_destroyer_force_doctrine_check
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = armored_standardization_doctrine_check
+                }
+                set_technology = { flexible_armored_battalions_equipment_req = 0 popup = no }
+                clr_country_flag = armored_standardization_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = streamlined_deployment_doctrine_check
+                }
+                set_technology = { streamline_production_mech = 0 popup = no }
+                set_technology = { streamline_production_tank = 0 popup = no }
+                clr_country_flag = streamlined_deployment_doctrine_check
+            }
+        }
+    }
+
+    category_tank_destroyers = {
+        defense = 0.05
+        hard_attack = 0.05
+        ap_attack = 0.05
+    }
+
+    category_self_propelled_anti_air = {
+        anti_air_attack = 0.05
+    }
+
+    rewards = {
+        mobile_anti_tank = {
             category_tank_destroyers = {
                 max_organisation = 3
-                soft_attack = -0.03
+                soft_attack = -0.08
                 hard_attack = 0.05
+                ap_attack = 0.05
+                max_strength = 3
+            }
+        }
+
+        committed_operational_units = {
+            category_tank_destroyers = {
+                max_organisation = 3
+            }
+            category_tanks = {
+                hard_attack = 0.04
+                soft_attack = -0.1
+                breakthrough = -0.5
+            }
+        }
+
+        redeployment_priority = {
+            category_self_propelled_anti_air = {
+                anti_air_attack = 0.05
+                ap_attack = 0.05
+                initiative = 0.02
+            }
+        }
+
+        independent_counterattacks = {
+            category_tank_destroyers = {
+                max_organisation = 3
+                initiative = 0.02
+                hard_attack = 0.03
+            }
+        }
+
+        selfsufficient_battalion = {
+            category_tank_destroyers = {
+                max_organisation = 3
+                soft_attack = -0.08
                 ap_attack = 0.05
             }
             category_self_propelled_anti_air = {
@@ -785,6 +646,5 @@ tank_destroyer_force = {
                 ap_attack = 0.05
             }
         }
-
     }
 }
