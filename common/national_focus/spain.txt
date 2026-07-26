@@ -192,6 +192,7 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = SPR_appeasement_tick_franco_list_tt
 			hidden_effect = { set_variable = { spanish_tick = 0.0008 } }
+			add_dynamic_modifier = { modifier = SPR_appeasement_modifier_franco }
 		}
 	}
 
@@ -493,7 +494,7 @@ focus_tree = {
 		x = 0
 		y = 2
 		relative_position_id = SPA_con_paquito
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_RESEARCH}
@@ -550,7 +551,7 @@ focus_tree = {
 		x = -2
 		y = 1
 		relative_position_id = SPA_the_condor_legion
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 
@@ -596,7 +597,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_the_condor_legion
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_INDUSTRY}
@@ -693,7 +694,7 @@ focus_tree = {
 		x = 2
 		y = 1
 		relative_position_id = SPA_the_condor_legion
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 
@@ -726,7 +727,7 @@ focus_tree = {
 		x = -1
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 
@@ -766,7 +767,7 @@ focus_tree = {
 		x = 1
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_RESEARCH}
@@ -1715,10 +1716,10 @@ focus_tree = {
 				}
 				effect_tooltip = {
 					290 = {
-						add_extra_state_shared_building_slots = 2
+						add_extra_state_shared_building_slots = 5
 						add_building_construction = {
 							type = industrial_complex
-							level = 1
+							level = 4
 							instant_build = yes
 						}
 					}
@@ -1728,10 +1729,10 @@ focus_tree = {
 			}
 			else = {
 				290 = {
-					add_extra_state_shared_building_slots = 2
+					add_extra_state_shared_building_slots = 5
 					add_building_construction = {
 						type = industrial_complex
-						level = 1
+						level = 4
 						instant_build = yes
 					}
 				}
@@ -1832,6 +1833,23 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = SPA_diego_hidalgo_y_duran
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			random_owned_controlled_state = {
+				limit = {
+					free_building_slots = {
+						building = industrial_complex
+						size > 3
+						include_locked = yes
+					}
+				}
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = industrial_complex
+					level = 4
+					instant_build = yes
+				}
+			}
 		}
 	}
 
@@ -1875,6 +1893,23 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = SPR_juan_lopez_sanchez
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			random_owned_controlled_state = {
+				limit = {
+					free_building_slots = {
+						building = industrial_complex
+						size > 2
+						include_locked = yes
+					}
+				}
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
 		}
 	}
 
@@ -3357,6 +3392,7 @@ focus_tree = {
 			custom_effect_tooltip = SPR_appeasement_tick_carlist_tt
 			custom_effect_tooltip = generic_skip_one_line_tt
 			hidden_effect = { set_variable = { spanish_tick = 0.0013 } }
+			add_dynamic_modifier = { modifier = SPR_appeasement_modifier_carlist }
 
 			add_popularity = {
 			    ideology = neutrality
@@ -8598,25 +8634,26 @@ focus_tree = {
             }
 			complete_national_focus = SPA_Big_Allied_Resource_Investments
 			add_ideas = SPA_AlliesV
-			SOV = {
-				add_timed_idea = {
-				idea = SPA_Spanish_Gold_SOV
-				days = 730
-			    }
-			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+        if = {
+        limit = {
+		    SOV = { has_completed_focus = SOV_spanish_gold }
+	    }
+	    SOV = {
+		    add_offsite_building = { type = arms_factory level = 5 }
+	        }
+        }
+        else = {
+	        SOV = {
+		        complete_national_focus = SOV_spanish_gold
+	        }
+        }
+			custom_effect_tooltip = generic_skip_one_line_tt
 			SPR = {
 				add_timed_idea = {
 					idea = SPR_Bozo_Spain_Build
 					days = 730
 				}
-			}
-			SOV = {
-				add_offsite_building = { type = arms_factory level = 15 }
-				army_experience = 50
-			}
-			FRA = {
-				add_offsite_building = { type = arms_factory level = 5 }
-				army_experience = 25
 			}
         custom_effect_tooltip = Allies_Victory_focus_1
 		}

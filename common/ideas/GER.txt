@@ -5888,7 +5888,10 @@ ideas = {
 
 			visible = {
 				NOT = {
-					has_completed_focus = GER_coal_liquefaction
+					OR = {
+						has_completed_focus = GER_coal_liquefaction
+						has_completed_focus = GER_ig_farben
+					}
 				}
 			}
 
@@ -5898,7 +5901,7 @@ ideas = {
 				#industry = 0.05
 				synth_resources = 0.15
 			}
-			
+
 			traits = { refinery_concern }
 			
 			ai_will_do = {
@@ -5915,11 +5918,14 @@ ideas = {
 
 
 			visible = {
-				has_completed_focus = GER_coal_liquefaction
+				OR = {
+					has_completed_focus = GER_coal_liquefaction
+					has_completed_focus = GER_ig_farben
+				}
 			}
 
 			cost = 150
-			
+
 			research_bonus = {
 				#industry = 0.05
 				synth_resources = 0.15
@@ -6049,12 +6055,10 @@ ideas = {
 			}
 
 			visible = {
-				NOT = {
-					has_completed_focus = GER_employ_philipp_holzmann
-					always = no # was: has_completed_focus = GER_revitalize_the_nation (focus removed in GER cleanup)
-				}
+				has_completed_focus = GER_ascension_of_speer
+				NOT = { has_completed_focus = GER_employ_philipp_holzmann }
 			}
-			
+
 			cost = 150
 
 			ai_will_do = {
@@ -6063,6 +6067,10 @@ ideas = {
 					factor = 5
 					is_historical_focus_on = yes
 				}
+			}
+
+			modifier = {
+				production_speed_industrial_complex_factor = 0.10
 			}
 
 			traits = { construction_company }
@@ -6089,10 +6097,6 @@ ideas = {
 			
 			cost = 150
 
-			research_bonus = {
-				construction_tech = 0.15
-			}
-			
 			traits = { GER_philipp_holzmann_trait }
 		}
 
@@ -6115,7 +6119,7 @@ ideas = {
 			research_bonus = {
 				construction_tech = 0.15
 			}
-			
+
 			traits = { GER_philipp_holzmann_trait_improved }
 		}
 
@@ -6138,7 +6142,7 @@ ideas = {
 			research_bonus = {
 				construction_tech = 0.15
 			}
-			
+
 			traits = { GER_philipp_holzmann_trait_improved_no_aat }
 		}
 
@@ -6438,7 +6442,7 @@ ideas = {
 				# PP Cost
 				political_power_gain = -0.1
 
-				production_speed_industrial_complex_factor = 0.1
+				production_speed_industrial_complex_factor = 0.05
 				production_speed_infrastructure_factor = 0.1
 				production_speed_rail_way_factor = 0.1
 			}
@@ -6952,6 +6956,52 @@ ideas = {
 				trade_laws_cost_factor = -0.25
 				economy_cost_factor = -0.25
 				research_speed_factor = 0.05
+			}
+		}
+
+	}
+
+	country = {
+		GER_the_armaments_union = {
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = generic_production_bonus
+
+			equipment_bonus = {
+				infantry_equipment = { build_cost_ic = -0.085 instant = yes }
+				squad_equipment = { build_cost_ic = -0.05 instant = yes }
+				fighter_equipment = { build_cost_ic = -0.025 instant = yes }
+				CAS_equipment = { build_cost_ic = -0.05 instant = yes }
+				light_tank_chassis = { build_cost_ic = -0.035 instant = yes }
+				medium_tank_chassis = { build_cost_ic = -0.035 instant = yes }
+				heavy_tank_chassis = { build_cost_ic = -0.05 instant = yes }
+			}
+		}
+
+		# Granted by GER_the_swiss_gold to SWI
+		SWI_swiss_gold_trade_agreement = {
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = generic_foreign_capital
+
+			cancel = {
+				OR = {
+					has_war_with = GER
+					NOT = { country_exists = GER }
+				}
+			}
+
+			targeted_modifier = {
+				tag = GER
+				trade_cost_for_target_factor = -0.99
 			}
 		}
 	}
