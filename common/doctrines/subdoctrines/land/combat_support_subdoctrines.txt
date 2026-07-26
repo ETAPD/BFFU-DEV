@@ -7,108 +7,106 @@ fire_concentration = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = fire_concentration_doctrine_check }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 75
-            original_tag = SOV
-        }
-        modifier = {
-            factor = 75
-            original_tag = ENG
-        }
-        modifier = {
-            factor = 75
-            original_tag = FRA
-        }   
-    }
-
     # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = FIRE_CONCENTRATION_MASTERY_GAIN
-            sub_doctrine = fire_concentration				
+        custom_effect_tooltip = fire_concentration_tech_tt
+        custom_effect_tooltip = generic_skip_one_line_tt
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = fire_concentration_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = FIRE_CONCENTRATION_MASTERY_GAIN
+                sub_doctrine = fire_concentration
+            }
+            set_country_flag = {
+                flag = fire_concentration_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        set_country_flag = {
-            flag = fire_concentration_doctrine_check
-            days = 1250
-            value = 1
+        set_country_flag = fire_concentration_doctrine_check
+        hidden_effect = {
+            set_country_flag = fire_concentration_doctrine_check
+            set_technology = {
+                fire_concentration = 1
+                popup = no
+            }
+
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_doctrine_check
+                }
+                set_technology = { all_terrain_arty_1 = 0 popup = no }
+                set_technology = { all_terrain_arty_2 = 0 popup = no }
+                set_technology = { all_terrain_arty_3 = 0 popup = no }
+                set_technology = { all_terrain_arty_4 = 0 popup = no }
+                set_technology = { all_terrain_arty_5 = 0 popup = no }
+                set_technology = { all_terrain_arty_6 = 0 popup = no }
+                clr_country_flag = pack_artillery_doctrine_check
+            }
         }
     }
-
     enable_tactic = tactic_overwhelming_fire
 
-    # artillery_brigade = {
-    #     combat_width = -0.2
-    # }
-    # pack_artillery_brigade = {
-    #     combat_width = -0.2
-    # }
-    # rocket_artillery_brigade = {
-    #     combat_width = -0.2
-    # }
-    # heavy_artillery_brigade = {
-    #     combat_width = -0.2
-    # }
-    category_line_artillery = {
-        max_organisation = 1
-        max_strength = 1
+
+
+    coordination_bonus = 0.03
+    category_artillery = {
+        soft_attack = 0.03
     }
 
     rewards = {
         standing_barrage = {
         #1
             category_line_artillery = {
-                defense = 0.05
+                soft_attack = 0.02
+                breakthrough = 0.03
             }
         }
         predicted_fire = {
         #2
             category_line_artillery = {
-                soft_attack = 0.03
+                soft_attack = 0.01
+                supply_consumption = 0.1
             }
         }
         artillery_groups = {
         #3
             category_line_artillery = {
-                breakthrough = 0.05
-                defense = 0.05
+                breakthrough = 0.03
+                soft_attack = 0.03
             }
         }
         dedicated_air_support = {
         #4
-            category_anti_air = {
-                air_attack = 0.05
+            recon = {
+                battalion_mult = {
+                    category = category_line_artillery
+                    hard_attack = 0.03
+                }
+            }
+            mot_recon = {
+                battalion_mult = {
+                    category = category_line_artillery
+                    hard_attack = 0.03
+                }
             }
         }
         weakpoint_studies = {
         #5
-            anti_tank_brigade = {
-                hard_attack = 0.05
+            planning_speed = 0.03
+            category_line_artillery = {
+                breakthrough = 0.04
+                soft_attack = 0.03
+                max_strength = 2
             }
-            pack_antitank_brigade = {
-                hard_attack = 0.05
-            }
-            heavy_anti_tank_brigade = {
-                hard_attack = 0.05
-            }
-            artillery_brigade = {
-                soft_attack = 0.05
-            }
-            pack_artillery_brigade = {
-                soft_attack = 0.05
-            }
-            heavy_artillery_brigade = {
-                soft_attack = 0.05
-            }
+            coordination_bonus = 0.02
         }
     }
 }
@@ -122,712 +120,218 @@ anti_tank_frontline = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        # always = yes
-        NOT = { has_country_flag = anti_tank_frontline_doctrine_check }
-    }
-
     ai_will_do = { base = 0 }
 
     # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = ANTI_TANK_FRONTLINE_MASTERY_GAIN
-            sub_doctrine = anti_tank_frontline				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = anti_tank_frontline_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = ANTI_TANK_FRONTLINE_MASTERY_GAIN
+                sub_doctrine = anti_tank_frontline
+            }
+            set_country_flag = {
+                flag = anti_tank_frontline_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        set_country_flag = {
-            flag = anti_tank_frontline_doctrine_check
-            days = 1250
-            value = 1
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_doctrine_check
+                }
+                set_technology = { all_terrain_arty_1 = 0 popup = no }
+                set_technology = { all_terrain_arty_2 = 0 popup = no }
+                set_technology = { all_terrain_arty_3 = 0 popup = no }
+                set_technology = { all_terrain_arty_4 = 0 popup = no }
+                set_technology = { all_terrain_arty_5 = 0 popup = no }
+                set_technology = { all_terrain_arty_6 = 0 popup = no }
+                clr_country_flag = pack_artillery_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = fire_concentration_doctrine_check
+                }
+                set_technology = { fire_concentration = 0 popup = no }
+                clr_country_flag = fire_concentration_doctrine_check
+            }
         }
     }
-     
-    engineer = {
-        battalion_mult = {
-            category = category_line_artillery
-            entrenchment = 0.1
-            add = yes
-        }
+
+    category_artillery = {
+        defense = 0.03
+        hard_attack = 0.03
     }
 
     rewards = {
         pakfront = {
         #1
-            category_anti_tank = {
-                defense = 0.15
+            category_artillery = {
+                hard_attack = 0.02
             }
         }
         emplacement_rotation = {
         #2
-            category_anti_tank = {
-                max_organisation = 3
-                max_strength = 1
+            category_artillery = {
+                defense = 0.05
+                ap_attack = 0.02
+            }
+            heavy_anti_air = {
+                anti_air_attack = 0.05
             }
         }
         weakpoint_studies = {
         #3
-            category_anti_tank = {
-                ap_attack = 0.05
-				hard_attack = 0.05				   
+            category_artillery = {
+				hard_attack = 0.02
+                defense = 0.05
+                entrenchment = 0.05
             }
         }
         offensive_deployments = {
         #4
-            category_anti_tank = {
-                breakthrough = 0.1
-				hard_attack = 0.02			   
+
+            category_artillery = {
+                hard_attack = 0.05
+            }
+            heavy_anti_air = {
+                ap_attack = 0.02
+                anti_air_attack = 0.05
             }
         }
         assault_anti_tank = {
         #5
-            category_anti_tank = {					  
-                hard_attack = 0.1
-            }
-        }
-    }
-}
-
-flying_batteries = {
-    track = combat_support
-    name = SUBDOCTRINE_FLYING_BATTERIES
-    description = SUBDOCTRINE_FLYING_BATTERIES_DESC
-    icon = GFX_doctrine_flying_batteries_medium
-
-    xp_cost = 100
-    xp_type = army
-
-    available = {
-        NOT = { has_country_flag = flying_batteries_doctrine_check }
-    }
-    visible = {
-        has_dlc = "No Compromise, No Surrender"
-    }
-
-    
-    ai_will_do = {
-        base = 1
-
-        modifier = {
-            factor = 0 
-            NOT = { has_tech = rocket_artillery } 
-        }
-    }
-
-     # EFFECTS
-     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = FLYING_BATTERIES_MASTERY_GAIN
-            sub_doctrine = flying_batteries				
-        }
-        set_country_flag = {
-            flag = flying_batteries_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-     effect = {
-        add_tech_bonus = {
-            bonus = 0.25
-            uses = 1
-            category = rocketry
-            name = SUBDOCTRINE_FLYING_BATTERIES
-        }
-    }
-
-    category_line_artillery = {
-        soft_attack = 0.03
-    }
-
-    rewards = {
-        deployment_drills = {
-            # mot_rocket_artillery_brigade = {
-            #    max_organisation = 3
-            # }
-            motorized_rocket_brigade = {
-                max_organisation = 3
-            }
-            mot_artillery_brigade = {
-                max_organisation = 3
-            }
-            mot_heavy_artillery_brigade = {
-                max_organisation = 3
-            }
-        }
-        counter_battery_tasks = {
-            mot_recon = {
-                battalion_mult = {
-                    category = category_line_artillery 
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-                recon = 0.1
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_line_artillery 
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-                recon = 0.1
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_line_artillery 
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-                recon = 0.1
-            }
-        }
-        ballistics_corrections = {
-            armored_signal = {
-                battalion_mult = {
-                    category = category_line_artillery
-                    initiative = 0.02
-                    supply_consumption = -0.01
-                }
-            }
-
-        }
-        mobile_barrages = {
-            motorized_rocket_brigade = {
-                default_morale = 0.03
-                breakthrough = 0.075
-                soft_attack = 0.04
-            }
-            mot_artillery_brigade = {
-                breakthrough = 0.05
-            }
-            mot_heavy_artillery_brigade = {
-                breakthrough = 0.05
-            }
-
-        }
-        wide_dispersal_positions = {
-            # mot_rocket_artillery_brigade = {
-            #    max_organisation = 3
-            # }
-            motorized_rocket_brigade = {
-                max_organisation = 2
-            }
-            mot_artillery_brigade = {
-                max_organisation = 2
-            }
-            mot_heavy_artillery_brigade = {
-                max_organisation = 2
-            }
-        }
-    }
-}
-
-air_cavalry = {
-    track = combat_support
-    name = SUBDOCTRINE_AIR_CAVALRY
-    description = SUBDOCTRINE_AIR_CAVALRY_DESC
-    icon = GFX_doctrine_air_cavalry_medium
-
-    xp_cost = 100
-    xp_type = army
-
-    available = {
-        NOT = { has_country_flag = air_cavalry_doctrine_check }
-    }
-    visible = {
-        has_dlc = "Gotterdammerung"
-    }   
-
-    ai_will_do = { base = 0 }
-
-     # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = AIR_CAVALRY_MASTERY_GAIN
-            sub_doctrine = air_cavalry				
-        }
-        set_country_flag = {
-            flag = air_cavalry_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-    effect = {
-        add_tech_bonus = {
-            bonus = 0.25
-            uses = 2
-            category = helicopter_tech
-            name = SUBDOCTRINE_AIR_CAVALRY
-        }
-    }
-
-     rewards = {
-        airborne_observers = { 
-            helicopter_recon = {
-                battalion_mult = {
-                    category = category_artillery
-                    soft_attack = 0.03
-                }
-               max_organisation = 3
-            }
-        }
-        service_and_support = {
-            category_helicopter_support_companies = {
-                max_strength = 0.03
-            }
-        }
-        rescue_liasions = {
-            helicopter_field_hospital = {
-            battalion_mult = {
-                category = category_all_infantry
-                    max_strength = 0.05 
-                    default_morale = 0.05 
-                }
-                max_organisation = 2.5
-                casualty_trickleback = 0.05
-            }
-        }
-
-        transport_assault = {
-            helicopter_transport = {
-                battalion_mult = {
-                    category = category_light_infantry
-                    maximum_speed = 0.1
-                    breakthrough = 0.05
-                }
-                breakthrough = 0.05
-               max_organisation = 3
-            }
-                
-        }
-        intervention_units = {
-            helicopter_brigade = {
-                battalion_mult = {
-                    category = category_all_infantry
-                    soft_attack = 0.03
-                }
-               max_organisation = 3
-                
-            }
-        }
- 
-
-     }
-}
-
-mobile_recon_and_assault = {
-    track = combat_support
-    name = SUBDOCTRINE_MOBILE_RECON_AND_ASSAULT
-    description = SUBDOCTRINE_MOBILE_RECON_AND_ASSAULT_DESC
-    icon = GFX_doctrine_mobile_recon_assault_medium
-
-    xp_cost = 100
-    xp_type = army
-
-    available = {
-        # always = yes
-        NOT = { has_country_flag = mobile_recon_and_assault_doctrine_check }
-    }
-    visible = {
-        has_dlc = "La Resistance"
-    }
-    
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 75
-            original_tag = GER
-        }
-        modifier = {
-            factor = 75
-            original_tag = USA
-        }
-        modifier = {
-            factor = 0
-            is_major = no
-        }
-    }
-    
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = MOBILE_RECON_AND_ASSAULT_MASTERY_GAIN
-            sub_doctrine = mobile_recon_and_assault				
-        }
-        set_country_flag = {
-            flag = mobile_recon_and_assault_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-
-    armored_car = {
-        max_organisation = 1.5
-    }
-    light_armor = {
-        max_organisation = 2.5
-    }
-
-    rewards = {
-
-        motorization_support = {
-            mot_heavy_artillery_brigade = {
-                maximum_speed = 0.1
-                default_morale = 0.05
-                soft_attack = 0.05
-            }
-            mot_artillery_brigade = {
-                maximum_speed = 0.2
-                default_morale = 0.05
-                soft_attack = 0.05
-            }
-            mot_heavy_anti_tank_brigade = {
-                maximum_speed = 0.2
-                default_morale = 0.05
-                soft_attack = 0.05
-            }
-            mot_anti_tank_brigade = {
-                maximum_speed = 0.2
-                default_morale = 0.05
-                soft_attack = 0.05
-            }
-
-        }
-        long_range_reconnaissance = {
-            category_recon = {
-                maximum_speed = 0.055
-            }
-        }
-        mobile_operational_deployments = {
-            mot_recon = {
-                battalion_mult = {
-                    category = category_line_artillery
-                    breakthrough = 0.05
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_line_artillery
-                    breakthrough = 0.05
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_line_artillery
-                    breakthrough = 0.05
-                }
-            }
-            mot_heavy_artillery_brigade = {
-                soft_attack = 0.05
-            }
-            mot_artillery_brigade = {
-                soft_attack = 0.05
-            }
-            mot_heavy_anti_tank_brigade = {
-                hard_attack = 0.05
-            }
-            mot_anti_tank_brigade = {
-                hard_attack = 0.05
-            }
-
-        }
-        self_propelled_support_elements = {
-            category_self_propelled_artillery = {
-                soft_attack = 0.030
-            }
-            category_self_propelled_anti_air= {
-                air_attack = 0.055
-                soft_attack = 0.03
-            }
-            category_tank_destroyers = {
-                hard_attack = 0.05
+            category_artillery = {
+				hard_attack = 0.05
+                defense = 0.05
                 ap_attack = 0.03
+                entrenchment = 0.05
             }
-            armored_car = {
-                breakthrough = 0.1
-                default_morale = 0.1
-            }
-        }
-        deep_reconnaissance_focus = {
-            category_recon = {
-                maximum_speed = 0.05
-            }
-            mot_recon = {
-                recon = 0.1
-                breakthrough = 0.05
-            }
-            armored_car_recon = {
-                recon = 0.1
-                breakthrough = 0.05
-            }
-            light_tank_recon = {
-                recon = 0.1
-                breakthrough = 0.05
-            }
-        }
-    }
-}
-
-mobile_recon_and_assault_no_lar = {
-    track = combat_support
-    name = SUBDOCTRINE_MOBILE_RECON_AND_ASSAULT
-    description = SUBDOCTRINE_MOBILE_RECON_AND_ASSAULT_DESC
-    icon = GFX_doctrine_mobile_recon_assault_medium
-
-    xp_cost = 100
-    xp_type = army
-
-    available = {
-        # always = yes
-        NOT = { has_country_flag = mobile_recon_and_assault_no_lar_doctrine_check }
-    }
-    visible = {
-        NOT = {
-            has_dlc = "La Resistance"
-        }
-    }
-
-    # EFFECTS
-    effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = MOBILE_RECON_AND_ASSAULT_NO_LAR_MASTERY_GAIN
-            sub_doctrine = mobile_recon_and_assault_no_lar				
-        }
-        set_country_flag = {
-            flag = mobile_recon_and_assault_no_lar_doctrine_check
-            days = 1250
-            value = 1
-        }
-    }
-
-    ai_will_do = {
-
-        base = 1
-        modifier = {
-            factor = 75
-            original_tag = GER
-        }
-        modifier = {
-            factor = 75
-            original_tag = USA
-        }
-        modifier = {
-            factor = 0
-            is_major = no
-        }
-    }
-    
-
-    light_armor = {
-        max_organisation = 2.5
-    }
-
-    rewards = {
-
-        motorization_support = {
-            category_mobile_and_mobile_combat_sup = {
-                maximum_speed = 0.05
-                default_morale = 0.05
-            }
-
-        }
-        long_range_reconnaissance = {
-            category_recon = {
-                maximum_speed = 0.055
-            }
-        }
-        mobile_operational_deployments = {
-            mot_recon = {
-                battalion_mult = {
-                    category = category_all_armor
-                    breakthrough = 0.05
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_all_armor
-                    breakthrough = 0.05
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_all_armor
-                    breakthrough = 0.05
-                }
-            }
-            mot_artillery_brigade = {
-                soft_attack = 0.03
-            }
-
-        }
-        self_propelled_support_elements = {
-            category_self_propelled_artillery = {
-                soft_attack = 0.030
-            }
-            category_self_propelled_anti_air= {
-                air_attack = 0.055
-                soft_attack = 0.03
-            }
-            category_tank_destroyers = {
-                hard_attack = 0.05
+            heavy_anti_air = {
                 ap_attack = 0.03
             }
         }
-        deep_reconnaissance_focus = {
-            category_recon = {
-                maximum_speed = 0.05
-            }
-            mot_recon = {
-                recon = 0.1
-                breakthrough = 0.05
-            }
-            armored_car_recon = {
-                recon = 0.1
-                breakthrough = 0.05
-            }
-            light_tank_recon = {
-                recon = 0.1
-                breakthrough = 0.05
-            }
-        }
     }
 }
 
-self_propelled_support = {
+pack_artillery = {
 
     track = combat_support
-    name = SUBDOCTRINE_SELF_PROPELLED_SUPPORT
-    description = SUBDOCTRINE_SELF_PROPELLED_SUPPORT_DESC
-    icon = GFX_doctrine_self_propelled_support_medium
+    name = SUBDOCTRINE_PACK_ARTILLERY
+    description = SUBDOCTRINE_PACK_ARTILLERY_DESC
+    icon = GFX_doctrine_pack_artillery_medium
 
     xp_cost = 100
     xp_type = army
 
-    available = {
-       NOT = { has_country_flag = self_propelled_support_doctrine_check }
-    }
-    visible = {
-        has_dlc = "No Compromise, No Surrender"
-    }
-
-    ai_will_do = { base = 0 }
-
-    # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = SELF_PROPELLED_SUPPORT_MASTERY_GAIN
-            sub_doctrine = self_propelled_support				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = pack_artillery_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = PACK_ARTILLERY_MASTERY_GAIN
+                sub_doctrine = pack_artillery
+            }
+            set_country_flag = {
+                flag = pack_artillery_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        set_country_flag = {
-            flag = self_propelled_support_doctrine_check
-            days = 1250
-            value = 1
+        custom_effect_tooltip  = pack_artillery_tech_1_tt
+        
+        set_country_flag = pack_artillery_doctrine_check
+        hidden_effect = {
+            set_technology = {
+                all_terrain_arty_1 = 1
+                popup = no
+            }
+            if = {
+                limit = {
+                    has_country_flag = fire_concentration_doctrine_check
+                }
+                set_technology = { fire_concentration = 0 popup = no }
+                clr_country_flag = fire_concentration_doctrine_check
+            }
         }
     }
-
-    category_self_propelled_artillery = {
-        soft_attack = 0.08
-    }
-    category_self_propelled_anti_air= {
-        air_attack = 0.1
-    }
-    category_tank_destroyers = {
-        hard_attack = 0.1
-    }
-
 
     rewards = {
-        mobile_battery_management_platoons = {
-            category_self_propelled_artillery = {
-               max_organisation = 3
-            }
-            category_self_propelled_anti_air= {
-               max_organisation = 3
-            }
-            category_tank_destroyers = {
-               max_organisation = 3
-            }
-        }
-        screening_attacks = {
-            recon = {
-                battalion_mult = {
-                    category = category_self_propelled_artillery
-                    soft_attack = 0.03
-                    default_morale = 0.05
-                }
-            }
-            mot_recon = {
-                battalion_mult = {
-                    category = category_self_propelled_artillery
-                    soft_attack = 0.03
-                    default_morale = 0.05
-                }
-            }
-            armored_car_recon = {
-                battalion_mult = {
-                    category = category_self_propelled_artillery
-                    soft_attack = 0.03
-                    default_morale = 0.05
-                }
-            }
-            light_tank_recon = {
-                battalion_mult = {
-                    category = category_self_propelled_artillery
-                    soft_attack = 0.03
-                    default_morale = 0.05
+        hill_battery_management = {
+            effect = {
+                custom_effect_tooltip  = pack_artillery_tech_2_tt
+                hidden_effect = {
+                    set_technology = {
+                        all_terrain_arty_2 = 1
+                        popup = no
+                    }
                 }
             }
         }
-        all_terrain_mobility = {
-            category_self_propelled_artillery = {
-                maximum_speed = 0.15
-            }
-            category_self_propelled_anti_air = {
-                maximum_speed = 0.15
-            }
-            category_tank_destroyers = {
-                maximum_speed = 0.15
-            }
-        }
-        multirole_support_vehicles = {
-            category_self_propelled_artillery = {
-                hard_attack = 0.05
-            }
-            category_self_propelled_anti_air = {
-                soft_attack = 0.03
-                hard_attack = 0.05
-            }
-            category_tank_destroyers = {
-                soft_attack = 0.03
+
+        marsh_screening_fire = {
+
+            effect = {
+                custom_effect_tooltip  = pack_artillery_tech_3_tt
+                hidden_effect = {
+                    set_technology = {
+                        all_terrain_arty_3 = 1
+                        popup = no
+                    }
+                }
             }
         }
-        shoot_and_scoot = {
-            category_self_propelled_artillery = {
-               max_organisation = 3
-                default_morale = 0.2
-            }
-            category_self_propelled_anti_air = {
-                max_organisation = 10
-                default_morale = 0.5
-            }
-            category_tank_destroyers = {
-               max_organisation = 3
-                hard_attack = 0.075
-                default_morale = 0.2
+
+        cross_country_gun_mobility = {
+            effect = {
+                custom_effect_tooltip  = pack_artillery_tech_4_tt
+                hidden_effect = {
+                    set_technology = {
+                        all_terrain_arty_4 = 1
+                        popup = no
+                    }
+                }
             }
         }
-    } 
+
+        urban_support_vehicles = {
+            effect = {
+                custom_effect_tooltip  = pack_artillery_tech_5_tt
+                hidden_effect = {
+                    set_technology = {
+                        all_terrain_arty_5 = 1
+                        popup = no
+                    }
+                }
+            }
+        }
+
+        shoot_and_scoot_batteries = {
+            effect = {
+                custom_effect_tooltip  = pack_artillery_tech_6_tt
+                hidden_effect = {
+                    set_technology = {
+                        all_terrain_arty_6 = 1
+                        popup = no
+                    }
+                }
+            }
+        }
+    }
 }
 
 siege_artillery = {
@@ -839,27 +343,47 @@ siege_artillery = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-
-    }
-    visible = {
-        has_dlc = "Gotterdammerung"
-    }
-
-    ai_will_do = { base = 0 }
-
     # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = SIEGE_ARTILLERY_MASTERY_GAIN
-            sub_doctrine = siege_artillery				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = siege_artillery_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = SIEGE_ARTILLERY_MASTERY_GAIN
+                sub_doctrine = siege_artillery
+            }
+            set_country_flag = {
+                flag = siege_artillery_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        set_country_flag = {
-            flag = siege_artillery_doctrine_check
-            days = 1250
-            value = 1
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_doctrine_check
+                }
+                set_technology = { all_terrain_arty_1 = 0 popup = no }
+                set_technology = { all_terrain_arty_2 = 0 popup = no }
+                set_technology = { all_terrain_arty_3 = 0 popup = no }
+                set_technology = { all_terrain_arty_4 = 0 popup = no }
+                set_technology = { all_terrain_arty_5 = 0 popup = no }
+                set_technology = { all_terrain_arty_6 = 0 popup = no }
+                clr_country_flag = pack_artillery_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = fire_concentration_doctrine_check
+                }
+                set_technology = { fire_concentration = 0 popup = no }
+                clr_country_flag = fire_concentration_doctrine_check
+            }
         }
     }
 
@@ -886,11 +410,13 @@ siege_artillery = {
 
         fortress_busters = {
             super_heavy_artillery = {
+                breakthrough = 0.03
                 fort = {
                     attack = 0.1
                 }
             }
             self_propelled_super_heavy_artillery = {
+                breakthrough = 0.03
                 fort = {
                     attack = 0.1
                 }
@@ -906,17 +432,19 @@ siege_artillery = {
                     railway_gun_hours_between_redistribution = -0.5
                     instant = yes
                 }
-                
+
             }
         }
         precomputed_firing_data = {
             super_heavy_artillery = {
                max_organisation = 3
                 defense = 0.15
+                default_morale = 0.05
             }
             self_propelled_super_heavy_artillery = {
                max_organisation = 3
                 defense = 0.15
+                default_morale = 0.05
             }
 
         }
@@ -930,7 +458,7 @@ siege_artillery = {
                     attack = 0.1
                 }
                 town = {
-                    attack = 0.05
+                    attack = 0.1
                 }
             }
             self_propelled_super_heavy_artillery = {
@@ -941,13 +469,14 @@ siege_artillery = {
                     attack = 0.1
                 }
                 town = {
-                    attack = 0.05
+                    attack = 0.1
                 }
             }
         }
         mobile_artillery_command = {
             self_propelled_super_heavy_artillery = {
                 maximum_speed = 0.15
+                defense = 0.05
             }
 
             equipment_bonus = {
@@ -974,134 +503,110 @@ field_engineering = {
     xp_cost = 100
     xp_type = army
 
-    available = {
-        NOT = { has_country_flag = field_engineering_doctrine_check }
-    }
-
-    ai_will_do = { 
-        base = 1
-        modifier = {
-            factor = 75
-            original_tag = ITA
-        }
-        modifier = {
-            factor = 75
-            original_tag = JAP
-        }
-    }
-
     # EFFECTS
     effect = {
-        add_daily_mastery = {
-            amount = 0.4						
-            days = 1250						
-            name = FIELD_ENGINEERING_MASTERY_GAIN
-            sub_doctrine = field_engineering				
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = field_engineering_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = FIELD_ENGINEERING_MASTERY_GAIN
+                sub_doctrine = field_engineering
+            }
+            set_country_flag = {
+                flag = field_engineering_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
         }
-        set_country_flag = {
-            flag = field_engineering_doctrine_check
-            days = 1250
-            value = 1
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_doctrine_check
+                }
+                set_technology = { all_terrain_arty_1 = 0 popup = no }
+                set_technology = { all_terrain_arty_2 = 0 popup = no }
+                set_technology = { all_terrain_arty_3 = 0 popup = no }
+                set_technology = { all_terrain_arty_4 = 0 popup = no }
+                set_technology = { all_terrain_arty_5 = 0 popup = no }
+                set_technology = { all_terrain_arty_6 = 0 popup = no }
+                clr_country_flag = pack_artillery_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = fire_concentration_doctrine_check
+                }
+                set_technology = { fire_concentration = 0 popup = no }
+                clr_country_flag = fire_concentration_doctrine_check
+            }
         }
     }
 
-    engineer = {
-        river = {
-            movement = 0.1
-        }
-        forest = {
-            movement = 0.1
-        }
-    }
     assault_engineer = {
         river = {
-            movement = 0.1
-        }
-        forest = {
-            movement = 0.1
+            attack = 0.05
+            movement = 0.05
         }
     }
-    pioneer_support = {
-        river = {
-            movement = 0.1
-        }
-        forest = {
-            movement = 0.1
-        }
+    category_support_battalions = {
+        soft_attack = 0.05
     }
 
     rewards = {
         rapid_fire_lane_clearance = {
-            engineer = {
-               max_organisation = 3
-                battalion_mult = {
-                    category = category_all_infantry
-                    entrenchment = 0.1
-                    add = yes
-                }
-            }
-            maintenance_company = {
-               max_organisation = 3
-            }
-            hq_company = {
-               max_organisation = 3
+            dig_in_speed_factor = 0.05
+            category_support_battalions = {
+                max_organisation = 2
+                soft_attack = 0.05
             }
         }
         sapper_fieldcraft = {
-            engineer = {
-                max_strength = 0.15
-                defense = 0.05
+            dig_in_speed_factor = 0.05
+            max_dig_in = 0.25
+            category_support_battalions = {
+                defense = 0.03
+                max_strength = 1
             }
-            maintenance_company = {
-                max_strength = 0.15
-            }
+
         }
         engineerdug_gun_emplacements = {
-            engineer = {
-                battalion_mult = {
-                    category = category_artillery
-                    soft_attack = 0.03
-                    defense = 0.05
-                }
-                battalion_mult = {
-                    category = category_all_infantry
-                    soft_attack = 0.03
-                }
+            category_recon = {
+                recon = 1
+            }
+            armored_car_recon = {
+                max_organisation = 4
+            }
+            light_tank_recon = {
+                max_organisation = 4
             }
         }
         smoke_projector_training = {
-            engineer = {
-                breakthrough = 0.25
-            }
-            maintenance_company = {
-                supply_consumption = -0.05
-                battalion_mult = {
-                    category = category_tanks
-                    reliability = 0.1
-                    strength = 0.05
-                }
-            }
             field_hospital = {
-                casualty_trickleback = 0.05
-            }
-            helicopter_brigade = {
-                casualty_trickleback = 0.05
+                casualty_trickleback = 0.03
+                experience_loss_factor = -0.03
             }
             helicopter_field_hospital = {
-                casualty_trickleback = 0.05
-            } 
-        }
-        charge_and_flame = {
-            engineer = {
-               max_organisation = 3
-                soft_attack = 0.03
-                hard_attack = 1  
+                casualty_trickleback = 0.03
+                experience_loss_factor = -0.03
             }
             maintenance_company = {
-                max_organisation = 2.5
+                reliability_factor = 0.03
             }
-            hq_company = {
-                max_organisation = 2.5
+        }
+        charge_and_flame = {
+            assault_engineer = {
+                river = {
+                    attack = 0.15
+                    movement = 0.05
+                }
+            }
+            maintenance_company = {
+                reliability_factor = 0.05
             }
         }
     }
