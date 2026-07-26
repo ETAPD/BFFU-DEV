@@ -1,4 +1,15 @@
 on_actions = {
+
+	# The Nationalist side is identified the same way the SPA tag alias in
+	# common/country_tag_aliases/tag_aliases.txt identifies it: original_tag SPR
+	# plus the nationalist side flag. NOT by ideology, since they rule as
+	# Non-Aligned (Junta Militar), and not by which country is ROOT at civil war
+	# start, since the live LaR path activates a reserved dynamic country rather
+	# than splitting the player's own country.
+
+	# Volunteers fighting for the Nationalists carry the same handicap the
+	# Nationalists themselves have, because volunteer divisions keep the sending
+	# country's modifiers. ROOT = sender, FROM = recipient.
 	on_send_volunteers = {
 		effect = {
 			if = {
@@ -8,7 +19,12 @@ on_actions = {
 					NOT = { original_tag = SPR }
 					NOT = { has_idea = SPA_scw_nationalist_handicap }
 					FROM = {
-						has_country_flag = SPA_scw_nationalist_side
+						original_tag = SPR
+						OR = {
+							has_country_flag = SPR_nationalist_spain_flag
+							has_country_flag = scw_no_lar_nationalists
+							has_country_flag = SPA_scw_nationalist_side
+						}
 					}
 				}
 				add_ideas = SPA_scw_nationalist_handicap
@@ -16,17 +32,22 @@ on_actions = {
 		}
 	}
 
-	# Safety net: if the Nationalists ever end up flagged but without the spirit
-	# (focus/event swapped their spirits, or the war began before this system
-	# existed
+	# Applies (or re-applies) the handicap to the Nationalists for as long as the
+	# war runs. This is what makes the system path independent: it covers the LaR
+	# civil war, the legacy no-LaR split, and games already in progress.
 	on_weekly = {
 		effect = {
 			if = {
 				limit = {
-					has_country_flag = SPA_scw_nationalist_side
+					original_tag = SPR
 					has_global_flag = spanish_civil_war
 					NOT = { has_global_flag = scw_over }
 					NOT = { has_idea = SPA_scw_nationalist_handicap }
+					OR = {
+						has_country_flag = SPR_nationalist_spain_flag
+						has_country_flag = scw_no_lar_nationalists
+						has_country_flag = SPA_scw_nationalist_side
+					}
 				}
 				add_ideas = SPA_scw_nationalist_handicap
 			}
