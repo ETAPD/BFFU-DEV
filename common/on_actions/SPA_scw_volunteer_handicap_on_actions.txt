@@ -10,6 +10,8 @@ on_actions = {
 	# Volunteers fighting for the Nationalists carry the same handicap the
 	# Nationalists themselves have, because volunteer divisions keep the sending
 	# country's modifiers. ROOT = sender, FROM = recipient.
+	# The sender copies Spain's CURRENT value rather than the full -0.10, so a
+	# country that joins midway through the decay does not get a fresh penalty.
 	on_send_volunteers = {
 		effect = {
 			if = {
@@ -17,7 +19,7 @@ on_actions = {
 					has_global_flag = spanish_civil_war
 					NOT = { has_global_flag = scw_over }
 					NOT = { original_tag = SPR }
-					NOT = { has_idea = SPA_scw_nationalist_handicap }
+					NOT = { has_dynamic_modifier = { modifier = SPA_scw_balance_modifier } }
 					FROM = {
 						original_tag = SPR
 						OR = {
@@ -27,7 +29,8 @@ on_actions = {
 						}
 					}
 				}
-				add_ideas = SPA_scw_nationalist_handicap
+				set_variable = { SPA_scw_balance_var = FROM.SPA_scw_balance_var }
+				add_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
 			}
 		}
 	}
@@ -42,14 +45,43 @@ on_actions = {
 					original_tag = SPR
 					has_global_flag = spanish_civil_war
 					NOT = { has_global_flag = scw_over }
-					NOT = { has_idea = SPA_scw_nationalist_handicap }
+					NOT = { has_dynamic_modifier = { modifier = SPA_scw_balance_modifier } }
 					OR = {
 						has_country_flag = SPR_nationalist_spain_flag
 						has_country_flag = scw_no_lar_nationalists
 						has_country_flag = SPA_scw_nationalist_side
 					}
 				}
-				add_ideas = SPA_scw_nationalist_handicap
+				set_variable = { SPA_scw_balance_var = -0.1 }
+				add_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+			}
+		}
+	}
+
+	# Decay: from 1 January 1937 the handicap weakens by 1 percentage point a
+	# month, so the full -10% is gone ten months later (November 1937). Every
+	# holder decays on the same monthly tick, so Spain and its volunteer senders
+	# stay in step. Once it reaches zero the modifier removes itself.
+	on_monthly = {
+		effect = {
+			if = {
+				limit = {
+					has_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+					date > 1937.1.1
+				}
+				add_to_variable = { SPA_scw_balance_var = 0.01 }
+				clamp_variable = {
+					var = SPA_scw_balance_var
+					min = -0.1
+					max = 0
+				}
+				if = {
+					limit = {
+						check_variable = { SPA_scw_balance_var > -0.005 }
+					}
+					remove_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+					clear_variable = SPA_scw_balance_var
+				}
 			}
 		}
 	}
