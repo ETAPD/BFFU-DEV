@@ -345,6 +345,154 @@ assault_infantry = {
     }
 }
 
+mounted_infantry = {
+    track = infantry
+    name = SUBDOCTRINE_MOUNTED_INFANTRY
+    description = SUBDOCTRINE_MOUNTED_INFANTRY_DESC
+    icon = GFX_doctrine_mounted_infantry_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    mastery = {
+        categories = {
+            category_all_infantry
+            category_cavalry
+        }
+    }
+
+    category_cavalry = {
+        soft_attack = 0.03
+    }
+
+    # EFFECTS
+    effect = {
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = mounted_infantry_doctrine_selected
+                }
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = MOUNTED_INFANTRY_MASTERY_GAIN
+                sub_doctrine = mounted_infantry
+            }
+            set_country_flag = {
+                flag = mounted_infantry_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+    }
+
+    rewards = {
+        dragoon_traditions = {
+            category_cavalry = {
+                breakthrough = 0.05
+            }
+        }
+        mounted_skirmish_groups = {
+            recon = {
+                battalion_mult = {
+                    category = category_cavalry
+                    soft_attack = 0.03
+                    defense = 0.05
+                }
+                battalion_mult = {
+                    category = category_cavalry
+                    max_organisation = 2.5
+                    add = yes
+                }
+            }
+        }
+        anti_mechanized_cavalry_groups = {
+            category_cavalry = {
+                hard_attack = 0.075
+            }
+        }
+        beasts_of_war = {
+            elephantry = {
+                plains = {
+                    attack = 0.05
+                    defence = 0.05
+                    movement = 0.05
+                }
+                desert = {
+                    attack = 0.10
+                    defence = 0.10
+                    movement = 0.10
+                }
+                hills = {
+                    attack = 0.05
+                    defence = 0.05
+                    movement = 0.05
+                }
+            }
+            camelry = {
+                plains = {
+                    attack = 0.05
+                    defence = 0.05
+                    movement = 0.05
+                }
+                desert = {
+                    attack = 0.10
+                    defence = 0.10
+                    movement = 0.10
+                }
+                hills = {
+                    attack = 0.05
+                    defence = 0.05
+                    movement = 0.05
+                }
+            }
+            cavalry = {
+                plains = {
+                    attack = 0.05
+                    defence = 0.05
+                    movement = 0.05
+                }
+                desert = {
+                    attack = 0.10
+                    defence = 0.10
+                    movement = 0.10
+                }
+                hills = {
+                    attack = 0.05
+                    defence = 0.05
+                    movement = 0.05
+                }
+            }
+        }
+        limbered_combat_support = {
+            effect = {
+                custom_effect_tooltip = mounted_infantry_arty_tt
+                hidden_effect = {
+                    set_technology = {
+                        mounted_infantry_arty = 1
+                        popup = no
+                    }
+                }
+            }
+            artillery_brigade = {
+                maximum_speed = 1
+            }
+            rocket_artillery_brigade = {
+                maximum_speed = 1
+            }
+            anti_tank_brigade = {
+                maximum_speed = 1
+            }
+            anti_air = {
+                maximum_speed = 1
+            }
+        }
+    }
+}
+
 commandos = {
     track = infantry
     name = SUBDOCTRINE_COMMANDOS
@@ -424,6 +572,13 @@ peoples_war = {
    
     xp_cost = 100
     xp_type = army
+
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 1
+        }
+    }
 
     effect = {
         if = {
