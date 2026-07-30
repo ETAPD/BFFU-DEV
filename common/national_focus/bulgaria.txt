@@ -368,7 +368,7 @@ focus_tree = {
 		x = 28
 		y = 0
 
-		cost = 10
+		cost = 5
 
 		ai_will_do = {
 			factor = 8
@@ -389,7 +389,7 @@ focus_tree = {
 		y = 1
 		relative_position_id = BUL_armed_forces
 
-		cost = 10
+		cost = 5
 
 		ai_will_do = {
 			factor = 27
@@ -477,209 +477,438 @@ focus_tree = {
 	}
 	
 	focus = {
-		id = BUL_navy
-		icon = GFX_goal_generic_construct_naval_dockyard
+		id = BUL_expand_the_burgas_shipyards
+		icon = GFX_SOV_rework256
 		prerequisite = { focus = BUL_armed_forces }
-		x = 7
+		x = 9
 		y = 1
 		relative_position_id = BUL_armed_forces
 
-		cost = 10
+		cost = 3
 
 		ai_will_do = {
-			factor = 1
+			factor = 3
 		}
-
-		completion_reward = {
-			navy_experience = 25
-			random_owned_controlled_state = {
-				limit = {
-					ROOT = { has_full_control_of_state = PREV }
-					is_core_of = ROOT
-					not = {
-						OR = {
-							state = 646
-							state = 645
-							state = 555
-						}
-					}
-					free_building_slots = {
-						building = dockyard
-						size > 1
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = dockyard
-					level = 2
-					instant_build = yes
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = BUL_black_sea_fleet
-		icon = GFX_goal_generic_navy_battleship
-		prerequisite = { focus = BUL_navy }
-		mutually_exclusive = { focus = BUL_raiding_fleet }
-		x = -1
-		y = 1
-		relative_position_id = BUL_navy
-
-		cost = 10
-
-		ai_will_do = {
-			factor = 1
-		}
-
-		completion_reward = {
-			add_tech_bonus = {
-				name = bulgaria
-				bonus = 0.5
-				uses = 2
-				category = dd_tech
-				category = ca_tech
-				category = bb_tech
-			}
-			random_owned_controlled_state = {
-				limit = {
-					ROOT = { has_full_control_of_state = PREV }
-					is_core_of = ROOT
-					not = {
-						OR = {
-							state = 646
-							state = 645
-							state = 555
-						}
-					}
-					free_building_slots = {
-						building = dockyard
-						size > 1
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = dockyard
-					level = 2
-					instant_build = yes
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = BUL_raiding_fleet
-		icon = GFX_goal_generic_navy_submarine
-		prerequisite = { focus = BUL_navy }
-		mutually_exclusive = { focus = BUL_black_sea_fleet }
-		x = 1
-		y = 1
-		relative_position_id = BUL_navy
-
-		cost = 10
-
-		ai_will_do = {
-			factor = 1
-		}
-
-		completion_reward = {
-			add_tech_bonus = {
-				name = bulgaria
-				bonus = 0.5
-				uses = 2
-				category = ss_tech
-			}
-			random_owned_controlled_state = {
-				limit = {
-					ROOT = { has_full_control_of_state = PREV }
-					is_core_of = ROOT
-					not = {
-						OR = {
-							state = 646
-							state = 645
-							state = 555
-						}
-					}
-					free_building_slots = {
-						building = dockyard
-						size > 1
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = dockyard
-					level = 2
-					instant_build = yes
-				}
-			}
-		}
-	}
-	focus = {
-		id = BUL_consolidate_dominance_of_the_seas
-
-		prerequisite = { focus = BUL_black_sea_fleet focus = BUL_raiding_fleet }
-
-		icon = GFX_goal_generic_navy_battleship
-		relative_position_id = BUL_black_sea_fleet
-		x = 1
-		y = 1
-		cost = 5
 
 		available = {
+
 		}
-		
-		search_filters = {FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+
 		completion_reward = {
-			add_war_support = 0.05
-			navy_experience = 50
-			add_doctrine_cost_reduction = {
-				name = BUL_consolidate_dominance_of_the_seas
-			    cost_reduction = 0.50
-			    uses = 2
-				category = naval_doctrine
-			}
-			random_owned_state = {
+			random_owned_controlled_state = {
+				prioritize = { 221 }
 				limit = {
+					ROOT = { has_full_control_of_state = PREV }
 					free_building_slots = {
 						building = dockyard
 						size > 2
 						include_locked = yes
 					}
 				}
-				set_state_flag = BUL_consolidate_dominance_of_the_seas_flag
-				add_extra_state_shared_building_slots = 2
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = dockyard
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
-			random_owned_state = {
-				limit = {
-					NOT = { has_state_flag = BUL_consolidate_dominance_of_the_seas_flag }
-					free_building_slots = {
-						building = dockyard
-						size > 2
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = dockyard
-					level = 2
-					instant_build = yes
-				}
+		}
+	}
+
+	focus = {
+		id = BUL_transportation_focus
+		icon = GFX_focus_generic_naval_discipline
+		prerequisite = { focus = BUL_expand_the_burgas_shipyards }
+		mutually_exclusive = { focus = BUL_anti_sub_focus }
+		x = -2
+		y = 1
+		relative_position_id = BUL_expand_the_burgas_shipyards
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			add_ideas = AXIS_MINOR_focus_on_transportation
+		}
+	}
+
+	focus = {
+		id = BUL_rehearsed_landings
+		icon = GFX_focus_generic_naval_invasion
+		prerequisite = { focus = BUL_transportation_focus }
+		x = -1
+		y = 1
+		relative_position_id = BUL_transportation_focus
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 4
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			swap_ideas = {
+				remove_idea = AXIS_MINOR_focus_on_transportation
+				add_idea = AXIS_MINOR_focus_on_landing
 			}
+		}
+	}
+
+	focus = {
+		id = BUL_streamlined_convoys
+		icon = GFX_focus_SOV_organize_wreckers
+		prerequisite = { focus = BUL_transportation_focus }
+		x = 1
+		y = 1
+		relative_position_id = BUL_transportation_focus
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 4
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			add_equipment_to_stockpile = {
+                type = convoy_1
+                amount = 50
+            }
+		}
+	}
+
+	focus = {
+		id = BUL_amphibious_strategy
+		icon = GFX_goal_SAF_protect_the_trade
+		prerequisite = { focus = BUL_rehearsed_landings }
+		prerequisite = { focus = BUL_streamlined_convoys }
+		x = 0
+		y = 2
+		relative_position_id = BUL_transportation_focus
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 4
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			navy_experience = 100
+			custom_effect_tooltip = tech_effect|AXIS_MINOR_marine_improvements
 			hidden_effect = {
-				random_owned_state = {
-					limit = {
-						has_state_flag = BUL_consolidate_dominance_of_the_seas_flag
+				set_technology = { AXIS_MINOR_marine_improvements = 1 }
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_anti_sub_focus
+		icon = GFX_goal_generic_navy_cruiser
+		prerequisite = { focus = BUL_expand_the_burgas_shipyards }
+		mutually_exclusive = { focus = BUL_transportation_focus }
+		x = 2
+		y = 1
+		relative_position_id = BUL_expand_the_burgas_shipyards
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			add_ideas = AXIS_MINOR_focus_on_asw
+		}
+	}
+
+	focus = {
+		id = BUL_destroyer_improvements
+		icon = GFX_goal_generic_navy_anti_submarine
+		prerequisite = { focus = BUL_anti_sub_focus }
+		x = -1
+		y = 1
+		relative_position_id = BUL_anti_sub_focus
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			swap_ideas = {
+				remove_idea = AXIS_MINOR_focus_on_asw
+				add_idea = AXIS_MINOR_destroyer_improvements
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_destroyer_prototypes
+		icon = GFX_focus_generic_navy_research_bonus
+		prerequisite = { focus = BUL_anti_sub_focus }
+		x = 1
+		y = 1
+		relative_position_id = BUL_anti_sub_focus
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			add_equipment_production = {
+				equipment = {
+					type = ship_hull_light_1
+					creator = "ROM"
+					version_name = "Regele Ferdinand Class"
+				}
+				requested_factories = 1
+				progress = 0.9
+				amount = 1 #Tooltip purposes
+			}
+			add_equipment_production = {
+				equipment = {
+					type = ship_hull_light_1
+					creator = "ROM"
+					version_name = "Regele Ferdinand Class"
+				}
+				requested_factories = 1
+				progress = 0.9
+				amount = 1 #Tooltip purposes
+			}
+			add_equipment_production = {
+				equipment = {
+					type = ship_hull_light_1
+					creator = "ROM"
+					version_name = "Regele Ferdinand Class"
+				}
+				requested_factories = 1
+				progress = 0.9
+				amount = 1 #Tooltip purposes
+			}
+			add_tech_bonus = {
+				name = BUL_destroyer_prototypes
+				bonus = 0.5
+				uses = 1
+				technology = improved_sonar
+			}
+			add_tech_bonus = {
+				name = BUL_destroyer_prototypes
+				bonus = 0.5
+				uses = 1
+				technology = advanced_depth_charges
+			}
+			add_tech_bonus = {
+				name = BUL_destroyer_prototypes
+				bonus = 0.5
+				uses = 1
+				technology = cavity_magnatron
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_dockyard_expansion
+		icon = GFX_focus_POL_develop_polish_shipbuilding
+		prerequisite = { focus = BUL_destroyer_improvements }
+		prerequisite = { focus = BUL_destroyer_prototypes }
+		x = 0
+		y = 2
+		relative_position_id = BUL_anti_sub_focus
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			navy_experience = 100
+			random_owned_controlled_state = {
+				prioritize = { 221 }
+				limit = {
+					ROOT = { has_full_control_of_state = PREV }
+					free_building_slots = {
+						building = dockyard
+						size > 2
+						include_locked = yes
 					}
-					clr_state_flag = BUL_consolidate_dominance_of_the_seas_flag
+				}
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = dockyard
+					level = 3
+					instant_build = yes
+				}
+				set_state_flag = BUL_expand_the_burgas_shipyards_AB
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_a_naval_review
+		icon = GFX_focus_BEL_maritime_phoenix
+		prerequisite = { focus = BUL_amphibious_strategy focus = BUL_dockyard_expansion }
+		x = 0
+		y = 4
+		relative_position_id = BUL_expand_the_burgas_shipyards
+
+		cost = 3
+
+		ai_will_do = {
+			factor = 4
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			IF = {
+				limit = {
+					has_completed_focus = BUL_dockyard_expansion
+				}
+				add_mastery = {
+					amount = 100
+					folder = naval
+				}
+				add_mastery_bonus = {
+					name = BUL_a_naval_review
+					bonus = 0.2
+					days = 360
+					folder = naval
+				}
+			}
+			IF = {
+				limit = {
+					has_completed_focus = BUL_amphibious_strategy
+				}
+				add_mastery = {
+					amount = 120
+					folder = special_forces
+				}
+				add_mastery_bonus = {
+					name = BUL_a_naval_review
+					bonus = 0.2
+					days = 360
+					folder = special_forces
 				}
 			}
 		}
