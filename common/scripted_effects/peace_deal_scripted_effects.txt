@@ -312,3 +312,257 @@ GER_soviet_peace_effect = {
         }
     }
 }
+
+JAP_allied_occupation_peace_effect = {
+
+	set_global_flag = JAP_lost_asia
+
+	#4th best find
+	
+	set_variable = { JAP_fourth_occupation_recipient = RAJ }
+
+	if = {
+		limit = {
+			SOV = {
+				exists = yes
+				has_war_with = JAP
+			}
+		}
+
+		set_temp_variable = { JAP_soviet_war = 1 }
+		set_variable = { JAP_fourth_occupation_recipient = SOV }
+	}
+	else = {
+		every_country = {
+			limit = {
+				exists = yes
+				has_war_with = JAP
+				NOT = {
+					
+					original_tag = ENG
+					original_tag = FRA
+					original_tag = USA
+					
+				}
+			}
+
+			set_temp_variable = { JAP_candidate_war_score = any_war_score }
+
+			if = {
+				limit = {
+					check_variable = {
+						var = JAP_candidate_war_score
+						value = ROOT.JAP_highest_eligible_war_score
+						compare = greater_than
+					}
+				}
+
+				ROOT = {
+					set_temp_variable = {
+						JAP_highest_eligible_war_score = PREV.JAP_candidate_war_score
+					}
+					set_variable = { JAP_fourth_occupation_recipient = PREV }
+				}
+			}
+		}
+	}
+
+	# whitepeace
+	every_country = {
+		limit = {
+			has_war_with = JAP
+		}
+		white_peace = JAP
+	}
+
+	# 4th best
+	var:JAP_fourth_occupation_recipient = {
+		transfer_state = 536  # Hokkaido
+		transfer_state = 533  # Kita-Tohoku
+		transfer_state = 1019 # Minami-Tohoku
+        transfer_state = 537  # South Sakhalin
+        transfer_state = 555  # Kuril Islands
+	}
+
+	# USA
+	USA = {
+		transfer_state = 282  # Kanto
+		transfer_state = 534  # Koshinetsu
+		transfer_state = 535  # Hokuriku
+		transfer_state = 532  # Tokai
+	}
+
+	# ENG
+	ENG = {
+		transfer_state = 531  # Kansai
+		transfer_state = 530  # Shikoku
+		transfer_state = 529  # Sanyo
+        transfer_state = 1020 # Sanin
+	}
+
+	# FRA
+	FRA = {
+		transfer_state = 528  # Hokubu Kyushu
+		transfer_state = 1018 # Minami Kyushu
+		transfer_state = 526  # Okinawa
+	}
+
+	# The United States receives all Chinese core territory.
+	CHI = {
+		every_core_state = {
+			USA = {
+				transfer_state = PREV
+			}
+		}
+	}
+
+	# Soviet settlement: Manchuria, a divided Korea, and Japan's fourth zone.
+	if = {
+		limit = {
+			check_variable = { JAP_soviet_war = 1 }
+		}
+
+		SOV = {
+			transfer_state = 328  # Manchukuo
+			transfer_state = 609  # East Hebei
+			transfer_state = 610  # Jehol
+			transfer_state = 611  # South Chahar
+			transfer_state = 612  # Chahar
+			transfer_state = 714  # Heilungkiang
+			transfer_state = 715  # Liaoning
+			transfer_state = 716  # Liaotung
+			transfer_state = 717  # Chuho
+			transfer_state = 745  # Dalian
+			transfer_state = 761  # Hulunbuir
+			transfer_state = 1043 # Pailingmiao
+
+			transfer_state = 527  # North Korea
+			transfer_state = 1028 # Hamgyong
+		}
+
+		USA = {
+			transfer_state = 525  # South Korea
+			transfer_state = 1029 # Gangwon
+			transfer_state = 1030 # Gyeongsang
+			transfer_state = 1031 # Chungcheong and Jeolla
+		}
+
+		# Release or reuse KOR as democratic South Korea under the USA.
+		USA = {
+			if = {
+				limit = {
+					KOR = { exists = no }
+				}
+				release = KOR
+			}
+		}
+
+		KOR = {
+			if = {
+				limit = { is_subject = yes }
+				overlord = { end_puppet = PREV }
+			}
+			transfer_state = 525
+			transfer_state = 1029
+			transfer_state = 1030
+			transfer_state = 1031
+			set_cosmetic_tag = KOR_democratic
+			set_politics = {
+				ruling_party = democratic
+				elections_allowed = yes
+			}
+			set_popularities = {
+				democratic = 100
+			}
+		}
+
+		USA = {
+			puppet = KOR
+			set_autonomy = {
+				target = KOR
+				autonomy_state = autonomy_puppet
+			}
+		}
+
+		# Create North Korea only after the original KOR country exists.
+		SOV = {
+			create_dynamic_country = {
+				original_tag = KOR
+				save_event_target_as = JAP_north_korea
+				set_cosmetic_tag = KOR_communism
+				set_politics = {
+					ruling_party = communism
+					elections_allowed = no
+				}
+				set_popularities = {
+					communism = 100
+				}
+				527 = {
+					add_core_of = PREV
+					transfer_state_to = PREV
+				}
+				1028 = {
+					add_core_of = PREV
+					transfer_state_to = PREV
+				}
+				set_capital = { state = 527 }
+				SOV = {
+					puppet = PREV
+					set_autonomy = {
+						target = PREV
+						autonomy_state = autonomy_puppet
+					}
+				}
+			}
+		}
+	}
+
+	# New Zealand
+	if = {
+		limit = {
+			NZL = {
+				exists = yes
+				is_ai = no
+			}
+		}
+		NZL = {
+			transfer_state = 284 # North Island
+			transfer_state = 723 # South Island
+			transfer_state = 726 # Samoa
+			transfer_state = 684 # Caroline Islands
+			transfer_state = 646 # Saipan
+			transfer_state = 524 # Taiwan
+			transfer_state = 647 # Palau
+		}
+	}
+
+	# RAJ
+	every_state = {
+		limit = {
+			OR = {
+				is_core_of = SIA
+				is_core_of = VIN
+			}
+			NOT = {
+				OWNER = {
+					is_in_faction_with = ENG
+				}
+			}
+		}
+
+		RAJ = {
+			transfer_state = PREV
+		}
+	}
+
+	# left over
+	JAP = {
+		every_owned_state = {
+			USA = {
+				transfer_state = PREV
+			}
+		}
+	}
+
+	clear_variable = JAP_fourth_occupation_recipient
+}
