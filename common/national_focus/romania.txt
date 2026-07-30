@@ -3748,7 +3748,7 @@ focus_tree = {
 
 	focus = {
 		id = ROM_invite_technical_experts
-		icon = GFX_focus_SOV_organize_wreckers
+		icon = GFX_goal_generic_improve_relations
 		prerequisite = { focus = ROM_learn_from_the_french focus = ROM_learn_from_the_germans }
 		x = -1
 		y = 1
@@ -3854,7 +3854,7 @@ focus_tree = {
 
 	focus = {
 		id = ROM_independent_operations
-		icon = GFX_doctrine_tank_warfare
+		icon = GFX_focus_FIN_motti_tactics
 		prerequisite = { focus = ROM_learn_from_the_germans }
 		x = 1
 		y = 1
@@ -4658,7 +4658,7 @@ focus_tree = {
 
 	focus = {
 		id = ROM_expand_the_galati_shipyards
-		icon = GFX_goal_generic_construct_naval_dockyard
+		icon = GFX_SOV_rework256
 		x = 50
 		y = 0
 
@@ -4680,36 +4680,22 @@ focus_tree = {
 		continue_if_invalid = no
 		available_if_capitulated = no
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		complete_tooltip = {
-			navy_experience = 25
-			random_state = {
-				limit = {
-					has_state_flag = ROM_expand_the_galati_shipyards_AB
-				}
-				add_building_construction = {
-					type = dockyard
-					level = 2
-					instant_build = yes
-				}
-			}
-		}
 
 		completion_reward = {
-			navy_experience = 25
 			random_owned_controlled_state = {
 				prioritize = { 971 }
 				limit = {
 					ROOT = { has_full_control_of_state = PREV }
 					free_building_slots = {
 						building = dockyard
-						size > 1
+						size > 2
 						include_locked = yes
 					}
 				}
-				add_extra_state_shared_building_slots = 2
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = dockyard
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 				set_state_flag = ROM_expand_the_galati_shipyards_AB
@@ -4718,11 +4704,11 @@ focus_tree = {
 	}
 
 	focus = {
-		id = ROM_coastal_defense_navy
-		icon = GFX_goal_generic_navy_doctrines_tactics
+		id = ROM_transportation_focus
+		icon = GFX_focus_generic_naval_discipline
 		prerequisite = { focus = ROM_expand_the_galati_shipyards }
-		mutually_exclusive = { focus = ROM_black_sea_dominance }
-		x = -1
+		mutually_exclusive = { focus = ROM_anti_sub_focus }
+		x = -2
 		y = 1
 		relative_position_id = ROM_expand_the_galati_shipyards
 
@@ -4745,36 +4731,17 @@ focus_tree = {
 		available_if_capitulated = no
 
 		completion_reward = {
-
-			IF = {
-				limit = {
-					has_dlc = "Arms Against Tyranny"
-				}
-				custom_effect_tooltip = available_mio_tt
-				show_mio_tooltip = ROM_galati_shipyard_organization
-				mio:ROM_galati_shipyard_organization = {
-					add_mio_funds = 2500
-				}
-				# unlock_mio_trait_tooltip  = {
-				# 	department = ROM_mio_department_design_ship_capital_screen_weapons
-				# 	trait = ROM_mio_trait_coastal_defense_weapons
-				# }
-			}
-
-			else = {
-				custom_effect_tooltip = available_designer
-				show_ideas_tooltip = ROM_coastal_defense_navy_designer
-			}
+			add_ideas = AXIS_MINOR_focus_on_transportation
 		}
 	}
 
 	focus = {
-		id = ROM_coastal_defense_ships
-		icon = GFX_goal_generic_navy_cruiser
-		prerequisite = { focus = ROM_coastal_defense_navy }
+		id = ROM_rehearsed_landings
+		icon = GFX_focus_generic_naval_invasion
+		prerequisite = { focus = ROM_transportation_focus }
 		x = -1
 		y = 1
-		relative_position_id = ROM_coastal_defense_navy
+		relative_position_id = ROM_transportation_focus
 
 		cost = 5
 
@@ -4795,23 +4762,25 @@ focus_tree = {
 		available_if_capitulated = no
 
 		completion_reward = {
-			add_ideas = ROM_coastal_defense_ships
-			#custom_effect_tooltip = ROM_coastal_defense_ships_tech_tt
-			#hidden_effect = { set_technology = { coastal_defense_ships = 1 } }
+			swap_ideas = {
+				remove_idea = AXIS_MINOR_focus_on_transportation
+				add_idea = AXIS_MINOR_focus_on_landing
+			}
 		}
 	}
 
 	focus = {
-		id = ROM_modern_destroyers
-		icon = GFX_goal_generic_navy_anti_submarine
-		prerequisite = { focus = ROM_coastal_defense_navy focus = ROM_black_sea_dominance }
+		id = ROM_streamlined_convoys
+		icon = GFX_focus_SOV_organize_wreckers
+		prerequisite = { focus = ROM_transportation_focus }
 		x = 1
 		y = 1
-		relative_position_id = ROM_coastal_defense_navy
+		relative_position_id = ROM_transportation_focus
 
 		cost = 5
+
 		ai_will_do = {
-			factor = 5
+			factor = 4
 		}
 
 		available = {
@@ -4825,29 +4794,95 @@ focus_tree = {
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
-		search_filters = { FOCUS_FILTER_RESEARCH }
+
 		completion_reward = {
-			add_tech_bonus = {
-				name = ROM_torpedo_bombers
-				bonus = 0.8
-				uses = 1
-				category = dd_tech
+			add_equipment_to_stockpile = {
+                type = convoy_1
+                amount = 50
+            }
+		}
+	}
+
+	focus = {
+		id = ROM_amphibious_strategy
+		icon = GFX_doctrine_tank_warfare
+		prerequisite = { focus = ROM_rehearsed_landings }
+		prerequisite = { focus = ROM_streamlined_convoys }
+		x = 0
+		y = 2
+		relative_position_id = ROM_transportation_focus
+
+		cost = 5
+
+		ai_will_do = {
+			factor = 4
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			navy_experience = 100
+			custom_effect_tooltip = tech_effect|AXIS_MINOR_marine_improvements
+			hidden_effect = {
+				set_technology = { AXIS_MINOR_marine_improvements = 1 }
 			}
 		}
 	}
 
 	focus = {
-		id = ROM_torpedo_boats
-		icon = GFX_goal_generic_occupy_start_war
-		prerequisite = { focus = ROM_coastal_defense_ships }
-		x = -2
-		y = 2
-		relative_position_id = ROM_coastal_defense_navy
+		id = ROM_anti_sub_focus
+		icon = GFX_goal_generic_navy_cruiser
+		prerequisite = { focus = ROM_expand_the_galati_shipyards }
+		mutually_exclusive = { focus = ROM_transportation_focus }
+		x = 2
+		y = 1
+		relative_position_id = ROM_expand_the_galati_shipyards
 
 		cost = 5
 
 		ai_will_do = {
-			factor = 1
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			add_ideas = AXIS_MINOR_focus_on_asw
+		}
+	}
+
+	focus = {
+		id = ROM_destroyer_improvements
+		icon = GFX_goal_generic_navy_anti_submarine
+		prerequisite = { focus = ROM_anti_sub_focus }
+		x = -1
+		y = 1
+		relative_position_id = ROM_anti_sub_focus
+
+		cost = 5
+
+		ai_will_do = {
+			factor = 9
 		}
 
 		available = {
@@ -4864,24 +4899,24 @@ focus_tree = {
 
 		completion_reward = {
 			swap_ideas = {
-				add_idea = ROM_coastal_defense_ships_2
-				remove_idea = ROM_coastal_defense_ships
+				remove_idea = AXIS_MINOR_focus_on_asw
+				add_idea = AXIS_MINOR_destroyer_improvements
 			}
 		}
 	}
 
 	focus = {
-		id = ROM_modern_submarines
-		icon = GFX_goal_generic_navy_submarine
-		prerequisite = { focus = ROM_modern_destroyers }
-		x = 0
-		y = 2
-		relative_position_id = ROM_coastal_defense_navy
+		id = ROM_destroyer_prototypes
+		icon = GFX_focus_generic_navy_research_bonus
+		prerequisite = { focus = ROM_anti_sub_focus }
+		x = 1
+		y = 1
+		relative_position_id = ROM_anti_sub_focus
 
 		cost = 5
 
 		ai_will_do = {
-			factor = 1
+			factor = 9
 		}
 
 		available = {
@@ -4895,30 +4930,120 @@ focus_tree = {
 		cancel_if_invalid = yes
 		continue_if_invalid = no
 		available_if_capitulated = no
-		search_filters = { FOCUS_FILTER_RESEARCH }
+
 		completion_reward = {
+			add_equipment_production = {
+				equipment = {
+					type = ship_hull_light_1
+					creator = "ROM"
+					version_name = "Regele Ferdinand Class"
+				}
+				requested_factories = 1
+				progress = 0.9
+				amount = 1 #Tooltip purposes
+			}
+			add_equipment_production = {
+				equipment = {
+					type = ship_hull_light_1
+					creator = "ROM"
+					version_name = "Regele Ferdinand Class"
+				}
+				requested_factories = 1
+				progress = 0.9
+				amount = 1 #Tooltip purposes
+			}
+			add_equipment_production = {
+				equipment = {
+					type = ship_hull_light_1
+					creator = "ROM"
+					version_name = "Regele Ferdinand Class"
+				}
+				requested_factories = 1
+				progress = 0.9
+				amount = 1 #Tooltip purposes
+			}
 			add_tech_bonus = {
-				name = ROM_modern_submarines
-				bonus = 0.75
+				name = ROM_destroyer_prototypes
+				bonus = 0.5
 				uses = 1
-				category = ss_tech
+				technology = improved_sonar
+			}
+			add_tech_bonus = {
+				name = ROM_destroyer_prototypes
+				bonus = 0.5
+				uses = 1
+				technology = advanced_depth_charges
+			}
+			add_tech_bonus = {
+				name = ROM_destroyer_prototypes
+				bonus = 0.5
+				uses = 1
+				technology = cavity_magnatron
 			}
 		}
 	}
 
 	focus = {
-		id = ROM_black_sea_dominance
-		icon = GFX_goal_generic_build_navy
-		prerequisite = { focus = ROM_expand_the_galati_shipyards }
-		mutually_exclusive = { focus = ROM_coastal_defense_navy }
-		x = 1
-		y = 1
+		id = ROM_dockyard_expansion
+		icon = GFX_focus_POL_develop_polish_shipbuilding
+		prerequisite = { focus = ROM_destroyer_improvements }
+		prerequisite = { focus = ROM_destroyer_prototypes }
+		x = 0
+		y = 2
+		relative_position_id = ROM_anti_sub_focus
+
+		cost = 5
+
+		ai_will_do = {
+			factor = 9
+		}
+
+		available = {
+
+		}
+
+		bypass = {
+
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			random_owned_controlled_state = {
+				prioritize = { 971 }
+				limit = {
+					ROOT = { has_full_control_of_state = PREV }
+					free_building_slots = {
+						building = dockyard
+						size > 2
+						include_locked = yes
+					}
+				}
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = dockyard
+					level = 3
+					instant_build = yes
+				}
+				set_state_flag = ROM_expand_the_galati_shipyards_AB
+			}
+		}
+	}
+
+	focus = {
+		id = ROM_a_naval_review
+		icon = GFX_focus_BEL_maritime_phoenix
+		prerequisite = { focus = ROM_amphibious_strategy focus = ROM_dockyard_expansion }
+		x = 0
+		y = 4
 		relative_position_id = ROM_expand_the_galati_shipyards
 
 		cost = 5
 
 		ai_will_do = {
-			factor = 5
+			factor = 4
 		}
 
 		available = {
@@ -4933,141 +5058,35 @@ focus_tree = {
 		continue_if_invalid = no
 		available_if_capitulated = no
 
-		completion_reward = {			
+		completion_reward = {
 			IF = {
 				limit = {
-					has_dlc = "Arms Against Tyranny"
+					has_completed_focus = ROM_dockyard_expansion
 				}
-				custom_effect_tooltip = available_mio_tt
-				show_mio_tooltip = ROM_Braila_organization
-				mio:ROM_Braila_organization = {
-					add_mio_size = 1
-					add_mio_funds = 500
+				add_mastery = {
+					amount = 100
+					folder = naval
 				}
-
+				add_mastery_bonus = {
+					name = ROM_a_naval_review
+					bonus = 0.2
+					days = 360
+					folder = naval
+				}
 			}
-
-			else = {
-				custom_effect_tooltip = available_designer
-				show_ideas_tooltip = ROM_black_sea_dominance_designer
-			}
-		}
-	}
-
-	focus = {
-		id = ROM_capital_ships
-		icon = GFX_goal_generic_navy_battleship
-		prerequisite = { focus = ROM_black_sea_dominance }
-		x = 1
-		y = 1
-		relative_position_id = ROM_black_sea_dominance
-
-		cost = 5
-
-		ai_will_do = {
-			factor = 1
-		}
-
-		available = {
-
-		}
-
-		bypass = {
-
-		}
-
-		cancel_if_invalid = yes
-		continue_if_invalid = no
-		available_if_capitulated = no
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			add_tech_bonus = {
-				name = ROM_capital_ships
-				bonus = 0.75
-				uses = 2
-				category = ca_tech
-				category = bb_tech
-				#category = bc_tech
-			}
-		}
-	}
-
-	focus = {
-		id = ROM_torpedo_bombers
-		icon = GFX_goal_generic_air_naval_bomber
-		prerequisite = { focus = ROM_modern_destroyers }
-		x = 2
-		y = 2
-		relative_position_id = ROM_coastal_defense_navy
-
-		cost = 5
-
-		ai_will_do = {
-			factor = 1
-		}
-
-		available = {
-
-		}
-
-		bypass = {
-
-		}
-
-		cancel_if_invalid = yes
-		continue_if_invalid = no
-		available_if_capitulated = no
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			add_tech_bonus = {
-				name = ROM_torpedo_bombers
-				bonus = 0.75
-				uses = 1
-				category = naval_bomber
-			}
-		}
-	}
-
-	focus = {
-		id = ROM_expand_the_marine_regiment
-		icon = GFX_goal_generic_amphibious_assault
-		prerequisite = { focus = ROM_capital_ships }
-		x = 2
-		y = 2
-		relative_position_id = ROM_black_sea_dominance
-
-		cost = 5
-
-		ai_will_do = {
-			factor = 1
-		}
-
-		available = {
-
-		}
-
-		bypass = {
-
-		}
-
-		cancel_if_invalid = yes
-		continue_if_invalid = no
-		available_if_capitulated = no
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			add_tech_bonus = {
-				name = ROM_expand_the_marine_regiment
-				bonus = 0.5
-				uses = 2
-				category = tp_tech
-				category = marine_tech
-			}
-			if = {
-				limit = { has_dlc = "Arms Against Tyranny" }
-				add_doctrine_cost_reduction = {
-					cost_reduction = 0.5
-					uses = 2
-					category = special_forces_doctrine
+			IF = {
+				limit = {
+					has_completed_focus = ROM_amphibious_strategy
+				}
+				add_mastery = {
+					amount = 120
+					folder = special_forces
+				}
+				add_mastery_bonus = {
+					name = ROM_a_naval_review
+					bonus = 0.2
+					days = 360
+					folder = special_forces
 				}
 			}
 		}
