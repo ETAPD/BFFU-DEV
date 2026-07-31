@@ -38,12 +38,7 @@ mission_type_tactics = {
             }
         }
     }
-    signal_company = {
-        initiative = 0.05
-    }
-    armored_signal = {
-        initiative = 0.05
-    }
+    coordination_bonus = 0.05
     enable_tactic = tactic_backhand_blow
 
     rewards = {
@@ -60,13 +55,12 @@ mission_type_tactics = {
         }
         flexible_command = {
         #2
-            max_planning = -0.05
-            planning_speed = 0.1
+            planning_speed = 0.1 
+            planning_decay_rate_factor = -0.1
         }
         maneouver_drills = {
         #3
-            planning_decay_rate_factor = -0.1
-            max_planning = -0.05
+           
             planning_speed = 0.1
             land_reinforce_rate = 0.01
 
@@ -83,8 +77,6 @@ mission_type_tactics = {
         control_zone_responsibilities = {
         #5
             planning_speed = 0.05
-            planning_decay_rate_factor = -0.2
-            max_planning_factor = -0.05
             signal_company = {
                 initiative = 0.15
             }
@@ -105,12 +97,6 @@ last_stand = {
     xp_cost = 100
     xp_type = army
 
-    ai_will_do = {
-        base = 1
-        modifier = {
-            factor = 1
-        }
-    }
     # EFFECTS
     effect = {
         custom_effect_tooltip = generic_skip_one_line_tt
@@ -136,36 +122,33 @@ last_stand = {
     }
 
     enable_tactic = tactic_delay
-    out_of_supply_factor = -0.05
+    supply_combat_penalties_on_core_factor = -0.05
 
     rewards = {
         werwolf_groups = {
         #1
             cas_damage_reduction = 0.05
+            planning_speed = 0.075
         }
 
         pocket_consolidation = {
         #2
             no_supply_grace = 36
-            pocket_penalty = -0.1
+            army_core_attack_factor = 0.025
         }
         digging_in = {
         #3
             max_dig_in = 0.5
-            org_loss_when_moving = -0.1
-			breakthrough_factor = -0.05
+            pocket_penalty = -0.1
         }
         stocking_up = {
         #4
-            org_loss_when_moving = -0.1
-			army_core_defence_factor = 0.05
+			army_core_defence_factor = 0.075
         }
         breaking_out = {
         #5
             cas_damage_reduction = 0.05
-            org_loss_when_moving = -0.05
-            supply_combat_penalties_on_core_factor = -0.05
-            surrender_limit = 0.1
+            supply_combat_penalties_on_core_factor = -0.1
         }
     }
 }
@@ -178,6 +161,12 @@ guerilla_warfare = {
     xp_cost = 100
     xp_type = army
 
+    ai_will_do = {
+        base = 1
+        modifier = {
+            factor = 1
+        }
+    }
     # EFFECTS
     effect = {
         custom_effect_tooltip = generic_skip_one_line_tt
@@ -210,7 +199,7 @@ guerilla_warfare = {
         }
     }
 
-    enable_tactic = tactic_guerrilla_tactics
+    #enable_tactic = tactic_guerrilla_tactics
     training_time_factor = -0.05
     dig_in_speed_factor = 0.05
     resistance_growth_on_our_occupied_states = 0.025
@@ -241,9 +230,8 @@ guerilla_warfare = {
         war_of_the_people = {
         #5
             training_time_factor = -0.05
-            category_militia = {
-                max_strength = 4
-            }
+            resistance_growth_on_our_occupied_states = 0.05
+            resistance_damage_to_garrison_on_our_occupied_states = 0.05
         }
     }
 }
@@ -301,14 +289,12 @@ grand_assault = {
         multiple_attack_directions = {
         #2
             max_planning_factor = 0.025
-            category_all_infantry = {
-                breakthrough = 0.05
-            }
+            breakthrough_factor = 0.05
         }
         combined_arms_integration = {
         #3
-            category_all_infantry = {
-                soft_attack = 0.02
+            category_army = {
+                soft_attack = 0.03
             }
         }
         forward_command_posts = {
@@ -415,8 +401,89 @@ expeditionary_warfare = {
             shore_bombardment_bonus = 0.1
             naval_invasion_division_cap = 2 
 	        naval_invasion_plan_cap = 2
-            army_non_core_attack_factor = 0.05
-            army_non_core_defence_factor = 0.05
+            army_non_core_attack_factor = 0.075
+            army_non_core_defence_factor = 0.075
+        }
+    }
+}
+
+operational_command = {
+    track = operations
+    name = SUBDOCTRINE_OPERATIONAL_COMMAND
+    description = SUBDOCTRINE_OPERATIONAL_COMMAND_DESC
+    icon = GFX_doctrine_operational_command_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    ai_will_do = {
+        base = 1
+    }
+
+    effect = {
+        custom_effect_tooltip = generic_skip_one_line_tt
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = operational_command_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = OPERATIONAL_COMMAND_MASTERY_GAIN
+                sub_doctrine = operational_command
+            }
+            set_country_flag = {
+                flag = operational_command_doctrine_selected
+                value = 1
+                days = 1250
+            }
+        }
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = last_stand_doctrine_check
+                }
+                set_technology = { last_stand_terran = 0 popup = no }
+                clr_country_flag = last_stand_doctrine_check
+            }
+        }
+    }
+
+    experience_gain_factor = 0.05
+    max_command_power = 20
+
+    rewards = {
+        integrated_divisional_staff = {
+        #1
+            experience_gain_factor = 0.1
+            max_command_power = 20
+        }
+
+        liaison_officers= {
+        #2
+            terrain_trait_xp_gain_factor = 0.2
+            max_command_power = 20
+        }
+
+        sustainment_staff = {
+        #3
+            experience_gain_army_unit_factor = 0.1
+            skill_bonus_factor = 0.1
+        }
+
+        combat_support_sections = {
+        #4
+            command_abilities_cost_factor = -0.15
+            command_power_gain = 0.25
+        }
+
+        field_command_network = {
+        #5
+            skill_bonus_factor = 0.1
+            command_abilities_cost_factor = -0.15
+            max_command_power = 20
         }
     }
 }
