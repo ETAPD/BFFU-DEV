@@ -1,21 +1,23 @@
 @echo off
 REM ============================================================
-REM  Publish BFFU to the Steam Workshop (item 3745245470).
+REM  Publish BFFU 2 to the Steam Workshop (item 3765324616).
+REM  The original item (3745245470) was taken down, so this is a
+REM  fresh Workshop item under the name "BFFU 2".
 REM  Exports git main into the uk-rework folder and stamps the
-REM  UPLOAD identity (name="BFFU", remote_file_id=3745245470), then
-REM  you upload it from the HOI4 launcher.
+REM  UPLOAD identity (name="BFFU 2", remote_file_id=3765324616),
+REM  then you upload it from the HOI4 launcher.
 REM
-REM  IMPORTANT: before uploading, DISABLE/unsubscribe the Workshop
-REM  "BFFU" in the launcher, or its remote_file_id will clash with
-REM  this folder. After uploading, run publish-bffu.bat to put
-REM  uk-rework back to its local "BFFU (Local)" descriptor.
+REM  IMPORTANT: before uploading, DISABLE/unsubscribe any other
+REM  local copy of BFFU/BFFU 2 in the launcher, or it will clash
+REM  with this folder. After uploading, run publish-bffu.bat to
+REM  put uk-rework back to its local "BFFU 2 (Local)" descriptor.
 REM ============================================================
 setlocal
 set "HUB=C:\Users\Roberts (ME)\Documents\GitHub\BFFU-DEV"
 set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework"
 set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework.mod"
 
-echo Re-exporting "BFFU" (main) for Workshop upload...
+echo Re-exporting "BFFU 2" (main) for Workshop upload...
 cd /d "%HUB%"
 
 if exist "%DEST%" rmdir /s /q "%DEST%"
@@ -39,17 +41,17 @@ if exist "%DEST%\.claude" rmdir /s /q "%DEST%\.claude"
 REM Stamp the UPLOAD identity on both the folder descriptor and the
 REM launcher pointer - written explicitly here rather than trusting
 REM whatever descriptor.mod happens to be checked into main.
-call :write_descriptor "%DEST%\descriptor.mod" "BFFU"
->> "%DEST%\descriptor.mod" echo remote_file_id="3745245470"
+call :write_descriptor "%DEST%\descriptor.mod" "BFFU 2"
+>> "%DEST%\descriptor.mod" echo remote_file_id="3765324616"
 
-call :write_descriptor "%MODFILE%" "BFFU"
+call :write_descriptor "%MODFILE%" "BFFU 2"
 >> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/uk-rework"
->> "%MODFILE%" echo remote_file_id="3745245470"
+>> "%MODFILE%" echo remote_file_id="3765324616"
 
 echo.
-echo Done. 1) DISABLE the subscribed Workshop "BFFU" in the launcher.
-echo       2) Upload "BFFU" from the launcher (updates item 3745245470).
-echo       3) Run publish-bffu.bat afterwards to restore "BFFU (Local)".
+echo Done. 1) DISABLE any other subscribed/local "BFFU" copy in the launcher.
+echo       2) Upload "BFFU 2" from the launcher (updates item 3765324616).
+echo       3) Run publish-bffu.bat afterwards to restore "BFFU 2 (Local)".
 pause
 exit /b 0
 

@@ -1,10 +1,11 @@
 @echo off
 REM ============================================================
 REM  Refresh the LOCAL BFFU test mod ("uk-rework" folder) from
-REM  git main, then enable "BFFU (Local)" in the HOI4 launcher.
+REM  git main, then enable "BFFU 2 (Local)" in the HOI4 launcher.
 REM
 REM  This stamps a LOCAL descriptor with NO remote_file_id, so it
-REM  never clashes with the subscribed Workshop BFFU (3745245470).
+REM  never clashes with the subscribed Workshop BFFU 2 (3765324616).
+REM  The original item (3745245470) was taken down and is no longer used.
 REM  To PUBLISH to the Workshop instead, run upload-bffu.bat.
 REM ============================================================
 setlocal
@@ -12,7 +13,7 @@ set "HUB=C:\Users\Roberts (ME)\Documents\GitHub\BFFU-DEV"
 set "DEST=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework"
 set "MODFILE=C:\Users\Roberts (ME)\Documents\Paradox Interactive\Hearts of Iron IV\mod\uk-rework.mod"
 
-echo Refreshing the local "BFFU (Local)" test mod from git main...
+echo Refreshing the local "BFFU 2 (Local)" test mod from git main...
 cd /d "%HUB%"
 
 if exist "%DEST%" rmdir /s /q "%DEST%"
@@ -34,14 +35,14 @@ del /q "%DEST%\.gitattributes" 2>nul
 if exist "%DEST%\.claude" rmdir /s /q "%DEST%\.claude"
 
 REM --- LOCAL folder descriptor (no remote_file_id) ---
-call :write_descriptor "%DEST%\descriptor.mod" "BFFU (Local)"
+call :write_descriptor "%DEST%\descriptor.mod" "BFFU 2 (Local)"
 
 REM --- LOCAL launcher pointer (adds path, still no remote_file_id) ---
-call :write_descriptor "%MODFILE%" "BFFU (Local)"
+call :write_descriptor "%MODFILE%" "BFFU 2 (Local)"
 >> "%MODFILE%" echo path="C:/Users/Roberts (ME)/Documents/Paradox Interactive/Hearts of Iron IV/mod/uk-rework"
 
 echo.
-echo Done. In the launcher, enable "BFFU (Local)" to test the latest main.
+echo Done. In the launcher, enable "BFFU 2 (Local)" to test the latest main.
 echo (To publish to the Workshop instead, run upload-bffu.bat.)
 pause
 exit /b 0
