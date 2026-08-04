@@ -3756,8 +3756,6 @@ focus_tree = {
 		}
 
 		bypass_effect = {
-			
-
 			add_to_variable = { SOV_red_army_experience_gain_army_factor_var = 0.1 }
 			add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.05 }
 		}
@@ -3766,10 +3764,23 @@ focus_tree = {
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			set_power_balance = {
-			id = SOV_army_bop
-			set_default = yes
+			army_experience = 50
+			if = {
+				limit = { has_idea = SOV_modernisation_cav_1 }
+				swap_ideas = {
+					remove_idea = SOV_modernisation_cav_1
+					add_idea = SOV_modernisation_bal
+				}
 			}
+		
+			if = {
+				limit = { has_idea = SOV_modernisation_cav_2 }
+				swap_ideas = {
+					remove_idea = SOV_modernisation_cav_2
+					add_idea = SOV_modernisation_bal
+				}
+			}
+
 			custom_effect_tooltip = SOV_army_autobypass
 			#custom_effect_tooltip = SOV_army_future_potencial
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
@@ -3778,1045 +3789,1604 @@ focus_tree = {
 			add_to_variable = { SOV_red_army_experience_gain_army_factor_var = 0.1 }
 			custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-5_tt
 			add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.05 }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = boris_shaposhnikov
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = georgy_zhukov
 		}
 	}
 
+
+	#Kulik
 	focus = {
-		id = SOV_army_top1
-		icon = GFX_SOV_rework248
+		id = SOV_kulik1
+		icon = GFX_goal_kulikfocus
 		prerequisite = { focus = SOV_army_04 }
-		mutually_exclusive = { focus = SOV_army_top5 focus = SOV_army_top2 focus = SOV_army_top3 focus = SOV_army_top4}
-		relative_position_id = SOV_army_04
+		mutually_exclusive = { focus = SOV_blucher1 }
+		mutually_exclusive = { focus = SOV_voroshilov1 }
+		mutually_exclusive = { focus = SOV_timoshenko1 }
 		x = -8
 		y = 1
 		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
-
-		available = {
-			NOT = {has_completed_focus = SOV_mil2}
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.4
-			}
-			custom_effect_tooltip = SOV_army_grind_tt
-			SOV_semyon_budyonny = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-				add_attack = 2
-				add_defense = 1
-				add_logistics = 2
-				add_planning = 2
-				add_unit_leader_trait = trait_head_red_army
-				hidden_effect = {
-					remove_unit_leader_trait = panzer_leader
-					remove_unit_leader_trait = cavalry_leader
-					remove_unit_leader_trait = panzer_expert
-					remove_unit_leader_trait = commando
-					remove_unit_leader_trait = skirmisher
-					remove_unit_leader_trait = paratrooper
-					remove_unit_leader_trait = camouflage_expert
-					remove_unit_leader_trait = combined_arms_expert
-					remove_unit_leader_trait = cavalry_expert
-				}
-			}
-		}
-		
-	}
-
-	focus = {
-		id = SOV_army_top11
-		icon = GFX_SOV_rework249
-		prerequisite = { focus = SOV_army_top1 }
-		relative_position_id = SOV_army_top1
-		x = 0
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		available_if_capitulated = yes
-
-		available = {
-
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.2
-			}
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-			custom_effect_tooltip = SOV_red_army_cavalry_attack_factor_5_tt
-			add_to_variable = { SOV_red_army_cavalry_attack_factor_var = 0.05 }
-
-			custom_effect_tooltip = SOV_red_army_cavalry_defence_factor_5_tt
-			add_to_variable = { SOV_red_army_cavalry_defence_factor_var = 0.05 }
-
-			custom_effect_tooltip = SOV_red_army_armor_attack_factor_-5_tt
-			add_to_variable = { SOV_red_army_armor_attack_factor_var = -0.05 }
-			custom_effect_tooltip = SOV_red_army_armor_defence_-5_tt
-			add_to_variable = { SOV_red_army_armor_defence_var = -0.5 }
-
-			custom_effect_tooltip = SOV_red_army_mechanized_attack_factor_-5_tt
-			add_to_variable = { SOV_red_army_mechanized_attack_factor_var = -0.05 }
-			custom_effect_tooltip = SOV_red_army_mechanized_defence_factor_-5_tt
-			add_to_variable = { SOV_red_army_mechanized_defence_factor_var = -0.05 }
-
-			add_to_variable = {
-				SOV_red_army_org_loss_at_low_org_factor_var = 0.2
-				tooltip = org_loss_at_low_org_factor_tt
-			}
-
-			add_to_variable = {
-				SOV_red_army_army_org_factor_var = 0.05
-				tooltip = army_org_factor_tt
-			}
-
-		}
-	}
-
-	focus = {
-		id = SOV_army_top12
-		icon = GFX_goal_generic_construction2
-		prerequisite = { focus = SOV_army_top11 }
-		relative_position_id = SOV_army_top11
-		x = 0
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		available_if_capitulated = yes
-
-		available = {
-
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.2
-			}
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-			
-			custom_effect_tooltip = SOV_red_army_max_dig_in_5_tt
-			add_to_variable = { SOV_red_army_max_dig_in_var = 5 }
-
-			custom_effect_tooltip = SOV_red_army_dig_in_speed_factor_-10_tt
-			add_to_variable = { SOV_red_army_dig_in_speed_factor_var = -0.1 }
-
-			custom_effect_tooltip = SOV_red_army_max_planning_factor_10_tt
-			add_to_variable = { SOV_red_army_max_planning_factor_var = 0.1 }
-			custom_effect_tooltip = SOV_red_army_planning_speed_-15_tt
-			add_to_variable = { SOV_red_army_planning_speed_var = -0.15 }
-
-			custom_effect_tooltip = SOV_red_army_coordination_bonus_-3_tt
-			add_to_variable = { SOV_red_army_coordination_bonus_var = -0.03 }
-
-			custom_effect_tooltip = SOV_red_army_infantry_attack_factor_5_tt
-			add_to_variable = { SOV_red_army_infantry_attack_factor_var = 0.05 }
-			custom_effect_tooltip = SOV_red_army_infantry_defence_factor_5_tt
-			add_to_variable = { SOV_red_army_infantry_defence_factor_var = 0.05 }
-		}
-	}
-
-	# focus = {
-	# 	id = SOV_army_top13
-	# 	icon = GFX_SOV_rework61
-	# 	prerequisite = { focus = SOV_army_top12 }
-	# 	relative_position_id = SOV_army_top12
-	# 	x = 0
-	# 	y = 1
-	# 	cost = 3
-	# 	ai_will_do = {
-	# 		factor = 5
-	# 	}
-
-	# 	search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
-	# 	available_if_capitulated = yes
-
-	# 	available = {
-
-	# 	}
-
-	# 	available_if_capitulated = yes
-
-	# 	search_filters = { FOCUS_FILTER_RESEARCH }
-	# 	completion_reward = {
-	# 		custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-	# 		custom_effect_tooltip = SOV_red_army_infantry_attack_factor_5_tt
-	# 		add_to_variable = { SOV_red_army_infantry_attack_factor_var = 0.05 }
-	# 		custom_effect_tooltip = SOV_red_army_infantry_defence_factor_5_tt
-	# 		add_to_variable = { SOV_red_army_infantry_defence_factor_var = 0.05 }
-
-	# 		custom_effect_tooltip = SOV_red_army_cavalry_attack_factor_5_tt
-	# 		add_to_variable = { SOV_red_army_cavalry_attack_factor_var = 0.05 }
-
-	# 		custom_effect_tooltip = SOV_red_army_cavalry_defence_factor_5_tt
-	# 		add_to_variable = { SOV_red_army_cavalry_defence_factor_var = 0.05 }
-
-	# 		add_to_variable = {
-	# 			SOV_red_army_org_loss_at_low_org_factor_var = 0.1
-	# 			tooltip = org_loss_at_low_org_factor_tt
-	# 		}
-
-	# 		add_to_variable = {
-	# 			SOV_red_army_army_org_factor_var = 0.025
-	# 			tooltip = army_org_factor_tt
-	# 		}
-
-	# 	}
-	# }
-
-	
-
-	focus = {
-		id = SOV_army_top2
-		icon = GFX_goal_yegorovfocus
-		prerequisite = { focus = SOV_army_04 }
-		mutually_exclusive = { focus = SOV_army_top1 focus = SOV_army_top5 focus = SOV_army_top3 focus = SOV_army_top4}
 		relative_position_id = SOV_army_04
-		x = -4
-		y = 1
-		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
-
 		available_if_capitulated = yes
 
-		available = {
-			has_completed_focus = SOV_pol_purge13
+		bypass = {
 		}
 
-		available_if_capitulated = yes
+		available = {
+			NOT = {
+				has_idea = SOV_assure_competency
+			}
+			# NOT = {
+			# 	has_country_flag = SOV_winter_war_incompetency
+			# }
+		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			custom_effect_tooltip = SOV_army_grind_tt
-			SOV_aleksandr_yegorov = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-				add_defense = 2
-				add_logistics = 1
-				add_planning = 2
+			#RG_armored_division_light = yes
+			#SOV_swap_RG_medium_light = yes
+			SOV_grigory_kulik = { 
+				promote_leader = yes
 				add_unit_leader_trait = trait_head_red_army
-				add_unit_leader_trait = organizer
-				hidden_effect = {
-					remove_unit_leader_trait = panzer_leader
-					remove_unit_leader_trait = cavalry_leader
-					remove_unit_leader_trait = panzer_expert
-					remove_unit_leader_trait = commando
-					remove_unit_leader_trait = skirmisher
-					remove_unit_leader_trait = paratrooper
-					remove_unit_leader_trait = camouflage_expert
-					remove_unit_leader_trait = combined_arms_expert
-					remove_unit_leader_trait = cavalry_expert
-				}
 			}
-			add_ideas = SOV_aleksandr_yegorov
-		}
-	}
-
-	focus = {
-		id = SOV_army_top21
-		icon = GFX_SOV_breakthrough_priority
-		prerequisite = { focus = SOV_army_top2 }
-		relative_position_id = SOV_army_top2
-		x = 0
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		available_if_capitulated = yes
-
-		available = {
-			
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-			
-			custom_effect_tooltip = SOV_red_army_mechanized_attack_factor_-5_tt
-			add_to_variable = { SOV_red_army_mechanized_attack_factor_var = -0.05 }
-			custom_effect_tooltip = SOV_red_army_armor_attack_factor_-5_tt
-			add_to_variable = { SOV_red_army_armor_attack_factor_var = -0.05 }
-
-
-			custom_effect_tooltip = SOV_red_army_max_dig_in_7_tt
-			add_to_variable = { SOV_red_army_max_dig_in_var = 7 }
-
-			custom_effect_tooltip = SOV_red_army_dig_in_speed_factor_20_tt
-			add_to_variable = { SOV_red_army_dig_in_speed_factor_var = 0.2 }
-
-			custom_effect_tooltip = SOV_red_army_infantry_defence_factor_5_tt
-			add_to_variable = { SOV_red_army_infantry_defence_factor_var = 0.05 }
-
-			custom_effect_tooltip = SOV_red_army_land_reinforce_rate_3_tt
-			add_to_variable = { SOV_red_army_land_reinforce_rate_var = 0.03 }
-
-			add_to_variable = {
-				SOV_red_army_org_loss_at_low_org_factor_var = -0.15 # WHY IS THIS RED I DONT GET IT
-				tooltip = org_loss_at_low_org_factor_tt
-			}
-		}
-	}
-
-	focus = {
-		id = SOV_army_top22
-		icon = GFX_goal_generic_more_territorial_claims
-		prerequisite = { focus = SOV_army_top21 }
-		relative_position_id = SOV_army_top21
-		x = 0
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
-
-		available = {
-
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.50
-			}
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_land_reinforce_rate_3_tt
-			add_to_variable = { SOV_red_army_land_reinforce_rate_var = 0.03 }
-
-			add_to_variable = {
-				SOV_red_army_army_org_factor_var = 0.05
-				tooltip = army_org_factor_tt
-			}
-		}
-	}
-
-	# focus = {
-	# 	id = SOV_army_top23
-	# 	icon = GFX_focus_GER_gebirgsjager
-	# 	prerequisite = { focus = SOV_army_top22 }
-	# 	relative_position_id = SOV_army_top22
-	# 	x = 0
-	# 	y = 1
-	# 	cost = 3
-	# 	ai_will_do = {
-	# 		factor = 5
-	# 	}
-
-	# 	available_if_capitulated = yes
-
-	# 	available = {
-
-	# 	}
-
-	# 	available_if_capitulated = yes
-
-	# 	search_filters = { FOCUS_FILTER_RESEARCH }
-	# 	completion_reward = {
-	# 		custom_effect_tooltip = SOV_generic_modify_red_army_tt
-	# 		custom_effect_tooltip = SOV_red_army_infantry_defence_factor_5_tt
-	# 		add_to_variable = { SOV_red_army_infantry_defence_factor_var = 0.05 }
-
-	# 		custom_effect_tooltip = SOV_red_army_land_reinforce_rate_3_tt
-	# 		add_to_variable = { SOV_red_army_land_reinforce_rate_var = 0.03 }
-
-	# 		add_to_variable = {
-	# 			SOV_red_army_org_loss_at_low_org_factor_var = -0.15 # WHY IS THIS RED I DONT GET IT
-	# 			tooltip = org_loss_at_low_org_factor_tt
-	# 		}
-	# 	}
-	# }
-
-	focus = {
-		id = SOV_army_top3
-		icon = GFX_goal_voroshilovfocus
-		prerequisite = { focus = SOV_army_04 }
-		mutually_exclusive = { focus = SOV_army_top1 focus = SOV_army_top2 focus = SOV_army_top5 focus = SOV_army_top4}
-		relative_position_id = SOV_army_04
-		x = 0
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
-
-		available_if_capitulated = yes
-
-		available = {
-			has_completed_focus = SOV_mil2
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			custom_effect_tooltip = SOV_army_grind_tt
-			SOV_kliment_voroshilov = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-				add_attack = 3
-				add_defense = 2
-				add_logistics = 2
-				add_planning = 2
-				add_unit_leader_trait = trait_head_red_army
-				add_unit_leader_trait = organizer
-				hidden_effect = {
-					remove_unit_leader_trait = panzer_leader
-					remove_unit_leader_trait = cavalry_leader
-					remove_unit_leader_trait = panzer_expert
-					remove_unit_leader_trait = commando
-					remove_unit_leader_trait = skirmisher
-					remove_unit_leader_trait = paratrooper
-					remove_unit_leader_trait = camouflage_expert
-					remove_unit_leader_trait = combined_arms_expert
-					remove_unit_leader_trait = cavalry_expert
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			activate_advisor = kliment_voroshilov
-		}
-	}
-
-	focus = {
-		id = SOV_army_top31
-		icon = GFX_goal_generic_more_territorial_claims
-		prerequisite = { focus = SOV_army_top3 }
-		relative_position_id = SOV_army_top3
-		x = 0
-		y = 1
-		cost = 3
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_INDUSTRY}
-
-		available_if_capitulated = yes
-
-		available = {
-			OR = {
-				mio:SOV_astrov_design_bureau_organization = { has_mio_size > 2  }    
-				mio:SOV_morozov_design_bureau_organization = { has_mio_size > 2  }   
-				mio:SOV_kirov_organization = { has_mio_size > 2  }     
-				mio:SOV_tankograd_plant_organization = { has_mio_size > 2  }    
-				mio:SOV_okmo_organization = { has_mio_size > 2  }   
-				mio:SOV_morozov_design_bureau_ac_organization = { has_mio_size > 2  }     
-			}
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			custom_effect_tooltip = voro_patronage_tt
+			#SOV_refresh_RG_cap_light = yes
 			custom_effect_tooltip = generic_skip_one_line_tt
 
-			custom_effect_tooltip = voroshilov2_tt
-			hidden_effect= {
-				remove_trait = {
-					character = SOV_kliment_voroshilov
-					slot = army_chief
-					trait = army_voro1
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil4 SOV_mil6 SOV_mil13 SOV_mil12
 				}
-				add_trait = {
-					character = SOV_kliment_voroshilov
-					slot = army_chief
-					trait = army_voro2
-				}
+				cost = 7
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-			custom_effect_tooltip = SOV_construction_speed_mil_5_tt
-			add_to_variable = { SOV_command_economy_production_speed_arms_factory_factor_var = 0.05 }
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil17 SOV_mil16 SOV_mil18
+				}
+				cost = 21
+			}
+
 		}
 	}
 
+	#Budyonny
 	focus = {
-		id = SOV_army_top321
-		icon = GFX_goal_generic_cavalry
-		prerequisite = { focus = SOV_army_top31 }
-		relative_position_id = SOV_army_top31
+		id = SOV_budyonny
+		icon = GFX_goal_budyonnyfocus
+		prerequisite = { focus = SOV_kulik1 }
+		mutually_exclusive = { focus = SOV_yegorov }
 		x = -1
 		y = 1
 		cost = 3
+		relative_position_id = SOV_kulik1
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
 		available_if_capitulated = yes
 
-		available = {
-			
+		bypass = {
 		}
 
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			custom_effect_tooltip = voroshilov3_tt
-			IF = {
-				LIMIT = {has_completed_focus = SOV_army_top322}
-				hidden_effect= {
-					remove_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro4
-					}
-					add_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro5
-					}
+			#custom_effect_tooltip = SOV_timoshenko_voroshilov_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = grand_battleplan
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine2_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = infantry } } 
+				set_sub_doctrine = mounted_infantry
+				add_mastery = {
+					amount = 200
+					sub_doctrine = mounted_infantry
 				}
 			}
-			ELSE = {
-				hidden_effect= {
-					remove_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro2
-					}
-					add_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro3
-					}
+			else_if = {
+				limit = {
+					has_doctrine = mounted_infantry
 				}
+				add_mastery = {
+					amount = 200
+					sub_doctrine = mounted_infantry
+				}
+			} else = {
+				add_mastery = {
+					amount = 150
+					track = infantry
+				}		
 			}
 		}
 	}
 
 	focus = {
-		id = SOV_army_top322
-		icon = GFX_SOV_modernize_the_cavalry
-		prerequisite = { focus = SOV_army_top31 }
-		relative_position_id = SOV_army_top31
+		id = SOV_reject_modernity
+		icon = GFX_focus_SOV_restore_cossack_units
+		prerequisite = { focus = SOV_budyonny }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_budyonny
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			add_ideas = SOV_kulik_budyonny_1
+		}
+	}
+
+	focus = {
+		id = SOV_harassment_tactics
+		icon = GFX_focus_CHI_protracted_warfare
+		prerequisite = { focus = SOV_reject_modernity }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_reject_modernity
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_kulik_budyonny_2
+				remove_idea = SOV_kulik_budyonny_1
+			}
+		}
+	}
+
+	#Yegorov
+	focus = {
+		id = SOV_yegorov
+		icon = GFX_goal_yegorovfocus
+		prerequisite = { focus = SOV_kulik1 }
+		mutually_exclusive = { focus = SOV_budyonny }
 		x = 1
 		y = 1
 		cost = 3
+		relative_position_id = SOV_kulik1
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
+		overlay = GFX_focus_sov_marshal1
 
 		available = {
-
+			NOT = { has_completed_focus = SOV_pol_purge12 }
 		}
 
 		available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			custom_effect_tooltip = voroshilov4_tt
-			IF = {
-				LIMIT = {has_completed_focus = SOV_army_top321}
-				hidden_effect= {
-					remove_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro3
-					}
-					add_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro5
-					}
-				}
+		bypass = {
+		}
 
+		completion_reward = {
+			#custom_effect_tooltip = SOV_yegorov_tt
+			#custom_effect_tooltip = SOV_yegerov_reinstated_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = superior_firepower
 			}
-			ELSE = {
-				hidden_effect= {
-					remove_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro2
-					}
-					add_trait = {
-						character = SOV_kliment_voroshilov
-						slot = army_chief
-						trait = army_voro4
-					}
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = tank_destroyer_force
+				add_mastery = {
+					amount = 150
+					sub_doctrine = tank_destroyer_force
 				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = tank_destroyer_force
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = tank_destroyer_force
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = infantry
+				}		
+				add_mastery = {
+					amount = 50
+					track = armor
+				}		
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_aleksandr_yegorov = { 
+				promote_leader = yes 
+				clr_character_flag = SOV_exiled_flag 
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil19 SOV_mil21 SOV_mil23 SOV_mil25 SOV_mil20 SOV_mil24
+				}
+				cost = 14
 			}
 		}
 	}
 
-	# focus = {
-	# 	id = SOV_army_top33
-	# 	icon = GFX_SOV_rework136
-	# 	prerequisite = { focus = SOV_army_top321 focus = SOV_army_top322}
-	# 	relative_position_id = SOV_army_top321
-	# 	x = 1
-	# 	y = 1
-	# 	cost = 3
-	# 	ai_will_do = {
-	# 		factor = 5
-	# 	}
-
-	# 	search_filters = {FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL FOCUS_FILTER_ARMY_XP}
-
-	# 	available_if_capitulated = yes
-
-	# 	available = {
-	# 			has_army_experience > 50
-	# 	}
-
-	# 	completion_reward = { 
-	# 		add_political_power = 25
-	# 		army_experience = -50
-	# 		custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-	# 		custom_effect_tooltip = SOV_construction_speed_mil_5_tt
-	# 		add_to_variable = { SOV_command_economy_production_speed_arms_factory_factor_var = 0.05 }
-	# 	}
-
-	# 	available_if_capitulated = yes
-
-	# 	search_filters = { FOCUS_FILTER_RESEARCH }
-		
-	# }
-
 	focus = {
-		id = SOV_army_top4
-		icon = GFX_goal_timoshenkofocus
-		prerequisite = { focus = SOV_army_04 }
-		mutually_exclusive = { focus = SOV_army_top1 focus = SOV_army_top2 focus = SOV_army_top3 focus = SOV_army_top5}
-		relative_position_id = SOV_army_04
-		x = 4
+		id = SOV_td_tactics
+		icon = GFX_focus_generic_army_tanks2
+		prerequisite = { focus = SOV_yegorov }
+		x = 0
 		y = 1
 		cost = 3
+		relative_position_id = SOV_yegorov
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
-
 		available_if_capitulated = yes
 
-		available = {
-			has_completed_focus = SOV_pol_purge12
-			has_completed_focus = SOV_mil2
+		bypass = {
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_yegorov_tt
+			add_ideas = SOV_kulik_yegorov_1
+		}
+	}
+
+	focus = {
+		id = SOV_tank_hunters
+		icon = GFX_SOV_production_targets
+		prerequisite = { focus = SOV_td_tactics }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_td_tactics
+		ai_will_do = {
+			factor = 5
 		}
 
 		available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
+		bypass = {
+		}
+
 		completion_reward = {
-			hidden_effect= {
-				remove_trait = {
-					character = SOV_semyon_timoshenko
-					slot = army_chief
-					trait = army_chief_reform_2
+			#custom_effect_tooltip = SOV_yegorov_tt
+			add_ideas = tank_hunter_teams
+			swap_ideas = {
+				add_idea = SOV_kulik_yegorov_2
+				remove_idea = SOV_kulik_yegorov_1
+			}
+		}
+	}
+
+	#End of Kulik
+	focus = {
+		id = SOV_new_corps5
+		icon = GFX_SOV_new_officer_academies
+		prerequisite = { focus = SOV_tank_hunters focus = SOV_harassment_tactics }
+		x = -1
+		y = 1
+		cost = 2
+		relative_position_id = SOV_tank_hunters
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			every_army_leader = {
+				add_logistics = 2
+				add_defense = 1
+				add_planning = 1
+			}
+			swap_ideas = {
+				remove_idea = SOV_modernisation_bal
+				add_idea = SOV_modernisation_cav_2
+			}
+			add_ideas = SOV_new_officers
+		}
+	}
+
+	#Voroshilov
+	focus = {
+		id = SOV_voroshilov1
+		icon = GFX_goal_voroshilovfocus
+		prerequisite = { focus = SOV_army_04 }
+		mutually_exclusive = { focus = SOV_blucher1 }
+		mutually_exclusive = { focus = SOV_kulik1 }
+		mutually_exclusive = { focus = SOV_timoshenko1 }
+		x = -3
+		y = 1
+		cost = 3
+		relative_position_id = SOV_army_04
+		ai_will_do = {
+			factor = 5
+		}
+
+		available = {
+			NOT = {
+				has_idea = SOV_assure_competency
+			}
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			#RG_armored_division_heavy = yes
+			#SOV_swap_RG_medium_heavy = yes
+			SOV_kliment_voroshilov = { 
+				#promote_leader = yes 
+				add_unit_leader_trait = trait_head_red_army
+			}
+			add_tech_bonus = {
+				name = art_bonus
+				bonus = 0.75
+				uses = 3
+				category = heavy_artillery
+			}
+			#SOV_refresh_RG_cap_heavy = yes
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil27
+				}
+				cost = 7
+			}
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil34
+				}
+				cost = 14
+			}
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil42 SOV_mil43
+				}
+				cost = 21
+			}
+		}
+	}
+
+	#Kulik
+	focus = {
+		id = SOV_kulik2
+		icon = GFX_goal_kulikfocus
+		prerequisite = { focus = SOV_voroshilov1 }
+		mutually_exclusive = { focus = SOV_timoshenko_voroshilov }
+		mutually_exclusive = { focus = SOV_budyonny2 }
+		x = -2
+		y = 1
+		cost = 3
+		relative_position_id = SOV_voroshilov1
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_kulik2_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = superior_firepower
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = combat_support } } 
+				set_sub_doctrine = siege_artillery
+				add_mastery = {
+					amount = 150
+					sub_doctrine = siege_artillery
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
 				}
 			}
-			add_trait = {
-				character = SOV_semyon_timoshenko
-				slot = army_chief
-				trait = army_chief_reform_timo
+			else_if = {
+				limit = {
+					has_doctrine = siege_artillery
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = siege_artillery
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = combat_support
+				}		
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}		
 			}
-			SOV_semyon_timoshenko = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_grigory_kulik = { 
+				promote_leader = yes 
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil4 SOV_mil6 SOV_mil13 SOV_mil12
+				}
+				cost = 7
+			}
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil17 SOV_mil16 SOV_mil18
+				}
+				cost = 14
+			}
+		}
+	}
+
+	focus = {
+		id = SOV_massed_artillery_charge
+		icon = GFX_SOV_breakthrough_priority
+		prerequisite = { focus = SOV_kulik2 }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_kulik2
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			add_ideas = SOV_voroshilov_kulik_1
+		}
+	}
+
+	focus = {
+		id = SOV_convert_naval_guns
+		icon = GFX_SOV_stalins_hammer
+		prerequisite = { focus = SOV_massed_artillery_charge }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_massed_artillery_charge
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_voroshilov_kulik_2
+				remove_idea = SOV_voroshilov_kulik_1
+			}
+		}
+	}
+
+	#Budyonny
+	focus = {
+		id = SOV_budyonny2
+		icon = GFX_goal_budyonnyfocus
+		prerequisite = { focus = SOV_voroshilov1 }
+		mutually_exclusive = { focus = SOV_timoshenko_voroshilov }
+		mutually_exclusive = { focus = SOV_kulik2 }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_voroshilov1
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_budyonny2_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = mass_assault
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = streamlined_deployment
+				add_mastery = {
+					amount = 150
+					sub_doctrine = streamlined_deployment
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = streamlined_deployment
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = streamlined_deployment
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = armor
+				}		
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}		
+			}
+		}
+	}
+
+	focus = {
+		id = SOV_cavalry_tank
+		icon = GFX_focus_SWE_lynx_armored_car
+		prerequisite = { focus = SOV_budyonny2 }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_budyonny2
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			add_ideas = SOV_voroshilov_budyonny_1
+		}
+	}
+
+	focus = {
+		id = SOV_bravery_rules
+		icon = GFX_focus_SOV_the_glory_of_the_red_army_communism
+		prerequisite = { focus = SOV_cavalry_tank }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_cavalry_tank
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_voroshilov_budyonny_2
+				remove_idea = SOV_voroshilov_budyonny_1
+			}
+		}
+	}
+
+	#End of Voroshilov
+	focus = {
+		id = SOV_new_corps4
+		icon = GFX_SOV_new_officer_academies
+		prerequisite = { focus = SOV_bravery_rules focus = SOV_convert_naval_guns }
+		x = -1
+		y = 1
+		cost = 2
+		relative_position_id = SOV_bravery_rules
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			every_army_leader = {
+				add_planning = 2
+				add_logistics = 1
 				add_attack = 1
-				add_planning = 1
-				add_logistics = 2
-				add_unit_leader_trait = trait_head_red_army
-				add_unit_leader_trait = organizer
+			}
+			swap_ideas = {
+				remove_idea = SOV_modernisation_bal
+				add_idea = SOV_modernisation_cav_1
+			}
+			add_ideas = SOV_new_officers
+		}
+	}
+
+	#Centre
+	focus = {
+		id = SOV_timoshenko_voroshilov
+		icon = GFX_goal_timoshenkofocus
+		prerequisite = { focus = SOV_voroshilov1 }
+		mutually_exclusive = { focus = SOV_budyonny2 }
+		mutually_exclusive = { focus = SOV_kulik2 }
+		x = 2
+		y = 1
+		cost = 3
+		relative_position_id = SOV_voroshilov1
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_timoshenko_voroshilov_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = grand_battleplan
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = armored_breakthrough
+				add_mastery = {
+					amount = 150
+					sub_doctrine = armored_breakthrough
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = armored_breakthrough
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = armored_breakthrough
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = armor
+				}		
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}		
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_semyon_timoshenko = { 
 				promote_leader = yes 
 			}
 		}
 	}
 
 	focus = {
-		id = SOV_army_top41
-		icon = GFX_SOV_rework286
-		prerequisite = { focus = SOV_army_top4 }
-		relative_position_id = SOV_army_top4
-		x = 0
+		id = SOV_voroshilov2
+		icon = GFX_goal_voroshilovfocus
+		prerequisite = { focus = SOV_timoshenko1 }
+		mutually_exclusive = { focus = SOV_shaposhnikovfocus focus = SOV_blucher2 }
+		x = 4
 		y = 1
 		cost = 3
+		relative_position_id = SOV_voroshilov1
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
 		available_if_capitulated = yes
 
-		available = {
+		bypass = {
+		}
 
+		completion_reward = {
+			#custom_effect_tooltip = SOV_voroshilov2_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = mass_assault
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = infantry_tank_support
+				add_mastery = {
+					amount = 150
+					sub_doctrine = infantry_tank_support
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = infantry_tank_support
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = infantry_tank_support
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = armor
+				}		
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}		
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_kliment_voroshilov = { 
+				promote_leader = yes 
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil27
+				}
+				cost = 7
+			}
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil34 SOV_mil42 SOV_mil43
+				}
+				cost = 14
+			}
+		}
+	}
+
+	#End of Centre
+	focus = {
+		id = SOV_nkvd_status_quo
+		icon = GFX_goal_generic_neutrality_focus
+		prerequisite = { focus = SOV_voroshilov2 focus = SOV_timoshenko_voroshilov }
+		x = 1
+		y = 1
+		cost = 3
+		relative_position_id = SOV_timoshenko_voroshilov
+		ai_will_do = {
+			factor = 5
 		}
 
 		available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
+		bypass = {
+		}
+
 		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.3
-			}
-
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-			
-			custom_effect_tooltip = SOV_red_army_mechanized_attack_factor_5_tt
-			add_to_variable = { SOV_red_army_mechanized_attack_factor_var = 0.05 }
-			custom_effect_tooltip = SOV_red_army_mechanized_defence_factor_5_tt
-			add_to_variable = { SOV_red_army_mechanized_defence_factor_var = 0.05 }
-			custom_effect_tooltip = SOV_red_army_army_org_factor_-025_tt
-			add_to_variable = { SOV_red_army_army_org_factor_var = -0.025 }
-			custom_effect_tooltip = SOV_red_army_army_morale_factor_075_tt
-			add_to_variable = { SOV_red_army_army_morale_factor_var = 0.075 }
-
-
-			custom_effect_tooltip = SOV_red_army_max_dig_in_1_tt
-			add_to_variable = { SOV_red_army_max_dig_in_var = 1 }
-
-			custom_effect_tooltip = SOV_red_army_dig_in_speed_factor_10_tt
-			add_to_variable = { SOV_red_army_dig_in_speed_factor_var = 0.1 }
+			add_ideas = SOV_nkvd_status_quo_1
 		}
 	}
 
 	focus = {
-		id = SOV_army_top42
-		icon = GFX_focus_HUN_form_the_gyorshadtest
-		prerequisite = { focus = SOV_army_top41 }
-		relative_position_id = SOV_army_top41
+		id = SOV_passive_command
+		icon = GFX_goal_generic_construction2
+		prerequisite = { focus = SOV_nkvd_status_quo }
 		x = 0
 		y = 1
 		cost = 3
+		relative_position_id = SOV_nkvd_status_quo
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_nkvd_status_quo_2
+				remove_idea = SOV_nkvd_status_quo_1
+			}
+		}
+	}
+
+	focus = {
+		id = SOV_new_corps3
+		icon = GFX_SOV_new_officer_academies
+		prerequisite = { focus = SOV_passive_command }
+		x = 0
+		y = 1
+		cost = 2
+		relative_position_id = SOV_passive_command
+		ai_will_do = {
+			factor = 5
+		}
 
 		available_if_capitulated = yes
 
+		bypass = {
+		}
+
+		completion_reward = {
+			every_army_leader = {
+				add_defense = 2
+				add_attack = 1
+				
+			}
+			add_ideas = SOV_new_officers
+			custom_effect_tooltip = SOV_lessons_of_war_cowed_trait_tt
+			hidden_effect = {
+				every_army_leader = {
+					limit = {
+						has_trait = trait_SOV_cowed_by_stalin_army
+					}
+					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_army
+				}
+				every_navy_leader = {
+					limit = {
+						has_trait = trait_SOV_cowed_by_stalin_navy
+					}
+					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_navy
+				}
+			}
+		}
+	}
+
+	#Timoshenko
+	focus = {
+		id = SOV_timoshenko1
+		icon = GFX_goal_timoshenkofocus
+		prerequisite = { focus = SOV_army_04 }
+		mutually_exclusive = { focus = SOV_blucher1 }
+		mutually_exclusive = { focus = SOV_voroshilov1 }
+		mutually_exclusive = { focus = SOV_kulik1 }
+		x = 3
+		y = 1
+		cost = 3
+		relative_position_id = SOV_army_04
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
 		available = {
-			# power_balance_value = {
-			# 	id = SOV_army_bop
-			# 	value > 0.2
+				
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = available_political_advisor
+			#custom_effect_tooltip = SOV_historical_tt
+			#custom_effect_tooltip = SOV_red_guard_template_medium_tt
+			SOV_semyon_timoshenko = { 
+				promote_leader = yes
+				add_unit_leader_trait = trait_head_red_army 
+			}
+			
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil42 SOV_mil43
+				}
+				cost = 14
+			}
+		}
+	}
+
+	#Shaposhnikov
+	focus = {
+		id = SOV_shaposhnikovfocus
+		icon = GFX_goal_shaposhnikovfocus
+		prerequisite = { focus = SOV_timoshenko1 }
+		mutually_exclusive = { focus = SOV_voroshilov2  focus = SOV_blucher2 }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_timoshenko1
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_historical_tt
+			#custom_effect_tooltip = SOV_shaposhnikovfocus_tt
+
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = mass_assault
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_mastery = {
+				amount = 150
+				track = armor
+			}		
+			add_mastery = {
+				amount = 50
+				track = infantry
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_boris_shaposhnikov = { 
+				promote_leader = yes 
+			}
+		}
+	}
+
+	focus = {
+		id = SOV_land_air_coordination
+		icon = GFX_goal_generic_air_doctrine
+		prerequisite = { focus = SOV_shaposhnikovfocus }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_shaposhnikovfocus
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+
+			add_ideas = SOV_timoshenko_shaposhnikov_1
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				track = fighter_aircraft
+				grand_doctrine = new_battlefield_support
+			}
+
+		}
+	}
+
+	focus = {
+		id = SOV_wargames
+		icon = GFX_goal_generic_position_armies
+		prerequisite = { focus = SOV_land_air_coordination }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_land_air_coordination
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_timoshenko_shaposhnikov_2
+				remove_idea = SOV_timoshenko_shaposhnikov_1
+			}
+			army_experience = 50
+			air_experience = 50
+		}
+	}
+
+	#Blucher
+	focus = {
+		id = SOV_blucher2
+		icon = GFX_goal_blucherfocus
+		prerequisite = { focus = SOV_timoshenko1 }
+		mutually_exclusive = { focus = SOV_shaposhnikovfocus focus = SOV_voroshilov2 }
+		x = 2
+		y = 1
+		cost = 3
+		relative_position_id = SOV_timoshenko1
+		ai_will_do = {
+			factor = 5
+		}
+
+		overlay = GFX_focus_sov_marshal1
+
+		available = {
+			# has_global_flag = SOV_border_war_win
+			#has_country_flag = SOV_winter_war_incompetency
+			AND = {
+				NOT = { has_war_with = FIN }
+				NOT = { owns_state = 146 }
+			}
+			NOT = { has_completed_focus = SOV_pol_purge12 }
+			# SOV_vasily_blyukher = {
+			# 	NOT = {has_character_flag = SOV_character_purged_flag }
 			# }
 		}
 
 		available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
+		bypass = {
+		}
+
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
+			custom_effect_tooltip = SOV_blucher_reinstated_tt
+			#custom_effect_tooltip = SOV_shaposhnikovfocus_tt
 
-			custom_effect_tooltip = SOV_red_army_mechanized_attack_factor_025_tt
-			add_to_variable = { SOV_red_army_mechanized_attack_factor_var = 0.025 }
-			custom_effect_tooltip = SOV_red_army_mechanized_defence_factor_025_tt
-			add_to_variable = { SOV_red_army_mechanized_defence_factor_var = 0.025 }
-
-			custom_effect_tooltip = SOV_red_army_coordination_bonus_5_tt
-			add_to_variable = { SOV_red_army_coordination_bonus_var = 0.05 }
-
-			custom_effect_tooltip = SOV_red_army_land_reinforce_rate_3_tt
-			add_to_variable = { SOV_red_army_land_reinforce_rate_var = 0.03 }
-
-			custom_effect_tooltip = SOV_red_army_planning_speed_10_tt
-			add_to_variable = { SOV_red_army_planning_speed_var = 0.10 }
-
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.2
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = mass_assault
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = infantry_tank_support
+				add_mastery = {
+					amount = 150
+					sub_doctrine = infantry_tank_support
+				}
+				add_mastery = {
+					amount = 50
+					track = operations
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = infantry_tank_support
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = infantry_tank_support
+				}
+				add_mastery = {
+					amount = 50
+					track = operations
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = armor
+				}		
+				add_mastery = {
+					amount = 50
+					track = operations
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_vasily_blyukher = { 
+				clr_character_flag = SOV_exiled_flag
 			}
 		}
 	}
 
-	# focus = {
-	# 	id = SOV_army_top43
-	# 	icon = GFX_SOV_rework292
-	# 	prerequisite = { focus = SOV_army_top42 }
-	# 	relative_position_id = SOV_army_top42
-	# 	x = 0
-	# 	y = 1
-	# 	cost = 3
-	# 	ai_will_do = {
-	# 		factor = 5
-	# 	}
-
-	# 	search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
-	# 	available_if_capitulated = yes
-
-	# 	available = {
-
-	# 	}
-
-	# 	available_if_capitulated = yes
-
-	# 	search_filters = { FOCUS_FILTER_RESEARCH }
-	# 	completion_reward = {
-	# 		custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-	# 		custom_effect_tooltip = SOV_red_army_mechanized_attack_factor_025_tt
-	# 		add_to_variable = { SOV_red_army_mechanized_attack_factor_var = 0.025 }
-	# 		custom_effect_tooltip = SOV_red_army_mechanized_defence_factor_025_tt
-	# 		add_to_variable = { SOV_red_army_mechanized_defence_factor_var = 0.025 }
-
-	# 		custom_effect_tooltip = SOV_red_army_army_org_factor_-025_tt
-	# 		add_to_variable = { SOV_red_army_army_org_factor_var = -0.025 }
-	# 		custom_effect_tooltip = SOV_red_army_army_morale_factor_075_tt
-	# 		add_to_variable = { SOV_red_army_army_morale_factor_var = 0.075 }
-	# 		add_power_balance_value = {
-	# 			id = SOV_army_bop
-	# 			value = 0.1
-	# 		}
-	# 	}
-	# }
-
 	focus = {
-		id = SOV_army_top5
-		icon = GFX_goal_tukachevskyfocus
+		id = SOV_stalins_sledgehammer
+		icon = GFX_focus_generic_sabotage
+		prerequisite = { focus = SOV_blucher2 }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_blucher2
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			add_ideas = SOV_timoshenko_blucher_1
+		}
+	}
+	
+	focus = {
+		id = SOV_combined_arms2
+		icon = GFX_focus_NOR_rikstanken
+		prerequisite = { focus = SOV_stalins_sledgehammer }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_stalins_sledgehammer
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_timoshenko_blucher_2
+				remove_idea = SOV_timoshenko_blucher_1
+			}	
+		}
+	}
+
+	#End of Timoshenko
+	focus = {
+		id = SOV_new_corps2
+		icon = GFX_SOV_new_officer_academies
+		prerequisite = { focus = SOV_combined_arms2 focus = SOV_wargames }
+		x = 1
+		y = 1
+		cost = 2
+		relative_position_id = SOV_wargames
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			every_army_leader = {
+				add_logistics = 2
+				add_defense = 1
+			}
+			swap_ideas = {
+				remove_idea = SOV_modernisation_bal
+				add_idea = SOV_modernisation_mech_1
+			}
+			add_ideas = SOV_new_officers
+		}
+	}
+
+	#Blucher
+	focus = {
+		id = SOV_blucher1
+		icon = GFX_goal_blucherfocus
 		prerequisite = { focus = SOV_army_04 }
-		mutually_exclusive = { focus = SOV_army_top1 focus = SOV_army_top2 focus = SOV_army_top3 focus = SOV_army_top4}
-		relative_position_id = SOV_army_04
+		mutually_exclusive = { focus = SOV_kulik1 }
+		mutually_exclusive = { focus = SOV_voroshilov1 }
+		mutually_exclusive = { focus = SOV_timoshenko1 }
 		x = 8
 		y = 1
 		cost = 3
+		relative_position_id = SOV_army_04
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
-
-		available_if_capitulated = yes
+		overlay = GFX_focus_sov_marshal1
 
 		available = {
-
-			has_completed_focus = SOV_pol_purge13
-			OR = {
-			has_completed_focus = SOV_spain_big
-			has_completed_focus = SOV_spanish_training
-			}
-			OR = {
-				has_completed_focus = SOV_mil42
-				has_completed_focus = SOV_mil29
-				has_completed_focus = SOV_mil33
-			}
-			
+			#has_global_flag = SOV_winter_war_loss
+			#has_country_flag = SOV_winter_war_catastrophe
+			# NOT = { has_global_flag = SOV_border_war_loss}
+			# SOV_vasily_blyukher = {
+			# 	NOT = {has_character_flag = SOV_character_purged_flag }
+			# }
+			NOT = { has_completed_focus = SOV_pol_purge12 }
 		}
 
 		available_if_capitulated = yes
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			SOV_mikhail_tukhachevsky = {
-			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-			add_attack = 1
-			add_defense = 1
-			add_logistics = 1
-			add_unit_leader_trait = trait_head_red_army
-			add_unit_leader_trait = organizer
-			promote_leader = yes 
+		bypass = {
 		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_red_guard_template_medium_tt
+			custom_effect_tooltip = SOV_blucher_reinstated_tt
+			SOV_vasily_blyukher = { 
+				promote_leader = yes
+				clr_character_flag = SOV_exiled_flag
+				add_unit_leader_trait = trait_head_red_army 
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil26 SOV_mil29 SOV_mil31
+				}
+				cost = 7
+			}
 		}
 	}
 
+	#Timoshenko
 	focus = {
-		id = SOV_army_top51
-		icon = GFX_SOV_rework93
-		prerequisite = { focus = SOV_army_top5 }
-		relative_position_id = SOV_army_top5
+		id = SOV_timoshenko2
+		icon = GFX_goal_timoshenkofocus
+		prerequisite = { focus = SOV_blucher1 }
+		mutually_exclusive = { focus = SOV_tukachevsky }
+		x = -1
+		y = 1
+		cost = 3
+		relative_position_id = SOV_blucher1
+		ai_will_do = {
+			factor = 5
+		}
+
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			#custom_effect_tooltip = SOV_timoshenko2_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = new_mobile_warfare
+			}
+			add_mastery = {
+				amount = 150
+				track = infantry
+			}
+			# add_doctrine_cost_reduction = {
+			# 	name = doc_bonus
+			# 	cost_reduction = 0.4
+			# 	uses = 3
+			# 	technology = mobile_infantry
+			# 	technology = mass_motorization
+			# 	technology = mechanised_offensive
+			# 	technology = volkssturm
+			# 	technology = nd_conscription
+			# 	technology = werwolf_guerillas
+			# }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = streamlined_deployment
+				add_mastery = {
+					amount = 150
+					sub_doctrine = streamlined_deployment
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = streamlined_deployment
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = streamlined_deployment
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = armor
+				}		
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_semyon_timoshenko = { 
+				promote_leader = yes 
+			}
+		}
+	}
+	
+	focus = {
+		id = SOV_mass_mechanisation
+		icon = GFX_SOV_mechanized_wave
+		prerequisite = { focus = SOV_timoshenko2 }
 		x = 0
 		y = 1
 		cost = 3
+		relative_position_id = SOV_timoshenko2
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
 		available_if_capitulated = yes
 
-		available = {
-
-			
-
+		bypass = {
 		}
 
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.45
-			}
-
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_army_org_factor_5_tt
-			add_to_variable = { SOV_red_army_army_org_factor_var = 0.05 }
-			custom_effect_tooltip = SOV_red_army_army_morale_factor_10_tt
-			add_to_variable = { SOV_red_army_army_morale_factor_var = 0.1 }
-			add_to_variable = { SOV_red_army_initiative_factor_var = 0.05 }
-			custom_effect_tooltip = SOV_red_army_initiative_factor_var_5_tt
-
-			custom_effect_tooltip = SOV_red_army_army_speed_factor_5_tt
-			add_to_variable = { SOV_red_army_army_speed_factor_var = 0.05 }
-
-			custom_effect_tooltip = SOV_red_army_coordination_bonus_5_tt
-			add_to_variable = { SOV_red_army_coordination_bonus_var = 0.05 }
-
+			add_ideas = SOV_blucher_timoshenko_1
 		}
 	}
-
+	
 	focus = {
-		id = SOV_army_top52
-		icon = GFX_SOV_rework297
-		prerequisite = { focus = SOV_army_top51 }
-		relative_position_id = SOV_army_top51
+		id = SOV_combined_arms
+		icon = GFX_focus_generic_combined_arms
+		prerequisite = { focus = SOV_mass_mechanisation }
 		x = 0
 		y = 1
 		cost = 3
+		relative_position_id = SOV_mass_mechanisation
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
-
 		available_if_capitulated = yes
 
-		available = {
-
+		bypass = {
 		}
 
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.45
+			swap_ideas = {
+				add_idea = SOV_blucher_timoshenko_2
+				remove_idea = SOV_blucher_timoshenko_1
 			}
-
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-			
-			custom_effect_tooltip = SOV_red_army_armor_attack_factor_075_tt
-			add_to_variable = { SOV_red_army_armor_attack_factor_var = 0.075 }
-			custom_effect_tooltip = SOV_red_army_armor_defence_-025_tt
-			add_to_variable = { SOV_red_army_armor_defence_var = -0.025 }
-			custom_effect_tooltip = SOV_red_army_max_planning_factor_-5_tt
-			add_to_variable = { SOV_red_army_max_planning_factor_var = -0.05 }
-			custom_effect_tooltip = SOV_red_army_planning_speed_15_tt
-			add_to_variable = { SOV_red_army_planning_speed_var = 0.15 }
-
-			custom_effect_tooltip = SOV_red_army_max_dig_in_-3_tt
-			add_to_variable = { SOV_red_army_max_dig_in_var = -3 }
+			add_tech_bonus = {
+				name = electronics
+				bonus = 1
+				uses = 2
+				category = electronics
+			}
+			#custom_effect_tooltip = available_designer
+			#show_ideas_tooltip = SOV_kirov
+			#add_ideas = SOV_kirov
 		}
 	}
 
-	# focus = {
-	# 	id = SOV_army_top53
-	# 	icon = GFX_SOV_rework270
-	# 	prerequisite = { focus = SOV_army_top52 }
-	# 	relative_position_id = SOV_army_top52
-	# 	x = 0
-	# 	y = 1
-	# 	cost = 3
-	# 	ai_will_do = {
-	# 		factor = 5
-	# 	}
+	#Tukachevsky
+	focus = {
+		id = SOV_tukachevsky
+		icon = GFX_goal_tukachevskyfocus
+		prerequisite = { focus = SOV_blucher1 }
+		mutually_exclusive = { focus = SOV_timoshenko2 }
+		x = 1
+		y = 1
+		cost = 3
+		relative_position_id = SOV_blucher1
+		ai_will_do = {
+			factor = 5
+		}
 
-	# 	search_filters = { FOCUS_FILTER_BALANCE_OF_POWER}
+		available = {
+			SPR = {
+				NOT = { has_completed_focus = SPA_Total_Axis_Victory }
+			}
+		}
+		
+		available_if_capitulated = yes
 
-	# 	available_if_capitulated = yes
+		bypass = {
+		}
 
-	# 	available = {
+		completion_reward = {
+			#custom_effect_tooltip = SOV_tukachevsky_tt
+			custom_effect_tooltip = SOV_tukhachevsky_reinstated_tt
+			add_mastery_bonus = {
+				name = doc_bonus
+				bonus = 0.1
+				days = 720
+				grand_doctrine = new_mobile_warfare
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_grant_doctrine_tt
+			if = { 
+				limit = { NOT = { has_subdoctrine_in_track = armor } } 
+				set_sub_doctrine = armored_standardization
+				add_mastery = {
+					amount = 150
+					sub_doctrine = armored_standardization
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			else_if = {
+				limit = {
+					has_doctrine = armored_standardization
+				}
+				add_mastery = {
+					amount = 150
+					sub_doctrine = armored_standardization
+				}
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}	
+			} else = {
+				add_mastery = {
+					amount = 100
+					track = armor
+				}		
+				add_mastery = {
+					amount = 50
+					track = infantry
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			SOV_mikhail_tukhachevsky = { 
+				promote_leader = yes 
+				clr_character_flag = SOV_exiled_flag
+			}
+		}
+	}
+	
+	focus = {
+		id = SOV_study_spain
+		icon = GFX_SOV_goal_military_in_spain
+		prerequisite = { focus = SOV_tukachevsky }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_tukachevsky
+		ai_will_do = {
+			factor = 5
+		}
 
-	# 	}
+		available_if_capitulated = yes
 
-	# 	available_if_capitulated = yes
+		bypass = {
+		}
 
-	# 	search_filters = { FOCUS_FILTER_RESEARCH }
-	# 	completion_reward = {
+		completion_reward = {
+			add_ideas = SOV_blucher_tukachevsky_1
+		}
+	}
+	
+	focus = {
+		id = SOV_study_blitzkrieg
+		icon = GFX_SOV_breakthrough_priority
+		prerequisite = { focus = SOV_study_spain }
+		x = 0
+		y = 1
+		cost = 3
+		relative_position_id = SOV_study_spain
+		ai_will_do = {
+			factor = 5
+		}
 
-	# 		add_power_balance_value = {
-	# 			id = SOV_army_bop
-	# 			value = 0.3
-	# 		}
+		available_if_capitulated = yes
 
-	# 		custom_effect_tooltip = SOV_generic_modify_red_army_tt
+		bypass = {
+		}
 
-	# 		custom_effect_tooltip = SOV_red_army_army_speed_factor_5_tt
-	# 		add_to_variable = { SOV_red_army_army_speed_factor_var = 0.05 }
+		completion_reward = {
+			swap_ideas = {
+				add_idea = SOV_blucher_tukachevsky_2
+				remove_idea = SOV_blucher_tukachevsky_1
+			}
+			add_doctrine_cost_reduction = {
+				name = doc_bonus
+				cost_reduction = 0.25
+				uses = 2
+				category = cat_battlefield_support 
+			}
+			army_experience = 50
+		}
+	}
 
-	# 		custom_effect_tooltip = SOV_red_army_coordination_bonus_5_tt
-	# 		add_to_variable = { SOV_red_army_coordination_bonus_var = 0.05 }
+	#End of Blucher
+	focus = {
+		id = SOV_new_corps
+		icon = GFX_SOV_new_officer_academies
+		prerequisite = { focus = SOV_combined_arms focus = SOV_study_blitzkrieg }
+		x = 1
+		y = 1
+		cost = 2
+		relative_position_id = SOV_combined_arms
+		ai_will_do = {
+			factor = 5
+		}
 
-	# 		custom_effect_tooltip = SOV_red_army_max_planning_factor_-5_tt
-	# 		add_to_variable = { SOV_red_army_max_planning_factor_var = -0.05 }
-	# 		custom_effect_tooltip = SOV_red_army_planning_speed_15_tt
-	# 		add_to_variable = { SOV_red_army_planning_speed_var = 0.15 }
-	# 	}
-	# }
+		available_if_capitulated = yes
+
+		bypass = {
+		}
+
+		completion_reward = {
+			every_army_leader = {
+				add_attack = 1
+				add_planning = 1
+				add_defense = -1
+				
+			}
+			swap_ideas = {
+				remove_idea = SOV_modernisation_bal
+				add_idea = SOV_modernisation_mech_2
+			}
+			add_ideas = SOV_new_officers
+		}
+	}
+	
+	#MID
 
 	focus = {
 		id = SOV_army_mid1
 		icon = GFX_focus_generic_reinforcing_the_supply_network
-		prerequisite = { focus = SOV_army_top52 focus = SOV_army_top12 focus = SOV_army_top22 focus = SOV_army_top321 focus = SOV_army_top322 focus = SOV_army_top42}
+		prerequisite = { focus = SOV_new_corps focus = SOV_new_corps2 focus = SOV_new_corps3 focus = SOV_new_corps4 focus = SOV_new_corps5 }
 		mutually_exclusive = {focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_top52
-		x = -12
-		y = 2
-		cost = 3
+		relative_position_id = SOV_new_corps3
+		x = -6
+		y = 1
+		cost = 2
 		ai_will_do = {
 			factor = 5
 		}
@@ -4843,12 +5413,12 @@ focus_tree = {
 	focus = {
 		id = SOV_army_mid2
 		icon = GFX_SOV_rework145
-		prerequisite = { focus = SOV_army_top52 focus = SOV_army_top12 focus = SOV_army_top22 focus = SOV_army_top321 focus = SOV_army_top322 focus = SOV_army_top42}
+		prerequisite = { focus = SOV_new_corps focus = SOV_new_corps2 focus = SOV_new_corps3 focus = SOV_new_corps4 focus = SOV_new_corps5 }
 		mutually_exclusive = {focus = SOV_army_mid1 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_top52
-		x = -8
-		y = 2
-		cost = 3
+		relative_position_id = SOV_new_corps3
+		x = 0
+		y = 1
+		cost = 2
 		ai_will_do = {
 			factor = 5
 		}
@@ -4875,50 +5445,50 @@ focus_tree = {
 					add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
 				}
 			}
-			hidden_effect = {
-				IF = {
-					LIMIT = {has_completed_focus = SOV_army_top1}
-					SOV_semyon_budyonny = {
-						remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					}
-				}
-				IF = {
-					LIMIT = {has_completed_focus = SOV_army_top2}
-					SOV_aleksandr_yegorov = {
-						remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					}
-				}
-				IF = {
-					LIMIT = {has_completed_focus = SOV_army_top3}
-					SOV_kliment_voroshilov= {
-						remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					}
-				}
-				IF = {
-					LIMIT = {has_completed_focus = SOV_army_top4}
-					SOV_semyon_timoshenko= {
-						remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					}
-				}
-				IF = {
-					LIMIT = {has_completed_focus = SOV_army_top5}
-					SOV_mikhail_tukhachevsky = {
-						remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					}
-				}
-			}
+			# hidden_effect = {
+			# 	IF = {
+			# 		LIMIT = {has_completed_focus = SOV_army_top1}
+			# 		SOV_semyon_budyonny = {
+			# 			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+			# 		}
+			# 	}
+			# 	IF = {
+			# 		LIMIT = {has_completed_focus = SOV_army_top2}
+			# 		SOV_aleksandr_yegorov = {
+			# 			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+			# 		}
+			# 	}
+			# 	IF = {
+			# 		LIMIT = {has_completed_focus = SOV_army_top3}
+			# 		SOV_kliment_voroshilov= {
+			# 			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+			# 		}
+			# 	}
+			# 	IF = {
+			# 		LIMIT = {has_completed_focus = SOV_army_top4}
+			# 		SOV_semyon_timoshenko= {
+			# 			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+			# 		}
+			# 	}
+			# 	IF = {
+			# 		LIMIT = {has_completed_focus = SOV_army_top5}
+			# 		SOV_mikhail_tukhachevsky = {
+			# 			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+			# 		}
+			# 	}
+			# }
 		}
 	}
 
 	focus = {
 		id = SOV_army_mid3
 		icon = GFX_focus_chi_army_reform
-		prerequisite = { focus = SOV_army_top52 focus = SOV_army_top12 focus = SOV_army_top22 focus = SOV_army_top321 focus = SOV_army_top322 focus = SOV_army_top42}
+		prerequisite = { focus = SOV_new_corps focus = SOV_new_corps2 focus = SOV_new_corps3 focus = SOV_new_corps4 focus = SOV_new_corps5 }
 		mutually_exclusive = {focus = SOV_army_mid1 focus = SOV_army_mid2}
-		relative_position_id = SOV_army_top52
-		x = -4
-		y = 2
-		cost = 3
+		relative_position_id = SOV_new_corps3
+		x = 6
+		y = 1
+		cost = 2
 		ai_will_do = {
 			factor = 5
 		}
@@ -4928,7 +5498,7 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		available = {
-			NOT = {has_completed_focus = SOV_army_top3}
+			#NOT = {has_completed_focus = SOV_army_top3}
 		}
 
 		available_if_capitulated = yes
@@ -4941,15 +5511,19 @@ focus_tree = {
 			}
 		}
 	}
-
+	
+	#END
+	
+	#1
 	focus = {
 		id = SOV_army_budy
 		icon = GFX_SOV_rework248
 		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = -4
+		mutually_exclusive = { focus = SOV_army_yego focus = SOV_army_voro focus = SOV_army_timo focus = SOV_army_tuka }
+		relative_position_id = SOV_army_mid2
+		x = -8
 		y = 1
-		cost = 5
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -4959,37 +5533,29 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		available = {
-			power_balance_value = {
-				id = SOV_army_bop
-				value < -0.45
+			OR = {
+				has_completed_focus = SOV_new_corps5
+				has_completed_focus = SOV_new_corps4
 			}
-			NOT = {has_country_flag = SOV_army2_flag}
-			NOT = {has_completed_focus = SOV_mil2}
-			NOT = {has_completed_focus = SOV_army_top1}
-			NOT = {has_completed_focus = SOV_army_popo}
+			# power_balance_value = {
+			# 	id = SOV_army_bop
+			# 	value < -0.45
+			# }
+			# NOT = {has_country_flag = SOV_army2_flag}
+			# NOT = {has_completed_focus = SOV_mil2}
+			# NOT = {has_completed_focus = SOV_army_top1}
+			# NOT = {has_completed_focus = SOV_army_popo}
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.2
-			}
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
 				SOV_semyon_budyonny = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+					add_skill_level = 1
 					add_defense = 2
 					add_logistics = 1
 					add_planning = 2
@@ -4999,12 +5565,15 @@ focus_tree = {
 			ELSE = {
 				SOV_semyon_budyonny = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					add_skill_level = 1
 					add_defense = 2
 					add_logistics = 1
 					add_planning = 2
 					add_unit_leader_trait = trait_head_red_army
 				}
 			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
 
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
 			custom_effect_tooltip = SOV_red_army_modifier_army_sub_unit_cavalry_speed_factor_5_tt
@@ -5016,13 +5585,93 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SOV_army_yego
-		icon = GFX_goal_yegorovfocus
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 0
+		id = SOV_army_kuli
+		icon = GFX_goal_kulikfocus
+		prerequisite = { focus = SOV_army_budy}
+		relative_position_id = SOV_army_budy
+		x = -1
 		y = 1
-		cost = 5
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
+
+		available_if_capitulated = yes
+
+		available = {
+
+		}
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			custom_effect_tooltip = SOV_army_grind_tt
+			IF = {
+				LIMIT = {has_completed_focus = SOV_army_mid2}
+				SOV_grigory_kulik = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+					add_attack = 2
+					add_defense = 1
+					add_planning = 1
+					add_unit_leader_trait = trait_arty_goat
+					hidden_effect = {
+						remove_unit_leader_trait = panzer_leader
+						remove_unit_leader_trait = cavalry_leader
+						remove_unit_leader_trait = panzer_expert
+						remove_unit_leader_trait = commando
+						remove_unit_leader_trait = skirmisher
+						remove_unit_leader_trait = paratrooper
+						remove_unit_leader_trait = camouflage_expert
+						remove_unit_leader_trait = combined_arms_expert
+						remove_unit_leader_trait = cavalry_expert
+					}
+				}
+			}
+			ELSE = {
+				SOV_grigory_kulik = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					add_attack = 2
+					add_defense = 1
+					add_planning = 1
+					add_unit_leader_trait = trait_arty_goat
+					hidden_effect = {
+						remove_unit_leader_trait = panzer_leader
+						remove_unit_leader_trait = cavalry_leader
+						remove_unit_leader_trait = panzer_expert
+						remove_unit_leader_trait = commando
+						remove_unit_leader_trait = skirmisher
+						remove_unit_leader_trait = paratrooper
+						remove_unit_leader_trait = camouflage_expert
+						remove_unit_leader_trait = combined_arms_expert
+						remove_unit_leader_trait = cavalry_expert
+					}
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_military_high_command
+			show_ideas_tooltip = grigory_kulik
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil4 SOV_mil6 SOV_mil13 SOV_mil12 SOV_mil17 SOV_mil16 SOV_mil18
+				}
+				cost = 7
+			}
+		}
+	}
+
+	focus = {
+		id = SOV_army_kuzn
+		icon = GFX_SOV_rework285
+		prerequisite = { focus = SOV_army_budy }
+		relative_position_id = SOV_army_budy
+		x = 1
+		y = 1
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -5032,26 +5681,64 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		available = {
-			has_completed_focus = SOV_pol_purge13
-			NOT = {has_country_flag = SOV_army2_flag}
-			NOT = {has_completed_focus = SOV_army_top2}
+			#has_completed_focus = SOV_army_mid3
+		}
+
+		overlay = GFX_focus_sov_marshal2
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			#Kuznetsov, ADVISOR
+			SOV_vasily_kuznetsov = {
+				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_red_army_tt
+
+			custom_effect_tooltip = SOV_red_army_special_forces_cap_3_tt
+			add_to_variable = { SOV_red_army_special_forces_cap_var = 0.03 }
+
+			custom_effect_tooltip = SOV_red_army_special_forces_training_time_factor_-10_tt
+			add_to_variable = { SOV_red_army_special_forces_training_time_factor_var = -0.10 }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_military_high_command
+			show_ideas_tooltip = vasily_kuznetsov
+
+		}
+	}
+
+	#2
+	focus = {
+		id = SOV_army_yego
+		icon = GFX_goal_yegorovfocus
+		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
+		mutually_exclusive = { focus = SOV_army_budy focus = SOV_army_voro focus = SOV_army_timo focus = SOV_army_tuka }
+		relative_position_id = SOV_army_mid2
+		x = -4
+		y = 1
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		overlay = GFX_focus_sov_marshal1
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
+
+		available_if_capitulated = yes
+
+		available = {
+			NOT = { has_completed_focus = SOV_pol_purge12 }
+			# NOT = {has_country_flag = SOV_army2_flag}
+			# NOT = {has_completed_focus = SOV_army_top2}
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-
-
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
 				SOV_aleksandr_yegorov = {
@@ -5073,32 +5760,155 @@ focus_tree = {
 					add_unit_leader_trait = organizer
 				}
 			}
-
-			hidden_effect = {
-				remove_trait = {
-					character = SOV_aleksandr_yegorov
-					slot = army_chief
-					trait = army_chief_defensive_2
-				}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			# hidden_effect = {
+			# 	remove_trait = {
+			# 		character = SOV_aleksandr_yegorov
+			# 		slot = army_chief
+			# 		trait = army_chief_defensive_2
+			# 	}
 				
-				add_trait = {
-					character = SOV_aleksandr_yegorov
-					slot = army_chief
-					trait = army_chief_defensive_1
+			# 	add_trait = {
+			# 		character = SOV_aleksandr_yegorov
+			# 		slot = army_chief
+			# 		trait = army_chief_defensive_1
+			# 	}
+			# }
+			#custom_effect_tooltip = available_chief_army_yego
+			#custom_effect_tooltip = army_chief_defensive_1
+			custom_effect_tooltip = available_chief_of_army
+			show_ideas_tooltip = SOV_aleksandr_yegorov
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil19 SOV_mil21 SOV_mil23 SOV_mil25 SOV_mil20 SOV_mil24
 				}
+				cost = 7
 			}
-			custom_effect_tooltip = available_chief_army_yego
 		}
 	}
 
 	focus = {
+		id = SOV_army_vlas
+		icon = GFX_roa
+		prerequisite = { focus = SOV_army_yego }
+		relative_position_id = SOV_army_yego
+		x = -1
+		y = 1
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER}
+
+		available_if_capitulated = yes
+
+		available = {
+			#has_completed_focus = SOV_army_mid2
+		}
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+
+			#Vlasov, VERY GOOD, BUT DEFECTS TO GER
+			custom_effect_tooltip = SOV_army_vlaslov_tt
+			SOV_andrey_vlasov = {
+				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+				add_attack = 3
+				add_planning = 3
+				add_logistics = 2
+			}
+			hidden_effect = {
+				set_global_flag = vlaslov_focus
+			}
+			
+		}
+	}
+
+	focus = {
+		id = SOV_army_vatu
+		icon = GFX_focus_generic_manpower
+		prerequisite = { focus = SOV_army_yego }
+		relative_position_id = SOV_army_yego
+		x = 1
+		y = 1
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
+
+		available_if_capitulated = yes
+
+		available = {
+			has_completed_focus = SOV_pol_purge12
+			#has_completed_focus = SOV_mil25
+		}
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			#VATUTIN, MEANT TO HAVE 80 ARMY CAP + NO SF OR TANK SHENANIGANS
+			custom_effect_tooltip = SOV_army_grind_tt
+			IF = {
+				LIMIT = {has_completed_focus = SOV_army_mid2}
+				SOV_nikolay_vatutin = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+					#add_attack = -2
+					add_logistics = 2
+					add_unit_leader_trait = trait_genius_staffer
+					hidden_effect = {
+						remove_unit_leader_trait = panzer_leader
+						remove_unit_leader_trait = cavalry_leader
+						remove_unit_leader_trait = panzer_expert
+						remove_unit_leader_trait = commando
+						remove_unit_leader_trait = skirmisher
+						remove_unit_leader_trait = paratrooper
+						remove_unit_leader_trait = camouflage_expert
+						remove_unit_leader_trait = combined_arms_expert
+						remove_unit_leader_trait = cavalry_expert
+					}
+				}
+			}
+			ELSE = {
+				SOV_nikolay_vatutin = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					#add_attack = -2
+					add_logistics = 2
+					add_unit_leader_trait = trait_genius_staffer
+					hidden_effect = {
+						remove_unit_leader_trait = panzer_leader
+						remove_unit_leader_trait = cavalry_leader
+						remove_unit_leader_trait = panzer_expert
+						remove_unit_leader_trait = commando
+						remove_unit_leader_trait = skirmisher
+						remove_unit_leader_trait = paratrooper
+						remove_unit_leader_trait = camouflage_expert
+						remove_unit_leader_trait = combined_arms_expert
+						remove_unit_leader_trait = cavalry_expert
+					}
+				}
+			}
+			
+		}
+	}
+
+	#3
+	focus = {
 		id = SOV_army_voro
 		icon = GFX_goal_voroshilovfocus
 		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 4
+		mutually_exclusive = { focus = SOV_army_budy focus = SOV_army_yego focus = SOV_army_timo focus = SOV_army_tuka }
+		relative_position_id = SOV_army_mid2
+		x = 0
 		y = 1
-		cost = 5
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -5109,33 +5919,28 @@ focus_tree = {
 
 		available = {
 			#VOROSHILOV, MEANT TO HAVE SMALL ARMY CAP TO NOT ABUSE AS GENERAL + 3 FM CAP
-			NOT = {has_country_flag = SOV_army2_flag}
-			NOT = {has_completed_focus = SOV_army_top3}
-			OR = {
-				mio:SOV_astrov_design_bureau_organization = { has_mio_size > 4  }    
-				mio:SOV_morozov_design_bureau_organization = { has_mio_size > 4  }   
-				mio:SOV_kirov_organization = { has_mio_size > 4  }     
-				mio:SOV_tankograd_plant_organization = { has_mio_size > 4  }    
-				mio:SOV_okmo_organization = { has_mio_size > 4  }   
-				mio:SOV_morozov_design_bureau_ac_organization = { has_mio_size > 4  }     
-			}
+			#NOT = {has_country_flag = SOV_army2_flag}
+			#NOT = {has_completed_focus = SOV_army_top3}
+			# OR = {
+			# 	mio:SOV_astrov_design_bureau_organization = { has_mio_size > 4  }    
+			# 	mio:SOV_morozov_design_bureau_organization = { has_mio_size > 4  }   
+			# 	mio:SOV_kirov_organization = { has_mio_size > 4  }     
+			# 	mio:SOV_tankograd_plant_organization = { has_mio_size > 4  }    
+			# 	mio:SOV_okmo_organization = { has_mio_size > 4  }   
+			# 	mio:SOV_morozov_design_bureau_ac_organization = { has_mio_size > 4  }     
+			# }
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = voro_patronage_tt
-		
+			mio:SOV_tankograd_plant_organization = {
+				unlock_mio_trait_tooltip = tankograd_trait_mass_small_arms_ammunition_production
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
 				SOV_kliment_voroshilov = {
@@ -5143,7 +5948,7 @@ focus_tree = {
 					add_attack = 2
 					add_logistics = 2
 					add_planning = 2
-					add_unit_leader_trait = trait_head_red_army
+					#add_unit_leader_trait = trait_head_red_army
 				}
 			}
 			ELSE = {
@@ -5152,346 +5957,99 @@ focus_tree = {
 					add_attack = 2
 					add_logistics = 2
 					add_planning = 2
+					#add_unit_leader_trait = trait_head_red_army
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			if = { 
+				limit = { NOT = { has_completed_focus = SOV_voroshilov1 } } 
+				SOV_kliment_voroshilov = { 
+					#promote_leader = yes 
 					add_unit_leader_trait = trait_head_red_army
 				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			reduce_focus_completion_cost = {
+				focus = {
+					SOV_mil27 SOV_mil34 SOV_mil42 SOV_mil43
+				}
+				cost = 7
 			}
 		}
 	}
 
 	focus = {
-		id = SOV_army_timo
-		icon = GFX_goal_timoshenkofocus
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 8
+		id = SOV_army_shap
+		icon = GFX_SOV_rework173
+		prerequisite = { focus = SOV_army_voro }
+		relative_position_id = SOV_army_voro
+		x = -1
 		y = 1
-		cost = 5
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP}
 
 		available_if_capitulated = yes
 
 		available = {
-			NOT = {has_country_flag = SOV_army2_flag}
-			has_completed_focus = SOV_pol_purge12
-			has_completed_focus = SOV_mil2
-			NOT = {has_completed_focus = SOV_army_top4}
+
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.1
-			}
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			hidden_effect= {
-				remove_trait = {
-					character = SOV_semyon_timoshenko
-					slot = army_chief
-					trait = army_chief_reform_2
-				}
-			}
-			add_trait = {
-				character = SOV_semyon_timoshenko
-				slot = army_chief
-				trait = army_chief_reform_timo
-			}
-
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
-				SOV_semyon_timoshenko = {
+				SOV_boris_shaposhnikov  = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					add_attack = 1
-					add_logistics = 1
-					add_unit_leader_trait = trait_head_red_army
-					add_unit_leader_trait = organizer
 					promote_leader = yes 
 				}
 			}
 			ELSE = {
-				SOV_semyon_timoshenko = {
+				SOV_boris_shaposhnikov = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-					add_attack = 1
-					add_logistics = 1
-					add_unit_leader_trait = trait_head_red_army
-					add_unit_leader_trait = organizer
 					promote_leader = yes 
 				}
 			}
-		}
-	}
-
-	focus = {
-		id = SOV_army_tuka
-		icon = GFX_goal_tukachevskyfocus
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 12
-		y = 1
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
-
-		available = {
-			power_balance_value = {
-				id = SOV_army_bop
-				value > 0.40
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_mastery = {
+				amount = 150
+				folder = land
 			}
-			NOT = {has_country_flag = SOV_army2_flag}
-			has_completed_focus = SOV_pol_purge13
-			OR = {
-				has_completed_focus = SOV_spain_big
-				has_completed_focus = SOV_spanish_training
-			}
-			OR = {
-				has_completed_focus = SOV_mil42
-				has_completed_focus = SOV_mil29
-				has_completed_focus = SOV_mil33
-			}
-			NOT = {has_completed_focus = SOV_army_top5}
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			SOV_mikhail_tukhachevsky = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-				add_attack = 1
-				add_logistics = 1
-				add_planning = 1
-				add_unit_leader_trait = trait_head_red_army
-				add_unit_leader_trait = organizer
-			}
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.2
-			}
-		}
-	}
-
-	focus = {
-		id = SOV_army_bluy
-		icon = GFX_goal_blucherfocus
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 13
-		y = 2
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
-
-		available_if_capitulated = yes
-
-		available = {
-			OR = {
-				has_completed_focus = SOV_army_top5
-				# has_completed_focus = SOV_army_tuka
-				
-			}
-			NOT = {has_country_flag = SOV_army2_flag}			
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-
-			IF = {
-				LIMIT = {has_completed_focus = SOV_army_mid2}
-				SOV_vasily_blyukher= {
-					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-				}
-			}
-			ELSE = {
-				SOV_vasily_blyukher= {
-					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-				}
-
-				custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-				custom_effect_tooltip = SOV_red_army_org_loss_when_moving_-10_tt
-				add_to_variable = { SOV_red_army_org_loss_when_moving_var = -0.10 }
-				custom_effect_tooltip = SOV_red_army_planning_speed_5_tt
-				add_to_variable = { SOV_red_army_planning_speed_var = 0.05 }
-
-				custom_effect_tooltip = SOV_red_army_coordination_bonus_5_tt
-				add_to_variable = { SOV_red_army_coordination_bonus_var = 0.05 }
-
-				custom_effect_tooltip = SOV_red_army_winter_attrition_factor_-15_tt
-				add_to_variable = { SOV_red_army_winter_attrition_factor_var = -0.15 }
-			}
-		}
-	}
-
-	focus = {
-		id = SOV_army_kuli
-		icon = GFX_goal_kulikfocus
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = -5
-		y = 2
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
-
-		available = {
-			has_completed_focus = SOV_mil4
-			NOT = {has_completed_focus = SOV_army_top4}
-			NOT = {has_completed_focus = SOV_army_top5}
-			NOT = {has_country_flag = SOV_army2_flag}
-
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-
-			#VATUTIN, MEANT TO HAVE 80 ARMY CAP + NO SF OR TANK SHENANIGANS
-			custom_effect_tooltip = SOV_army_grind_tt
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.15
-			}
-			IF = {
-				LIMIT = {has_completed_focus = SOV_army_mid2}
-				SOV_grigory_kulik = {
-					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					add_attack = 2
-					add_defense = 1
-					add_planning = 1
-					add_unit_leader_trait = trait_arty_goat
-					hidden_effect = {
-						remove_unit_leader_trait = panzer_leader
-						remove_unit_leader_trait = cavalry_leader
-						remove_unit_leader_trait = panzer_expert
-						remove_unit_leader_trait = commando
-						remove_unit_leader_trait = skirmisher
-						remove_unit_leader_trait = paratrooper
-						remove_unit_leader_trait = camouflage_expert
-						remove_unit_leader_trait = combined_arms_expert
-						remove_unit_leader_trait = cavalry_expert
-					}
-				}
-			}
-			ELSE = {
-				SOV_grigory_kulik = {
-					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-					add_attack = 2
-					add_defense = 1
-					add_planning = 1
-					add_unit_leader_trait = trait_arty_goat
-					hidden_effect = {
-						remove_unit_leader_trait = panzer_leader
-						remove_unit_leader_trait = cavalry_leader
-						remove_unit_leader_trait = panzer_expert
-						remove_unit_leader_trait = commando
-						remove_unit_leader_trait = skirmisher
-						remove_unit_leader_trait = paratrooper
-						remove_unit_leader_trait = camouflage_expert
-						remove_unit_leader_trait = combined_arms_expert
-						remove_unit_leader_trait = cavalry_expert
-					}
-				}
-			}
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = grigory_kulik
 		}
 	}
 
 	focus = {
 		id = SOV_army_popo
 		icon = GFX_focus_generic_military_dictatorship
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 5
-		y = 2
-		cost = 5
+		prerequisite = { focus = SOV_army_voro }
+		relative_position_id = SOV_army_voro
+		x = 1
+		y = 1
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
+
+		overlay = GFX_focus_sov_marshal2
 
 		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
 
 		available_if_capitulated = yes
 
 		available = {
-			NOT = {has_country_flag = SOV_army2_flag}
-			NOT = {has_completed_focus = SOV_army_top1}
-			has_completed_focus = SOV_army_mid3
+			#has_completed_focus = SOV_army_mid3
 			has_completed_focus = SOV_pol_purge12
-			NOT = {has_completed_focus = SOV_army_budy}
-
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
 			#POPOV, MEANT TO HAVE 10 ARMY CAP + POSSIBLE 2 FROM PANZER LEADER
 			custom_effect_tooltip = SOV_army_grind_tt
 			SOV_markian_popov = {
@@ -5516,70 +6074,16 @@ focus_tree = {
 		}
 	}
 
+	#4
 	focus = {
-		id = SOV_army_kuzn
-		icon = GFX_SOV_rework285
+		id = SOV_army_timo
+		icon = GFX_goal_timoshenkofocus
 		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 1
-		y = 2
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
-
-		available_if_capitulated = yes
-
-		available = {
-			has_completed_focus = SOV_army_mid3
-			NOT = {has_country_flag = SOV_army2_flag}
-
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-			IF = {
-				LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-				set_country_flag = SOV_army1_flag
-			}
-			ELSE = {
-				set_country_flag = SOV_army2_flag
-			}
-		}
-			#Kuznetsov, ADVISOR
-			SOV_vasily_kuznetsov = {
-			remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-			}
-
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_special_forces_cap_3_tt
-			add_to_variable = { SOV_red_army_special_forces_cap_var = 0.03 }
-
-			custom_effect_tooltip = SOV_red_army_special_forces_training_time_factor_-10_tt
-			add_to_variable = { SOV_red_army_special_forces_training_time_factor_var = -0.10 }
-		
-		custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = vasily_kuznetsov
-			hidden_effect = {
-			
-		}
-		}
-	}
-
-	focus = {
-		id = SOV_army_roko
-		icon = GFX_focus_SOV_the_glory_of_the_red_army_communism
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 11
-		y = 2
-		cost = 5
+		mutually_exclusive = { focus = SOV_army_budy focus = SOV_army_yego focus = SOV_army_voro focus = SOV_army_tuka }
+		relative_position_id = SOV_army_mid2
+		x = 4
+		y = 1
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -5589,35 +6093,92 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		available = {
-			NOT = {has_completed_focus = SOV_army_vasi}
-			NOT = {has_country_flag = SOV_army2_flag}
-			has_completed_focus = SOV_mil2
-			power_balance_value = {
-				id = SOV_army_bop
-				value > 0.45
-			}
+			#NOT = {has_country_flag = SOV_army2_flag}
+			#has_completed_focus = SOV_pol_purge12
+			has_idea = semyon_timoshenko
+			#has_completed_focus = SOV_mil2
+			#NOT = {has_completed_focus = SOV_army_top4}
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
+			custom_effect_tooltip = SOV_historical_tt
+			hidden_effect= {
+				remove_trait = {
+					character = SOV_semyon_timoshenko
+					slot = army_chief
+					trait = army_chief_reform_2
 				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
+			}
+			add_trait = {
+				character = SOV_semyon_timoshenko
+				slot = army_chief
+				trait = army_chief_reform_timo
+			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			IF = {
+				LIMIT = {NOT = { has_completed_focus = SOV_timoshenko1} }
+				SOV_semyon_timoshenko = {
+					promote_leader = yes 
+					add_unit_leader_trait = trait_head_red_army
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt		
+			IF = {
+				LIMIT = {has_completed_focus = SOV_army_mid2}
+				SOV_semyon_timoshenko = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+					add_attack = 1
+					add_logistics = 1
+					#add_unit_leader_trait = trait_head_red_army
+					add_unit_leader_trait = organizer
+					#promote_leader = yes 
+				}
+			}
+			ELSE = {
+				SOV_semyon_timoshenko = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					add_attack = 1
+					add_logistics = 1
+					#add_unit_leader_trait = trait_head_red_army
+					add_unit_leader_trait = organizer
+					#promote_leader = yes 
 				}
 			}
 
+		}
+	}
+
+	focus = {
+		id = SOV_army_roko
+		icon = GFX_focus_SOV_the_glory_of_the_red_army_communism
+		prerequisite = { focus = SOV_army_timo }
+		relative_position_id = SOV_army_timo
+		x = -1
+		y = 1
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
+
+		available_if_capitulated = yes
+
+		available = {
+			#has_completed_focus = SOV_mil2
+		}
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
 			#ROKO, ADVISOR
 			custom_effect_tooltip = SOV_army_grind_tt
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.1
-			}
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
 				SOV_konstantin_rokossovsky = {
@@ -5661,13 +6222,113 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SOV_army_kone
+		icon = GFX_SOV_rework304
+		prerequisite = { focus = SOV_army_timo }
+		relative_position_id = SOV_army_timo
+		x = 1
+		y = 1
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
+
+		available_if_capitulated = yes
+		available = {
+			#has_completed_focus = SOV_army_mid2
+			has_idea = ivan_konev
+		}
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+
+			SOV_ivan_konev = {
+				#KONEV, good General plus Adivor
+				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+				add_skill_level = 1
+			}
+		}
+	}
+
+	#5
+	focus = {
+		id = SOV_army_tuka
+		icon = GFX_goal_tukachevskyfocus
+		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
+		mutually_exclusive = { focus = SOV_army_budy focus = SOV_army_yego focus = SOV_army_voro focus = SOV_army_timo }
+		relative_position_id = SOV_army_mid2
+		x = 8
+		y = 1
+		cost = 3
+		ai_will_do = {
+			factor = 5
+		}
+
+		overlay = GFX_focus_sov_marshal1
+
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
+
+		available_if_capitulated = yes
+
+		available = {
+			NOT = { has_completed_focus = SOV_pol_purge12 }
+			OR = {
+				has_completed_focus = SOV_new_corps
+				has_completed_focus = SOV_new_corps2
+			}
+			#NOT = {has_country_flag = SOV_army2_flag}
+			OR = {
+				has_completed_focus = SOV_spain_big
+				has_completed_focus = SOV_spanish_training
+			}
+			OR = {
+				has_completed_focus = SOV_mil42
+				has_completed_focus = SOV_mil29
+				has_completed_focus = SOV_mil33
+			}
+			#NOT = {has_completed_focus = SOV_army_top5}
+		}
+
+		available_if_capitulated = yes
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			IF = {
+				LIMIT = {has_completed_focus = SOV_army_mid2}
+				SOV_mikhail_tukhachevsky = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
+					add_attack = 1
+					add_logistics = 1
+					add_planning = 1
+					add_unit_leader_trait = trait_head_red_army
+					add_unit_leader_trait = organizer
+				}
+			}
+			ELSE = {
+				SOV_mikhail_tukhachevsky = {
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					add_attack = 1
+					add_logistics = 1
+					add_planning = 1
+					add_unit_leader_trait = trait_head_red_army
+					add_unit_leader_trait = organizer
+				}
+			}
+		}
+	}
+
+	focus = {
 		id = SOV_army_vasi
 		icon = GFX_focus_SWE_the_beast_stirs
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 9
-		y = 2
-		cost = 5
+		prerequisite = { focus = SOV_army_tuka }
+		relative_position_id = SOV_army_tuka
+		x = -1
+		y = 1
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -5677,33 +6338,14 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		available = {
-			NOT = {has_completed_focus = SOV_army_roko}
-			OR = {	
-				has_completed_focus = SOV_army_top3
-				has_completed_focus = SOV_army_voro
-				has_completed_focus = SOV_army_shap
-			}
-			NOT = {has_country_flag = SOV_army2_flag}
-
+			#has_completed_focus = SOV_army_top3
+			has_idea = aleksandr_vasilevsky
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.05
-			}
 			#Vasilevsky, MEANT TO BE JSUT GOOD
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
@@ -5728,248 +6370,54 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SOV_army_shap
-		icon = GFX_SOV_rework173
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 3
-		y = 2
-		cost = 5
+		id = SOV_army_bluy
+		icon = GFX_goal_blucherfocus
+		prerequisite = { focus = SOV_army_tuka }
+		relative_position_id = SOV_army_tuka
+		x = 1
+		y = 1
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
 
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP}
+		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
 
 		available_if_capitulated = yes
 
 		available = {
-			
-			NOT = {has_country_flag = SOV_army2_flag}
-
+			#NOT = { has_completed_focus = SOV_pol_purge12 }
 		}
 
 		available_if_capitulated = yes
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
+
 			IF = {
 				LIMIT = {has_completed_focus = SOV_army_mid2}
-				SOV_boris_shaposhnikov  = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-				promote_leader = yes 
-				}
-			}
-			ELSE = {
-				SOV_boris_shaposhnikov = {
-					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-					promote_leader = yes 
-				}
-				# add_doctrine_cost_reduction = {
-				# 	name = SOV_shapos
-				# 	cost_reduction = 0.25
-				# 	uses = 10
-				# 	category = land_doctrine
-				# }
-				add_mastery = {
-					amount = 100
-					folder = land
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = SOV_army_kone
-		icon = GFX_SOV_rework304
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = 7
-		y = 2
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
-		available = {
-			NOT = {has_country_flag = SOV_army2_flag}
-			has_completed_focus = SOV_army_mid2
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = 0.05
-			}
-
-			SOV_ivan_konev = {
-				#KONEV, good General plus Adivor
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-				add_skill_level = 1
-			}
-		}
-	}
-
-	focus = {
-		id = SOV_army_vatu
-		icon = GFX_focus_generic_manpower
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = -3
-		y = 2
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_BALANCE_OF_POWER}
-
-		available_if_capitulated = yes
-
-		available = {
-			
-			NOT = {has_country_flag = SOV_army2_flag}
-			has_completed_focus = SOV_pol_purge12
-			has_completed_focus = SOV_mil25
-			NOT = {has_completed_focus = SOV_army_mid3}
-
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			#VATUTIN, MEANT TO HAVE 80 ARMY CAP + NO SF OR TANK SHENANIGANS
-			custom_effect_tooltip = SOV_army_grind_tt
-			add_power_balance_value = {
-				id = SOV_army_bop
-				value = -0.05
-			}
-			IF = {
-				LIMIT = {has_completed_focus = SOV_army_mid2}
-				SOV_nikolay_vatutin = {
+				SOV_vasily_blyukher= {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-					add_attack = -2
-					add_logistics = 2
-					add_unit_leader_trait = trait_genius_staffer
-					hidden_effect = {
-						remove_unit_leader_trait = panzer_leader
-						remove_unit_leader_trait = cavalry_leader
-						remove_unit_leader_trait = panzer_expert
-						remove_unit_leader_trait = commando
-						remove_unit_leader_trait = skirmisher
-						remove_unit_leader_trait = paratrooper
-						remove_unit_leader_trait = camouflage_expert
-						remove_unit_leader_trait = combined_arms_expert
-						remove_unit_leader_trait = cavalry_expert
-					}
 				}
 			}
 			ELSE = {
-				SOV_nikolay_vatutin = {
+				SOV_vasily_blyukher= {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
-					add_attack = -2
-					add_logistics = 2
-					add_unit_leader_trait = trait_genius_staffer
-					hidden_effect = {
-						remove_unit_leader_trait = panzer_leader
-						remove_unit_leader_trait = cavalry_leader
-						remove_unit_leader_trait = panzer_expert
-						remove_unit_leader_trait = commando
-						remove_unit_leader_trait = skirmisher
-						remove_unit_leader_trait = paratrooper
-						remove_unit_leader_trait = camouflage_expert
-						remove_unit_leader_trait = combined_arms_expert
-						remove_unit_leader_trait = cavalry_expert
-					}
 				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = SOV_generic_modify_red_army_tt
+
+				custom_effect_tooltip = SOV_red_army_org_loss_when_moving_-5_tt
+				add_to_variable = { SOV_red_army_org_loss_when_moving_var = -0.05 }
+				custom_effect_tooltip = SOV_red_army_planning_speed_5_tt
+				add_to_variable = { SOV_red_army_planning_speed_var = 0.05 }
+				# custom_effect_tooltip = SOV_red_army_coordination_bonus_5_tt
+				# add_to_variable = { SOV_red_army_coordination_bonus_var = 0.05 }
+				custom_effect_tooltip = SOV_red_army_winter_attrition_factor_-5_tt
+				add_to_variable = { SOV_red_army_winter_attrition_factor_var = -0.05 }
 			}
-			
 		}
 	}
-
-	focus = {
-		id = SOV_army_vlas
-		icon = GFX_roa
-		prerequisite = { focus = SOV_army_mid1 focus = SOV_army_mid2 focus = SOV_army_mid3}
-		relative_position_id = SOV_army_mid1
-		x = -1
-		y = 2
-		cost = 5
-		ai_will_do = {
-			factor = 5
-		}
-
-		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER}
-
-		available_if_capitulated = yes
-
-		available = {
-			has_completed_focus = SOV_army_mid2
-			NOT = {has_country_flag = SOV_army2_flag}
-		}
-
-		available_if_capitulated = yes
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = {
-			hidden_effect = {
-				IF = {
-					LIMIT = {NOT = {has_country_flag = SOV_army1_flag}}
-					set_country_flag = SOV_army1_flag
-				}
-				ELSE = {
-					set_country_flag = SOV_army2_flag
-				}
-			}
-			#Vlasov, VERY GOOD, BUT DEFECTS TO GER
-			custom_effect_tooltip = SOV_army_vlaslov_tt
-			SOV_andrey_vlasov = {
-				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
-				add_attack = 3
-				add_planning = 3
-				add_logistics = 2
-			}
-			hidden_effect = {
-				set_global_flag = vlaslov_focus
-			}
-			
-		}
-	}
-
 
 	
 
@@ -11413,7 +11861,7 @@ focus_tree = {
 		}
 
 		available = {
-			NOT = {has_completed_focus = SOV_army_top1}
+			NOT = {has_completed_focus = SOV_kulik1}
 			NOT = {has_completed_focus = SOV_army_budy}
 		}
 		
@@ -12894,6 +13342,29 @@ focus_tree = {
 
 
 		completion_reward = {
+			every_owned_state = {
+				limit = {
+					OR = {
+						state = 229 #Azerbaijan
+						state = 230 #Armenia
+						state = 231 #Georgia
+						state = 232 #Dagestan
+						state = 821 #Chechnya
+						state = 828 #Ossetia
+						state = 827 #Kabardino-Balkaria
+						state = 826 #Abkhazia
+						state = 233 #Sochi
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_rubber_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_tech_bonus = {
 				name = SOV_light_fighter_bonus
 				bonus = 0.75
@@ -13015,6 +13486,29 @@ focus_tree = {
 
 
 		completion_reward = {
+			every_owned_state = {
+				limit = {
+					OR = {
+						state = 229 #Azerbaijan
+						state = 230 #Armenia
+						state = 231 #Georgia
+						state = 232 #Dagestan
+						state = 821 #Chechnya
+						state = 828 #Ossetia
+						state = 827 #Kabardino-Balkaria
+						state = 826 #Abkhazia
+						state = 233 #Sochi
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_rubber_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_tech_bonus = {
 				name = cas_bonus_big
 				bonus = 0.5
@@ -13343,6 +13837,29 @@ focus_tree = {
 
 
 		completion_reward = {
+			every_owned_state = {
+				limit = {
+					OR = {
+						state = 229 #Azerbaijan
+						state = 230 #Armenia
+						state = 231 #Georgia
+						state = 232 #Dagestan
+						state = 821 #Chechnya
+						state = 828 #Ossetia
+						state = 827 #Kabardino-Balkaria
+						state = 826 #Abkhazia
+						state = 233 #Sochi
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = synthetic_rubber_refinery
+					level = 3
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_research_slot = 1
 			custom_effect_tooltip = generic_skip_one_line_tt
 
@@ -13480,6 +13997,29 @@ focus_tree = {
 
 
 		completion_reward = {
+			every_owned_state = {
+				limit = {
+					OR = {
+						state = 229 #Azerbaijan
+						state = 230 #Armenia
+						state = 231 #Georgia
+						state = 232 #Dagestan
+						state = 821 #Chechnya
+						state = 828 #Ossetia
+						state = 827 #Kabardino-Balkaria
+						state = 826 #Abkhazia
+						state = 233 #Sochi
+					}
+				}
+				random_select_amount = 3
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = synthetic_rubber_refinery
+					level = 2
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			mio:SOV_tupolev_design_bureau_organization = {
 				add_mio_funds_gain_factor = 0.15
 				add_mio_funds = 1000
