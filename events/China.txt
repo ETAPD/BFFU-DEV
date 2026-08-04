@@ -117,20 +117,6 @@ country_event = {
 	# }
 }
 
-# Germany Withdraws Advisors
-country_event = {
-	id = china.2
-	title = china.2.t
-	desc = china.2.d
-	picture = GFX_report_event_chinese_army_training
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = china.2.a
-		remove_ideas = german_advisors
-	}
-}
 
 # Chinese - German Relations Poor, Mission Recalled
 country_event = {
@@ -160,33 +146,6 @@ country_event = {
 	}
 }
 
-# Mao is gaining ground, loses his Cornered Fox trait
-country_event = {
-	id = china.5
-	title = china.5.t
-	desc = china.5.d
-	picture = GFX_report_event_chinese_officers
-	
-	fire_only_once = yes
-
-	mean_time_to_happen = {
-		days = 1
-	}
-
-	trigger = {
-		tag = PRC
-		num_of_controlled_states > 3
-		has_country_leader = { ruling_only = yes character = PRC_mao_zedong }
-		NOT = {
-			has_dlc = "No Compromise, No Surrender"
-		}
-	}
-	
-	option = {
-		name = china.5.a
-		remove_country_leader_trait = cornered_fox
-	}
-}
 
 # Kuomintang Offensive
 country_event = {
@@ -747,144 +706,10 @@ country_event = {
 	}
 }
 
-# FROM joins China (annex)
-country_event = {
-	id = china.103
-	title = china.103.t
-	desc = china.103.d
-	picture = GFX_report_event_chinese_army_training
 
-	is_triggered_only = yes
-	
-	option = {
-		name = china.103.a
-		set_global_flag = CHI_unite_PRC
-		annex_country = { target = FROM transfer_troops = yes }
-	}
-}
 
-# Restart Chinese civil war - Communist supporters reinforces the PRC army
-country_event = {
-	id = china.108
-	title = china.108.t
-	desc = china.108.d
-	picture = GFX_report_event_chinese_army_training
 
-	is_triggered_only = yes
 
-	option = {
-		name = china.108.a
-		custom_effect_tooltip = china.108_PRC_SOV_reinforcements_2
-		hidden_effect = {
-			if = {
-				limit = { 
-					NOT = { has_war_with = SOV }
-					any_country = {
-						OR = {
-							tag = ROOT
-							is_in_faction_with = ROOT
-						}
-						has_full_control_of_state = 621
-					}
-				}
-				load_oob = "PRC_SOV_reinforcements_2"
-			}
-			set_global_flag = PRC_restart_CHI_war
-		}
-	}
-}
-
-# Restart Chinese civil war
-country_event = {
-	id = china.109
-	title = china.109.t
-	desc = china.109.d
-	picture = GFX_report_event_chinese_soldiers
-
-	fire_only_once = yes
-
-	trigger = {
-		tag = PRC
-		has_global_flag = PRC_restart_CHI_war
-		NOT = { has_war_together_with = CHI }
-		is_subject = no
-		CHI = { is_subject = no }
-	}
-
-	mean_time_to_happen = { days = 360 }
-
-	option = {
-		name = china.109.a
-		custom_effect_tooltip = china.109_tt		
-		CHI = { country_event = { id = china.110 } }
-		effect_tooltip = {
-			declare_war_on = { target = CHI type = annex_everything }
-		}
-	}
-}
-
-country_event = {
-	id = china.110
-	title = china.110.t
-	desc = china.110.d
-	picture = GFX_report_event_chinese_soldiers
-
-	is_triggered_only = yes
-	
-	immediate = {
-		hidden_effect = {
-			PRC = { declare_war_on = { target = CHI type = annex_everything } }
-		}
-	}
-
-	option = {
-		name = china.110.a
-		add_timed_idea = { idea = CHI_civil_war_deserters days = 180 }
-	}
-
-}
-
-# China and Japan no longer at war - Break up faction and Mao claims his part of China
-country_event = {
-	id = china.111
-	title = china.111.t
-	desc = china.111.d
-	picture = GFX_report_event_generic_sign_treaty1
-
-	is_triggered_only = yes
-
-	option = {
-		name = china.111.a
-		CHI = { 
-			dismantle_faction = yes
-			hidden_effect = {
-				remove_opinion_modifier = { target = PRC modifier = unstable_alliance }
-			}
-		}
-		hidden_effect = {
-			PRC = { remove_opinion_modifier = { target = CHI modifier = unstable_alliance } }
-		}
-		custom_effect_tooltip = china.107_tt
-		hidden_effect = {
-			every_state = {
-				limit = {
-					controller = {
-						original_tag = CHI
-						is_puppet_of = CHI
-					}
-					is_core_of = PRC
-					OR = {
-						region = 143
-						region = 155
-					}
-					NOT = { state = 525 }
-					NOT = { state = 527 }				
-				}
-				ROOT = { transfer_state = PREV }
-			}			
-		}
-	}
-}
 
 # China turns communist / Communists break off from China
 country_event = {

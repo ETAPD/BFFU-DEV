@@ -395,19 +395,6 @@ on_actions = {
 			}
 		}
 
-		# effect = {
-		# 	IF = {
-		# 		limit = {
-		# 			FROM = {
-		# 				original_tag = BEL
-		# 				has_completed_focus = BEL_interpreters
-		# 			}
-		# 		}
-		# 		ROOT = {
-		# 			add_ideas = BEL_interpreters_ns
-		# 		}
-		# 	}
-		# }
 
 	}
 
@@ -625,19 +612,6 @@ on_actions = {
 			}
 		}
 
-		# effect = {
-		# 	IF = {
-		# 		limit = {
-		# 			ROOT = {
-		# 				original_tag = BEL
-		# 				has_completed_focus = BEL_interpreters
-		# 			}
-		# 		}
-		# 		FROM = {
-		# 			add_ideas = BEL_interpreters_ns
-		# 		}
-		# 	}
-		# }
 	}
 
 	# FROM is the one that joins the faction. Trigger the following commands whenever a country creates a faction.	
@@ -1370,24 +1344,6 @@ on_actions = {
 			}
 		}
 
-		# Jan Zumbach flees to the UK if in faction with them when Poland caps
-		effect = {
-			IF = {
-				limit = {
-					original_tag = POL
-					is_in_faction_with = ENG
-					NOT = {
-						has_global_flag = jan_zumbach_fled_to_britain
-					}
-				}
-				country_event = {
-					id = ww_congo.70
-					hours = 2
-					random_hours = 4
-				}	
-				set_global_flag = jan_zumbach_fled_to_britain
-			}
-		}
 
 		effect = { #If a Reichskommissariat has capitulated, make Alfred Rosenberg suck a bit
 			IF = {
@@ -1713,25 +1669,6 @@ on_actions = {
 			}
 		}
 
-		effect = {  #BEL Unknown Sympathies Trigger : BEL is being attacked, with Leopold still as king 
-			if = { 
-				limit = {
-					FROM = {
-						original_tag = BEL
-						has_country_flag = BEL_leopold_flag
-						NOT = {
-							has_country_flag = BEL_unknown_sympathies_triggered_flag
-						}
-					}
-				}
-				ROOT = {
-					BEL = { 
-						country_event = { id = ww_BEL_event_war.2 hours = 6 } 
-					}
-				}
-				set_country_flag = BEL_unknown_sympathies_triggered_flag
-			}
-		}
 	}
 
 	on_send_volunteers = { 
@@ -1929,31 +1866,7 @@ on_actions = {
 			}  
 		}
 
-		# Creates the Colonial Template Divisions for Belgium
-		effect = {
-			IF = {
-				limit = {
-					has_dlc = "Gotterdammerung"
-				}
-				
-			}
-			
-		}
 
-		effect = {
-			IF = {
-				limit = { has_dlc = "Gotterdammerung" }
-				random_list = {
-					999 = {
-						BEL = { set_country_flag = BEL_serious_waffle_flag }
-					}
-					1 = {
-						BEL = { set_country_flag = BEL_wunder_waffle_flag }
-					}
-				}
-			}
-			
-		}
 
 		effect = {
 			IF = {
@@ -1987,23 +1900,6 @@ on_actions = {
 
 	on_subject_free = {
 
-		# Sends Raoul van Overstraeten back to Belgium
-		effect = {
-			IF = {
-				limit = {
-					ROOT = {
-						original_tag = COG
-						has_character = BEL_raoul_van_overstraeten
-					}
-				}
-				ROOT = {
-					country_event = {
-						id = ww_congo.4
-						hours = 2
-					}	
-				}
-			}
-		}
 
 		# If the Belgian Congo is freed, they are no longer Belgian
 		effect = {
@@ -2074,97 +1970,7 @@ on_actions = {
 		}
 	}
 
-	on_monthly_COG = {
 
-		# Checks to see if Rwanda should revolt against Congolese rule or not
-		effect = {
-			IF = {
-				limit = {
-					NOT = {
-						has_global_flag = rwandan_revolution_happened_flag
-					}
-					ROOT = {
-						is_subject = no
-						owns_state = 768
-						has_war = no
-					}
-					# RWA = {
-					# 	exists = no
-					# }
-					768 = {
-						NOT = {
-							is_core_of = COG
-						}
-					}
-				}
-				country_event = {
-					id = ww_congo.20
-					hours = 6
-					random_hours = 24
-				}
-			}
-		}
-
-		# Checks to see if Burundi should revolt against Congolese rule or not
-		effect = {
-			IF = {
-				limit = {
-					NOT = {
-						has_global_flag = burundian_revolution_happened_flag
-					}
-					ROOT = {
-						is_subject = no
-						owns_state = 769
-						has_war = no
-					}
-					# BRD = {
-					# 	exists = no
-					# }
-					769 = {
-						NOT = {
-							is_core_of = COG
-						}
-					}
-				}
-				country_event = {
-					id = ww_congo.21
-					days = 1
-					random_days = 2
-				}
-			}
-		}
-
-	}
-
-	on_monthly_ENG = {
-
-		# Jan Zumbach heads on over to the Congo
-		effect = {
-			IF = {
-				limit = {
-					original_tag = ENG
-					COG = {
-						exists = yes
-						NOT = {
-							has_war_with = ENG
-						}
-					}
-					has_global_flag = jan_zumbach_fled_to_britain
-					NOT = {
-						has_global_flag = jan_zumbach_wanted_to_go_to_the_congo
-					}
-					date > 1943.01.01
-				}
-				country_event = {
-					id = ww_congo.71
-					hours = 2
-					random_hours = 4
-				}	
-				set_global_flag = jan_zumbach_wanted_to_go_to_the_congo
-			}
-		}
-
-	}
 
 	on_ruling_party_change = {
 
