@@ -831,7 +831,7 @@ focus_tree = {
 		id = MAN_manchuria_greening_program
 		icon = GFX_MAN_manchuria_greening_program-905624
 		x = 15
-		y = 9
+		y = 8
 		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
@@ -844,7 +844,7 @@ focus_tree = {
 		id = MAN_support_land_reform
 		icon = GFX_MAN_support_land_reform-905626
 		x = 17
-		y = 9
+		y = 8
 		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
@@ -857,7 +857,7 @@ focus_tree = {
 		id = MAN_thejapaneseareatthetopchinesesecond
 		icon = GFX_MAN_thejapaneseareatthetopchinesesecond-905630
 		x = 16
-		y = 10
+		y = 9
 		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
@@ -1008,107 +1008,384 @@ focus_tree = {
 		prerequisite = { focus = MAN_pass_forced_labours  } prerequisite = { focus = MAN_purge_the_left  }
 	}
 
-	#Manchurian Army Uniform Standard
+	###########################################################
+	################ THE MANCHURIAN ARMY ######################
+	###########################################################
+	# Army-wide buffs feed the MAN_manchurian_army dynamic modifier by
+	# adding to the MAN_army_* variables (initialized to day-1 penalties in
+	# history). Completing the whole army spine clears those penalties.
+	# Navy/air/special-forces branches give direct research/xp/equipment rewards.
+
+	# --- ROOT ---
 	focus = {
 		id = MAN_manchurian_army_uniform_standard
 		icon = GFX_MAN_manchurian_army_uniform_standard-905652
 		x = 10
 		y = 9
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_ANNEXATION
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_org_factor value = 0.02 tooltip = MAN_army_org_up2 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 		}
 	}
 
-	#New military Academies
+	# --- ARMY SPINE (center) ---
+	focus = {
+		id = MAN_rebuild_the_officer_corps
+		icon = GFX_focus_nationalize_the_military
+		x = 10
+		y = 10
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_army_uniform_standard }
+		completion_reward = {
+			add_command_power = 50
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_experience_gain_factor value = 0.08 tooltip = MAN_army_xp_up8 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
 	focus = {
 		id = MAN_new_military_academies
 		icon = GFX_MAN_new_military_academies-905654
 		x = 10
 		y = 11
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_ANNEXATION
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_rebuild_the_officer_corps }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_training_time_factor value = -0.08 tooltip = MAN_army_train_dn8 }
+			add_to_variable = { var = MAN_army_experience_gain_factor value = 0.04 tooltip = MAN_army_xp_up4 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 		}
-		prerequisite = { focus = MAN_manchurian_army_uniform_standard  }
 	}
 
-	#Korean Special Forces
+	focus = {
+		id = MAN_standardise_drill
+		icon = GFX_focus_ROC_conscription_law
+		x = 9
+		y = 12
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_new_military_academies }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_org_factor value = 0.04 tooltip = MAN_army_org_up4 }
+			add_to_variable = { var = MAN_army_morale_factor value = 0.05 tooltip = MAN_army_morale_up5 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_kwantung_training_cadres
+		icon = GFX_MAN_Power_to_the_Kwantung_Army
+		x = 11
+		y = 12
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_new_military_academies }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_experience_gain_factor value = 0.03 tooltip = MAN_army_xp_up3 }
+			add_to_variable = { var = MAN_army_training_time_factor value = -0.04 tooltip = MAN_army_train_dn4 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_frontline_infantry_doctrine
+		icon = GFX_GOAL_infantry_equipment
+		x = 10
+		y = 13
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_standardise_drill }
+		prerequisite = { focus = MAN_kwantung_training_cadres }
+		completion_reward = {
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = land_doctrine name = MAN_frontline_infantry_doctrine }
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_attack_factor value = 0.03 tooltip = MAN_army_atk_up3 }
+			add_to_variable = { var = MAN_army_defence_factor value = 0.03 tooltip = MAN_army_def_up3 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_reservist_mobilisation
+		icon = GFX_goal_JAP_army_expansion
+		x = 9
+		y = 14
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_frontline_infantry_doctrine }
+		completion_reward = {
+			add_manpower = 25000
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_morale_factor value = 0.05 tooltip = MAN_army_morale_up5 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_manchurian_logistics_corps
+		icon = GFX_GOAL_support_equipment
+		x = 11
+		y = 14
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_frontline_infantry_doctrine }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_supply_consumption_factor value = -0.05 tooltip = MAN_army_supply_dn5 }
+			add_to_variable = { var = MAN_army_speed_factor value = 0.05 tooltip = MAN_army_speed_up5 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_a_modern_imperial_army
+		icon = GFX_MAN_Manchukuo_Imperial_Army
+		x = 10
+		y = 15
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_reservist_mobilisation }
+		prerequisite = { focus = MAN_manchurian_logistics_corps }
+		completion_reward = {
+			army_experience = 25
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_org_factor value = 0.04 tooltip = MAN_army_org_up4 }
+			add_to_variable = { var = MAN_army_morale_factor value = 0.05 tooltip = MAN_army_morale_up5 }
+			add_to_variable = { var = MAN_army_attack_factor value = 0.02 tooltip = MAN_army_atk_up2 }
+			add_to_variable = { var = MAN_army_defence_factor value = 0.02 tooltip = MAN_army_def_up2 }
+			add_to_variable = { var = MAN_army_training_time_factor value = -0.03 tooltip = MAN_army_train_dn3 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# --- SPECIAL FORCES (left of spine) ---
 	focus = {
 		id = MAN_korean_special_forces
 		icon = GFX_MAN_korean_special_forces-905656
-		x = 9
+		x = 7
 		y = 12
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_ANNEXATION
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_new_military_academies }
+		completion_reward = {
+			army_experience = 15
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = infantry_weapons name = MAN_korean_special_forces }
 		}
-		prerequisite = { focus = MAN_new_military_academies  }
 	}
 
-	#Form the Asano Squad
 	focus = {
 		id = MAN_form_the_asano_squad
 		icon = GFX_MAN_form_the_asano_squad-905657
-		x = 11
-		y = 12
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_ANNEXATION
+		x = 7
+		y = 13
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_korean_special_forces }
+		completion_reward = {
+			army_experience = 10
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 500 producer = MAN }
 		}
-		prerequisite = { focus = MAN_new_military_academies  }
 	}
 
-	#Lay Down the First Destroyer
+	focus = {
+		id = MAN_manchurian_commandos
+		icon = GFX_goal_samurai
+		x = 7
+		y = 14
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_form_the_asano_squad }
+		completion_reward = {
+			army_experience = 20
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = land_doctrine name = MAN_manchurian_commandos }
+		}
+	}
+
+	# --- ARMOUR (right of spine) ---
+	focus = {
+		id = MAN_manchurian_tank_corps
+		icon = GFX_focus_generic_tank_production
+		x = 12
+		y = 13
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_kwantung_training_cadres }
+		completion_reward = {
+			army_experience = 10
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = armor name = MAN_manchurian_tank_corps }
+		}
+	}
+
+	focus = {
+		id = MAN_mechanisation_program
+		icon = GFX_focus_ROC_mech_units
+		x = 13
+		y = 14
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_tank_corps }
+		completion_reward = {
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = motorized_equipment name = MAN_mechanisation_program }
+		}
+	}
+
+	focus = {
+		id = MAN_deep_battle_tactics
+		icon = GFX_SOV_breakthrough_priority
+		x = 12
+		y = 15
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_mechanisation_program }
+		completion_reward = {
+			army_experience = 15
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = land_doctrine name = MAN_deep_battle_tactics }
+		}
+	}
+
+	# --- NAVY (far left) ---
 	focus = {
 		id = MAN_lay_down_the_first_destroyer
 		icon = GFX_MAN_lay_down_the_first_destroyer-905658
-		x = 8
+		x = 4
 		y = 10
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_RESEARCH
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_army_uniform_standard }
+		completion_reward = {
+			navy_experience = 10
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = naval_equipment name = MAN_lay_down_the_first_destroyer }
 		}
-		prerequisite = { focus = MAN_manchurian_army_uniform_standard  }
 	}
 
-	#Manchurian Shipyards
 	focus = {
 		id = MAN_manchurian_shipyards
-		icon = GFX_goal_generic_construct_naval_dockyard
-		x = 7
+		icon = GFX_goal_generic_expand_the_naval_industry
+		x = 4
 		y = 11
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_RESEARCH
+		cost = 7
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = MAN_lay_down_the_first_destroyer }
+		completion_reward = {
+			navy_experience = 5
+			random_owned_controlled_state = {
+				limit = { is_core_of = MAN is_coastal = yes }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
 		}
-		prerequisite = { focus = MAN_lay_down_the_first_destroyer  }
 	}
 
-	#Create a Manchurian Air Force
+	focus = {
+		id = MAN_riverine_flotilla
+		icon = GFX_MAN_Manchukuo_Imperial_Navy
+		x = 3
+		y = 12
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_shipyards }
+		completion_reward = {
+			navy_experience = 10
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = naval_equipment name = MAN_riverine_flotilla }
+		}
+	}
+
+	focus = {
+		id = MAN_coastal_defence_command
+		icon = GFX_focus_generic_cruiser2
+		x = 5
+		y = 12
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_shipyards }
+		completion_reward = {
+			navy_experience = 10
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = naval_equipment name = MAN_coastal_defence_command }
+		}
+	}
+
+	# --- AIR (far right) ---
 	focus = {
 		id = MAN_create_a_manchurian_air_force
 		icon = GFX_MAN_create_a_manchurian_air_force-905660
-		x = 12
+		x = 14
 		y = 10
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_RESEARCH
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_army_uniform_standard }
+		completion_reward = {
+			air_experience = 10
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = air_equipment name = MAN_create_a_manchurian_air_force }
 		}
-		prerequisite = { focus = MAN_manchurian_army_uniform_standard  }
 	}
 
-	#Air Defense Department
+	focus = {
+		id = MAN_manchukuo_aviation_industry
+		icon = GFX_MAN_Manchukuo_Imperial_Air_Force
+		x = 15
+		y = 11
+		cost = 7
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = MAN_create_a_manchurian_air_force }
+		completion_reward = {
+			air_experience = 10
+			random_owned_controlled_state = {
+				limit = { is_core_of = MAN }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+	}
+
 	focus = {
 		id = MAN_air_defense_department
-		icon = GFX_goal_generic_army_artillery2
+		icon = GFX_zenith_cannon
 		x = 13
 		y = 11
-		cost = 5
-		search_filters = {
-			FOCUS_FILTER_INDUSTRY
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_create_a_manchurian_air_force }
+		completion_reward = {
+			air_experience = 5
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = air_equipment name = MAN_air_defense_department }
 		}
-		prerequisite = { focus = MAN_create_a_manchurian_air_force  }
+	}
+
+	focus = {
+		id = MAN_fighter_development
+		icon = GFX_goal_fighters_japan
+		x = 15
+		y = 12
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchukuo_aviation_industry }
+		completion_reward = {
+			air_experience = 15
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = air_equipment name = MAN_fighter_development }
+		}
+	}
+
+	focus = {
+		id = MAN_ground_support_wing
+		icon = GFX_goal_multiple_bombers
+		x = 13
+		y = 12
+		cost = 7
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_air_defense_department }
+		completion_reward = {
+			air_experience = 10
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = air_equipment name = MAN_ground_support_wing }
+		}
 	}
 
 }

@@ -50,3 +50,41 @@ MAN_fyp2_completion_check = {
 		country_event = { id = man_behemoth.2 days = 3 }
 	}
 }
+
+# Construction-MIO funding scaled by the TOTAL number of civilian factories in
+# Manchukuo: the larger the civilian economy, the more monthly funds each founded
+# construction MIO (Mantetsu, Mangyo) receives. Called from on_monthly (MAN).
+# MAN_mio_civ_funds_current stores the current monthly amount for the tooltip.
+# add_mio_funds only accepts literals, so each band both stores the amount and
+# grants it to whichever MIOs are founded.
+MAN_apply_mio_civ_funds = {
+	if = {
+		limit = { num_of_civilian_factories < 20 }
+		set_variable = { MAN_mio_civ_funds_current = 40 }
+		if = { limit = { has_country_flag = MAN_mantetsu_founded } mio:MAN_south_manchuria_railway_company_organisation = { add_mio_funds = 40 } }
+		if = { limit = { has_country_flag = MAN_mangyo_founded } mio:MAN_mange_organisation = { add_mio_funds = 40 } }
+	}
+	else_if = {
+		limit = { num_of_civilian_factories < 40 }
+		set_variable = { MAN_mio_civ_funds_current = 80 }
+		if = { limit = { has_country_flag = MAN_mantetsu_founded } mio:MAN_south_manchuria_railway_company_organisation = { add_mio_funds = 80 } }
+		if = { limit = { has_country_flag = MAN_mangyo_founded } mio:MAN_mange_organisation = { add_mio_funds = 80 } }
+	}
+	else_if = {
+		limit = { num_of_civilian_factories < 60 }
+		set_variable = { MAN_mio_civ_funds_current = 140 }
+		if = { limit = { has_country_flag = MAN_mantetsu_founded } mio:MAN_south_manchuria_railway_company_organisation = { add_mio_funds = 140 } }
+		if = { limit = { has_country_flag = MAN_mangyo_founded } mio:MAN_mange_organisation = { add_mio_funds = 140 } }
+	}
+	else_if = {
+		limit = { num_of_civilian_factories < 100 }
+		set_variable = { MAN_mio_civ_funds_current = 220 }
+		if = { limit = { has_country_flag = MAN_mantetsu_founded } mio:MAN_south_manchuria_railway_company_organisation = { add_mio_funds = 220 } }
+		if = { limit = { has_country_flag = MAN_mangyo_founded } mio:MAN_mange_organisation = { add_mio_funds = 220 } }
+	}
+	else = {
+		set_variable = { MAN_mio_civ_funds_current = 320 }
+		if = { limit = { has_country_flag = MAN_mantetsu_founded } mio:MAN_south_manchuria_railway_company_organisation = { add_mio_funds = 320 } }
+		if = { limit = { has_country_flag = MAN_mangyo_founded } mio:MAN_mange_organisation = { add_mio_funds = 320 } }
+	}
+}
