@@ -1111,7 +1111,11 @@ focus_tree = {
 			custom_effect_tooltip = MAN_army_spirit_changed_tt
 			add_to_variable = { var = MAN_army_attack_factor value = 0.03 tooltip = MAN_army_atk_up3 }
 			add_to_variable = { var = MAN_army_defence_factor value = 0.03 tooltip = MAN_army_def_up3 }
-			hidden_effect = { force_update_dynamic_modifier = yes }
+			custom_effect_tooltip = MAN_infantry_line_tech_tt
+			hidden_effect = {
+				set_technology = { MAN_infantry_line_tech = 1 }
+				force_update_dynamic_modifier = yes
+			}
 		}
 	}
 
@@ -1251,6 +1255,8 @@ focus_tree = {
 		completion_reward = {
 			army_experience = 15
 			add_tech_bonus = { bonus = 0.5 uses = 1 category = land_doctrine name = MAN_deep_battle_tactics }
+			custom_effect_tooltip = MAN_armour_specialisation_tech_tt
+			hidden_effect = { set_technology = { MAN_armour_specialisation_tech = 1 } }
 		}
 	}
 
@@ -1387,6 +1393,138 @@ focus_tree = {
 		completion_reward = {
 			air_experience = 10
 			add_tech_bonus = { bonus = 0.5 uses = 1 category = air_equipment name = MAN_ground_support_wing }
+		}
+	}
+
+	# --- SPECIAL FORCES capstone (specialise: big SF buff, infantry nerf) ---
+	focus = {
+		id = MAN_the_terror_of_the_east
+		icon = GFX_goal_generic_special_forces
+		x = 8
+		y = 15
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_commandos }
+		completion_reward = {
+			army_experience = 25
+			custom_effect_tooltip = MAN_sf_specialisation_tech_tt
+			hidden_effect = { set_technology = { MAN_sf_specialisation_tech = 1 } }
+		}
+	}
+
+	# --- ARMOUR: Wall of Steel (spawns a real Land Warfare research facility) ---
+	focus = {
+		id = MAN_wall_of_steel
+		icon = GFX_goal_generic_army_tanks
+		x = 13
+		y = 13
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_manchurian_tank_corps }
+		completion_reward = {
+			army_experience = 15
+			custom_effect_tooltip = MAN_wall_of_steel_facility_tt
+			715 = {
+				add_building_construction = {
+					type = land_facility
+					level = 1
+					instant_build = yes
+					province = 916
+				}
+			}
+		}
+	}
+
+	######################################################################
+	# SECTION 2 - A New Manchurian Army (unlocked by the capstone).
+	# Two mutually-reinforcing doctrines below the modern-army capstone.
+	######################################################################
+
+	focus = {
+		id = MAN_dragons_of_the_land
+		icon = GFX_goal_generic_army_doctrines
+		x = 9
+		y = 16
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_a_modern_imperial_army }
+		completion_reward = {
+			army_experience = 20
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = land_doctrine name = MAN_dragons_of_the_land }
+		}
+	}
+
+	focus = {
+		id = MAN_combined_arms_command
+		icon = GFX_goal_generic_military_sphere
+		x = 11
+		y = 16
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_a_modern_imperial_army }
+		completion_reward = {
+			add_command_power = 75
+			army_experience = 20
+		}
+	}
+
+	focus = {
+		id = MAN_living_off_enemy_land
+		icon = GFX_goal_generic_construct_military
+		x = 8
+		y = 17
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_dragons_of_the_land }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_supply_consumption_factor value = -0.05 tooltip = MAN_army_supply_dn5 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_manchurian_tank_tactics
+		icon = GFX_goal_generic_army_tanks
+		x = 10
+		y = 17
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_dragons_of_the_land }
+		completion_reward = {
+			army_experience = 15
+			add_tech_bonus = { bonus = 0.5 uses = 1 category = armor name = MAN_manchurian_tank_tactics }
+		}
+	}
+
+	focus = {
+		id = MAN_deep_operations_planning
+		icon = GFX_goal_generic_army_doctrines
+		x = 11
+		y = 17
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_combined_arms_command }
+		completion_reward = {
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_org_factor value = 0.04 tooltip = MAN_army_org_up4 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = MAN_high_command_collaboration
+		icon = GFX_goal_generic_allies_build_infantry
+		x = 12
+		y = 17
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = MAN_combined_arms_command }
+		completion_reward = {
+			army_experience = 20
+			custom_effect_tooltip = MAN_army_spirit_changed_tt
+			add_to_variable = { var = MAN_army_experience_gain_factor value = 0.03 tooltip = MAN_army_xp_up3 }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 		}
 	}
 
