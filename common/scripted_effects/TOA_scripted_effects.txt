@@ -696,27 +696,7 @@ SMB_naval_sov_advisors_effect = {
 
 
 ### OPERATIVES
-JUNO_create_rosita_serrano_operative = { #INITIAL
-	create_operative_leader = {
-		name = CHL_rosita_serrano
-		GFX = GFX_portrait_CHL_rosita_serrano
-		traits = { operative_seducer operative_well_groomed }
-		bypass_recruitment = no
-		available_to_spy_master = yes
-		nationalities = { CHL SPR GER }
-	}
-}
 
-JUNO_create_osmar_hellmuth_operative = { #INITIAL
-	create_operative_leader = {
-		name = "Osmar Hellmuth"
-		GFX = GFX_portrait_ARG_osmar_hellmuth
-		traits = { operative_infiltrator operative_natural_orator operative_well_groomed }
-		bypass_recruitment = no
-		available_to_spy_master = yes
-		nationalities = { ARG GER }
-	}
-}
 
 ### Brazil
 
@@ -747,53 +727,8 @@ BRA_remove_economy_modifier = {
 	}
 }
 
-BRA_setup_colonized_countries_to_liberate_array = {
-	hidden_effect = {
-		for_each_scope_loop = {
-			array = global.countries
-			IF = {
-				limit = {
-					exists = no #the country does not exist
-					any_state = {
-						is_core_of = PREV #the state is a core of the non-existing country
-						is_on_continent = south_america #the state is in south america
-						OWNER = { #the country owning the state
-							NOT = { is_in_faction_with = ROOT }
-							NOT = { tag = ROOT }
-							NOT = { #don't add multiple times
-								is_in_array = {
-									array = BRA.anti_colonialist_countries_to_liberate
-									value = THIS
-								}
-							}
-						}
-					}
-
-				}
-				add_to_array = { BRA.anti_colonialist_countries_to_liberate = THIS }
-			}
-		}
-		
-	}
-}
 
 
-BRA_communist_cw_transfer_chars = {
-		BRA = {
-			BRA_eurico_gaspar_dutra = {
-				set_character_flag = BRA_loyal_to_gov_char
-			}
-			BRA_mascarenhas_de_morais = {
-				set_character_flag = BRA_loyal_to_gov_char
-			}
-			every_character = {
-				limit = {
-					has_character_flag = BRA_loyal_to_gov_char
-				}
-				set_nationality = PREV.PREV
-			}
-		}
-}
 
 BRA_mio_military_factory = {
 	random_core_state = {

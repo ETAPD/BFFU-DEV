@@ -127,21 +127,6 @@ country_event = { #USA refuses to share tech
 
 
 
-country_event = { #FROM countering communism influence
-	id = JUNO_brazil_events.144
-	title = JUNO_brazil_events.144.t
-	desc = JUNO_brazil_events.144.desc
-	picture = GFX_report_event_generic_sign_treaty1
-	is_triggered_only = yes
-
-	# unfortunate
-	option = {
-		name = JUNO_brazil_events.144.a
-		ai_chance = {
-			base = 1
-		}
-	}
-}
 
 country_event = { #cangaceiro raid/spread
 	id = JUNO_brazil_events.150
@@ -911,95 +896,82 @@ country_event = {
 	}
 }
 
-# Brazil taking dominate americas path - news
+
+
+
+
+
+
+# King Pedro de Alcantara Dies 
 news_event = {
-	id = JUNO_brazil_news.1
-	title = JUNO_brazil_news.1.t
-	desc = JUNO_brazil_news.1.d
-	picture = GFX_news_event_german_speech
+	id = JUNO_brazil_news.7
+	title = JUNO_brazil_news.7.t
+	desc = JUNO_brazil_news.7.desc
+	picture = GFX_news_event_generic_funeral
 	
 	major = no
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = JUNO_brazil_news.1.a
-	}
-} 
 
-news_event = { # Brazil finishes Constitutional Monarchy focus
-	id = JUNO_brazil_news.2
-	title = JUNO_brazil_news.2.t
-	desc = JUNO_brazil_news.2.d
-	picture = GFX_news_event_por_return_of_monarchy
+	fire_only_once = yes
 
-	major = no
-	
-	is_triggered_only = yes
-	
-	option = {
-		name = JUNO_brazil_news.2.a
-	}
-} 
-
-news_event = {
-	id = JUNO_brazil_news.3
-	title = JUNO_brazil_news.3.t
-	desc = JUNO_brazil_news.3.d
-	picture = GFX_news_event_por_return_of_monarchy
-
-	major = yes
-
-	is_triggered_only = yes
-
-	option = {
-		name = JUNO_brazil_news.3.a
+	trigger = {
+		has_dlc = "Trial of Allegiance"
+		original_tag = BRA
+		has_country_leader = {
+			ruling_only = yes
+			character = BRA_pedro_de_alcantara
+		}	
+		date > 1940.01.01
 	}
 
-}
-
-news_event = {
-	id = JUNO_brazil_news.4
-	title = JUNO_brazil_news.4.t
-	desc = JUNO_brazil_news.4.d
-	picture = GFX_news_event_por_return_of_monarchy
-
-	major = yes
-
-	is_triggered_only = yes
-
-	option = {
-		name = JUNO_brazil_news.4.a
+	mean_time_to_happen = {
+		days = 30
+		modifier = {
+			factor = 2
+			date > 1941.01.01
+		}
 	}
-}
-
-news_event = {
-	id = JUNO_brazil_news.5
-	title = JUNO_brazil_news.5.t
-	desc = JUNO_brazil_news.5.d
-	picture = GFX_news_event_soviet_soldiers_ruins
-
-	major = yes
-
-	is_triggered_only = yes
 
 	option = {
-		name = JUNO_brazil_news.5.a
-	}
-}
+		name = JUNO_brazil_news.7.a
 
-news_event = {
-	id = JUNO_brazil_news.6
-	title = JUNO_brazil_news.6.t
-	desc = JUNO_brazil_news.6.d
-	picture = GFX_news_event_soviet_soldiers_ruins
+		retire_character = BRA_pedro_de_alcantara 
 
-	major = yes
-
-	is_triggered_only = yes
-
-	option = {
-		name = JUNO_brazil_news.6.a
+		IF = {
+			limit = {
+				NOT = {
+					has_global_flag = neutralized_focus_BRA_empire_of_brazil
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			BRA_pedro_gastao = {
+				add_country_leader_role = {
+					country_leader = {
+						ideology = despotism
+						expire = "1965.1.1.1"
+						traits = { BRA_head_of_house_orleans_braganza_trait }
+					}
+					promote_leader = yes
+				} 
+			}
+		}
+		ELSE = {
+			custom_effect_tooltip = generic_skip_one_line_tt
+			BRA_pedro_gastao = {
+				add_country_leader_role = {
+					country_leader = {
+						ideology = despotism
+						expire = "1965.1.1.1"
+						traits = { BRA_head_of_house_orleans_braganza_trait BRA_emperor_trait }
+					}
+					promote_leader = yes
+				} 
+			}
+		}
+		
+		hidden_effect = {
+			set_country_flag = BRA_pedro_de_alcantara_dead_flag
+			mark_focus_tree_layout_dirty = yes
+		}
 	}
 }
 
