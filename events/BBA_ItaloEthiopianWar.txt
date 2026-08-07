@@ -6,6 +6,202 @@ add_namespace = BBA_italo_ethiopian_war_events
 
 ### MUSSOLINI AMBITION SYSTEM STARTS AS CHRISTMAS OFFENSIVE ENDS ###
 # Event for ITA 
+unit_leader_event = { # THIS IS ACTUALLY THE FIRST MISSIOLINI! 
+	id = BBA_italo_ethiopian_war_events.01
+	title = BBA_italo_ethiopian_war_events.01.t
+	desc = BBA_italo_ethiopian_war_events.01.desc
+	
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	immediate = { # INITIALIZE MISSIOLINIS SYSTEM
+		hidden_effect = {
+			# ITA_missiolinis_initialize_missiolinis_system = yes
+			# #First time it's two missions at once
+			# ITA_missiolinis_initialize_new_mission_effect = yes
+			# ITA_missiolinis_initialize_new_mission_effect = yes
+		}
+	}
+
+	trigger = {
+		# has_war_with = ETH
+		# has_country_leader = {
+		# 	character = ITA_benito_mussolini
+		# 	ruling_only = yes
+		# }
+		always = no
+	}
+
+	# Lets go on the offensive!
+	option = { 
+		name = BBA_italo_ethiopian_war_events.01.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0.5
+				NOT = { has_government = fascism }
+			}
+		}
+
+		# Set Mission Timers 
+		set_variable = { ETH.ETH_hold_the_north_time = 120 } # Timer for Holding/Conquering northern Ethiopia
+		set_variable = { ETH.ETH_hold_the_south_time = 120 } # Timer for Holding/Conquering southern Ethiopia and Harar
+
+		if = { # Effects to Ethiopia and LoN stuff only for BBA
+			limit = {
+				has_dlc = "By Blood Alone"
+			}
+		
+			# Increase War escalation and trigger loc for GUI
+			ETH = { set_country_flag = italian_major_offensive_against_ethiopia_flag }
+			# ETH_escalate_the_war_effect = yes 
+			custom_effect_tooltip = ITA_war_escalation_inc_tt
+			add_to_variable = { ETH.ETH_war_escalation_level = 1 }
+			#ITA = {
+			#	add_named_threat = { 
+			#		threat = 0.6
+			#		name = ETH_major_offensive_threat
+			#	}
+			#}
+
+			# hidden_effect = { # Ethiopian missions activated only with BBA
+			# 	ETH = { activate_mission = ETH_hold_the_north_mission }
+			# 	ETH = { activate_mission = ETH_hold_the_south_mission }
+			# }
+		}
+	
+		#START MISSIOLINIS SYSTEM
+		set_country_flag = ITA_missiolinis_active_flag #This will unlock Missiolini's decision cat with the two first missions 
+		# hidden_effect = {
+		# 	ITA = {
+		# 		activate_mission = ITA_conquer_the_north_mission
+		# 		activate_mission = ITA_conquer_the_south_mission
+		# 		add_ideas = ITA_aggressive_policy_in_ethiopia
+		# 	}
+		# }
+
+		# other effects for ITA 
+		# add_timed_idea = {
+		# 	idea = ITA_offensive_in_ethiopia
+		# 	days = 180
+		# }
+		# ETH =  {
+		# 	add_timed_idea = {
+		# 		idea = ETH_italian_offensive_idea
+		# 		days = 180
+		# 	}
+		# }
+
+		# Other effects for ETH
+		ETH = {
+			country_event = {
+				id = BBA_italo_ethiopian_war_events.02
+				hours = 1
+			}
+		}		
+	}
+
+	# We need to be more cautious .... 
+	option = { 
+		name = BBA_italo_ethiopian_war_events.01.b
+		ai_chance = {
+			base = 2
+			modifier = {
+				factor = 0
+				is_historical_focus_on = yes 
+			}
+		}
+		# No escalation of war
+
+		# Set Mission Timers 
+		set_variable = { ETH.ETH_hold_the_north_time = 180 } # Timer for Holding/Conquering northern Ethiopia
+		set_variable = { ETH.ETH_hold_the_south_time = 180 } # Timer for Holding/Conquering southern Ethiopia and Harar
+
+		# hidden_effect = {
+		# 	ETH = { activate_mission = ETH_hold_the_north_mission }
+		# 	ETH = { activate_mission = ETH_hold_the_south_mission }
+		# 	ITA = { activate_mission = ITA_conquer_the_north_mission }
+		# 	ITA = { activate_mission = ITA_conquer_the_south_mission }
+		# }
+		# other effects for ITA
+
+		# add_timed_idea = {
+		# 	idea = ITA_logistics_in_ethiopia
+		# 	days = 240
+		# }
+
+		# Other effects for ETH
+		ETH = {
+			country_event = {
+				id = BBA_italo_ethiopian_war_events.02
+				hours = 1
+			}
+		}
+	
+	}
+}
+
+# Event for ETH - ITA starts major offensive
+country_event = {
+	id = BBA_italo_ethiopian_war_events.02
+	title = BBA_italo_ethiopian_war_events.02.t
+	desc = BBA_italo_ethiopian_war_events.02.desc
+	picture = GFX_report_event_gre_italian_troops
+	
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		
+	}
+
+	trigger = {
+		has_war_with = ETH
+	}
+
+	# Oh bleep
+	option = { 
+		name = BBA_italo_ethiopian_war_events.02.a
+		ai_chance = {
+			base = 10
+		}
+	
+	}
+	
+}
+
+
+# Event for ETH - ITA starts slow buildup
+country_event = {
+	id = BBA_italo_ethiopian_war_events.03
+	title = BBA_italo_ethiopian_war_events.03.t
+	desc = BBA_italo_ethiopian_war_events.03.desc
+	picture = GFX_report_event_military_planning
+	
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	immediate = {
+		
+	}
+
+	trigger = {
+		has_war_with = ETH
+	}
+
+	# Oh bleep
+	option = { 
+		name = BBA_italo_ethiopian_war_events.03.a
+		ai_chance = {
+			base = 10
+		}
+	
+	}
+	
+}
 
 
 
@@ -580,9 +776,160 @@ country_event = {
 
 
 # Notification for Italy that Haile Selassie has escaped
+country_event = {
+	id = BBA_italo_ethiopian_war_events.20
+	title = BBA_italo_ethiopian_war_events.20.t
+	desc = BBA_italo_ethiopian_war_events.20.desc
+	picture = GFX_report_event_generic_train
+	
+	is_triggered_only = yes
+	fire_only_once = yes 
+
+	immediate = {
+		
+	}
+	# We will defeat them
+	option = { 
+		name = BBA_italo_ethiopian_war_events.20.a
+		trigger = {
+			
+		}
+		ai_chance = {
+			base = 10
+
+		}
+		custom_effect_tooltip = ITA_occupation_tt
+
+	}
+	
+}
 
 #### Host country events
 # ETH requests possible exile status
+country_event = {
+	id = BBA_italo_ethiopian_war_events.100
+	title = BBA_italo_ethiopian_war_events.100.t
+	desc = BBA_italo_ethiopian_war_events.100.desc
+	picture = GFX_report_event_generic_battle
+	
+	is_triggered_only = yes
+
+	immediate = {
+		hidden_effect = {
+			set_variable = { var_opinion = ROOT.opinion@FROM}
+			divide_variable = { var_opinion = 100 } # make it go from -1 to 1
+			add_to_variable = { var_opinion = 2 } # 0 to 2 
+		}
+	}
+	# great idea, do come here
+	option = { 
+		name = BBA_italo_ethiopian_war_events.100.a
+		trigger = {
+			NOT = { is_in_faction_with = ITA }
+		}
+		ai_chance = {
+			
+			base = 10
+			modifier = { # We don't generally like foreigners
+				factor = 0.5
+				has_government = fascism
+			}
+			modifier = { # Kodoha - Ethiopian Friendship
+				factor = 10 
+				always = no
+			}
+			modifier = { # If we really like them
+				factor = var_opinion
+				always = yes 
+			}
+
+		}
+		set_variable = { ETH.host_nation = ROOT }
+		FROM = {
+			country_event = {
+				id = BBA_italo_ethiopian_war_events.101
+				hours = 8
+				random_hours = 8
+			}
+		}
+		ITA = {
+			add_opinion_modifier = {
+				target = PREV 
+				modifier = Hosting_ETH
+			}
+		}
+	}
+
+	# Sorry, we're closed
+	option = { 
+		name = BBA_italo_ethiopian_war_events.100.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0.5
+				has_government = democratic 
+			}
+			modifier = {
+				factor = 0.1
+				has_opinion = {
+					target = ITA
+					value < -50
+				}
+			}
+			modifier = {
+				factor = 2
+				has_opinion = {
+					target = FROM
+					value < 0
+				}
+			}
+			modifier = {
+				factor = 0 
+				tag = ENG 
+				is_historical_focus_on = yes
+			}
+		}
+		FROM = {
+			country_event = {
+				id = BBA_italo_ethiopian_war_events.102
+				hours = 8
+				random_hours = 8
+			}
+		}
+	}
+}
+
+# ETH Allowed 
+country_event = {
+	id = BBA_italo_ethiopian_war_events.101
+	title = BBA_italo_ethiopian_war_events.101.t
+	desc = BBA_italo_ethiopian_war_events.101.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	
+	is_triggered_only = yes
+	# Great
+	option = { 
+		name = BBA_italo_ethiopian_war_events.101.a
+		set_country_flag = ETH_host_confirmed_flag
+		mark_focus_tree_layout_dirty = yes
+		custom_effect_tooltip = change_focus_to_from_tt 
+	}
+}
+
+# ETH Not allowed
+country_event = {
+	id = BBA_italo_ethiopian_war_events.102
+	title = BBA_italo_ethiopian_war_events.102.t
+	desc = BBA_italo_ethiopian_war_events.102.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	
+	is_triggered_only = yes
+	# Great
+	option = { 
+		name = BBA_italo_ethiopian_war_events.102.a
+		clr_country_flag = ETH_request_sent_flag
+	}
+}
 
 ### International Mediation
 # Event for Italy
@@ -970,28 +1317,272 @@ country_event = {
 
 # ETHIOPIA 
 # International Reputation Grows 
+country_event = {
+	id = BBA_italo_ethiopian_war_events.200
+	title = BBA_italo_ethiopian_war_events.200.t
+	desc = BBA_italo_ethiopian_war_events.200.desc
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.200.a
+		add_political_power = 150 
+	}
+}
 
 # Army Morale Boost
+country_event = {
+	id = BBA_italo_ethiopian_war_events.201
+	title = BBA_italo_ethiopian_war_events.201.t
+	desc = BBA_italo_ethiopian_war_events.201.desc
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.201.a
+		custom_effect_tooltip = ETH_morale_boost_tt
+		add_to_variable = { ETH_army_army_defence_factor = 0.1 }
+		add_to_variable = { ETH_army_army_org_factor = 0.05 }
+		ETH_improve_army_spirit_effect = yes # increase bling value
+	}
+}
 
 # Enemy Desertions
+country_event = {
+	id = BBA_italo_ethiopian_war_events.202
+	title = BBA_italo_ethiopian_war_events.202.t
+	desc = BBA_italo_ethiopian_war_events.202.desc
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.202.a
+		add_manpower = 15000
+		add_equipment_to_stockpile = { 
+			type = infantry_equipment_1
+			amount = 1200
+			producer = ITA
+		}
+		add_equipment_to_stockpile = { 
+			type = support_equipment
+			amount = 500
+			producer = ITA
+		}
+		add_equipment_to_stockpile = { 
+			type = artillery_equipment_1
+			amount = 50
+			producer = ITA
+		}
+		
+	}
+}
 
 # Survival against all odds 
+country_event = {
+	id = BBA_italo_ethiopian_war_events.203
+	title = BBA_italo_ethiopian_war_events.203.t
+	desc = BBA_italo_ethiopian_war_events.203.desc
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.203.a
+		custom_effect_tooltip = ETH_for_the_duration_of_the_war_tt
+		add_ideas = ETH_survival_against_all_odds_idea
+		add_manpower = 10000
+	}
+}
 
 # The People's War 
+country_event = {
+	id = BBA_italo_ethiopian_war_events.204
+	title = BBA_italo_ethiopian_war_events.204.t
+	desc = BBA_italo_ethiopian_war_events.204.desc
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.204.a
+		every_owned_state = {
+			limit = {
+				is_core_of = ROOT 
+				NOT = { is_controlled_by = ROOT }
+				has_resistance = yes 
+			}
+			add_resistance = 45
+		}
+		custom_effect_tooltip = ETH_for_the_duration_of_the_war_tt
+		add_ideas = ETH_local_weapons_manufactories_idea 	
+	}
+}
 
 
 # ITALY
 # Italian Public Concerned
+country_event = {
+	id = BBA_italo_ethiopian_war_events.300
+	title = BBA_italo_ethiopian_war_events.300.t
+	desc = BBA_italo_ethiopian_war_events.300.desc
+	picture = GFX_report_event_generic_riot
+	fire_only_once = yes 
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.300.a
+		add_popularity = {
+			ideology = ROOT
+			popularity = -0.1
+		}
+	}
+}
 
 # Army of Africa Disheartened
+country_event = {
+	id = BBA_italo_ethiopian_war_events.301
+	title = BBA_italo_ethiopian_war_events.301.t
+	desc = BBA_italo_ethiopian_war_events.301.desc
+	picture = GFX_report_event_generic_soldiers_surrendering
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.301.a
+		add_ideas = ITA_army_of_africa_disheartened_idea
+		IF = {
+			limit = { has_idea = ITA_offensive_in_ethiopia }
+			remove_ideas = ITA_offensive_in_ethiopia
+		}
+		# ELSE_IF = {
+		# 	limit = { has_idea = ITA_logistics_in_ethiopia }
+		# 	remove_ideas = ITA_logistics_in_ethiopia
+		# }
+	}
+}
 
 # Unrest in the Colonies
+country_event = {
+	id = BBA_italo_ethiopian_war_events.302
+	title = BBA_italo_ethiopian_war_events.302.t
+	desc = BBA_italo_ethiopian_war_events.302.desc
+	picture = GFX_report_event_generic_riot
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.302.a
+		every_owned_state = {
+			limit = {
+				has_resistance = yes
+			}
+			add_compliance = -15
+			add_resistance_target = {
+				amount = 15
+				occupier = ROOT 
+				days = 730 
+				tooltip = ITA_colonial_unrest_tt
+			}
+		}
+	}
+}
 
 # Italian Public Questions War Effort
+country_event = {
+	id = BBA_italo_ethiopian_war_events.303
+	title = BBA_italo_ethiopian_war_events.303.t
+	desc = BBA_italo_ethiopian_war_events.303.desc
+	picture = GFX_report_event_gathering_protest
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.303.a
+		custom_effect_tooltip = ETH_for_the_duration_of_the_war_tt
+		IF = {
+			limit = { has_government = fascism }
+			add_ideas = ITA_public_questions_war_effort_idea_fascism
+		}
+		ELSE_IF = {
+			limit = { has_government = democratic }
+			add_ideas = ITA_public_questions_war_effort_idea_democratic
+		}
+		IF = {
+			limit = { has_government = communism }
+			add_ideas = ITA_public_questions_war_effort_idea_communism
+		}
+		IF = {
+			limit = { has_government = neutrality }
+			add_ideas = ITA_public_questions_war_effort_idea_neutrality
+		}
+	}
+}
 
 # Mass Desertions
+country_event = {
+	id = BBA_italo_ethiopian_war_events.304
+	title = BBA_italo_ethiopian_war_events.304.t
+	desc = BBA_italo_ethiopian_war_events.304.desc
+	picture = GFX_report_event_generic_battle
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.304.a
+		custom_effect_tooltip = ITA_desertions_east_africa_tt
+		hidden_effect = {
+			every_state = {
+				limit = {
+					OR = {
+						region = 17
+						region = 273
+						region = 274
+						region = 216
+						region = 217
+					}
+				}
+				damage_units = {
+					state = THIS 
+					limit = { tag = ITA } 
+					damage = 0.35
+					ratio = yes  
+					army = yes
+				}
+			}
+		}
+	}
+}
 
 # Uproar in the Colonies
+country_event = {
+	id = BBA_italo_ethiopian_war_events.305
+	title = BBA_italo_ethiopian_war_events.305.t
+	desc = BBA_italo_ethiopian_war_events.305.desc
+	picture = GFX_report_event_generic_battle
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.305.a
+		every_owned_state = {
+			limit = {
+				is_on_continent = africa
+				has_resistance = yes 
+			}
+			add_compliance = -30
+			add_resistance = 15
+			add_resistance_target = {
+				amount = 80
+				occupier = ITA 
+				days = 730 
+				tooltip = ITA_colonial_uproar_tt
+			}
+			
+		}
+	}
+}
 
 # Pressure on the Aussa Sultan
 country_event = {
@@ -1064,9 +1655,267 @@ country_event = {
 }
 
 # Italy demands subjugation
+country_event = {
+	id = BBA_italo_ethiopian_war_events.401
+	title = BBA_italo_ethiopian_war_events.401.t
+	desc = BBA_italo_ethiopian_war_events.401.desc
+	picture = GFX_report_event_mussolini_hotel
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.401.a
+		ai_chance = {
+			base = 10
+		}
+		FROM = {
+			country_event = {
+				id = BBA_italo_ethiopian_war_events.402
+				hours = 4 
+				random_hours = 8 
+			}
+		}
+		news_event = {
+			id = bba_news.8
+			hours = 1
+		}
+		effect_tooltip = {
+			ITA = {
+				annex_country = {
+					target = ROOT
+					transfer_troops = no
+				}
+			}
+		}
+
+	}
+
+	option = { 
+		name = BBA_italo_ethiopian_war_events.401.b
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = 0 
+				OR = {
+					is_historical_focus_on = yes 
+					is_tutorial = yes
+				}
+			}
+		}
+		FROM = {
+			country_event = {
+				id = BBA_italo_ethiopian_war_events.403
+				hours = 4 
+				random_hours = 8 
+			}
+		}
+	}
+}
+
+# Aussa folds
+country_event = {
+	id = BBA_italo_ethiopian_war_events.402
+	title = BBA_italo_ethiopian_war_events.402.t
+	desc = BBA_italo_ethiopian_war_events.402.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.402.a
+		annex_country = {
+			target = FROM
+			transfer_troops = no 
+		}
+		908 = {
+			create_unit = {
+				division = "division_template = \"Banda Indigena Irregolare\" start_experience_factor = 0.1 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = ROOT
+				prioritize_location = 13240 # optional 
+				allow_spawning_on_enemy_provs = yes
+				
+				count = 2 
+				
+			}
+		}
+	}
+}
+
+# Aussa remains defiant
+country_event = {
+	id = BBA_italo_ethiopian_war_events.403
+	title = BBA_italo_ethiopian_war_events.403.t
+	desc = BBA_italo_ethiopian_war_events.403.desc
+	picture = GFX_report_event_ger_civil_war
+	fire_only_once = yes 
+	
+	is_triggered_only = yes
+	option = { 
+		name = BBA_italo_ethiopian_war_events.403.a
+		declare_war_on = {
+			target = FROM
+			type = annex_everything
+		}
+	}
+}
 
 
 
 
 ####PEACE EVENTS
 #Italy is notified that England or France wants a peace treaty with Ethiopia before helping Italy
+country_event = {  
+	id = BBA_italo_ethiopian_war_events.500
+	title = BBA_italo_ethiopian_war_events.500.t 
+	desc = BBA_italo_ethiopian_war_events.500.desc
+	picture = GFX_report_event_generic_sign_treaty2 
+	
+	is_triggered_only = yes
+ 
+	option = { #Peace for territory
+		name = BBA_italo_ethiopian_war_events.500.a 
+		trigger= {
+			FROM = {	
+				NOT = {
+					has_country_flag = ITA_italy_asks_ethiopian_host_for_help
+				}
+			}
+		}
+		ai_chance = { 
+			base = 10
+		}
+		ETH = { 
+			country_event = { id = BBA_italo_ethiopian_war_events.501 hours = 2 random_hours = 1 }
+		}
+		effect_tooltip = {
+			ITA = {
+				start_peace_conference = {
+					tag = ETH
+					score_factor = 0.25
+				}
+			}
+			custom_effect_tooltip = ITA_peace_with_ethiopia_tt
+			ENG = { 
+				country_event = { id = BBA_italy_interaction_events.31 }
+			}
+		}
+	}
+	option = { #Peace for guaranteeing Austria
+		name = BBA_italo_ethiopian_war_events.500.b 
+		trigger= {
+			FROM = {	
+				has_country_flag = ITA_italy_asks_ehtiopian_host_for_help
+			}
+		}
+		ai_chance = { 
+			base = 10
+		}
+		ETH = { 
+			country_event = { id = BBA_italo_ethiopian_war_events.501 hours = 2 random_hours = 1 }
+		}
+		effect_tooltip = {
+			ITA = {
+				start_peace_conference = {
+					tag = ETH
+					score_factor = 0.25
+				}
+			}
+			custom_effect_tooltip = ITA_peace_with_ethiopia_tt
+			FROM = { 
+				country_event = { id = BBA_italy_interaction_events.60 }
+			}
+		}
+	}
+	option = { #The War continues
+		name = BBA_italo_ethiopian_war_events.500.c
+		ai_chance = { 
+			base = 1
+		}
+		custom_effect_tooltip = BBA_italo_ethiopian_war_events.500_tt
+
+		hidden_effect = {	
+			FROM = { 
+				country_event = { id = BBA_italo_ethiopian_war_events.502 hours = 6 random_hours = 3 }
+			}
+		}
+	}	
+}
+
+#Ethiopia gets notified about the peace conference
+country_event = {
+	id = BBA_italo_ethiopian_war_events.501
+	title = BBA_italo_ethiopian_war_events.501.t
+	desc = BBA_italo_ethiopian_war_events.501.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	
+	is_triggered_only = yes
+	
+	option = { 
+		name = BBA_italo_ethiopian_war_events.501.a
+		ITA = {
+			start_peace_conference = {
+				tag = ETH
+				score_factor = 0.25
+			}
+		}
+		hidden_effect = {
+			if = {
+				limit = {#Checks if ENG is the hos of exiled ETH or is allied to the host 
+					ITA_hosting_exiled_ethiopia = yes
+					if = {
+						limit = { 
+							ENG = {
+								has_country_flag = ITA_italy_asks_ehtiopian_host_for_help
+							}
+						}
+					}
+				}
+				ENG = { #If ENG is the host of the exiled ETH government or is allied to the host and have been asked by ITA to guarantee AUS, then do this
+					country_event = { id = BBA_italy_interaction_events.60 days = 1 }
+				}
+				else = {
+					limit = {
+						ITA_hosting_exiled_ethiopia = yes
+					}
+					ENG = { #If ENG is the host of the exiled ETH government or is allied to the host and ITA wants to negotiate land claims, then do this
+						country_event = { id = BBA_italy_interaction_events.31 days = 1 }
+					}
+				}
+			}
+		}
+	}	
+}
+
+#Event for England or France if Italy refuses to sue for peace
+country_event = {  
+	id = BBA_italo_ethiopian_war_events.502
+	title = BBA_italo_ethiopian_war_events.502.t 
+	desc = BBA_italo_ethiopian_war_events.502.desc
+	picture = GFX_report_event_fascist_speech 
+	
+	is_triggered_only = yes
+ 
+	option = { #Such a shame
+		name = BBA_italo_ethiopian_war_events.502.a 
+		hidden_effect = {
+			clr_country_flag = ITA_italy_asks_ehtiopian_host_for_help
+		}
+	}
+}
+
+#Event for Ethiopia after Italy finishes Topple Amhara Rule
+country_event = {  
+	id = BBA_italo_ethiopian_war_events.510
+	title = BBA_italo_ethiopian_war_events.510.t 
+	desc = BBA_italo_ethiopian_war_events.510.desc
+	picture = GFX_report_event_fascist_speech 
+	
+	is_triggered_only = yes
+
+	fire_only_once = yes
+ 
+	option = { #Lying, thieving villians!
+		name = BBA_italo_ethiopian_war_events.510.a 
+		add_legitimacy = -10
+	}
+}

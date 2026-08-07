@@ -207,6 +207,54 @@ country_event = {
 }
 
 # Border Skirmish with the Japanese
+country_event = {
+	id = soviet.1
+	title = soviet.1.t
+	desc = soviet.1.d
+	picture = GFX_report_event_japanese_transport_soldiers
+	
+	is_triggered_only = yes
+	
+	option = { # Push back
+		name = soviet.1.a
+		ai_chance = { factor = 75 }
+		add_political_power = -25
+		hidden_effect = {
+			random_list = {
+				60 = {
+					JAP = {
+						country_event = { days = 1 id = japan.3 }
+					}
+				}
+				40 = {
+					JAP = {
+						country_event = { days = 1 id = japan.4 }
+					}
+				}
+			}
+		}
+		effect_tooltip = {
+			random_list = {
+				60 = {
+					country_event = soviet.2
+				}
+				40 = {
+					country_event = soviet.3
+				}
+			}
+		}
+	}
+	option = { # Yield
+		name = soviet.1.b
+		ai_chance = { factor = 25 }
+		JAP = {
+			effect_tooltip = {
+				add_stability = 0.05
+			}
+			country_event = { days = 1 id = japan.5 }
+		}
+	}
+}
 
 # Successful Raid
 country_event = {
@@ -389,6 +437,60 @@ country_event = {
 }
 
 # Finland Accepts Demands
+country_event = {
+	id = soviet.12
+	title = soviet.12.t
+	desc = soviet.12.d
+	picture = GFX_report_event_soviet_finnish_pact
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = soviet.12.a
+		SOV = { 
+			transfer_state = 146
+			custom_effect_tooltip = FIN_remove_soviet_claims_in_other_states_tt
+		}
+		hidden_effect = {
+			FIN = {
+				every_core_state = {
+					limit = {
+						is_owned_by = PREV
+						is_claimed_by = ROOT
+					}
+					remove_claim_by = ROOT 
+				} 
+			}
+			SOV = {
+				country_event = { days = 1 id = news.13 }
+			}
+		}
+	}
+}
+
+# Finland Refuses Demands
+country_event = {
+	id = soviet.13
+	title = soviet.13.t
+	desc = soviet.13.d
+	picture = GFX_report_event_soviet_tanks_snow
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = soviet.13.a
+		create_wargoal = {
+			type = take_state
+			target = FIN
+			generator = { 146 }
+		}				
+		hidden_effect = {
+			SOV = {
+				country_event = { days = 1 id = news.12 }
+			}
+		}
+	}
+}
 
 # Xi'an Incident
 country_event = {
@@ -483,6 +585,18 @@ country_event = {
 }
 
 # Xi'an Incident - Kuomintang Refuses
+country_event = {
+	id = soviet.20
+	title = soviet.20.t
+	desc = soviet.20.d
+	picture = GFX_report_event_nationalist_china_machinegun_firing
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = soviet.20.a
+	}
+}
 
 # Xi'an Incident - Truce
 country_event = {
@@ -517,6 +631,33 @@ country_event = {
 }
 
 # Soviet Union Cedes Land (Japan)
+country_event = {
+	id = soviet.23
+	title = soviet.23.t
+	desc = soviet.23.d
+	picture = GFX_report_event_soviet_japanese_pact
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = soviet.23.a
+		transfer_state = 655
+	}
+}
+
+# Great Purge - Begins
+country_event = {
+	id = soviet.24
+	title = soviet.24.t
+	desc = soviet.24.d
+	picture = GFX_report_event_soviet_purge_speech
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = soviet.24.a
+	}
+}
 
 # Demand Bessarabia
 country_event = {
@@ -828,6 +969,101 @@ country_event = {
 }
 
 # Polish event for Returning occupied territory
+country_event = {
+	id = soviet.74
+	title = soviet.74.t
+	desc = soviet.74.d
+	picture = GFX_report_event_SOV_demands
+	is_triggered_only = yes 
+
+	trigger = {
+		
+	}
+	#fire_only_once = yes
+	
+	option = {
+		name = soviet.74.a
+		ai_chance = {
+			base = 1
+		}
+		POL = {
+			add_autonomy_score = { 
+				value = -250 
+				localization = POL_accepted_states
+			}
+			add_popularity = {
+				ideology = FROM
+				popularity = 0.05
+			}
+		}
+		FROM = {
+			every_owned_state = {
+				limit = {
+					is_core_of = POL 
+					OR = {
+						# Białystok
+						state = 97 
+						# Uncontested Polish Cores
+						NOT = {
+							any_country_with_core = {
+								NOT = { tag = POL }
+							}
+						}
+					}
+					
+				}
+				transfer_state_to = POL
+			}
+		}
+		FROM = {
+			country_event = {
+				id = soviet.75
+				hours = 2 
+				random_hours = 6 
+			}
+		}
+	}
+	option = {
+		name = soviet.74.b
+		ai_chance = {
+			base = 0
+		}
+		POL = {
+			add_autonomy_score = { 
+				value = 250 
+				localization = POL_refused_states
+			}
+		}
+		FROM = {
+			every_owned_state = {
+				limit = {
+					is_core_of = POL 
+					OR = {
+						# Białystok
+						state = 97 
+						# Uncontested Polish Cores
+						NOT = {
+							any_country_with_core = {
+								NOT = { tag = POL }
+							}
+						}
+					}
+					
+				}
+				remove_core_of = POL  
+				add_core_of = SOV
+				add_claim_by = POL 
+			}
+		}
+		FROM = {
+			country_event = {
+				id = soviet.76
+				hours = 2 
+				random_hours = 6 
+			}
+		}
+	}
+}
 
 # Poland Accepted
 country_event = {
@@ -884,3 +1120,64 @@ country_event = {
 
 # The successor is now selected. Will depend on the choice of policies and current leader.
 # The previous event implies the law on successors is being strictly applied so candidates are not eligible if they have been president before!
+country_event = {
+	id = soviet.506
+	title = soviet.506.t
+	desc = soviet.506.d
+	
+	picture = GFX_report_event_election_vote
+	
+	is_triggered_only = yes
+
+	# Communist
+	
+	option = { ##Mao Zedong (Trait:Veteran Communist)
+		name = soviet.506.a
+
+		add_country_leader_role = {
+			character = KSR_mao_zedong
+			country_leader={
+				ideology=marxism
+				traits={ cornered_fox }
+				expire="1965.1.1.1"
+				id=-1
+			}
+			promote_leader = yes
+		}
+	}
+	
+	option = { ##Krishna Pillai (Trait: Great Architect)
+		name = soviet.506.b
+
+		add_country_leader_role = {
+			character = KSR_p_krishna_pillai
+			country_leader={
+				ideology=marxism
+				expire="1965.1.1.1"
+				id=-1
+				traits = {
+					great_architect
+				}
+			}
+			promote_leader = yes
+		}
+	}
+
+	option = { ##Ilyas Zhansugurov (Trait:Man of the Nation)
+		name = soviet.506.c
+		
+		add_country_leader_role = {
+			character = KSR_ilyas_zhansugurov
+			country_leader={
+				ideology=marxism
+				expire="1965.1.1.1"
+				id=-1
+				traits = {
+					face_licker
+					revolutionary_poet
+				}
+			}
+			promote_leader = yes
+		}
+	}
+}
