@@ -1558,6 +1558,39 @@ focus_tree = {
 		}
 	}
 	focus = {
+		id = ICE_fighting_as_equals
+		icon = GFX_focus_ICE_fighting_as_equals
+		prerequisite = { focus = ICE_not_standing_idly_by }
+
+		x = -1
+		y = 1
+		relative_position_id = ICE_not_standing_idly_by
+		bypass = {
+			NOT = { is_subject_of = DEN}
+		}
+		cost = 10
+		available = {
+			OR = { 
+				has_government = democratic 
+				has_government = neutrality  
+			}
+			is_subject_of = DEN
+			has_war = yes 
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			DEN = {
+				country_event = {
+					id = iceland_events.6
+					hours = 1
+				}
+			}
+			custom_effect_tooltip = ICE_fighting_as_equals_tt
+		}
+	}
+	focus = {
 		id = ICE_expanding_the_university_of_reykjavik
 		icon = GFX_focus_ICE_expanding_the_university_of_reykjavik
 		prerequisite = { focus = ICE_not_standing_idly_by focus = ICE_political_unity }
@@ -1747,6 +1780,33 @@ focus_tree = {
 			add_to_variable = {
 				ICE_economy_production_factory_max_efficiency_factor = 0.1
 				tooltip = production_factory_max_efficiency_factor_tt
+			}
+		}
+	}
+	focus = {
+		id = ICE_compensation
+		icon = GFX_focus_generic_treaty
+		prerequisite = { focus = ICE_fighting_as_equals }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_fighting_as_equals
+		cost = 10
+		available = {
+			OR = {
+				101 = { is_owned_by = DEN }
+				337 = { is_owned_by = DEN }
+			}
+		}
+
+		search_filters = {FOCUS_FILTER_ANNEXATION}
+
+		completion_reward = {
+			DEN = {
+				country_event = {
+					id = iceland_events.12
+					hours = 1 
+				}
 			}
 		}
 	}
@@ -2017,6 +2077,37 @@ focus_tree = {
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = ICE_gisli_sigurbjornsson
 			show_ideas_tooltip = ICE_brynjolfur_bjarnason
+		}
+	}
+	focus = {
+		id = ICE_international_relations
+		icon = GFX_focus_generic_soviet_politics
+		prerequisite = { focus = ICE_expand_the_industrial_base }
+
+		x = -2
+		y = 1
+		relative_position_id = ICE_expand_the_industrial_base
+		cost = 10
+		available = {
+			communism > 0.2
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			add_offsite_building = {
+				type = industrial_complex
+				level = 1
+			}
+			IF = {
+				limit = {
+					has_idea = isolation
+				}
+				swap_ideas = {
+					remove_idea = isolation
+					add_idea = civilian_economy
+				}
+			}
 		}
 	}
 	focus = {
@@ -2435,6 +2526,55 @@ focus_tree = {
 		}
 	}
 	focus = {
+		id = ICE_international_brigades
+		icon = GFX_focus_SOV_builder_of_the_red_army
+		prerequisite = { focus = ICE_embrace_the_workers_revolution }
+		prerequisite = { focus = ICE_international_relations }
+
+		x = -2
+		y = 1
+		relative_position_id = ICE_embrace_the_workers_revolution
+		cost = 10
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			add_ideas = {
+				ICE_international_brigades
+			}
+
+			hidden_effect = {
+				delete_unit_template_and_units = { 
+					division_template = "Icelandic Expeditionary Force"
+					disband = yes #if yes, will refund equipment/manpower. 
+				}
+				division_template = {
+					name = "Icelandic Expeditionary Force"
+					is_locked = no
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 0 y = 3 }
+					}
+				}
+			}
+			100 = {
+				create_unit = {
+					division = "name = \"Icelandic Expeditionary Force\" division_template = \"Icelandic Expeditionary Force\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = ROOT
+					
+					allow_spawning_on_enemy_provs = no 
+				
+					count = 1
+					
+				}
+			}
+		}
+	}
+	focus = {
 		id = ICE_state_owned_industry
 		icon = GFX_focus_generic_communist_industry
 		prerequisite = { focus = ICE_embrace_the_workers_revolution }
@@ -2468,6 +2608,24 @@ focus_tree = {
 			}
 			custom_effect_tooltip = available_industrial_concern
 			show_ideas_tooltip = ICE_landsvirkjun
+		}
+	}
+	focus = {
+		id = ICE_organize_the_greyshirts
+		icon = GFX_focus_generic_fascist_troops
+		prerequisite = { focus = ICE_state_corporatism }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_state_corporatism
+		cost = 10
+		available = {
+		}
+
+		search_filters = {FOCUS_FILTER_MANPOWER}
+
+		completion_reward = { 
+			add_ideas = ICE_greyshirts
 		}
 	}
 	focus = {
@@ -2505,6 +2663,278 @@ focus_tree = {
 			custom_effect_tooltip = available_industrial_concern
 			show_ideas_tooltip = ICE_siemens
 		
+		}
+	}
+	focus = {
+		id = ICE_infiltrating_the_british_isles
+		icon = GFX_focus_ICE_infiltrating_the_british_isles
+		prerequisite = { focus = ICE_international_brigades }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_international_brigades
+		cost = 10
+		available = {
+			ENG = {
+				NOT = {
+					has_government = communism
+				}
+			}
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			custom_effect_tooltip = ICE_infiltrating_the_british_isles_tt
+			IF = {
+				limit = { has_dlc = "La Resistance"}
+				if = {
+					limit = { has_intelligence_agency = no }
+					create_intelligence_agency = yes
+				}
+				if = {
+					limit = { NOT = { has_done_agency_upgrade = upgrade_diplo_training } }
+					upgrade_intelligence_agency = upgrade_diplo_training
+				}
+				if = {
+					limit = { NOT = { has_done_agency_upgrade = upgrade_training_centers } } #There should be enough 'free' departments to become faction spymaster now
+					upgrade_intelligence_agency = upgrade_training_centers
+				}
+			}
+		}
+	}
+	focus = {
+		id = ICE_transformation_of_nature
+		icon = GFX_goal_generic_soviet_construction
+		prerequisite = { focus = ICE_state_owned_industry }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_state_owned_industry
+		cost = 10
+		available = {
+		}
+
+		search_filters = {}
+
+		completion_reward = {
+			100 = {
+				add_extra_state_shared_building_slots = 2
+				add_dynamic_modifier = {
+					modifier = ICE_transformation_of_nature_state_modifier
+				}
+			}
+		}
+	}
+	focus = {
+		id = ICE_the_viking_spirit
+		icon = GFX_focus_ICE_the_viking_spirit
+		prerequisite = { focus = ICE_organize_the_greyshirts }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_organize_the_greyshirts
+		cost = 10
+		available = {  
+		}
+
+		search_filters = {FOCUS_FILTER_WAR_SUPPORT}
+
+		completion_reward = {
+			add_ideas = ICE_viking_spirit 
+			custom_effect_tooltip = ICE_viking_spirit_tt
+		}
+	}
+	focus = {
+		id = ICE_recruiting_international_workers
+		icon = GFX_focus_ETH_callout_to_the_world
+		prerequisite = { focus = ICE_transformation_of_nature focus = ICE_infiltrating_the_british_isles }
+
+		x = -2
+		y = 1
+		relative_position_id = ICE_transformation_of_nature
+		cost = 10
+		available = {
+		}
+
+		search_filters = {FOCUS_FILTER_MANPOWER}
+
+		completion_reward = {
+			add_manpower = 15000
+			100 = { add_manpower = 10000 }
+			every_owned_state = { 
+				limit = { 
+					NOT = { state = 100 }
+					is_controlled_by_ROOT_or_ally = yes 
+				}
+				add_manpower = 5000
+			}
+		}
+	}
+	focus = {
+		id = ICE_international_research_community
+		icon = GFX_focus_generic_socialist_science
+		prerequisite = { focus = ICE_transformation_of_nature }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_transformation_of_nature
+		cost = 10
+		available = {
+		}
+
+		search_filters = {FOCUS_FILTER_RESEARCH}
+
+		completion_reward = {
+			add_research_slot = 1
+			custom_effect_tooltip = ICE_the_icelandic_economy_modifier_tt
+			add_to_variable = {
+				ICE_economy_research_speed_factor = 0.05
+				tooltip = research_speed_factor_tt
+			}
+			custom_effect_tooltip = ICE_international_research_community_tt 
+			every_country = {
+				limit = {
+					has_government = communism
+					NOT = { has_war_with = ROOT }
+					OR = {
+						tag = ICE
+						is_in_faction_with = ROOT
+						is_in_faction = no 
+					}
+				}
+				add_to_tech_sharing_group = ICE_communist_tech_sharing_group
+			}
+		}
+	}
+	focus = {
+		id = ICE_reclaiming_the_empire
+		icon = GFX_focus_ICE_reclaiming_the_empire
+		prerequisite = { focus = ICE_the_viking_spirit }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_the_viking_spirit
+		cost = 10
+		available = {
+			NOT = {
+				owns_state = 101
+			}
+			any_country = {
+				owns_state = 101
+				NOT = {
+					has_war_with = ROOT
+				}
+			}
+		}
+
+		bypass = {
+			OR = {
+				101 = {
+					is_owned_and_controlled_by = ROOT
+				}
+				any_country = {
+					owns_state = 101
+					has_war_with = ROOT
+				}
+			}
+		}
+
+		search_filters = {FOCUS_FILTER_ANNEXATION}
+
+		completion_reward = {
+			101 = {
+				add_claim_by = ROOT
+			}
+			random_other_country = {
+				limit = {
+					owns_state = 101
+				}
+				country_event = {
+					id = iceland_events.20
+					days = 1
+					random = 2
+				}
+			}
+			custom_effect_tooltip = if_they_accept_tt
+			effect_tooltip = {
+				ROOT = {
+					transfer_state = 101
+				}
+				101 = {
+					add_core_of = ROOT
+				}
+			}
+		}
+	}
+	focus = {
+		id = ICE_securing_the_north_sea_passage
+		icon = GFX_focus_ICE_securing_the_north_sea_passage
+		prerequisite = { focus = ICE_the_viking_spirit }
+
+		x = 2
+		y = 1
+		relative_position_id = ICE_the_viking_spirit
+		cost = 10
+		available = {
+		}
+
+		search_filters = {FOCUS_FILTER_ANNEXATION}
+
+		completion_reward = {
+			337 = {
+				add_claim_by = ROOT
+			}
+			933 = {
+				add_claim_by = ROOT
+			}
+			914 = {
+				add_claim_by = ROOT
+			}
+			every_other_country = {
+				limit = {
+					OR = {
+						owns_state = 337
+						owns_state = 933
+						owns_state = 914
+					}
+				}
+				country_event = {
+					id = iceland_events.23
+					hours = 1 
+					random_hours = 2 
+				}
+			}
+		}
+	}
+	focus = {
+		id = ICE_vinland
+		icon = GFX_focus_ICE_vinland
+		prerequisite = { focus = ICE_reclaiming_the_empire }
+		prerequisite = { focus = ICE_securing_the_north_sea_passage }
+
+		x = 0
+		y = 1
+		relative_position_id = ICE_reclaiming_the_empire
+		cost = 10
+		available = {
+		}
+
+		search_filters = {FOCUS_FILTER_ANNEXATION}
+
+		completion_reward = {
+			331 = {
+				add_claim_by = ROOT
+			}
+			730 = {
+				add_claim_by = ROOT
+			}
+			332 = {
+				add_claim_by = ROOT
+			}
+			860 = {
+				add_claim_by = ROOT
+			}
 		}
 	}
 

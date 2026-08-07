@@ -79,6 +79,12 @@ ideas = {
 			}
 		}
 
+		SWE_historical_trade_with_Germany_dummy = {
+			allowed = {
+				always = yes
+			}
+			picture = can_wartime_prices_and_trade_board
+		}
 
 		triumphant_will = {
 			
@@ -719,6 +725,25 @@ ideas = {
 			}
 		}
 
+		GER_communist_refugees_supressed = {
+			name = GER_communist_refugees
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = communism
+			}
+
+			removal_cost = -1
+
+			picture = generic_communism_drift_bonus
+
+			modifier = {
+				communism_drift = 0.05
+				stability_factor = -0.05
+			}
+		}
 
 		GER_redirecting_naval_production = {
 			allowed = {
@@ -748,6 +773,34 @@ ideas = {
 			}
 		}
 
+		GER_redirecting_naval_production_2 = {
+			name = GER_redirecting_naval_production
+			allowed = {
+				always = no
+			}
+
+			cancel = {
+				OR = {
+					ENG = { is_subject = yes }
+					ENG = { exists = no}
+					has_war_with = ENG
+				}
+			}
+
+			allowed_civil_war = {
+				has_government = neutrality
+			}
+
+			removal_cost = -1
+
+			picture = generic_production_bonus
+
+			modifier = {
+				industrial_capacity_factory = 0.05
+				consumer_goods_factor = -0.05
+				industrial_capacity_dockyard = -0.1
+			}
+		}
 
 		GER_safeguard_the_baltic = {
 			allowed = {
@@ -956,8 +1009,85 @@ ideas = {
 			}
 		}
 
+		GER_mitteleuropa_customs_union_member_upgraded = {
+			name = GER_mitteleuropa_customs_union_member
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
 
+			removal_cost = -1
+
+			picture = HUN_treaty_of_triannon
+
+			modifier = {
+				consumer_goods_factor = -0.15
+			}
+		}
+
+		GER_mitteleuropa_customs_union_member_upgraded_2 = {
+			name = GER_mitteleuropa_customs_union_member
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+
+			removal_cost = -1
+
+			picture = HUN_treaty_of_triannon
+
+			modifier = {
+				consumer_goods_factor = -0.15
+				compliance_growth = 0.02
+			}
+		}
+
+		GER_mitteleuropa_integrated_customs_union_member = {
+			name = GER_mitteleuropa_customs_union_member
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+
+			removal_cost = -1
+
+			picture = HUN_treaty_of_triannon
+
+			cancel = {
+			  NOT = {
+			  	OR = {
+			  		is_in_faction_with = GER
+			  		original_tag = GER
+			  	}
+			  }
+			}
+
+			modifier = {
+				consumer_goods_factor = -0.2
+				industrial_capacity_factory = 0.05
+				industrial_capacity_dockyard = 0.05
+				min_export = 0.15
+				custom_modifier_tooltip	= GER_mitteleuropa_integrated_customs_union_member_tt
+			}
+		}
 
 		GER_preparing_ITA_coup = {
 			allowed = {
@@ -2485,6 +2615,33 @@ ideas = {
 			}
 		}
 
+		GER_fernostliche_legion_prc_ns = {
+			name = GER_fernostliche_legion_ns
+			removal_cost = -1
+
+			picture = ETH_conservative_high_command
+				
+			allowed = {
+				original_tag = GER
+			}
+
+			allowed_civil_war = {
+				always = yes
+			}
+
+			cancel = {
+				PRC = { has_war = no }
+			}
+
+			modifier = {
+				send_volunteer_divisions_required = -0.15
+				experience_gain_army_factor = 0.15
+				experience_gain_air_factor = 0.15
+				send_volunteer_size = 2
+				air_volunteer_cap = 1
+				send_volunteers_tension = -0.2
+			}
+		}
 
 		#REICHSKOMMISSARIATS
 		GER_german_controlled_reichskommissariat = {
@@ -2519,6 +2676,39 @@ ideas = {
 			}
 		}
 
+		GER_local_controlled_reichskommissariat = {
+			name = GER_german_controlled_reichskommissariat
+			
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				always = yes
+			}
+
+			removal_cost = -1
+
+			picture = triumphant_will
+
+			modifier = {
+				compliance_growth = 0.1
+				local_resources_factor = 0.2
+				industrial_capacity_factory = 0.1
+				production_speed_buildings_factor = 0.05
+				production_lack_of_resource_penalty_factor = -0.15
+				autonomy_gain_global_factor = -0.05
+				weekly_manpower = 250
+				resistance_target = -0.1
+				overlord_trade_cost_factor = -0.05
+			}
+
+			targeted_modifier = {
+				tag = GER
+				cic_to_target_factor = 0.15
+				mic_to_target_factor = 0.15
+			}
+		}
 
 		GER_government_general_idea = { #Poland
 			
@@ -2590,8 +2780,73 @@ ideas = {
 
 		#ALT-HISTORY
 
+		GER_rally_the_nation_ns = {
+			name = GER_rally_the_nation
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
 
+			removal_cost = -1
+
+			picture = FIN_german_threat
+
+			modifier = {
+				training_time_factor = -0.15
+				conscription = 0.005
+				war_support_factor = 0.1
+				weekly_casualties_war_support = 0.001
+			}
+		}
+
+		GER_recover_from_the_civil_war_ns = {
+			name = GER_rebuild_the_nation_ww
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+
+			removal_cost = -1
+
+			picture = ger_rebuild_the_nation
+
+			modifier = {
+				industry_repair_factor = 0.25
+				consumer_goods_factor = -0.1
+			}
+		}
+
+		GER_national_revitalization_ns = {
+			name = GER_national_revitalization
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				 has_government = neutrality
+			}
+
+			removal_cost = -1
+
+			picture = ARG_public_works_investment
+
+			modifier = {
+				production_speed_industrial_complex_factor = 0.15
+				production_speed_infrastructure_factor = 0.15
+			}
+		}
 
 		GER_expatriated_communists_return_home_ns = {
 			allowed = {
@@ -2915,6 +3170,29 @@ ideas = {
 			}
 		}
 
+		GER_propagandists_swaying_public_opinion_neu = {
+			name = GER_propagandists_swaying_public_opinion_dem
+			
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+
+			removal_cost = -1
+
+			picture = generic_monarchist_uprising
+
+			modifier = {
+				neutrality_drift = 0.1
+				political_power_factor = 0.05
+			}
+		}
 
 		GER_aid_in_military_industrialization = {
 			
@@ -2973,6 +3251,28 @@ ideas = {
 			}
 		}
 
+		GER_weakened_bismarckjugend_idea = {
+			name = GER_bismarckjugend_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = neutrality
+				}
+			}
+
+			removal_cost = -1
+
+			picture = GER_bismarckjugend
+
+			modifier = {
+				conscription_factor = 0.03
+				neutrality_drift = 0.03
+			}
+		}
 
 		GER_eiserne_front_idea = {
 			
@@ -2999,6 +3299,28 @@ ideas = {
 			}
 		}
 
+		GER_weakened_eiserne_front_idea = {
+			name = GER_eiserne_front_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
+
+			removal_cost = -1
+
+			picture = GER_iron_front
+
+			modifier = {
+				conscription_factor = 0.04
+				democratic_drift = 0.03
+			}
+		}
 
 		GER_all_for_the_front_idea = {
 			allowed = {
@@ -3067,8 +3389,77 @@ ideas = {
 			}
 		}
 
+		GER_fan_prussian_militarism_idea_2 = {
+			name = GER_fan_prussian_militarism_idea
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				has_government = neutrality
+			}
 
+			removal_cost = -1
+
+			picture = GER_fan_prussian_militarism
+
+			modifier = {
+				conscription = 0.01
+				army_org_factor = 0.05
+				training_time_factor = -0.1
+				experience_gain_army = 0.1
+			}
+		}
+
+		GER_fan_prussian_militarism_idea_3 = {
+			name = GER_fan_prussian_militarism_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = neutrality
+			}
+
+			removal_cost = -1
+
+			picture = GER_fan_prussian_militarism
+
+			modifier = {
+				conscription = 0.005
+				army_org_factor = 0.1
+				training_time_factor = -0.1
+				mobilization_speed = 0.1
+				army_morale_factor = 0.05
+				max_command_power = 15
+				experience_gain_army = 0.1
+			}
+		}
+
+		GER_fan_prussian_militarism_idea_4 = {
+			name = GER_fan_prussian_militarism_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = neutrality
+			}
+
+			removal_cost = -1
+
+			picture = GER_fan_prussian_militarism
+
+			modifier = {
+				conscription = 0.01
+				army_org_factor = 0.1
+				training_time_factor = -0.1
+				mobilization_speed = 0.1
+				army_morale_factor = 0.05
+				max_command_power = 15
+				experience_gain_army = 0.1
+			}
+		}
 
 		GER_the_shield_of_democracy_idea = {
 			
@@ -3089,12 +3480,186 @@ ideas = {
 			}
 		}
 
+		GER_the_shield_of_democracy_liberalism_idea = {
+			name = GER_the_shield_of_democracy_idea
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				has_government = democratic
+			}
 
+			removal_cost = -1
 
+			picture = GER_the_shield_of_democracy
 
+			modifier = {
+				drift_defence_factor = 0.2
+				political_advisor_cost_factor = -0.25
+				trade_laws_cost_factor = -0.2
+				economy_cost_factor = -0.2
+			}
+		}
 
+		GER_the_shield_of_democracy_conservatism_idea = {
+			name = GER_the_shield_of_democracy_idea
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				has_government = democratic
+			}
+
+			removal_cost = -1
+
+			picture = GER_the_shield_of_democracy
+
+			modifier = {
+				drift_defence_factor = 0.2
+				political_advisor_cost_factor = -0.1
+				high_command_cost_factor = -0.1
+				air_chief_cost_factor = -0.1
+				army_chief_cost_factor = -0.1
+				navy_chief_cost_factor = -0.1
+				mobilization_laws_cost_factor = -0.2
+			}
+		}
+
+		GER_the_shield_of_democracy_liberalism_and_welfare_idea = {
+			name = GER_the_shield_of_democracy_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = democratic
+			}
+
+			removal_cost = -1
+
+			picture = GER_the_shield_of_democracy
+
+			modifier = {
+				drift_defence_factor = 0.2
+				political_advisor_cost_factor = -0.25
+				trade_laws_cost_factor = -0.2
+				economy_cost_factor = -0.2
+				monthly_population = 0.1
+				defensive_war_stability_factor = 0.15
+				party_popularity_stability_factor = 0.15
+			}
+		}
+
+		GER_the_shield_of_democracy_conservatism_and_welfare_idea = {
+			name = GER_the_shield_of_democracy_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = democratic
+			}
+
+			removal_cost = -1
+
+			picture = GER_the_shield_of_democracy
+
+			modifier = {
+				drift_defence_factor = 0.2
+				political_advisor_cost_factor = -0.1
+				high_command_cost_factor = -0.1
+				air_chief_cost_factor = -0.1
+				army_chief_cost_factor = -0.1
+				navy_chief_cost_factor = -0.1
+				mobilization_laws_cost_factor = -0.2
+				monthly_population = 0.1
+				defensive_war_stability_factor = 0.15
+				party_popularity_stability_factor = 0.15
+			}
+		}
+
+		GER_the_shield_of_democracy_liberalism_welfare_and_democracy_idea = {
+			name = GER_the_shield_of_democracy_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = democratic
+			}
+
+			removal_cost = -1
+
+			picture = GER_the_shield_of_democracy
+
+			modifier = {
+				drift_defence_factor = 0.2
+				political_advisor_cost_factor = -0.25
+				trade_laws_cost_factor = -0.2
+				economy_cost_factor = -0.2
+				monthly_population = 0.1
+				defensive_war_stability_factor = 0.15
+				party_popularity_stability_factor = 0.15
+				send_volunteers_tension = -0.5
+				send_volunteer_size = 2
+				air_volunteer_cap = 2
+			}
+		}
+
+		GER_the_shield_of_democracy_conservatism_welfare_and_democracy_idea = {
+			name = GER_the_shield_of_democracy_idea
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				has_government = democratic
+			}
+
+			removal_cost = -1
+
+			picture = GER_the_shield_of_democracy
+
+			modifier = {
+				drift_defence_factor = 0.2
+				political_advisor_cost_factor = -0.1
+				high_command_cost_factor = -0.1
+				air_chief_cost_factor = -0.1
+				army_chief_cost_factor = -0.1
+				navy_chief_cost_factor = -0.1
+				mobilization_laws_cost_factor = -0.2
+				monthly_population = 0.1
+				defensive_war_stability_factor = 0.15
+				party_popularity_stability_factor = 0.15
+				send_volunteers_tension = -0.5
+				send_volunteer_size = 2
+				air_volunteer_cap = 2
+			}
+		}
+
+		GER_pacific_blitzkrieg_ns = {
+			name = GER_pacific_blitzkrieg
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = generic_naval_invasion
+
+			modifier = {
+				marines_special_forces_contribution_factor = -0.25
+				naval_invasion_prep_speed = 0.25
+				shore_bombardment_bonus = 0.25
+				naval_invasion_penalty = -0.15
+			}
+		}
 
 		GER_the_eastern_bulwark_ns = {
 			
@@ -3121,7 +3686,58 @@ ideas = {
 			}
 		}
 
+		GER_proud_eagle_that_ate_the_sun_ns = {
+			name = GER_proud_eagle_that_ate_the_sun
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = GER_proud_eagle_that_ate_the_sun
+
+			modifier = {
+				naval_invasion_prep_speed = 0.25
+				naval_invasion_penalty = -0.15
+				production_speed_dockyard_factor = 0.1
+				production_speed_coastal_bunker_factor = 0.1
+			}
+
+			targeted_modifier = {
+				tag = JAP
+				attack_bonus_against = 0.1
+				defense_bonus_against = 0.1
+			}
+		}
+
+		GER_ger_chi_trade_ns = {
+			name = GER_chi_ger_trade
+
+			allowed = {
+				always = yes
+			}
+
+			allowed_civil_war = {
+				always = no
+			}
+
+			cancel = {
+				has_war_with = CHI
+			}
+
+			removal_cost = -1
+
+			picture = GER_german_trade
+
+			targeted_modifier = {
+				tag = CHI
+				trade_cost_for_target_factor = -0.25
+			}
+		}
 
 		GER_chi_ger_trade_ns = {
 			name = GER_chi_ger_trade
@@ -3178,7 +3794,57 @@ ideas = {
 			}
 		}
 
+		GER_shatter_USA_hegemony_ns = {
+			name = GER_shatter_USA_hegemony
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = GER_attack_usa
+
+			modifier = {
+				naval_invasion_prep_speed = 0.25
+				naval_invasion_penalty = -0.15
+			}
+
+			targeted_modifier = {
+				tag = USA
+				attack_bonus_against = 0.1
+				defense_bonus_against = 0.1
+			}
+		}
+
+		GER_wage_war_on_capitalism_ns = {
+			name = GER_wage_war_on_capitalism
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = GER_wage_war_on_capitalism
+
+			modifier = {
+				naval_invasion_prep_speed = 0.25
+				naval_invasion_penalty = -0.15
+			}
+
+			targeted_modifier = {
+				tag = USA
+				attack_bonus_against = 0.1
+				defense_bonus_against = 0.1
+			}
+		}
 
 		GER_white_russian_advisors = {
 			allowed = {
@@ -3204,7 +3870,55 @@ ideas = {
 			}
 		}
 
+		GER_operation_sea_lion_ns = {
+			name = GER_operation_sea_lion
+			allowed = {
+				always = no
+			}
 
+			allowed_civil_war = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = generic_naval_invade_britain
+
+			modifier = {
+				marines_special_forces_contribution_factor = -0.25
+				paratroopers_special_forces_contribution_factor = -0.25
+				naval_invasion_prep_speed = 0.25
+				shore_bombardment_bonus = 0.25
+				naval_invasion_penalty = -0.15
+				air_strategic_bomber_bombing_factor = 0.1
+			}
+
+			targeted_modifier = {
+				tag = ENG
+				attack_bonus_against = 0.05
+			}
+		}
+
+		GER_crossing_the_atlantic_ns = {
+			name = GER_crossing_the_atlantic
+			allowed = {
+				always = no
+			}
+
+			allowed_civil_war = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			picture = generic_sea_focused_navy
+
+			modifier = {
+				naval_invasion_prep_speed = 0.25
+				naval_invasion_penalty = -0.15
+				industrial_capacity_dockyard = 0.25
+			}
+		}
 
 		GER_holy_roman_empire_of_the_german_nation_idea = {
 			allowed = {
@@ -3227,8 +3941,50 @@ ideas = {
 			}
 		}
 		
+		GER_boosting_fascism_in_country_ns = {
+			name = GER_boosting_fascism_in_country
+			allowed = { always = no }
 
+			allowed_civil_war = { always = no }
 
+			removal_cost = -1
+
+			picture = generic_fascism_drift_2
+
+			modifier = {
+				fascism_drift = 0.05
+			}
+		}
+
+		GER_boosting_communism_in_country_ns = {
+			name = GER_boosting_communism_in_country
+			allowed = { always = no }
+
+			allowed_civil_war = { always = no }
+
+			removal_cost = -1
+
+			picture = generic_communism_drift_bonus
+
+			modifier = {
+				communism_drift = 0.05
+			}
+		}
+
+		GER_boosting_democratic_in_country_ns = {
+			name = GER_boosting_democratic_in_country
+			allowed = { always = no }
+
+			allowed_civil_war = { always = no }
+
+			removal_cost = -1
+
+			picture = generic_democratic_drift_bonus
+
+			modifier = {
+				democratic_drift = 0.05
+			}
+		}
 
 		GER_communist_influence = {
 			name = GER_communist_influence
@@ -3367,6 +4123,25 @@ ideas = {
 			}
 		}
 
+		GER_proletarian_solidarity_subject_ns = {
+			name = GER_proletarian_solidarity_subject
+
+			picture = generic_production_bonus
+
+			removal_cost = -1
+
+			cancel = {
+				NOT = {
+					is_subject_of = GER
+				}
+			}
+
+			modifier = {
+				production_speed_buildings_factor = 0.15
+				cic_to_overlord_factor = 0.1
+				mic_to_overlord_factor = 0.1
+			}
+		}
 
 		GER_proletarian_solidarity_ns = {
 			name = GER_proletarian_solidarity_ns
@@ -3389,8 +4164,58 @@ ideas = {
 			}
 		}
 
+		GER_SOV_industrial_cooperation_ns = {
+			name = GER_SOV_industrial_cooperation
 
+			picture = eng_spirit_of_the_industrial_revolution
 
+			cancel = {
+				OR = {
+					AND = {
+						original_tag = SOV
+						has_war_with = GER
+					}
+					AND = {
+						original_tag = GER
+						has_war_with = SOV
+					}
+				}
+			}
+
+			modifier = {
+				industrial_capacity_factory = 0.1
+				production_speed_industrial_complex_factor = 0.05
+				production_speed_arms_factory_factor = 0.05
+			}
+		}
+
+		GER_stricter_industrial_organization_ns = {
+			name = GER_stricter_industrial_organization
+
+			picture = eng_spirit_of_the_industrial_revolution
+
+			modifier = {
+				production_speed_industrial_complex_factor = 0.05
+				production_speed_arms_factory_factor = 0.05
+			}
+		}
+
+		GER_supporting_colonial_independence_idea = {
+			picture = soviet_german_friendship
+			name = GER_supporting_independence_idea
+			allowed = {
+				always = no
+			}
+			allowed_civil_war = {
+				always = yes
+			}
+			removal_cost = -1
+			
+			modifier = {
+				autonomy_gain = 0.4
+				political_power_factor = 0.1
+			}
+		}
 
 
 		# RAIDS
@@ -3473,15 +4298,164 @@ ideas = {
 
 			}
 		}
+		GER_mefo_bills_1939_fake_ns = { #Fake National Spirit for showing off dynamic modifier at games start-up
+			name = GER_mefo_bills_modifier
+			picture = ger_mefo_bills 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			modifier = { #REMINDER to always update these if the dynamic modifier is altered!
+				custom_modifier_tooltip = GER_mefo_bills_1939_fake_ns_tt #This TT is necessary to properly display the modifiers unfortunately
+			}
+		}
+
+		GER_army_1936_fake_ns = { #Fake National Spirit for showing off dynamic modifier at games start-up
+			name = GER_army_modifier
+			picture = GER_army 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			modifier = { #REMINDER to always update these if the dynamic modifier is altered!
+				army_org_factor = 0.05
+				planning_speed = 0.25
+				supply_consumption_factor = 0.15
+			}
+		}
+		GER_army_1939_fake_ns = { #Fake National Spirit for showing off dynamic modifier at games start-up
+			name = GER_army_modifier
+			picture = GER_army
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			modifier = { #REMINDER to always update these if the dynamic modifier is altered!
+				army_org_factor = 0.05
+				planning_speed = 0.25
+				supply_factor = -0.15
+				unit_leader_as_advisor_cp_cost_factor = -0.15
+				coordination_bonus = 0.05
+			}
+		}
+
+		GER_navy_fake_ns = { #Fake National Spirit for showing off dynamic modifier at games start-up
+			name = GER_navy_fascist_modifier
+			picture = GER_navy 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			modifier = { #REMINDER to always update these if the dynamic modifier is altered!
+				screening_without_screens = 0.1
+				naval_defense_factor = -0.1
+			}
+		}
+
+		GER_airforce_fake_ns = { #Fake National Spirit for showing off dynamic modifier at games start-up
+			name = GER_airforce_modifier
+			picture = GER_airforce 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			modifier = { #REMINDER to always update these if the dynamic modifier is altered!
+				air_accidents_factor = 0.1
+				air_manpower_requirement_factor = 0.1
+			}
+		}
+
+		GER_wehrwirtschaft_fake_ns = { #Fake National Spirit for showing off dynamic modifier at games start-up
+			name = GER_wehrwirtschaft_modifier
+			picture = GER_autarky 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+			modifier = { #REMINDER to always update these if the dynamic modifier is altered!
+				local_resources_factor = 0.05
+				#production_speed_buildings_factor = 0.05
+				production_speed_fuel_silo_factor = 0.1
+				production_speed_synthetic_refinery_factor = 0.1
+			}
+		}
 
 
+		GER_blitzkrieg_fake_ns = {
+			name = GER_blitzkrieg_modifier
+			picture = SWE_let_fly_all_guns 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
 
 
-
-
+			modifier = {
+				army_armor_speed_factor = 0.05
+				org_loss_when_moving = -0.05
+			}
+		}
 
 		#TODO_DANNE This are for testing purposes and need to be removed
+		GER_blitzkrieg_idea = { #Blitzkrieg for Germany in enemy states
+			name = GER_blitzkrieg_modifier
+			picture = SWE_let_fly_all_guns
 
+			allowed = {
+				always = yes
+			}
+
+			targeted_modifier = {
+				tag = POL
+				army_attack_factor = 0.5
+				#army_armor_attack_factor = 0.5
+				breakthrough_factor = 0.5
+				#motorized_attack_factor = 0.5
+				#mechanized_attack_factor = 0.5
+			}
+
+			#modifier = {
+			#
+			#army_armor_speed_factor = 0.5
+			#org_loss_when_moving = 0.5
+			#}
+		}
+
+		GER_bewegungskrieg_fake_ns = {
+			name = GER_bewegungskrieg_modifier
+			picture = SWE_let_fly_all_guns 
+		
+			allowed = {
+				always = no
+			}
+
+			removal_cost = -1
+
+
+			modifier = {
+				army_infantry_attack_factor = 0.05
+			}
+		}
 
 		GER_weapons = {
 
@@ -5412,6 +6386,53 @@ ideas = {
 			}
 		}
 		
+		GER_goring_luftwaffe_commander = {
+		
+			allowed = {
+				original_tag = GER
+				always = no
+			}
+
+			allowed_civil_war = {
+				always = yes
+			}
+			
+			removal_cost = -1
+
+			picture = expand_mefo_air
+
+			equipment_bonus = {		
+				fighter_equipment = {
+					build_cost_ic = -0.1 instant = yes
+				}
+				heavy_fighter_equipment = {
+					build_cost_ic = -0.1 instant = yes
+				}
+				cv_fighter_equipment = {
+					build_cost_ic = -0.75 instant = yes
+				}
+				tac_bomber_equipment = {
+					build_cost_ic = -0.1 instant = yes
+				}
+				CAS_equipment = {
+					build_cost_ic = -0.1 instant = yes
+				}
+				# scout_plane_equipment = {
+				# 	build_cost_ic = -0.075 instant = yes
+				# }
+				transport_plane_equipment = {
+					build_cost_ic = -0.075 instant = yes
+				}
+				cv_nav_bomber_equipment = {
+					build_cost_ic = -0.075 instant = yes
+				}
+			}
+
+			modifier = {
+				custom_modifier_tooltip = GER_mefo_air_tt
+			}
+			
+		}
 	}
 
 	hidden_ideas = {
