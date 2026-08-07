@@ -1514,56 +1514,6 @@ focus_tree = {
 	# 	}
 	# }
 
-	# focus = {
-	#    id = ROM_king_michaels_coup
-	#    icon = GFX_focus_rom_coup
-	# 	prerequisite = { focus = ROM_flexible_foreign_policy }
-	# 	x = -2
-	# 	y = 1
-	# 	relative_position_id = ROM_flexible_foreign_policy
-	# 	cost = 10
-	# 	ai_will_do = {}
-	# 	available = {
-	# 		is_subject = no
-	# 		has_war_with = SOV
-	# 		surrender_progress > 0.05
-	# 		#NOT = { GER = { has_idea = GER_barbarossa } }
-	# 		is_in_faction_with = GER
-	# 	}
-
-	# 	cancel_if_invalid = yes
-	# 	continue_if_invalid = no
-	# 	available_if_capitulated = no
-
-	# 	completion_reward = {
-	# 		create_country_leader = {
-	# 			name = "Michael I"
-	# 			desc = "POLITICS_MICHAEL_I_DESC"
-	# 			picture = GFX_Portrait_romania_michael_i				
-	# 			expire = "1965.1.1"
-	# 			ideology = despotism
-	# 			traits = {
-	# 			}
-	# 		}
-	# 		if = {
-	# 			limit = {
-	# 				has_government = fascism
-	# 			}
-	# 			add_popularity = {
-	# 				popularity = 0.80
-	# 				ideology = neutrality
-	# 			}
-	# 			set_politics = {
-	# 				ruling_party = neutrality
-	# 				elections_allowed = no
-	# 			}
-	# 		}
-	# 		GER = { activate_mission = ROM_michaels_coup }
-	# 		set_global_flag = ROM_coup_flag
-	# 		custom_effect_tooltip = GER_michaels_coup_tt
-	# 	}
-	# }
-
 	focus = {
 		id = ROM_1937_election
 		icon = GFX_focus_generic_treaty
@@ -2130,6 +2080,13 @@ focus_tree = {
 		ai_will_do = {}
 		completion_reward = {
 			add_ideas = ROM_preserve_greatest_romania
+			IF = {
+				limit = {
+					NOT = {GER = { is_in_faction_with = ROM }}
+				}
+				custom_effect_tooltip = generic_skip_one_line_tt
+				GER = { add_to_faction = ROM }
+			}
 		}
 	} 
 
@@ -2154,18 +2111,9 @@ focus_tree = {
 				remove_ideas = ROM_national_struggle_2
 				remove_ideas = ROM_fortify_the_borders
 				remove_ideas = ROM_the_national_renaissance_front
-				remove_ideas = neutrality_idea
 				add_popularity = {
 					ideology = fascism
 					popularity = 1
-				}
-				add_to_variable = {
-					ROM_king_carol_ii_consumer_goods_expected_value = -0.075
-					tooltip = consumer_goods_expected_value_tt
-				} 
-				add_to_variable = {
-					ROM_king_carol_ii_political_power_factor = -0.1
-					tooltip = political_power_factor_tt
 				}
 			}
 			add_ideas = ROM_end_greater_romania
@@ -2206,18 +2154,9 @@ focus_tree = {
 				remove_ideas = ROM_national_struggle_2
 				remove_ideas = ROM_fortify_the_borders
 				remove_ideas = ROM_the_national_renaissance_front
-				remove_ideas = neutrality_idea
 				add_popularity = {
 					ideology = fascism
 					popularity = 1
-				}
-				add_to_variable = {
-					ROM_king_carol_ii_consumer_goods_expected_value = -0.075
-					tooltip = consumer_goods_expected_value_tt
-				} 
-				add_to_variable = {
-					ROM_king_carol_ii_political_power_factor = -0.1
-					tooltip = political_power_factor_tt
 				}
 			}
 			add_ideas = ROM_end_greater_romania
@@ -2271,9 +2210,14 @@ focus_tree = {
 			GER = { has_completed_focus = GER_war_with_the_ussr }
 		}
 		bypass_effect = {
-			add_timed_idea = {
-				idea = ROM_kick_the_rotten_structure
-				days = 180
+			IF = {
+				limit = { 
+					NOT = { has_completed_focus = ROM_dreams_even_greater_romania }
+				}
+				add_timed_idea = {
+					idea = ROM_kick_the_rotten_structure
+					days = 180
+				}
 			}
 		}
 		completion_reward = {
@@ -2534,6 +2478,17 @@ focus_tree = {
 		relative_position_id = ROM_mass_assassinations
 		cost = 4
 		ai_will_do = {}
+		available = {
+			76 = {
+				industrial_complex > 1
+			}
+			77 = {
+				industrial_complex > 1
+			}
+			78 = {
+				industrial_complex > 4
+			}
+		}
 		completion_reward = {
 			76 = {
 				remove_building = {
@@ -3423,7 +3378,71 @@ focus_tree = {
 			has_country_flag = ROM_lost_bessarabia
 		}
 		completion_reward = {
-			remove_ideas = ROM_end_greater_romania	
+			remove_ideas = ROM_end_greater_romania
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = ROM_retire_carol
+			add_ideas = ROM_figurehead_king_michael
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = ROM_king_carol_ii_dynamic_modifier
+			add_to_variable = {
+				ROM_king_carol_ii_political_power_factor = -0.1
+				tooltip = political_power_factor_tt
+			}
+			add_to_variable = {
+				ROM_king_carol_ii_consumer_goods_expected_value = -0.025
+				tooltip = consumer_goods_expected_value_tt
+			}	
+		}
+	}
+
+	focus = {
+	   id = ROM_king_michaels_coup
+	   icon = GFX_focus_rom_coup
+		prerequisite = { focus = ROM_recover_our_strengths }
+		x = 0
+		y = 2
+		relative_position_id = ROM_recover_our_strengths
+		cost = 4
+		ai_will_do = {}
+		available = {
+			is_subject = no
+			has_war_with = SOV
+			surrender_progress > 0.05
+			#NOT = { GER = { has_idea = GER_barbarossa } }
+			is_in_faction_with = GER
+		}
+
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+
+		completion_reward = {
+			create_country_leader = {
+				name = "Michael I"
+				desc = "POLITICS_MICHAEL_I_DESC"
+				picture = GFX_Portrait_romania_michael_i				
+				expire = "1965.1.1"
+				ideology = despotism
+				traits = {
+				}
+			}
+			if = {
+				limit = {
+					has_government = fascism
+				}
+				add_popularity = {
+					popularity = 0.80
+					ideology = neutrality
+				}
+				set_politics = {
+					ruling_party = neutrality
+					elections_allowed = no
+				}
+			}
+			GER = { activate_mission = ROM_michaels_coup }
+			set_global_flag = ROM_coup_flag
+			custom_effect_tooltip = GER_michaels_coup_tt
 		}
 	}
 
@@ -3471,7 +3490,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = ROM_kick_the_rotten_structure
-		cost = 10
+		cost = 8
 		ai_will_do = {}
 		available = {
 			192 = { is_controlled_by = ROM }
@@ -3620,7 +3639,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = ROM_industrialise_transnistria
-		cost = 10
+		cost = 4
 		ai_will_do = {}
 		available = {
 			192 = { is_controlled_by = ROM }
