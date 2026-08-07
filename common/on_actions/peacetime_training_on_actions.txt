@@ -1,0 +1,47 @@
+on_actions = {
+
+	on_startup = {
+		effect = {
+			every_country = {
+				add_ideas = peacetime_training_spirit
+			}
+		}
+	}
+
+
+	on_weekly = {
+		effect = {
+			if = {
+				limit = {
+					has_idea = peacetime_training_spirit
+					OR = {
+						tag = ITA
+						tag = JAP
+						tag = MAN
+						tag = SIA
+						original_tag = SPR
+					}
+				}
+				if = {
+					limit = {
+						has_war = yes
+						NOT = { has_country_flag = peacetime_at_war }
+					}
+					set_country_flag = peacetime_at_war
+					add_to_variable = { peacetime_war_count = 1 }
+					if = {
+						limit = { check_variable = { peacetime_war_count > 1.5 } }
+						remove_ideas = peacetime_training_spirit
+					}
+				}
+				if = {
+					limit = {
+						has_war = no
+						has_country_flag = peacetime_at_war
+					}
+					clr_country_flag = peacetime_at_war
+				}
+			}
+		}
+	}
+}
