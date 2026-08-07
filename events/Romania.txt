@@ -15,6 +15,7 @@ country_event = {
 	
 	option = { # Accept demands
 		name = romania.1.a
+		trigger = { NOT = { has_completed_focus = ROM_carol_rises } }
 		ai_chance = {
 			factor = 90
 			modifier = { # Don't accept if in a faction that can protect them
@@ -40,12 +41,12 @@ country_event = {
 		}
 		set_country_flag = bessarabia_ceded
 		set_country_flag = bessarabia_finished
-		complete_national_focus = ROM_national_humiliation
+		complete_national_focus = ROM_antonescu_takes_control
 	}
 
 	option = { # Refuse
 		name = romania.1.b
-		trigger = { NOT = { is_in_faction_with = GER } }
+		trigger = { NOT = { has_completed_focus = ROM_codreanu_rises } }
 		ai_chance = {
 			base = 0
 			modifier = {
@@ -79,82 +80,9 @@ country_event = {
 			}
 		}
 		custom_effect_tooltip = generic_skip_one_line_tt
-		add_timed_idea = { idea = ROM_national_struggle days = 365 }
+		#add_timed_idea = { idea = ROM_national_struggle days = 365 }
 		custom_effect_tooltip = generic_skip_one_line_tt
 		custom_effect_tooltip = fight_for_bessarabia
-		custom_effect_tooltip = generic_skip_one_line_tt
-		custom_effect_tooltip = ROM_bessarabia_war_explainer
-		effect_tooltip = {
-			# Constiutional
-			if = {
-				limit = {
-					has_idea = ROM_constitutional_guarantees
-				}
-				remove_ideas = ROM_constitutional_guarantees
-			}
-			else_if = {
-				limit = {
-					has_idea = ROM_constitutional_guarantees2
-				}
-				remove_ideas = ROM_constitutional_guarantees2
-			}
-			else_if = {
-				limit = {
-					has_idea = ROM_constitutional_guarantees3
-				}
-				remove_ideas = ROM_constitutional_guarantees3
-			}
-
-			# Christian
-			if = {
-				limit = {
-					has_idea = ROM_national_christian_party_in_power
-				}
-				remove_ideas = ROM_national_christian_party_in_power
-			}
-			else_if = {
-				limit = {
-					has_idea = ROM_national_christian_party_in_power2
-				}
-				remove_ideas = ROM_national_christian_party_in_power2
-			}
-
-			# Cult
-			if = {
-				limit = {
-					has_idea = ROM_archangel_michaels_cult
-				}
-				remove_ideas = ROM_archangel_michaels_cult
-			}
-
-			# Iron Guard
-			if = {
-				limit = { has_country_leader = { character = ROM_corneliu_codreanu ruling_only = yes } }
-				remove_dynamic_modifier = { modifier = ROM_iron_guard }
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			if = {
-				limit = {
-					has_completed_focus = ROM_the_royal_dictatorship
-				}
-				if = { limit = { has_idea = ROM_the_sentinel_of_the_motherland } remove_ideas = ROM_the_sentinel_of_the_motherland }
-				if = { limit = { has_idea = ROM_the_sentinel_of_the_motherland_2 } remove_ideas = ROM_the_sentinel_of_the_motherland_2 }
-				if = { limit = { has_idea = ROM_the_sentinel_of_the_motherland_3 } remove_ideas = ROM_the_sentinel_of_the_motherland_3 }
-			}
-			else_if = {
-				limit = {
-					NOT = { has_completed_focus = ROM_all_parties_must_end }
-				}
-				custom_effect_tooltip = ROM_carol_gone_tt
-				remove_dynamic_modifier = { modifier = ROM_king_carol_ii }
-			}
-			else = {
-				custom_effect_tooltip = ROM_carol_gone_tt
-				remove_ideas = { ROM_king_carol_ii_handled_2 }
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-		}
 	}
 }
 
@@ -465,3 +393,28 @@ country_event = {
 # 	}
 
 # }
+
+# Joint training with Finland
+country_event = {
+	id = romania.10
+	title = romania.10.t
+	desc = romania.10.d
+	picture = GFX_report_event_military_planning
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = romania.10.a
+		add_ideas = ROM_joint_finnish_training_elites
+	}
+
+	option = {
+		name = romania.10.b
+		add_ideas = ROM_joint_finnish_training_artillery
+	}
+
+	option = {
+		name = romania.10.c
+		add_ideas = ROM_joint_finnish_training_infantry
+	}
+}
