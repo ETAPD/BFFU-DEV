@@ -1613,6 +1613,10 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = ROM_modify_iron_guard_dynamic_modifier
 			add_to_variable = {
+				ROM_iron_guard_stability_factor = 0.1
+				tooltip = ROM_stab_1percent_tt
+			}
+			add_to_variable = {
 				ROM_iron_guard_stability_weekly = 0.001
 				tooltip = ROM_weekly_stab_1percent_tt
 			}
@@ -1867,8 +1871,18 @@ focus_tree = {
 				upgrade_intelligence_agency = upgrade_decryption_boost 
 				custom_effect_tooltip = generic_skip_one_line_tt
 			}
-			activate_advisor = ROM_iuliu_maniu
-			custom_effect_tooltip = generic_skip_one_line_tt
+			IF = {
+				limit = {
+					amount_taken_ideas = {
+						amount < 3
+						slots = {
+							political_advisor
+						}
+					}
+				}
+				activate_advisor = ROM_iuliu_maniu
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
 			add_decryption = {
 				target = SOV
 				ratio = 0.75
@@ -2064,8 +2078,6 @@ focus_tree = {
 		}
 		completion_reward = {
 			hidden_effect = {
-				remove_ideas = ROM_national_struggle_2
-				remove_ideas = ROM_fortify_the_borders
 				remove_ideas = neutrality_idea
 				add_popularity = {
 					ideology = neutrality
@@ -2080,7 +2092,10 @@ focus_tree = {
 			add_to_variable = {
 				ROM_king_carol_ii_consumer_goods_expected_value = -0.075
 				tooltip = consumer_goods_expected_value_tt
-			} 
+			}
+			
+			custom_effect_tooltip = generic_skip_one_line_tt
+			remove_ideas = ROM_fortify_the_borders
 		}
 	} 
 
@@ -2123,13 +2138,17 @@ focus_tree = {
 		}
 		bypass_effect = {
 			hidden_effect = {
-				remove_ideas = ROM_national_struggle_2
-				remove_ideas = ROM_fortify_the_borders
-				remove_ideas = ROM_the_national_renaissance_front
 				add_popularity = {
 					ideology = fascism
 					popularity = 1
 				}
+				HUN = {
+				transfer_state = 76
+				}
+				BUL = {
+					transfer_state = 77
+				}
+				GER = { add_to_faction = ROM }
 			}
 			add_ideas = ROM_end_greater_romania
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -2152,28 +2171,27 @@ focus_tree = {
 					remove_unit_leader_role = yes
 				}
 			}
-			
-			
-			
-
-			HUN = {
-				transfer_state = 76
-			}
-			BUL = {
-				transfer_state = 77
-			}
-			GER = { add_to_faction = ROM }
+			remove_ideas = ROM_national_struggle_2
+			custom_effect_tooltip = generic_skip_one_line_tt
+			remove_ideas = ROM_fortify_the_borders
 		}
 		completion_reward = {
 			hidden_effect = {
-				remove_ideas = ROM_national_struggle_2
-				remove_ideas = ROM_fortify_the_borders
-				remove_ideas = ROM_the_national_renaissance_front
 				add_popularity = {
 					ideology = fascism
 					popularity = 1
 				}
+				HUN = {
+				transfer_state = 76
+				}
+				BUL = {
+					transfer_state = 77
+				}
+				GER = { add_to_faction = ROM }
 			}
+			custom_effect_tooltip = ROM_antonescu_takes_control_tt
+			custom_effect_tooltip = generic_skip_one_line_tt
+
 			add_ideas = ROM_end_greater_romania
 			custom_effect_tooltip = generic_skip_one_line_tt
 
@@ -2195,17 +2213,9 @@ focus_tree = {
 					remove_unit_leader_role = yes
 				}
 			}
-			
-			
-			
-
-			HUN = {
-				transfer_state = 76
-			}
-			BUL = {
-				transfer_state = 77
-			}
-			GER = { add_to_faction = ROM }
+			remove_ideas = ROM_national_struggle_2
+			custom_effect_tooltip = generic_skip_one_line_tt
+			remove_ideas = ROM_fortify_the_borders
 		}
 	} 
 
@@ -2718,7 +2728,15 @@ focus_tree = {
 			is_in_faction_with = GER
 		}
 		completion_reward = {
-			GER = { add_to_faction = ROM }
+			hidden_effect = {
+				IF = {
+					limit = {
+						has_idea = neutrality_idea
+					}
+					remove_ideas = neutrality_idea
+				}
+			}
+			GER = { country_event = generic.2 }
 		}
 	}
 
