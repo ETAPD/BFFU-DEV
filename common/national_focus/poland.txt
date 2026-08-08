@@ -5909,13 +5909,27 @@ focus = {
 		}
 		
 		available = {
-				NOT = { has_completed_focus = POL_polish_armed_forces_in_the_west }
-				is_ai = no
+			NOT = { 
+				has_completed_focus = POL_polish_armed_forces_in_the_west 
+				has_war_with = SOV
+			}
+			is_ai = no
 		}
 
-			available_if_capitulated = yes	
+		available_if_capitulated = yes	
 		search_filters = { FOCUS_FILTER_INDUSTRY } 
 		completion_reward = {
+			every_country = {
+				limit = {
+					OR = {
+						tag = JAP
+						is_in_faction_with = JAP
+					}
+					has_war_with = POL
+				}
+				white_peace = POL
+			}
+			
 			SOV = {
 				add_to_faction = POL
 			}	
@@ -5939,16 +5953,13 @@ focus = {
 				}
 				every_country = {
 					limit = {
-						OR = {
-							tag = PER
-							tag = SOV
-							tag = MON
-						}
+						is_in_faction_with = ENG
 					}
 					give_military_access = POL
-					#give_guarantee = POL 
+					POL = {
+						give_military_access = PREV
+					}
 				} 	
-					
 			}
 		}
 	}
