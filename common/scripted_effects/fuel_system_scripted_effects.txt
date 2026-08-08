@@ -1,0 +1,238 @@
+# Fuel distribution system
+# Managers (GER/JAP/ENG) redistribute fuel to their faction members toward each
+# member's min_fuel target. Wired up in common/on_actions/fuel_system_on_actions.txt.
+
+fuel_system_refresh_list = {
+    if = {
+        limit = {
+            any_country = {
+                OR = {
+                    AND = {
+                        NOT = { tag = ROOT }
+                        is_in_faction_with = ROOT
+                        NOT = { is_in_array = { ROOT.faction_members_array = THIS.id } }
+                    }
+                    any_of_scopes = { array = ROOT.faction_members_array exists = no }
+                }
+            }
+        }
+        clear_array = ROOT.faction_members_array
+
+        every_country = {
+            limit = {
+                NOT = { tag = ROOT }
+                OR = {
+                    is_in_faction_with = ROOT
+                    AND = { ROOT = { tag = ENG } tag = HOL }
+                    AND = { ROOT = { tag = ENG } tag = POL }
+                    AND = { ROOT = { tag = ENG } tag = NOR }
+                    AND = { ROOT = { tag = ENG } tag = MON }
+                    AND = { ROOT = { tag = ENG } tag = GRE }
+                    AND = { ROOT = { tag = ENG } tag = BEL }
+                    AND = { ROOT = { tag = GER } tag = FIN }
+                    AND = { ROOT = { tag = GER } tag = DEN }
+                    AND = { ROOT = { tag = GER } tag = ITA }
+                    AND = { ROOT = { tag = GER } tag = HUN }
+                    AND = { ROOT = { tag = GER } tag = ROM }
+                    AND = { ROOT = { tag = GER } tag = BUL }
+                    AND = { ROOT = { tag = GER } tag = CZE }
+                    AND = { ROOT = { tag = GER } tag = YUG }
+                    AND = { ROOT = { tag = GER } tag = SPR }
+                    AND = { ROOT = { tag = GER } tag = VIC }
+                    AND = { ROOT = { tag = GER } tag = ALB }
+                    AND = { ROOT = { tag = ENG } tag = FRA }
+                    AND = { ROOT = { tag = ENG } tag = CAN }
+                    AND = { ROOT = { tag = ENG } tag = AST }
+                    AND = { ROOT = { tag = ENG } tag = NZL }
+                    AND = { ROOT = { tag = ENG } tag = SAF }
+                    AND = { ROOT = { tag = ENG } tag = RAJ }
+                    AND = { ROOT = { tag = JAP } tag = MAN }
+                    AND = { ROOT = { tag = JAP } tag = SIA }
+                }
+                NOT = { is_in_array = { ROOT.faction_members_array = THIS.id } }
+            }
+            add_to_array = { ROOT.faction_members_array = THIS.id }
+        }
+    }
+
+    if = {
+        limit = {
+            any_of_scopes = { array = ROOT.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+        }
+        for_each_scope_loop = {
+            array = ROOT.faction_members_array
+            if = { limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+                add_to_array = { GLOBAL.fuel_countries = THIS.id }
+            }
+        }
+    }
+}
+
+fuel_startup_effect = {
+    every_country = {  # THESE NATIONS ARE THE FUEL CONTROLLERS
+        limit = { OR = { tag = GER tag = JAP tag = ENG } }
+        add_to_array = { GLOBAL.fuel_system_manager = THIS.id }
+    }
+    if = {
+        limit = { ROM = { owns_state = 46 } }
+        ROM = { give_resource_rights = { receiver = GER state = 46 resources = { oil } } }   # Ploiesti oil -> GER
+    }
+    if = {
+        limit = { MAN = { owns_state = 610 } }
+        MAN = { give_resource_rights = { receiver = JAP state = 610 resources = { oil } } }   # Jehol oil -> JAP
+    }
+
+    # UK (ENG) oil rights (oil only): Curacao, British/Dutch Borneo, Dutch East Indies.
+    if = { limit = { HOL = { owns_state = 695 } } HOL = { give_resource_rights = { receiver = ENG state = 695 resources = { oil } } } }   # Curacao
+    if = { limit = { MAL = { owns_state = 333 } } MAL = { give_resource_rights = { receiver = ENG state = 333 resources = { oil } } } }   # British Borneo
+    if = {
+        limit = { country_exists = INS }
+        INS = {
+            if = { limit = { owns_state = 334 }  give_resource_rights = { receiver = ENG state = 334  resources = { oil } } }   # Dutch Borneo (Kalimantan Barat)
+            if = { limit = { owns_state = 1055 } give_resource_rights = { receiver = ENG state = 1055 resources = { oil } } }   # Eastern Kalimantan
+            if = { limit = { owns_state = 335 }  give_resource_rights = { receiver = ENG state = 335  resources = { oil } } }   # West Java
+            if = { limit = { owns_state = 1051 } give_resource_rights = { receiver = ENG state = 1051 resources = { oil } } }   # East Java
+            if = { limit = { owns_state = 672 }  give_resource_rights = { receiver = ENG state = 672  resources = { oil } } }   # South Sumatra
+        }
+    }
+
+    # Horst's fuel_fra capacity idea for these fuel-system members.
+    if = { limit = { country_exists = FRA } FRA = { add_ideas = fuel_fra } }
+    if = { limit = { country_exists = ITA } ITA = { add_ideas = fuel_fra } }
+
+    # Miss-nothing fallback: any country without an explicit history min_fuel
+    # (unset variables read as 0) gets the standard 0.80 target, so every
+    # possible faction member has a sane value.
+    every_country = {
+        limit = { check_variable = { min_fuel < 0.01 } }
+        set_variable = { var = min_fuel value = 0.80 }
+    }
+
+    GER = {
+        every_country = {
+            limit = {
+                NOT = { tag = GER }
+                # Hardcoded so expected Axis members are in the list from day 1,
+                # before they formally join Germany's faction.
+                OR = { is_in_faction_with = GER tag = ITA tag = HUN tag = ROM tag = BUL tag = FIN tag = CZE tag = YUG tag = SPR tag = VIC tag = ALB }
+                NOT = { is_in_array = { GER.faction_members_array = THIS.id } }
+            }
+            add_to_array = { GER.faction_members_array = THIS.id }
+        }
+
+        if = {
+            limit = { any_of_scopes = { array = GER.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } } }
+            for_each_scope_loop = {
+                array = GER.faction_members_array
+                if = {
+                    limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+                    add_to_array = { GLOBAL.fuel_countries = THIS.id }
+                }
+            }
+        }
+    }
+
+    ENG = {
+        every_country = {
+            limit = {
+                OR = {
+                    AND = {
+                        NOT = { tag = ENG }
+                        OR = { is_in_faction_with = ENG tag = FRA tag = CAN tag = AST tag = NZL tag = SAF tag = RAJ tag = POL tag = HOL tag = NOR tag = GRE tag = BEL }
+                        NOT = { is_in_array = { ENG.faction_members_array = THIS.id } }
+                    }
+                }
+            }
+            add_to_array = { ENG.faction_members_array = THIS.id }
+        }
+
+        if = {
+            limit = { any_of_scopes = { array = ENG.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } } }
+            for_each_scope_loop = {
+                array = ENG.faction_members_array
+                if = {
+                    limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+                    add_to_array = { GLOBAL.fuel_countries = THIS.id }
+                }
+            }
+        }
+    }
+
+    # JAP (GECAPS) - not built by Horst at startup; added here so Manchukuo and
+    # Siam receive fuel from Japan without needing a manual panel refresh.
+    JAP = {
+        every_country = {
+            limit = {
+                NOT = { tag = JAP }
+                OR = { is_in_faction_with = JAP tag = MAN tag = SIA }
+                NOT = { is_in_array = { JAP.faction_members_array = THIS.id } }
+            }
+            add_to_array = { JAP.faction_members_array = THIS.id }
+        }
+
+        if = {
+            limit = { any_of_scopes = { array = JAP.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } } }
+            for_each_scope_loop = {
+                array = JAP.faction_members_array
+                if = {
+                    limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+                    add_to_array = { GLOBAL.fuel_countries = THIS.id }
+                }
+            }
+        }
+    }
+}
+
+on_daily_fuel = {
+    # Loop over all fuel controllers
+    for_each_scope_loop = {
+        array = GLOBAL.fuel_system_manager
+        set_variable = { GLOBAL.controllerscope = THIS.id }
+
+        # Loop over all faction members of this controller
+        for_each_scope_loop = {
+            array = THIS.faction_members_array
+            set_variable = { GLOBAL.currentscope = THIS.id }
+
+            ## BLOCK 1A: Calculate fuel needed by the FUEL_RECIPIENT
+            set_variable = { fuel_required = min_fuel }
+            subtract_from_variable = { fuel_required = fuel_ratio }
+            multiply_variable = { fuel_required = max_fuel_k }
+            multiply_variable = { fuel_required = 1000 }
+            set_variable = { fuel_required_variable = fuel_required }
+            multiply_variable = { fuel_required_variable = -1 }
+
+            ## BLOCK 1B: Calculate available fuel from the FUEL_CONTROLLER
+            set_variable = { PREV.fuel_required = PREV.min_fuel }
+            subtract_from_variable = { PREV.fuel_required = PREV.fuel_ratio }
+            multiply_variable = { PREV.fuel_required = PREV.max_fuel_k }
+            multiply_variable = { PREV.fuel_required = 1000 }
+            set_variable = { PREV.fuel_required_variable = PREV.fuel_required }
+            multiply_variable = { PREV.fuel_required_variable = -1 }
+
+            ## BLOCK 2: Transfer fuel if conditions are met
+            if = {
+                limit = {
+                    check_variable = { PREV.fuel_required < 0 }
+                    check_variable = { fuel_required > 0 }
+                    check_variable = { min_fuel > fuel_ratio }
+                    check_variable = { PREV.fuel_required_variable > fuel_required }
+                }
+
+                set_temp_variable = { PREV.fuel_from_FUEL_CONTROLLER = fuel_required_variable }
+                set_temp_variable = { fuel_to_FUEL_RECIPIENT = fuel_required }
+                PREV = { add_fuel = fuel_from_FUEL_CONTROLLER }
+                add_fuel = fuel_to_FUEL_RECIPIENT
+            }
+        }
+    }
+
+    # Update fuel bar display for all countries
+    for_each_scope_loop = {
+        array = GLOBAL.fuel_countries
+        set_temp_variable = { currentfuel = fuel_ratio }
+        subtract_from_temp_variable = { currentfuel = 1 }
+        multiply_temp_variable = { currentfuel = 88 }
+        set_variable = { fuel_bar_fuel = currentfuel }
+    }
+}
