@@ -113,11 +113,40 @@ focus_tree = {
 		}
 	}
 	
+	# focus = {
+	# 	id = ENG_assasinate_heydrich
+	# 	icon = GFX_focus_GER_strengthen_the_waffen_ss
+	# 	prerequisite = { focus = ENG_expand_the_secret_intelligence_service_focus }
+	# 	mutually_exclusive = { focus = ENG_international_agency }
+		
+	# 	available = {
+	# 		#GER = { has_completed_focus = GER_fate_of_czechoslovakia }
+	# 		always = false
+	# 	}
+		
+		
+	# 	dynamic = yes
+	# 	allow_branch = {
+	# 		has_dlc = "La Resistance"
+	# 	}
+
+	# 	x = -1
+	# 	y = 1
+	# 	relative_position_id = ENG_expand_the_secret_intelligence_service_focus
+
+	# 	cost = 3
+
+	# 	completion_reward = {
+	# 		custom_effect_tooltip = ENG_assasinate_heydrich_tt
+	# 		set_country_flag = ENG_heydrich_died_flag
+	# 	}
+	# }
 	
 	focus = {
 		id = ENG_international_agency
 		icon = GFX_focus_ARG_keep_it_in_the_party
 		prerequisite = { focus = ENG_expand_the_secret_intelligence_service_focus }
+		#mutually_exclusive = { focus = ENG_assasinate_heydrich }
 		
 		dynamic = yes
 		allow_branch = {
@@ -1305,6 +1334,44 @@ focus_tree = {
 		}
 	}
 	
+	# focus = {
+	# 	id = ENG_open_stockpiles
+	# 	icon = GFX_SOV_ppsh_hand_angry
+	# 	prerequisite = { focus = ENG_modernise_infantry focus = ENG_rocket_artillery_development }
+		
+	# 	x = 1
+	# 	y = 1
+	# 	relative_position_id = ENG_rocket_artillery_development
+		
+	# 	cost = 5
+		
+	# 	ai_will_do = {
+	# 		factor = 1
+	# 	}	
+		
+	# 	completion_reward = {
+	# 		add_equipment_to_stockpile = {
+	# 			type = infantry_equipment_0
+	# 			amount = 7500
+	# 			producer = UK
+	# 		}
+	# 		add_equipment_to_stockpile = {
+	# 			type = horse_equipment_0
+	# 			amount = 3000
+	# 			producer = UK
+	# 		}
+	# 		add_equipment_to_stockpile = {
+	# 			type = squad_equipment_0
+	# 			amount = 1500
+	# 			producer = UK
+	# 		}
+	# 		add_equipment_to_stockpile = {
+	# 			type = support_equipment_1
+	# 			amount = 500
+	# 			producer = UK
+	# 		}
+	# 	}
+	# }
 	
 	focus = {
 		id = ENG_modernise_doctrine
@@ -4143,6 +4210,81 @@ focus_tree = {
 		}	
 		completion_reward = {
 			add_ideas = ENG_pride_of_britain_navy
+		}
+	}
+
+	
+	focus = {
+		id = ENG_never_at_disadvantage
+		icon = GFX_focus_SMB_blue_water_fleet
+		prerequisite = { focus = ENG_perfect_cruisers focus = ENG_perfect_carriers}
+
+		allow_branch = {
+			always = no
+		}
+		x = 0
+		y = 4
+		relative_position_id = ENG_new_officers
+		
+	cost = 3
+		
+		ai_will_do = {
+			factor = 1
+		}	
+		completion_reward = {
+			#custom_effect_tooltip = ENG_never_at_disadvantage_tt
+			if = {
+				limit = { has_completed_focus = ENG_perfect_cruisers }
+				if = {
+					limit = { has_completed_focus = ENG_focus_cruiser }
+					swap_ideas = {
+						remove_idea = royal_navy_new_mindset_6
+						add_idea = royal_navy_new_mindset_10
+					}	
+				}
+			}		
+			if = {
+				limit = { has_completed_focus = ENG_focus_carrier }
+				if = {
+					limit = { has_completed_focus = ENG_perfect_cruisers }
+					swap_ideas = {
+						remove_idea = royal_navy_new_mindset_7
+						add_idea = royal_navy_new_mindset_11
+					}
+				}
+			}
+			if = {
+				limit = { has_completed_focus = ENG_focus_cruiser }
+				if = {
+					limit = { has_completed_focus = ENG_perfect_carriers }
+					swap_ideas = {
+						remove_idea = royal_navy_new_mindset_8
+						add_idea = royal_navy_new_mindset_12
+					}
+				}
+			}
+			if = {
+				limit = { has_completed_focus = ENG_focus_carrier }
+				if = {
+					limit = { has_completed_focus = ENG_perfect_carriers }
+					swap_ideas = {
+						remove_idea = royal_navy_new_mindset_9
+						add_idea = royal_navy_new_mindset_13
+					}
+				}
+			}
+			if = {
+				limit = {
+					NOT = { has_completed_focus = ENG_perfect_cruisers }
+					NOT = { has_completed_focus = ENG_perfect_carriers }
+				}
+				effect_tooltip = {
+					swap_ideas = {
+						remove_idea = royal_navy_new_mindset_6
+						add_idea = royal_navy_new_mindset_10
+					}
+				}
+			}
 		}
 	}
 	
@@ -7095,7 +7237,65 @@ focus_tree = {
 	
 	
 	
+	# focus = {
+	# 	id = ENG_build_new_factories
+	# 	icon = GFX_focus_SOV_merge_plants
+	# 	prerequisite = { focus = ENG_full_depression_recovery }
+	# 	prerequisite = { focus = ENG_new_manufacturing_methods }
+	# 	prerequisite = { focus = ENG_dispersed_factories }
+	# 	mutually_exclusive = { focus = ENG_factory_modernisation }
+		
+	# 	available = {
+	# 		OR = {
+	# 			has_war_with = GER
+	# 			has_war_with = ITA
+	# 			has_war_with = JAP
+	# 		}
+	# 	}
+		
+	# 	x = -1
+	# 	y = 1
+	# 	relative_position_id = ENG_new_manufacturing_methods
+		
+	# 	cost = 5
+		
+	# 	ai_will_do = {
+	# 		factor = 1
+	# 	}	
+	# 	completion_reward = {
+	# 		add_ideas = ENG_build_new_factories
+	# 	}
+	# }
 	
+	# focus = {
+	# 	id = ENG_factory_modernisation
+	# 	icon = GFX_focus_generic_reorient_production
+	# 	prerequisite = { focus = ENG_full_depression_recovery }
+	# 	prerequisite = { focus = ENG_new_manufacturing_methods }
+	# 	prerequisite = { focus = ENG_dispersed_factories }
+	# 	mutually_exclusive = { focus = ENG_build_new_factories }
+		
+	# 	available = {
+	# 		OR = {
+	# 			has_war_with = GER
+	# 			has_war_with = ITA
+	# 			has_war_with = JAP
+	# 		}
+	# 	}
+		
+	# 	x = 1
+	# 	y = 1
+	# 	relative_position_id = ENG_new_manufacturing_methods
+		
+	# 	cost = 5
+		
+	# 	ai_will_do = {
+	# 		factor = 1
+	# 	}	
+	# 	completion_reward = {
+	# 		add_ideas = ENG_expand_existing_factories
+	# 	}
+	# }
 	
 	# Shared Eco Focused Branch ###################################################
 	
@@ -7198,6 +7398,59 @@ focus_tree = {
 	}
 	
 	
+	# focus = {
+	# 	id = ENG_expand_industry
+	# 	icon = GFX_focus_generic_low_cost_housing
+	# 	prerequisite = { focus = ENG_imperial_conference }
+		
+	# 	x = -1
+	# 	y = 1
+	# 	relative_position_id = ENG_imperial_conference
+		
+	# 	cost = 5
+		
+	# 	ai_will_do = {
+	# 		factor = 1
+	# 	}
+		
+	# 	completion_reward = {
+		
+	# 		custom_effect_tooltip = ENG_eco_choice_tt1
+	# 		custom_effect_tooltip = ENG_expand_industry_tt1
+	# 		custom_effect_tooltip = ENG_eco_choice_tt2
+	# 		custom_effect_tooltip = ENG_eco_choice_tt3
+	# 		custom_effect_tooltip = ENG_eco_choice_tt4
+	# 		custom_effect_tooltip = ENG_eco_choice_tt5
+	# 		custom_effect_tooltip = ENG_expand_industry_tt2
+
+	# 		hidden_effect = {
+	# 			if = {
+	# 				limit = { has_completed_focus = ENG_focus_empire }
+	# 					125 = {
+	# 						add_extra_state_shared_building_slots = 2
+	# 						add_building_construction = {
+	# 						type = industrial_complex
+	# 						level = 4
+	# 						instant_build = yes
+	# 					}
+	# 				}
+	# 			}
+			
+	# 		if = {
+	# 			limit = { has_completed_focus = ENG_focus_home }
+	# 				125 = {
+	# 					add_extra_state_shared_building_slots = 2
+	# 					add_building_construction = {
+	# 						type = arms_factory
+	# 						level = 4
+	# 						instant_build = yes
+	# 					}
+	# 				}
+	# 			}
+	# 		}
+			
+	# 	}
+	# }
 	
 	focus = {
 		id = ENG_general_rearmament
@@ -7223,6 +7476,44 @@ focus_tree = {
 		}
 	}
 	
+	# focus = {
+	# 	id = ENG_invest_construction
+	# 	icon = GFX_goal_generic_construct_civilian
+	# 	prerequisite = { focus = ENG_imperial_conference }
+		
+	# 	x = 1
+	# 	y = 1
+	# 	relative_position_id = ENG_imperial_conference
+		
+	# 	cost = 5
+		
+	# 	ai_will_do = {
+	# 		factor = 1
+	# 	}	
+		
+	# 	completion_reward = {
+
+	# 		custom_effect_tooltip = ENG_eco_choice_tt1
+	# 		custom_effect_tooltip = ENG_invest_construction_tt1
+	# 		custom_effect_tooltip = ENG_eco_choice_tt2
+	# 		custom_effect_tooltip = ENG_eco_choice_tt3
+	# 		custom_effect_tooltip = ENG_eco_choice_tt4
+	# 		custom_effect_tooltip = ENG_eco_choice_tt5
+	# 		custom_effect_tooltip = ENG_invest_construction_tt2
+
+	# 		hidden_effect = {
+	# 			if = {
+	# 				limit = { has_completed_focus = ENG_focus_empire }
+	# 				add_timed_idea = { idea = ENG_construction_left days = 365 }
+	# 			}
+			
+	# 			if = {
+	# 				limit = { has_completed_focus = ENG_focus_home }
+	# 				add_timed_idea = { idea = ENG_construction_right days = 365 }
+	# 			}
+	# 		}
+	# 	}
+	# }
 	
 	focus = {
 		id = ENG_air_production_group
@@ -7269,6 +7560,32 @@ focus_tree = {
 		}
 	}
 	# Post-Danzig Branch ###################################################
+
+	
+	focus = {
+		id = ENG_special_research_department
+		icon = GFX_focus_eng_chiefs_of_staff_committee
+		prerequisite = { focus = ENG_the_point_of_no_reutrn }
+		available = {
+		}
+
+		allow_branch = {
+			always = no
+		}
+
+		available_if_capitulated = yes
+
+		x = -2
+		y = 1
+		relative_position_id = ENG_the_point_of_no_reutrn
+		cost = 5
+		ai_will_do = {
+			factor = 1
+		}	
+		completion_reward = {
+			custom_effect_tooltip = ENG_special_tech_unlock
+		}
+	}
 	
 	focus = {
 		id = ENG_anglo_soviet_agreement

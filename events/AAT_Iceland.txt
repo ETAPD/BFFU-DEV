@@ -7,6 +7,38 @@
 add_namespace = iceland_events
 
 
+# Declare Independence
+country_event = { 
+	id = iceland_events.1
+	title = iceland_events.1.t
+	desc = iceland_events.1.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+
+	option = { 
+		name = iceland_events.1.a
+		ai_chance = {
+			base = 1
+		}
+		OVERLORD = { end_puppet = ICE }
+		set_politics = {
+			ruling_party = neutrality
+			elections_allowed = yes
+		}
+		add_popularity = {
+			ideology = neutrality
+			popularity = 0.5
+		}	
+		hidden_effect = {
+			drop_cosmetic_tag = yes
+			news_event = { id = aat_news.1 days = 1 }
+		}
+	}
+}
 
 #
 # Request American Protection
@@ -285,12 +317,580 @@ country_event = {
 	}
 }
 
+# Iceland declares equal Standing to Denmark
+country_event = { 
+	id = iceland_events.6
+	title = iceland_events.6.t
+	desc = iceland_events.6.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# AAT is fine
+	option = { 
+		name = iceland_events.6.a
+		ai_chance = {
+			base = 10
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.7
+				hours = 16
+				random_hours = 32
+			}
+		}
+	}
+	# no
+	option = { 
+		name = iceland_events.6.b
+		ai_chance = {
+			base = 1
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.11
+				hours = 8 
+				random_hours = 16 
+			}
+		}
+		ROOT = {
+			create_wargoal = {
+				type = puppet_wargoal_focus
+				target = FROM
+			}
+		}
+	}
+}
+
+# Denmark says ja för faen
+country_event = { 
+	id = iceland_events.7
+	title = iceland_events.7.t
+	desc = iceland_events.7.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+
+	}
+	# Great
+	option = { 
+		name = iceland_events.7.a
+		ai_chance = {
+			base = 1
+		}
+		FROM = {
+			end_puppet = ROOT
+		}
+		country_event = {
+			id = iceland_events.45
+			hours = 16
+			random_hours = 32 
+		}
+		IF = {
+			limit = {
+				has_idea = ICE_christian_x 
+			}
+			remove_ideas = {
+				ICE_christian_x
+			}
+		}
+	}
+	# Lets keep a close relationship with Denmark 
+	option = { 
+		name = iceland_events.7.b
+		ai_chance = {
+			base = 1
+		}
+		trigger = {
+			NOT = {
+				DEN = { has_government = communism}
+			}
+		}
+		FROM = {
+			end_puppet = ROOT
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.8
+				hours = 8
+				random_hours = 32 
+			}
+		}
+	}
+}
+
+# Iceland wants a Danish King
+country_event = { 
+	id = iceland_events.8
+	title = iceland_events.8.t
+	desc = iceland_events.8.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# AAT is fine
+	option = { 
+		name = iceland_events.8.a
+		ai_chance = {
+			base = 9
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.9
+				hours = 16
+				random_hours = 32 
+			}
+		}
+		
+	}
+	# no
+	option = { 
+		name = iceland_events.8.b
+		ai_chance = {
+			base = 1
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.10
+				hours = 16
+				random_hours = 32 
+			}
+		}
+		
+	}
+}
+
+# Iceland gets a Danish King
+country_event = { 
+	id = iceland_events.9
+	title = iceland_events.9.t
+	desc = iceland_events.9.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# Everything is Awesome
+	option = { 
+		name = iceland_events.9.a
+		ai_chance = {
+			base = 1
+		}
+		add_opinion_modifier = {
+			target = DEN
+			modifier = same_royal_house
+		}
+		DEN = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = same_royal_house
+			}
+		}
+		set_politics = {
+			ruling_party = neutrality
+		}
+		set_cosmetic_tag = ICE_independent_kingdom
+		ICE_king_knud = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = {
+					ideology = moderatism
+					expire = "1965.1.1"
+					traits = { ICE_the_navy_king } 
+				}
+			}
+			add_naval_commander_role = {
+			    skill = 2
+			    attack_skill = 2
+			    defense_skill = 1
+			    maneuvering_skill = 3
+			    coordination_skill = 2
+			}
+		}
+	}
+	# nice - but honestly
+	option = { 
+		name = iceland_events.9.b
+		ai_chance = {
+			base = 1
+		}
+		add_opinion_modifier = {
+			target = DEN
+			modifier = same_royal_house
+		}
+		DEN = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = same_royal_house
+			}
+		}
+		add_ideas = ICE_knud_i
+		ICE_king_knud = {
+			add_naval_commander_role = {
+			    skill = 2
+			    attack_skill = 2
+			    defense_skill = 1
+			    maneuvering_skill = 3
+			    coordination_skill = 2
+			}
+		}
+	}
+}
+
+# Iceland does not get a Danish King
+country_event = { 
+	id = iceland_events.10
+	title = iceland_events.10.t
+	desc = iceland_events.10.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# I guess we are a republic then... 
+	option = { 
+		name = iceland_events.10.a
+		ai_chance = {
+			base = 1
+		}
+		country_event = {
+			id = iceland_events.45
+			hours = 16
+			random_hours = 32 
+		}
+	}
+	
+}
+# Denmarks is angry
+country_event = { 
+	id = iceland_events.11
+	title = iceland_events.11.t
+	desc = iceland_events.11.desc
+	picture = GFX_report_event_generic_sign_treaty2
+
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# I guess we are a republic then... 
+	option = { 
+		name = iceland_events.11.a
+		ai_chance = {
+			base = 1
+		}
+		country_event = {
+			id = iceland_events.45
+			hours = 16
+			random_hours = 32 
+		}
+	}
+	
+}
 
 
+# Compensation 
+country_event = { 
+	id = iceland_events.12
+	title = iceland_events.12.t
+	desc = iceland_events.12.desc
+	picture = GFX_report_event_generic_sign_treaty1
 
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# sure
+	option = { 
+		name = iceland_events.12.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = ROOT.opinion@FROM
+				always = yes 
+			}
+		}
+		trigger = {
+			101 = { is_owned_by = ROOT }
+			337 = { is_owned_by = ROOT }
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.13
+				hours = 16
+				random_hours = 32 
+			}
+		}
+		effect_tooltip = {
+			101 = { 
+				transfer_state_to = FROM 
+				add_core_of = FROM
+			}
+			337 = { 
+				transfer_state_to = FROM 
+				add_core_of = FROM
+			}
+			FROM = {
+				add_timed_idea = {
+					idea = ICE_compensation_purchase_idea
+					days = 720
+				}
+			}
+			ROOT = {
+				add_timed_idea = {
+					idea = ICE_compensation_sale_idea
+					days = 720
+				}
+			}
+		}
+	}
+	# No Way
+	option = { 
+		name = iceland_events.12.b
+		ai_chance = {
+			base = 10
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.14
+				hours = 16
+				random_hours = 32 
+			}
+		}
+		effect_tooltip = {
+			IF = {
+				limit = {
+					101 = { is_owned_by = ROOT  }
+				}
+				101 = { add_claim_by = FROM }
+			}
+			IF = {
+				limit = {
+					337 = { is_owned_by = ROOT }
+				}
+				337 = { add_claim_by = FROM }
+			}
+			FROM = {
+				create_wargoal = {
+					type = take_claimed_state
+					target = ROOT
+					generator = { 101 337 } # optional 
+				}
+			}
+		}
+	}
+	# They can have one of them 
+	option = { 
+		name = iceland_events.12.c
+		ai_chance = {
+			base = 10
+			modifier = {
+				add = ROOT.opinion@FROM
+				always = yes 
+			}
+		}
+		trigger = {
+			OR = {
+				101 = { is_owned_by = ROOT }
+				337 = { is_owned_by = ROOT }
+			}
+		}
+		FROM = {
+			country_event = {
+				id = iceland_events.15
+				hours = 16
+				random_hours = 32 
+			}
+		}
+		effect_tooltip = {
+			IF = {
+				limit = {
+					101 = { is_owned_by = ROOT }
+				}
+				101 = { 
+					transfer_state_to = FROM
+					add_core_of = FROM
+				}
+				FROM = {
+					add_timed_idea = {
+						idea = ICE_compensation_purchase_idea
+						days = 360
+					}
+				}
+				ROOT = {
+					add_timed_idea = {
+						idea = ICE_compensation_sale_idea
+						days = 360
+					}
+				}
+			}
+			ELSE = {
+				337 = { 
+					transfer_state_to = FROM
+					add_core_of = FROM
+				}
+				FROM = {
+					add_timed_idea = {
+						idea = ICE_compensation_purchase_idea
+						days = 360
+					}
+				}
+				ROOT = {
+					add_timed_idea = {
+						idea = ICE_compensation_sale_idea
+						days = 360
+					}
+				}
+			}
+		}
+	}
+	
+}
+# Both islands
+country_event = { 
+	id = iceland_events.13
+	title = iceland_events.13.t
+	desc = iceland_events.13.desc
+	picture = GFX_report_event_generic_sign_treaty1
 
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# Our empire grows
+	option = { 
+		name = iceland_events.13.a
+		ai_chance = {
+			base = 1
+		}
+		101 = { 
+			transfer_state_to = ROOT 
+			add_core_of = ROOT
+		}
+		337 = { 
+			transfer_state_to = ROOT 
+			add_core_of = ROOT
+		}
+		ROOT = {
+			add_timed_idea = {
+				idea = ICE_compensation_purchase_idea
+				days = 720
+			}
+		}
+		FROM = {
+			add_timed_idea = {
+				idea = ICE_compensation_sale_idea
+				days = 720
+			}
+		}
+	}
+	
+}
+# No island for Iceland
+country_event = { 
+	id = iceland_events.14
+	title = iceland_events.14.t
+	desc = iceland_events.14.desc
+	picture = GFX_report_event_generic_sign_treaty1
 
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# We have to go get them... 
+	option = { 
+		name = iceland_events.14.a
+		ai_chance = {
+			base = 1
+		}
+		IF = {
+			limit = {
+				101 = { is_owned_by = FROM }
+			}
+			101 = { add_claim_by = ROOT }
+		}
+		IF = {
+			limit = {
+				337 = { is_owned_by = FROM }
+			}
+			337 = { add_claim_by = ROOT }
+		}
+		ROOT = {
+			create_wargoal = {
+				type = take_claimed_state
+				target = FROM
+				generator = { 101 337 } # optional 
+			}
+		}
+	}
+	
+}
+# one island
+country_event = { 
+	id = iceland_events.15
+	title = iceland_events.15.t
+	desc = iceland_events.15.desc
+	picture = GFX_report_event_generic_sign_treaty1
 
+	is_triggered_only = yes
+	immediate = {
+		
+	}
+	# I mean, one island extra is like 100% of the starting number of states after all
+	option = { 
+		name = iceland_events.15.a
+		ai_chance = {
+			base = 1
+		}
+		IF = {
+			limit = {
+				101 = { is_owned_by = FROM }
+			}
+			101 = { 
+				transfer_state_to = ROOT 
+				add_core_of = ROOT
+			}
+			ROOT = {
+				add_timed_idea = {
+					idea = ICE_compensation_purchase_idea
+					days = 360
+				}
+			}
+			FROM = {
+				add_timed_idea = {
+					idea = ICE_compensation_sale_idea
+					days = 360
+				}
+			}
+		}
+		ELSE = {
+			337 = { 
+				transfer_state_to = ROOT 
+				add_core_of = ROOT
+			}
+			ROOT = {
+				add_timed_idea = {
+					idea = ICE_compensation_purchase_idea
+					days = 360
+				}
+			}
+			FROM = {
+				add_timed_idea = {
+					idea = ICE_compensation_sale_idea
+					days = 360
+				}
+			}
+		}
+
+	}
+	
+}
 
 # Break with the Crown event chain - starting event
 country_event = { 
@@ -438,12 +1038,280 @@ country_event = {
 
 }
 
+# Iceland Demands the "return" of Greenland
+country_event = { 
+	id = iceland_events.20
+	title = iceland_events.20.t
+	desc = {
+		text = iceland_events.20.desc
+	}
+
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+	# We should give it to them
+	option = { 
+		name = iceland_events.20.a
+		ai_chance = {
+			base = 90
+		}
+
+		FROM = {
+			country_event = {
+				id = iceland_events.21
+				days = 1
+				random = 3
+			}
+		}
+
+	}
+	# We should keep it for ourselves
+	option = { 
+		name = iceland_events.20.b
+		ai_chance = {
+			base = 10
+		}
+		
+		FROM = {
+			country_event = {
+				id = iceland_events.22
+				days = 1
+				random = 3
+			}
+		}
+	}
+}
+
+# X country returns Greenland
+country_event = { 
+	id = iceland_events.21
+	title = iceland_events.21.t
+	desc = {
+		text = iceland_events.21.desc
+	}
+
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+	# Great!
+	option = { 
+		name = iceland_events.21.a
+		ai_chance = {
+			base = 100
+		}
+
+		ROOT = {
+			transfer_state = 101
+		}
+		101 = {
+			add_core_of = ROOT
+		}
+
+		IF = {
+			limit = {
+				101 = {
+					is_core_of = FROM
+				}
+			}
+			101 = {
+				remove_core_of = FROM
+			}
+		}
+
+	}
+}
+
+# X country does not return Greenland
+country_event = { 
+	id = iceland_events.22
+	title = iceland_events.22.t
+	desc = {
+		text = iceland_events.22.desc
+	}
+
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+	# They will Perish!
+	option = { 
+		name = iceland_events.22.a
+		ai_chance = {
+			base = 100
+		}
+		
+		create_wargoal = {
+			target = FROM
+			type = take_state_focus
+			generator = { 101 }
+		}
+
+    	add_war_support = 0.05
+
+	}
+}
 
 
+# Iceland Demands the "return" of North Sea islands
+country_event = { 
+	id = iceland_events.23
+	title = iceland_events.23.t
+	desc = {
+		text = iceland_events.23.desc
+	}
 
+	picture = GFX_report_event_generic_read_write
 
+	is_triggered_only = yes
+	# We should give it to them
+	option = { 
+		name = iceland_events.23.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 2
+				has_government = FROM
+			}
+			modifier = {
+				factor = 2
+				is_in_faction_with = FROM 
+			}
+		}
+		event_option_tooltip = iceland_events.24.a
+		FROM = {
+			country_event = {
+				id = iceland_events.24
+				days = 1
+				random = 3
+			}
+		}
 
+	}
+	# We should keep it for ourselves
+	option = { 
+		name = iceland_events.23.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 2
+				has_government = fascism
+			}
+			modifier = {
+				factor = 3
+				is_major = yes 
+			}
+		}
+		event_option_tooltip = iceland_events.25.a
+		FROM = {
+			country_event = {
+				id = iceland_events.25
+				days = 1
+				random = 3
+			}
+		}
+	}
+}
 
+# X country returns North Sea islands
+country_event = { 
+	id = iceland_events.24
+	title = iceland_events.24.t
+	desc = {
+		text = iceland_events.24.desc
+	}
+
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+	# Great!
+	option = { 
+		name = iceland_events.24.a
+		ai_chance = {
+			base = 100
+		}
+
+		FROM = {
+			every_owned_state = {
+				limit = {
+					OR = {
+						state = 337
+						state = 933
+						state = 914
+					}
+				}
+				add_core_of = ROOT
+				ROOT = { transfer_state = PREV }
+			}
+		}
+	}
+}
+
+# X country does not cede North Sea island
+country_event = { 
+	id = iceland_events.25
+	title = iceland_events.25.t
+	desc = {
+		text = iceland_events.25.desc
+	}
+
+	picture = GFX_report_event_generic_read_write
+
+	is_triggered_only = yes
+	# They will Perish!
+	option = { 
+		name = iceland_events.25.a
+		ai_chance = {
+			base = 100
+		}
+		IF = {
+			limit = {
+				FROM = {
+					owns_state = 337
+				}
+			}
+			337 = { add_core_of = ROOT }
+			ROOT = {
+				create_wargoal = {
+					target = FROM
+					type = take_core_state
+					generator = { 337}
+				}
+			}
+		}
+		ELSE_IF = {
+			limit = {
+				FROM = {
+					owns_state = 933
+				}
+			}
+			933 = { add_core_of = ROOT }
+			ROOT = {
+				create_wargoal = {
+					target = FROM
+					type = take_core_state
+					generator = { 933}
+				}
+			}
+		}
+		ELSE_IF = {
+			limit = {
+				FROM = {
+					owns_state = 914
+				}
+			}
+			914 = { add_core_of = ROOT }
+			ROOT = {
+				create_wargoal = {
+					target = FROM
+					type = take_core_state
+					generator = { 914}
+				}
+			}
+		}
+
+    	add_war_support = 0.05
+
+	}
+}
 
 
 # Presidential Elections
@@ -513,7 +1381,41 @@ country_event = {
 		}
 	}
 
+	# Brynjolólfur is the people's vote
+	option = { 
+		name = iceland_events.45.d
+		ai_chance = {
+			base = 1
+		}
+		trigger = {
+			has_completed_focus = ICE_fighting_as_equals
+			DEN = { has_government = communism }
+		}
+		set_politics = {
+			ruling_party = communism
+		}
+		ICE_brynjolfur_bjarnason = {
+			promote_character = yes 
+		}
+	}
 
+	# Gísli, Gísli, he's our man, if he can't do it .... great
+	option = { 
+		name = iceland_events.45.e
+		ai_chance = {
+			base = 1
+		}
+		trigger = {
+			has_completed_focus = ICE_fighting_as_equals
+			DEN = { has_government = fascism }
+		}
+		set_politics = {
+			ruling_party = fascism
+		}
+		ICE_gisli_sigurbjornsson = {
+			promote_character = yes 
+		}
+	}
 	
 }
 

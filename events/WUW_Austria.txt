@@ -5509,8 +5509,192 @@ country_event = { #FROM installs a Habsburg on our throne :(
 	}
 }
 
+country_event = { #FROM asks kindly to have silesia
+	id = AUS_political_events.49
+	title = AUS_political_events.49.t
+	desc = AUS_political_events.49.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
 
+	option = { #fine, they'll get those states
+		name = AUS_political_events.49.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0.1
+				has_government = fascism				
+			}
+			modifier = {
+				factor = 2 
+				has_government = FROM
+			}
+			modifier = {
+				factor = 5
+				has_opinion = {
+					target = FROM
+					value > 49
+				}			
+			}
+		}
 
+		event_option_tooltip = AUS_political_events.50.a
+
+		FROM = {
+			country_event = {
+				id = AUS_political_events.50
+				hours = 6
+			}
+		}
+	}
+
+	option = { #oh hell no
+		name = AUS_political_events.49.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				has_government = fascism				
+			}
+		}
+
+		event_option_tooltip = AUS_political_events.51.a
+
+		FROM = {
+			country_event = {
+				id = AUS_political_events.51
+				hours = 6
+			}
+		}
+	}
+}
+
+country_event = { #FROM gives ROOT Silesia
+	id = AUS_political_events.50
+	title = AUS_political_events.50.t
+	desc = AUS_political_events.50.desc
+	picture = GFX_report_event_generic_handshake
+	is_triggered_only = yes
+
+	option = { #great!
+		name = AUS_political_events.50.a
+		ai_chance = {
+			base = 10
+		}
+
+		IF = {
+			limit = {
+				66 = {
+					is_controlled_by = FROM
+				}
+			}
+			66 = { #Niederschlesien
+				transfer_state_to = ROOT
+			}
+		}
+
+		IF = {
+			limit = {
+				67 = {
+					is_controlled_by = FROM
+				}
+			}
+			67 = { #Oberschlesien
+				transfer_state_to = ROOT
+			}
+		}
+
+	
+		FROM = {
+			random_owned_controlled_state = {
+				limit = {
+					is_core_of = FROM
+					NOT = {
+						state = 66
+						state = 67
+					}
+				}
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+		}
+		
+		
+	}
+}
+
+country_event = { #FROM refuses to give ROOT Silesia
+	id = AUS_political_events.51
+	title = AUS_political_events.51.t
+	desc = AUS_political_events.51.desc
+	picture = GFX_report_event_gathering_protest
+	is_triggered_only = yes
+
+	option = { #we'll consider fighting them then.
+		name = AUS_political_events.51.a
+		ai_chance = {
+			base = 10
+		}
+
+		IF = {
+			limit = {
+				66 = {
+					is_controlled_by = FROM
+				}
+			}
+			66 = { #Niederschlesien
+				add_claim_by = ROOT
+			}
+		}
+
+		IF = {
+			limit = {
+				67 = {
+					is_controlled_by = FROM
+				}
+			}
+			67 = { #Oberschlesien
+				add_claim_by = ROOT
+			}
+		}
+
+		
+
+		add_opinion_modifier = {
+			target = FROM
+			modifier = rejected_demands
+		}
+
+		IF = {
+			limit = {
+				66 = {
+					is_controlled_by = FROM
+				}
+			}
+			create_wargoal = {
+				type = take_claimed_state
+				target = FROM
+				generator = { 66 } 
+			}
+		}
+
+		IF = {
+			limit = {
+				67 = {
+					is_controlled_by = FROM
+				}
+			}
+			create_wargoal = {
+				type = take_claimed_state
+				target = FROM
+				generator = { 67 } 
+			}
+		}
+	}
+}
 
 country_event = { #FROM demands our (SWI) Annexation
 	id = AUS_political_events.52
@@ -6091,6 +6275,52 @@ country_event = { #FROM keeps Jansa
 	}
 }
 
+country_event = { #Exiled resistance group from AUS offering their service
+	id = AUS_political_events.63
+	title = AUS_political_events.63.t
+	desc = AUS_political_events.63.desc
+	picture = GFX_report_event_military_planning
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	option = { #we can't trust them
+		name = AUS_political_events.63.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				has_government = fascism
+			}
+			modifier = {
+				factor = 5
+				is_in_faction_with = GER
+			}
+		}
+		add_popularity = {
+			ideology = fascism
+			popularity = 0.05
+		}
+	}
+
+	option = { #everyone is welcome 
+		name = AUS_political_events.63.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				NOT = { 
+					has_government = fascism
+				}
+			}
+			modifier = {
+				factor = 5
+				is_historical_focus_on = yes
+			}
+
+		}
+	}
+}
 
 country_event = { #FROM offers industrial support
 	id = AUS_political_events.64
@@ -7668,7 +7898,43 @@ country_event = { #Austria aligns to our leaders doctrine
 
 }
 
+country_event = { #Austria gets a SOV guarantee
+	id = AUS_political_events.82
+	title = AUS_political_events.82.t
+	desc = AUS_political_events.82.desc
+	picture = GFX_report_event_generic_handshake
+	is_triggered_only = yes
 
+	fire_only_once = yes
+
+	option = { #great
+		name = AUS_political_events.82.a
+		ai_chance = {
+			base = 10
+			
+		}
+		event_option_tooltip = AUS_political_events.81.a
+	}
+}
+
+country_event = { #Austria does not get SOV guarantee
+	id = AUS_political_events.83
+	title = AUS_political_events.83.t
+	desc = AUS_political_events.83.desc
+	picture = GFX_report_event_generic_handshake
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	option = { #drats
+		name = AUS_political_events.83.a
+		ai_chance = {
+			base = 10
+			
+		}
+		event_option_tooltip = AUS_political_events.81.b
+	}
+}
 
 country_event = { #Austria boosts communist sentiments
 	id = AUS_political_events.84
@@ -8372,6 +8638,26 @@ country_event = { #America refuses to sell Alaska
 	}
 }
 
+country_event = { #the Liechtensteiner army found a friend!
+	id = AUS_political_events.95
+	title = AUS_political_events.95.t
+	desc = AUS_political_events.95.desc
+	picture = GFX_report_event_german_troops
+	is_triggered_only = yes
+
+	fire_only_once = yes
+
+	option = { #How nice!
+		name = AUS_political_events.95.a
+		ai_chance = {
+			base = 10
+			
+		}
+
+		custom_effect_tooltip = AUS_political_events.95.a_tt
+		add_manpower = 1
+	}
+}
 
 country_event = { #Austria seeks to join the allies
 	id = AUS_political_events.96
@@ -9093,8 +9379,185 @@ country_event = { #A familiar guy wants to assume power over Austria
 	}		
 }
 
+country_event = { #Austria informed of Italy backing down
+	id = AUS_political_events.105
+	title = AUS_political_events.105.t
+	desc = AUS_political_events.105.desc
+	picture = GFX_report_event_generic_riot
+	is_triggered_only = yes
 
+	option = { #we better back down
+		name = AUS_political_events.105.a
+		ai_chance = {
+			base = 10
+		}
 
+		GER = {
+			country_event = { hours = 2 id = germany.4 }
+		}
+		custom_effect_tooltip = GAME_OVER_TT
+
+		AUS = {
+			clr_country_flag = AUS_antischluss_active_flag
+		}
+	}
+
+	option = { #keep fighting!
+		name = AUS_political_events.105.b
+		ai_chance = {
+			base = 10
+		}
+
+		effect_tooltip = {
+			GER = {
+				add_state_claim = 4
+				add_state_claim = 152
+				add_state_claim = 153
+				add_state_claim = 848
+				add_state_claim = 975
+				add_state_claim = 976
+				create_wargoal = {
+					type = take_state_focus
+					target = AUS
+					generator = { 4 152 153 848 975 976 }
+				}
+				
+			}
+
+			news_event = {
+				id = AUS_news_events.1
+				days = 3 
+			}
+
+			AUS = {
+				clr_country_flag = AUS_antischluss_active_flag
+				IF = {
+					limit = { 
+						NOT = { 
+							has_country_flag = AUS_seyss_inquart_can_be_fired_flag 
+						} 
+					}
+					set_can_be_fired_in_advisor_role = {
+						character = AUS_arthur_seyss-inquart
+						value = yes
+					}
+					set_country_flag = AUS_seyss_inquart_can_be_fired_flag
+				}
+			}
+		}
+		
+		GER = {
+			add_opinion_modifier = { target = ROOT modifier = GER_anschluss_rejected }
+			country_event = { days = 1 id = germany.29 }
+			if = { limit = { is_in_faction_with = AUS }
+				remove_from_faction = AUS
+			}
+		}
+		
+	}
+}
+
+country_event = { #Austria informed of Italy supporting them
+	id = AUS_political_events.106
+	title = AUS_political_events.106.t
+	desc = AUS_political_events.106.desc
+	picture = GFX_report_event_fascist_gathering
+	is_triggered_only = yes
+
+	option = { #we knew they would
+		name = AUS_political_events.106.a
+		ai_chance = {
+			base = 10
+		}
+
+		effect_tooltip = {
+			GER = {
+				add_state_claim = 4
+				add_state_claim = 152
+				add_state_claim = 153
+				add_state_claim = 848
+				add_state_claim = 975
+				add_state_claim = 976
+				create_wargoal = {
+					type = take_state_focus
+					target = AUS
+					generator = { 4 152 153 848 975 976 }
+				}
+			} 
+
+			news_event = {
+				id = AUS_news_events.1
+				days = 3 
+			}
+
+			AUS = {
+				clr_country_flag = AUS_antischluss_active_flag
+				IF = {
+					limit = { 
+						NOT = { 
+							has_country_flag = AUS_seyss_inquart_can_be_fired_flag 
+						} 
+					}
+					set_can_be_fired_in_advisor_role = {
+						character = AUS_arthur_seyss-inquart
+						value = yes
+					}
+					set_country_flag = AUS_seyss_inquart_can_be_fired_flag
+				}
+			}
+		}
+
+		GER = {
+			add_opinion_modifier = { target = ROOT modifier = GER_anschluss_rejected }
+			country_event = { days = 1 id = germany.29 }
+			if = { limit = { is_in_faction_with = AUS }
+				remove_from_faction = AUS
+			}
+		}
+	}
+}
+
+country_event = { #Austria folds but we want them alive
+	id = AUS_political_events.107
+	title = AUS_political_events.107.t
+	desc = AUS_political_events.107.desc
+	picture = GFX_report_event_journalists_speech
+	is_triggered_only = yes
+
+	option = { #we knew they would
+		name = AUS_political_events.107.a
+		ai_chance = {
+			base = 1
+			modifier = {
+				factor = 0
+				is_historical_focus_on = yes
+				AUS = {
+					is_ai = yes
+				}
+			}
+		}
+
+		create_wargoal = {
+			type = liberate_wargoal
+			target = GER
+		}
+		custom_effect_tooltip = AUS_political_events.107.a_tt
+		show_ideas_tooltip = ITA_alpine_defense
+	}
+
+	option = {
+		name = AUS_political_events.107.b
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 100
+				FROM = {
+					is_ai = yes
+				}
+			}
+		}
+	}
+}
 
 country_event = { #Informs ROOT of From hosting Military Exercises
 	id = AUS_political_events.108
@@ -10008,6 +10471,41 @@ country_event = {
 ###### News Events ########
 ###########################
 
+news_event = {  #Austria Refuses Anschluss
+	id = AUS_news_events.1
+	title = AUS_news_events.1.t
+	desc = AUS_news_events.1.desc
+	picture = GFX_news_event_AUS_vaterlandische_front_rally 
+	is_triggered_only = yes
+
+	major = yes
+
+	option = {
+		name = AUS_news_events.1.a
+		trigger = {
+			NOT = {
+				OR = {
+					original_tag = GER
+					original_tag = AUS
+				}
+			}
+		}
+	}
+
+	option = {
+		name = AUS_news_events.1.b
+		trigger = {
+			original_tag = GER
+		}
+	}
+
+	option = {
+		name = AUS_news_events.1.c
+		trigger = {
+			original_tag = AUS
+		}
+	}
+}
 
 news_event = { #Godwin von Brumowski crash trigger (HIDDEN)
 	id = AUS_news_events.2
@@ -10285,6 +10783,38 @@ news_event = {  #Armed Communist Revolution in Austria
 	}
 }
 
+news_event = {  #Austria forms the Danubian bloc
+	id = AUS_news_events.11
+	title = AUS_news_events.11.t
+	desc = AUS_news_events.11.desc
+	picture = GFX_news_event_generic_sign_treaty2
+	is_triggered_only = yes
+
+	option = { #why would they do that?
+		name = AUS_news_events.11.a
+		trigger = {
+			NOT = {
+				original_tag = AUS
+				has_government = communism
+			}
+		}
+	}
+	option = { #we wish them luck
+		name = AUS_news_events.11.b
+		trigger = {
+			NOT = {
+				original_tag = AUS
+			}
+			has_government = communism
+		}
+	}
+	option = { #great
+		name = AUS_news_events.11.c
+		trigger = {
+			original_tag = AUS
+		}
+	}
+}
 
 news_event = { #Austria holds elections again
 	id = AUS_news_events.12

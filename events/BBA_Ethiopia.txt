@@ -380,6 +380,128 @@ country_event = {
 #	}
 #}
 
+country_event = {
+	id = BBA_ethiopia_balance_of_power_events.22
+	title = BBA_ethiopia_balance_of_power_events.22.t
+	desc = BBA_ethiopia_balance_of_power_events.22.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.22.a
+		ai_chance = {
+			base = 10
+		}
+	}
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.22.b
+		ai_chance = {
+			base = 10
+		}		
+	}
+}
+#Education Reforms - Communist
+country_event = {
+	id = BBA_ethiopia_balance_of_power_events.23
+	title = BBA_ethiopia_balance_of_power_events.23.t
+	desc = BBA_ethiopia_balance_of_power_events.23.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty2
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.23.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+#Education Reforms - Anarchist
+country_event = {
+	id = BBA_ethiopia_balance_of_power_events.24
+	title = BBA_ethiopia_balance_of_power_events.24.t
+	desc = BBA_ethiopia_balance_of_power_events.24.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty2
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.24.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Officer Reforms - Centralized
+country_event = {
+	id = BBA_ethiopia_balance_of_power_events.25
+	title = BBA_ethiopia_balance_of_power_events.25.t
+	desc = BBA_ethiopia_balance_of_power_events.25.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.25.a
+		ai_chance = {
+			base = 10
+		}
+		add_ideas = ETH_political_officers
+		IF = {
+			limit = {
+				NOT = { 
+					OR = {
+						#TODO_ASD: Unlock support equipment tech?
+						has_tech = tech_military_police 
+						#has_tech = support_equipment
+					}
+				}	
+
+			}
+			set_technology = { tech_military_police = 1 }
+			#set_technology = { #support_equipment = 1 }
+		}
+	}
+}
+
+# Officer Reforms - Decentralized
+country_event = {
+	id = BBA_ethiopia_balance_of_power_events.26
+	title = BBA_ethiopia_balance_of_power_events.26.t
+	desc = BBA_ethiopia_balance_of_power_events.26.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.26.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+# Safo recalled
+unit_leader_event = {
+	id = BBA_ethiopia_balance_of_power_events.30
+	title = BBA_ethiopia_balance_of_power_events.30.t
+	desc = BBA_ethiopia_balance_of_power_events.30.desc
+	is_triggered_only = yes
+	option = {
+		name = BBA_ethiopia_balance_of_power_events.30.a
+		ai_chance = {
+			base = 10
+		}
+		ETH_balcho_safo = {
+			set_character_flag = safo_active_flag
+		}
+		random_owned_controlled_state = {
+			limit = {
+				is_core_of = ROOT
+			}
+			prioritize = { 837 } 
+			create_unit = {
+				division = "name = \"Sidamo levies\"division_template = \"Chitet Sefari\" start_experience_factor = 0.06 start_equipment_factor = 1 start_manpower_factor = 1"
+				owner = ROOT
+				allow_spawning_on_enemy_provs = no 	
+				count = 1
+			}
+
+		}
+	}
+}
 
 
 # BoP random events - trigger 
@@ -949,6 +1071,57 @@ country_event = {
 ####################################################
 
 # Event for Host nation when Ethiopia is ready 
+country_event = {
+	id = BBA_ethiopia_exile_events.01
+	title = BBA_ethiopia_exile_events.01.t
+	desc = BBA_ethiopia_exile_events.01.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	immediate = {
+		# Get occupier country - just to ensure it actually is Italy - things may have happened... 
+		hidden_effect = {
+			IF = {
+				limit = {
+					ETH = { 
+						any_owned_state = { is_controlled_by = ITA }
+					}
+				}
+				set_variable = { ETH.ETH_occupier_country = ITA}
+			}
+			ELSE = {
+				random_country = {
+					limit = {
+						has_war_with = ETH
+						ETH = { 
+						 	any_owned_state = { is_controlled_by = PREV.PREV }
+						}
+					}
+					set_variable = { ETH.ETH_occupier_country = THIS }
+				}
+			}
+		}
+	}
+
+	option = {
+		name = BBA_ethiopia_exile_events.01.a
+		ai_chance = {
+			base = 10
+		}
+		# Give wargoal if not already at war
+		IF = {
+			limit = {
+				NOT = { has_war_with = ETH.ETH_occupier_country }
+			}
+			create_wargoal = {
+				type = liberate_wargoal
+				target = ETH.ETH_occupier_country
+			}
+		}
+		custom_effect_tooltip = ETH_can_call_allies_tt
+		# No need to actually set the global Flag, this is already done in the focus, so just notify Host
+		
+	}
+}
 
 # Notification event to ITA about the patriots
 country_event = {
@@ -984,6 +1157,58 @@ country_event = {
 
 # Notification event to RAJ about Wingate being sent to Ethiopia
 #TODO_TA DO recall decision 
+country_event = {
+	id = BBA_ethiopia_exile_events.04
+	title = BBA_ethiopia_exile_events.04.t
+	desc = BBA_ethiopia_exile_events.04.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_ETH_ethiopian_warriors
+
+	option = {
+		name = BBA_ethiopia_exile_events.04.a
+		ai_chance = {
+			base = 10
+		}
+		RAJ_orde_wingate = {
+			set_nationality = ETH
+			hidden_effect = { 
+				set_character_flag = is_in_ethiopia 
+				if = {
+					limit = { has_character_flag = is_in_raj }
+					clr_character_flag = is_in_raj
+				}
+			}
+		}
+	}
+}
+
+# Notification event to ETH about Wingate being sent to Burma
+country_event = {
+	id = BBA_ethiopia_exile_events.05
+	title = BBA_ethiopia_exile_events.05.t
+	desc = BBA_ethiopia_exile_events.05.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_british_inspect_troops
+
+	option = {
+		name = BBA_ethiopia_exile_events.05.a
+		ai_chance = {
+			base = 10
+		}
+		RAJ_orde_wingate = {
+			set_nationality = RAJ
+			hidden_effect = {
+				if = {
+					limit = {
+						has_character_flag = is_in_ethiopia
+					}
+					clr_character_flag = is_in_ethiopia
+				}
+				set_character_flag = is_in_raj
+			}
+		}
+	}
+}
 
 ### UNIFICATION OF THE HABESHA EVENT CHAIN
 # Event to the UK asking
@@ -1246,6 +1471,20 @@ country_event = {
 # }
 
 # Ethiopia: Uk say no to handing over enemy Somali states
+country_event = {
+	id = BBA_ethiopia_exile_events.13
+	title = BBA_ethiopia_exile_events.13.t
+	desc = BBA_ethiopia_exile_events.13.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty2
+
+	option = {
+		name = BBA_ethiopia_exile_events.13.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
 
 ### THE HEIR OF SOLOMON EVENT CHAIN
 # Event to the UK asking state = 454
@@ -2403,6 +2642,66 @@ country_event = {
 
 # False Flag operation 
 # For Germany, Italians appear to attack
+country_event = {
+	id = BBA_ethiopia_exile_events.50
+	title = BBA_ethiopia_exile_events.50.t
+	desc = BBA_ethiopia_exile_events.50.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_german_volunteers
+
+	# Oh
+	option = { 
+		name = BBA_ethiopia_exile_events.50.a
+		ai_chance = {
+			base = 10
+		}
+		add_opinion_modifier = {
+			target = ITA
+			modifier = ETH_false_flag_border_incident
+		}
+		
+	}
+
+}
+
+# For Italy - incident on the German Border
+country_event = {
+	id = BBA_ethiopia_exile_events.51
+	title = BBA_ethiopia_exile_events.51.t
+	desc = BBA_ethiopia_exile_events.51.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_german_volunteers
+
+	# That wasn't really us, was it? 
+	option = { 
+		name = BBA_ethiopia_exile_events.51.a
+		ai_chance = {
+			base = 10
+		}
+		add_opinion_modifier = {
+			target = GER
+			modifier = ETH_false_flag_border_incident
+		}
+	}
+
+}
+
+#Lavish party over
+country_event = {
+	id = BBA_ethiopia_exile_events.52
+	title = BBA_ethiopia_exile_events.52.t
+	desc = BBA_ethiopia_exile_events.52.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty3
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.52.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
 
 #Lobby Support
 country_event = {
@@ -2422,6 +2721,123 @@ country_event = {
 }
 
 #Fundraising
+country_event = {
+	id = BBA_ethiopia_exile_events.54
+	title = BBA_ethiopia_exile_events.54.t
+	desc = BBA_ethiopia_exile_events.54.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty1
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.54.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Mercs
+country_event = {
+	id = BBA_ethiopia_exile_events.55
+	title = BBA_ethiopia_exile_events.55.t
+	desc = BBA_ethiopia_exile_events.55.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_army
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.55.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Pilots
+country_event = {
+	id = BBA_ethiopia_exile_events.56
+	title = BBA_ethiopia_exile_events.56.t
+	desc = BBA_ethiopia_exile_events.56.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_bombers
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.56.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Ships
+country_event = {
+	id = BBA_ethiopia_exile_events.57
+	title = BBA_ethiopia_exile_events.57.t
+	desc = BBA_ethiopia_exile_events.57.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_sailors_in_working_rig
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.57.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Rifles
+country_event = {
+	id = BBA_ethiopia_exile_events.58
+	title = BBA_ethiopia_exile_events.58.t
+	desc = BBA_ethiopia_exile_events.58.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_rifles
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.58.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Support Equipment
+country_event = {
+	id = BBA_ethiopia_exile_events.59
+	title = BBA_ethiopia_exile_events.59.t
+	desc = BBA_ethiopia_exile_events.59.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_rifles
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.59.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
+
+#Tanks
+country_event = {
+	id = BBA_ethiopia_exile_events.60
+	title = BBA_ethiopia_exile_events.60.t
+	desc = BBA_ethiopia_exile_events.60.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_lend_lease
+
+	# Great
+	option = { 
+		name = BBA_ethiopia_exile_events.60.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
 
 ###################################################################
 
@@ -2875,6 +3291,60 @@ country_event = {
 }
 
 # Democratic Coup
+unit_leader_event = {
+	id = BBA_ethiopia_imperial_events.20
+	title = BBA_ethiopia_imperial_events.20.t
+	desc = BBA_ethiopia_imperial_events.20.desc
+	is_triggered_only = yes
+
+	# He will make a great leader
+	option = {
+		name = BBA_ethiopia_imperial_events.20.a
+		ai_chance = {
+			base = 10
+		}
+		set_politics = {
+			ruling_party = democratic
+			elections_allowed = yes 
+		}
+		add_stability = -0.05
+		add_popularity = {
+			ideology = democratic
+			popularity = 0.05
+		}
+		add_popularity = {
+			ideology = communism
+			popularity = 0.05
+		}
+	}
+
+	# It is better to keep the monarchy, on paper
+	option = {
+		name = BBA_ethiopia_imperial_events.20.b
+		ai_chance = {
+			base = 10
+		}
+		ETH_amha_selassie = {
+			add_country_leader_role = {
+				promote_leader = yes
+				country_leader = {
+					ideology = conservatism
+					expire = "1965.1.1.1"
+					traits = { king_of_ethiopia }
+				}
+			}
+		}
+		set_politics = {
+			ruling_party = democratic
+			elections_allowed = yes 
+		}
+		add_popularity = {
+			ideology = democratic
+			popularity = 0.15
+		}
+		hidden_effect = { set_cosmetic_tag = ETH_ethiopian_federation }
+	}
+}
 
 # To Ethiopia, they refuse 
 country_event = {
@@ -2982,6 +3452,227 @@ country_event = {
 #######################################################################
 
 # Hidden event for IND WAR country to dispatch intervention event to opponent 
+country_event = {
+	id = BBA_ethiopia_anti_colonialism_events.1
+	title = BBA_ethiopia_anti_colonialism_events.1.t
+	desc = BBA_ethiopia_anti_colonialism_events.1.desc
+	is_triggered_only = yes
+	hidden = yes 
+	
+
+	
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.1.a
+		ai_chance = {
+			base = 10
+		}
+		var:previous_overlord = {
+			country_event = {
+				id = BBA_ethiopia_anti_colonialism_events.2
+				hours = 1 # For testing
+			}
+		}
+		set_variable = { global.african_revolt_country = ROOT } # This country
+		set_variable = { global.african_supporting_country = FROM } # Instigator (Ethiopia in standard case)
+		set_variable = { global.african_colonial_country = var:previous_overlord }
+	}
+}
+
+# Colonial Power:  Ethiopia demands cease fire 
+country_event = {
+	id = BBA_ethiopia_anti_colonialism_events.2
+	title = BBA_ethiopia_anti_colonialism_events.2.t
+	desc = BBA_ethiopia_anti_colonialism_events.2.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_parliament
+
+	# yes we should give this thing up 
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.2.a
+		ai_chance = {
+			base = 10
+		}
+		trigger = {
+			NOT = { has_war_with = var:global.african_supporting_country }
+			var:global.african_revolt_country = { exists = yes } # Country has not been destroyed in the meantime
+		}
+		IF = {
+			limit = { var:global.african_revolt_country = { exists = yes }}
+			var:global.african_revolt_country = { # Former Colony
+				country_event = {
+					id = BBA_ethiopia_anti_colonialism_events.3
+					hours = 2 # For testing
+				}
+			}
+		}
+		ELSE = { # just an emergency back up 
+			var:global.african_supporting_country = {
+				country_event = {
+					id = BBA_ethiopia_anti_colonialism_events.4
+					hours = 2 # For testing
+				}
+			}
+		}
+		
+	}
+	# no we refuse
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.2.b
+		ai_chance = {
+			base = 10
+		}
+		var:global.african_supporting_country = { # Ethiopia in this case
+			country_event = {
+				id = BBA_ethiopia_anti_colonialism_events.4
+				hours = 2 # For testing
+			}
+		}
+	}
+}
+# For former colony: Freedom
+country_event = {
+	id = BBA_ethiopia_anti_colonialism_events.3
+	title = BBA_ethiopia_anti_colonialism_events.3.t
+	desc = BBA_ethiopia_anti_colonialism_events.3.desc
+	is_triggered_only = yes	
+	picture = GFX_report_event_generic_sign_treaty2
+
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.3.a
+		ai_chance = {
+			base = 10
+		}
+		var:global.african_supporting_country = { # Ethiopia in this case
+			country_event = {
+				id = BBA_ethiopia_anti_colonialism_events.6
+				hours = 1 # For testing
+			}
+		}
+		white_peace = FROM # Colonial Power 
+		every_other_country = {
+			limit = {
+				is_in_faction_with = FROM
+				has_war_with = ROOT 
+			}
+			white_peace = ROOT
+		}
+		# Join Ethiopia's faction if they have any 
+		IF = {
+			limit = {
+				var:global.african_supporting_country = { is_faction_leader = yes }
+				ROOT = { is_in_faction = no }
+			}
+			var:global.african_supporting_country = { add_to_faction = ROOT }
+		}
+	}
+}
+# For Ethiopia: Colonial Power Refuses
+country_event = {
+	id = BBA_ethiopia_anti_colonialism_events.4
+	title = BBA_ethiopia_anti_colonialism_events.4.t
+	desc = BBA_ethiopia_anti_colonialism_events.4.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_soldiers_marching
+	
+	# Too bad
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.4.a
+		ai_chance = {
+			base = 10
+		}
+		add_war_support = -0.05
+		add_popularity = {
+			ideology = ROOT 
+			popularity = -0.05
+		}
+		ETH = {
+			clr_country_flag = ETH_currently_demanding_peace_flag
+		}		
+		clear_variable = global.african_revolt_country
+		clear_variable = global.african_supporting_country
+		clear_variable = global.african_colonial_country
+	}
+
+	# Declare War 
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.4.b
+		ai_chance = {
+			base = 10
+		}
+		add_war_support = 0.05
+		add_popularity = {
+			ideology = ROOT 
+			popularity = 0.05
+		}
+		declare_war_on = {
+			target = FROM
+			type = liberate_wargoal
+		}
+		IF = {
+			limit = {
+				ROOT = { is_faction_leader = yes }
+				var:global.african_revolt_country = { is_in_faction = no }
+			}
+			add_to_faction = var:global.african_revolt_country
+		}
+		var:global.african_revolt_country = {
+			country_event = {
+				id = BBA_ethiopia_anti_colonialism_events.5
+				hours = 1
+			}
+		}
+		
+	}
+}
+
+# Fomer Colony: Ethiopia joins war 
+country_event = {
+	id = BBA_ethiopia_anti_colonialism_events.5
+	title = BBA_ethiopia_anti_colonialism_events.5.t
+	desc = BBA_ethiopia_anti_colonialism_events.5.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_generic_battle
+
+	
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.5.a
+		ai_chance = {
+			base = 10
+		}
+		ETH = {
+			clr_country_flag = ETH_currently_demanding_peace_flag
+		}
+		clear_variable = global.african_revolt_country
+		clear_variable = global.african_supporting_country
+		clear_variable = global.african_colonial_country
+	}
+}
+
+# Ethiopia: Colony is liberated  
+country_event = {
+	id = BBA_ethiopia_anti_colonialism_events.6
+	title = BBA_ethiopia_anti_colonialism_events.6.t
+	desc = BBA_ethiopia_anti_colonialism_events.6.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_generic_sign_treaty2
+
+	
+	option = {
+		name = BBA_ethiopia_anti_colonialism_events.6.a
+		ai_chance = {
+			base = 10
+		}
+		ETH = {
+			clr_country_flag = ETH_currently_demanding_peace_flag
+		}
+		clear_variable = global.african_revolt_country
+		clear_variable = global.african_supporting_country
+		clear_variable = global.african_colonial_country
+	}
+}
 
 ###########################################################################
 
@@ -3118,6 +3809,160 @@ country_event = {
 
 ### The Horn of Africa
 # Ethiopia Requests integration 
+country_event = {
+	id = BBA_ethiopia_industrial_financial_events.2
+	title = BBA_ethiopia_industrial_financial_events.2.t
+	desc = BBA_ethiopia_industrial_financial_events.2.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_generic_peaceful_annexation
+
+	# They have no right!
+	option = {
+		name = BBA_ethiopia_industrial_financial_events.2.a
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 5
+				AND = {
+					is_in_faction = yes
+					NOT = { is_in_faction_with = FROM }
+				}
+			}
+		}
+		FROM = {
+			country_event = {
+				id = BBA_ethiopia_industrial_financial_events.3
+				hours = 16 
+				random_hours = 12
+			}
+		}
+		effect_tooltip = {
+			FROM = {
+				create_wargoal = {
+					type = annex_everything
+					target = ROOT
+				}
+			}
+		}
+	}
+
+	# As long as we can retain some kind of autonomy 
+	option = {
+		name = BBA_ethiopia_industrial_financial_events.2.b
+		trigger = {
+			is_subject = no
+		}
+		ai_chance = {
+			base = 2
+			modifier = {
+				factor = 0
+				is_in_faction = yes 
+			}
+		}
+		FROM = {
+			country_event = {
+				id = BBA_ethiopia_industrial_financial_events.4
+				hours = 16 
+				random_hours = 12
+			}
+		}
+		effect_tooltip = {
+			FROM = {
+				puppet = ROOT 
+			}
+		}
+	}
+
+	# It is for the best of both our countries 
+	option = {
+		name = BBA_ethiopia_industrial_financial_events.2.c
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 5
+				OR = {
+					is_in_faction_with = ROOT 
+					is_subject_of = ROOT
+				}
+			}
+		}
+		FROM = {
+			country_event = {
+				id = BBA_ethiopia_industrial_financial_events.5
+				hours = 16 
+				random_hours = 12
+			}
+		}
+		effect_tooltip = {
+			FROM = {
+				annex_country = {
+					target = ROOT
+					transfer_troops = yes
+				}
+			}
+		}
+	}
+}
+
+# They refuse
+country_event = {
+	id = BBA_ethiopia_industrial_financial_events.3
+	title = BBA_ethiopia_industrial_financial_events.3.t
+	desc = BBA_ethiopia_industrial_financial_events.3.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_generic_peaceful_annexation
+
+	option = {
+		name = BBA_ethiopia_industrial_financial_events.3.a
+		ai_chance = {
+			base = 10
+		}
+		create_wargoal = {
+			type = annex_everything
+			target = FROM 
+		}
+	}	
+}
+# They want to retain Autonomy
+country_event = {
+	id = BBA_ethiopia_industrial_financial_events.4
+	title = BBA_ethiopia_industrial_financial_events.4.t
+	desc = BBA_ethiopia_industrial_financial_events.4.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_generic_peaceful_annexation
+
+	option = {
+		name = BBA_ethiopia_industrial_financial_events.4.a
+		ai_chance = {
+			base = 10
+		}
+		puppet = FROM 
+	}	
+}
+
+# They acccept fully 
+country_event = {
+	id = BBA_ethiopia_industrial_financial_events.5
+	title = BBA_ethiopia_industrial_financial_events.5.t
+	desc = BBA_ethiopia_industrial_financial_events.5.desc
+	is_triggered_only = yes
+	
+	picture = GFX_report_event_generic_peaceful_annexation
+
+	option = {
+		name = BBA_ethiopia_industrial_financial_events.5.a
+		ai_chance = {
+			base = 10
+		}
+		annex_country = {
+			target = FROM 
+			transfer_troops = yes
+		}
+	}	
+}
 
 ############################################################
 
@@ -3979,6 +4824,81 @@ country_event = {
 #						Demand DJI from Vichy Events
 ##########################################################################
 #ETH takes DJI from Vichy - Does vichy continue war?
+country_event = {
+	id = BBA_ethiopia_fascist_events.50
+	title = BBA_ethiopia_fascist_events.50.t
+	desc = BBA_ethiopia_fascist_events.50.desc
+	picture = GFX_report_event_tur_machine_gunners
+	is_triggered_only = yes
+	# Give up DJI
+	option = {
+		name = BBA_ethiopia_fascist_events.50.a
+		ai_chance = {
+			base = 10
+		}
+		ETH = {
+			country_event = {
+				id = BBA_ethiopia_fascist_events.51
+				hours = 1
+			}
+		}
+	}
+	# War with ETH
+	option = {
+		name = BBA_ethiopia_fascist_events.50.b
+		ai_chance = {
+			base = 0
+		}
+		ETH = {
+			country_event = {
+				id = BBA_ethiopia_fascist_events.52
+				hours = 1
+			}
+		}
+		add_stability = -0.05
+		create_wargoal = {
+			type = take_claimed_state 
+			target = FROM 
+			generator = { 268 }
+		}
+	}
+}
+
+#Vichy give up DJI
+country_event = {
+	id = BBA_ethiopia_fascist_events.51
+	title = BBA_ethiopia_fascist_events.51.t
+	desc = BBA_ethiopia_fascist_events.51.desc
+	picture = GFX_report_event_military_planning
+	is_triggered_only = yes
+	#Ok - Get DJI
+	option = {
+		name = BBA_ethiopia_fascist_events.51.a
+		ai_chance = {
+			base = 10
+		}
+		ETH = {
+			transfer_state = 268
+			268 = { add_core_of = ETH }
+		}
+	}
+}
+
+#Vichy Refuse to give up DJI
+country_event = {
+	id = BBA_ethiopia_fascist_events.52
+	title = BBA_ethiopia_fascist_events.52.t
+	desc = BBA_ethiopia_fascist_events.52.desc
+	picture = GFX_report_event_tur_machine_gunners
+	is_triggered_only = yes
+	# That sucks
+	option = {
+		name = BBA_ethiopia_fascist_events.52.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
 
 ##########################################################################
 #					Request Italian Equipment Events
@@ -4829,6 +5749,38 @@ country_event = {
 }
 
 #SOV back military coup against provisional gov
+country_event = {
+	id = BBA_ethiopia_communist_events.06
+	title = BBA_ethiopia_communist_events.06.t
+	desc = {
+		text = BBA_ethiopia_communist_events.06.desc
+		trigger = { 
+			is_subject_of = SOV
+		}
+	}
+	desc = {
+		text = BBA_ethiopia_communist_events.06.indy_desc
+		trigger = { 
+			NOT = { is_subject_of = SOV }
+		}			
+	}
+	picture = GFX_report_event_generic_military_parade
+	is_triggered_only = yes
+	option = {
+		name = BBA_ethiopia_communist_events.06.a
+		ai_chance = {
+			base = 10
+		}
+		set_party_name = { 
+			ideology = communism 
+			long_name = ETH_provisonal_military_admin_long 
+			name = ETH_provisonal_military_admin
+		}
+		ETH = {
+			promote_character = ETH_prov_mil_admin
+		}		
+	}
+}
 
 #SOV Demand ITA end war
 country_event = {
@@ -5074,6 +6026,39 @@ country_event = {
 }
 
 #ETH Event for receiving infantry equipment
+country_event = {
+	id = BBA_ethiopia_communist_events.12
+	title = BBA_ethiopia_communist_events.12.t
+	desc = BBA_ethiopia_communist_events.12.desc
+	picture = GFX_report_event_merchant_ship_01
+	is_triggered_only = yes
+	option = {
+		name = BBA_ethiopia_communist_events.12.a
+		ai_chance = {
+			base = 10 
+		}
+		add_equipment_to_stockpile = { 
+				type = infantry_equipment_1 
+				amount = 10000  
+				producer = SOV
+		}
+	}
+}
+
+#Event for ETH receiving planes
+country_event = {
+	id = BBA_ethiopia_communist_events.13
+	title = BBA_ethiopia_communist_events.12.t
+	desc = BBA_ethiopia_communist_events.12.desc
+	picture = GFX_report_event_merchant_ship_01
+	is_triggered_only = yes
+	option = {
+		name = BBA_ethiopia_communist_events.12.a
+		ai_chance = {
+			base = 10 
+		}			
+	}
+}
 
 #SOV event for helping ETH form airforce
 country_event = {
@@ -5157,6 +6142,19 @@ country_event = {
 }
 
 #Sov Refuse to send advisors
+country_event = {
+	id = BBA_ethiopia_communist_events.16
+	title = BBA_ethiopia_communist_events.16.t
+	desc = BBA_ethiopia_communist_events.16.desc
+	picture = GFX_report_event_generic_army
+	is_triggered_only = yes
+	option = {
+		name = BBA_ethiopia_communist_events.16.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
 
 #SOV event for ETH requesting armored cars
 country_event = {
@@ -6064,6 +7062,47 @@ country_event = {
 }
 
 # Event if ETH occupies the Rif from SPC
+country_event = {
+	id = BBA_ethiopia_communist_events.39
+	title = BBA_ethiopia_communist_events.39.t
+	desc = BBA_ethiopia_communist_events.39.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty2 
+	#End war with liberation of Rif and SPC african territory
+	option = {
+		name = BBA_ethiopia_communist_events.39.a
+		ai_chance = {
+			base = 10
+		}
+		white_peace = SPC
+		SPC = {
+			release = RIF
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.39.b
+		ai_chance = {
+			base = 0
+		}
+	}	
+}
+
+# Event for SPC if ETH occupies the Rif
+
+country_event = {
+	id = BBA_ethiopia_communist_events.40
+	title = BBA_ethiopia_communist_events.40.t
+	desc =  BBA_ethiopia_communist_events.40.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty2
+	#There's nothing we can do.
+	option = {
+		name = BBA_ethiopia_communist_events.40.a
+		ai_chance = {
+			base = 10
+		}
+	}
+}
 
 country_event = {
 	id = BBA_ethiopia_communist_events.41
@@ -6188,6 +7227,326 @@ country_event = {
 #}
 
 #ETH offers peace for SUD
+country_event = {
+	id = BBA_ethiopia_communist_events.46
+	title = BBA_ethiopia_communist_events.46.t
+	desc = BBA_ethiopia_communist_events.46.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+	option = {
+		name = BBA_ethiopia_communist_events.46.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.46.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				any_owned_state = {
+					is_core_of = SUD
+					is_owned_by = ETH
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = ETH
+				}
+			}
+		}
+		ETH = {
+			release_puppet_on_controlled = SUD
+		}
+		white_peace = ETH
+	}
+}
+
+#Peace for DJI
+country_event = {
+	id = BBA_ethiopia_communist_events.47
+	title = BBA_ethiopia_communist_events.47.t
+	desc = BBA_ethiopia_communist_events.47.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty1
+	option = {
+		name = BBA_ethiopia_communist_events.47.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.47.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				any_owned_state = {
+					is_core_of = DJI
+					is_controlled_by = ETH
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = ETH
+				}
+			}
+		}
+		ETH = {
+			release_puppet_on_controlled = DJI
+		}
+		white_peace = ETH
+	}
+}
+
+#Peace for ERI
+country_event = {
+	id = BBA_ethiopia_communist_events.48
+	title = BBA_ethiopia_communist_events.48.t
+	desc = BBA_ethiopia_communist_events.48.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty1
+	option = {
+		name = BBA_ethiopia_communist_events.48.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.48.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				any_owned_state = {
+					#is_core_of = ERI
+					is_owned_by = ETH
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = ETH
+				}
+			}
+		}
+		# ETH = {
+		# 	release_puppet_on_controlled = ERI
+		# }
+		white_peace = ETH
+	}
+}
+
+#Peace for KEN
+country_event = {
+	id = BBA_ethiopia_communist_events.49
+	title = BBA_ethiopia_communist_events.49.t
+	desc = BBA_ethiopia_communist_events.49.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty1
+	option = {
+		name = BBA_ethiopia_communist_events.49.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.49.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				any_owned_state = {
+					#is_core_of = KEN
+					is_owned_by = ETH
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = ETH
+				}
+			}
+		}
+		# ETH = {
+		# 	release_puppet_on_controlled = KEN
+		# }
+		white_peace = ETH
+	}
+}
+#SOM
+country_event = {
+	id = BBA_ethiopia_communist_events.50
+	title = BBA_ethiopia_communist_events.50.t
+	desc = BBA_ethiopia_communist_events.50.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty1
+	option = {
+		name = BBA_ethiopia_communist_events.50.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	# option = {
+	# 	name = BBA_ethiopia_communist_events.50.b
+	# 	ai_chance = {
+	# 		base = 0
+	# 		modifier = {
+	# 			add = 30
+	# 			any_owned_state = {
+	# 				is_core_of = SOM
+	# 				is_owned_by = ETH
+	# 			}
+	# 		}
+	# 		modifier = {
+	# 			add = -15
+	# 			any_controlled_state = {
+	# 				is_core_of = ETH
+	# 			}
+	# 		}
+	# 	}
+	# 	ETH = {
+	# 		release_puppet_on_controlled = SOM
+	# 	}
+	# 	white_peace = ETH
+	# }
+}
+#UGA
+country_event = {
+	id = BBA_ethiopia_communist_events.51
+	title = BBA_ethiopia_communist_events.51.t
+	desc = BBA_ethiopia_communist_events.51.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty1
+	option = {
+		name = BBA_ethiopia_communist_events.51.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 10
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.51.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				any_owned_state = {
+					is_core_of = UGA
+					is_owned_by = ETH
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = ETH
+				}
+			}
+		}
+		ETH = {
+			release_puppet_on_controlled = UGA
+		}
+		white_peace = ETH
+	}
+}
 
 #SOV event when ETH completes 'Our Own Path' focus
 country_event = {
@@ -6368,6 +7727,162 @@ country_event = {
 		name = BBA_ethiopia_communist_events.59.a
 		ai_chance = {
 			base = 5
+		}	
+	}
+}
+
+country_event = {
+	id = BBA_ethiopia_communist_events.60
+	title = BBA_ethiopia_communist_events.60.t
+	desc = BBA_ethiopia_communist_events.60.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_british_inspect_troops
+	option = {
+		name = BBA_ethiopia_communist_events.60.a
+		ai_chance = {
+			base = 5
+		}	
+	}
+}
+
+country_event = {
+	id = BBA_ethiopia_communist_events.61
+	title = BBA_ethiopia_communist_events.61.t
+	desc = BBA_ethiopia_communist_events.61.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_ETH_ethiopian_warriors
+	option = {
+		name = BBA_ethiopia_communist_events.61.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 5
+				AND = {
+					is_in_faction = yes
+					has_war_with_major = yes
+					ETH = {
+						is_in_faction = yes
+					}
+				}
+			}
+		}
+		FROM = {	
+			country_event = {
+				id = BBA_ethiopia_communist_events.60
+				hours = 12
+			}
+		}
+	}
+	option = {
+		name = BBA_ethiopia_communist_events.61.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 30
+				any_owned_state = {
+					is_on_continent = africa
+					is_controlled_by = ETH
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = FROM
+				}
+			}
+			modifier = {
+				add = -15
+				any_controlled_state = {
+					is_core_of = FROM
+				}
+			}
+		}
+		
+		for_each_scope_loop = {
+			array = ETH.ETH_has_liberation_goal_array
+			every_core_state = {
+				IF = {
+					limit = {
+						is_controlled_by = FROM
+					}
+				}
+			}
+			#FROM is ETH				
+			FROM = {
+				every_owned_state = {
+					limit = {
+						#PREV.PREV is target country for release
+						is_core_of = PREV.PREV
+					}
+					set_state_flag = ETH_prio_state_flag
+				}
+				#PREV is target country for release
+				release_puppet_on_controlled = PREV
+				PREV = {
+					every_owned_state = {
+						limit = {
+							has_state_flag = ETH_prio_state_flag
+						}
+						#PREV.PREV is ETH
+						ETH = {
+							transfer_state = PREV
+						}
+						
+					}
+				}
+				country_event = {
+					id = BBA_ethiopia_communist_events.62
+					hours = 1
+				}
+			}
+			remove_from_array = {
+				array = ETH.ETH_has_liberation_goal_array
+				value = THIS
+			}	
+		}
+		IF = {
+			limit = {
+				FROM = {
+					is_in_faction = yes
+				}
+			}
+			FROM = {
+				leave_faction = yes
+			}
+		}
+		white_peace = ETH
+		# Allies also make peace
+		every_other_country = {
+			limit = { 
+				is_in_faction_with = ROOT 
+				has_war_with = ETH
+			}
+			white_peace = ETH
+		}
+		every_other_country = {
+			limit = {
+				is_in_faction_with = ETH
+				has_war_with = ROOT
+			}
+			white_peace = ROOT
+		}
+	}
+}
+
+country_event = {
+	id = BBA_ethiopia_communist_events.62
+	title = BBA_ethiopia_communist_events.62.t
+	desc = BBA_ethiopia_communist_events.62.desc
+	is_triggered_only = yes
+	picture = GFX_report_event_generic_sign_treaty2
+	option = {
+		name = BBA_ethiopia_communist_events.62.a
+		ai_chance = {
+			base = 5
+		}
+		hidden_effect = {
+			clear_variable = ETH.ETH_disputed_colony
+			clr_country_flag = ETH_has_active_liberation_goal
 		}	
 	}
 }

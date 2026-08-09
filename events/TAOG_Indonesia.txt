@@ -3,6 +3,7 @@ add_namespace = INS_political_events
 add_namespace = INS_volksraad_events
 add_namespace = INS_dutch_events
 add_namespace = INS_union_events
+add_namespace = INS_military_events
 add_namespace = INS_revolution_events
 add_namespace = INS_industrial_events
 add_namespace = INS_chaos_events
@@ -645,6 +646,26 @@ country_event = {
 	}
 }
 
+# INS: HOL recalls Conrad Helfrich
+country_event = {
+	id = INS_political_events.19
+	title = INS_political_events.19.t
+	desc = INS_political_events.19.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	# Ok
+	option = {
+		name = INS_political_events.19.a
+		HOL_conrad_helfrich = {
+			set_nationality = HOL
+		}
+		add_autonomy_score = { 
+			value = 350 
+			localization = HOL_recall_conrad_helfrich
+		}
+	}
+}
 
 # HOL: Indonesia requests Volksraad Law: allow_language_in_schools
 country_event = {
@@ -1302,7 +1323,169 @@ country_event = {
 	}
 }
 
+# HOL: Indonesia requests Volksraad Law: INS_volksraad_equal_education
+country_event = {
+	id = INS_volksraad_events.50
+	title = INS_volksraad_events.50.t
+	desc = INS_volksraad_events.50.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Allow
+	option = {
+		name = INS_volksraad_events.10.a #reuse same loc
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 1.2
+				INS = {
+					has_completed_focus = INS_realign_supply_chains
+				}
+			}
+			modifier = {
+				factor = 1.2
+				INS = {
+					has_completed_focus = INS_prioritize_dutch_companies
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 5
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 10
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 15
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 20
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_integrated_puppet
+						has_autonomy_state = autonomy_puppet
+					}
+				}
+			}
+			modifier = {
+				factor = 0.8
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_colony
+					}
+				}
+			}
+			modifier = {
+				factor = 0.5
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_dominion
+					}
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					is_ai = no #fun
+				}
+			}
+		}
+		INS = {
+			country_event = {
+				id = INS_volksraad_events.51
+				hours = 6
+			}
+			effect_tooltip = { indonesia_volksraad_equal_education_effect = yes }
+		}
+	}
+	
+	# Deny
+	option = {
+		name = INS_volksraad_events.10.b #reuse same loc
+		ai_chance = {
+			base = 2
+			modifier = {
+				factor = 1.5
+				INS = {
+					has_completed_focus = INS_first_come_first_serve
+				}
+			}
+			modifier = {
+				factor = 1.5
+				INS = {
+					has_completed_focus = INS_increased_trade_with_japan
+				}
+			}
+			modifier = {
+				factor = 1.5
+				has_completed_focus = INSHOL_urge_gov_veto
+			}
+			modifier = {
+				factor = 10
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+					has_autonomy_state = autonomy_colony
+				}
+			}
+			modifier = {
+				factor = 3
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+					has_autonomy_state = autonomy_dominion
+				}
+			}
+		}
+		INS = {
+			country_event = {
+				id = INS_volksraad_events.3
+				hours = 6
+			}
+		}
+		effect_tooltip = { indonesia_volksraad_reject_50_effect = yes }
+		hidden_effect = { HOL = { add_political_power = -50 } } #Dutch PP changes happen for Dutch-event, Indonesian PP changes happen for Indonesian event. Scripted effect should always be an effect tooltip
+	}
+}
 
+# INS: Accepted
+country_event = {
+	id = INS_volksraad_events.51
+	title = INS_volksraad_events.51.t
+	desc = INS_volksraad_events.51.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_volksraad_events.11.a #reuse same loc
+		ai_chance = {
+			base = 10
+		}
+		indonesia_volksraad_equal_education_effect = yes
+	}
+}
 
 # HOL: Indonesia requests Volksraad Law: INS_volksraad_knil_rank_limit
 country_event = {
@@ -1632,9 +1815,333 @@ country_event = {
 	}
 }
 
+# HOL: Indonesia requests Volksraad Law: INS_volksraad_legalize_nationalist_movements
+country_event = {
+	id = INS_volksraad_events.80
+	title = INS_volksraad_events.80.t
+	desc = INS_volksraad_events.80.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Allow
+	option = {
+		name = INS_volksraad_events.10.a #reuse same loc
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 1.2
+				INS = {
+					has_completed_focus = INS_realign_supply_chains
+				}
+			}
+			modifier = {
+				factor = 1.2
+				INS = {
+					has_completed_focus = INS_prioritize_dutch_companies
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 5
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 10
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 15
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 20
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_integrated_puppet
+						has_autonomy_state = autonomy_puppet
+					}
+				}
+			}
+			modifier = {
+				factor = 0.8
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_colony
+					}
+				}
+			}
+			modifier = {
+				factor = 0.5
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_dominion
+					}
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					is_ai = no #fun
+				}
+			}
+		}
+		INS = {
+			country_event = {
+				id = INS_volksraad_events.81
+				hours = 6
+			}
+			effect_tooltip = { indonesia_volksraad_legalize_nationalist_movements_effect = yes }
+		}
+	}
+	
+	# Deny
+	option = {
+		name = INS_volksraad_events.10.b #reuse same loc
+		ai_chance = {
+			base = 2
+			modifier = {
+				factor = 1.5
+				INS = {
+					has_completed_focus = INS_first_come_first_serve
+				}
+			}
+			modifier = {
+				factor = 1.5
+				INS = {
+					has_completed_focus = INS_increased_trade_with_japan
+				}
+			}
+			modifier = {
+				factor = 1.5
+				has_completed_focus = INSHOL_urge_gov_veto
+			}
+			modifier = {
+				factor = 10
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+					has_autonomy_state = autonomy_colony
+				}
+			}
+			modifier = {
+				factor = 3
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+					has_autonomy_state = autonomy_dominion
+				}
+			}
+		}
+		INS = {
+			country_event = {
+				id = INS_volksraad_events.3
+				hours = 6
+			}
+		}
+		effect_tooltip = { indonesia_volksraad_reject_50_effect = yes }
+		hidden_effect = { HOL = { add_political_power = -50 } } #Dutch PP changes happen for Dutch-event, Indonesian PP changes happen for Indonesian event. Scripted effect should always be an effect tooltip
+	}
+}
 
+# INS: Accepted
+country_event = {
+	id = INS_volksraad_events.81
+	title = INS_volksraad_events.81.t
+	desc = INS_volksraad_events.81.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_volksraad_events.11.a #reuse same loc
+		ai_chance = {
+			base = 10
+		}
+		indonesia_volksraad_legalize_nationalist_movements_effect = yes
+	}
+}
 
+# HOL: Indonesia requests Volksraad Law: INS_volksraad_democratic_volksraad
+country_event = {
+	id = INS_volksraad_events.90
+	title = INS_volksraad_events.90.t
+	desc = INS_volksraad_events.90.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Allow
+	option = {
+		name = INS_volksraad_events.10.a #reuse same loc
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 1.2
+				INS = {
+					has_completed_focus = INS_realign_supply_chains
+				}
+			}
+			modifier = {
+				factor = 1.2
+				INS = {
+					has_completed_focus = INS_prioritize_dutch_companies
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 5
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 10
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 15
+				}
+			}
+			modifier = {
+				add = 2
+				INS = {
+					num_of_factories > 20
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_integrated_puppet
+						has_autonomy_state = autonomy_puppet
+					}
+				}
+			}
+			modifier = {
+				factor = 0.8
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_colony
+					}
+				}
+			}
+			modifier = {
+				factor = 0.5
+				INS = {
+					OR = {
+						has_autonomy_state = autonomy_dominion
+					}
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					is_ai = no #fun
+				}
+			}
+		}
+		INS = {
+			country_event = {
+				id = INS_volksraad_events.91
+				hours = 6
+			}
+			effect_tooltip = { indonesia_volksraad_democratic_volksraad_effect = yes }
+		}
+	}
+	
+	# Deny
+	option = {
+		name = INS_volksraad_events.10.b #reuse same loc
+		ai_chance = {
+			base = 2
+			modifier = {
+				factor = 1.5
+				INS = {
+					has_completed_focus = INS_first_come_first_serve
+				}
+			}
+			modifier = {
+				factor = 1.5
+				INS = {
+					has_completed_focus = INS_increased_trade_with_japan
+				}
+			}
+			modifier = {
+				factor = 1.5
+				has_completed_focus = INSHOL_urge_gov_veto
+			}
+			modifier = {
+				factor = 10
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+				}
+			}
+			modifier = {
+				factor = 2
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+					has_autonomy_state = autonomy_colony
+				}
+			}
+			modifier = {
+				factor = 3
+				INS = {
+					is_ai = yes
+					is_historical_focus_on = yes
+					has_autonomy_state = autonomy_dominion
+				}
+			}
+		}
+		INS = {
+			country_event = {
+				id = INS_volksraad_events.3
+				hours = 6
+			}
+		}
+		effect_tooltip = { indonesia_volksraad_reject_50_effect = yes }
+		hidden_effect = { HOL = { add_political_power = -50 } } #Dutch PP changes happen for Dutch-event, Indonesian PP changes happen for Indonesian event. Scripted effect should always be an effect tooltip
+	}
+}
 
+# INS: Accepted
+country_event = {
+	id = INS_volksraad_events.91
+	title = INS_volksraad_events.91.t
+	desc = INS_volksraad_events.91.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_volksraad_events.11.a #reuse same loc
+		ai_chance = {
+			base = 10
+		}
+		indonesia_volksraad_democratic_volksraad_effect = yes
+	}
+}
 
 # HOL: Indonesia requests Volksraad Law: INS_volksraad_education_subsidies_for_indonesians
 country_event = {
@@ -2009,9 +2516,116 @@ country_event = {
 	}
 }
 
+# INS: HOL requests exile
+country_event = {
+	id = INS_union_events.1
+	title = INS_union_events.1.t
+	desc = INS_union_events.1.desc
+	picture = GFX_report_event_generic_sign_treaty3
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_union_events.1.a
+		ai_chance = {
+			base = 10
+			modifier = {
+				factor = 0.9
+				surrender_progress > 0
+			}
+			modifier = {
+				factor = 0.75
+				surrender_progress > 0.25
+			}
+			modifier = {
+				factor = 0.5
+				surrender_progress > 0.5
+			}
+			modifier = {
+				factor = 2
+				has_war_with = JAP
+			}
+			modifier = {
+				factor = 3
+				has_autonomy_state = autonomy_integrated_puppet
+			}
+			modifier = {
+				factor = 3
+				has_autonomy_state = autonomy_puppet
+			}
+		}
+		HOL = {
+			country_event = {
+				id = INS_union_events.2
+				hours = 12
+			}
+		}
+		effect_tooltip = {
+			indonesia_hol_exile_effect = yes
+		}
+		INS = {
+			set_country_flag = INS_exile_accepted_flag
+		}
+	}
 
+	# No
+	option = {
+		name = INS_union_events.1.b
+		ai_chance = {
+			base = 5
+		}
+		HOL = {
+			country_event = {
+				id = INS_union_events.3
+				hours = 12
+			}
+		}
+	}
+}
 
+# HOL: accepted
+country_event = {
+	id = INS_union_events.2
+	title = INS_union_events.2.t
+	desc = INS_union_events.2.desc
+	picture = GFX_report_event_generic_sign_treaty2
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_union_events.2.a
+		indonesia_hol_exile_effect = yes
+	}
+}
 
+# HOL: rejected
+country_event = {
+	id = INS_union_events.3
+	title = INS_union_events.3.t
+	desc = INS_union_events.3.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_union_events.3.a
+	}
+}
+
+# INS: army relocated
+country_event = {
+	id = INS_union_events.4
+	title = INS_union_events.4.t
+	desc = INS_union_events.4.desc
+	picture = GFX_report_event_generic_sign_treaty3
+	is_triggered_only = yes
+	
+	# Ok
+	option = {
+		name = INS_union_events.4.a
+		custom_effect_tooltip = INS_army_located_tt
+	}
+}
 
 # HOL: INS does union
 country_event = {
@@ -3165,8 +3779,76 @@ country_event = {
 	}
 }
 
+# JAP: Indonesia offers resource rights
+country_event = {
+	id = INS_industrial_events.1
+	title = INS_industrial_events.1.t
+	desc = INS_industrial_events.1.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
 
+	# hell yeah
+	option = {
+		name = INS_industrial_events.1.a
 
+		ai_chance = {
+			base = 10
+		}
+
+		indonesia_give_jap_resource_rights_effect = yes
+		FROM = {
+			country_event = {
+				id = INS_industrial_events.2
+				hours = 8
+			}
+		}
+	}
+
+	# nuh uh
+	option = {
+		name = INS_industrial_events.1.b
+
+		ai_chance = {
+			base = 0
+		}
+
+		FROM = {
+			country_event = {
+				id = INS_industrial_events.3
+				hours = 8
+			}
+		}
+	}
+}
+
+# INS: japan said yes
+country_event = {
+	id = INS_industrial_events.2
+	title = INS_industrial_events.2.t
+	desc = INS_industrial_events.2.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.2.a
+		effect_tooltip = {
+			indonesia_give_jap_resource_rights_effect = yes
+		}
+	}
+}
+
+# INS: japan said no
+country_event = {
+	id = INS_industrial_events.3
+	title = INS_industrial_events.3.t
+	desc = INS_industrial_events.3.desc
+	picture = GFX_report_event_generic_sign_treaty1
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.3.a
+	}
+}
 
 # INS: Select resource
 country_event = {
@@ -3616,9 +4298,57 @@ country_event = {
 	}
 }
 
+# Refund 4 Oil
+country_event = {
+	id = INS_industrial_events.7
+	hidden = yes
+	is_triggered_only = yes
 
+	option = {
+		name = INS_industrial_events.7.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -4 tooltip = country_resource_cost_oil_tt }
+	}
+}
 
+# Refund 8 Oil
+country_event = {
+	id = INS_industrial_events.8
+	hidden = yes
+	is_triggered_only = yes
 
+	option = {
+		name = INS_industrial_events.8.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -8 tooltip = country_resource_cost_oil_tt }
+	}
+}
+
+# Refund 12 Oil
+country_event = {
+	id = INS_industrial_events.9
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.9.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -12 tooltip = country_resource_cost_oil_tt }
+	}
+}
+
+# Refund 16 Oil
+country_event = {
+	id = INS_industrial_events.10
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.10.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -16 tooltip = country_resource_cost_oil_tt }
+	}
+}
 
 # Refund 24 Oil
 country_event = {
@@ -3659,11 +4389,83 @@ country_event = {
 	}
 }
 
+# Refund 60 Oil
+country_event = {
+	id = INS_industrial_events.14
+	hidden = yes
+	is_triggered_only = yes
 
+	option = {
+		name = INS_industrial_events.14.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -60 tooltip = country_resource_cost_oil_tt }
+	}
+}
 
+# Refund 90 Oil
+country_event = {
+	id = INS_industrial_events.15
+	hidden = yes
+	is_triggered_only = yes
 
+	option = {
+		name = INS_industrial_events.15.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -90 tooltip = country_resource_cost_oil_tt }
+	}
+}
 
+# Refund 120 Oil
+country_event = {
+	id = INS_industrial_events.16
+	hidden = yes
+	is_triggered_only = yes
 
+	option = {
+		name = INS_industrial_events.16.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_oil value = -120 tooltip = country_resource_cost_oil_tt }
+	}
+}
+
+# Refund 4 Rubber
+country_event = {
+	id = INS_industrial_events.17
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.17.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_rubber value = -4 tooltip = country_resource_cost_rubber_tt }
+	}
+}
+
+# Refund 8 Rubber
+country_event = {
+	id = INS_industrial_events.18
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.18.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_rubber value = -8 tooltip = country_resource_cost_rubber_tt }
+	}
+}
+
+# Refund 12 Rubber
+country_event = {
+	id = INS_industrial_events.19
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.19.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_rubber value = -12 tooltip = country_resource_cost_rubber_tt }
+	}
+}
 
 # Refund 16 Rubber
 country_event = {
@@ -3717,6 +4519,18 @@ country_event = {
 	}
 }
 
+# Refund 60 Rubber
+country_event = {
+	id = INS_industrial_events.24
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.24.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_rubber value = -60 tooltip = country_resource_cost_rubber_tt }
+	}
+}
 
 # Refund 90 Rubber
 country_event = {
@@ -3731,6 +4545,18 @@ country_event = {
 	}
 }
 
+# Refund 120 Rubber
+country_event = {
+	id = INS_industrial_events.26
+	hidden = yes
+	is_triggered_only = yes
+
+	option = {
+		name = INS_industrial_events.26.a
+		custom_effect_tooltip = INS_great_depression_tt
+		add_to_variable = { var = INS_great_depression_country_resource_cost_rubber value = -120 tooltip = country_resource_cost_rubber_tt }
+	}
+}
 
 # Tin Mining Effects
 country_event = {

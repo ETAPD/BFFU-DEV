@@ -249,6 +249,15 @@ idea_RAJ_agrarian_society = {
 	mobilization_speed = RAJ_agrarian_society_mobilization_speed
 }
 
+#Added on states if invaded
+idea_RAJ_resistant_to_occupation = {
+	icon = GFX_modifiers_FIN_weapon_caches
+	compliance_growth = -0.25
+	local_manpower = -0.33
+	remove_trigger = {	
+		CONTROLLER = { is_raj_or_raj_inheritor = yes } 	
+	}
+}
 
 idea_RAJ_sikh_approval = {
 	icon = GFX_modifiers_RAJ_sikh_approval
@@ -308,8 +317,44 @@ idea_RAJ_indian_railways = {
 	stability_factor = RAJ_indian_railway_stability_factor
 }
 
+idea_RAJ_funded_by_princely_states = {
+	icon = GFX_idea_generic_improved_industries
+	production_speed_industrial_complex_factor = RAJ_hindu_mahasabha_released
+}
 
+idea_RAJ_mughal_influence = {
+	icon = GFX_modifiers_RAJ_mughal_influence
+	local_building_slots_factor = 0.35 
+	local_manpower = 1.25
+	army_core_defence_factor = 0.15
 
+	remove_trigger = {
+		CONTROLLER = { NOT = { is_raj_or_raj_inheritor = yes } }
+	}
+}
+
+idea_RAJ_five_year_plan = {
+	icon = GFX_idea_man_five_year_plan_industry
+	stability_factor = RAJ_fyp_stability_factor
+	production_speed_buildings_factor = RAJ_fyp_production_speed_buildings_factor
+	consumer_goods_factor = RAJ_fyp_consumer_goods_factor
+	research_speed_factor = RAJ_fyp_research_speed_factor
+	production_speed_industrial_complex_factor = RAJ_fyp_production_speed_industrial_complex_factor
+	production_speed_arms_factory_factor = RAJ_fyp_production_speed_arms_factory_factor
+	production_speed_dockyard_factor = RAJ_fyp_production_speed_dockyard_factor
+	production_factory_efficiency_gain_factor = RAJ_fyp_production_factory_efficiency_gain_factor
+	production_factory_max_efficiency_factor = RAJ_fyp_production_factory_max_efficiency_factor
+	local_resources_factor = RAJ_fyp_local_resources_factor
+	production_lack_of_resource_penalty_factor = RAJ_fyp_production_lack_of_resource_penalty_factor
+	
+	line_change_production_efficiency_factor = RAJ_fyp_line_change_production_efficiency_factor
+	production_factory_start_efficiency_factor = RAJ_fyp_production_factory_start_efficiency_factor
+	industry_air_damage_factor = RAJ_fyp_industry_air_damage_factor
+	global_building_slots_factor = RAJ_fyp_global_building_slots_factor
+	industrial_capacity_factory = RAJ_fyp_industrial_capacity_factory
+	compliance_growth = RAJ_fyp_compliance_growth
+	supply_consumption_factor = RAJ_fyp_supply_consumption_factor
+}
 
 
 # RAJ Loyalist Branch
@@ -524,7 +569,34 @@ idea_RAJ_famine_country = {
 	war_support_factor = RAJ_famine_stability_factor #scale the same as stab
 }
 
+idea_RAJ_epidemic = {
+	icon = GFX_modifiers_RAJ_famine_state
 
+	remove_trigger = {
+		owner = {
+			NOT = {
+				original_tag = RAJ
+				is_subject_of = RAJ 
+			}
+		}
+	}
+	
+	political_power_factor = RAJ_famine_political_power_factor
+	stability_factor = RAJ_famine_stability_factor
+}
+
+idea_RAJ_war_taxes = {
+	icon = GFX_idea_RAJ_taxes
+	production_speed_arms_factory_factor = RAJ_war_taxes_mil
+	war_support_factor = RAJ_war_taxes_war_support
+	stability_factor = RAJ_war_taxes_stability
+
+	remove_trigger = {
+		ROOT = {
+			has_war = no
+		}
+	}
+}
 
 idea_RAJ_aden_treaty_port = {
 	enable = { always = yes }
@@ -542,7 +614,20 @@ idea_RAJ_aden_treaty_port = {
 	resistance_target = -0.15
 }
 
+idea_RAJ_eic_taxes = {
+	enable = { always = yes }
 
+	icon = GFX_idea_RAJ_taxes	
+	consumer_goods_factor = RAJ_eic_taxes_consumer_goods
+}
+
+idea_RAJ_eic_dividends_investment = {
+	enable = { always = yes }
+
+	icon = GFX_idea_RAJ_issue_bonds_on_the_stock_market	
+	production_factory_max_efficiency_factor = RAJ_eic_dividends_investment_efficiency_max
+	production_speed_buildings_factor =  RAJ_eic_dividends_investment_building_speed
+}
 
 PER_stand_with_giants_modifier = {
 	enable = { always = yes }
@@ -584,6 +669,25 @@ KUR_resistance_modifier = {
 	local_resources_factor = -0.5
 }
 
+IRQ_shia_resistance_modifier = {
+	enable = { always = yes }
+	icon = GFX_modifiers_tur_traditionalist_insurgency	
+
+	remove_trigger = {
+		ROOT = {
+			OWNER = {
+				NOT = {
+					original_tag = IRQ 
+				} 
+			}
+		}
+	}
+
+	local_manpower = -0.35 
+	state_production_speed_buildings_factor = -0.15
+	disable_strategic_redeployment = 1
+
+}
 
 PER_resistance_modifier = {
 	enable = { always = yes }
@@ -637,15 +741,247 @@ PER_special_units_division_idea = {
 
 #### IRAQ ####
 
+IRQ_royal_army_modifier = { #This will be obsolete but removing the id will mess up save games?
+	enable = { always = yes }
+	icon = GFX_IRQ_royal_army_modifier	
+	experience_gain_army_factor = IRQ_experience_gain_army_factor
+	army_org_factor = IRQ_army_org_factor
+	army_core_defence_factor = IRQ_army_core_defence_factor
+	army_core_attack_factor = IRQ_army_core_attack_factor
+	army_armor_defence_factor = IRQ_army_armor_defence_factor
+	army_armor_attack_factor = IRQ_army_armor_attack_factor
+	army_artillery_attack_factor = IRQ_army_artillery_attack_factor
+	army_artillery_defence_factor = IRQ_army_artillery_defence_factor
+	conscription_factor = IRQ_conscription_factor
+	training_time_factor = IRQ_training_time_factor
+	conscription = IRQ_conscription
+	army_defence_factor = IRQ_army_defence_factor
+	army_attack_factor = IRQ_army_attack_factor
+	special_forces_cap = IRQ_special_forces_cap
+	special_forces_out_of_supply_factor = IRQ_special_forces_out_of_supply_factor
+	extra_marine_supply_grace = IRQ_extra_marine_supply_grace
+	max_planning_factor = IRQ_max_planning_factor
+	planning_speed = IRQ_planning_speed
+	max_command_power_mult = IRQ_max_command_power_mult
+	command_power_gain_mult = IRQ_command_power_gain_mult
+	acclimatization_cold_climate_gain_factor = IRQ_acclimatization_cold_climate_gain_factor
+	acclimatization_hot_climate_gain_factor = IRQ_acclimatization_hot_climate_gain_factor
+	motorized_attack_factor = IRQ_motorized_attack_factor
+	mechanized_attack_factor = IRQ_mechanized_attack_factor
+	modifier_army_sub_unit_cavalry_attack_factor = IRQ_modifier_army_sub_unit_cavalry_attack_factor
+	modifier_army_sub_unit_cavalry_defence_factor = IRQ_modifier_army_sub_unit_cavalry_defence_factor
+	modifier_army_sub_unit_cavalry_speed_factor = IRQ_modifier_army_sub_unit_cavalry_speed_factor
+}
 
+IRQ_royal_army_modifier_IRQ = { #This is for the name only, no scripted loc for ideas
+	enable = { always = yes }
+	icon = GFX_IRQ_royal_army_modifier	
+	experience_gain_army_factor = IRQ_experience_gain_army_factor
+	army_org_factor = IRQ_army_org_factor
+	army_core_defence_factor = IRQ_army_core_defence_factor
+	army_core_attack_factor = IRQ_army_core_attack_factor
+	army_armor_defence_factor = IRQ_army_armor_defence_factor
+	army_armor_attack_factor = IRQ_army_armor_attack_factor
+	army_artillery_attack_factor = IRQ_army_artillery_attack_factor
+	army_artillery_defence_factor = IRQ_army_artillery_defence_factor
+	conscription_factor = IRQ_conscription_factor
+	training_time_factor = IRQ_training_time_factor
+	conscription = IRQ_conscription
+	army_defence_factor = IRQ_army_defence_factor
+	army_attack_factor = IRQ_army_attack_factor
+	special_forces_cap = IRQ_special_forces_cap
+	special_forces_out_of_supply_factor = IRQ_special_forces_out_of_supply_factor
+	extra_marine_supply_grace = IRQ_extra_marine_supply_grace
+	max_planning_factor = IRQ_max_planning_factor
+	planning_speed = IRQ_planning_speed
+	max_command_power_mult = IRQ_max_command_power_mult
+	command_power_gain_mult = IRQ_command_power_gain_mult
+	acclimatization_cold_climate_gain_factor = IRQ_acclimatization_cold_climate_gain_factor
+	acclimatization_hot_climate_gain_factor = IRQ_acclimatization_hot_climate_gain_factor
+	motorized_attack_factor = IRQ_motorized_attack_factor
+	mechanized_attack_factor = IRQ_mechanized_attack_factor
+	modifier_army_sub_unit_cavalry_attack_factor = IRQ_modifier_army_sub_unit_cavalry_attack_factor
+	modifier_army_sub_unit_cavalry_defence_factor = IRQ_modifier_army_sub_unit_cavalry_defence_factor
+	modifier_army_sub_unit_cavalry_speed_factor = IRQ_modifier_army_sub_unit_cavalry_speed_factor
+}
 
+IRQ_royal_army_modifier_KUR = { #This is for the name only, no scripted loc for ideas
+	enable = { always = yes }
+	icon = GFX_IRQ_royal_army_modifier	
+	experience_gain_army_factor = IRQ_experience_gain_army_factor
+	army_org_factor = IRQ_army_org_factor
+	army_core_defence_factor = IRQ_army_core_defence_factor
+	army_core_attack_factor = IRQ_army_core_attack_factor
+	army_armor_defence_factor = IRQ_army_armor_defence_factor
+	army_armor_attack_factor = IRQ_army_armor_attack_factor
+	army_artillery_attack_factor = IRQ_army_artillery_attack_factor
+	army_artillery_defence_factor = IRQ_army_artillery_defence_factor
+	conscription_factor = IRQ_conscription_factor
+	training_time_factor = IRQ_training_time_factor
+	conscription = IRQ_conscription
+	army_defence_factor = IRQ_army_defence_factor
+	army_attack_factor = IRQ_army_attack_factor
+	special_forces_cap = IRQ_special_forces_cap
+	special_forces_out_of_supply_factor = IRQ_special_forces_out_of_supply_factor
+	extra_marine_supply_grace = IRQ_extra_marine_supply_grace
+	max_planning_factor = IRQ_max_planning_factor
+	planning_speed = IRQ_planning_speed
+	max_command_power_mult = IRQ_max_command_power_mult
+	command_power_gain_mult = IRQ_command_power_gain_mult
+	acclimatization_cold_climate_gain_factor = IRQ_acclimatization_cold_climate_gain_factor
+	acclimatization_hot_climate_gain_factor = IRQ_acclimatization_hot_climate_gain_factor
+	motorized_attack_factor = IRQ_motorized_attack_factor
+	mechanized_attack_factor = IRQ_mechanized_attack_factor
+	modifier_army_sub_unit_cavalry_attack_factor = IRQ_modifier_army_sub_unit_cavalry_attack_factor
+	modifier_army_sub_unit_cavalry_defence_factor = IRQ_modifier_army_sub_unit_cavalry_defence_factor
+	modifier_army_sub_unit_cavalry_speed_factor = IRQ_modifier_army_sub_unit_cavalry_speed_factor
+}
 
+IRQ_air_force_modifier = { #This will be obsolete but removing the id will mess up save games?
+	enable = { always = yes }
+	icon = GFX_IRQ_air_force_modifier	
+	air_accidents_factor = IRQ_air_accidents_factor
+	air_ace_generation_chance_factor = IRQ_air_ace_generation_chance_factor
+	air_weather_penalty = IRQ_air_weather_penalty
+	air_training_xp_gain_factor = IRQ_air_training_xp_gain_factor
+	air_manpower_requirement_factor = IRQ_air_manpower_requirement_factor
+	air_agility_factor = IRQ_air_agility_factor
+	air_nav_efficiency = IRQ_air_nav_efficiency
+	air_cas_efficiency = IRQ_air_cas_efficiency
+	air_strategic_bomber_bombing_factor = IRQ_air_strategic_bomber_bombing_factor
+	air_range_factor = IRQ_air_range_factor
+	air_fuel_consumption_factor = IRQ_air_fuel_consumption_factor
+	air_superiority_efficiency = IRQ_air_superiority_efficiency
+}
 
+IRQ_air_force_modifier_IRQ = { #This is for the name only, no scripted loc for ideas
+	enable = { always = yes }
+	icon = GFX_IRQ_air_force_modifier	
+	air_accidents_factor = IRQ_air_accidents_factor
+	air_ace_generation_chance_factor = IRQ_air_ace_generation_chance_factor
+	air_weather_penalty = IRQ_air_weather_penalty
+	air_training_xp_gain_factor = IRQ_air_training_xp_gain_factor
+	air_manpower_requirement_factor = IRQ_air_manpower_requirement_factor
+	air_agility_factor = IRQ_air_agility_factor
+	air_nav_efficiency = IRQ_air_nav_efficiency
+	air_cas_efficiency = IRQ_air_cas_efficiency
+	air_strategic_bomber_bombing_factor = IRQ_air_strategic_bomber_bombing_factor
+	air_range_factor = IRQ_air_range_factor
+	air_fuel_consumption_factor = IRQ_air_fuel_consumption_factor
+	air_superiority_efficiency = IRQ_air_superiority_efficiency
+}
 
+IRQ_air_force_modifier_KUR = { #This is for the name only, no scripted loc for ideas
+	enable = { always = yes }
+	icon = GFX_IRQ_air_force_modifier	
+	air_accidents_factor = IRQ_air_accidents_factor
+	air_ace_generation_chance_factor = IRQ_air_ace_generation_chance_factor
+	air_weather_penalty = IRQ_air_weather_penalty
+	air_training_xp_gain_factor = IRQ_air_training_xp_gain_factor
+	air_manpower_requirement_factor = IRQ_air_manpower_requirement_factor
+	air_agility_factor = IRQ_air_agility_factor
+	air_nav_efficiency = IRQ_air_nav_efficiency
+	air_cas_efficiency = IRQ_air_cas_efficiency
+	air_strategic_bomber_bombing_factor = IRQ_air_strategic_bomber_bombing_factor
+	air_range_factor = IRQ_air_range_factor
+	air_fuel_consumption_factor = IRQ_air_fuel_consumption_factor
+	air_superiority_efficiency = IRQ_air_superiority_efficiency
+}
 
+IRQ_navy_modifier = { #This will be obsolete but removing the id will mess up save games?
+	enable = { always = yes }
+	icon = GFX_IRQ_navy_modifier
+	refit_speed = IRQ_navy_refit_speed
+	repair_speed_factor = IRQ_navy_repair_speed_factor
+	experience_gain_navy_factor = IRQ_experience_gain_navy
+	mines_planting_by_fleets_factor = IRQ_mines_planting_by_fleets_factor
+	navy_anti_air_attack_factor = IRQ_navy_anti_air_attack_factor
+	navy_spirit_category_type_cost_factor = IRQ_navy_spirit_category_type_cost_factor
+	convoy_retreat_speed = IRQ_convoy_retreat_speed
+	spotting_chance = IRQ_spotting_chance	
+	production_speed_dockyard_factor = IRQ_production_speed_dockyard_factor
+	industrial_capacity_dockyard = IRQ_industrial_capacity_dockyard
+	extra_marine_supply_grace = IRQ_extra_marine_supply_grace
+	naval_invasion_capacity = IRQ_naval_invasion_capacity
+	naval_mines_effect_reduction = IRQ_naval_mines_effect_reduction
+	experience_gain_navy_unit_factor = IRQ_experience_gain_navy_unit_factor
+	naval_coordination = IRQ_naval_coordination
+	naval_equipment_upgrade_xp_cost = IRQ_naval_equipment_upgrade_xp_cost
+	naval_morale_factor = IRQ_naval_morale_factor
+	screening_efficiency = IRQ_screening_efficiency
+	convoy_escort_efficiency = IRQ_convoy_escort_efficiency
+	navy_capital_ship_defence_factor = IRQ_navy_capital_ship_defence_factor
+	naval_accidents_chance = IRQ_naval_accidents_chance
+	navy_screen_defence_factor = IRQ_navy_screen_defence_factor
+	production_speed_coastal_bunker_factor = IRQ_production_speed_coastal_bunker_factor
+}
 
+IRQ_navy_modifier_IRQ = { #This is for the name only, no scripted loc for ideas
+	enable = { always = yes }
+	icon = GFX_IRQ_navy_modifier
+	refit_speed = IRQ_navy_refit_speed
+	repair_speed_factor = IRQ_navy_repair_speed_factor
+	experience_gain_navy_factor = IRQ_experience_gain_navy
+	mines_planting_by_fleets_factor = IRQ_mines_planting_by_fleets_factor
+	navy_anti_air_attack_factor = IRQ_navy_anti_air_attack_factor
+	navy_spirit_category_type_cost_factor = IRQ_navy_spirit_category_type_cost_factor
+	convoy_retreat_speed = IRQ_convoy_retreat_speed
+	spotting_chance = IRQ_spotting_chance	
+	production_speed_dockyard_factor = IRQ_production_speed_dockyard_factor
+	industrial_capacity_dockyard = IRQ_industrial_capacity_dockyard
+	extra_marine_supply_grace = IRQ_extra_marine_supply_grace
+	naval_invasion_capacity = IRQ_naval_invasion_capacity
+	naval_mines_effect_reduction = IRQ_naval_mines_effect_reduction
+	experience_gain_navy_unit_factor = IRQ_experience_gain_navy_unit_factor
+	naval_coordination = IRQ_naval_coordination
+	naval_equipment_upgrade_xp_cost = IRQ_naval_equipment_upgrade_xp_cost
+	naval_morale_factor = IRQ_naval_morale_factor
+	screening_efficiency = IRQ_screening_efficiency
+	convoy_escort_efficiency = IRQ_convoy_escort_efficiency
+	navy_capital_ship_defence_factor = IRQ_navy_capital_ship_defence_factor
+	naval_accidents_chance = IRQ_naval_accidents_chance
+	navy_screen_defence_factor = IRQ_navy_screen_defence_factor
+	production_speed_coastal_bunker_factor = IRQ_production_speed_coastal_bunker_factor
+}
 
+IRQ_navy_modifier_KUR = { #This is for the name only, no scripted loc for ideas
+	enable = { always = yes }
+	icon = GFX_IRQ_navy_modifier
+	refit_speed = IRQ_navy_refit_speed
+	repair_speed_factor = IRQ_navy_repair_speed_factor
+	experience_gain_navy_factor = IRQ_experience_gain_navy
+	mines_planting_by_fleets_factor = IRQ_mines_planting_by_fleets_factor
+	navy_anti_air_attack_factor = IRQ_navy_anti_air_attack_factor
+	navy_spirit_category_type_cost_factor = IRQ_navy_spirit_category_type_cost_factor
+	convoy_retreat_speed = IRQ_convoy_retreat_speed
+	spotting_chance = IRQ_spotting_chance	
+	production_speed_dockyard_factor = IRQ_production_speed_dockyard_factor
+	industrial_capacity_dockyard = IRQ_industrial_capacity_dockyard
+	extra_marine_supply_grace = IRQ_extra_marine_supply_grace
+	naval_invasion_capacity = IRQ_naval_invasion_capacity
+	naval_mines_effect_reduction = IRQ_naval_mines_effect_reduction
+	experience_gain_navy_unit_factor = IRQ_experience_gain_navy_unit_factor
+	naval_coordination = IRQ_naval_coordination
+	naval_equipment_upgrade_xp_cost = IRQ_naval_equipment_upgrade_xp_cost
+	naval_morale_factor = IRQ_naval_morale_factor
+	screening_efficiency = IRQ_screening_efficiency
+	convoy_escort_efficiency = IRQ_convoy_escort_efficiency
+	navy_capital_ship_defence_factor = IRQ_navy_capital_ship_defence_factor
+	naval_accidents_chance = IRQ_naval_accidents_chance
+	navy_screen_defence_factor = IRQ_navy_screen_defence_factor
+	production_speed_coastal_bunker_factor = IRQ_production_speed_coastal_bunker_factor
+}
 
+IRQ_river_navy = { #STATE MODIFIER
+	remove_trigger = { 
+		IRQ = { has_capitulated = yes } 
+	}
+	icon = GFX_MODIFIER_NAVAL_INVASION_DIVISION_CAP
+	army_core_defence_factor = 0.1
+	resistance_target = 0.1
+	resistance_growth_on_our_occupied_states = 0.15
+	resistance_damage_to_garrison_on_our_occupied_states = 0.1
+}
 
 SSB_saadabad_pact = {
 	enable = { always = yes }
@@ -678,4 +1014,18 @@ SSB_saadabad_pact = {
 	political_power_factor = SSB_political_power_factor
 
 	agency_upgrade_time = SSB_agency_upgrade_time
+}
+idea_RAJ_rural_development = {
+	icon = GFX_modifiers_SOV_civilian_labor_in_defense
+	state_resources_factor = 0.15
+	state_production_speed_buildings_factor = 0.15
+	local_building_slots = 2
+}
+
+idea_RAJ_large_scale_urbanization = {
+	icon = GFX_modifiers_generic_construction
+	local_manpower = 0.15
+	local_supplies = 0.2
+	state_production_speed_buildings_factor = 0.25
+	global_building_slots_factor = 0.25
 }
