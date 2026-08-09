@@ -229,6 +229,14 @@ indonesia_transfer_ATJ = {
 	}
 }
 
+indonesia_princely_advisors_effect = { #WARNING: DO NOT USE THIS FOR TOOLTIPS!! Only ever use this effect when necessary, and do not just make an effect_tooltip to show its effects. This one can get quite laggy as it may need to search through every country many times
+	indonesia_transfer_POK = yes
+	indonesia_transfer_TNE = yes
+	indonesia_transfer_GOW = yes
+	indonesia_transfer_SSI = yes
+	indonesia_transfer_BLI = yes
+	indonesia_transfer_ATJ = yes
+}
 
 indonesia_princely_advisors_effect_no_atjeh = { #WARNING: DO NOT USE THIS FOR TOOLTIPS!! Only ever use this effect when necessary, and do not just make an effect_tooltip to show its effects. This one can get quite laggy as it may need to search through every country many times
 	indonesia_transfer_POK = yes
@@ -724,6 +732,20 @@ indonesia_volksraad_official_flag_effect = {
 	custom_effect_tooltip = indonesia_volksraad_official_flag_effect_tt
 }
 
+indonesia_volksraad_abolish_veto_right_effect = {
+	clr_country_flag = INS_is_taking_volksraad
+	set_country_flag = indonesia_volksraad_passed_13
+	add_to_variable = { INS_volksraad_counter = 1 }
+	add_autonomy_score = { 
+		value = 250
+		localization = INS_autonomy_no_veto
+	}
+
+	set_country_flag = {
+		flag = INS_governor_veto_available
+		value = 0
+	}
+}
 
 indonesia_volksraad_reject_25_effect = {
 	HOL = {
@@ -1220,9 +1242,137 @@ indonesia_union_INS_START_effect = {
 	}
 }
 
+indonesia_revolutionary_strength_tt_effect = {
+	if = {
+		limit = {
+			check_variable = {
+				FROM.influence_point_count = 0
+			}
+		}
+		custom_effect_tooltip = INS_current_revolution_strength_0_tt
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				FROM.influence_point_count = 1
+			}
+		}
+		custom_effect_tooltip = INS_current_revolution_strength_1_tt
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				FROM.influence_point_count = 2
+			}
+		}
+		custom_effect_tooltip = INS_current_revolution_strength_2_tt
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				FROM.influence_point_count = 3
+			}
+		}
+		custom_effect_tooltip = INS_current_revolution_strength_3_tt
+	}
+}
 
+indonesia_increase_militia_activity_effect = {
+	if = {
+		limit = {
+			THIS = {
+				has_dynamic_modifier = {
+					modifier = INS_state_militia_activity_1
+				}
+			}
+		}
+		remove_dynamic_modifier = {
+			modifier = INS_state_militia_activity_1
+		}
+		add_dynamic_modifier = {
+			modifier = INS_state_militia_activity_2
+		}
+	}
+	else_if = {
+		limit = {
+			THIS = {
+				has_dynamic_modifier = {
+					modifier = INS_state_militia_activity_2
+				}
+			}
+		}
+		remove_dynamic_modifier = {
+			modifier = INS_state_militia_activity_2
+		}
+		add_dynamic_modifier = {
+			modifier = INS_state_militia_activity_3
+		}
+	}
+	else_if = {
+		limit = {
+			THIS = {
+				has_dynamic_modifier = {
+					modifier = INS_state_militia_activity_3
+				}
+			}
+		}
+		# do nothing
+	}
+	else = { #has no militia activity at all
+		add_dynamic_modifier = {
+			modifier = INS_state_militia_activity_1
+		}
+	}
+}
 
+indonesia_reduce_militia_activity_effect = {
+	if = {
+		limit = {
+			THIS = {
+				has_dynamic_modifier = {
+					modifier = INS_state_militia_activity_1
+				}
+			}
+		}
+		remove_dynamic_modifier = {
+			modifier = INS_state_militia_activity_1
+		}
+	}
+	else_if = {
+		limit = {
+			THIS = {
+				has_dynamic_modifier = {
+					modifier = INS_state_militia_activity_2
+				}
+			}
+		}
+		remove_dynamic_modifier = {
+			modifier = INS_state_militia_activity_2
+		}
+		add_dynamic_modifier = {
+			modifier = INS_state_militia_activity_1
+		}
+	}
+	else_if = {
+		limit = {
+			THIS = {
+				has_dynamic_modifier = {
+					modifier = INS_state_militia_activity_3
+				}
+			}
+		}
+		remove_dynamic_modifier = {
+			modifier = INS_state_militia_activity_3
+		}
+		add_dynamic_modifier = {
+			modifier = INS_state_militia_activity_2
+		}
+	}
+}
 
+indonesia_laskar_funding_effect = {
+	
+}
 
 indonesia_increase_escalation_1_effect = {
 	hidden_effect = { INS = { add_to_variable = { var = INS_war_escalation_level value = 1 tooltip = INS_increase_escalation_1_tt } } }
@@ -1238,6 +1388,12 @@ indonesia_increase_escalation_2_effect = {
 	indonesia_evaluate_escalation_effect = yes
 }
 
+indonesia_increase_escalation_3_effect = {
+	hidden_effect = { INS = { add_to_variable = { var = INS_war_escalation_level value = 3 tooltip = INS_increase_escalation_3_tt } } }
+	hidden_effect = { INS = { clamp_variable = { var = INS_war_escalation_level max = 10 } } }
+	custom_effect_tooltip = INS_increase_escalation_3_tt
+	indonesia_evaluate_escalation_effect = yes
+}
 
 indonesia_reduce_escalation_1_effect = {
 	hidden_effect = { INS = { subtract_from_variable = { var = INS_war_escalation_level value = 1 tooltip = INS_reduce_escalation_1_tt } } }
@@ -1245,7 +1401,17 @@ indonesia_reduce_escalation_1_effect = {
 	custom_effect_tooltip = INS_reduce_escalation_1_tt
 }
 
+indonesia_reduce_escalation_2_effect = {
+	hidden_effect = { INS = { subtract_from_variable = { var = INS_war_escalation_level value = 2 tooltip = INS_reduce_escalation_2_tt } } }
+	hidden_effect = { INS = { clamp_variable = { var = INS_war_escalation_level min = 1 } } }
+	custom_effect_tooltip = INS_reduce_escalation_2_tt
+}
 
+indonesia_reduce_escalation_3_effect = {
+	hidden_effect = { INS = { subtract_from_variable = { var = INS_war_escalation_level value = 3 tooltip = INS_reduce_escalation_3_tt } } }
+	hidden_effect = { INS = { clamp_variable = { var = INS_war_escalation_level min = 1 } } }
+	custom_effect_tooltip = INS_reduce_escalation_3_tt
+}
 
 indonesia_declare_war_is_over_effect = { #always use this instead of directly clearing the flag, as this way some effects can be triggered
 	INS_war_half_over_effect = yes #Do the basic war-end effects; legacy mechanic required me to have this be callable without everything else here, but I'll keep it in case thats needed again
@@ -1886,6 +2052,10 @@ indonesia_HOL_sign_accord_FRA_effect = {
 	}
 }
 
+indonesia_two_state_solution_effect = {
+	custom_effect_tooltip = INS_end_to_bloodshed_tt
+
+}
 
 indonesia_HOL_british_support_effect = {
 	ENG = {
@@ -2109,6 +2279,30 @@ indonesia_hatta_focus_effect = {
 	}
 }
 
+indonesia_direct_democracy_focus_effect = {
+	
+	INS_national_committee = {
+		add_country_leader_role = {
+			promote_leader = yes
+			country_leader = {
+				ideology = populism
+				expire = "1965.1.1.1"
+				traits = { INS_inefficient_government }
+			}
+		}
+	}
+
+	add_popularity = {
+		ideology = democratic
+		popularity = 0.2
+	}
+
+	custom_effect_tooltip = newline_tt
+
+	custom_effect_tooltip = available_political_advisor
+	set_country_flag = INS_socialist_loyalty
+	show_ideas_tooltip = INS_surachman_tjokoadisurjo
+}
 
 indonesia_seize_oppurtunity_reconquest_effect = {
 
@@ -2338,6 +2532,24 @@ INS_remove_hol_ally_strategy_effect = {
 				array = INS.INS_dutch_ally_tracker
 				value = THIS
 			}
+		}
+	}
+}
+
+INS_cancel_hol_ally_strategy_entirely_effect = {
+	if = {
+		limit = {
+			has_dlc = "Thunder at Our Gates"
+		}
+		set_global_flag = INS_should_be_defended
+		every_country = {
+			limit = {
+				is_in_array = {
+					array = INS.INS_dutch_ally_tracker
+					value = THIS
+				}
+			}
+			INS_remove_hol_ally_strategy_effect = yes
 		}
 	}
 }

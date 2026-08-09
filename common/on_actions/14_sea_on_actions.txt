@@ -2710,6 +2710,35 @@ on_actions = {
 		# 	}
 		# }
 
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			ROOT = {
+		# 				original_tag = PHI
+		# 			}
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				has_character = USA_douglas_macarthur
+		# 			}
+		# 			set_nationality = {
+		# 				target_country = USA
+		# 				character = USA_douglas_macarthur
+		# 			}
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				has_character = USA_dwight_d_eisenhower
+		# 				NOT = {
+		# 					has_completed_focus = PHI_police_chief_eisenhower
+		# 				}
+		# 			}
+		# 			USA = {
+		# 				country_event = SEA_PHI_political_events.52
+		# 			}
+		# 		}
+		# 	}
+		# }
 
 		# effect = { # Trigger the dissolutuion of the HBC event
 		# 	IF = {
@@ -2750,6 +2779,52 @@ on_actions = {
 		# 	}
 		# }
 
+		# #PRC capitulates
+		# effect = {
+		# 	IF = {
+		# 		limit = {
+		# 			ROOT = {
+		# 				original_tag = PRC
+		# 				owns_state = 1046
+		# 			}
+		# 			1046 = {
+		# 				has_dynamic_modifier = { modifier = PRC_the_yulin_garrison }
+		# 			}
+		# 		}
+		# 		1046 = {
+		# 			remove_dynamic_modifier = { modifier = PRC_the_yulin_garrison }
+		# 		}
+		# 	}
+		# 	IF = { #If PRC capitulates after having completed Burn the Paper tiger and is faction leader, then make China a major so they can continue the fight against Japan
+		# 		limit = {
+		# 			ROOT = {
+		# 				original_tag = PRC
+		# 				has_completed_focus = PRC_burn_the_paper_tigers
+		# 				is_faction_leader = yes
+		# 				is_in_faction_with = CHI
+		# 			}
+		# 			FROM = {
+		# 				OR = {
+		# 					original_tag = JAP
+		# 					is_in_faction_with = JAP
+		# 				}
+		# 			}
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				CHI = {
+		# 					is_major = no
+		# 					is_subject = no
+		# 					exists = yes
+		# 					has_capitulated = no
+		# 				}
+		# 			}
+		# 			CHI = {
+		# 				set_faction_leader = yes
+		# 			}
+		# 		}
+		# 	}
+		# }
 
 		# # Three way civil war - demo Japan is defeated and should be annexed into com JAP 
 		# effect = {
@@ -2843,6 +2918,16 @@ on_actions = {
 	# ROOT is the winner, FROM is the loser 
 	on_peaceconference_ended = {
 
+        #effect = {
+        #    FROM = {
+        #        IF = {    #This prevents the country capping again after just having been puppeted
+        #            limit = {
+        #                has_idea = BEL_surrender_ns
+        #            }
+        #            remove_ideas = BEL_surrender_ns
+        #        }
+        #    }
+        #}
 
 		effect = {
             FROM = {

@@ -1,9 +1,299 @@
 #Remember to change the tooltips if the effects are changed
 #State scope. Prev is target country.
+LIT_iron_wolf_up_effect = {
+	if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_2
+		}
+		add_stability = 0.1
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_1
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_good_1
+			add_idea = LIT_iron_wolf_idea_good_2
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_1
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_good_1
+			add_idea = LIT_iron_wolf_idea_good_2
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_1
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_1
+			add_idea = LIT_iron_wolf_idea_good_1
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_2
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_2
+			add_idea = LIT_iron_wolf_idea_bad_1
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_3
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_3
+			add_idea = LIT_iron_wolf_idea_bad_2
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_4
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_4
+			add_idea = LIT_iron_wolf_idea_bad_3
+		}
+	}
+}
 
+LIT_iron_wolf_down_effect = {
+	if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_4
+		}
+		if = { #Easier civil war for AI on historical since we don't want historical Lithuanian AI to join the Axis and so on
+			limit = {
+				is_ai = yes
+				OR = {
+					AND = {
+						is_historical_focus_on = yes
+						has_game_rule = {
+							rule = LIT_ai_behavior
+							option = DEFAULT
+						}
+					}
+					has_country_flag = LIT_AI_RANDOM_HISTORICAL
+					has_game_rule = {
+						rule = LIT_ai_behavior
+						option = HISTORICAL
+					}
+				}
+			}
+			start_civil_war = {
+				ideology = fascism
+				size = 0.2
+				army_ratio = 0.2
+				capital = 282
+			}
+		}
+		else = { #Regular CW
+			start_civil_war = {
+				ideology = fascism
+				size = 0.45
+				army_ratio = 0.3
+				capital = 282
+			}
+		}
+		
+		hidden_effect = {
+		}
+		set_country_flag = fought_iron_wolf_flag
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_3
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_3
+			add_idea = LIT_iron_wolf_idea_bad_4
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_2
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_2
+			add_idea = LIT_iron_wolf_idea_bad_3
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_1
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_bad_1
+			add_idea = LIT_iron_wolf_idea_bad_2
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_1
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_good_1
+			add_idea = LIT_iron_wolf_idea_bad_1
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_2
+		}
+		swap_ideas = {
+			remove_idea = LIT_iron_wolf_idea_good_2
+			add_idea = LIT_iron_wolf_idea_good_1
+		}
+	}
+	
+}
 
+LIT_remove_iron_wolf_effect = {
+	if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_4
+		}
+		remove_ideas = LIT_iron_wolf_idea_bad_4
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_3
+		}
+		remove_ideas = LIT_iron_wolf_idea_bad_3
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_2
+		}
+		remove_ideas = LIT_iron_wolf_idea_bad_2
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_bad_1
+		}
+		remove_ideas = LIT_iron_wolf_idea_bad_1
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_1
+		}
+		remove_ideas = LIT_iron_wolf_idea_good_1
+	}
+	else_if = {
+		limit = {
+			has_idea = LIT_iron_wolf_idea_good_2
+		}
+		remove_ideas = LIT_iron_wolf_idea_good_2
+	}
+	
+}
 
+EST_vaps_down_effect = {
+	if = {
+		limit = {
+			has_idea = EST_vaps_idea_4
+		}
+		if = { #Easier civil war for AI on historical since we don't want historical Estonian AI to puppet Finland and form the Fino-Ugra Empire
+			limit = {
+				is_ai = yes
+				OR = {
+					AND = {
+						is_historical_focus_on = yes
+						has_game_rule = {
+							rule = EST_ai_behavior
+							option = DEFAULT
+						}
+					}
+					has_country_flag = EST_AI_RANDOM_HISTORICAL
+					has_game_rule = {
+						rule = EST_ai_behavior
+						option = HISTORICAL
+					}
+				}
+			}
+			start_civil_war = {
+				ideology = fascism
+				size = 0.2
+				army_ratio = 0.2
+			}
+		}
+		else = { #Regular CW
+			start_civil_war = {
+				ideology = fascism
+				size = 0.5
+				army_ratio = 0.35
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = EST_vaps_idea_3
+		}
+		swap_ideas = {
+			remove_idea = EST_vaps_idea_3
+			add_idea = EST_vaps_idea_4
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = EST_vaps_idea_2
+		}
+		swap_ideas = {
+			remove_idea = EST_vaps_idea_2
+			add_idea = EST_vaps_idea_3
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = EST_vaps_idea_1
+		}
+		swap_ideas = {
+			remove_idea = EST_vaps_idea_1
+			add_idea = EST_vaps_idea_2
+		}
+	}
+}
 
+EST_vaps_up_effect = {
+	if = {
+		limit = {
+			has_idea = EST_vaps_idea_1
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = EST_vaps_idea_2
+		}
+		swap_ideas = {
+			remove_idea = EST_vaps_idea_2
+			add_idea = EST_vaps_idea_1
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = EST_vaps_idea_3
+		}
+		swap_ideas = {
+			remove_idea = EST_vaps_idea_3
+			add_idea = EST_vaps_idea_2
+		}
+	}
+	else_if = {
+		limit = {
+			has_idea = EST_vaps_idea_4
+		}
+		swap_ideas = {
+			remove_idea = EST_vaps_idea_4
+			add_idea = EST_vaps_idea_3
+		}
+	}
+}
 
 remove_vaps_effect = {
 	if = {
@@ -32,6 +322,26 @@ remove_vaps_effect = {
 	}
 }
 
+remove_perkonkrust_effect = {
+	if = {
+		limit = {
+			has_idea = LAT_perkonkrust_idea_neu_1
+		}
+		remove_ideas = LAT_perkonkrust_idea_neu_1
+	}
+	else_if = {
+		limit = {
+			has_idea = LAT_perkonkrust_idea
+		}
+		remove_ideas = LAT_perkonkrust_idea
+	}
+	else_if = {
+		limit = {
+			has_idea = perkonkrust_fas_idea_1
+		}
+		remove_ideas = perkonkrust_fas_idea_1
+	}
+}
 
 look_north_focus_effect = {
 	if = {
@@ -80,6 +390,131 @@ look_north_focus_effect = {
 	}
 }
 
+claim_greater_LIT_effect = {
+	#Belarus States
+	96 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	95 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	94 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	207 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	206 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	204 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	241 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	#Ukraine states
+	93 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	199 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	201 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	198 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	202 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	203 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	259 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	193 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	225 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	221 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	226 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	197 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	192 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	#Russian states
+	242 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	243 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	224 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	205 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	223 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	222 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	220 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	240 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	194 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+	834 = {
+		add_claim_by = ROOT
+		set_state_flag = greater_lithuania_flag
+	}
+}
 remove_all_temp_boosts_baltic = {
 	if = {
 		limit = { has_idea = BALTIC_disloyal_parliament }

@@ -15,8 +15,61 @@
 #		example_effect = yes
 #	}
 #
+ETH_escalate_the_war_effect = {
+	custom_effect_tooltip = ETH_war_escalation_inc_tt
+	add_to_variable = { ETH.ETH_war_escalation_level = 1 }
+	#hidden_effect = {
+	#	ITA = {
+	#		add_named_threat = { 
+	#			threat = 0.2
+	#			name = ETH_war_escalation_threat
+	#		}
+	#	}
+	#}
+}
 
+ETH_set_up_lon_arms_resolution_effect = {
+	add_relation_rule_override = {
+		can_access_market = no
+		trigger = has_lon_arms_embargo
+		usage_desc = lon_arms_resolution_tt
+	}
+	
+}
 
+ETH_deescalate_the_war_effect = {
+	custom_effect_tooltip = ITA_war_deescalation_inc_tt #Change or use scripted loc if ETH ever has effects to de-escalate
+	subtract_from_variable = { ETH.ETH_war_escalation_level = 1 }
+}
+
+ETH_electrify_state_remove_effect = {
+	clr_country_flag = ETH_investments_in_progress_flag
+	FROM = {
+		clr_state_flag = ETH_can_electrify_state_flag
+		set_state_flag = ETH_state_is_electrified_flag #State has already been electrified (either by ETH or by ITA)
+	}
+	custom_effect_tooltip = ETH_electrify_state_tt
+	FROM = {
+		add_to_variable = { ETH_state_development_production_speed = 0.1 }
+			add_to_variable = { ETH_state_development_local_building_slots_factor = 0.1 }
+	}
+	IF = {
+		limit = { 
+			FROM = {
+				check_variable = { ETH_state_development_production_speed < -0.1 } 
+			}
+		}
+		FROM = { set_state_flag = ETH_can_improve_communication_state_flag }
+	}
+	IF = {
+		limit = { 
+			FROM = {
+				check_variable = { ETH_state_development_local_building_slots_factor < -0.1 } 
+			}
+		}
+		FROM = { set_state_flag = ETH_can_invest_local_industry_state_flag }
+	}
+}
 
 # Effect for removing the Dynamic modifier when it no longer has any impact on things
 ETH_check_remove_corrupt_bureaucracy = {
@@ -525,6 +578,41 @@ ETH_upgrade_main_city = {
 }
 
 # Local resistance fighters rising up (historically some 50000 or so rose up in the North )
+ETH_arbegnoch_uprising = {
+	
+	# ensure noone has tried creating a template in advance 
+	delete_unit_template_and_units = {
+		division_template = "Arbegnoch Fighters"
+		disband = yes #will refund equipment and manpower
+	}
+
+	# Create the template 
+	division_template = {
+		name = "Arbegnoch Fighters"
+		is_locked = yes
+		division_names_group = ETH_ARB
+		priority = 0
+		template_counter = 0
+		regiments = {
+			irregular_infantry = { x = 0 y = 0 }
+			irregular_infantry = { x = 0 y = 1 }
+			irregular_infantry = { x = 0 y = 2 }
+		}
+	}
+	every_owned_state = {
+		limit = {
+			check_variable = { ETH_resistance_force_strength > 0 }
+		}
+		create_unit = { 
+			# unit detauls 
+			division = "division_template = \"Arbegnoch Fighters\" start_experience_factor = 0.2  start_equipment_factor = 0.75" 
+			# country to spawn unit for 
+			owner = ROOT  
+			allow_spawning_on_enemy_provs = yes 
+			count = ETH_resistance_force_strength
+		}
+	}
+}
 
 ETH_set_up_african_resistance_states = {
 	
@@ -1009,6 +1097,21 @@ ETH_provisional_government_effect = {
 		}
 }
 
+ETH_make_random_general_leader = {
+	random_character = {
+		limit = {
+			has_character_flag = ETH_visible_random_general_flag
+		}
+		add_country_leader_role = {
+			country_leader = {
+				ideology = stalinism
+				traits = { patriotic_socialist }
+				expire = "1965.1.1.1"
+			}
+			promote_leader = yes
+		}		
+	}
+}
 
 #ROOT = {
 #				random_unit_leader = {
@@ -1518,6 +1621,36 @@ ETH_get_ships_from_country = { #MOved this here from event in ETH. This works wi
 			  exclude_refitting = no
 			}
 			USA = { set_country_flag = sold_ships_to_us@ROOT }
+		}
+	}
+}
+
+ETH_transfer_promised_states = {
+	for_each_scope_loop = {
+		array = ETH.ETH_promised_states_array	
+		IF = { 
+			limit = {
+				owner = {
+					tag = ETH
+				}
+			}
+			remove_dynamic_modifier = { modifier = ETH_arranged_expansion_modifier } 
+		}
+		# If states are taken by e.g. host nation in the peace conference, transfer them to Ethiopia (to deal with cases where they come frmom a country that Ethiopia is not at war with)
+		ELSE_IF = {
+			limit = {
+				owner = {
+					OR = {
+						is_in_faction_with = ETH
+						ETH = { is_subject_of = PREV }  
+						check_variable = { ETH.host_nation = THIS }
+					}
+				}
+			}
+			ETH = { 
+				transfer_state = PREV 
+			}
+			remove_dynamic_modifier = { modifier = ETH_arranged_expansion_modifier } 
 		}
 	}
 }
