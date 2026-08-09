@@ -2040,122 +2040,6 @@ focus_tree = {
 		}
 	}
 	
-	focus = {
-		id = SOV_pol_invade_bessarabia
-		icon = GFX_SOV_moldavia
-		prerequisite = { focus = SOV_pol_molotov_ribbentrop_pact }
-		x = 1
-		y = 1
-
-		relative_position_id = SOV_pol_molotov_ribbentrop_pact
-		cost = 1
-
-
-		bypass = {
-			OR = {
-				AND = {
-					OR = {
-						owns_state = 78 #Bessarabia
-						78 = {
-							owner = { is_in_faction_with = ROOT }
-						}
-					}
-					OR = {
-						owns_state = 80 #Bucovina
-						80 = {
-							owner = { is_in_faction_with = ROOT }
-						}
-					}
-					OR = {
-						owns_state = 766 #Southern Bessarabia
-						766 = {
-							owner = { is_in_faction_with = ROOT }
-						}
-					}
-				}
-				any_country = {
-					owns_state = 78
-					owns_state = 80
-					owns_state = 766
-					has_war_with = ROOT
-				}
-			}
-		}
-
-		will_lead_to_war_with = ROM
-		
-		search_filters = { FOCUS_FILTER_ANNEXATION }
-		completion_reward = { #This is now generic and will target any potential (multiple) controllers for these states.
-			hidden_effect = {
-				CZE = {
-					diplomatic_relation = {
-						country = ROM
-						relation = guarantee
-						active = no
-					}
-				}
-			}
-			if = {
-				limit = { 78 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
-				add_state_claim = 78
-			}
-			if = {
-				limit = { 766 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
-				add_state_claim = 766
-			}
-			if = {
-				limit = { 80 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
-				add_state_claim = 80
-			}
-			add_named_threat = { threat = 1 name = SOV_claim_on_bessarabia }
-			random_other_country = {
-				limit = { owns_state = 78 }
-				add_opinion_modifier = { target = SOV modifier = claimed_bessarabia }
-				set_country_flag = SOV_added_claimed_bessarabia
-				country_event = { id = romania.1 hours = 16 random_hours = 8 }
-			}
-			if = { #Done like this to prevent disgusting tooltip issues, but I hate it ok?
-				limit = {
-					any_other_country = {
-						owns_state = 78
-						NOT = {	owns_state = 80 }
-					}
-				}
-				random_other_country = {
-					limit = { 
-						owns_state = 80 
-						NOT = { has_country_flag = SOV_added_claimed_bessarabia }
-					}
-					add_opinion_modifier = { target = SOV modifier = claimed_bucovina }
-					country_event = { id = romania.1 hours = 16 random_hours = 8 }
-				}
-			}
-			if = {
-				limit = {
-					AND = {
-						any_other_country = {
-							owns_state = 78
-							NOT = {	owns_state = 766 }
-						}
-						any_other_country = {
-							owns_state = 80
-							NOT = {	owns_state = 766 }
-						}
-					}
-				}
-				random_other_country = {
-					limit = { 
-						owns_state = 766
-						NOT = { has_country_flag = SOV_added_claimed_bessarabia }
-					}
-					add_opinion_modifier = { target = SOV modifier = claimed_bucovina }
-					country_event = { id = romania.1 hours = 4 }
-				}
-			}
-		}
-	}
-	
-	
 	# Expasion Path
 
 	focus = {
@@ -2246,7 +2130,7 @@ focus_tree = {
 		id = SOV_secure_leningrad
 		icon = GFX_SOV_finnish_wargoal
 		prerequisite = { focus = SOV_prepare_expansion }
-		x = 0
+		x = -1
 		y = 1
 		relative_position_id = SOV_prepare_expansion
 
@@ -2332,6 +2216,127 @@ focus_tree = {
 				#		add_ideas = MON_brothers_war
 				#	}
 				#}
+			}
+		}
+	}
+
+	focus = {
+		id = SOV_pol_invade_bessarabia
+		icon = GFX_SOV_moldavia
+		prerequisite = { focus = SOV_prepare_expansion }
+		x = 1
+		y = 1
+
+		relative_position_id = SOV_prepare_expansion
+		cost = 1
+
+
+		bypass = {
+			OR = {
+				AND = {
+					OR = {
+						owns_state = 78 #Bessarabia
+						78 = {
+							owner = { is_in_faction_with = ROOT }
+						}
+					}
+					OR = {
+						owns_state = 80 #Bucovina
+						80 = {
+							owner = { is_in_faction_with = ROOT }
+						}
+					}
+					OR = {
+						owns_state = 766 #Southern Bessarabia
+						766 = {
+							owner = { is_in_faction_with = ROOT }
+						}
+					}
+				}
+				any_country = {
+					owns_state = 78
+					owns_state = 80
+					owns_state = 766
+					has_war_with = ROOT
+				}
+			}
+		}
+
+		will_lead_to_war_with = ROM
+		
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available = {
+			OR = {
+				has_completed_focus = SOV_pol_molotov_ribbentrop_pact
+				NOT = { ROM = { is_in_faction_with = GER }}
+			}
+		}
+		completion_reward = { #This is now generic and will target any potential (multiple) controllers for these states.
+			hidden_effect = {
+				CZE = {
+					diplomatic_relation = {
+						country = ROM
+						relation = guarantee
+						active = no
+					}
+				}
+			}
+			if = {
+				limit = { 78 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
+				add_state_claim = 78
+			}
+			if = {
+				limit = { 766 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
+				add_state_claim = 766
+			}
+			if = {
+				limit = { 80 = { OWNER = { NOT = { is_in_faction_with = ROOT} } } }
+				add_state_claim = 80
+			}
+			add_named_threat = { threat = 1 name = SOV_claim_on_bessarabia }
+			random_other_country = {
+				limit = { owns_state = 78 }
+				add_opinion_modifier = { target = SOV modifier = claimed_bessarabia }
+				set_country_flag = SOV_added_claimed_bessarabia
+				country_event = { id = romania.1 hours = 16 random_hours = 8 }
+			}
+			if = { #Done like this to prevent disgusting tooltip issues, but I hate it ok?
+				limit = {
+					any_other_country = {
+						owns_state = 78
+						NOT = {	owns_state = 80 }
+					}
+				}
+				random_other_country = {
+					limit = { 
+						owns_state = 80 
+						NOT = { has_country_flag = SOV_added_claimed_bessarabia }
+					}
+					add_opinion_modifier = { target = SOV modifier = claimed_bucovina }
+					country_event = { id = romania.1 hours = 16 random_hours = 8 }
+				}
+			}
+			if = {
+				limit = {
+					AND = {
+						any_other_country = {
+							owns_state = 78
+							NOT = {	owns_state = 766 }
+						}
+						any_other_country = {
+							owns_state = 80
+							NOT = {	owns_state = 766 }
+						}
+					}
+				}
+				random_other_country = {
+					limit = { 
+						owns_state = 766
+						NOT = { has_country_flag = SOV_added_claimed_bessarabia }
+					}
+					add_opinion_modifier = { target = SOV modifier = claimed_bucovina }
+					country_event = { id = romania.1 hours = 4 }
+				}
 			}
 		}
 	}
@@ -2444,7 +2449,7 @@ focus_tree = {
 		id = SOV_pol_improve_new_conquests
 		icon = GFX_goal_generic_soviet_construction
 		prerequisite = { focus = SOV_secure_leningrad }
-		x = -1
+		x = 0
 		y = 1
 
 		search_filters = { FOCUS_FILTER_INDUSTRY }
@@ -2517,7 +2522,7 @@ focus_tree = {
 		prerequisite = { focus = SOV_secure_leningrad }
 		mutually_exclusive = { focus = SOV_pol_improve_new_conquests }
 		cost = 3
-		x = 1
+		x = 2
 		y = 1
 
 		search_filters = { FOCUS_FILTER_INDUSTRY }
@@ -5405,6 +5410,11 @@ focus_tree = {
 				add_planning = 2
 				add_logistics = 2
 			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_red_army_tt
+			custom_effect_tooltip = SOV_red_army_army_org_factor_6_tt
+			add_to_variable = { SOV_red_army_army_org_factor_var = 0.06 }
 		}
 	}
 
@@ -5443,6 +5453,10 @@ focus_tree = {
 					add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_red_army_tt
+			custom_effect_tooltip = SOV_red_army_army_org_factor_3_tt
+			add_to_variable = { SOV_red_army_army_org_factor_var = 0.03 }
 			# hidden_effect = {
 			# 	IF = {
 			# 		LIMIT = {has_completed_focus = SOV_army_top1}
@@ -5507,6 +5521,10 @@ focus_tree = {
 				add_defense = 1
 				add_attack = 1
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_red_army_tt
+			custom_effect_tooltip = SOV_red_army_army_org_factor_015_tt
+			add_to_variable = { SOV_red_army_army_org_factor_var = 0.015 }
 		}
 	}
 	
