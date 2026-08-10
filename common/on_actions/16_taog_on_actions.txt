@@ -24,7 +24,7 @@
  							is_subject_of = HOL
  						}
  					}
- 					INS_set_hol_ally_strategy_effect = yes
+# [DEI reverted]  					INS_set_hol_ally_strategy_effect = yes
  				}
  			}
  			# If HOL is already in a faction, and someone new joins, give them the strategy
@@ -43,7 +43,7 @@
  					}
  				}
  				ROOT = {
- 					INS_set_hol_ally_strategy_effect = yes
+# [DEI reverted]  					INS_set_hol_ally_strategy_effect = yes
  				}
  			}
  		}
@@ -64,7 +64,7 @@
  						has_country_flag = INS_revolution_has_started
  					}
  				}
- 				INS_set_hol_ally_strategy_effect = yes
+# [DEI reverted]  				INS_set_hol_ally_strategy_effect = yes
  			}
  		}
  	}
@@ -686,48 +686,6 @@
 		effect = {
 			IF = {
 				limit = {
-					AST = {
-						has_war_with = JAP
-						has_country_flag = AST_advance_pacific_initiatives_jap
-					}	
-				}
-				add_offsite_building = {
-					type = dockyard
-			   		level = -2
-				}
-				clr_country_flag = AST_advance_pacific_initiatives_jap
-			}
-			IF = {
-				limit = {
-					AST = {
-						has_war_with = INS
-						has_country_flag = AST_advance_pacific_initiatives_ins
-					}	
-				}
-				add_offsite_building = {
-					type = synthetic_refinery
-			   		level = -1
-				}
-				clr_country_flag = AST_advance_pacific_initiatives_ins
-			}
-			IF = {
-				limit = {
-					AST = {
-						has_war_with = CHI
-						has_country_flag = AST_advance_pacific_initiatives_chi
-					}	
-				}
-				add_offsite_building = {
-					type = industrial_complex
-			   		level = -2
-				}
-				clr_country_flag = AST_advance_pacific_initiatives_chi
-			}	
-		}
-
-		effect = {
-			IF = {
-				limit = {
 					OR = {
 						ROOT = {
 							original_tag = AST
@@ -1013,7 +971,7 @@
 						HOL = { has_cosmetic_tag = INS_UNION }
 					}
 				}
-				indonesia_free_effect = yes
+# [DEI reverted] 				indonesia_free_effect = yes
 			}
 		}
 		
@@ -1084,7 +1042,7 @@
 						HOL = { has_cosmetic_tag = INS_UNION }
 					}
 				}
-				indonesia_free_effect = yes
+# [DEI reverted] 				indonesia_free_effect = yes
 			}
 		}
 	}
@@ -1116,13 +1074,13 @@
 					has_dlc = "Thunder at Our Gates"
 					has_start_date < 1936.1.2
 				}
-				INS = {
-					country_event = {
-						id = INS_political_events.1 #New Governor General for Indonesia
-						days = 259 #September 16th, 1936
-					}
-					activate_mission = INS_soetardjo_pending
-				}
+# [DEI reverted] 				INS = {
+# [DEI reverted] 					country_event = {
+# [DEI reverted] 						id = INS_political_events.1 #New Governor General for Indonesia
+# [DEI reverted] 						days = 259 #September 16th, 1936
+# [DEI reverted] 					}
+# [DEI reverted] 					activate_mission = INS_soetardjo_pending
+# [DEI reverted] 				}
 			}
 
 			AST = {
@@ -2138,105 +2096,6 @@
 	# 	}
 	# }
 
-	#ROOT is new controller, FROM is old controller, FROM.FROM is state ID
-	on_state_control_changed = {
-		effect = {
-			if = {
-				limit = {
-					has_dlc = "Thunder at Our Gates"
-					is_in_array = {
-						array = SIA.indochina_states
-						value = FROM.FROM.FROM
-					}
-					NOT = {
-						ROOT = {
-							original_tag = SIA
-						}
-					}
-				}
-				SIA = { SIA_refresh_indochina_controllers = yes }
-			}
-		}
-		effect = {
-			if = {
-				limit = {
-					FROM = {
-						original_tag = INS
-						has_completed_focus = INS_the_jewel_in_the_crown
-						NOT = {
-							has_country_flag = INS_has_gotten_invasion_event
-							has_completed_focus = INSHOL_netherlands_indonesia_union
-						}
-					}
-					FROM.FROM = {
-						is_in_array = {
-							array = INS.owned_states_at_game_start
-							value = THIS
-						}
-					}
-					ROOT = {
-						is_major = yes
-						has_war_with = FROM
-					}
-				}
-				if = {
-					limit = {
-						ROOT = {
-							original_tag = JAP
-						}
-					}
-					FROM = {
-						set_country_flag = INS_has_gotten_invasion_event #ensures event only fires once
-					}
-					ROOT = {
-						save_event_target_as = INS_invasion_event_invader
-					}
-					FROM.FROM = {
-						save_event_target_as = INS_invasion_event_invaded_state
-					}
-					if = {
-						limit = {
-							FROM = {
-								has_completed_focus = INSHOL_industrialized_colony
-							}
-						}
-						FROM = {
-							country_event = {
-								id = INS_political_events.8
-								hours = 24
-							}
-						}
-					}
-					else = {
-						ROOT = {
-							country_event = {
-								id = INS_political_events.12
-								hours = 12
-							}
-						}
-					}
-				}
-				else = {
-					FROM = {
-						set_country_flag = INS_has_gotten_invasion_event #ensures event only fires once
-					}
-					ROOT = {
-						save_event_target_as = INS_invasion_event_invader
-					}
-					FROM.FROM = {
-						save_event_target_as = INS_invasion_event_invaded_state
-					}
-					FROM = {
-						country_event = {
-							id = INS_political_events.8
-							hours = 24
-						}
-					}
-				}
-			}
-		}
-	}
-
 
 	#FROM is the faction Leader, ROOT is the country leaving the faction 
 	on_leave_faction  = {
@@ -2296,49 +2155,6 @@
 				}
 				
 				ROOT = { SIA_update_adc = yes }
-			}
-		}
-		# Late ABDACOM invite: covers add_to_faction and accepted offers
-		effect = {
-			if = {
-				limit = {
-					FROM = {
-						OR = {
-							tag = ENG
-							tag = USA
-							tag = HOL
-							tag = FRA
-							tag = INS
-						}
-						NOT = { has_country_flag = abdacom_member }
-						NOT = { has_country_flag = abdacom_declined }
-						has_war_with = JAP
-						is_major = yes
-						OR = {
-							has_government = democratic
-							has_government = neutrality
-						}
-						any_other_country = {
-							is_in_faction_with = FROM
-							has_country_flag = abdacom_member
-						}
-					}
-				}
-				random_country = {
-					limit = {
-						is_in_faction_with = FROM
-						has_country_flag = abdacom_member
-						NOT = { tag = FROM }
-					}
-					set_variable = { global.ABDA_repair_speed_factor_snapshot = ABDA_repair_speed_factor }
-					set_variable = { global.ABDA_convoy_escort_efficiency_snapshot = ABDA_convoy_escort_efficiency }
-					set_variable = { global.ABDA_submarine_attack_factor_snapshot = ABDA_submarine_attack_factor }
-					set_variable = { global.ABDA_submarine_defence_factor_snapshot = ABDA_submarine_defence_factor }
-					set_variable = { global.ABDA_screening_efficiency_snapshot = ABDA_screening_efficiency }
-					set_variable = { global.ABDA_screen_defence_factor_snapshot = ABDA_screen_defence_factor }
-					set_variable = { global.ABDA_experience_gain_navy_unit_factor_snapshot = ABDA_experience_gain_navy_unit_factor }
-					FROM = { country_event = { id = ABDA_events.5 days = 1 } }
-				}
 			}
 		}
 
