@@ -593,225 +593,10 @@ country_event = { # Vote of No Confidence
 	}
 }
 
-country_event = { # Quisling's Historical Coup event 
-	id = AAT_norway.13
-	title = AAT_norway.13.t
-	desc = AAT_norway.13.desc	
-	picture = GFX_report_event_NOR_quisling_speech
-
-	is_triggered_only = yes
-
-	option = { # Switch to Fascism
-		name = AAT_norway.13.a
-		ai_chance = {
-			base = 10
-			modifier = {
-				factor = 0 
-				is_historical_focus_on = yes 
-			}
-		}
-		trigger = {
-		}
-		set_country_flag = NOR_switched_to_fasc_hist
-		NOR_start_fascist_civil_war = yes 
-		custom_effect_tooltip = NOR_switch_to_fascist_TT # Warning about that Oslo City Shuffle
-	}
-	
-	option = { # Civil War triggers, player continues as democratic 
-		name = AAT_norway.13.b
-		ai_chance = {
-			base = 10
-			
-		}
-		trigger = {
-		}
-		NOR_start_fascist_civil_war = yes
-		custom_effect_tooltip = NOR_stay_democratic_TT
-	}
-
-	option = {
-		name = AAT_norway.13.c
-		ai_chance = {
-			base = 0 
-		}
-		if = {
-			limit = {
-				110 = {
-					check_variable = {
-						var = NOR_state_preparation
-						value = 3
-					}
-				}
-			}
-			add_political_power = -25 
-		}
-		else_if = {
-			limit = {
-				110 = {
-					check_variable = {
-						var = NOR_state_preparation
-						value = 2
-					}
-				}
-			}
-			add_political_power = -50
-		}
-		else_if = {
-			limit = {
-				110 = {
-					check_variable = {
-						var = NOR_state_preparation
-						value = 1
-					}
-				}
-			}
-			add_political_power = -75
-		}
-		else_if = {
-			limit = {
-				110 = {
-					check_variable = {
-						var = NOR_state_preparation
-						value = 0
-					}
-				}
-			}
-			add_political_power = -100
-		}
-		custom_effect_tooltip = NOR_delay_coup_TT
-		NOR = { set_country_flag = NOR_delayed_quislings_coup } 
-	}
-	#TODO_TA add Rally behind the King option under certain conditions
-}
-
-country_event = { # Asking Germany if they want Quisling or not 
-	id = AAT_norway.14
-	title = AAT_norway.14.t
-	desc = AAT_norway.14.desc
-	picture = GFX_report_event_NOR_quisling_meeting	
 
 
-	is_triggered_only = yes
-
-	option = { 
-		name = AAT_norway.14.a
-		ai_chance = {
-			base = 10
-			modifier = {
-				factor = 0 
-				is_historical_focus_on = yes 
-			}
-		}
-		trigger = {
-		}
-		if = {
-			limit = {
-				NOR = {
-					has_civil_war = no 
-				}
-			}	
-			NOR = {
-				country_event = {
-					id = AAT_norway.13
-					hours = 2
-				}
-			}
-		}
-	}
-	
-	option = {
-		name = AAT_norway.14.b
-		ai_chance = {
-			base = 10
-			
-		}
-		trigger = {
-		}
-	}
-}
-
-country_event = { # Delayed Coup 	
-	id = AAT_norway.15
-	title = AAT_norway.15.t
-	desc = AAT_norway.15.desc
-	picture = GFX_report_event_NOR_Nasjonal_samling_rally	
-
-	is_triggered_only = yes
-	fire_only_once = yes
-
-	option = { # Switch to Fascism
-		name = AAT_norway.15.a
-		ai_chance = {
-			base = 10
-			modifier = {
-				factor = 0 
-				is_historical_focus_on = yes 
-			}
-		}
-		trigger = {
-		}
-		set_country_flag = NOR_switched_to_fasc_hist
-		NOR_start_fascist_civil_war = yes 
-		custom_effect_tooltip = NOR_switch_to_fascist_TT # Warning about the Oslo City Shuffle
-	}
-	
-	option = {
-		name = AAT_norway.15.b
-		ai_chance = {
-			base = 10
-			
-		}
-		trigger = {
-		}
-		custom_effect_tooltip = NOR_stay_democratic_TT
-	}
-}
 
 
-country_event = { # Giving player the prepare exile things
-	id = AAT_norway.16
-	title = AAT_norway.16.t
-	desc = AAT_norway.16.desc	
-	picture = GFX_report_event_NOR_norway_exile_troops
-
-	is_triggered_only = yes
-
-	option = {
-		name = AAT_norway.16.a
-		ai_chance = {
-			base = 10
-		}
-		trigger = {
-		}
-		if = {
-			limit = {
-				has_variable = NOR_exiled_convoys
-			}
-			add_equipment_to_stockpile = { 
-				type = convoy_1
-				amount = NOR_exiled_convoys
-			}
-		}
-		if = {
-			limit = {
-				has_variable = NOR_exiled_pp
-			}
-			add_political_power = NOR_exiled_pp
-		}
-		if = {
-			limit = {
-				has_variable = NOR_exiled_legitimacy
-			}
-			add_legitimacy = NOR_exiled_legitimacy
-		}
-		if = {
-			limit = {
-				has_variable = NOR_exiled_manpower
-			}
-			add_manpower = NOR_exiled_manpower 
-		}
-	}
-}
 
 country_event = { # Claiming Land 
 	id = AAT_norway.17
@@ -1464,16 +1249,6 @@ country_event = { #  The Queen dies. - Historical
 	}
 }
 
-country_event = { # Fake event to trigger Civil war when Germany Attacks
-	id = AAT_norway.199
-	hidden = yes 	
-	is_triggered_only = yes
-	immediate = {
-		hidden_effect = {
-			NOR_start_fascist_civil_war = yes
-		}
-	}
-}
 
 
 
@@ -1493,31 +1268,6 @@ country_event = { # Fake event to trigger Civil war when Germany Attacks
 ################################################################################################
 ################################################################################################
 
-news_event = { # Trotsky Lands in Mexico 
-	id = AAT_norway_news.1
-	title = AAT_norway.7.t  # On Purpose
-	desc = AAT_norway_news.1.desc
-	picture = GFX_news_event_NOR_trotsky_frida 
-
-	major = yes
-	is_triggered_only = yes
-
-	option = {
-		name = AAT_norway_news.1.sov
-		trigger = {
-			has_country_leader_ideology = stalinism
-		}
-	}
-
-	option = {
-		name = AAT_norway_news.1.a 
-		trigger = {
-			NOT = {
-				has_country_leader_ideology = stalinism
-			}
-		}
-	}
-}
 
 news_event = { # Queen Maud Dies 
 	id = AAT_norway_news.2
@@ -2614,46 +2364,6 @@ country_event = { # Fascist Accepted Research Stuff
 	}
 }
 
-country_event = { # Let's dissect the tank, maybe we can learn something   
-	id = AAT_norway_rikstanken.11
-	title = AAT_norway_rikstanken.11.t
-	desc = AAT_norway_rikstanken.11.desc
-
-	picture = GFX_report_event_NOR_rikstanken
-
-	trigger = { 
-	}
-
-	is_triggered_only = yes
-
-	immediate = {
-		hidden_effect = {}
-	}
-
-	option = { # Let's take a look
-		name = AAT_norway_rikstanken.11.a
-		ai_chance = {
-			base = 10
-		}
-		trigger = {  
-		}
-		add_political_power = -150
-		add_tech_bonus = {
-			name = AAT_rikstanken_program_tech_bonus
-			bonus = 0.5
-			uses = 4
-		}
-	}
-
-	option = { # Not worth the effort
-		name = AAT_norway_rikstanken.11.b
-		ai_chance = {
-			base = 10
-		}
-		trigger = {  
-		}		
-	}
-}
 
 country_event = { # We were rejected
 	id = AAT_norway_rikstanken.12
@@ -2800,32 +2510,6 @@ country_event = { # They accepted
 	}
 }
 
-country_event = { # They rejected us
-	id = AAT_norway_allied.3
-	title = AAT_norway_allied.3.t
-	desc = AAT_norway_allied.3.desc
-
-	picture = GFX_report_event_SWI_parliament_members
-
-	trigger = { 
-	}
-
-	is_triggered_only = yes
-
-	immediate = {
-		hidden_effect = {}
-	}
-
-	option = { # Ah dammit
-		name = AAT_norway_allied.3.a
-		ai_chance = {
-			base = 10
-
-		}
-		trigger = {  
-		}
-	}
-}
 
 
 country_event = { # Laake's Replacement

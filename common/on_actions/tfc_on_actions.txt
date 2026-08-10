@@ -10,11 +10,6 @@ on_actions = {
 		#anticwelmeasurements
 		effect = {
 			every_country = {
-				add_timed_idea = { idea = qol_start_eff days = 1 }
-			}
-		}
-		effect = {
-			every_country = {
 				limit = {
 					#is_ai = no
 					NOT = { has_idea = father_check}
@@ -169,6 +164,18 @@ on_actions = {
 				}
 			}
 		}
+		#PEACE TRAINING IDEA
+		effect = {
+			every_country = {
+				limit = {
+					exists = yes
+					has_war = no
+					NOT = { has_idea = peace_training_idea }
+				}
+
+				add_ideas = peace_training_idea
+			}
+		}		
 		
 		#EXTRA SPY
 		effect = {
@@ -220,6 +227,53 @@ on_actions = {
 		}
 	}
 
+	on_weekly = {
+		#Peace Training Idea
+        effect = {
+            if = {
+                limit = { tag = JAP }
+
+                every_country = {
+                    limit = {
+                        has_idea = peace_training_idea
+
+                        OR = {
+                            AND = {
+								date > 1941.4.1
+								OR = {
+									tag = JAP
+									tag = USA
+									tag = SPA
+								}
+							}
+							AND = {
+								tag = ITA
+								date > 1939.5.31
+							}
+                        }
+                    }
+
+                    remove_ideas = peace_training_idea
+                }
+
+                every_country = {
+                    limit = {
+                        has_war = no
+                        NOT = { has_idea = peace_training_idea }
+
+                        OR = {
+                            tag = JAP
+                            tag = SPA
+							tag = ITA
+                        }
+                        date < 1941.3.30
+                    }
+
+                    add_ideas = peace_training_idea
+                }
+            }
+        }
+    }
 
 	on_capitulation = {
 		  effect = {
