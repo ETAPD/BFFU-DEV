@@ -1,10 +1,14 @@
 on_actions = {
 
-	# Grant the Peacetime Training QoL spirit to every country at game start.
+	# Grant the Peacetime Training QoL spirit to every country at game start,
+	# unless the "Peacetime Training" game rule is set to Disabled.
 	on_startup = {
 		effect = {
-			every_country = {
-				add_ideas = peacetime_training_spirit
+			if = {
+				limit = { has_game_rule = { rule = peacetime_training_rule option = ENABLED } }
+				every_country = {
+					add_ideas = peacetime_training_spirit
+				}
 			}
 		}
 	}
@@ -12,60 +16,70 @@ on_actions = {
 	on_weekly = {
 		effect = {
 
-
+			# Rule off: strip the spirit from anyone who somehow has it.
 			if = {
-				limit = {
-					has_idea = peacetime_training_spirit
-					OR = {
-						AND = {
-							tag = ITA
-							date > 1939.5.31
-						}
-						AND = {
-							OR = {
-								tag = JAP
-								tag = MAN
-								tag = SIA
-								original_tag = SPR
-							}
-							date > 1941.4.1
-						}
-					}
+				limit = { has_game_rule = { rule = peacetime_training_rule option = DISABLED } }
+				if = {
+					limit = { has_idea = peacetime_training_spirit }
+					remove_ideas = peacetime_training_spirit
 				}
-				remove_ideas = peacetime_training_spirit
 			}
-
-
-			if = {
-				limit = {
-					has_war = no
-					NOT = { has_idea = peacetime_training_spirit }
-					OR = {
-						NOT = {
-							OR = {
+			else = {
+				# Rule on: original date-based reapply logic.
+				if = {
+					limit = {
+						has_idea = peacetime_training_spirit
+						OR = {
+							AND = {
 								tag = ITA
-								tag = JAP
-								tag = MAN
-								tag = SIA
-								original_tag = SPR
+								date > 1939.5.31
 							}
-						}
-						AND = {
-							tag = ITA
-							date < 1939.5.31
-						}
-						AND = {
-							OR = {
-								tag = JAP
-								tag = MAN
-								tag = SIA
-								original_tag = SPR
+							AND = {
+								OR = {
+									tag = JAP
+									tag = MAN
+									tag = SIA
+									original_tag = SPR
+								}
+								date > 1941.4.1
 							}
-							date < 1941.4.1
 						}
 					}
+					remove_ideas = peacetime_training_spirit
 				}
-				add_ideas = peacetime_training_spirit
+
+
+				if = {
+					limit = {
+						has_war = no
+						NOT = { has_idea = peacetime_training_spirit }
+						OR = {
+							NOT = {
+								OR = {
+									tag = ITA
+									tag = JAP
+									tag = MAN
+									tag = SIA
+									original_tag = SPR
+								}
+							}
+							AND = {
+								tag = ITA
+								date < 1939.5.31
+							}
+							AND = {
+								OR = {
+									tag = JAP
+									tag = MAN
+									tag = SIA
+									original_tag = SPR
+								}
+								date < 1941.4.1
+							}
+						}
+					}
+					add_ideas = peacetime_training_spirit
+				}
 			}
 		}
 	}
