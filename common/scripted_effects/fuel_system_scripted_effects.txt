@@ -170,55 +170,64 @@ fuel_startup_effect = {
 }
 
 on_daily_fuel = {
-    # Loop over all fuel controllers
+    for_each_scope_loop = {
+        array = GLOBAL.fuel_countries
+        if = {
+            limit = {
+                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
+                check_variable = { min_fuel < 0.01 }
+            }
+            set_variable = { var = min_fuel value = 0.80 }
+        }
+    }
+
+    # Loop over all fuel controllers.
     for_each_scope_loop = {
         array = GLOBAL.fuel_system_manager
         set_variable = { GLOBAL.controllerscope = THIS.id }
 
-        # Loop over all faction members of this controller
+        # Compute this controller's SPARE fuel (everything above its own reserve),
+        # in the controller's OWN scope so fuel_ratio / max_fuel_k resolve correctly.
+        # fuel_spare = (fuel_ratio - min_fuel) * max_fuel_k * 1000  (positive = has surplus)
+        set_variable = { fuel_spare = fuel_ratio }
+        subtract_from_variable = { fuel_spare = min_fuel }
+        multiply_variable = { fuel_spare = max_fuel_k }
+        multiply_variable = { fuel_spare = 1000 }
+
+        # Loop over all faction members of this controller.
         for_each_scope_loop = {
             array = THIS.faction_members_array
             set_variable = { GLOBAL.currentscope = THIS.id }
 
-            ## BLOCK 1A: Calculate fuel needed by the FUEL_RECIPIENT
-            set_variable = { fuel_required = min_fuel }
-            subtract_from_variable = { fuel_required = fuel_ratio }
-            multiply_variable = { fuel_required = max_fuel_k }
-            multiply_variable = { fuel_required = 1000 }
-            set_variable = { fuel_required_variable = fuel_required }
-            multiply_variable = { fuel_required_variable = -1 }
+            # This member's deficit (in the member's own scope).
+            set_variable = { fuel_need = min_fuel }
+            subtract_from_variable = { fuel_need = fuel_ratio }
+            multiply_variable = { fuel_need = max_fuel_k }
+            multiply_variable = { fuel_need = 1000 }
 
-            ## BLOCK 1B: Calculate available fuel from the FUEL_CONTROLLER
-            set_variable = { PREV.fuel_required = PREV.min_fuel }
-            subtract_from_variable = { PREV.fuel_required = PREV.fuel_ratio }
-            multiply_variable = { PREV.fuel_required = PREV.max_fuel_k }
-            multiply_variable = { PREV.fuel_required = 1000 }
-            set_variable = { PREV.fuel_required_variable = PREV.fuel_required }
-            multiply_variable = { PREV.fuel_required_variable = -1 }
             if = {
                 limit = {
-                    check_variable = { PREV.fuel_required < 0 }   # controller is above its own reserve (has surplus)
-                    check_variable = { fuel_required > 0 }        # recipient is below its target
-                    check_variable = { min_fuel > fuel_ratio }
+                    check_variable = { PREV.fuel_spare > 0 }   # controller still has spare (persistent, resolves via PREV)
+                    check_variable = { fuel_need > 0 }         # member is below its target
                 }
 
-                # amount = recipient deficit, capped at the controller's available surplus
-                set_temp_variable = { fuel_transfer = fuel_required }
+                # Move min(member deficit, controller's remaining spare).
+                set_variable = { fuel_move = fuel_need }
                 if = {
-                    limit = { check_variable = { PREV.fuel_required_variable < fuel_transfer } }
-                    set_temp_variable = { fuel_transfer = PREV.fuel_required_variable }
+                    limit = { check_variable = { fuel_move > PREV.fuel_spare } }
+                    set_variable = { fuel_move = PREV.fuel_spare }
                 }
 
-                set_temp_variable = { fuel_to_FUEL_RECIPIENT = fuel_transfer }
-                set_temp_variable = { PREV.fuel_from_FUEL_CONTROLLER = fuel_transfer }
-                multiply_temp_variable = { PREV.fuel_from_FUEL_CONTROLLER = -1 }
-                PREV = { add_fuel = fuel_from_FUEL_CONTROLLER }   # controller loses the transferred amount
-                add_fuel = fuel_to_FUEL_RECIPIENT                 # recipient gains it
+                add_fuel = fuel_move                              # member gains
+                subtract_from_variable = { PREV.fuel_spare = fuel_move }   # deplete controller's remaining spare
+                set_variable = { PREV.fuel_move_out = fuel_move }
+                multiply_variable = { PREV.fuel_move_out = -1 }
+                PREV = { add_fuel = fuel_move_out }               # controller loses the same amount
             }
         }
     }
 
-    # Update fuel bar display for all countries
+    # Update fuel bar display for all countries.
     for_each_scope_loop = {
         array = GLOBAL.fuel_countries
         set_temp_variable = { currentfuel = fuel_ratio }
