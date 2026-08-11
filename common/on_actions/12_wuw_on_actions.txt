@@ -1487,125 +1487,6 @@ on_actions = {
 	#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
 	on_state_control_changed = {
 
-		effect = { #reduce german oil if SOV loses state Germany gets industrial relocation oil from
-			IF = {
-				limit = {
-					FROM.FROM = {
-						OR = {
-							state = 229 #Azerbaijan
-							state = 234 #Krasnodar
-						}
-						has_state_flag = GER_trades_for_oil_here_flag
-					}
-
-					FROM = {
-						original_tag = SOV
-					}
-				}
-
-				subtract_from_variable = {
-					var = GER_industrial_relocation_resources_country_resource_oil
-					value = 5
-				}
-			}
-		}
-
-		effect = { #reduce german tungsten if SOV loses state Germany gets industrial relocation tungsten from
-			IF = {
-				limit = {
-					FROM.FROM = {
-						OR = {
-							state = 564 #Buryatia
-							state = 401 #Balakovo
-						}
-						has_state_flag = GER_trades_for_tungsten_here_flag
-					}
-					FROM = {
-						original_tag = SOV
-					}
-				}
-				subtract_from_variable = {
-					var = GER_industrial_relocation_resources_country_resource_tungsten
-					value = 5
-				}
-			}
-		}
-
-		effect = { #reduce german chromium if SOV loses state Germany gets industrial relocation chromium from
-			IF = {
-				limit = {
-					FROM.FROM = {
-						OR = {
-							state = 402 #Akhtubinsk
-							state = 573 #Zlatoust
-						}
-						has_state_flag = GER_trades_for_chromium_here_flag
-					}
-					FROM = {
-						original_tag = SOV
-					}
-				}
-				subtract_from_variable = {
-					var = GER_industrial_relocation_resources_country_resource_chromium
-					value = 5
-				}
-			}
-		}
-
-		effect = { # Makes France surrender to the Belgian meance
-			IF = {
-				limit = {
-
-					NOT = {
-						has_global_flag = FRA_and_BEL_already_sought_peace_flag
-					}
-
-					29 = {
-						is_owned_by = FRA
-					}
-					785 = {
-						is_owned_by = FRA
-					}
-
-					NOT = {
-						any_country = {
-							NOT = {
-								original_tag = FRA
-							}
-							is_in_faction_with = FRA
-							#is_major = yes
-						}
-					}
-
-					FROM.FROM = {
-						state = 16 #paris
-					}
-
-					FROM = {
-						original_tag = FRA
-					}
-
-					ROOT = {
-						original_tag = BEL
-						any_other_country = {
-							is_major = no
-							NOT = { is_in_faction_with = ROOT } 
-						}
-					}
-				}
-
-				ROOT = {
-					country_event = {
-						id = ww_BEL_event_war.10
-						hours = 6
-					}	
-				}
-				
-			}
-		}
-
-		
-
 		effect = { # Trigger the generic fall fo Budapest event 
 			IF = {
 				limit = {
@@ -1649,6 +1530,7 @@ on_actions = {
 				clr_country_flag = GER_coco_chanel_ready_to_join_as_operative_flag
 			}
 		}
+
 		#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
 		effect = { #Check how many occupied states Germany has
 			IF = {
@@ -1862,6 +1744,7 @@ on_actions = {
 				}
 			}
 		}
+
 		#Check numbers of Reichskommissariats and make Rosenberg cry if the numbers don't add up - this is a failsafe system
 		effect = {
 			if = {
@@ -1981,29 +1864,6 @@ on_actions = {
 			}
 		}
 	}
-
-	on_civil_war_end = {
-
-		effect = {
-
-			IF = {
-				limit = {
-					ROOT = {
-						original_tag = AUS
-					}
-				}
-			}
-			
-			every_country = {
-				limit = {
-					has_country_flag = AUS_antischluss_measures_flag
-				}
-
-				clr_country_flag = AUS_antischluss_measures_flag
-			}
-		}
-	}
-
 
 	#ROOT is winner, FROM is loser (called for all winners against all losers)
 	on_before_peace_conference_start = {
