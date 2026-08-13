@@ -1,0 +1,299 @@
+####################################################
+# USA — Cash and Carry Market
+####################################################
+
+USA_cash_and_carry_cat = {
+
+	#####################################
+	# ====  USA: MARKET OVERVIEW (tracker)  ====
+	#####################################
+
+	USA_cnc_market_overview = {
+		icon = USA_cnc_money
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+		available = { custom_trigger_tooltip = { tooltip = USA_cnc_overview_hint_tt  always = no } }
+		cost = 0
+		fire_only_once = no
+	}
+
+	#####################################
+	# ====  USA: STOCK THE MARKET (per type, drawn from US stockpile)  ====
+	#####################################
+
+	USA_cnc_stock_infantry = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_stability_tt  has_stability > 0.10 }
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_infantry_tt
+				has_equipment = { infantry_equipment > 5999 }
+				has_equipment = { squad_equipment > 1999 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_stability = -0.05
+			# Package drawn from the US stockpile.
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -6000 }
+			add_equipment_to_stockpile = { type = squad_equipment    amount = -2000 }
+			# Cost: one random on-map US military factory is torn down.
+			random_owned_controlled_state = {
+				limit = { arms_factory > 0 }
+				remove_building = { type = arms_factory level = 1 }
+			}
+			add_to_variable = { global.cnc_stock_inf = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+
+	USA_cnc_stock_support = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_stability_tt  has_stability > 0.10 }
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_support_tt
+				has_equipment = { support_equipment > 999 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_stability = -0.05
+			add_equipment_to_stockpile = { type = support_equipment amount = -1000 }
+			random_owned_controlled_state = {
+				limit = { arms_factory > 0 }
+				remove_building = { type = arms_factory level = 1 }
+			}
+			add_to_variable = { global.cnc_stock_sup = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+
+	USA_cnc_stock_artillery = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_stability_tt  has_stability > 0.10 }
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_artillery_tt
+				has_equipment = { artillery_equipment > 749 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_stability = -0.05
+			add_equipment_to_stockpile = { type = artillery_equipment amount = -750 }
+			random_owned_controlled_state = {
+				limit = { arms_factory > 0 }
+				remove_building = { type = arms_factory level = 1 }
+			}
+			add_to_variable = { global.cnc_stock_art = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+
+	USA_cnc_stock_motorized = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_stability_tt  has_stability > 0.10 }
+			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_motorized_tt
+				has_equipment = { motorized_equipment > 1999 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_stability = -0.05
+			add_equipment_to_stockpile = { type = motorized_equipment amount = -2000 }
+			random_owned_controlled_state = {
+				limit = { arms_factory > 0 }
+				remove_building = { type = arms_factory level = 1 }
+			}
+			add_to_variable = { global.cnc_stock_mot = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+}
+
+USA_cnc_market_cat = {
+
+	#####################################
+	# ====  RECIPIENT: MARKET OVERVIEW (tracker)  ====
+	# Always shown to eligible recipients while the US market is open, so the tab is reachable.
+	#####################################
+
+	USA_cnc_buyer_overview = {
+		icon = USA_cnc_money
+		allowed = { always = yes }
+		visible = { USA = { has_country_flag = USA_cash_and_carry_active  has_war = no } }
+		available = { custom_trigger_tooltip = { tooltip = USA_cnc_overview_hint_tt  always = no } }
+		cost = 0
+		fire_only_once = no
+	}
+
+	#####################################
+	# ====  RECIPIENT: BUY FROM THE US MARKET (per type)  ====
+	# Eligible tags are governed by the USA_cnc_market_cat category's allowed block. All four
+	# buys stay visible (greyed with reasons) so every recipient always has the four options.
+	# On purchase the package leaves the market at once; equipment arrives after 90 days.
+	#####################################
+
+	USA_cnc_buy_infantry = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_buyer_at_war_tt  has_war = yes }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_inf_tt
+				check_variable = { global.cnc_stock_inf > 0.5 }
+			}
+		}
+
+		cost = 60
+		days_re_enable = 120
+		fire_only_once = no
+
+		complete_effect = {
+			subtract_from_variable = { global.cnc_stock_inf = 1 }
+			country_event = { id = usa.9401 days = 90 }
+			USA_cnc_purchase_cost = yes
+		}
+
+		ai_will_do = { factor = 4 modifier = { factor = 2 is_in_faction_with = USA } }
+	}
+
+	USA_cnc_buy_support = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_buyer_at_war_tt  has_war = yes }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_sup_tt
+				check_variable = { global.cnc_stock_sup > 0.5 }
+			}
+		}
+
+		cost = 60
+		days_re_enable = 120
+		fire_only_once = no
+
+		complete_effect = {
+			subtract_from_variable = { global.cnc_stock_sup = 1 }
+			country_event = { id = usa.9402 days = 90 }
+			USA_cnc_purchase_cost = yes
+		}
+
+		ai_will_do = { factor = 4 modifier = { factor = 2 is_in_faction_with = USA } }
+	}
+
+	USA_cnc_buy_artillery = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_buyer_at_war_tt  has_war = yes }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_art_tt
+				check_variable = { global.cnc_stock_art > 0.5 }
+			}
+		}
+
+		cost = 60
+		days_re_enable = 120
+		fire_only_once = no
+
+		complete_effect = {
+			subtract_from_variable = { global.cnc_stock_art = 1 }
+			country_event = { id = usa.9403 days = 90 }
+			USA_cnc_purchase_cost = yes
+		}
+
+		ai_will_do = { factor = 4 modifier = { factor = 2 is_in_faction_with = USA } }
+	}
+
+	USA_cnc_buy_motorized = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = { tooltip = USA_cnc_buyer_at_war_tt  has_war = yes }
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_mot_tt
+				check_variable = { global.cnc_stock_mot > 0.5 }
+			}
+		}
+
+		cost = 60
+		days_re_enable = 120
+		fire_only_once = no
+
+		complete_effect = {
+			subtract_from_variable = { global.cnc_stock_mot = 1 }
+			country_event = { id = usa.9404 days = 90 }
+			USA_cnc_purchase_cost = yes
+		}
+
+		ai_will_do = { factor = 4 modifier = { factor = 2 is_in_faction_with = USA } }
+	}
+}
