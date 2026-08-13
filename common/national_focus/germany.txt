@@ -1647,6 +1647,8 @@ focus_tree = {
 				GER_industrial_production_speed_dockyard_factor = 0.05
 				tooltip = production_speed_dockyard_factor_tt
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_Goring_Path2
 			#add_timed_idea = {
 			#	idea = GER_rapid_mobilisation
 			#	days = 500
@@ -1928,7 +1930,9 @@ focus_tree = {
 				tooltip = production_speed_dockyard_factor_tt
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
-			#custom_effect_tooltip = GER_Speer_Path
+			custom_effect_tooltip = GER_Speer_Path2
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_Manage_Autarky
 			#GER_stop_rearmament = yes
 		}
 	}
@@ -2179,7 +2183,7 @@ focus_tree = {
 		add_resource = {
 			state = 52
 			type = coal
-			amount = 150
+			amount = 300
 		}
     }
 	}
@@ -2645,7 +2649,7 @@ focus_tree = {
 				GER_industrial_line_change_production_efficiency_factor = 0.05
 				tooltip = line_change_production_efficiency_factor_tt
 			}
-			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.40 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.45 tooltip = production_speed_arms_factory_factor_tt }
 			add_to_variable = { 
 				GER_industrial_production_speed_dockyard_factor = 0.15
 				tooltip = production_speed_dockyard_factor_tt
@@ -2665,6 +2669,12 @@ focus_tree = {
 				GER_wehrwirtschaft_local_resources_factor = 0.10
 				tooltip = local_resources_factor_tt
 			}
+		custom_effect_tooltip = generic_skip_one_line_tt
+		add_resource = {
+			state = 64
+			type = coal
+			amount = 200
+		}
 		}
 	}
 
@@ -13460,9 +13470,9 @@ completion_reward = {
 		#prerequisite = { focus = GER_fate_of_czechoslovakia focus = GER_integrate_czechoslovakia }
 		prerequisite = { focus = GER_Mobilise_The_Deutchess_Reich }
 		#mutually_exclusive = { focus = GER_anti_soviet_pact }
-		x = 0
-		y = 1
-		relative_position_id = GER_Mobilise_The_Deutchess_Reich
+		x = 2
+		y = 2
+		relative_position_id = GER_fate_of_czechoslovakia # was GER_Mobilise_The_Deutchess_Reich (defined later -> error); re-anchored to the same absolute spot via its parent
 		cost = 5
 		
 		available = {
@@ -14204,8 +14214,8 @@ completion_reward = {
 	focus = {
 		id = GER_form_rome_berlin_axis
 
-		icon = GFX_ger_alliance_with_italy2
-		alternate_icon = GFX_ger_alliance_with_italy2
+		icon = GFX_ger_alliance_with_italy
+		alternate_icon = GFX_ger_alliance_with_italy
 
 		#prerequisite = { focus = GER_fate_of_czechoslovakia focus = GER_integrate_czechoslovakia }	
 		prerequisite = { focus = GER_fate_of_czechoslovakia }
@@ -14284,7 +14294,10 @@ completion_reward = {
 		prerequisite = { focus = GER_form_rome_berlin_axis }
 		available = {
 			has_war_with = USA
-			has_war_with = SOV
+			OR = {
+				has_war_with = SOV
+				has_global_flag = SOV_has_capitulated
+			}
 			ITA = { 
 				OR = {
 					surrender_progress > 0.05
@@ -17843,58 +17856,7 @@ completion_reward = {
 					}
 				}
 			}
-						if = {
-						limit = {
-							HUN = {
-									is_in_faction_with = GER
-								}
-							}
-						HUN = {
-							declare_war_on = { 
-								target = SOV
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							ROM = {
-									is_in_faction_with = GER
-								}
-							}
-						ROM = {
-							declare_war_on = { 
-								target = SOV
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							BUL = {
-									is_in_faction_with = GER
-								}
-							}
-						BUL = {
-							declare_war_on = { 
-								target = SOV
-								type = annex_everything
-							}
-						}
-					}
-					if = {
-						limit = {
-							YUG = {
-									is_in_faction_with = GER
-								}
-							}
-						YUG = {
-							declare_war_on = { 
-								target = SOV
-								type = annex_everything
-							}
-						}
-					}
+			country_event = { id = germany.2100 hours = 3 } # co-belligerents (HUN/ROM/BUL/YUG) join in staggered waves, not all in GER's tick
 
 			effect_tooltip = {
 				activate_mission = GER_barbarossa_mission_moscow
@@ -21369,7 +21331,7 @@ completion_reward = {
 
 	focus = {
 		id = GER_wunderwaffe
-		icon = GFX_GER_wunderwaffe2
+		icon = GFX_GER_make_wunderwaffe2
 		prerequisite = { focus = GER_autonomous_organization_todt focus = GER_plenipotentiary_of_armaments}
 
 		text_icon = GER_inner_circle_focus_style
