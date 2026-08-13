@@ -3034,20 +3034,22 @@ operations = {
 		}
 		fire_only_once = yes
 		complete_effect = {
+			# strip all on-map factories from the Irish states before annexing
+			IRE = {
+				every_owned_state = {
+					set_building_level = { type = industrial_complex level = 0 instant_build = yes }
+					set_building_level = { type = arms_factory level = 0 instant_build = yes }
+					set_building_level = { type = dockyard level = 0 instant_build = yes }
+				}
+			}
 			annex_country = { target = IRE transfer_troops = yes }
 			113 = { set_compliance = 60 }
 			134 = { set_compliance = 60 }
 			135 = { set_compliance = 60 }
+			# compensate the UK with off-map industry instead of the stripped on-map factories
 			ENG = {
-				if = { 
-					limit = {
-						has_game_rule = {
-							rule = allow_voice_lines
-							option = ENABLED
-						}
-					}
-				scoped_sound_effect = "wot_ze_fok"
-				}
+				add_offsite_building = { type = industrial_complex level = 10 }
+				add_offsite_building = { type = arms_factory level = 10 }
 			}
 		}
 	}
