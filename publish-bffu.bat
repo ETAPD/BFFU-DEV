@@ -33,6 +33,8 @@ del /q "%DEST%\upload-bffu.bat" 2>nul
 del /q "%DEST%\.gitignore" 2>nul
 del /q "%DEST%\.gitattributes" 2>nul
 if exist "%DEST%\.claude" rmdir /s /q "%DEST%\.claude"
+if exist "%DEST%\.codebuddy" rmdir /s /q "%DEST%\.codebuddy"
+del /q "%DEST%\changelog.txt" 2>nul
 
 REM --- LOCAL folder descriptor (no remote_file_id) ---
 call :write_descriptor "%DEST%\descriptor.mod" "BFFU 2 (Local)"
@@ -49,7 +51,7 @@ exit /b 0
 
 :write_descriptor
 REM %~1 = target .mod file, %~2 = mod name
-> "%~1" echo version="1.17.3.0"
+> "%~1" echo version="1.19"
 >> "%~1" echo tags={
 >> "%~1" echo 	"Balance"
 >> "%~1" echo 	"Events"
@@ -66,5 +68,5 @@ REM %~1 = target .mod file, %~2 = mod name
 >> "%~1" echo replace_path="common/ai_templates"
 >> "%~1" echo replace_path="gfx/interface/equipmentdesigner/tanks/designer"
 >> "%~1" echo replace_path="history/countries"
->> "%~1" echo supported_version="1.17.3.0"
+>> "%~1" echo supported_version="1.19.*"
 exit /b 0
