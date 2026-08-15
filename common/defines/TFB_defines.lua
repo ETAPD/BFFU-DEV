@@ -622,6 +622,7 @@ NDefines.NNavy.SPOTTING_ENEMY_SPOTTING_MULTIPLIER_FOR_RUNNING_AWAY = 0.50		-- en
 NDefines.NNavy.NAVY_VISIBILITY_BONUS_ON_RETURN_FOR_REPAIR = 0.5				-- Multiplier for the surface/sub visiblity when the heavily damaged fleet is returning to the home base for reparation. 1.0 = no bonus. 0.0 = invisible
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor must be this value to deal damage fraction equal to the index in the array below [higher number = higher penetration]. If armor is 0, 1.00 will be returned.
+	4.00,
 	3.00,
 	2.50,
 	2.00,
@@ -637,21 +638,23 @@ NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor mu
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_CRITICAL_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
+	4.00,
 	3.00,
 	2.50,
 	2.00,
-	1.50,
-	1.00, --100%
+	1.00,
+	0.00, --100%
 	-0.10,
 	-0.25,
 	-0.50,
-	-0.85, -- For criticals, you could reduce crit chance unlike damage in army combat, but we do not for now.
-	-0.95,
-	-1.00,
+	-0.70, -- For criticals, you could reduce crit chance unlike damage in army combat, but we do not for now.
+	-0.80,
+	-0.90,
 	-1.00
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_DAMAGE_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
+	4.00,
 	3.00,
 	2.50,
 	2.00,
@@ -659,9 +662,9 @@ NDefines.NNavy.NAVY_PIERCING_THRESHOLD_DAMAGE_VALUES = {	-- 0 armor will always 
 	1.00, --100%
 	0.85,
 	0.70,
-	0.60,
-	0.50,
-	0.35,
+	0.55,
+	0.45,
+	0.25,
 	0.15,
 	0.00 -- 
 }
