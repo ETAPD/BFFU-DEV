@@ -27,12 +27,10 @@ JAP_strike_south = {
 	declare_war_on = { target = ENG type = annex_everything }
 	declare_war_on = { target = HOL type = annex_everything }
 
-	# Festung Europa - stand up the display on Europe's coast and the real penalty on the Allies.
+	# Festung Europa - add the state modifier to every European coastal state.
 	# Globals start at 0 and are scaled to the islands held by the first recompute below.
 	set_variable = { global.JAP_festung_inv = 0 }
 	set_variable = { global.JAP_festung_islands = 0 }
-	if = { limit = { country_exists = USA } USA = { add_dynamic_modifier = { modifier = JAP_festung_allied_diversion } } }
-	if = { limit = { country_exists = ENG } ENG = { add_dynamic_modifier = { modifier = JAP_festung_allied_diversion } } }
 	every_state = {
 		limit = { is_on_continent = europe is_coastal = yes }
 		add_dynamic_modifier = { modifier = JAP_festung_europa }
@@ -83,22 +81,6 @@ JAP_pacific_recompute = {
 	if = { limit = { 335 = { is_controlled_by = JAP } 672 = { is_controlled_by = JAP } 334 = { is_controlled_by = JAP } 1022 = { is_controlled_by = JAP } } add_to_temp_variable = { caps = 1 } } # Dutch East Indies (Java, Sumatra, Borneo, Kalimantan)
 	set_variable = { JAP_pac_caps = caps }
 
-	# --- Secondary effect: the Allies' "The Pacific War" attack debuff vs the European Axis ---
-	# Tier scales with the Allied powers Japan has knocked out (caps) plus heavy island dominance.
-	# It is eroded one level from 1 Jan 1942 and fully lifted from 1 Jan 1943, as the Allies finally
-	# mobilise against Asia. Applied to every Allied nation (oak applies it faction-wide).
-	set_temp_variable = { atier = caps }
-	if = { limit = { check_variable = { isl > 9 } } add_to_temp_variable = { atier = 1 } }
-	if = { limit = { date > 1942.1.1 } subtract_from_temp_variable = { atier = 1 } }
-	if = { limit = { date > 1943.1.1 } set_temp_variable = { atier = 0 } }
-	if = { limit = { check_variable = { atier < 0 } } set_temp_variable = { atier = 0 } }
-	if = { limit = { check_variable = { atier > 5 } } set_temp_variable = { atier = 5 } }
-	set_variable = { global.ALLIES_pacific_tier = atier }
-	every_country = {
-		limit = { OR = { is_in_faction_with = ENG is_in_faction_with = USA tag = ENG tag = USA } }
-		JAP_apply_allies_pacific_war = yes
-	}
-
 	# --- Tora Tora: 20 days off per newly-taken objective ---
 	set_temp_variable = { total = isl }
 	add_to_temp_variable = { total = caps }
@@ -122,17 +104,22 @@ JAP_pacific_recompute = {
 	# on_state_control_changed), so nothing cross-theatre is rescaled here.
 }
 
-# Sets the holder's "The Pacific War" debuff tier to match global.ALLIES_pacific_tier (0 = none).
-# Only swaps when the tier actually changes (ALLIES_pacific_applied guard) to avoid monthly churn.
-JAP_apply_allies_pacific_war = {
+# on every Allied country (same scope as island hopping).
+USA_allies_pacific_war_level_up = {
 	if = {
-		limit = { NOT = { check_variable = { var = ALLIES_pacific_applied value = global.ALLIES_pacific_tier compare = equals } } }
-		remove_ideas = { ALLIES_pacific_war_1 ALLIES_pacific_war_2 ALLIES_pacific_war_3 ALLIES_pacific_war_4 ALLIES_pacific_war_5 }
-		if =      { limit = { check_variable = { global.ALLIES_pacific_tier = 1 } } add_ideas = ALLIES_pacific_war_1 }
-		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 2 } } add_ideas = ALLIES_pacific_war_2 }
-		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 3 } } add_ideas = ALLIES_pacific_war_3 }
-		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 4 } } add_ideas = ALLIES_pacific_war_4 }
-		else_if = { limit = { check_variable = { global.ALLIES_pacific_tier = 5 } } add_ideas = ALLIES_pacific_war_5 }
-		set_variable = { ALLIES_pacific_applied = global.ALLIES_pacific_tier }
+		limit = { NOT = { has_idea = ALLIES_pacific_war_1 has_idea = ALLIES_pacific_war_2 has_idea = ALLIES_pacific_war_3 has_idea = ALLIES_pacific_war_4 has_idea = ALLIES_pacific_war_5 } }
+		add_ideas = ALLIES_pacific_war_1
 	}
+	else_if = { limit = { has_idea = ALLIES_pacific_war_1 } swap_ideas = { remove_idea = ALLIES_pacific_war_1 add_idea = ALLIES_pacific_war_2 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_2 } swap_ideas = { remove_idea = ALLIES_pacific_war_2 add_idea = ALLIES_pacific_war_3 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_3 } swap_ideas = { remove_idea = ALLIES_pacific_war_3 add_idea = ALLIES_pacific_war_4 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_4 } swap_ideas = { remove_idea = ALLIES_pacific_war_4 add_idea = ALLIES_pacific_war_5 } }
+}
+
+USA_allies_pacific_war_level_down = {
+	if = { limit = { has_idea = ALLIES_pacific_war_5 } swap_ideas = { remove_idea = ALLIES_pacific_war_5 add_idea = ALLIES_pacific_war_4 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_4 } swap_ideas = { remove_idea = ALLIES_pacific_war_4 add_idea = ALLIES_pacific_war_3 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_3 } swap_ideas = { remove_idea = ALLIES_pacific_war_3 add_idea = ALLIES_pacific_war_2 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_2 } swap_ideas = { remove_idea = ALLIES_pacific_war_2 add_idea = ALLIES_pacific_war_1 } }
+	else_if = { limit = { has_idea = ALLIES_pacific_war_1 } remove_ideas = ALLIES_pacific_war_1 }
 }
