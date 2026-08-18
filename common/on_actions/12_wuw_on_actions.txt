@@ -1684,67 +1684,6 @@ on_actions = {
 			}	
 		}
 
-		effect = { #ticking down effect for after the event
-			IF = {
-				limit = {
-					has_country_flag = GER_hitler_wants_austria_flag
-					AUS = {
-						exists = yes
-						is_subject = no
-						NOT = { has_war_with = GER }
-					}
-					GER = {
-						NOT = {
-							has_completed_focus = GER_anschluss
-							always = no # was: has_completed_focus = GER_oppose_hitler_ww (focus removed in GER cleanup)
-							always = no # was: has_completed_focus = GER_oppose_hitler (focus removed in GER cleanup)
-						}
-					}
-				}
-
-				IF = {
-					limit = {
-						AUS = {	
-							OR = {
-								has_completed_focus = AUS_reinstate_the_imperial_council
-								has_government = neutrality
-							}
-							
-						}
-					}
-
-					set_variable = { AUS.fascism_anschluss_tick = AUS.party_popularity@fascism } #sets a new variable to not risk affecting the standard variable of fascist popularity
-
-					IF = {
-						limit = { #makes sure that we do not get a negative ratio after the subtraction
-							check_variable = { global.deployed_manpower_ratio_needed_for_anschluss > AUS.fascism_anschluss_tick  }
-						}
-						subtract_from_variable = { #if we can subtract without going below zero, subtract the fascism support from the ratio
-							var = global.deployed_manpower_ratio_needed_for_anschluss
-							value = AUS.fascism_anschluss_tick
-						}
-					}
-				
-				}
-
-				ELSE = {
-
-					set_variable = { AUS.neutrality_anschluss_tick = AUS.party_popularity@neutrality } #sets a new variable to not risk affecting the standard variable of neutrality popularity
-					
-					IF = {
-						limit = { #makes sure that we do not get a negative ratio after the subtraction
-							check_variable = { global.deployed_manpower_ratio_needed_for_anschluss > AUS.neutrality_anschluss_tick }
-						}
-
-						subtract_from_variable = { #if we can subtract without going below zero, subtract the fascism support from the ratio
-							var = global.deployed_manpower_ratio_needed_for_anschluss
-							value = AUS.neutrality_anschluss_tick
-						}
-					}
-				}
-			}
-		}
-
 		#Check numbers of Reichskommissariats and make Rosenberg cry if the numbers don't add up - this is a failsafe system
 		effect = {
 			if = {

@@ -1,9 +1,6 @@
 ############################################################
 # USA Dynamic Modifiers
 ############################################################
-
-# United States Navy — absorbs Torpedo Reliability Issues (USA_torpedo_detonator_penalty).
-# All values are variable-driven so focuses/events can improve them with add_to_variable.
 # Variables initialised in history/countries/USA - USA.txt before add_dynamic_modifier.
 USA_united_states_navy = {
 	icon = GFX_idea_USA_the_united_states_navy
@@ -22,11 +19,6 @@ USA_united_states_navy = {
 	sortie_efficiency                  = var:USA_navy_sortie_efficiency_bonus   # 0.0 base
 }
 
-# United States Army — replaces the static spirit.
-# conscription_factor is always active. The three reform bonuses
-# (XP, promote cost, planning) are driven by variables initialised
-# to 0 in gmfu_usa_startup.txt and set to their final values by the
-# USA_finish_the_final_army_reforms focus completion reward.
 USA_united_states_army = {
 	icon = GFX_idea_MEX_politicised_army
 
@@ -57,13 +49,13 @@ USA_united_states_army = {
 	mountaineers_special_forces_contribution_factor    = var:USA_army_mountaineer_sf_cap_bonus      # 0 until Army Rangers; -0.25 after
 	modifier_army_sub_unit_mountaineers_attack_factor  = var:USA_army_mountaineer_attack_bonus      # 0 until Army Rangers; 0.10 after
 	modifier_army_sub_unit_mountaineers_defence_factor = var:USA_army_mountaineer_defence_bonus     # 0 until Army Rangers; 0.10 after
-	special_forces_attack_factor                        = var:USA_army_ranger_attack_bonus         # 0 until Army Rangers; +5% (all special forces, incl. rangers)
+	special_forces_attack_factor                        = var:USA_army_ranger_attack_bonus         # 0 until Army Rangers; +5% 
 	coordination_bonus                                  = var:USA_army_ranger_coordination_bonus   # 0 until Army Rangers; +2% after
 
 	command_power_gain_mult      = var:USA_army_pentagon_cp_bonus       # 0 until Plans for the Pentagon; 0.15 after
 	training_time_army_factor    = var:USA_army_training_time_bonus     # 0 until The US Army; -0.05 after
 
-	invasion_preparation                = var:USA_army_invasion_prep_bonus          # 0 until either; +0.50 after Large Scale Invasion (slower prep, tradeoff); -1.00 after Island Campaign (faster). Negative = faster.
+	invasion_preparation                = var:USA_army_invasion_prep_bonus          # 0 until either; +0.50 after Large Scale Invasion
 	naval_invasion_penalty              = var:USA_army_amphibious_inv_bonus          # 0 until Large Scale Invasion; -0.075 after
 	naval_invasion_planning_bonus_speed = var:USA_army_naval_planning_speed_bonus    # 0 until Large Scale Invasion; 0.10 after
 	naval_invasion_capacity             = var:USA_army_naval_inv_capacity_bonus      # 0 until Island Campaign; 6 after
@@ -112,7 +104,7 @@ USA_new_business_deal = {
 }
 # Ohio River Flood — State-level penalties for affected states
 
-# Stage 1 — Full penalty
+# Stage 1
 ohio_flood = {
 	icon = "GFX_modifiers_flooded_icon"
 	enable = { always = yes }
@@ -120,7 +112,7 @@ ohio_flood = {
 	local_resources_factor = -0.15
 }
 
-# Stage 2 — Two-thirds penalty
+# Stage 2
 ohio_flood_2 = {
 	icon = "GFX_modifiers_flooded_icon"
 	enable = { always = yes }
@@ -128,12 +120,22 @@ ohio_flood_2 = {
 	local_resources_factor = -0.10
 }
 
-# Stage 3 — One-third penalty
+# Stage 3
 ohio_flood_3 = {
 	icon = "GFX_modifiers_flooded_icon"
 	enable = { always = yes }
 	state_production_speed_buildings_factor = -0.05
 	local_resources_factor = -0.05
+}
+
+USA_cnc_market_costs = {
+	enable = {
+		tag = USA
+		has_war = no
+		has_country_flag = USA_cash_and_carry_active
+	}
+	consumer_goods_factor       = USA_cnc_consumer_goods_var
+	production_speed_buildings_factor = USA_cnc_construction_speed_var
 }
 
 # War Economy — Added by the December 7 1941 focus chain
@@ -148,7 +150,7 @@ USA_war_economy = {
 	global_building_slots_factor         = 2.0
 }
 
-# War Economy + Big Business Subsidies (fallback — applied if war economy was already active before subsidies)
+# War Economy + Big Business Subsidies
 USA_war_economy_subsidies = {
 	icon = GFX_idea_war_economy
 	enable = { tag = USA }
