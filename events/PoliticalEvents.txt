@@ -2329,24 +2329,13 @@ country_event = {
 		trigger = {
 			ROOT = { is_ai = no }
 		}
-		clr_country_flag = yes_to_unification_flag 
+		clr_country_flag = yes_to_unification_flag
 		clr_country_flag = unification_request_sent_flag
-		#log = "Player ROOT [ROOT.GetName] to annex"
-		every_other_country = {
-			limit = {
-				original_tag = ROOT
-				has_country_flag = yes_to_unification_flag
-				is_subject = no
-				has_government = ROOT
-				has_war = no
-			}
-			clr_country_flag = yes_to_unification_flag
-			ROOT = { annex_country = { target = PREV transfer_troops = yes } }
-		}
+		country_event = { id = political.34 }
 		news_event = {
 			id = news.350
-			hours = 8 
-			random_hours = 8 
+			hours = 8
+			random_hours = 8
 		}
 	}
 	option = {
@@ -2363,64 +2352,75 @@ country_event = {
 					is_subject = no
 					has_government = ROOT
 					has_war = no
-					is_ai = no 
+					is_ai = no
 				}
 			}
-			log = "ai ROOT - Human player [ROOT.GetName] to annex"
 			random_other_country = {
-				limit = { 
+				limit = {
 					NOT = { tag = ROOT }
 					original_tag = ROOT
 					has_country_flag = yes_to_unification_flag
 					is_subject = no
 					has_government = ROOT
 					has_war = no
-					is_ai = no 
+					is_ai = no
 				}
-				clr_country_flag = yes_to_unification_flag 
+				clr_country_flag = yes_to_unification_flag
 				clr_country_flag = unification_request_sent_flag
-				every_other_country = {
-					limit = { 
-						original_tag = ROOT
-						has_country_flag = yes_to_unification_flag
-						is_subject = no
-						has_government = ROOT
-						has_war = no
-					}
-					clr_country_flag = yes_to_unification_flag
-					PREV = { annex_country = { target = PREV transfer_troops = yes } }
-				}
+				country_event = { id = political.34 }
 				news_event = {
 					id = news.350
-					hours = 8 
-					random_hours = 8 
+					hours = 8
+					random_hours = 8
 				}
 			}
 		}
 		ELSE = {
-			#log = "AI ROOT [ROOT.GetName] to annex"
-			clr_country_flag = yes_to_unification_flag 
+			clr_country_flag = yes_to_unification_flag
 			clr_country_flag = unification_request_sent_flag
-			every_other_country = {
-				limit = {
+			country_event = { id = political.34 }
+			news_event = {
+				id = news.350
+				hours = 8
+				random_hours = 8
+			}
+		}
+	}
+}
+	
+# Sequential unification annexation — annexes one country per tick to avoid stack overflow
+country_event = {
+	id = political.34
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		random_other_country = {
+			limit = {
+				original_tag = ROOT
+				has_country_flag = yes_to_unification_flag
+				is_subject = no
+				has_government = ROOT
+				has_war = no
+			}
+			clr_country_flag = yes_to_unification_flag
+			ROOT = { annex_country = { target = PREV transfer_troops = yes } }
+		}
+		if = {
+			limit = {
+				any_other_country = {
 					original_tag = ROOT
 					has_country_flag = yes_to_unification_flag
 					is_subject = no
 					has_government = ROOT
 					has_war = no
 				}
-				clr_country_flag = yes_to_unification_flag
-				ROOT = { annex_country = { target = PREV transfer_troops = yes } }
 			}
-			news_event = {
-				id = news.350
-				hours = 8 
-				random_hours = 8 
-			}
+			country_event = { id = political.34 hours = 1 }
 		}
 	}
 }
-	
+
 country_event = {
 	id = political.33
 	title = political.33.t
