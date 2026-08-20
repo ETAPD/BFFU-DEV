@@ -1261,3 +1261,47 @@ country_event = {
 		}
 	}
 }
+
+# Mediterranean Gambit - monthly output bonus while holding Cyprus and Malta
+country_event = {
+	id = britain.811
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_war_with = ITA
+				controls_state = 183
+				controls_state = 116
+			}
+			add_to_variable = { ENG_industrial_capacity_factory_var = 0.005 }
+			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.005 }
+			add_to_variable = { ENG_med_gambit_months = 1 }
+			country_event = { id = britain.811 days = 30 }
+		}
+		else_if = {
+			limit = {
+				has_war_with = ITA
+				OR = {
+					NOT = { controls_state = 183 }
+					NOT = { controls_state = 116 }
+				}
+				check_variable = { ENG_med_gambit_months < 3 }
+			}
+			add_to_variable = { ENG_industrial_capacity_factory_var = -0.05 }
+			add_to_variable = { ENG_industrial_capacity_dockyard_var = -0.05 }
+			clr_country_flag = ENG_med_gambit_active
+		}
+		else_if = {
+			limit = {
+				has_war_with = ITA
+				OR = {
+					NOT = { controls_state = 183 }
+					NOT = { controls_state = 116 }
+				}
+			}
+			clr_country_flag = ENG_med_gambit_active
+		}
+	}
+}

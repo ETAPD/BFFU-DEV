@@ -60,8 +60,77 @@ focus_tree = {
 			complete_national_focus = ENG_army_rearmament
 		}
 	}
-	
-	
+
+	focus = {
+		id = ENG_churchills_rearmament
+		icon = GFX_focus_AUS_raid_military_storages
+		prerequisite = { focus = ENG_rearmament }
+		mutually_exclusive = { focus = ENG_maxwells_plan }
+
+		x = -12
+		y = 1
+		relative_position_id = ENG_rearmament
+
+		cost = 5
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			add_stability = -0.05
+			122 = {
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = arms_factory
+					level = 4
+					instant_build = yes
+				}
+			}
+			130 = {
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = arms_factory
+					level = 4
+					instant_build = yes
+				}
+			}
+			132 = {
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = arms_factory
+					level = 4
+					instant_build = yes
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_maxwells_plan
+		icon = GFX_focus_generic_arms_trade
+		prerequisite = { focus = ENG_rearmament }
+		mutually_exclusive = { focus = ENG_churchills_rearmament }
+
+		x = -10
+		y = 1
+		relative_position_id = ENG_rearmament
+
+		cost = 5
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = ENG_maxwells_plan_tt
+			hidden_effect = {
+				activate_decision = ENG_maxwells_plan_decision
+			}
+		}
+	}
+
+
 	# Intel Branch
 	focus = {
 		id = ENG_expand_the_secret_intelligence_service_focus
@@ -490,6 +559,7 @@ focus_tree = {
 		}	
 		completion_reward = {
 			country_event = britain.22
+			add_political_power = 100
 		}
 	}
 	focus = {
@@ -740,9 +810,10 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-        add_war_support = 0.1
-        add_stability = -0.05
-       
+			add_war_support = 0.1
+			add_stability = -0.05
+			custom_effect_tooltip = available_political_advisor
+			show_ideas_tooltip = ENG_leslie_hore_belisha
 		}
 	}
 	focus = {
@@ -5436,11 +5507,9 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			add_political_power = -100
-			add_stability = -0.05
-			add_war_support = 0.05
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = ENG_Containment_Cuck
+			custom_effect_tooltip = ENG_modify_domestic_situation_tt
+			add_to_variable = { ENG_political_power_cost_var = -0.1 tooltip = political_power_cost_var_tt }
+			add_to_variable = { ENG_war_support_factor_var = 0.1 tooltip = war_support_factor_tt }
 		}
 	}
 	focus = {
@@ -5465,13 +5534,9 @@ focus_tree = {
 			country_event = { id = mtg_britain.22 }
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = ENG_modify_domestic_situation_tt
-			add_to_variable = { ENG_consumer_goods_expected_value = 0.075 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { ENG_consumer_goods_expected_value = 0.03 tooltip = consumer_goods_expected_value_tt }
 			add_to_variable = { ENG_production_speed_industrial_complex_factor_var = -0.25 tooltip = production_speed_industrial_complex_factor_tt }
-			add_to_variable = { ENG_production_speed_arms_factory_factor_var = 0.05 tooltip = production_speed_arms_factory_factor_tt }
-			add_to_variable = { ENG_production_speed_dockyard_factor_var = 0.05 tooltip = production_speed_dockyard_factor_tt }
-			add_to_variable = { ENG_production_factory_start_efficiency_factor_var = 0.05 tooltip = production_factory_start_efficiency_factor_tt }
-			add_to_variable = { ENG_industrial_capacity_factory_var = 0.075 tooltip = industrial_capacity_factory_tt }
-			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.075 tooltip = industrial_capacity_dockyard_tt }
+			add_to_variable = { ENG_production_speed_arms_factory_factor_var = 0.25 tooltip = production_speed_arms_factory_factor_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = Containment_ENG2
 		}
@@ -5511,18 +5576,12 @@ focus_tree = {
 			128 = {
 				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
-					type = industrial_complex
+					type = arms_factory
 					level = 3
 					instant_build = yes
 				}
 			}
-			# custom_effect_tooltip = ENG_instant_early_mob_tt
-			# #add_stability = -0.05
-			add_political_power = -100
-
-			add_war_support = 0.05
 			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = ENG_all_eco_up
 
 			hidden_effect = {
 				if = {
@@ -5859,7 +5918,7 @@ focus_tree = {
 
 		}
 		
-		cost = 6
+		cost = 5
 		
 		ai_will_do = {
 			factor = 1
@@ -6022,7 +6081,7 @@ focus_tree = {
 		relative_position_id = ENG_bohemian_weapons
 
 		available = {
-			GER = { has_completed_focus = GER_demand_sudetenland }
+			GER = { has_completed_focus = GER_anschluss }
 		}
 		
 		cost = 4
@@ -6031,10 +6090,10 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			remove_ideas = ENG_the_war_to_end_all_wars
 			country_event = { id = mtg_britain.22 }
+			add_ideas = low_economic_mobilisation
 		}
-	}  
+	}
 		focus = {
 		id = ENG_expand_aluminium_production
 		icon = GFX_focus_generic_aluminum
@@ -6239,33 +6298,22 @@ focus_tree = {
 		id = ENG_military_buildup
 		icon = GFX_SOV_expand_the_aircraft_industry_ccp_2d_sov_compatibility
 		prerequisite = { focus = ENG_early_mobilisation }
-		
+
 		x = 0
 		y = 1
 		relative_position_id = ENG_early_mobilisation
-		
+
+		available = {
+			date > 1937.7.3
+		}
+
 		cost = 5
-		
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
 		completion_reward = {
-			127 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			338 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
+			add_ideas = partial_economic_mobilisation
 		}
 	}
 
@@ -6289,12 +6337,14 @@ focus_tree = {
 		
 		ai_will_do = {
 			factor = 1
-		}	
+		}
 		completion_reward = {
-			remove_ideas = ENG_the_war_to_end_all_wars
+			add_political_power = 300
+			custom_effect_tooltip = ENG_modify_domestic_situation_tt
+			add_to_variable = { ENG_political_power_factor_var = -0.1 tooltip = political_power_factor_tt }
 		}
 	}
-	
+
 
 	# Empire Focused Branch ###################################################
 	focus = {
@@ -6964,9 +7014,12 @@ focus_tree = {
 		}
 
 		completion_reward = {
+			custom_effect_tooltip = ENG_modify_domestic_situation_tt
+			add_to_variable = { ENG_industrial_capacity_factory_var = 0.05 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.05 tooltip = industrial_capacity_dockyard_tt }
 		}
 	}
-	
+
 	focus = {
 		id = ENG_imperial_defense_conference
 		prerequisite = { focus = ENG_finish_development focus = ENG_the_eastern_battalion focus = ENG_fortify_rhodesia}
@@ -7078,9 +7131,22 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			add_political_power = 75
-			custom_effect_tooltip = available_political_advisor
-			show_ideas_tooltip = ENG_leslie_hore_belisha
+			125 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			338 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
 		}
 	}
 	focus = {
@@ -7144,13 +7210,21 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-        custom_effect_tooltip = MaxwellxChurchill_ENG
-		custom_effect_tooltip = generic_skip_one_line_tt
-		123 = {
-				add_extra_state_shared_building_slots = 2
+			custom_effect_tooltip = MaxwellxChurchill_ENG
+			custom_effect_tooltip = generic_skip_one_line_tt
+			123 = {
+				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = arms_factory
-					level = 2
+					level = 4
+					instant_build = yes
+				}
+			}
+			128 = {
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = arms_factory
+					level = 4
 					instant_build = yes
 				}
 			}
@@ -7161,27 +7235,59 @@ focus_tree = {
 		icon = GFX_focus_generic_combined_arms
 		prerequisite = { focus = ENG_military_buildup}
 		mutually_exclusive = { focus = ENG_boost_military_comblex2}
-		
+
 		x = -2
 		y = 1
 		relative_position_id = ENG_military_buildup
 
 		available = {
-			threat > 0.2
 		}
-		
+
 		cost = 5
-		
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
 		completion_reward = {
-			custom_effect_tooltip = ENG_modify_domestic_situation_tt
-			add_to_variable = { ENG_production_speed_arms_factory_factor_var = 0.05 tooltip = production_speed_arms_factory_factor_tt }
-			add_to_variable = { ENG_production_speed_dockyard_factor_var = 0.05 tooltip = production_speed_dockyard_factor_tt }
-			add_to_variable = { ENG_industrial_capacity_factory_var = 0.025 tooltip = industrial_capacity_factory_tt }
-			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.025 tooltip = industrial_capacity_dockyard_tt }
-			add_to_variable = { ENG_production_factory_max_efficiency_factor_var = 0.025 tooltip = production_factory_max_efficiency_factor_tt }
+			custom_effect_tooltip = ENG_boost_mil_complex_convert_tt
+			hidden_effect = {
+				random_owned_controlled_state = {
+					limit = { is_core_of = ENG }
+					remove_building = { type = industrial_complex level = 4 }
+				}
+				random_owned_controlled_state = {
+					limit = { is_core_of = ENG }
+					remove_building = { type = industrial_complex level = 3 }
+				}
+				random_owned_controlled_state = {
+					limit = { is_core_of = ENG }
+					remove_building = { type = industrial_complex level = 3 }
+				}
+			}
+			123 = {
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = arms_factory
+					level = 5
+					instant_build = yes
+				}
+			}
+			128 = {
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = arms_factory
+					level = 5
+					instant_build = yes
+				}
+			}
+			338 = {
+				add_extra_state_shared_building_slots = 5
+				add_building_construction = {
+					type = arms_factory
+					level = 5
+					instant_build = yes
+				}
+			}
 		}
 	}
 	focus = {
@@ -7195,7 +7301,6 @@ focus_tree = {
 		relative_position_id = ENG_military_buildup
 
 		available = {
-			threat > 0.2
 		}
 
 		cost = 5
@@ -7205,11 +7310,10 @@ focus_tree = {
 		}
 		completion_reward = {
 			custom_effect_tooltip = ENG_modify_domestic_situation_tt
-			add_to_variable = { ENG_production_speed_arms_factory_factor_var = 0.05 tooltip = production_speed_arms_factory_factor_tt }
-			add_to_variable = { ENG_production_speed_dockyard_factor_var = 0.05 tooltip = production_speed_dockyard_factor_tt }
-			add_to_variable = { ENG_industrial_capacity_factory_var = 0.025 tooltip = industrial_capacity_factory_tt }
-			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.025 tooltip = industrial_capacity_dockyard_tt }
-			add_to_variable = { ENG_production_factory_max_efficiency_factor_var = 0.025 tooltip = production_factory_max_efficiency_factor_tt }
+			add_to_variable = { ENG_consumer_goods_expected_value = 0.05 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { ENG_production_factory_max_efficiency_factor_var = 0.10 tooltip = production_factory_max_efficiency_factor_tt }
+			custom_effect_tooltip = ENG_boost_mil_prod_cap_until_war_tt
+			set_country_flag = ENG_boost_mil_prod_cap_active
 		}
 	}
 	focus = {
@@ -7231,7 +7335,8 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-
+			custom_effect_tooltip = ENG_modify_domestic_situation_tt
+			add_to_variable = { ENG_production_factory_max_efficiency_factor_var = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
 		}
 	}
 	focus = {
@@ -7305,7 +7410,8 @@ focus_tree = {
 			factor = 1
 		}
 		completion_reward = {
-
+			set_country_flag = ENG_med_gambit_active
+			custom_effect_tooltip = ENG_med_gambit_tt
 		}
 	}
 
@@ -7329,7 +7435,8 @@ focus_tree = {
 			factor = 1
 		}
 		completion_reward = {
-
+			set_country_flag = ENG_libyan_gambit_active
+			custom_effect_tooltip = ENG_libyan_gambit_tt
 		}
 	}
 	focus = {
@@ -7350,22 +7457,7 @@ focus_tree = {
 			factor = 1
 		}	
 		completion_reward = {
-			127 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			338 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = arms_factory
-					level = 1
-					instant_build = yes
-				}
-			}
+			add_timed_idea = { idea = ENG_research_funding_idea days = 365 }
 		}
 	}
 	focus = {
@@ -7385,8 +7477,8 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = available_industrial_concern
 			show_ideas_tooltip = John_Laing
-		
-			130 = {
+
+			127 = {
 				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = infrastructure
@@ -7411,10 +7503,6 @@ focus_tree = {
 				}
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
-			add_timed_idea = {
-				idea = ENG_Domestic_Bonds
-				days = 180
-			}
 		}
 	}
 	
