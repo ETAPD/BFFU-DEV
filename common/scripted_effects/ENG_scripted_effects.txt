@@ -735,3 +735,31 @@ ENG_sync_colonial_development_boost = {
 		}
 	}
 }
+
+ENG_shadow_debug_calc = {
+	set_variable = { var = shadow_dbg_current value = 0 }
+	for_each_scope_loop = {
+		array = ENG.starting_core_states
+		set_temp_variable = { var = tmp_civs value = industrial_complex_level }
+		ROOT = {
+			add_to_variable = { var = shadow_dbg_current value = temp:tmp_civs }
+		}
+	}
+	set_variable = { var = shadow_dbg_delta value = var:shadow_dbg_current }
+	subtract_from_variable = { var = shadow_dbg_delta value = var:shadow_civs1 }
+	clamp_variable = { var = shadow_dbg_delta min = 0 max = 120 }
+	set_variable = { var = shadow_dbg_mils value = var:shadow_dbg_delta }
+	divide_variable = { var = shadow_dbg_mils value = 3 }
+	set_variable = { var = shadow_dbg_tmp value = var:shadow_dbg_mils }
+	round_variable = shadow_dbg_mils
+	if = {
+		limit = {
+			check_variable = {
+				var = shadow_dbg_tmp
+				value = var:shadow_dbg_mils
+				compare = less_than
+			}
+		}
+		subtract_from_variable = { var = shadow_dbg_mils value = 1 }
+	}
+}

@@ -547,6 +547,110 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = shadow_scheme_focus_tt
 			add_ideas = ENG_shadow_scheme_idea
+			custom_effect_tooltip = ENG_available_political_advisor_tt
+			show_ideas_tooltip = ENG_clement_attlee
+			ENG = {
+				set_variable = { var = shadow_civs1 value = 0 }
+				for_each_scope_loop = {
+					array = ENG.starting_core_states
+					set_temp_variable = { var = tmp_civs value = industrial_complex_level }
+					ROOT = {
+						add_to_variable = { var = shadow_civs1 value = temp:tmp_civs }
+					}
+				}
+			}
+		}
+	}
+	focus = {
+		id = ENG_shadow_scheme_focus2
+		prerequisite = { focus = shadow_scheme }
+		available = { has_war = yes }
+		continue_if_invalid = yes
+		available_if_capitulated = yes
+		icon = GFX_goal_generic_construct_mil_factory
+		x = 2
+		y = 1
+		relative_position_id = shadow_scheme
+		cost = 5
+		ai_will_do = {
+			factor = 1
+		}
+		complete_tooltip = {
+			for_each_scope_loop = {
+				array = ENG.starting_core_states
+				add_to_variable = { ENG.shadow_civs2 = industrial_complex_level }
+			}
+			subtract_from_variable = { ENG.shadow_civs2 = ENG.shadow_civs1 }
+			clamp_variable = {
+				var = ENG.shadow_civs2
+				min = 0
+				max = 120
+			}
+			divide_variable = { ENG.shadow_civs2 = 3 }
+			set_variable = { ENG.shadow_civs3 = ENG.shadow_civs2 }
+			round_variable = ENG.shadow_civs2
+			if = {
+				limit = {
+					check_variable = {
+						var = ENG.shadow_civs3
+						value = ENG.shadow_civs2
+						compare = less_than
+					}
+				}
+				subtract_from_variable = { ENG.shadow_civs2 = 1 }
+			}
+			for_loop_effect = {
+				end = ENG.shadow_civs2
+				ENG = { 130 = {
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = {
+						type = arms_factory
+						level = 1
+						instant_build = yes
+					}
+				}}
+			}
+		}
+		completion_reward = {
+			custom_effect_tooltip = ENG_shadow_debug_tt
+			hidden_effect = { ENG_shadow_debug_calc = yes }
+			ENG = {
+				set_variable = { var = shadow_civs2 value = 0 }
+				for_each_scope_loop = {
+					array = ENG.starting_core_states
+					set_temp_variable = { var = tmp_civs value = industrial_complex_level }
+					ROOT = {
+						add_to_variable = { var = shadow_civs2 value = temp:tmp_civs }
+					}
+				}
+				subtract_from_variable = { var = shadow_civs2 value = var:shadow_civs1 }
+				clamp_variable = { var = shadow_civs2 min = 0 max = 120 }
+				divide_variable = { var = shadow_civs2 value = 3 }
+				set_variable = { var = shadow_civs3 value = var:shadow_civs2 }
+				round_variable = shadow_civs2
+				if = {
+					limit = {
+						check_variable = {
+							var = shadow_civs3
+							value = var:shadow_civs2
+							compare = less_than
+						}
+					}
+					subtract_from_variable = { var = shadow_civs2 value = 1 }
+				}
+				for_loop_effect = {
+					end = var:shadow_civs2
+					random_owned_controlled_state = {
+						limit = { is_core_of = ENG }
+						add_extra_state_shared_building_slots = 1
+						add_building_construction = {
+							type = arms_factory
+							level = 1
+							instant_build = yes
+						}
+					}
+				}
+			}
 		}
 	}
 	focus = {
