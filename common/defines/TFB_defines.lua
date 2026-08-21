@@ -1044,7 +1044,11 @@ NDefines.NRailwayGun.BASE_CAPTURE_CHANCE = 0						-- The base chance of railway 
 NDefines.NGame.TRADE_ROUTE_RECALCULATE_FREQUENCY_DAYS = 30
 NDefines.NCountry.INTERPOLATED_FRONT_STEPS_SHORT = 2
 NDefines_Graphics.NGraphics.MAPICON_GROUP_PASSES = 10
-NDefines.NAI.AI_UPDATE_ROLES_FREQUENCY_HOURS = 480
+NDefines.NNavy.NAVAL_COMBAT_RESULT_TIMEOUT_YEARS = 0 --vanilla 2, current value from horst
+NDefines.NNavy.CONVOY_LOSS_HISTORY_TIMEOUT_MONTHS = 1 --vanilla 24, current value from horst
+NDefines.NAI.AI_UPDATE_ROLES_FREQUENCY_HOURS = 48000000 -- vanilla 480, current value from horst
+NDefines.NAI.AI_NAVAL_GOALS_UPDATE_FREQUENCY_DAYS = 7000 -- vanilla 7
+NDefines.NAI.RAIDS_ENABLE_AI = false -- vanilla true
 NDefines.NGame.LAG_DAYS_FOR_LOWER_SPEED = 250
 NDefines.NGame.LAG_DAYS_FOR_PAUSE = 200
 
