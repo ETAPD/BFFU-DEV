@@ -879,7 +879,7 @@ NDefines.NDoctrines.THEATER_COMMANDER_UNITS_MASTERY_GAIN_FACTOR_PER_SKILL = 0.01
 ----- SUBMOD DEFINES -----
 --------------------------
 
-NDefines.NGame.GAME_SPEED_SECONDS = { 2000.0, 0.25, 0.2, 0.1, 0.0 } -- game speeds for each level. Must be 5 entries with last one 0 for unbound
+NDefines.NGame.GAME_SPEED_SECONDS = { 2000.0, 0.24, 0.225, 0.125, 0.0 } -- game speeds for each level. Must be 5 entries with last one 0 for unbound
 NDefines.NGame.COMBAT_LOG_MAX_MONTHS = 12
 NDefines.NDiplomacy.VOLUNTEERS_DIVISIONS_REQUIRED = 0	-- This many divisons are required for the country to be able to send volunteers.
 NDefines.NProduction.DEFAULT_MAX_NAV_FACTORIES_PER_LINE = 20
