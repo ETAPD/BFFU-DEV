@@ -38,7 +38,7 @@ NDefines.NDiplomacy.EMBARGO_NEIGHBOUR_AI_WEIGHT = -25					-- AI weight for diffe
 -- NDefines.NDiplomacy.NAVAL_BLOCKADE_THREAT_THRESHOLD = 20				-- Target-generated threat threshold to allow naval blockade
 
 NDefines.NCountry.DEFAULT_COASTAL_PROTECTION_STABILITY = 0.0		-- Default stability when the coastal states are fully protected
-NDefines.NCountry.EVENT_PROCESS_OFFSET = 40						-- Events are checked every X day per country or state (1 is ideal but CPU heavy)
+NDefines.NCountry.EVENT_PROCESS_OFFSET = 210000					-- Events are checked every X day per country or state (all MTTH events converted to on_actions)
 NDefines.NCountry.BASE_RESEARCH_SLOTS = 4						-- Base number of research slots per country.
 NDefines.NCountry.AIR_SCORE_MULTIPLIER = 0.0						-- Based on number of planes (which is typically a lot).
 NDefines.NCountry.BASE_STABILITY_WAR_FACTOR = -0.15				-- Default stability war factor
