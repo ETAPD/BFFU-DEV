@@ -1,31 +1,13 @@
 on_actions = {
 	on_weekly = {
-		effect = {
-			every_other_country = {
-				limit = {
-					has_volunteers_amount_from = {
-						tag = ROOT
-						count > 0
-					}
-					ROOT = {
-						not = {
-							has_military_access_to = PREV
-						}
-					}
-				}
-				give_military_access = ROOT
-			}
-		}
-		
 		# Update Stalin Air Weekly
 		effect = {
 			if = {
 				limit = {
+					tag = SOV
 					has_global_flag = soviet_air_changes_full_flag
 				}
-				SOV = {
-					SOV_stalins_air_needs = yes
-				}
+				SOV_stalins_air_needs = yes
 			}
 		}
 
@@ -208,22 +190,25 @@ on_actions = {
 		
 		effect = {
 			if = {
-				limit = {
-					country_exists = VIC
+				limit = { tag = FRA }
+				if = {
+					limit = {
+						country_exists = VIC
+					}
+					set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
 				}
-				set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
-			}
-			if = {
-				limit = {
-					26 = { CONTROLLER = { tag = D04 } }
+				if = {
+					limit = {
+						26 = { CONTROLLER = { tag = D04 } }
+					}
+					set_variable = { FRA.SOUTHFRANCEOWNER = D04 }
 				}
-				set_variable = { FRA.SOUTHFRANCEOWNER = D04 }
-			}
-			if = {
-				limit = {
-					26 = { CONTROLLER = { tag = D05 } }
+				if = {
+					limit = {
+						26 = { CONTROLLER = { tag = D05 } }
+					}
+					set_variable = { FRA.SOUTHFRANCEOWNER = D05 }
 				}
-				set_variable = { FRA.SOUTHFRANCEOWNER = D05 }
 			}
 		}
 	}
@@ -2323,6 +2308,17 @@ on_actions = {
 					set_country_flag = { flag = SOV_enforced_fanaticism_in_progress_flag days = 14 value = 1 }
 					country_event = { id = SOV_auto_complete_focus.20 days = 14 }
 				}
+			}
+		}
+	}
+
+	on_send_volunteers = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_military_access_to = FROM }
+				}
+				FROM = { give_military_access = ROOT }
 			}
 		}
 	}

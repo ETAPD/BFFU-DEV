@@ -1037,7 +1037,7 @@ NDefines.NNavy.SUBMARINE_ESCAPE_RATIOS = {
 
 NDefines.NRailwayGun.BASE_CAPTURE_CHANCE = 0						-- The base chance of railway guns being captured during an overrrun. Will be further modified by the equipment capture chance of the capturing unit.
 
---------------------------	
+--------------------------
 --- SUBMOD PERFORMANCE ---
 --------------------------
 
@@ -1049,4 +1049,26 @@ NDefines.NGame.LAG_DAYS_FOR_LOWER_SPEED = 250
 NDefines.NGame.LAG_DAYS_FOR_PAUSE = 200
 
 NDefines.NAI.UPDATE_SUPPLY_MOTORIZATION_FREQUENCY_HOURS = 8760     -- Check if activating motorization would improve supply situation this often.
-NDefines.NAI.DIVISION_SUPPLY_RATIO_TO_MOTORIZE = 0						-- If supply ratio is less than this, consider motorizing any applicable nearby supply hub
+NDefines.NAI.DIVISION_SUPPLY_RATIO_TO_MOTORIZE = 0
+
+NDefines.NNavy.NAVAL_COMBAT_RESULT_TIMEOUT_YEARS = 0				-- clear naval combat results immediately instead of holding 2 years (save/memory bloat)
+NDefines.NNavy.CONVOY_LOSS_HISTORY_TIMEOUT_MONTHS = 1				-- down from vanilla 24; no UI shows old convoy losses, just bloats saves
+NDefines.NCountry.POPULATION_YEARLY_GROWTH_BASE = 0				-- removes per-country yearly population recalc; reduces desync risk in MP
+NDefines.NMilitary.GENERATE_AI_DIV_COMMAND_HISTORY_ENTRIES = false	-- stops AI division command history from bloating saves
+NDefines.NMilitary.HISTORICAL_ORDER_NAME_EXHAUSTION = false		-- avoids tracking which order names have been used
+
+NDefines_Graphics.NAirGfx.MAX_MISSILE_BOMBING_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_BOMBING_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_PATROL_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_DOGFIGHTS_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_TRANSPORT_SCENARIOS = 0
+
+NDefines_Graphics.NGraphics.BLOOM_WIDTH = 0
+NDefines_Graphics.NGraphics.BLOOM_SCALE = 0
+NDefines_Graphics.NGraphics.BRIGHT_THRESHOLD = 0
+NDefines_Graphics.NGraphics.EMISSIVE_BLOOM_STRENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_SHADOWS_CUTOFF = 0
+NDefines_Graphics.NGraphics.DRAW_SHADOWS_FADE_LENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_FOW_CUTOFF = 0
+NDefines_Graphics.NGraphics.DRAW_FOW_FADE_LENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_REFRACTIONS_CUTOFF = 0						-- If supply ratio is less than this, consider motorizing any applicable nearby supply hub
