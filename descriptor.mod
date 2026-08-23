@@ -10,6 +10,7 @@ tags={
 name="BFFU-DEV"
 picture="thumbnail.png"
 replace_path="common/units/names_divisions"
+replace_path="common/units/names_ships"
 replace_path="common/national_focus"
 replace_path="common/decisions"
 replace_path="common/decisions/categories"
