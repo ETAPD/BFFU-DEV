@@ -1,13 +1,3 @@
-#Add to scripted triggers if more levels of hyper inflation is added
-#CHI_hyper_inflation_clear_all = {
-#	remove_ideas = {
-#		CHI_hyper_inflation_1
-#		CHI_hyper_inflation_2
-#		CHI_hyper_inflation_3
-#		CHI_hyper_inflation_4
-#		CHI_hyper_inflation_5
-#	}
-#}
 
 #Important to put HIGHEST first
 CHI_hyper_inflation_level_up = {
@@ -179,15 +169,6 @@ CHI_warlord_integration_down = {
 }
 
 CHI_unity_level_up = {
-	#if = {
-	#	limit = {
-	#		has_idea = CHI_chinese_unity_4
-	#	}
-	#	swap_ideas = {
-	#		remove_idea = CHI_chinese_unity_4
-	#		add_idea = CHI_chinese_unity_5
-	#	}
-	#}
 	if = {
 		limit = {
 			has_idea = CHI_chinese_unity_3
@@ -257,15 +238,6 @@ CHI_unity_level_down = {
 			add_idea = CHI_chinese_unity_3
 		}
 	}
-	#else_if = {
-	#	limit = {
-	#		has_idea = CHI_chinese_unity_5
-	#	}
-	#	swap_ideas = {
-	#		remove_idea = CHI_chinese_unity_5
-	#		add_idea = CHI_chinese_unity_4
-	#	}
-	#}
 	else_if = {
 		limit = {
 			has_idea = CHI_chinese_unity_1
@@ -287,54 +259,6 @@ CHI_set_ally_strat_on_current_leader = {
             value = 200
         }
 	}
-	# else_if = {
-	# 	limit = {
-	# 		FROM = {
-	# 			tag = SHX
-	# 		}
-	# 	}
-	# 	add_ai_strategy = {
-    #         type = alliance
-    #         id = "SHX"
-    #         value = 200
-    #     }
-	# }
-	# else_if = {
-	# 	limit = {
-	# 		FROM = {
-	# 			tag = GXC
-	# 		}
-	# 	}
-	# 	add_ai_strategy = {
-    #         type = alliance
-    #         id = "GXC"
-    #         value = 200
-    #     }
-	# }
-	# else_if = {
-	# 	limit = {
-	# 		FROM = {
-	# 			tag = YUN
-	# 		}
-	# 	}
-	# 	add_ai_strategy = {
-    #         type = alliance
-    #         id = "YUN"
-    #         value = 200
-    #     }
-	# }
-	# else_if = {
-	# 	limit = {
-	# 		FROM = {
-	# 			tag = XSM
-	# 		}
-	# 	}
-	# 	add_ai_strategy = {
-    #         type = alliance
-    #         id = "XSM"
-    #         value = 200
-    #     }
-	# }
 	else_if = {
 		limit = {
 			FROM = {
@@ -473,22 +397,6 @@ CHI_apply_integration_cost_reduction = {
 	clear_variable = t_cost_reduction
 }
 
-#CHI_remove_annexed_warlord_from_array = { #called from on_actions
-#	if = {
-#		limit = {
-#			FROM = { original_tag = CHI }
-#			is_in_array = {
-#				array = FROM.warlord_subjects
-#				value = ROOT
-#			}	
-#		}
-#
-#		remove_from_array = {
-#			array = FROM.warlord_subjects
-#			value = ROOT
-#		}
-#	}	
-#}
 
 CHI_modify_illicit_goods_event_trigger = {
 	if = {
@@ -531,7 +439,6 @@ CHI_is_corruption_in_government_on_balance_good = {
 	#CONSTRUCTION SPEED
 	set_variable = { corruption_construction_speed = CHI_corruption_construction_speed }
 	add_to_variable = { on_balance = corruption_construction_speed }
-
 
 
 	#ARMS FACTORY
@@ -917,31 +824,6 @@ CHI_move_factories = {
 		}
 	}
 
-	# if = {
-	# 	limit = {
-	# 		has_dlc = "No Compromise, No Surrender"
-	# 		ROOT = { original_tag = CHI }
-	# 	}
-	# if = {
-	# 	limit = {
-	# 		FROM = { #Chinese Coast States
-	# 			OR = {
-	# 				any_state_in = {
-	# 					strategic_region = 143
-	# 				}
-	# 				any_state_in = {
-	# 					strategic_region = 247
-	# 				}
-	# 				any_state_in = {
-	# 					strategic_region = 164
-	# 				}
-	# 				any_state_in = {
-	# 					strategic_region = 248
-	# 				}
-	# 			}
-	# 		}
-	# 	}
-	#Move AF
 	CONTROLLER = {
 		random_owned_controlled_state = {
 			prioritize = { 1037 1041 750 753 751 752 754 }
@@ -1097,316 +979,8 @@ CHI_move_factories = {
 		}
 		clr_country_flag = CHI_industrial_evacuations_moved_IC
 	}
-	# }
-	# else = {
-	# 	#Move AF
-	# 	CONTROLLER = {
-	# 		random_owned_controlled_state = {
-	# 			prioritize = { 1035 613 1036 }
-	# 			limit = {
-	# 				is_fully_controlled_by = ROOT
-	# 				any_neighbor_state = {
-	# 					is_controlled_by = ROOT
-	# 					NOT = {
-	# 						controller = {
-	# 							has_war_with = ROOT
-	# 						}
-	# 					}
-	# 				}
-	# 				free_building_slots = {
-	# 					building = arms_factory
-	# 					size > 2
-	# 					include_locked = yes
-	# 				}
-	# 			}
-
-	# 			custom_effect_tooltip = CHI_industrial_evacuations_add_AF						
-	# 			hidden_effect = {
-	# 				add_extra_state_shared_building_slots = prev.prev.af_to_move
-	# 				add_building_construction = {
-	# 					type = arms_factory
-	# 					level = prev.prev.af_to_move
-	# 					instant_build = yes
-	# 				}
-	# 				CONTROLLER = { set_country_flag = CHI_industrial_evacuations_moved_AF }
-	# 			}
-	# 		}
-
-	# 		#If no states are really safe or all safe are filled
-	# 		#Move to random controlled state
-	# 		if = {
-	# 			limit = {
-	# 				NOT = { has_country_flag = CHI_industrial_evacuations_moved_AF }
-	# 				NOT = {
-	# 					any_controlled_state = {
-	# 						is_fully_controlled_by = ROOT
-	# 						any_neighbor_state = {
-	# 							is_controlled_by = ROOT
-	# 						}
-	# 						free_building_slots = {
-	# 							building = arms_factory
-	# 							size > 2
-	# 							include_locked = yes
-	# 						}
-	# 					}
-	# 				}
-	# 			}
-	# 			random_owned_controlled_state = {
-	# 				prioritize = { 1035 613 1036 }
-	# 				limit = {
-	# 					is_controlled_by = ROOT
-	# 					free_building_slots = {
-	# 						building = arms_factory
-	# 						size > 2
-	# 						include_locked = yes
-	# 					}
-	# 				}
-
-	# 				custom_effect_tooltip = CHI_industrial_evacuations_add_AF						
-	# 				hidden_effect = {
-	# 					add_extra_state_shared_building_slots = prev.prev.af_to_move
-	# 					add_building_construction = {
-	# 						type = arms_factory
-	# 						level = prev.prev.af_to_move
-	# 						instant_build = yes
-	# 					}
-	# 				}
-	# 			}
-	# 		}
-	# 		clr_country_flag = CHI_industrial_evacuations_moved_AF
 
 
-	# 		#Move IC
-	# 		random_owned_controlled_state = {
-	# 			prioritize = { 1035 613 1036 }
-	# 			limit = {
-	# 				is_fully_controlled_by = ROOT
-	# 				any_neighbor_state = {
-	# 					is_controlled_by = ROOT
-	# 					NOT = {
-	# 						controller = {
-	# 							has_war_with = ROOT
-	# 						}
-	# 					}
-	# 				}
-	# 				free_building_slots = {
-	# 					building = industrial_complex
-	# 					size > 2
-	# 					include_locked = yes
-	# 				}
-	# 			}
-				
-	# 			custom_effect_tooltip = CHI_industrial_evacuations_add_IC
-	# 			hidden_effect = {
-	# 				add_extra_state_shared_building_slots = prev.prev.ic_to_move
-	# 				add_building_construction = {
-	# 					type = industrial_complex
-	# 					level = prev.prev.ic_to_move
-	# 					instant_build = yes
-	# 				}
-	# 				CONTROLLER = { set_country_flag = CHI_industrial_evacuations_moved_IC }
-	# 			}
-	# 		}
-
-	# 		#If no states are really safe or all safe are filled
-	# 		#Move to random controlled state
-	# 		if = {
-	# 			limit = {
-	# 				NOT = { has_country_flag = CHI_industrial_evacuations_moved_IC }
-	# 				NOT = {
-	# 					any_controlled_state = {
-	# 						is_fully_controlled_by = ROOT
-	# 						any_neighbor_state = {
-	# 							is_controlled_by = ROOT
-	# 						}
-	# 						free_building_slots = {
-	# 							building = industrial_complex
-	# 							size > 2
-	# 							include_locked = yes
-	# 						}
-	# 					}
-	# 				}
-	# 			}
-	# 			random_owned_controlled_state = {
-	# 				prioritize = { 1035 613 1036 }
-	# 				limit = {
-	# 					is_controlled_by = ROOT
-	# 					free_building_slots = {
-	# 						building = industrial_complex
-	# 						size > 2
-	# 						include_locked = yes
-	# 					}
-	# 				}
-
-	# 				custom_effect_tooltip = CHI_industrial_evacuations_add_IC
-	# 				hidden_effect = {
-	# 					add_extra_state_shared_building_slots = prev.prev.ic_to_move
-	# 					add_building_construction = {
-	# 						type = industrial_complex
-	# 						level = prev.prev.ic_to_move
-	# 						instant_build = yes
-	# 					}
-	# 				}
-	# 			}
-	# 		}
-	# 		clr_country_flag = CHI_industrial_evacuations_moved_IC
-	# 	}	
-	# }
-	# }
-	# else = {
-	# 	#Move AF
-	# 	CONTROLLER = {
-	# 		random_owned_controlled_state = {
-	# 			prioritize = { 1037 1041 750 }
-	# 			limit = {
-	# 				is_fully_controlled_by = ROOT
-	# 				any_neighbor_state = {
-	# 					is_controlled_by = ROOT
-	# 					NOT = {
-	# 						controller = {
-	# 							has_war_with = ROOT
-	# 						}
-	# 					}
-	# 				}
-	# 				free_building_slots = {
-	# 					building = arms_factory
-	# 					size > 2
-	# 					include_locked = yes
-	# 				}
-	# 			}
-
-	# 			custom_effect_tooltip = CHI_industrial_evacuations_add_AF						
-	# 			hidden_effect = {
-	# 				add_extra_state_shared_building_slots = prev.prev.af_to_move
-	# 				add_building_construction = {
-	# 					type = arms_factory
-	# 					level = prev.prev.af_to_move
-	# 					instant_build = yes
-	# 				}
-	# 				CONTROLLER = { set_country_flag = CHI_industrial_evacuations_moved_AF }
-	# 			}
-	# 		}
-
-	# 		#If no states are really safe or all safe are filled
-	# 		#Move to random controlled state
-	# 		if = {
-	# 			limit = {
-	# 				NOT = { has_country_flag = CHI_industrial_evacuations_moved_AF }
-	# 				NOT = {
-	# 					any_controlled_state = {
-	# 						is_fully_controlled_by = ROOT
-	# 						any_neighbor_state = {
-	# 							is_controlled_by = ROOT
-	# 						}
-	# 						free_building_slots = {
-	# 							building = arms_factory
-	# 							size > 2
-	# 							include_locked = yes
-	# 						}
-	# 					}
-	# 				}
-	# 			}
-	# 			random_owned_controlled_state = {
-	# 				prioritize = { 1037 1041 750 }
-	# 				limit = {
-	# 					is_controlled_by = ROOT
-	# 					free_building_slots = {
-	# 						building = arms_factory
-	# 						size > 2
-	# 						include_locked = yes
-	# 					}
-	# 				}
-
-	# 				custom_effect_tooltip = CHI_industrial_evacuations_add_AF						
-	# 				hidden_effect = {
-	# 					add_extra_state_shared_building_slots = prev.prev.af_to_move
-	# 					add_building_construction = {
-	# 						type = arms_factory
-	# 						level = prev.prev.af_to_move
-	# 						instant_build = yes
-	# 					}
-	# 				}
-	# 			}
-	# 		}
-	# 		clr_country_flag = CHI_industrial_evacuations_moved_AF
-
-
-	# 		#Move IC
-	# 		random_owned_controlled_state = {
-	# 			prioritize = { 1037 1041 750 }
-	# 			limit = {
-	# 				is_fully_controlled_by = ROOT
-	# 				any_neighbor_state = {
-	# 					is_controlled_by = ROOT
-	# 					NOT = {
-	# 						controller = {
-	# 							has_war_with = ROOT
-	# 						}
-	# 					}
-	# 				}
-	# 				free_building_slots = {
-	# 					building = industrial_complex
-	# 					size > 2
-	# 					include_locked = yes
-	# 				}
-	# 			}
-				
-	# 			custom_effect_tooltip = CHI_industrial_evacuations_add_IC
-	# 			hidden_effect = {
-	# 				add_extra_state_shared_building_slots = prev.prev.ic_to_move
-	# 				add_building_construction = {
-	# 					type = industrial_complex
-	# 					level = prev.prev.ic_to_move
-	# 					instant_build = yes
-	# 				}
-	# 				CONTROLLER = { set_country_flag = CHI_industrial_evacuations_moved_IC }
-	# 			}
-	# 		}
-
-	# 		#If no states are really safe or all safe are filled
-	# 		#Move to random controlled state
-	# 		if = {
-	# 			limit = {
-	# 				NOT = { has_country_flag = CHI_industrial_evacuations_moved_IC }
-	# 				NOT = {
-	# 					any_controlled_state = {
-	# 						is_fully_controlled_by = ROOT
-	# 						any_neighbor_state = {
-	# 							is_controlled_by = ROOT
-	# 						}
-	# 						free_building_slots = {
-	# 							building = industrial_complex
-	# 							size > 2
-	# 							include_locked = yes
-	# 						}
-	# 					}
-	# 				}
-	# 			}
-	# 			random_owned_controlled_state = {
-	# 				prioritize = { 1037 1041 750 }
-	# 				limit = {
-	# 					is_controlled_by = ROOT
-	# 					free_building_slots = {
-	# 						building = industrial_complex
-	# 						size > 2
-	# 						include_locked = yes
-	# 					}
-	# 				}
-
-	# 				custom_effect_tooltip = CHI_industrial_evacuations_add_IC
-	# 				hidden_effect = {
-	# 					add_extra_state_shared_building_slots = prev.prev.ic_to_move
-	# 					add_building_construction = {
-	# 						type = industrial_complex
-	# 						level = prev.prev.ic_to_move
-	# 						instant_build = yes
-	# 					}
-	# 				}
-	# 			}
-	# 		}
-	# 		clr_country_flag = CHI_industrial_evacuations_moved_IC
-	# 	}			
-	# }
 }
 
 CHI_corrupt_administration_improvement = {
