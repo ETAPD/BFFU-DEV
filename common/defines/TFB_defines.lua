@@ -38,7 +38,7 @@ NDefines.NDiplomacy.EMBARGO_NEIGHBOUR_AI_WEIGHT = -25					-- AI weight for diffe
 -- NDefines.NDiplomacy.NAVAL_BLOCKADE_THREAT_THRESHOLD = 20				-- Target-generated threat threshold to allow naval blockade
 
 NDefines.NCountry.DEFAULT_COASTAL_PROTECTION_STABILITY = 0.0		-- Default stability when the coastal states are fully protected
-NDefines.NCountry.EVENT_PROCESS_OFFSET = 40						-- Events are checked every X day per country or state (1 is ideal but CPU heavy)
+NDefines.NCountry.EVENT_PROCESS_OFFSET = 210000					-- Events are checked every X day per country or state (all MTTH events converted to on_actions)
 NDefines.NCountry.BASE_RESEARCH_SLOTS = 4						-- Base number of research slots per country.
 NDefines.NCountry.AIR_SCORE_MULTIPLIER = 0.0						-- Based on number of planes (which is typically a lot).
 NDefines.NCountry.BASE_STABILITY_WAR_FACTOR = -0.15				-- Default stability war factor
@@ -135,7 +135,8 @@ NDefines.NProduction.CAPITULATE_FUEL_RATIO = 0.75 -- How much fuel will be trans
 NDefines.NProduction.MIN_FIELD_TO_TRAINING_MANPOWER_RATIO = 0.65	-- Ratio which % of army in field can be trained
 NDefines.NProduction.INFRA_MAX_CONSTRUCTION_COST_EFFECT = 0.7 		-- Building in a state with higher infrastructure will reduce the cost of shared buildings.
 NDefines.NProduction.PRODUCTION_RESOURCE_LACK_PENALTY = -0.01			-- Penalty decrease while lack of resource per factory
-NDefines.NProduction.LICENSE_IC_COST_YEAR_INCREASE = 0.25					-- IC cost equipment for every year of equipment after 1936
+NDefines.NProduction.BASE_LICENSE_IC_COST = 0							-- Base IC cost for licensing equipment
+NDefines.NProduction.LICENSE_IC_COST_YEAR_INCREASE = 0					-- IC cost equipment for every year of equipment after 1936
 NDefines.NProduction.LICENSE_EQUIPMENT_BASE_SPEED = -0.20				-- base MIC speed modifier for licensed equipment
 NDefines.NProduction.LICENSE_EQUIPMENT_TECH_SPEED_MAX_YEARS = 3			-- Maximum years for MIC speed modifier
 NDefines.NProduction.LICENSE_EQUIPMENT_SPEED_NOT_FACTION = -0.20		-- MIC speed modifier for licensed equipment for not being in faction
@@ -878,7 +879,7 @@ NDefines.NDoctrines.THEATER_COMMANDER_UNITS_MASTERY_GAIN_FACTOR_PER_SKILL = 0.01
 ----- SUBMOD DEFINES -----
 --------------------------
 
-NDefines.NGame.GAME_SPEED_SECONDS = { 2000.0, 0.25, 0.2, 0.1, 0.0 } -- game speeds for each level. Must be 5 entries with last one 0 for unbound
+NDefines.NGame.GAME_SPEED_SECONDS = { 2000.0, 0.24, 0.225, 0.125, 0.0 } -- game speeds for each level. Must be 5 entries with last one 0 for unbound
 NDefines.NGame.COMBAT_LOG_MAX_MONTHS = 12
 NDefines.NDiplomacy.VOLUNTEERS_DIVISIONS_REQUIRED = 0	-- This many divisons are required for the country to be able to send volunteers.
 NDefines.NProduction.DEFAULT_MAX_NAV_FACTORIES_PER_LINE = 20
@@ -1036,16 +1037,42 @@ NDefines.NNavy.SUBMARINE_ESCAPE_RATIOS = {
 
 NDefines.NRailwayGun.BASE_CAPTURE_CHANCE = 0						-- The base chance of railway guns being captured during an overrrun. Will be further modified by the equipment capture chance of the capturing unit.
 
---------------------------	
+--------------------------
 --- SUBMOD PERFORMANCE ---
 --------------------------
 
 NDefines.NGame.TRADE_ROUTE_RECALCULATE_FREQUENCY_DAYS = 30
 NDefines.NCountry.INTERPOLATED_FRONT_STEPS_SHORT = 2
 NDefines_Graphics.NGraphics.MAPICON_GROUP_PASSES = 10
-NDefines.NAI.AI_UPDATE_ROLES_FREQUENCY_HOURS = 480
+NDefines.NNavy.NAVAL_COMBAT_RESULT_TIMEOUT_YEARS = 0 --vanilla 2, current value from horst
+NDefines.NNavy.CONVOY_LOSS_HISTORY_TIMEOUT_MONTHS = 1 --vanilla 24, current value from horst
+NDefines.NAI.AI_UPDATE_ROLES_FREQUENCY_HOURS = 48000000 -- vanilla 480, current value from horst
+NDefines.NAI.AI_NAVAL_GOALS_UPDATE_FREQUENCY_DAYS = 7000 -- vanilla 7
+NDefines.NAI.RAIDS_ENABLE_AI = false -- vanilla true
 NDefines.NGame.LAG_DAYS_FOR_LOWER_SPEED = 250
 NDefines.NGame.LAG_DAYS_FOR_PAUSE = 200
 
 NDefines.NAI.UPDATE_SUPPLY_MOTORIZATION_FREQUENCY_HOURS = 8760     -- Check if activating motorization would improve supply situation this often.
-NDefines.NAI.DIVISION_SUPPLY_RATIO_TO_MOTORIZE = 0						-- If supply ratio is less than this, consider motorizing any applicable nearby supply hub
+NDefines.NAI.DIVISION_SUPPLY_RATIO_TO_MOTORIZE = 0
+
+NDefines.NNavy.NAVAL_COMBAT_RESULT_TIMEOUT_YEARS = 0				-- clear naval combat results immediately instead of holding 2 years (save/memory bloat)
+NDefines.NNavy.CONVOY_LOSS_HISTORY_TIMEOUT_MONTHS = 1				-- down from vanilla 24; no UI shows old convoy losses, just bloats saves
+NDefines.NCountry.POPULATION_YEARLY_GROWTH_BASE = 0				-- removes per-country yearly population recalc; reduces desync risk in MP
+NDefines.NMilitary.GENERATE_AI_DIV_COMMAND_HISTORY_ENTRIES = false	-- stops AI division command history from bloating saves
+NDefines.NMilitary.HISTORICAL_ORDER_NAME_EXHAUSTION = false		-- avoids tracking which order names have been used
+
+NDefines_Graphics.NAirGfx.MAX_MISSILE_BOMBING_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_BOMBING_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_PATROL_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_DOGFIGHTS_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_TRANSPORT_SCENARIOS = 0
+
+NDefines_Graphics.NGraphics.BLOOM_WIDTH = 0
+NDefines_Graphics.NGraphics.BLOOM_SCALE = 0
+NDefines_Graphics.NGraphics.BRIGHT_THRESHOLD = 0
+NDefines_Graphics.NGraphics.EMISSIVE_BLOOM_STRENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_SHADOWS_CUTOFF = 0
+NDefines_Graphics.NGraphics.DRAW_SHADOWS_FADE_LENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_FOW_CUTOFF = 0
+NDefines_Graphics.NGraphics.DRAW_FOW_FADE_LENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_REFRACTIONS_CUTOFF = 0						-- If supply ratio is less than this, consider motorizing any applicable nearby supply hub

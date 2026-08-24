@@ -1,31 +1,13 @@
 on_actions = {
 	on_weekly = {
-		effect = {
-			every_other_country = {
-				limit = {
-					has_volunteers_amount_from = {
-						tag = ROOT
-						count > 0
-					}
-					ROOT = {
-						not = {
-							has_military_access_to = PREV
-						}
-					}
-				}
-				give_military_access = ROOT
-			}
-		}
-		
 		# Update Stalin Air Weekly
 		effect = {
 			if = {
 				limit = {
+					tag = SOV
 					has_global_flag = soviet_air_changes_full_flag
 				}
-				SOV = {
-					SOV_stalins_air_needs = yes
-				}
+				SOV_stalins_air_needs = yes
 			}
 		}
 
@@ -208,22 +190,25 @@ on_actions = {
 		
 		effect = {
 			if = {
-				limit = {
-					country_exists = VIC
+				limit = { tag = FRA }
+				if = {
+					limit = {
+						country_exists = VIC
+					}
+					set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
 				}
-				set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
-			}
-			if = {
-				limit = {
-					26 = { CONTROLLER = { tag = D04 } }
+				if = {
+					limit = {
+						26 = { CONTROLLER = { tag = D04 } }
+					}
+					set_variable = { FRA.SOUTHFRANCEOWNER = D04 }
 				}
-				set_variable = { FRA.SOUTHFRANCEOWNER = D04 }
-			}
-			if = {
-				limit = {
-					26 = { CONTROLLER = { tag = D05 } }
+				if = {
+					limit = {
+						26 = { CONTROLLER = { tag = D05 } }
+					}
+					set_variable = { FRA.SOUTHFRANCEOWNER = D05 }
 				}
-				set_variable = { FRA.SOUTHFRANCEOWNER = D05 }
 			}
 		}
 	}
@@ -279,15 +264,6 @@ on_actions = {
 				}
 				set_global_flag = tension_game_flag
 			}
-			# if = {
-			# 	limit = {
-			# 		has_game_rule = {
-			# 			rule = coastal_raiders
-			# 			option = ENABLED
-			# 		}
-			# 	}
-			# 	set_global_flag = coastal_raiders_flag
-			# }
 			if = {
 				limit = {
 					has_game_rule = {
@@ -306,15 +282,6 @@ on_actions = {
 				}
 				set_global_flag = capped_volunteers_flag
 			}
-			# else_if = {
-			# 	limit = {
-			# 		has_game_rule = {
-			# 			rule = capped_volunteers
-			# 			option = NOJAPANVOLUNTEERS
-			# 		}
-			# 	}
-			# 	set_global_flag = capped_volunteers_no_japan_flag
-			# }
 			if = {
 				limit = {
 					has_game_rule = {
@@ -477,33 +444,6 @@ on_actions = {
 				}
 				set_global_flag = navy_cap_disabled_flag
 			}
-			# if = {
-			# 	limit = {
-			# 		has_game_rule = {
-			# 			rule = dockyard_cg
-			# 			option = ENABLED
-			# 		}
-			# 	}
-			# 	set_global_flag = dockyard_cg_enabled_flag
-			# }
-			# else_if = {
-			# 	limit = {
-			# 		has_game_rule = {
-			# 			rule = dockyard_cg
-			# 			option = BUILD_SPEED
-			# 		}
-			# 	}
-			# 	set_global_flag = dockyard_cg_build_speed_flag
-			# }
-			# else_if = {
-			# 	limit = {
-			# 		has_game_rule = {
-			# 			rule = dockyard_cg
-			# 			option = DISABLED
-			# 		}
-			# 	}
-			# 	set_global_flag = dockyard_cg_disabled_flag
-			# }
 			if = {
 				limit = {
 					has_game_rule = {
@@ -621,33 +561,6 @@ on_actions = {
 			}
 		}		
 
-		# Dockyard Consumer Goods Debuff
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			has_game_rule = {
-		# 				rule = dockyard_cg
-		# 				option = ENABLED
-		# 			}
-		# 		}
-		# 		every_country = {
-		# 			add_dynamic_modifier = { modifier = dockyard_cg_mod }
-		# 			dockyard_cg_calculation = yes
-		# 		}
-		# 	}
-		# 	else_if = {
-		# 		limit = {
-		# 			has_game_rule = {
-		# 				rule = dockyard_cg
-		# 				option = BUILD_SPEED
-		# 			}
-		# 		}
-		# 		every_country = {
-		# 			add_dynamic_modifier = { modifier = dockyard_build_speed_mod }
-		# 			dockyard_build_speed_calculation = yes
-		# 		}
-		# 	}
-		# }
 
 		# Friendly Faction Intel
 		effect = {
@@ -793,54 +706,7 @@ on_actions = {
 			}
 		}
 
-	   	# Mediteranian Raiders
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			has_game_rule = {
-		# 				rule = coastal_raiders
-		# 				option = ENABLED
-		# 			}
-		# 		}
-		# 		# Eastern Med
-		# 		ENG = {  add_to_array = { ENG.eastern_med = 1091 } }
-		# 		ENG = {  add_to_array = { ENG.eastern_med = 447 } }
-		# 		ENG = {  add_to_array = { ENG.eastern_med = 1082 } }
-		# 		ENG = {  add_to_array = { ENG.eastern_med = 452 } }
-		# 		ENG = {  add_to_array = { ENG.eastern_med = 451 } }
-		# 		ENG = {  add_to_array = { ENG.eastern_med = 446 } }
-		# 		# Central Med
-		# 		ENG = {  add_to_array = { ENG.central_med = 450 } }
-		# 		ENG = {  add_to_array = { ENG.central_med = 449 } }
-		# 		ENG = {  add_to_array = { ENG.central_med = 448 } }
-		# 		ENG = {  add_to_array = { ENG.central_med = 665 } }
-		# 		ENG = {  add_to_array = { ENG.central_med = 458 } }
-		# 		# Western Med
-		# 		ENG = {  add_to_array = { ENG.western_med = 290 } }
-		# 		ENG = {  add_to_array = { ENG.western_med = 459 } }
-		# 		ENG = {  add_to_array = { ENG.western_med = 460 } }
 
-		# 		for_each_scope_loop = {
-		# 			array = ENG.eastern_med
-		# 			add_dynamic_modifier = {
-		# 				modifier =  NO_coastal_raiding 
-		# 			}
-		# 		}
-		# 		for_each_scope_loop = {
-		# 			array = ENG.central_med
-		# 			add_dynamic_modifier = {
-		# 				modifier =  NO_coastal_raiding 
-		# 			}
-		# 		}
-		# 		for_each_scope_loop = {
-		# 			array = ENG.western_med
-		# 			add_dynamic_modifier = {
-		# 				modifier =  NO_coastal_raiding 
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# State of the Pacific
 		effect = {
 			if = {
 				limit = {
@@ -1166,24 +1032,6 @@ on_actions = {
 			set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
 		}
 		effect = {
-			# every_country = { 
-			# 	limit = { tag = GER }
-			# 	country_event = { 
-			# 		id = germany.mefoair 
-			# 	}
-			# }
-			# every_country = { 
-			# 	limit = { tag = MON }
-			# 	country_event = { 
-			# 		id = mongolia.start 
-			# 	}
-			# }	
-			# every_country = { 
-			# 	limit = { tag = ITA }
-			# 	country_event = { 
-			# 		id = italy.air 
-			# 	}
-			# }	
 			if = {
 				limit = {
 					is_historical_focus_on = no
@@ -1239,40 +1087,6 @@ on_actions = {
 			340 = { set_demilitarized_zone = no }
 		}
 		effect = {
-			# SOV = {
-			# 	mio:SOV_morozov_design_bureau_organization = {
-			# 		add_mio_funds_gain_factor = -0.75
-			# 	}
-			# 	mio:SOV_astrov_design_bureau_organization = {
-			# 		add_mio_funds_gain_factor = -0.75
-			# 	}
-			# 	mio:SOV_okmo_organization = {
-			# 		add_mio_funds_gain_factor = -0.75
-			# 	}
-			# 	mio:SOV_mytishchy_machine_building_plant_organization = {
-			# 		add_mio_funds_gain_factor = -0.75
-			# 	}
-			# 	mio:SOV_kirov_organization = {
-			# 		add_mio_funds_gain_factor = -0.75
-			# 	}
-			# }
-			# if = {
-			# 	limit = {
-			# 		KSR = { is_ai = yes }
-			# 	}
-			# 	SOV = {	country_event = { id = soviet.505 } }
-			# }
-			# if = {
-			# 	limit = {
-			# 		KSR = { exists = yes }
-			# 	}
-			# 	KSR = {
-			# 		give_resource_rights = { receiver = SOV state = 588 }
-			# 		give_resource_rights = { receiver = SOV state = 882 }
-			# 		give_resource_rights = { receiver = SOV state = 402 }
-			# 		give_resource_rights = { receiver = SOV state = 584 }
-			# 	}
-			# }
 		}
 		effect = {
 			SPR = { add_to_array = { global.nationalist_spain_states = 171 } }
@@ -1605,17 +1419,13 @@ on_actions = {
 					FROM = { tag = JAP }
 				}
 				JAP = {
-					# white_peace = CHI
-					annex_country = {
-						target = CHI
-						transfer_troops = no
-					}
+					add_ideas = peacetime_training_spirit
 					add_named_threat = {
 						threat = 30
 						name = JAP_threat_treaty_of_nanjing
 					}
 					set_country_flag = { flag = JAP_transfer_timer value = 1 days = 100 }
-					country_event = { id = japan.506 } 
+					country_event = { id = japan.506 hours = 1 }
 				}
 				if = {
 					limit = {
@@ -1626,159 +1436,15 @@ on_actions = {
 					}
 					MAN = {
 						add_ideas = MAN_assert_mills
+						add_ideas = peacetime_training_spirit
 					}
+				}
+				SIA = {
+					add_ideas = peacetime_training_spirit
 				}
 			}
 		}
-		# # Going to the Peace Conference
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			original_tag = CHI
-		# 			FROM = { tag = JAP }
-		# 			AND = {
-		# 				NOT = { has_global_flag = JAP_split_china}
-		# 				NOT = { has_global_flag = JAP_take_china}
-		# 				NOT = { has_global_flag = JAP_give_china}
-		# 				NOT = { has_global_flag = JAP_puppet_china}
-		# 			}
 					
-		# 		}
-		# 		if = {
-		# 			limit = {
-		# 				MAN = { always = no }
-		# 			}
-		# 			MAN = {
-		# 				add_ideas = MAN_assert_mills
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# # Japan and Manchu split China
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			original_tag = CHI
-		# 			FROM = { tag = JAP }
-		# 			has_global_flag = JAP_split_china
-		# 		}
-		# 		# JAP = {
-		# 		# 	white_peace = CHI
-		# 		# }
-		# 		MAN = {
-		# 			transfer_state = 604 #Qinghai
-		# 			transfer_state = 608 #Beijing
-		# 			transfer_state = 616 #Ningxia
-		# 			transfer_state = 621 #Suiyuan
-		# 			transfer_state = 746 #Ordos
-		# 			transfer_state = 755 #Haixi
-		# 			transfer_state = 756 #Jinquan
-		# 		}
-		# 		if = {
-		# 			limit = {
-		# 				MAN = { always = no }
-		# 			}
-		# 			MAN = {
-		# 				add_ideas = MAN_assert_mills
-		# 			}
-		# 		}
-		# 		JAP = {
-		# 			annex_country = {
-		# 				target = CHI
-		# 				transfer_troops = no
-		# 			}
-		# 			add_named_threat = {
-		# 				threat = 30
-		# 				name = JAP_threat_treaty_of_nanjing
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# # Japan Takes all of China
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			original_tag = CHI
-		# 			FROM = { tag = JAP }
-		# 			has_global_flag = JAP_take_china
-		# 		}
-		# 		JAP = {
-		# 			# white_peace = CHI
-		# 			annex_country = {
-		# 				target = CHI
-		# 				transfer_troops = no
-		# 			}
-		# 			add_named_threat = {
-		# 				threat = 30
-		# 				name = JAP_threat_treaty_of_nanjing
-		# 			}
-		# 		}
-		# 		if = {
-		# 			limit = {
-		# 				MAN = { always = no }
-		# 			}
-		# 			MAN = {
-		# 				add_ideas = MAN_assert_mills
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# # Manchu takes all of China
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			original_tag = CHI
-		# 			FROM = { tag = JAP }
-		# 			has_global_flag = JAP_give_china
-		# 		}
-		# 		MAN = {
-		# 			# white_peace = CHI
-		# 			annex_country = {
-		# 				target = CHI
-		# 				transfer_troops = no
-		# 			}
-		# 		}
-		# 		if = {
-		# 			limit = {
-		# 				MAN = { always = no }
-		# 			}
-		# 			MAN = {
-		# 				add_ideas = MAN_assert_mills
-		# 			}
-		# 		}
-		# 		JAP = {
-		# 			add_named_threat = {
-		# 				threat = 30
-		# 				name = JAP_threat_treaty_of_nanjing
-		# 			}
-		# 		}
-		# 	}
-		# }
-		# # Japan Puppets China
-		# effect = { 
-		# 	if = {
-		# 		limit = {
-		# 			original_tag = CHI
-		# 			FROM = { tag = JAP }
-		# 			has_global_flag = JAP_puppet_china
-		# 		}
-		# 		JAP = {
-		# 			puppet = CHI
-		# 			add_named_threat = {
-		# 				threat = 30
-		# 				name = JAP_threat_treaty_of_nanjing
-		# 			}
-		# 		}
-		# 		if = {
-		# 			limit = {
-		# 				MAN = { always = no }
-		# 			}
-		# 			MAN = {
-		# 				add_ideas = MAN_assert_mills
-		# 			}
-		# 		}
-		# 	}
-		# }
 
 		# Italy takes Ethopia
 		effect = { 
@@ -1788,6 +1454,7 @@ on_actions = {
 					FROM = { tag = ITA }
 				}
 				ITA = {
+					add_ideas = peacetime_training_spirit
 					annex_country = {
 						target = ETH
 						transfer_troops = no
@@ -1818,11 +1485,6 @@ on_actions = {
 						amount = 5000
 						producer = ITA
 					}
-					# add_equipment_to_stockpile = {
-					# 	type = horse_equipment_0
-					# 	amount = 5000
-					# 	producer = ITA
-					# }
 					create_corps_commander = {
 						name = "Fresh Prince Amedeo"
 						portrait_path = GFX_Portrait_Duke_of_Aosta
@@ -2322,6 +1984,17 @@ on_actions = {
 					set_country_flag = { flag = SOV_enforced_fanaticism_in_progress_flag days = 14 value = 1 }
 					country_event = { id = SOV_auto_complete_focus.20 days = 14 }
 				}
+			}
+		}
+	}
+
+	on_send_volunteers = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_military_access_to = FROM }
+				}
+				FROM = { give_military_access = ROOT }
 			}
 		}
 	}

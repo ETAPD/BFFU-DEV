@@ -722,17 +722,6 @@ country_event = {
 		set_politics = { ruling_party = neutrality elections_allowed = no }
 		add_popularity = { ideology = neutrality popularity = 0.9 }
 		add_timed_idea = { idea = JAP_military_purges days = 90 }
-		# if = { #MM: I honestly have no idea about how this works, so checking just in case
-		# 	limit = {
-		# 		JAP_hirohito_emperor = {
-		# 			is_country_leader = yes
-		# 		}
-		# 	}
-		# 	remove_country_leader_role = {
-		# 		character = JAP_emperor_hirohito
-		# 		ideology = fascism_ideology
-		# 	}
-		# }
 		add_country_leader_role = {
 			character = JAP_emperor_hirohito
 			country_leader = {
@@ -958,12 +947,6 @@ country_event = {
 				MAN = { is_subject_of = ROOT }
 			}
 			set_autonomy = { target = MAN autonomy_state = autonomy_free }
-			# if = {
-			# 	limit = {
-			# 		MEN = { is_subject_of = ROOT }
-			# 	}
-			# 	MAN = { puppet = MEN }
-			# }
 			MAN = {
 				set_cosmetic_tag = MAN_kwantung_army
 				hidden_effect = {
@@ -1428,6 +1411,7 @@ country_event = {
 						is_faction_leader = yes
 					}
 				}
+				# Pass 1: Transfer all states back to Chinese controllers
 				every_country = {
 					limit = {
 						is_literally_china = yes
@@ -1439,10 +1423,6 @@ country_event = {
 							is_controlled_by = PREV
 							OR = {
 								is_owned_by = JAP
-								# AND = {
-								# 	is_owned_by = MEN
-								# 	MEN = { is_subject_of = JAP }
-								# }
 								AND = {
 									is_owned_by = MAN
 									MAN = { is_subject_of = JAP }
@@ -1461,10 +1441,19 @@ country_event = {
 							transfer_state = PREV
 						}
 					}
+				}
+				# Pass 2: White peace on a clean stack
+				every_country = {
+					limit = {
+						is_literally_china = yes
+						has_war_with = ROOT
+						is_in_faction_with = event_target:WTT_current_china_leader
+					}
 					white_peace = ROOT
 				}
 			}
 			else = {
+				# Pass 1: Transfer all states back to Chinese controllers
 				every_country = {
 					limit = {
 						is_literally_china = yes
@@ -1475,10 +1464,6 @@ country_event = {
 							is_controlled_by = PREV
 							OR = {
 								is_owned_by = JAP
-								# AND = {
-								# 	is_owned_by = MEN
-								# 	MEN = { is_subject_of = JAP }
-								# }
 								AND = {
 									is_owned_by = MAN
 									MAN = { is_subject_of = JAP }
@@ -1493,12 +1478,19 @@ country_event = {
 							transfer_state = PREV
 						}
 					}
+				}
+				# Pass 2: White peace on a clean stack
+				every_country = {
+					limit = {
+						is_literally_china = yes
+						has_war_with = ROOT
+					}
 					white_peace = ROOT
 				}
 			}
 		}
 		FROM = {
-			country_event = { id = wtt_japan.127 }
+			country_event = { id = wtt_japan.127 hours = 1 }
 		}
 		set_country_flag = achievement_JAP_sue_for_peace_CHI_completed
 		
@@ -1740,6 +1732,7 @@ country_event = {
 					is_faction_leader = yes
 				}
 			}
+			# Pass 1: Transfer all states back to Chinese controllers
 			every_country = {
 				limit = {
 					OR = {
@@ -1757,10 +1750,6 @@ country_event = {
 						is_controlled_by = PREV
 						OR = {
 							is_owned_by = JAP
-							# AND = {
-							# 	is_owned_by = MEN
-							# 	MEN = { is_subject_of = JAP }
-							# }
 							AND = {
 								is_owned_by = MAN
 								MAN = { is_subject_of = JAP }
@@ -1775,10 +1764,25 @@ country_event = {
 						transfer_state = PREV
 					}
 				}
+			}
+			# Pass 2: White peace on a clean stack
+			every_country = {
+				limit = {
+					OR = {
+						AND = {
+							original_tag = MAN
+							is_in_faction_with = event_target:WTT_current_china_leader
+						}
+						is_literally_china = yes
+					}
+					has_war_with = ROOT
+					is_in_faction_with = event_target:WTT_current_china_leader
+				}
 				white_peace = ROOT
 			}
 		}
 		else = {
+			# Pass 1: Transfer all states back to Chinese controllers
 			every_country = {
 				limit = {
 					is_literally_china = yes
@@ -1789,10 +1793,6 @@ country_event = {
 						is_controlled_by = PREV
 						OR = {
 							is_owned_by = JAP
-							# AND = {
-							# 	is_owned_by = MEN
-							# 	MEN = { is_subject_of = JAP }
-							# }
 							AND = {
 								is_owned_by = MAN
 								MAN = { is_subject_of = JAP }
@@ -1806,6 +1806,13 @@ country_event = {
 						}
 						transfer_state = PREV
 					}
+				}
+			}
+			# Pass 2: White peace on a clean stack
+			every_country = {
+				limit = {
+					is_literally_china = yes
+					has_war_with = ROOT
 				}
 				white_peace = ROOT
 			}
@@ -1829,22 +1836,6 @@ country_event = {
 				target = CHI
 				days = 730
 			}
-			# set_truce = {
-			# 	target = XSM
-			# 	days = 730
-			# }
-			# set_truce = {
-			# 	target = SHX
-			# 	days = 730
-			# }
-			# set_truce = {
-			# 	target = GXC
-			# 	days = 730
-			# }
-			# set_truce = {
-			# 	target = YUN
-			# 	days = 730
-			# }
 			set_truce = {
 				target = SIK
 				days = 730
@@ -1951,10 +1942,6 @@ country_event = {
 					limit = {
 						OR = {
 							is_owned_by = JAP
-							# AND = {
-							# 	is_owned_by = MEN
-							# 	MEN = { is_subject_of = JAP }
-							# }
 						}
 						NOT = {
 							state = 525
@@ -2035,10 +2022,6 @@ country_event = {
 					is_controlled_by = PREV
 					OR = {
 						is_owned_by = JAP
-						# AND = {
-						# 	is_owned_by = MEN
-						# 	MEN = { is_subject_of = JAP }
-						# }
 					}
 				}
 				MAN = {
@@ -2191,87 +2174,17 @@ country_event = {
 		
 	}
 }
-#japan escalates
-# country_event = {
-# 	id = goe_japan.1
-# 	title = goe_japan.1.t
-# 	desc = goe_japan.1.desc
-# 	picture = GFX_report_event_japanese_parade
 
-# 	fire_only_once = yes
-# 	trigger = {
-# 		original_tag = JAP
-# 		OR = {
-# 			AND = {
-# 				has_war_with = RAJ
-# 				OR = {
-# 					RAJ = { is_subject = yes }
-# 					RAJ = { is_in_faction_with = ENG }
-# 					RAJ = { NOT = { has_completed_focus = RAJ_forward_bloc } }
-# 				}
-# 			}
-# 			AND = {
-# 				has_war_with = BRM
-# 				OR = {
-# 					BRM = { is_in_faction_with = ENG }
-# 					BRM = { is_subject_of = ENG }
-# 				}
-# 			}
-# 		}
-# 	}
 
-# 	option = {
-# 		name = goe_japan.1.a
-# 		ai_chance = {
-# 			base = 10
-# 		}
-
-# 		add_timed_idea = {
-# 			idea = idea_RAJ_azad_hind_fervor
-# 			days = 70
-# 		}
-
-# 		division_template = {
-# 			name = "Azad Hind Legion"
-# 			is_locked = no
-
-# 			regiments = {
-# 				infantry = { x = 0 y = 0 }
-# 				infantry = { x = 0 y = 1 }
-# 				infantry = { x = 0 y = 2 }
-# 				infantry = { x = 0 y = 3 }
-# 				infantry = { x = 1 y = 0 }
-# 				infantry = { x = 1 y = 1 }
-				
 # 			}
 # 			support = {
 				
 # 			}
 # 		}
 
-# 		random_core_state = {
-# 			limit = {
-# 				is_fully_controlled_by = ROOT
-# 			}
-# 			prioritize = { 282 } #optional: to pick those states first if they fulfill the limit
-# 			create_unit = {
-# 				division = "name = \"Azad Hind Legion\" division_template = \"Azad Hind Legion\" start_experience_factor = 0.2 start_equipment_factor = 1 start_manpower_factor = 1"
-# 				owner = JAP
-# 				prioritize_location = 1182 # optional 
-# 				allow_spawning_on_enemy_provs = no 
-# 				country_score = {} # optional 
-# 				count = 6 
-# 			}
-# 		}
-
 
 # 	}
 
-# 	option = {
-# 		name = goe_japan.1.b
-# 		ai_chance = {
-# 			base = 0
-# 		}
 
 # 	}
 # }
