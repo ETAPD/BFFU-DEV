@@ -1,4 +1,4 @@
-version="1.19"
+version="1.0.0"
 tags={
 	"Balance"
 	"Events"
@@ -7,19 +7,9 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="BFFU-DEV"
+name="BFFU 2 - Czechoslovakia Rework"
 picture="thumbnail.png"
-replace_path="common/units/names_divisions"
-replace_path="common/units/names_ships"
-replace_path="common/national_focus"
-replace_path="common/decisions"
-replace_path="common/decisions/categories"
-replace_path="common/technologies"
-replace_path="events"
-replace_path="common/ai_equipment"
-replace_path="common/ai_strategy"
-replace_path="common/ai_strategy_plans"
-replace_path="common/ai_templates"
-replace_path="gfx/interface/equipmentdesigner/tanks/designer"
-replace_path="history/countries"
-supported_version="1.19.*"
+supported_version="1.19.2.0"
+dependencies={
+	"BFFU 2"
+}
