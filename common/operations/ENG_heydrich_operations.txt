@@ -1,0 +1,100 @@
+ENG_operation_assassinate_heydrich = {
+	icon = GFX_operations_targeted_sabotage
+	map_icon = GFX_operations_targeted_sabotage_map
+	name = ENG_operation_assassinate_heydrich
+	desc = ENG_operation_assassinate_heydrich_desc
+	priority = 50
+	days = 90
+	network_strength = 80
+	operatives = 3
+	visible = {
+		original_tag = ENG
+		has_country_flag = ENG_heydrich_operation_unlocked
+		NOT = { has_country_flag = ENG_heydrich_operation_completed }
+		FROM = {
+			original_tag = CZE
+			has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich }
+		}
+	}
+	available = {
+		original_tag = ENG
+		has_country_flag = ENG_heydrich_operation_unlocked
+		NOT = { has_country_flag = ENG_heydrich_operation_completed }
+		FROM = {
+			original_tag = CZE
+			has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich }
+		}
+	}
+	requirements = {
+		FROM = {
+			original_tag = CZE
+			has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich }
+		}
+	}
+	equipment = {
+	}
+	risk_chance = 0.15
+	experience = 6
+	cost_multiplier = 1
+	outcome_execute = {
+		FROM = {
+			kill_country_leader = yes
+			promote_character = CZE_kurt_daluege
+		}
+		ROOT = {
+			set_country_flag = ENG_heydrich_operation_completed
+			country_event = { id = ENG_heydrich_minigame.1 }
+			every_operative = {
+				limit = { has_trait = CZE_czech_patriot }
+				kill_operative = { killed_by = FROM }
+			}
+		}
+	}
+	outcome_potential = {
+		ROOT = {
+			custom_effect_tooltip = ENG_operation_assassinate_heydrich_outcome_tt
+		}
+	}
+	phases = {
+		infiltration_border = { base = 25 }
+		infiltration_submarine = { base = 25 }
+		infiltration_paradrop = {
+			base = 25
+			modifier = {
+				ROOT = {
+					has_equipment = { transport_plane_equipment < 1 }
+				}
+				factor = 0
+			}
+		}
+		infiltration_diplomatic = {
+			base = 25
+			modifier = {
+				factor = 20
+				ROOT = { has_war = no }
+				FROM = { has_war = no }
+			}
+			modifier = {
+				FROM = { has_war_with = ROOT }
+				factor = 0
+			}
+		}
+	}
+	phases = {
+		infiltrate_military_bribe = { base = 50 }
+		infiltrate_military_seduction = { base = 50 }
+	}
+	phases = {
+		exfiltration_air_pickup = {
+			base = 15
+			modifier = {
+				ROOT = {
+					has_equipment = { transport_plane_equipment < 1 }
+				}
+				factor = 0
+			}
+		}
+		exfiltration_go_to_ground = { base = 30 }
+		exfiltration_submarine_pickup = { base = 25 }
+	}
+}
