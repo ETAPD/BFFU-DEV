@@ -1,0 +1,170 @@
+ENG_heydrich_assassination_category = {
+	ENG_heydrich_minigame_countdown_display = {
+		icon = generic_intelligence_exchange
+		allowed = {
+			original_tag = ENG
+		}
+		visible = {
+			always = yes
+		}
+		available = {
+			always = no
+		}
+		ai_will_do = {
+			base = 0
+		}
+	}
+
+	ENG_boost_exiled_cze_legitimacy = {
+		icon = generic_political_actions
+		allowed = {
+			original_tag = ENG
+		}
+		visible = {
+			always = yes
+		}
+		available = {
+			has_country_flag = ENG_heydrich_tickdown_started
+			NOT = { has_country_flag = ENG_heydrich_operation_unlocked }
+			CZE = { has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich } }
+		}
+		cost = var:ENG_heydrich_pp_cost
+		days_remove = 30
+		remove_effect = {
+			add_to_variable = { ENG_heydrich_countdown = -30 }
+			if = {
+				limit = {
+					check_variable = { var = ENG_heydrich_countdown value = 0 compare = less_than_or_equals }
+				}
+				set_variable = { ENG_heydrich_countdown = 0 }
+				set_country_flag = ENG_heydrich_operation_unlocked
+			}
+			custom_effect_tooltip = ENG_boost_exiled_cze_tt
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	ENG_supply_cze_guns = {
+		icon = generic_army_support
+		allowed = {
+			original_tag = ENG
+		}
+		visible = {
+			always = yes
+		}
+		available = {
+			has_country_flag = ENG_heydrich_tickdown_started
+			NOT = { has_country_flag = ENG_heydrich_operation_unlocked }
+			CZE = { has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich } }
+			has_equipment = { infantry_equipment > ENG_heydrich_gun_threshold }
+		}
+		cost = var:ENG_heydrich_gun_pp_cost
+		custom_cost_trigger = {
+			has_equipment = { infantry_equipment > ENG_heydrich_gun_threshold }
+		}
+		custom_cost_text = ENG_heydrich_gun_cost_text
+		days_remove = 30
+		remove_effect = {
+			set_temp_variable = { ENG_heydrich_guns_to_remove = ENG_heydrich_gun_cost }
+			multiply_temp_variable = { ENG_heydrich_guns_to_remove = -1 }
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = ENG_heydrich_guns_to_remove
+			}
+			add_to_variable = { ENG_heydrich_countdown = -30 }
+			if = {
+				limit = {
+					check_variable = { var = ENG_heydrich_countdown value = 0 compare = less_than_or_equals }
+				}
+				set_variable = { ENG_heydrich_countdown = 0 }
+				set_country_flag = ENG_heydrich_operation_unlocked
+			}
+			custom_effect_tooltip = ENG_supply_cze_guns_tt
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	ENG_supply_cze_funds = {
+		icon = generic_industry
+		allowed = {
+			original_tag = ENG
+		}
+		visible = {
+			always = yes
+		}
+		available = {
+			has_country_flag = ENG_heydrich_tickdown_started
+			NOT = { has_country_flag = ENG_heydrich_operation_unlocked }
+			CZE = { has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich } }
+			num_of_civilian_factories_available_for_projects > ENG_heydrich_civ_threshold
+		}
+		cost = 0
+		custom_cost_trigger = {
+			num_of_civilian_factories_available_for_projects > ENG_heydrich_civ_threshold
+		}
+		custom_cost_text = ENG_heydrich_civ_cost_text
+		days_remove = 30
+		complete_effect = {
+			add_dynamic_modifier = { modifier = ENG_heydrich_funding_commitment }
+		}
+		cancel_effect = {
+			remove_dynamic_modifier = { modifier = ENG_heydrich_funding_commitment }
+		}
+		remove_effect = {
+			remove_dynamic_modifier = { modifier = ENG_heydrich_funding_commitment }
+			add_to_variable = { ENG_heydrich_countdown = -30 }
+			if = {
+				limit = {
+					check_variable = { var = ENG_heydrich_countdown value = 0 compare = less_than_or_equals }
+				}
+				set_variable = { ENG_heydrich_countdown = 0 }
+				set_country_flag = ENG_heydrich_operation_unlocked
+			}
+			custom_effect_tooltip = ENG_supply_cze_funds_tt
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+
+	ENG_support_slovak_communists = {
+		icon = generic_propaganda
+		allowed = {
+			original_tag = ENG
+		}
+		visible = {
+			always = yes
+		}
+		available = {
+			has_country_flag = ENG_heydrich_tickdown_started
+			NOT = { has_country_flag = ENG_heydrich_operation_unlocked }
+			CZE = { has_country_leader = { ruling_only = yes character = CZE_reinhard_heydrich } }
+		}
+		cost = 0
+		days_remove = 30
+		remove_effect = {
+			CZE = {
+				add_popularity = {
+					ideology = communism
+					popularity = 0.01
+				}
+			}
+			add_to_variable = { ENG_heydrich_countdown = -30 }
+			if = {
+				limit = {
+					check_variable = { var = ENG_heydrich_countdown value = 0 compare = less_than_or_equals }
+				}
+				set_variable = { ENG_heydrich_countdown = 0 }
+				set_country_flag = ENG_heydrich_operation_unlocked
+			}
+			custom_effect_tooltip = ENG_support_slovak_communists_tt
+		}
+		ai_will_do = {
+			base = 10
+		}
+	}
+}

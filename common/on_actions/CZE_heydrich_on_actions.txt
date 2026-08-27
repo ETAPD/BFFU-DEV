@@ -1,0 +1,139 @@
+on_actions = {
+	on_operation_completed = {
+		effect = {
+			every_operative = {
+				limit = { has_trait = CZE_czech_patriot }
+				kill_operative = { killed_by = FROM }
+			}
+		}
+	}
+	on_game_start = {
+		effect = {
+			if = {
+				limit = { original_tag = CZE }
+				set_global_flag = neutralized_focus_CZE_coalition_building
+				clr_country_flag = CZE_show_a_divided_nation_category
+				country_event = { id = cze_crisis.0 days = 1 }
+				country_event = { id = cze_crisis.1 days = 2 }
+				country_event = { id = cze_crisis.2 days = 2 }
+				country_event = { id = cze_crisis.3 days = 3 }
+				country_event = { id = cze_crisis.4 days = 3 }
+				country_event = { id = cze_crisis.5 days = 4 }
+				country_event = { id = cze_crisis.6 days = 4 }
+				country_event = { id = cze_crisis.7 days = 4 }
+			}
+			if = {
+				limit = { original_tag = ENG }
+				set_country_flag = ENG_heydrich_costs_v2_initialized
+				set_variable = { ENG_heydrich_pp_cost = 50 }
+				set_variable = { ENG_heydrich_gun_pp_cost = 25 }
+				set_variable = { ENG_heydrich_gun_cost = 2000 }
+				set_variable = { ENG_heydrich_gun_threshold = 1999 }
+				set_variable = { ENG_heydrich_civ_cost = 1 }
+				set_variable = { ENG_heydrich_civ_threshold = 0 }
+				set_variable = { ENG_heydrich_countdown = 1826 }
+			}
+		}
+	}
+	on_daily = {
+		effect = {
+			if = {
+				limit = { original_tag = ENG }
+				if = {
+					limit = { NOT = { has_country_flag = ENG_heydrich_costs_v2_initialized } }
+					set_country_flag = ENG_heydrich_costs_v2_initialized
+					set_variable = { ENG_heydrich_pp_cost = 50 }
+					set_variable = { ENG_heydrich_gun_pp_cost = 25 }
+					set_variable = { ENG_heydrich_gun_cost = 2000 }
+					set_variable = { ENG_heydrich_gun_threshold = 1999 }
+					set_variable = { ENG_heydrich_civ_cost = 1 }
+					set_variable = { ENG_heydrich_civ_threshold = 0 }
+					if = {
+						limit = { NOT = { has_variable = ENG_heydrich_countdown } }
+						set_variable = { ENG_heydrich_countdown = 1826 }
+					}
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = ENG_heydrich_tickdown_started }
+						has_war_with = GER
+					}
+					set_country_flag = ENG_heydrich_tickdown_started
+					set_variable = { ENG_heydrich_countdown = 1826 }
+				}
+				else_if = {
+					limit = {
+						has_country_flag = ENG_heydrich_tickdown_started
+						NOT = { has_country_flag = ENG_heydrich_operation_unlocked }
+					}
+					add_to_variable = { ENG_heydrich_countdown = -1 }
+					if = {
+						limit = { check_variable = { var = ENG_heydrich_countdown value = 0 compare = less_than_or_equals } }
+						set_variable = { ENG_heydrich_countdown = 0 }
+						set_country_flag = ENG_heydrich_operation_unlocked
+					}
+				}
+			}
+			else_if = {
+				limit = { original_tag = CZE }
+				if = {
+					limit = { has_country_flag = CZE_show_a_divided_nation_category }
+					clr_country_flag = CZE_show_a_divided_nation_category
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = CZE_anschluss_event_applied }
+						GER = { has_country_flag = AUS_annexed }
+					}
+					set_country_flag = CZE_anschluss_event_applied
+					country_event = { id = cze_crisis.1 }
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = CZE_sudeten_demand_event_applied }
+						GER = { has_completed_focus = GER_demand_sudetenland }
+					}
+					set_country_flag = CZE_sudeten_demand_event_applied
+					country_event = { id = cze_crisis.2 }
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = CZE_sudeten_transfer_event_applied }
+						GER = { has_country_flag = sudetenland_acquired }
+					}
+					set_country_flag = CZE_sudeten_transfer_event_applied
+					country_event = { id = cze_crisis.4 }
+					country_event = { id = cze_crisis.5 }
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = CZE_fate_event_applied }
+						GER = { has_completed_focus = GER_fate_of_czechoslovakia }
+					}
+					set_country_flag = CZE_fate_event_applied
+					country_event = { id = cze_crisis.7 }
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = CZE_protectorate_outcome_applied }
+						owns_state = 9
+						owns_state = 75
+						NOT = { owns_state = 70 }
+						NOT = { owns_state = 71 }
+					}
+					country_event = { id = cze_hist.9 }
+				}
+				if = {
+					limit = {
+						NOT = { has_country_flag = CZE_slovak_outcome_applied }
+						owns_state = 70
+						owns_state = 71
+						NOT = { owns_state = 9 }
+						NOT = { owns_state = 75 }
+					}
+					country_event = { id = cze_hist.10 }
+				}
+			}
+		}
+	}
+}
