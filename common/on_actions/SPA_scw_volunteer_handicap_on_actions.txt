@@ -1,0 +1,83 @@
+on_actions = {
+
+	# The Nationalist side is identified the same way the SPA tag alias in
+	# common/country_tag_aliases/tag_aliases.txt identifies it: original_tag SPR
+	# plus the nationalist side flag. NOT by ideology, since they rule as
+	# Non-Aligned (Junta Militar), and not by which country is ROOT at civil war
+	# start, since the live LaR path activates a reserved dynamic country rather
+	# than splitting the player's own country.
+
+	on_send_volunteers = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = spanish_civil_war
+					NOT = { has_global_flag = scw_over }
+					NOT = { original_tag = SPR }
+					NOT = { has_dynamic_modifier = { modifier = SPA_scw_balance_modifier } }
+					FROM = {
+						original_tag = SPR
+						OR = {
+							has_country_flag = SPR_nationalist_spain_flag
+							has_country_flag = scw_no_lar_nationalists
+							has_country_flag = SPA_scw_nationalist_side
+						}
+					}
+				}
+				set_variable = { SPA_scw_balance_var = FROM.SPA_scw_balance_var }
+				add_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+			}
+		}
+	}
+
+	# Applies (or re-applies) the handicap to the Nationalists for as long as the
+	# war runs. This is what makes the system path independent: it covers the LaR
+	# civil war, the legacy no-LaR split, and games already in progress.
+	on_weekly = {
+		effect = {
+			if = {
+				limit = {
+					original_tag = SPR
+					has_global_flag = spanish_civil_war
+					NOT = { has_global_flag = scw_over }
+					NOT = { has_dynamic_modifier = { modifier = SPA_scw_balance_modifier } }
+					OR = {
+						has_country_flag = SPR_nationalist_spain_flag
+						has_country_flag = scw_no_lar_nationalists
+						has_country_flag = SPA_scw_nationalist_side
+					}
+				}
+				set_variable = { SPA_scw_balance_var = -0.1 }
+				add_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+			}
+		}
+	}
+
+	# Decay: from 1 January 1937 the handicap weakens by 1 percentage point a
+	# month, so the full -10% is gone ten months later (November 1937). Every
+	# holder decays on the same monthly tick, so Spain and its volunteer senders
+	# stay in step. Once it reaches zero the modifier removes itself.
+	on_monthly = {
+		effect = {
+			if = {
+				limit = {
+					has_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+					date > 1937.1.1
+				}
+				add_to_variable = { SPA_scw_balance_var = 0.01 }
+				clamp_variable = {
+					var = SPA_scw_balance_var
+					min = -0.1
+					max = 0
+				}
+				if = {
+					limit = {
+						check_variable = { SPA_scw_balance_var > -0.005 }
+					}
+					remove_dynamic_modifier = { modifier = SPA_scw_balance_modifier }
+					clear_variable = SPA_scw_balance_var
+				}
+			}
+		}
+	}
+}

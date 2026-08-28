@@ -19,7 +19,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -57,7 +57,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -308,7 +308,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -351,7 +351,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -478,7 +478,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -524,7 +524,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -592,7 +592,7 @@ fascism_on_the_rise = {
 			OR = {
 				AND = {
 					original_tag = GER
-					has_completed_focus = GER_expatriate_the_communists_ww
+					always = no # was: has_global_flag = neutralized_focus_GER_expatriate_the_communists_ww (focus removed in GER cleanup)
 					has_country_flag = GER_strasserism_relevant_in_germany_flag
 				}
 				check_has_focus_tree_to_switch_to_fascism = yes
@@ -602,7 +602,15 @@ fascism_on_the_rise = {
 					has_dlc = "Trial of Allegiance"
 				}
 				NOT = {
-					tag = ARG
+					original_tag = ARG
+				}
+			}
+			IF = {
+				limit = {
+					has_dlc = "Arms Against Tyranny"
+				}
+				NOT = {
+					original_tag = NOR
 				}
 			}
 		}
@@ -1182,13 +1190,6 @@ democratic_on_the_rise = {
 				has_country_flag = open_up_political_discourse_democratic
 			}
 			check_has_focus_tree_to_switch_to_democratic = yes
-			if = {
-				limit = {
-					NOR_AAT = yes 
-				}
-				original_tag = NOR 
-				has_country_flag = NOR_included_in_generic_political
-			}
 		}
 		
 		remove_trigger = {
@@ -1875,14 +1876,6 @@ political_actions = {
         remove_trigger = {
             OR = {
                 GER = { has_government = ROOT }
-                # AND = {
-                #     country_exists = WGR
-                #     WGR = { has_government = ROOT }
-                # }
-                # AND = {
-                #     country_exists = DDR
-                #     DDR = { has_government = ROOT }
-                # }
             }
         }
 
@@ -1957,36 +1950,34 @@ political_actions = {
     		OR = {
 				NOT = { has_government = fascism }
 				AND = {
-					original_tag = RAJ
-					has_idea = idea_RAJ_kingmaker	
+					original_tag = RAJ	
 				}
-			}
-			IF = {
-				limit = {
-					has_dlc = "Gotterdammerung"
-					original_tag = AUS
-				}
-				NOT = { has_completed_focus = AUS_reinstate_the_imperial_council }
+
+    			AND = {
+    				original_tag = SIA
+    				has_dlc = "Thunder at Our Gates"
+    			}
 			}
 		}
 
 		available = {
-            fascism > 0.1
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							has_dlc = "Thunder at Our Gates"
+							original_tag = SIA
+						}
+					}
+				}
+            	fascism > 0.1
+			}
             if = {
 				limit = {
 					tag = SPR
 				}
 				NOT = {
 					has_idea = SPR_political_violence
-				}
-			}
-			if = {
-				limit = {
-					has_aat = yes 
-					original_tag = NOR 
-				}
-				NOT = { 
-					has_idea = NOR_anti_communist_sentiment_ns
 				}
 			}
         }
@@ -1999,27 +1990,33 @@ political_actions = {
 		days_remove = 120
 		cost = 50
 
-		cancel_trigger = {
-			if = {
-				limit = {
-					original_tag = AUS
-				}
-				OR = {
-					has_completed_focus = AUS_clamp_down_on_dnsap
-					has_completed_focus = AUS_ban_dnsap
-					has_completed_focus = AUS_rebuild_democratic_systems
-				}
-			}
-			else = {
-				always = no
-			}
-		}
-
 		complete_effect = {
 			add_stability = -0.1
+			if = {
+				limit = {
+					original_tag = SIA
+					has_global_flag = neutralized_focus_SIA_shuffle_pridi_to_the_minister_of_interior
+					is_ai = yes 
+				}
+
+				SIA_increase_civilian_approval = yes
+				SIA_decrease_military_approval = yes
+				add_war_support = -0.02
+			}
 		}
 		
 		remove_effect = {
+			if = {
+				limit = {
+					original_tag = SIA
+					has_global_flag = neutralized_focus_SIA_shuffle_pridi_to_the_minister_of_interior
+					is_ai = no
+				}
+
+				SIA_increase_civilian_approval = yes
+				SIA_decrease_military_approval = yes
+				add_war_support = -0.1
+			}
 		}
 		
 		ai_will_do = {
@@ -2034,7 +2031,7 @@ political_actions = {
 				add = 10
 				tag = AUS
 				fascism > 0.45
-				GER = { has_completed_focus = GER_reestablish_free_elections }
+				GER = { always = no } # was: has_global_flag = neutralized_focus_GER_reestablish_free_elections (focus removed in GER cleanup)
 			}
 			modifier = {
 				add = 10
@@ -2071,13 +2068,27 @@ political_actions = {
 				NOT = { has_government = democratic }
     			AND = {
     				original_tag = RAJ
-    				has_idea = idea_RAJ_kingmaker	
+    			}
+
+    			AND = {
+    				original_tag = SIA
+    				has_dlc = "Thunder at Our Gates"
     			}
 			}
 		}
 
 		available = {
-            democratic > 0.1
+			if = {
+				limit = {
+					NOT = {
+						AND = {
+							has_dlc = "Thunder at Our Gates"
+							original_tag = SIA
+						}
+					}
+				}
+            	democratic > 0.1
+			}
             if = {
 				limit = {
 					tag = SPR
@@ -2098,13 +2109,41 @@ political_actions = {
 
 		complete_effect = {
 			add_stability = -0.1
+			if = {
+				limit = {
+					original_tag = SIA
+					has_global_flag = neutralized_focus_SIA_for_the_preservation_of_siamese_independence
+					is_ai = yes
+				}
+
+				SIA_increase_military_approval = yes
+				SIA_decrease_civilian_approval = yes
+				add_war_support = -0.02
+			}
 		}
 		
 		remove_effect = {
+			if = {
+				limit = {
+					original_tag = SIA
+					has_global_flag = neutralized_focus_SIA_for_the_preservation_of_siamese_independence
+					is_ai = no
+				}
+
+				SIA_increase_military_approval = yes
+				SIA_decrease_civilian_approval = yes
+				add_war_support = -0.1
+			}
 		}
 		
 		ai_will_do = {
 			base = 0
+
+			modifier = {
+				add = 500
+				original_tag = SIA
+				has_idea = idea_SIA_military_rebellious
+			}
 		}
     }
 
@@ -2116,8 +2155,7 @@ political_actions = {
     		OR = {
 				NOT = { has_government = communism }
     			AND = {
-    				original_tag = RAJ
-    				has_idea = idea_RAJ_kingmaker	
+    				original_tag = RAJ	
     			}
 			}
 		}
@@ -2151,18 +2189,7 @@ political_actions = {
 		
 		ai_will_do = {
 			base = 0
-			modifier = { # If they have nothing else big to spend pp on, and this is avaiable, Monarchist Germany should start work on removing communist support. 
-				add = 10
-				original_tag = GER
-				OR = {
-					has_country_flag = GER_AI_RANDOM_KAISER
-					has_game_rule = {
-						rule = GER_ai_behavior
-						option = KAISER
-					}
-				}
-			}
-			modifier = { 
+			modifier = {
 				add = 5
 				has_dlc = "No Compromise, No Surrender"
 				original_tag = CHI
@@ -2184,7 +2211,6 @@ political_actions = {
 				NOT = { has_government = neutrality }
     			has_focus_tree = austro_hungarian_releasable_focus
     			has_focus_tree = generic_focus
-    			has_idea = idea_RAJ_kingmaker
     		}
     		OR = {
 				NOT = { has_government = neutrality }
@@ -2301,10 +2327,10 @@ political_actions = {
 
 			IF = {
 				limit = {
-					has_dlc = "Gotterdammerung"
-					original_tag = AUS
+					has_dlc = "Thunder at Our Gates"
+					original_tag = AST
 				}
-				NOT = { has_completed_focus = AUS_reinstate_the_imperial_council }
+				NOT = { has_global_flag = neutralized_focus_AST_australia_first }
 			}
 		}
 
@@ -2492,6 +2518,14 @@ political_actions = {
 					has_dlc = "Battle for the Bosporus"	
 				}
 				NOT = { original_tag = GRE }
+			}
+
+			IF = {
+				limit = {
+					has_dlc = "Thunder at Our Gates"
+					original_tag = AST
+				}
+				NOT = { has_global_flag = neutralized_focus_AST_against_war_and_fascism }
 			}
 		}
 

@@ -1,0 +1,172 @@
+scripted_gui = {
+
+	# Fuel Distribution button injected into the Logistics tab (managers: GER/ENG/JAP).
+	fuel_tool_topbar_win = {
+		context_type = player_context
+		window_name = "fuel_tool_topbar_win"
+		parent_window_token = logistics_tab
+		visible = {
+			OR = { tag = GER tag = ENG tag = JAP }
+		}
+
+		effects = {
+			fuel_value_button_click = {
+				if = {
+					limit = {
+						has_variable = show_fuel_system_window
+					}
+					clear_variable = show_fuel_system_window
+				}
+				else = {
+					set_variable = { show_fuel_system_window = 1 }
+				}
+			}
+		}
+
+		triggers = {
+			fuel_value_button_click_enabled = {
+				OR = { tag = GER tag = ENG tag = JAP }
+			}
+			fuel_value_button_visible = {
+				OR = { tag = GER tag = ENG tag = JAP }
+			}
+		}
+	}
+
+	# The Fuel Distribution panel.
+	fuel_system_window = {
+		context_type = player_context
+		parent_window_token = logistics_tab
+		window_name = "fuel_system_window"
+
+		visible = {
+			check_variable = { show_fuel_system_window > 0 }
+		}
+
+		effects = {
+			horsttool_helpbutton2_click = { ROOT = { country_event = { id = fuel_help.1 } } }		# "Help Me!" -> fuel system explainer
+			refresh_button_click = {
+				fuel_system_refresh_list = yes
+				on_daily_fuel = yes                 # immediately recalc + redistribute so refresh has a visible effect
+			}
+			close_button_click = {
+				clear_variable = show_fuel_system_window
+			}
+
+			increase_fuel_priority_click = {
+				for_each_loop = {
+					array = ROOT.faction_members_array
+					if = { limit = { var:v = { tag = PREV } }
+						set_temp_variable = { new_index = i }
+						add_to_temp_variable = { new_index = -1 }
+						if = { limit = { check_variable = { new_index > -1 } }
+							remove_from_array = {
+								array = ROOT.faction_members_array
+								value = THIS
+							}
+							add_to_array = {
+								array = ROOT.faction_members_array
+								value = THIS
+								index = new_index
+							}
+						}
+						set_temp_variable = { break = 1 }
+					}
+				}
+			}
+			decrease_fuel_priority_click = {
+				for_each_loop = {
+					array = ROOT.faction_members_array
+					if = { limit = { var:v = { tag = PREV } }
+						set_temp_variable = { new_index = i }
+						add_to_temp_variable = { new_index = 1 }
+						if = { limit = { check_variable = { new_index < ROOT.faction_members_array^num } }
+							remove_from_array = {
+								array = ROOT.faction_members_array
+								value = THIS
+							}
+							add_to_array = {
+								array = ROOT.faction_members_array
+								value = THIS
+								index = new_index
+							}
+						}
+						set_temp_variable = { break = 1 }
+					}
+				}
+			}
+			decrease_fuel_priority_shift_click = {
+				remove_from_array = {
+					array = ROOT.faction_members_array
+					value = THIS
+				}
+				add_to_array = {
+					array = ROOT.faction_members_array
+					value = THIS
+				}
+			}
+			increase_fuel_priority_shift_click = {
+				remove_from_array = {
+					array = ROOT.faction_members_array
+					value = THIS
+				}
+				add_to_array = {
+					array = ROOT.faction_members_array
+					value = THIS
+					index = 0
+				}
+			}
+			increase_min_fuel_button_click = {
+				add_to_variable = { min_fuel = 0.05 }
+				clamp_variable = {
+					var = min_fuel
+					min = 0.00
+					max = 0.95
+				}
+			}
+			decrease_min_fuel_button_click = {
+				add_to_variable = { min_fuel = -0.05 }
+				clamp_variable = {
+					var = min_fuel
+					min = 0.00
+					max = 0.95
+				}
+			}
+			increase_min_fuel_button_shift_click = {
+				add_to_variable = { min_fuel = 0.1 }
+				clamp_variable = {
+					var = min_fuel
+					min = 0.00
+					max = 0.95
+				}
+			}
+			decrease_min_fuel_button_shift_click = {
+				add_to_variable = { min_fuel = -0.1 }
+				clamp_variable = {
+					var = min_fuel
+					min = 0.00
+					max = 0.95
+				}
+			}
+		}
+
+		triggers = {
+			no_faction_members_info_visible = {
+				check_variable = { ROOT.faction_members_array^num < 1 }
+			}
+		}
+		properties = {
+			fuel_bar = {
+				x = fuel_bar_fuel
+			}
+		}
+
+		dynamic_lists = {
+			fuel_faction_members_gridbox = {
+				array = faction_members_array
+				entry_container = fuel_faction_members_entry
+				change_scope = yes
+			}
+		}
+	}
+}

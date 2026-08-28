@@ -25,119 +25,16 @@ operations = {
 		}
 		fire_only_once = yes
 		complete_effect = {
-			#annex_country = { target = HOL }
-			#annex_country = { target = INS }
-			if = {
-				limit = {
-					672 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 672
-			}
-
-			if = {
-				limit = {
-					334 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 334
-			}
-
-			if = {
-				limit = {
-					335 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 335
-			}
-
-			if = {
-				limit = {
-					673 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 673
-			}
-
-			if = {
-				limit = {
-					667 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 667
-			}
-
-			if = {
-				limit = {
-					668 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 668
-			}
-
-			if = {
-				limit = {
-					669 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 669
-			}
-
-			if = {
-				limit = {
-					738 = {
-						OR = {
-							is_controlled_by = HOL
-							is_controlled_by = INS
-						}
-					}
-				}
-				transfer_state = 738
-			}
-			#transfer_state = 309
-			#transfer_state = 695
-			
+			custom_effect_tooltip = AST_annex_INS_tt
 			every_state = {
 				limit = {
-					is_core_of = HOL
-					is_controlled_by = AST
+					OR = {
+						is_controlled_by = HOL
+						is_controlled_by = INS
 					}
-				set_compliance = 80
-			}
-			every_state = {
-				limit = {
-					is_core_of = INS
-					is_controlled_by = AST
-					}
-				set_compliance = 80
+					NOT = { is_core_of = HOL }
+				}
+				ROOT = { transfer_state = PREV }
 			}
 		}
 	}
@@ -183,11 +80,11 @@ operations = {
 			FIN = {is_ai = yes}
 			FIN = { has_war = no}
 			GER = { has_war = yes}
-			NOT = {has_completed_focus = SPA_abandon_neutrality }
+			NOT = {SPR = { is_in_faction_with = GER } }
 			NOT = {country_exists = LIT }
 			NOT = {country_exists = LAT }
 			NOT = {country_exists = EST }
-			has_completed_focus = SPA_national_recovery
+			has_completed_focus = SPA_la_division_azul
 			SOV = { owns_any_state_of = {
 				146
 				147
@@ -216,94 +113,6 @@ operations = {
 		}
 	}	
 	
-	
-	FRA_annex_COG = {
-	
-		allowed = {
-			original_tag = FRA
-		}
-
-		available = {
-			FRA = { has_capitulated = yes }
-			COG = { is_ai = yes }
-			COG = { exists = yes }
-		}
-		
-		visible = {
-			COG = { is_ai = yes }
-			COG = { exists = yes }
-		}
-
-		ai_will_do = {
-			factor = 0
-		}
-
-		fire_only_once = yes
-		complete_effect = {
-			FRA = {
-				transfer_state = 295
-				transfer_state = 538
-				transfer_state = 888
-				transfer_state = 889
-				transfer_state = 769
-				transfer_state = 768
-				transfer_state = 890
-				transfer_state = 718
-			}
-			
-			every_state = {
-				limit = {
-					is_core_of = COG
-					is_controlled_by = FRA
-					}
-				set_compliance = 80
-			}
-		}
-	}
-	
-	SAF_annex_COG = {
-	
-		allowed = {
-			original_tag = SAF
-		}
-
-		available = {
-			FRA = { has_capitulated = yes }
-			COG = { is_ai = yes }
-			COG = { exists = yes }
-		}
-		
-		visible = {
-			COG = { is_ai = yes }
-			COG = { exists = yes }
-		}
-
-		ai_will_do = {
-			factor = 0
-		}
-
-		fire_only_once = yes
-		complete_effect = {
-			SAF = {
-				transfer_state = 295
-				transfer_state = 538
-				transfer_state = 888
-				transfer_state = 889
-				transfer_state = 769
-				transfer_state = 768
-				transfer_state = 890
-				transfer_state = 718
-			}	
-			every_state = {
-				limit = {
-					is_core_of = COG
-					is_controlled_by = SAF
-					}
-				set_compliance = 80
-			}
-		}
-	}
-
 	end_spanish_civil_war = {
 
 		icon = GFX_decision_generic_break_treaty
@@ -331,34 +140,16 @@ operations = {
 				limit = { original_tag = SPR }
 				SPA = { annex_country = { target = PREV transfer_troops = no } }
 			}
-			# give_resource_rights = {
-			# 	receiver = SOV
-			# 	state = 167
-			# 	resources = { Tungsten }
-			# 	}
 			complete_national_focus = SPA_Allies_Victory
 
 			SOV = {
-				add_offsite_building = { type = arms_factory level = 15 }
+				add_offsite_building = { type = arms_factory level = 10 }
 				army_experience = 50
 			}
 			FRA = {
 				add_offsite_building = { type = arms_factory level = 5 }
 				army_experience = 25
 			}		
-			# SOV = {
-			# 	add_timed_idea = {
-			# 		idea = SPA_Spanish_Gold_SOV
-			# 		days = 730
-			# 	}
-			# }
-		    # SPR = {
-			# 	add_timed_idea = { 
-			# 		idea = SPR_Bozo_Spain_Build
-			# 		days = 730
-			# 	}
-			# }
-			# add_ideas = SPA_AlliesV
 			
 			every_country = {
 				limit = {
@@ -402,10 +193,7 @@ operations = {
 		fire_only_once = yes
 		complete_effect = {
 			ENG = {
-				transfer_state = 336
-				transfer_state = 333
-				transfer_state = 1024
-				transfer_state = 712
+				annex_country = { target = MAL }
 			}	
 			every_state = {
 				limit = {

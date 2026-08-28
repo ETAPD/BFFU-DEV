@@ -1,4 +1,14 @@
-﻿capital = 275
+capital = 275
+
+add_equipment_to_stockpile = {
+	type = train_equipment_1
+	amount = 100
+	producer = SAF
+}
+
+# Fuel distribution system (Horst)
+set_variable = { var = min_fuel value = 0.800 }
+set_fuel_ratio = 1
 
 oob = "SAF_1936"
 
@@ -25,6 +35,7 @@ set_technology = {
 	fuel_silos = 1
 	basic_train = 1
 	camelry = 1
+	early_light_cruiser = 1
 }
 
 set_grand_doctrine = grand_battleplan
@@ -33,6 +44,66 @@ set_grand_doctrine = new_fleet_in_being
 set_variable = { number_of_mios = 0 }
 
 
+# Panel 1 - SAF_south_african_economy (PERMANENT: Depression -> prosperity;
+#           upgraded, never removed, by SAF_the_september_1939_vote)
+set_variable = { SAF_eco_political_power_factor_var = -0.20 }
+set_variable = { SAF_eco_consumer_goods_var = 0.10 }
+set_variable = { SAF_eco_stability_factor_var = -0.15 }
+set_variable = { SAF_eco_industrial_capacity_factory_var = -0.05 }
+set_variable = { SAF_eco_industrial_capacity_dockyard_var = 0 }
+set_variable = { SAF_eco_production_speed_industrial_complex_factor_var = 0 }
+set_variable = { SAF_eco_production_speed_arms_factory_factor_var = -0.20 }
+set_variable = { SAF_eco_production_speed_dockyard_factor_var = -0.35 }
+set_variable = { SAF_eco_production_speed_infrastructure_factor_var = 0 }
+set_variable = { SAF_eco_production_factory_efficiency_gain_factor_var = -0.05 }
+set_variable = { SAF_eco_production_factory_max_efficiency_factor_var = -0.025 }
+set_variable = { SAF_eco_local_resources_factor_var = -0.10 }
+set_variable = { SAF_eco_research_speed_factor_var = -0.05 }
+set_variable = { SAF_eco_production_speed_buildings_factor_var = 0 }
+set_variable = { SAF_eco_local_building_slots_factor_var = 0 }
+set_variable = { SAF_eco_production_factory_start_efficiency_factor_var = 0 }
+set_variable = { SAF_eco_resource_trade_cost_bonus_per_factory_var = 100 }
+
+# Panel 2 - SAF_the_afrikaner_question (permanent)
+set_variable = { SAF_afr_conscription_factor_var = -0.50 }
+set_variable = { SAF_afr_conscription_var = 0 }
+set_variable = { SAF_afr_stability_factor_var = -0.15 }
+set_variable = { SAF_afr_political_power_cost_var = 0.10 }
+set_variable = { SAF_afr_war_support_factor_var = -0.10 }
+set_variable = { SAF_afr_global_building_slots_factor_var = -0.15 }
+set_variable = { SAF_afr_mobilization_speed_var = -0.10 }
+set_variable = { SAF_afr_subversive_var = 0.15 }
+set_variable = { SAF_afr_resistance_target_var = 0.05 }
+
+# Panel 3 - SAF_union_defence_force (permanent)
+set_variable = { SAF_udf_command_power_gain_mult_var = -0.20 }
+set_variable = { SAF_udf_max_command_power_var = -20 }
+set_variable = { SAF_udf_army_org_factor_var = -0.10 }
+set_variable = { SAF_udf_army_morale_factor_var = -0.10 }
+set_variable = { SAF_udf_army_attack_factor_var = -0.05 }
+set_variable = { SAF_udf_army_defence_factor_var = -0.05 }
+set_variable = { SAF_udf_army_speed_factor_var = 0 }
+set_variable = { SAF_udf_army_armor_attack_factor_var = 0 }
+set_variable = { SAF_udf_army_infantry_attack_factor_var = 0 }
+set_variable = { SAF_udf_army_artillery_attack_factor_var = 0 }
+set_variable = { SAF_udf_mechanized_attack_factor_var = 0 }
+set_variable = { SAF_udf_experience_gain_army_var = 0 }
+set_variable = { SAF_udf_land_doctrine_cost_factor_var = 0.10 }
+set_variable = { SAF_udf_max_planning_var = -0.10 }
+set_variable = { SAF_udf_planning_speed_var = -0.10 }
+set_variable = { SAF_udf_out_of_supply_factor_var = 0.15 }
+set_variable = { SAF_udf_mio_funds_gain_var = 0 }
+set_variable = { SAF_udf_air_mission_xp_gain_factor_var = 0 }
+set_variable = { SAF_udf_air_accidents_factor_var = 0.10 }
+set_variable = { SAF_udf_air_ace_generation_chance_factor_var = 0 }
+set_variable = { SAF_udf_air_cas_efficiency_var = 0 }
+set_variable = { SAF_udf_convoy_escort_efficiency_var = -0.10 }
+set_variable = { SAF_udf_navy_sub_detection_var = 0 }
+set_variable = { SAF_udf_naval_coordination_var = -0.10 }
+
+add_dynamic_modifier = { modifier = SAF_south_african_economy }
+add_dynamic_modifier = { modifier = SAF_the_afrikaner_question }
+add_dynamic_modifier = { modifier = SAF_union_defence_force }
 
 if = {
 	limit = {
@@ -54,25 +125,13 @@ if = {
 		mtg_transport = 1
 	}
 }
-# if = {
-# 	limit = { has_dlc = "By Blood Alone" }
-# 		set_air_oob = "SAF_1936_air_bba"
-# 	else = {
-# 		set_technology = {
-# 			early_fighter = 1
-# 			cv_early_fighter = 1
-# 			naval_bomber1 = 1
-# 			early_bomber = 1
-# 			CAS1 = 1
 
-# 		}
-# 	}
-# }
 
 if = {
 	limit = { has_dlc = "Together for Victory" }
 	add_ideas = SAF_ossewabrandwag
-	add_ideas = SAF_history_of_segregation
+	# SAF_history_of_segregation is gone - its conscription/stability malus
+	# now lives in the SAF_the_afrikaner_question dynamic modifier panel.
 
 	add_to_tech_sharing_group = commonwealth_research
 	add_opinion_modifier = { target = ENG modifier = SAF_anti_british_sentiment }
@@ -94,30 +153,32 @@ set_popularities = {
 }
 
 recruit_character = SAF_j._b._m._hertzog
-recruit_character = SAF_moses_kotane
-recruit_character = SAF_pixley_ka_isaka_seme
 recruit_character = SAF_jan_smuts
-recruit_character = SAF_george_edwin_brink
-recruit_character = SAF_guy_hallifax
 recruit_character = SAF_d_f_malan
+recruit_character = SAF_nicolaas_havenga
+recruit_character = SAF_charles_stallard
+recruit_character = SAF_hendrik_van_der_bijl
+recruit_character = SAF_oswald_pirow
+recruit_character = SAF_moses_kotane
+recruit_character = SAF_ernest_oppenheimer
+recruit_character = SAF_jan_hendrik_hofmeyr
+recruit_character = SAF_richard_stuttaford
+recruit_character = SAF_deneys_reitz
+recruit_character = SAF_e_g_malherbe
+recruit_character = SAF_basil_schonland
+recruit_character = SAF_j_f_van_rensburg
+recruit_character = SAF_leonard_beyers
+recruit_character = SAF_james_mitchell_baker
+recruit_character = SAF_pierre_van_ryneveld
+recruit_character = SAF_adolf_malan
+recruit_character = SAF_guy_hallifax
+recruit_character = SAF_frank_theron
+recruit_character = SAF_james_dalgleish
+recruit_character = SAF_hendrik_klopper
+recruit_character = SAF_christoffel_venter
+recruit_character = SAF_george_edwin_brink
 recruit_character = SAF_evered_poole
 recruit_character = SAF_dan_pienaar
-recruit_character = SAF_pierre_oliver_knoll
-recruit_character = SAF_cornelis_van_zuigenbrogge
-recruit_character = SAF_e_g_jansen
-recruit_character = SAF_adolf_malan
-recruit_character = SAF_marinus_van_osterkamp
-recruit_character = SAF_nicolaas_havenga
-recruit_character = SAF_sir_patrick_duncan
-recruit_character = SAF_jeannot_de_la_tourier
-recruit_character = SAF_j_f_van_rensburg
-recruit_character = SAF_pierre_van_ryneveld
-recruit_character = SAF_s_p_le_roux
-recruit_character = SAF_robert_palmer
-recruit_character = SAF_leonard_beyers
-recruit_character = SAF_c_de_weenburg_du_toit
-recruit_character = SAF_james_mitchell_baker
-recruit_character = SAF_lion_king
 
 # Adding this line since you need a newline otherwise recruit character won't work, and it's liable to get removed if I just have an empty line
 

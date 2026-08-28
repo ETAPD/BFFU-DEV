@@ -1,0 +1,180 @@
+CONGO_one_more_focus_done = {
+	IF = {
+		limit = {
+			has_global_flag = COG_no_jft_done
+		}
+		clr_global_flag = COG_no_jft_done
+		set_global_flag = COG_1_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_1_jft_done
+		}
+		clr_global_flag = COG_1_jft_done
+		set_global_flag = COG_2_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_2_jft_done
+		}
+		clr_global_flag = COG_2_jft_done
+		set_global_flag = COG_3_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_3_jft_done
+		}
+		clr_global_flag = COG_3_jft_done
+		set_global_flag = COG_4_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_4_jft_done
+		}
+		clr_global_flag = COG_4_jft_done
+		set_global_flag = COG_5_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_5_jft_done
+		}
+		clr_global_flag = COG_5_jft_done
+		set_global_flag = COG_6_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_6_jft_done
+		}
+		clr_global_flag = COG_6_jft_done
+		set_global_flag = COG_7_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_7_jft_done
+		}
+		clr_global_flag = COG_7_jft_done
+		set_global_flag = COG_8_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_8_jft_done
+		}
+		clr_global_flag = COG_8_jft_done
+		set_global_flag = COG_9_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_9_jft_done
+		}
+		clr_global_flag = COG_9_jft_done
+		set_global_flag = COG_10_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_10_jft_done
+		}
+		clr_global_flag = COG_10_jft_done
+		set_global_flag = COG_11_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_11_jft_done
+		}
+		clr_global_flag = COG_11_jft_done
+		set_global_flag = COG_12_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_12_jft_done
+		}
+		clr_global_flag = COG_12_jft_done
+		set_global_flag = COG_13_jft_done
+	}
+	ELSE_IF = {
+		limit = {
+			has_global_flag = COG_13_jft_done
+		}
+		clr_global_flag = COG_13_jft_done
+		set_global_flag = COG_14_jft_done
+	}
+}
+
+#Important to put LOWEST first
+COG_vast_uncentralized_nation_modifier_level_down = {
+	custom_effect_tooltip = COG_vast_uncentralized_nation_modifier_level_down_tt
+}
+
+COG_set_up_african_resistance_states = {
+	hidden_effect = {
+		for_each_scope_loop = {
+			array = global.countries
+			IF = {
+				limit = {
+					# Find countries with cores in africa that do not already exist as free or puppeted nations
+					exists = no
+					any_state = {
+						is_core_of = PREV
+						is_on_continent = africa
+						OWNER = {
+							NOT = {
+								is_in_faction_with = ROOT
+							}
+							NOT = {
+								tag = ROOT
+							}
+						}
+					}
+				}
+				# add African state of theirs to the array
+				every_core_state = {
+					limit = {
+						OR = {
+							is_on_continent = africa
+							is_core_of = EGY
+						}
+						has_resistance = yes
+						NOT = {
+							# no point adding if already in there
+							is_in_array = {
+								array = COG.african_colonial_states_array
+								value = THIS
+							}
+						}
+					}
+					add_to_array = {
+						COG.african_colonial_states_array = THIS
+					}
+				}
+			}
+		}
+	}
+}
+
+COG_setup_freedom_at_gunpoint_array = {
+	hidden_effect = {
+		for_each_scope_loop = {
+			array = global.countries
+			IF = {
+				limit = {
+					exists = no
+					any_state = {
+						is_core_of = PREV
+						is_on_continent = africa
+						OWNER = {
+							NOT = {
+								is_in_faction_with = ROOT
+							}
+							NOT = {
+								tag = ROOT
+							}
+						}
+					}
+				}
+				#log = "[THIS.GetName]"
+				add_to_array = {
+					COG.freedom_at_gunpoint_array = THIS
+				}
+			}
+		}
+	}
+}

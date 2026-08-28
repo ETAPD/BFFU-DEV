@@ -1,5 +1,9 @@
-﻿
+
 capital = 64 # Berlin/Brandeburg
+
+# Fuel distribution system (Horst)
+set_variable = { var = min_fuel value = 0.05 }
+set_fuel_ratio = 1
 
 oob = "GER_1936"
 
@@ -23,7 +27,6 @@ set_grand_doctrine = new_convoy_raiding
 set_grand_doctrine = new_battlefield_support
 
 starting_train_buffer = 2
-set_fuel_ratio = 0.8
 
 # add_timed_idea = { idea = GER_mefo_air days = 1340 }
 add_ideas = GER_mefo_air
@@ -122,24 +125,6 @@ if = {
 	}
 	set_naval_oob = "GER_1936_naval_mtg"
 }
-# if = {
-# 	limit =  { has_dlc = "By Blood Alone" }
-# 		set_air_oob = "GER_1936_air_bba"
-# 		set_technology = {
-# 			aa_lmg = 1
-# 			#aa_cannon_1 = 1
-# 			#engines_1 = 1
-# 			#engines_2 = 1
-# 			early_bombs = 1
-# 			aircraft_construction = 1
-# 			iw_small_airframe = 1
-# 			basic_small_airframe = 1
-# 			iw_medium_airframe = 1
-# 			basic_medium_airframe = 1
-# 			iw_large_airframe = 1
-# 		}
-# 	else = {
-# 		set_air_oob = "GER_1936_air_legacy"
 		set_technology = {
 			early_fighter = 1
 			fighter1 = 1
@@ -149,10 +134,7 @@ if = {
 			CAS1 = 1
 			naval_bomber1 = 1
 		}
-# 	}
-# }
-#CONSUMER GOODS INCREASE AND PENALTIES VARIABLES
-set_variable = { GER_monthly_consumer_goods_start = 0.02 } #Starting amount of monthly increasing CG for MEFO Bills 
+set_variable = { GER_monthly_consumer_goods_start = 0.015 } #Starting amount of monthly increasing CG for MEFO Bills 
 set_variable = { GER_change_monthly_CG_vichy_france = 0.005 } #Changing monthly CG when capitulating FRance
 set_variable = { GER_change_monthly_CG_price_controls = 0.005 } #Changing monthly CG when taking Price Controls focus
 set_variable = { GER_change_monthly_CG_occupied_states = 0.005 } #Changing monthly CG based on none-core states
@@ -169,8 +151,10 @@ set_variable = { GER_industrial_civilian_intel_to_others = -25 }
 set_variable = { GER_industrial_army_intel_to_others = -25 }
 set_variable = { GER_industrial_navy_intel_to_others = -25 }
 set_variable = { GER_industrial_airforce_intel_to_others = -25 }
-set_variable = { GER_industrial_production_speed_arms_factory_factor = 0.2 }
-set_variable = { GER_industrial_production_speed_dockyard_factor = 0.1 }
+set_variable = { GER_industrial_production_speed_arms_factory_factor = 0.05 }
+set_variable = { GER_industrial_production_speed_dockyard_factor = 0.05 }
+set_variable = { GER_industrial_production_speed_infrastructure_factor = 0 }
+set_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.1 }
 set_variable = { GER_industrial_industrial_capacity_factory = 0 }
 set_variable = { GER_industrial_industrial_capacity_dockyard = 0 }
 set_variable = { GER_industrial_production_lack_of_resource_penalty_factor = 0 }
@@ -234,6 +218,8 @@ set_variable = { GER_military_org_loss_when_moving = 0 }
 set_variable = { GER_military_motorized_attack_factor = 0 }
 set_variable = { GER_military_mechanized_attack_factor = 0 }
 set_variable = { GER_military_army_infantry_attack_factor = 0 }
+set_variable = { GER_military_army_infantry_defence_factor = 0 }
+set_variable = { GER_military_planning_decay_factor = 0 }
 set_variable = { GER_military_army_artillery_attack_factor = 0 }
 set_variable = { GER_military_army_org_factor = 0.05 }
 set_variable = { GER_military_planning_speed = 0.25 }
@@ -260,6 +246,8 @@ set_variable = { GER_military_mobilization_speed = 0 }
 set_variable = { GER_military_minimum_training_level = 0 }
 set_variable = { GER_military_unit_leader_as_advisor_cp_cost_factor = 0 }
 set_variable = { GER_military_command_power_gain_mult = 0 }
+set_variable = { GER_military_max_planning = 0 }
+set_variable = { GER_military_max_planning_factor = 0 }
 add_dynamic_modifier = { modifier = GER_army_modifier }
 
 #NAVY
@@ -313,6 +301,16 @@ set_variable = { GER_poster_left_icon_frame = GER_propaganda_empty_slot_index } 
 set_variable = { GER_poster_center_icon_frame = GER_propaganda_empty_slot_index } #Set up the appropriate locked slot GFX
 #set_variable = { SOV_poster_right_icon_frame = SOV_propaganda_locked_slot_index } #Set up the appropriate locked slot GFX
 set_variable = { GER_tank_manufacturer_cost_factor = -0.34 }
+
+add_to_variable = { var = GER_barb_buff_army_org_factor_var value = 0.0 }
+add_to_variable = { var = GER_barb_buff_army_morale_factor_var value = 0.0 }
+add_to_variable = { var = GER_barb_buff_initiative_factor_var value = 0.05 }
+add_to_variable = { var = GER_barb_buff_org_loss_when_moving_var value = -0.05 }
+add_to_variable = { var = GER_barb_buff_army_attack_speed_factor_var value = 0.05 }
+add_to_variable = { var = GER_barb_buff_air_superiority_bonus_in_combat_var value = 0.05 }
+add_to_variable = { var = GER_barb_buff_air_cas_present_factor_var value = 0.05 }
+add_to_variable = { var = GER_barb_buff_supply_node_range_var value = 0.05 }
+add_to_variable = { var = GER_barb_buff_supply_factor_var value = -0.05 }
 
 
 #COMMUNIST INTEL MODIFIER
@@ -430,6 +428,8 @@ set_variable = { GER_SS_cap_increase_double = 2 }
 #SS_armored_division_standard = yes
 set_country_flag = SS_armored_division_standard
 
+# Faction fuel-sharing manager (Fuel Distribution tab in logistics view)
+
 # Setup German Politics
 set_politics = {
 	ruling_party = fascism
@@ -463,6 +463,8 @@ add_ideas = {
 
 # Activates the MEFO Bills Mission
 # activate_mission = GER_mefo_bills_mission
+
+activate_mission = GER_economic_direction_mission
 
 # Character Recruitment
 recruit_character = GER_wilhelm_pieck
@@ -685,12 +687,6 @@ create_equipment_variant = {
 	show_position = no
 	mark_older_equipment_obsolete = yes
 }
-#create_equipment_variant = {
-#	type = motorized_equipment_1
-#	design_team = mio:GER_opel_organization
-#	show_position = no
-#	mark_older_equipment_obsolete = yes
-#}
 create_equipment_variant = {
 	type = fighter_equipment_1
 	design_team = mio:GER_messerschmitt_organization
@@ -1027,165 +1023,3 @@ if = {
 		obsolete = yes
 	}
 }
-
-# create_variants_for_tank_chassi_p1 = yes
-# create_variants_for_tank_chassi_p2 = yes
-# create_variants_for_tank_chassi_p3 = yes
-# create_variants_for_tank_chassi_p4 = yes
-# create_variants_for_tank_chassi_neubaufahrzeug = yes
-
-
-# if = {
-# 	limit = {
-# 		has_dlc = "By Blood Alone"
-# 	}
-
-# 	create_equipment_variant = {
-# 		name = "Do 23"
-# 		type = medium_plane_airframe_0
-# 		modules = {
-# 			fixed_main_weapon_slot = medium_bomb_bay
-# 			fixed_auxiliary_weapon_slot_1 = medium_bomb_bay_extra
-# 			fixed_auxiliary_weapon_slot_2 = empty
-			
-# 			engine_type_slot = engine_1_2x
-# 			special_type_slot_1 = empty
-# 			special_type_slot_2 = empty
-# 			special_type_slot_3 = empty
-# 			special_type_slot_4 = empty
-# 		}
-# 		obsolete = yes
-# 	}
-# 	create_equipment_variant = {
-# 		name = "Ju 86"
-# 		type = medium_plane_airframe_0
-# 		modules = {
-# 			fixed_main_weapon_slot = medium_bomb_bay
-# 			fixed_auxiliary_weapon_slot_1 = medium_bomb_bay_extra
-# 			fixed_auxiliary_weapon_slot_2 = empty
-			
-# 			engine_type_slot = engine_1_2x
-# 			special_type_slot_1 = lmg_defense_turret_2x
-# 			special_type_slot_2 = fuel_tanks_medium
-# 			special_type_slot_3 = empty
-# 			special_type_slot_4 = empty
-# 		}
-# 		obsolete = yes
-# 	}
-
-# 	create_equipment_variant = {
-# 		name = "He 111"
-# 		type = medium_plane_airframe_1
-# 		modules = {
-# 			fixed_main_weapon_slot = medium_bomb_bay
-# 			fixed_auxiliary_weapon_slot_1 = medium_bomb_bay_extra
-# 			fixed_auxiliary_weapon_slot_2 = medium_bomb_bay_extra
-			
-# 			engine_type_slot = engine_1_2x
-# 			special_type_slot_1 = lmg_defense_turret_2x
-# 			special_type_slot_2 = lmg_defense_turret_2x
-# 			special_type_slot_3 = empty
-# 			special_type_slot_4 = empty
-# 		}
-# 		icon = "GFX_GER_tactical_bomber1_medium"
-# 	}
-	
-# 	create_equipment_variant = {
-# 		name = "Do 17"
-# 		type = small_plane_cas_airframe_0
-# 		modules = {
-# 			fixed_main_weapon_slot = small_bomb_bay
-# 			engine_type_slot = engine_iw_2x
-# 			special_type_slot_1 = lmg_defense_turret_2x
-# 		}
-# 		icon = "GFX_GER_medium_plane_1_medium"
-# 	}
-
-# 	create_equipment_variant = {
-# 		name = "He 51" #also covers Ar 68
-# 		type = small_plane_airframe_0
-# 		modules = {
-# 			fixed_main_weapon_slot = light_mg_2x
-# 			engine_type_slot = engine_iw_1x
-# 			special_type_slot_1 = empty
-# 		}
-# 		obsolete = yes
-# 	}
-# 	create_equipment_variant = {
-# 		name = "Hs 123"
-# 		type = small_plane_cas_airframe_0
-# 		modules = {
-# 			fixed_main_weapon_slot = small_bomb_bay
-# 			engine_type_slot = engine_iw_1x
-# 			special_type_slot_1 = empty
-# 		}
-# 		obsolete = yes
-# 	}
-# 	create_equipment_variant = {
-# 		name = "Bf 109 D"
-# 		type = small_plane_airframe_1
-# 		modules = {
-# 			fixed_main_weapon_slot = light_mg_4x
-# 			engine_type_slot = engine_1_1x
-# 			special_type_slot_1 = empty
-# 		}
-# 		icon = "GFX_GER_fighter1_medium"
-# 	}
-# 	create_equipment_variant = {
-# 		name = "Ju 87"
-# 		type = small_plane_cas_airframe_1
-# 		modules = {
-# 			fixed_main_weapon_slot = small_bomb_bay
-# 			engine_type_slot = engine_1_1x
-# 			special_type_slot_1 = lmg_defense_turret
-# 			special_type_slot_2 = dive_brakes_small
-# 		}
-# 		icon = "GFX_GER_CAS1_medium"
-# 	}
-# 	create_equipment_variant = {
-# 		name = "Do 22"
-# 		type = small_plane_naval_bomber_airframe_1
-# 		modules = {
-# 			fixed_main_weapon_slot = torpedo_mounting
-# 			engine_type_slot = engine_1_1x
-# 			special_type_slot_1 = lmg_defense_turret
-# 			special_type_slot_2 = floats
-# 		}
-# 		icon = "GFX_GER_naval_bomber1_medium"
-# 	}
-# }
-
-# create_equipment_variant = {
-# 	name = "Ju 86"
-# 	type = tac_bomber_equipment_0
-# 	upgrades = {
-# 		plane_tac_bomb_upgrade = 2
-# 		plane_range_upgrade = 2
-# 		plane_engine_upgrade = 2
-# 		plane_reliability_upgrade = 2
-# 	}
-# 	obsolete = yes
-# }
-
-# create_equipment_variant = {
-# 	name = "Do 17"
-# 	type = tac_bomber_equipment_0
-# 	upgrades = {
-# 		plane_tac_bomb_upgrade = 1
-# 		plane_range_upgrade = 1
-# 		plane_engine_upgrade = 1
-# 		plane_reliability_upgrade = 1
-# 	}
-# 	obsolete = yes
-# }
-
-# create_equipment_variant = {
-# 		name = "Bf 109 E"
-# 		type = fighter_equipment_1
-# 		upgrades = {
-# 			plane_gun_upgrade = 2
-# 			plane_range_upgrade = 2
-# 			plane_engine_upgrade = 2
-# 			plane_reliability_upgrade = 2
-# 		}
-# }

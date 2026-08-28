@@ -81,39 +81,6 @@ on_actions = {
 		}
 	}
 
-	#ROOT is winner #FROM gets annexed - This will also fire on_annex
-	on_civil_war_end = {
-		effect = {
-			# Give back MEX focus tree to rebel MEX if they win a civil war.
-			if = {
-				limit = {
-					has_dlc = "Man the Guns"
-					original_tag = MEX
-					has_focus_tree = generic_focus
-					FROM = {
-						original_tag = MEX
-					}
-				}
-				load_focus_tree = { tree = mexico_focus_tree keep_completed = yes }
-			}
-			# Give back USA focus tree to CSA if they win a civil war.
-			if = {
-				limit = {
-					original_tag = USA
-					has_government = democratic
-					FROM = {
-						original_tag = USA
-						OR = {
-							has_government = neutrality
-							has_government = fascism
-						}
-					}
-				}
-				drop_cosmetic_tag = yes # we are done here
-				set_country_flag = democratic_usa_won_civil_war
-			}
-		}
-	}
 	#FROM is war target
 	on_declare_war = {
 		effect = {
@@ -153,50 +120,6 @@ on_actions = {
 				}
 				country_event = { id = mtg_netherlands.63 days = 1 }
 			}
-		}
-	}
-
-	#ROOT = nation being puppeted, FROM = overlord
-	on_puppet = {
-		effect = {
-			if = {
-				limit = {
-					original_tag = MEX
-					has_government = communism
-					OR = {
-						has_country_leader = { ruling_only = yes character = MEX_hernan_laborde }
-						has_country_leader = { ruling_only = yes character = MEX_leon_trotsky }
-						has_country_leader = { ruling_only = yes character = MEX_valentin_campa }
-					}					
-					is_puppet_of = SOV
-					SOV = {
-						has_country_leader_ideology = stalinism 
-					}
-				}
-				MEX = { 
-					add_country_leader_role = {
-						character = MEX_dionisio_encina
-						country_leader ={
-							expire = "1965.1.1"
-							ideology = stalinism
-							traits = {
-								staunch_stalinist
-							}
-						}
-						promote_leader = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					FROM = {
-						original_tag = ENG
-						NOT = { has_government = communism }
-					}
-					has_completed_focus = MEX_focus_nationalize_the_oil_fields
-				}
-				set_cosmetic_tag = ENG_MEX_dominion
-			}	
 		}
 	}
 
@@ -270,44 +193,6 @@ on_actions = {
 		}
 	}
 
-	#ROOT is winner #FROM is loser
-	on_peaceconference_ended = {
-		effect = {
-			if = {
-				limit = {
-					OR = {
-						AND = {
-							FROM = { original_tag = PAK }
-							ROOT = { original_tag = RAJ }
-						}
-						AND = {
-							FROM = { original_tag = RAJ }
-							ROOT = { original_tag = PAK }
-						}
-					}
-				}
-				FROM = {
-					delete_unit_template_and_units = {
-						division_template = "Pakistani Liberation Army"
-					}
-					delete_unit_template_and_units = {
-						division_template = "Hindu Militia"
-					}
-				}
-				ROOT = {
-					delete_unit_template_and_units = {
-						division_template = "Pakistani Liberation Army"
-					}
-					delete_unit_template_and_units = {
-						division_template = "Hindu Militia"
-					}
-				}
-			}
-		}
-	}
-
-
-
 	on_nuke_drop = {
 		effect = {			
 			if = {
@@ -331,23 +216,11 @@ on_actions = {
 				}
 				FROM = { set_country_flag = achievements_pride_and_extreme_prejudice }
 			}
-		}
-	}
-	# FROM is the faction Leader, ROOT is the country leaving the faction 
-	on_leave_faction = {
-		effect = {
 			if = {
-				limit = { 
-					original_tag = HOL
-					has_country_flag = HOL_joined_germany_flag
+				limit = {
+					tag = SIA
 				}
-				FROM = {
-					create_wargoal = {
-						type = take_state_focus
-						target = ROOT
-						generator = { 7 }
-					}
-				}
+				FROM = { set_country_flag = achievement_thaitanic }
 			}
 		}
 	}
@@ -378,28 +251,6 @@ on_actions = {
 					}
 				}
 				set_country_flag = assuming_direct_control_achievement_flag
-			}
-		}
-	}
-	on_monthly_MEX = {
-		effect = { # Effect to make Trotsky appear in Mexico if the player doesn't have AAT 
-			if = {
-				limit = {
-					has_aat = no
-					NOT = { has_country_flag = MEX_trotsky_event_triggered }
-				}
-				if = {
-					limit = {
-						date > 1937.01.01 # Historically arrived in January 9th 1937
-					}
-					MEX = { # I know I don't need to do this but I don't want to take my chances 
-						set_country_flag = MEX_trotsky_event_triggered
-						country_event = {
-							id = mexico.17
-							days = 8
-						}
-					}
-				}
 			}
 		}
 	}
