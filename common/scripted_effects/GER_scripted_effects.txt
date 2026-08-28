@@ -217,53 +217,6 @@ give_SOV_armor_research_bonuses = { #this effect is run for the Soviets!
 			category = armor
 		}
 	}
-	# if = { #double if because history files don't like else and this effect is run in the Soviet history file
-	# 	limit = {
-	# 		has_dlc = "No Step Back"
-	# 	}
-	# 	create_equipment_variant = {
-	# 		name = "A-20"
-	# 		type = medium_tank_chassis_1
-	# 		parent_version = 0
-	# 		allow_without_tech = no
-	# 		modules = {
-	# 			main_armament_slot = tank_small_cannon_2
-	# 			turret_type_slot = tank_medium_two_man_tank_turret
-	# 			suspension_type_slot = tank_christie_suspension
-	# 			armor_type_slot = tank_welded_armor
-	# 			engine_type_slot = tank_diesel_engine
-	# 			special_type_slot_1 = sloped_armor
-	# 		}
-	# 		upgrades = {
-	# 			tank_nsb_engine_upgrade = 8
-	# 			tank_nsb_armor_upgrade = 2
-	# 		}
-	# 		icon = "GFX_SOV_basic_medium_tank_medium"
-	# 	}
-	# 	create_equipment_variant = {
-	# 		name = "KV-1"
-	# 		type = heavy_tank_chassis_1
-	# 		parent_version = 0
-	# 		modules = {
-	# 			main_armament_slot = tank_medium_cannon
-	# 			turret_type_slot = tank_heavy_three_man_tank_turret
-	# 			suspension_type_slot = tank_torsion_bar_suspension
-	# 			armor_type_slot = tank_welded_armor
-	# 			engine_type_slot = tank_diesel_engine		
-	# 		}
-	# 		upgrades = {
-	# 			tank_nsb_engine_upgrade = 10
-	# 			tank_nsb_armor_upgrade = 9
-	# 		}
-	# 		icon = "GFX_SOV_improved_heavy_tank_medium"
-	# 	}
-	# 	add_tech_bonus = {
-	# 		name = armor_bonus
-	# 		bonus = 1.0
-	# 		uses = 2
-	# 		category = armor
-	# 	}
-	# }
 }
 
 MR_pact_transfer_state_effect = {
@@ -732,11 +685,11 @@ GER_stop_rearmament = {
 				GER_industrial_consumer_goods_factor = 0
 			}
 		}
-		GER_pay_back_mefo_bills = yes
+		#GER_pay_back_mefo_bills = yes
 		
 		custom_effect_tooltip = generic_skip_one_line_tt
 		
-		custom_effect_tooltip = GER_replace_mefo_bills_with_recovering_economy_tt
+		custom_effect_tooltip = GER_replace_mefo_bills_with_speer_tt
 		add_to_variable = {
 			GER_mefo_bills_civilian_intel_to_others = 0.25
 			tooltip = civilian_intel_to_others_tt
@@ -753,28 +706,33 @@ GER_stop_rearmament = {
 			GER_mefo_bills_airforce_intel_to_others = 0.25
 			tooltip = airforce_intel_to_others_tt
 		}
+		add_to_variable = { 
+			GER_industrial_production_speed_industrial_complex_factor = 0.15
+			tooltip = production_speed_industrial_complex_factor_tt
+		}
+		add_to_variable = { 
+			GER_industrial_consumer_goods_factor = 0.2
+			tooltip = consumer_goods_factor_tt
+		}
 		add_to_variable = {
-			GER_industrial_production_speed_arms_factory_factor = -0.1
+			GER_industrial_production_speed_arms_factory_factor = -0.4
 			tooltip = production_speed_arms_factory_factor_tt
 		}
 		add_to_variable = {
-			GER_industrial_production_speed_dockyard_factor = -0.1
+			GER_industrial_production_speed_dockyard_factor = -0.4
 			tooltip = production_speed_dockyard_factor_tt
 		}
 		add_to_variable = {
-			GER_industrial_industrial_capacity_factory = -0.1
+			GER_industrial_industrial_capacity_factory = -0.075
 			tooltip = industrial_capacity_factory_tt
 		}
 		add_to_variable = {
-			GER_industrial_industrial_capacity_dockyard = -0.1
+			GER_industrial_industrial_capacity_dockyard = -0.075
 			tooltip = industrial_capacity_dockyard_tt
 		}
-		effect_tooltip = { #Show the consequences once the MEFO Bills have been paid
-			custom_effect_tooltip = GER_after_mefo_bills_payment_tt
-			add_to_variable = { #These numbers must match the once set in GER_mefo_bills_ended idea 
-				GER_industrial_consumer_goods_factor = GER_economic_crash_consumer_goods
-				tooltip = consumer_goods_factor_tt
-			}
+		add_to_variable = { 
+			GER_industrial_production_factory_max_efficiency_factor = -0.025
+			tooltip = production_factory_max_efficiency_factor_tt
 		}
 	}
 	else_if = { #In case you have Economy of Conquest and wanna do "Prioritize Economic Growth" more or less
@@ -926,12 +884,6 @@ GER_autarky_achieved_effects = {
 
 GER_autarky_partially_achieved_effects = {
 
-	# if = {
-	# 	limit = {
-	# 		check_variable = { GER_industrial_consumer_goods_factor < 0.80}
-	# 	}
-	# 	set_variable = { GER_industrial_consumer_goods_factor = 0.80 tooltip = consumer_goods_factor_custom_tt}
-	# }
 	set_variable = { GER_industrial_consumer_goods_factor = 0.80 tooltip = consumer_goods_factor_custom_tt}
 	if = {
 		limit = {
@@ -1562,7 +1514,7 @@ GER_improve_rosenbergs_trait_effect = {
 		#WARNING! If any of these values are changed - or other variables are added or removed - the same change must be done in the script block below, GER_worsen_rosenbergs_trait_effect, AND the loc string GER_rk_rosenberg_tt must be adjusted to reflect these changes
 		custom_effect_tooltip = GER_modify_GER_alfred_rosenberg_modifier_tt
 		add_to_variable = { GER_alfred_rosenberg_modifier_consumer_goods_factor = -0.02 tooltip = consumer_goods_factor_tt }
-		add_to_variable = { GER_alfred_rosenberg_modifier_production_speed_arms_factory_factor = 0.04 tooltip = production_speed_arms_factory_factor_tt }
+		add_to_variable = { GER_alfred_rosenberg_modifier_production_speed_arms_factory_factor = 0.02 tooltip = production_speed_arms_factory_factor_tt }
 		add_to_variable = { GER_alfred_rosenberg_modifier_industrial_capacity_factory = 0.02 tooltip = industrial_capacity_factory_tt }
 
 		subtract_from_variable = { GER_count_down_alfred_rosenberg_upgrades = 1 }
@@ -1581,7 +1533,7 @@ GER_worsen_rosenbergs_trait_effect = {
 		}
 		custom_effect_tooltip = GER_modify_GER_alfred_rosenberg_modifier_tt
 		add_to_variable = { GER_alfred_rosenberg_modifier_consumer_goods_factor = 0.02 tooltip = consumer_goods_factor_tt }
-		add_to_variable = { GER_alfred_rosenberg_modifier_production_speed_arms_factory_factor = -0.04 tooltip = production_speed_arms_factory_factor_tt }
+		add_to_variable = { GER_alfred_rosenberg_modifier_production_speed_arms_factory_factor = -0.02 tooltip = production_speed_arms_factory_factor_tt }
 		add_to_variable = { GER_alfred_rosenberg_modifier_industrial_capacity_factory = -0.02 tooltip = industrial_capacity_factory_tt }
 
 		add_to_variable = { GER_count_down_alfred_rosenberg_upgrades = 1 }
@@ -1650,8 +1602,6 @@ GER_add_or_modify_politburo = {
 }
 
 
-
-
 GER_setup_GER_asia_sphere_of_influence_array = {
 	hidden_effect = {
 		for_each_scope_loop = {
@@ -1672,15 +1622,6 @@ GER_setup_GER_asia_sphere_of_influence_array = {
 						is_core_of = NZL
 						is_core_of = MAL
 						is_core_of = INS
-						#is_core_of = PAP
-						# is_core_of = GUM
-						# is_core_of = FSM
-						# is_core_of = HAW
-						# is_core_of = SAM
-						# is_core_of = SOL
-						# is_core_of = TAH
-						# is_core_of = FIJ
-						# is_core_of = RAP
 						is_core_of = SRL
 						#is_core_of = MLD
 					}
@@ -1709,10 +1650,6 @@ GER_setup_CHI_sphere_of_influence_array = {
 						is_core_of = RAJ
 						is_core_of = PAK
 						is_core_of = BAN
-						is_core_of = BRM
-						# is_core_of = NEP
-						# is_core_of = TIB
-						# is_core_of = BHU
 						is_core_of = KOR
 						is_core_of = JAP
 						is_core_of = MON
@@ -1734,8 +1671,8 @@ GER_setup_faction_wide_aoe_effects_from = {
 			FROM = {
 				original_tag = GER
 				OR = {
-					has_completed_focus = GER_pool_technical_know_how_ww
-					has_completed_focus = GER_pool_technical_know_how
+					always = no # was: has_completed_focus = GER_pool_technical_know_how_ww (focus removed in GER cleanup)
+					always = no # was: has_completed_focus = GER_pool_technical_know_how (focus removed in GER cleanup)
 				}
 			}
 			NOT = { has_idea = GER_pool_technical_know_how }
@@ -1747,8 +1684,8 @@ GER_setup_faction_wide_aoe_effects_from = {
 			FROM = {
 				original_tag = GER
 				OR = {
-					has_completed_focus = GER_shared_rd_programs_ww
-					has_completed_focus = GER_shared_rd_programs
+					always = no # was: has_completed_focus = GER_shared_rd_programs_ww (focus removed in GER cleanup)
+					always = no # was: has_completed_focus = GER_shared_rd_programs (focus removed in GER cleanup)
 				}
 				is_in_tech_sharing_group = ger_dem_research
 			}
@@ -1760,7 +1697,7 @@ GER_setup_faction_wide_aoe_effects_from = {
 		limit = {
 			FROM = {
 				original_tag = GER
-				has_completed_focus = GER_mitteleuropa_cooperation_sphere
+				always = no # was: has_completed_focus = GER_mitteleuropa_cooperation_sphere (focus removed in GER cleanup)
 				is_in_tech_sharing_group = ger_mitteleuropa_research
 			}
 		}
@@ -1771,7 +1708,7 @@ GER_setup_faction_wide_aoe_effects_from = {
 		limit = {
 			FROM = {
 				original_tag = GER
-				has_completed_focus = GER_establish_a_customs_union
+				always = no # was: has_completed_focus = GER_establish_a_customs_union (focus removed in GER cleanup)
 			}
 			NOT = { has_idea = GER_mitteleuropa_customs_union_member }
 		}
@@ -1788,8 +1725,8 @@ GER_setup_faction_wide_aoe_effects_root = {
 			ROOT = {
 				original_tag = GER
 				OR = {
-					has_completed_focus = GER_pool_technical_know_how_ww
-					has_completed_focus = GER_pool_technical_know_how
+					always = no # was: has_completed_focus = GER_pool_technical_know_how_ww (focus removed in GER cleanup)
+					always = no # was: has_completed_focus = GER_pool_technical_know_how (focus removed in GER cleanup)
 				}
 			}
 			NOT = { has_idea = GER_pool_technical_know_how }
@@ -1803,8 +1740,8 @@ GER_setup_faction_wide_aoe_effects_root = {
 			ROOT = {
 				original_tag = GER
 				OR = {
-					has_completed_focus = GER_shared_rd_programs_ww
-					has_completed_focus = GER_shared_rd_programs
+					always = no # was: has_completed_focus = GER_shared_rd_programs_ww (focus removed in GER cleanup)
+					always = no # was: has_completed_focus = GER_shared_rd_programs (focus removed in GER cleanup)
 				}
 				is_in_tech_sharing_group = ger_dem_research
 			}
@@ -1818,7 +1755,7 @@ GER_setup_faction_wide_aoe_effects_root = {
 		limit = {
 			ROOT = {
 				original_tag = GER
-				has_completed_focus = GER_mitteleuropa_cooperation_sphere
+				always = no # was: has_completed_focus = GER_mitteleuropa_cooperation_sphere (focus removed in GER cleanup)
 				is_in_tech_sharing_group = ger_mitteleuropa_research
 			}
 		}
@@ -1831,7 +1768,7 @@ GER_setup_faction_wide_aoe_effects_root = {
 		limit = {
 			ROOT = {
 				original_tag = GER
-				has_completed_focus = GER_establish_a_customs_union
+				always = no # was: has_completed_focus = GER_establish_a_customs_union (focus removed in GER cleanup)
 			}
 			NOT = { has_idea = GER_mitteleuropa_customs_union_member }
 		}
@@ -1964,7 +1901,6 @@ GER_amerika_bomber_messerschmitt_completion_SP_effects = { #SCOPE IS GER
 		}
 	}
 }
-
 
 
 ##################
@@ -2102,10 +2038,6 @@ GER_create_operative_coco_chanel = { #Subversive Infiltrators + France occupied
 		gender = female
 	}
 }
-
-
-
-
 
 
 		  ##################################
@@ -2511,6 +2443,13 @@ GER_add_goring_effects = {
 		}
 		add_ideas = GER_goring_overseer_four_year_plan
 	}
+
+	custom_effect_tooltip = generic_skip_one_line_tt
+
+	GER_hermann_goring = {
+		set_character_flag = GER_goring_eco_path_flag
+	}
+	country_event = { id = GER_inner_circle_goring.01 days = GER_inner_circle_days_to_start_focus random_days = GER_inner_circle_random_days }
 }
 
 GER_remove_goring_effects = {
@@ -3075,10 +3014,6 @@ GER_inner_circle_set_ascension_cd = {
 }
 
 
-
-
-
-
 GER_set_up_colonial_resistance_states = {
 	
 	hidden_effect = {
@@ -3410,7 +3345,6 @@ GER_check_chromium = {
 		limit = { 26 = { CONTROLLER = { tag = D05 } } }
 		D05 = { add_to_variable = { GER.num_ger_chromium = resource_produced@chromium } }
 	}
-
 
 
 	# Check against non Spain to see if Germany has more chromium than anyone else in the faction
