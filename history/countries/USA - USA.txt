@@ -1,9 +1,5 @@
 capital = 361 # Washington DC
 
-# Fuel distribution system (Horst)
-set_variable = { var = min_fuel value = 0.800 }
-set_fuel_ratio = 1
-
 oob = "USA_1936"
 
 starting_train_buffer = 5
@@ -15,6 +11,21 @@ if = {
 		set_naval_oob = "USA_1936_naval_legacy"
 	}
 }
+# if = {
+# 	limit = { has_dlc = "By Blood Alone" }
+# 		set_air_oob = "USA_1936_air_bba"
+# 		set_technology = {
+# 			iw_small_airframe = 1
+# 			basic_small_airframe = 1
+# 			iw_medium_airframe = 1
+# 			basic_medium_airframe = 1
+# 			#engines_1 = 1
+# 			#engines_2 = 1
+# 			aa_lmg = 1
+# 			early_bombs = 1
+# 			aircraft_construction = 1
+# 		}
+# 	else = {
 
 # 	}
 # }
@@ -38,6 +49,16 @@ set_stability = 0.50
 set_war_support = 0
 add_command_power = 20
 set_rule = { can_join_factions = no }  # USA may only join the Allies via the December 7th focus
+# GUTTED: set_variable = { USA_propaganda_empty_slot_index = 1 } #### === INSERT EMPTY SLOT INDEX IN STRIPE HERE === ####
+# GUTTED: set_variable = { USA_poster_left_icon_frame = USA_propaganda_empty_slot_index } #Set up the appropriate empty slot GFX
+# GUTTED: set_variable = { USA_poster_center_icon_frame = USA_propaganda_empty_slot_index } #Set up the appropriate locked slot GFX
+#set_variable = { SOV_poster_right_icon_frame = SOV_propaganda_locked_slot_index } #Set up the appropriate locked slot GFX
+# GUTTED: USA_recalc_congress_icon_frames = yes
+# USA = {
+# 	country_event = { id = usa.50 days = 2 }
+# 	country_event = { id = usa.51 days = 2 }
+# }
+# Starting tech
 set_technology = {
 	infantry_weapons = 1
 	infantry_weapons1 = 1
@@ -130,9 +151,38 @@ if = {
 	}
 	add_ideas = MTG_naval_treaty_adherent
 }
+##Monroe Doctrine - We are trying to just remove the dlc check and see what, if any, things break. Will ask QA and BETAs to test new system both with and without ToA
+#IF = {
+#	limit = { has_dlc = "Trial of Allegiance" }
+# GUTTED(monroe): 	add_ideas = USA_monroe_doctrine_enforcer
+#}
+#IF = {
+#	limit = { NOT = { has_dlc = "Trial of Allegiance" }	}
+#	give_guarantee = CAN
+#	give_guarantee = MEX
+#	give_guarantee = CUB
+#	give_guarantee = HAI
+#	give_guarantee = DOM
+#	give_guarantee = GUA
+#	give_guarantee = HON
+#	give_guarantee = ELS
+#	give_guarantee = NIC
+#	give_guarantee = COS
+#	give_guarantee = PAN
+#	give_guarantee = VEN
+#	give_guarantee = COL
+#	give_guarantee = ECU
+#	give_guarantee = PRU
+#	give_guarantee = BRA
+#	give_guarantee = BOL
+#	give_guarantee = CHL
+#	give_guarantee = PAR
+#	give_guarantee = ARG
+#	give_guarantee = URG
+#}
 
 
-set_convoys = 1100
+set_convoys = 600
 
 
 set_politics = {
@@ -151,30 +201,11 @@ set_rule = { can_join_factions = no }
 add_ideas = {
 	undisturbed_isolation
 	USA_volunteer_army
-	free_trade
-	USA_island_hopping8
+	free_trade
 	USA_idea_isolationism
 # GUTTED(monroe): 	USA_monroe_doctrine_enforcer
 	USA_outdated_undertrained_underfunded
 }
-
-# Cash and Carry market: hidden flag disables the vanilla Lend-Lease action for the USA
-# (see diplomacy_scripted_triggers.txt), the tracked market package pool, and the
-# war-economy output bases (variable-driven USA_war_economy* modifiers; +0.002 per sale).
-set_country_flag = USA_lend_lease_disabled
-set_variable = { var = global.cnc_stock_inf value = 0 }
-set_variable = { var = global.cnc_stock_sup value = 0 }
-set_variable = { var = global.cnc_stock_art value = 0 }
-set_variable = { var = global.cnc_stock_mot value = 0 }
-set_variable = { var = global.cnc_stock_mec value = 0 }
-set_variable = { var = global.cnc_stock_aa  value = 0 }
-set_variable = { var = global.cnc_stock_at  value = 0 }
-set_variable = { var = global.cnc_stock_rkt value = 0 }
-set_variable = { var = USA_war_economy_output_var        value = 0.20 }
-set_variable = { var = USA_war_economy_output_fdr_var    value = 0.35 }
-set_variable = { var = USA_war_economy_output_landon_var value = 0.45 }
-set_variable = { var = USA_cnc_consumer_goods_var value = 0 }
-set_variable = { var = USA_cnc_construction_speed_var value = 0 }
 
 # USA_united_states_army — dynamic modifier. Variables must be set before adding.
 # Added here (not via on_startup) so the conscription_factor penalty is applied
@@ -228,6 +259,19 @@ set_variable = { var = USA_navy_sortie_efficiency_bonus   value = 0 }
 add_dynamic_modifier = { modifier = USA_united_states_navy }
 
 
+# DIPLOMACY
+# set_autonomy = {
+# 	target = PHI
+# 	autonomous_state =  autonomy_colony
+# }
+# give_guarantee = PHI
+
+# 1936.1.2 = {
+# 	remove_from_faction = PHI
+# 	set_autonomy = { target = PHI autonomy_state = autonomy_free }
+# 	set_global_flag = meta_game_flag
+# }
+
 if = {
 	limit = { has_dlc = "La Resistance" }
 	create_operative_leader = {
@@ -279,9 +323,6 @@ recruit_character = usa_raymond_spruance
 recruit_character = usa_jimmy_doolittle
 recruit_character = usa_courtney_hodges
 recruit_character = usa_frank_jack_fletcher
-recruit_character = usa_harold_rainsford_stark
-recruit_character = usa_arleigh_burke
-recruit_character = usa_charles_m_cooke_jr
 recruit_character = usa_john_k_cannon
 recruit_character = usa_claire_lee_chennault
 recruit_character = usa_bernard_baruch
@@ -805,6 +846,184 @@ if = {
 		}
 	}
 }
+# if = {
+# 	limit = {
+# 		has_dlc = "By Blood Alone"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "P-6" #export models only
+# 		type = small_plane_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = light_mg_2x
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		obsolete = yes
+# 	}
+# 	create_equipment_variant = {
+# 		name = "P-26A" #
+# 		type = small_plane_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = light_mg_2x
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		obsolete = yes
+# 		icon = "GFX_USA_light_plane_2_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "O2U" #
+# 		type = small_plane_cas_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = small_bomb_bay
+# 			fixed_auxiliary_weapon_slot_1 = light_mg_2x
+# 			engine_type_slot = engine_1_1x
+# 		}
+# 		obsolete = yes
+# 	}
+# 	create_equipment_variant = {
+# 		name = "SBU Corsair" #
+# 		type = cv_small_plane_cas_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = small_bomb_bay
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = dive_brakes_small
+# 		}
+# 		obsolete = yes
+# 	}
+# 	create_equipment_variant = {
+# 		name = "BM-2" #
+# 		type = cv_small_plane_naval_bomber_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = torpedo_mounting
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		obsolete = yes
+# 	}
+# 	create_equipment_variant = {
+# 		name = "A-12" #
+# 		type = small_plane_cas_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = small_bomb_bay
+# 			fixed_auxiliary_weapon_slot_1 = light_mg_4x
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		obsolete = yes
+# 		icon = "GFX_USA_CAS1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "A-17" #
+# 		type = small_plane_cas_airframe_1
+# 		modules = {
+# 			fixed_main_weapon_slot = small_bomb_bay
+# 			fixed_auxiliary_weapon_slot_1 = light_mg_4x
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		icon = "GFX_USA_CAS1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "P-35A" #
+# 		type = small_plane_airframe_1
+# 		modules = {
+# 			fixed_main_weapon_slot = light_mg_2x
+# 			fixed_auxiliary_weapon_slot_1 = heavy_mg_2x
+# 			engine_type_slot = engine_2_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		icon = "GFX_USA_light_plane_4_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "P-36A" #
+# 		type = small_plane_airframe_1
+# 		modules = {
+# 			fixed_main_weapon_slot = light_mg_4x
+# 			fixed_auxiliary_weapon_slot_1 = light_mg_2x
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		icon = "GFX_USA_fighter1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "B-6A" #also covers other Keystone bombers
+# 		type = medium_plane_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = medium_bomb_bay
+# 			engine_type_slot = engine_1_2x
+# 			special_type_slot_1 = lmg_defense_turret
+# 		}
+# 		obsolete = yes
+# 	}
+# 	create_equipment_variant = {
+# 		name = "B-10" #
+# 		type = medium_plane_airframe_1
+# 		modules = {
+# 			fixed_main_weapon_slot = medium_bomb_bay
+# 			engine_type_slot = engine_1_2x
+# 			special_type_slot_1 = lmg_defense_turret
+# 		}
+# 		icon = "GFX_medium_plane_1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "B-18" #
+# 		type = medium_plane_airframe_1
+# 		modules = {
+# 			fixed_main_weapon_slot = medium_bomb_bay
+# 			engine_type_slot = engine_1_2x
+# 			special_type_slot_1 = lmg_defense_turret
+# 		}
+# 		icon = "GFX_USA_early_bomber_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "P2Y" #
+# 		type = medium_plane_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = medium_bomb_bay
+# 			fixed_auxiliary_weapon_slot_1 = medium_bomb_bay_extra
+# 			engine_type_slot = engine_2_2x
+# 			special_type_slot_1 = flying_boat_medium
+# 			special_type_slot_2 = lmg_defense_turret
+# 		}
+# 		obsolete = yes
+# 		icon = "GFX_USA_naval_bomber1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "PBY" #
+# 		type = medium_plane_airframe_1
+# 		modules = {
+# 			fixed_main_weapon_slot = medium_bomb_bay
+# 			#fixed_auxiliary_weapon_slot_1 = torpedo_mounting
+# 			fixed_auxiliary_weapon_slot_1 = torpedo_mounting_extra
+# 			engine_type_slot = engine_1_2x
+# 			special_type_slot_1 = flying_boat_medium
+# 			special_type_slot_2 = lmg_defense_turret
+# 		}
+# 		icon = "GFX_USA_naval_bomber1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "F4B" #also covers F2F
+# 		type = cv_small_plane_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = light_mg_2x
+# 			engine_type_slot = engine_1_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		obsolete = yes
+# 		icon = "GFX_USA_cv_fighter1_medium"
+# 	}
+# 	create_equipment_variant = {
+# 		name = "F3F" #
+# 		type = cv_small_plane_airframe_0
+# 		modules = {
+# 			fixed_main_weapon_slot = light_mg_2x
+# 			engine_type_slot = engine_2_1x
+# 			special_type_slot_1 = empty
+# 		}
+# 		icon = "GFX_USA_cv_fighter1_medium"
+# 	}
+# }
 
 
 # 1939 Start #
@@ -842,6 +1061,17 @@ if = {
 				ship_reliability_upgrade = 2
 			}
 		}
+		# 1941
+		#create_equipment_variant = {
+		#	name = "South Dakota Class"
+		#	type = battleship_2
+		#	upgrades = {
+		#		ship_reliability_upgrade = 3
+		#		ship_engine_upgrade = 3
+		#		ship_armor_upgrade = 3
+		#		ship_gun_upgrade = 3
+		#	}
+		#}
 	}
 	if = {
 		limit = { has_dlc = "Man the Guns" }

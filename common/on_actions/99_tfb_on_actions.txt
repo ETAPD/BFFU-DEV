@@ -1,19 +1,52 @@
 on_actions = {
 	on_weekly = {
+		effect = {
+			if = {
+				limit = {
+					any_other_country = {
+						has_volunteers_amount_from = {
+							tag = ROOT
+							count > 0
+						}
+						ROOT = {
+							not = {
+								has_military_access_to = PREV
+							}
+						}
+					}
+				}
+				every_other_country = {
+					limit = {
+						has_volunteers_amount_from = {
+							tag = ROOT
+							count > 0
+						}
+						ROOT = {
+							not = {
+								has_military_access_to = PREV
+							}
+						}
+					}
+					give_military_access = ROOT
+				}
+			}
+		}
+		
 		# Update Stalin Air Weekly
 		effect = {
 			if = {
 				limit = {
-					tag = SOV
 					has_global_flag = soviet_air_changes_full_flag
 				}
-				SOV_stalins_air_needs = yes
+				SOV = {
+					SOV_stalins_air_needs = yes
+				}
 			}
 		}
 
 		# Reset Intel on Hotjoin
 		effect = {
-			# each country processes its own intel arrays on its own weekly tick
+			every_country = {
 				for_each_scope_loop = {
 					array = THIS.CIVILIAN
 					if = {
@@ -49,6 +82,74 @@ on_actions = {
 						PREV = { add_operation_token = { tag = PREV token = token_resistance_contacts } }
 					}
 				}
+			}
+			# JAP = {
+			# 	if = {
+			# 		limit = { always = no }
+			# 		for_each_scope_loop = {
+			# 			array = JAP.JAPAN_INTEL
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_airforce_japan_small } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_airforce_japan_small } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_army_japan_small } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_army_japan_small } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_civilian_japan_small } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_civilian_japan_small } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { PREV = { has_operation_token = { tag = PREV token = token_navy_japan_small } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_navy_japan_small } }
+			# 			}
+			# 		}
+			# 	} else_if = {
+			# 		limit = { always = no }
+			# 		for_each_scope_loop = {
+			# 			array = JAP.JAPAN_INTEL
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_airforce_japan_medium } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_airforce_japan_medium } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_army_japan_medium } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_army_japan_medium } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_civilian_japan_medium } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_civilian_japan_medium } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { PREV = { has_operation_token = { tag = PREV token = token_navy_japan_medium } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_navy_japan_medium } }
+			# 			}
+			# 		}
+			# 	} else_if = {
+			# 		limit = { always = no }
+			# 		for_each_scope_loop = {
+			# 			array = JAP.JAPAN_INTEL
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_airforce_japan_big } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_airforce_japan_big } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_army_japan_big } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_army_japan_big } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { JAP = { has_operation_token = { tag = PREV token = token_civilian_japan_big } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_civilian_japan_big } }
+			# 			}
+			# 			if = {
+			# 				limit = {  NOT = { PREV = { has_operation_token = { tag = PREV token = token_navy_japan_big } } } }
+			# 				JAP = { add_operation_token = { tag = PREV token = token_navy_japan_big } }
+			# 			}
+			# 		}
+			# 	}
+
+			# }
 		}
 
 		# Reset Friendly Intel on Hotjoin
@@ -57,7 +158,6 @@ on_actions = {
 			# Axis / East Asia Co Prosperity Sphere
 			if = {
 				limit = {
-					tag = JAP # anchor: run this block only once per week (was executed by every country's weekly tick)
 					OR = {
 						NOT = { has_global_flag = intel_share_time_flag }
 						has_global_flag = japan_is_at_war_with_allies
@@ -86,9 +186,9 @@ on_actions = {
 					}
 				}
 				for_each_scope_loop = {
-					array = GER.faction_intel_shared
+					array = JAP.faction_intel_shared
 					for_each_scope_loop = {
-						array = JAP.faction_intel_shared
+						array = GER.faction_intel_shared
 						if = {
 							limit = {  NOT = { PREV = { has_operation_token = { tag = PREV token = token_airforce_friendly } } } }
 							PREV = { add_operation_token = { tag = PREV token = token_airforce_friendly } }
@@ -112,7 +212,6 @@ on_actions = {
 			# Allies / Comintern
 			if = {
 				limit = {
-					tag = ENG # anchor: run this block only once per week (was executed by every country's weekly tick)
 					OR = {
 						NOT = { has_global_flag = intel_share_time_flag }
 						has_global_flag = soviets_are_at_war_with_germany
@@ -165,11 +264,23 @@ on_actions = {
 			}
 		}
 	}
-
-	# The autarky resource counts are no longer tick-updated here; the autarky
-	# window has a manual Refresh button (see ger_inner_circle_inlay_window.txt).
-	# Initial values still come from on_startup below.
 	on_weekly = {
+		effect = {
+			if = {
+				limit = {
+					GER = { NOT = { has_completed_focus = GER_prioritize_economic_growth }}
+				}
+				GER = {
+					# Update German Stuff
+					GER_check_steel = yes
+					GER_check_aluminium = yes
+					GER_check_rubber = yes
+					GER_check_tungsten = yes
+					GER_check_chromium = yes
+					GER_check_oil = yes
+				}
+			}
+		}
 		effect = {
 			if = {
 				limit = {
@@ -187,56 +298,129 @@ on_actions = {
 				HMP_check_fleet_size = yes 
 			}
 		}
-		
-		effect = {
-			if = {
-				limit = { tag = FRA }
-				if = {
-					limit = {
-						country_exists = VIC
-					}
-					set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
-				}
-				if = {
-					limit = {
-						26 = { CONTROLLER = { tag = D04 } }
-					}
-					set_variable = { FRA.SOUTHFRANCEOWNER = D04 }
-				}
-				if = {
-					limit = {
-						26 = { CONTROLLER = { tag = D05 } }
-					}
-					set_variable = { FRA.SOUTHFRANCEOWNER = D05 }
-				}
-			}
-		}
-	}
-
-    on_startup = {
-		effect = {
-			set_global_flag = game_has_started
-		}
-		effect = {
-			add_power_balance_modifier = {
-				id = SOV_purge_bop    # The ID of the balance of power
-				modifier = SOV_purge1 # The modifier to add
-			}
-		}
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			has_global_flag = coastal_raiders_flag
+		# 		}
+		# 		MED_coastal_raiding_check = yes 
+		# 	}
+		# }
 		effect = {
 			if = {
 				limit = {
-					always = yes
+					country_exists = VIC
 				}
-				every_country = {
-					limit = {
-						always = yes
-					}
-					add_ideas = {
-						DISABLE_MARKET
-					}
-				}
+				set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
 			}
+			if = {
+				limit = {
+					26 = { CONTROLLER = { tag = D04 } }
+				}
+				set_variable = { FRA.SOUTHFRANCEOWNER = D04 }
+			}
+			if = {
+				limit = {
+					26 = { CONTROLLER = { tag = D05 } }
+				}
+				set_variable = { FRA.SOUTHFRANCEOWNER = D05 }
+			}
+		}
+	}
+    on_startup = {
+		# effect = {
+		# 	# Cursed Setup for the MIO Level Swap
+		# 	every_country = {
+		# 		every_military_industrial_organization = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_mio_equipment_type = mio_cat_eq_all_tanks
+		# 					has_mio_equipment_type = mio_cat_eq_all_tank_destroyers
+		# 					has_mio_equipment_type = mio_cat_eq_all_light_tank
+		# 					has_mio_equipment_type = mio_cat_eq_all_medium_tank
+		# 					has_mio_equipment_type = mio_cat_eq_all_heavy_tank
+		# 					has_mio_equipment_type = armor
+		# 					has_mio_equipment_type = armored_car_chassis
+		# 					has_mio_equipment_type = light_assault_gun_chassis 
+		# 					has_mio_equipment_type = medium_assault_gun_chassis 
+		# 					has_mio_equipment_type = heavy_assault_gun_chassis 
+		# 					has_mio_equipment_type = light_tank_artillery_chassis 
+		# 					has_mio_equipment_type = medium_tank_artillery_chassis 
+		# 					has_mio_equipment_type = heavy_tank_artillery_chassis
+
+		# 					has_mio_research_category = cat_armored_cars
+		# 					has_mio_research_category = mio_cat_tech_all_armor_and_modules
+		# 					has_mio_research_category = mio_cat_tech_light_armor_and_modules
+		# 					has_mio_research_category = mio_cat_tech_medium_armor_and_modules
+		# 					has_mio_research_category = mio_cat_tech_heavy_armor_and_modules
+		# 					has_mio_research_category = armor
+		# 				}
+		# 			}
+		# 			set_mio_flag = tank_mio
+		# 		}
+		# 		every_military_industrial_organization = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_mio_equipment_type = mio_cat_eq_all_carrier
+		# 					has_mio_equipment_type = mio_cat_eq_all_cruiser
+		# 					has_mio_equipment_type = mio_cat_eq_all_destroyer
+		# 					has_mio_equipment_type = mio_cat_eq_all_battleship
+		# 					has_mio_equipment_type = ship_hull_submarine
+		# 					has_mio_equipment_type = capital_ship
+		# 					has_mio_equipment_type = screen_ship
+		# 					has_mio_equipment_type = submarine
+
+		# 					has_mio_research_category = mio_cat_tech_all_capital_ship_and_modules
+		# 					has_mio_research_category = mio_cat_tech_all_screen_ship_and_modules
+		# 					has_mio_research_category = mio_cat_tech_all_submarine_and_modules
+		# 					has_mio_research_category = mio_cat_tech_all_carrier_and_modules
+		# 					has_mio_research_category = mio_cat_tech_all_cruiser_and_modules
+		# 					has_mio_research_category = mio_cat_tech_all_destroyer_and_modules
+		# 					has_mio_research_category = naval_equipment
+		# 				}
+		# 			}
+		# 			set_mio_flag = naval_mio
+		# 		}
+		# 		every_military_industrial_organization = {
+		# 			limit = {
+		# 				OR = {
+		# 					has_mio_equipment_type = mio_cat_eq_all_small_plane
+		# 					has_mio_equipment_type = mio_cat_eq_all_medium_plane
+		# 					has_mio_equipment_type = mio_cat_eq_all_large_plane
+		# 					has_mio_equipment_type = mio_cat_eq_all_cv_aircraft
+		# 					has_mio_equipment_type = mio_cat_eq_all_airplanes
+		# 					has_mio_equipment_type = mio_cat_eq_only_light_fighter
+		# 					has_mio_equipment_type = mio_cat_eq_only_light_fighter_no_cv
+		# 					has_mio_equipment_type = mio_cat_eq_only_light_fighter_and_CAS_no_cv
+		# 					has_mio_equipment_type = mio_cat_eq_only_tactical_bomber
+		# 					has_mio_equipment_type = mio_cat_eq_only_strategic_bomber
+		# 					has_mio_equipment_type = mio_cat_all_cas_and_modules
+		# 					has_mio_equipment_type = mio_cat_all_naval_bomber_and_modules
+
+		# 					has_mio_research_category = mio_cat_all_light_fighter_and_modules
+		# 					has_mio_research_category = mio_cat_all_cas_and_modules
+		# 					has_mio_research_category = mio_cat_all_naval_bomber_and_modules
+		# 					has_mio_research_category = mio_cat_all_light_aircraft_and_modules
+		# 					has_mio_research_category = mio_cat_all_medium_aircraft_and_modules
+		# 					has_mio_research_category = mio_cat_all_heavy_aircraft_and_modules
+		# 					has_mio_research_category = air_equipment
+		# 				}
+		# 			}
+		# 			set_mio_flag = air_mio
+		# 		}
+		# 		every_military_industrial_organization = {
+		# 			random_state = {
+		# 				set_variable = { target_MIO@PREV.PREV = PREV }
+		# 				add_to_array = { PREV.PREV.target_MIO_state = THIS }
+		# 			}
+		# 		}
+		# 		set_variable = { var = tank_mio_displayed }
+		# 		add_to_variable = { MIO_Transfer_GUI_dirty_var = 1 }	
+		# 	}
+			
+		# }
+		effect = {
+			set_global_flag = game_has_started
 		}
 		# Set all of the flags from GameRules for easier setup:
 		effect = {
@@ -264,6 +448,15 @@ on_actions = {
 				}
 				set_global_flag = tension_game_flag
 			}
+			# if = {
+			# 	limit = {
+			# 		has_game_rule = {
+			# 			rule = coastal_raiders
+			# 			option = ENABLED
+			# 		}
+			# 	}
+			# 	set_global_flag = coastal_raiders_flag
+			# }
 			if = {
 				limit = {
 					has_game_rule = {
@@ -282,6 +475,15 @@ on_actions = {
 				}
 				set_global_flag = capped_volunteers_flag
 			}
+			# else_if = {
+			# 	limit = {
+			# 		has_game_rule = {
+			# 			rule = capped_volunteers
+			# 			option = NOJAPANVOLUNTEERS
+			# 		}
+			# 	}
+			# 	set_global_flag = capped_volunteers_no_japan_flag
+			# }
 			if = {
 				limit = {
 					has_game_rule = {
@@ -290,6 +492,15 @@ on_actions = {
 					}
 				}
 				set_global_flag = china_waves_style_flag
+			}
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = raj_version
+						option = ENABLED
+					}
+				}
+				set_global_flag = raj_version_flag
 			}
 			if = {
 				limit = {
@@ -444,6 +655,33 @@ on_actions = {
 				}
 				set_global_flag = navy_cap_disabled_flag
 			}
+			# if = {
+			# 	limit = {
+			# 		has_game_rule = {
+			# 			rule = dockyard_cg
+			# 			option = ENABLED
+			# 		}
+			# 	}
+			# 	set_global_flag = dockyard_cg_enabled_flag
+			# }
+			# else_if = {
+			# 	limit = {
+			# 		has_game_rule = {
+			# 			rule = dockyard_cg
+			# 			option = BUILD_SPEED
+			# 		}
+			# 	}
+			# 	set_global_flag = dockyard_cg_build_speed_flag
+			# }
+			# else_if = {
+			# 	limit = {
+			# 		has_game_rule = {
+			# 			rule = dockyard_cg
+			# 			option = DISABLED
+			# 		}
+			# 	}
+			# 	set_global_flag = dockyard_cg_disabled_flag
+			# }
 			if = {
 				limit = {
 					has_game_rule = {
@@ -516,23 +754,45 @@ on_actions = {
 				}
 				set_global_flag = soviet_air_changes_disabled_flag
 			}
-			if = {
-				limit = {
-					has_game_rule = {
-						rule = italian_join_type
-						option = ITALIAN_DYNAMIC_JOIN
-					}
-				}
-				set_global_flag = italy_dynamic_join_flag
-			}
+			# if = {
+			# 	limit = {
+			# 		has_game_rule = {
+			# 			rule = italian_join_type
+			# 			option = ITALIAN_DYNAMIC_JOIN
+			# 		}
+			# 	}
+			# 	set_global_flag = italy_dynamic_join_flag
+			# }
 		}
 		effect = {
-			RAJ = {
-				load_oob = "RAJ_1936_GOE"
-				set_variable = { RAJ_agrarian_society_conscription_factor = -0.72 } #3
-				set_variable = { RAJ_agrarian_society_mobilization_laws_cost_factor = 2.16 } #9
-				set_variable = { RAJ_agrarian_society_mobilization_speed = -0.72 } #3
-				add_ideas = idea_RAJ_great_depression_1
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_dlc = "Graveyard of Empires" }
+						has_game_rule = {
+							rule = raj_version
+							option = DISABLED
+						}
+					}
+				}
+				set_global_flag = using_old_raj
+				RAJ = {
+					load_focus_tree = indian_focus
+					set_variable = { RAJ_agrarian_society_value = -0.70 }
+					add_dynamic_modifier = { modifier = RAJ_agrarian_society_dynamic }
+					remove_dynamic_modifier = { modifier = idea_RAJ_agrarian_society } 
+					remove_ideas = RAJ_agrarian_society #For startup screen
+					load_oob = "RAJ_1936"
+				}
+			} else = {
+				RAJ = {
+					load_oob = "RAJ_1936_GOE"
+					remove_ideas = RAJ_agrarian_society #For startup screen	
+					set_variable = { RAJ_agrarian_society_conscription_factor = -0.72 } #3
+					set_variable = { RAJ_agrarian_society_mobilization_laws_cost_factor = 2.16 } #9
+					set_variable = { RAJ_agrarian_society_mobilization_speed = -0.72 } #3
+					add_ideas = idea_RAJ_great_depression_1
+				}
 			}
 		}
 		effect = {
@@ -549,8 +809,8 @@ on_actions = {
 		# Apply Soviet Stuff
 		effect = {
 			SOV = {
-				# add_ideas = SOV_soviet_industry
-				# add_ideas = SOV_soviet_industry_railway_gun
+				add_ideas = SOV_soviet_industry
+				add_ideas = SOV_soviet_industry_railway_gun
 				add_tech_bonus = {
 					name = SOV_small_cannon
 					ahead_reduction = 1
@@ -559,8 +819,63 @@ on_actions = {
 					technology = sov_t26_upgrade
 				}
 			}
+			if = {
+				limit = {
+					OR = {
+						has_game_rule = {
+							rule = soviet_air_changes
+							option = FULL_SOV_AIR
+						}
+						has_game_rule = {
+							rule = soviet_air_changes
+							option = START_SOV_AIR
+						}
+					}
+				}
+				SOV = {
+					add_dynamic_modifier = { modifier = soviet_air_mod_pre_war }
+					SOV_stalins_air_needs = yes
+				}
+			} else_if = {
+				limit = {
+					has_game_rule = {
+						rule = soviet_air_changes
+						option = FOCUS_SOV_AIR
+					}
+				}
+				SOV = {
+					add_dynamic_modifier = { modifier = soviet_air_mod_pre_war }
+				}
+			}
 		}		
 
+		# Dockyard Consumer Goods Debuff
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			has_game_rule = {
+		# 				rule = dockyard_cg
+		# 				option = ENABLED
+		# 			}
+		# 		}
+		# 		every_country = {
+		# 			add_dynamic_modifier = { modifier = dockyard_cg_mod }
+		# 			dockyard_cg_calculation = yes
+		# 		}
+		# 	}
+		# 	else_if = {
+		# 		limit = {
+		# 			has_game_rule = {
+		# 				rule = dockyard_cg
+		# 				option = BUILD_SPEED
+		# 			}
+		# 		}
+		# 		every_country = {
+		# 			add_dynamic_modifier = { modifier = dockyard_build_speed_mod }
+		# 			dockyard_build_speed_calculation = yes
+		# 		}
+		# 	}
+		# }
 
 		# Friendly Faction Intel
 		effect = {
@@ -706,7 +1021,54 @@ on_actions = {
 			}
 		}
 
+	   	# Mediteranian Raiders
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			has_game_rule = {
+		# 				rule = coastal_raiders
+		# 				option = ENABLED
+		# 			}
+		# 		}
+		# 		# Eastern Med
+		# 		ENG = {  add_to_array = { ENG.eastern_med = 1057 } }
+		# 		ENG = {  add_to_array = { ENG.eastern_med = 447 } }
+		# 		ENG = {  add_to_array = { ENG.eastern_med = 1047 } }
+		# 		ENG = {  add_to_array = { ENG.eastern_med = 452 } }
+		# 		ENG = {  add_to_array = { ENG.eastern_med = 451 } }
+		# 		ENG = {  add_to_array = { ENG.eastern_med = 446 } }
+		# 		# Central Med
+		# 		ENG = {  add_to_array = { ENG.central_med = 450 } }
+		# 		ENG = {  add_to_array = { ENG.central_med = 449 } }
+		# 		ENG = {  add_to_array = { ENG.central_med = 448 } }
+		# 		ENG = {  add_to_array = { ENG.central_med = 665 } }
+		# 		ENG = {  add_to_array = { ENG.central_med = 458 } }
+		# 		# Western Med
+		# 		ENG = {  add_to_array = { ENG.western_med = 290 } }
+		# 		ENG = {  add_to_array = { ENG.western_med = 459 } }
+		# 		ENG = {  add_to_array = { ENG.western_med = 460 } }
 
+		# 		for_each_scope_loop = {
+		# 			array = ENG.eastern_med
+		# 			add_dynamic_modifier = {
+		# 				modifier =  NO_coastal_raiding 
+		# 			}
+		# 		}
+		# 		for_each_scope_loop = {
+		# 			array = ENG.central_med
+		# 			add_dynamic_modifier = {
+		# 				modifier =  NO_coastal_raiding 
+		# 			}
+		# 		}
+		# 		for_each_scope_loop = {
+		# 			array = ENG.western_med
+		# 			add_dynamic_modifier = {
+		# 				modifier =  NO_coastal_raiding 
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# State of the Pacific
 		effect = {
 			if = {
 				limit = {
@@ -913,9 +1275,6 @@ on_actions = {
 			15 = { add_dynamic_modifier = { modifier =  NO_PORTS_CAN_BE_BUILT } }
 			785 = { add_dynamic_modifier = { modifier =  NO_PORTS_CAN_BE_BUILT } }
 			29 = { add_dynamic_modifier = { modifier =  NO_PORTS_CAN_BE_BUILT } }
-			1090 = { add_dynamic_modifier = { modifier =  NO_PORTS_CAN_BE_BUILT } }
-			907 = { add_dynamic_modifier = { modifier =  NO_PORTS_CAN_BE_BUILT } }
-			446 = { add_dynamic_modifier = { modifier =  NO_PORTS_CAN_BE_BUILT } }
 
 			ITA = {
 				every_core_state = {
@@ -1032,6 +1391,24 @@ on_actions = {
 			set_variable = { FRA.SOUTHFRANCEOWNER = VIC }
 		}
 		effect = {
+			# every_country = { 
+			# 	limit = { tag = GER }
+			# 	country_event = { 
+			# 		id = germany.mefoair 
+			# 	}
+			# }
+			# every_country = { 
+			# 	limit = { tag = MON }
+			# 	country_event = { 
+			# 		id = mongolia.start 
+			# 	}
+			# }	
+			# every_country = { 
+			# 	limit = { tag = ITA }
+			# 	country_event = { 
+			# 		id = italy.air 
+			# 	}
+			# }	
 			if = {
 				limit = {
 					is_historical_focus_on = no
@@ -1087,6 +1464,40 @@ on_actions = {
 			340 = { set_demilitarized_zone = no }
 		}
 		effect = {
+			SOV = {
+				mio:SOV_morozov_design_bureau_organization = {
+					add_mio_funds_gain_factor = -0.75
+				}
+				mio:SOV_astrov_design_bureau_organization = {
+					add_mio_funds_gain_factor = -0.75
+				}
+				mio:SOV_okmo_organization = {
+					add_mio_funds_gain_factor = -0.75
+				}
+				mio:SOV_mytishchy_machine_building_plant_organization = {
+					add_mio_funds_gain_factor = -0.75
+				}
+				mio:SOV_kirov_organization = {
+					add_mio_funds_gain_factor = -0.75
+				}
+			}
+			# if = {
+			# 	limit = {
+			# 		KSR = { is_ai = yes }
+			# 	}
+			# 	SOV = {	country_event = { id = soviet.505 } }
+			# }
+			# if = {
+			# 	limit = {
+			# 		KSR = { exists = yes }
+			# 	}
+			# 	KSR = {
+			# 		give_resource_rights = { receiver = SOV state = 588 }
+			# 		give_resource_rights = { receiver = SOV state = 882 }
+			# 		give_resource_rights = { receiver = SOV state = 402 }
+			# 		give_resource_rights = { receiver = SOV state = 584 }
+			# 	}
+			# }
 		}
 		effect = {
 			SPR = { add_to_array = { global.nationalist_spain_states = 171 } }
@@ -1101,275 +1512,145 @@ on_actions = {
 			SPR = { add_to_array = { global.nationalist_spain_states = 789 } }
 			SPR = { add_to_array = { global.nationalist_spain_states = 169 } }
 		}
-		
-		# SOV GOSPLAN STUFF
-		effect = {
-			SOV = {
-				# Progress Bar Counter
-				set_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 60 }
-				
-				# Marsh / Island that cant be upgraded
-				194 = { add_dynamic_modifier = { modifier = SOV_regional_development_stage_1 }}
-				875 = { add_dynamic_modifier = { modifier = SOV_regional_development_stage_1 }}
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			has_game_rule = {
+		# 				rule = mio_size
+		# 				option = MIO_SIZE_NO_NAVY
+		# 			}
+		# 		}
+		# 		every_country = {
+		# 			every_military_industrial_organization = {
+		# 				limit = {
+		# 					OR = {
+		# 						has_mio_equipment_type = mio_cat_eq_all_carrier
+		# 						has_mio_equipment_type = mio_cat_eq_all_cruiser
+		# 						has_mio_equipment_type = mio_cat_eq_all_destroyer
+		# 						has_mio_equipment_type = mio_cat_eq_all_battleship
+		# 						has_mio_equipment_type = ship_hull_submarine
+		# 						has_mio_equipment_type = capital_ship
+		# 						has_mio_equipment_type = screen_ship
+		# 						has_mio_equipment_type = submarine
 
-				# Northwest
-				set_variable = { var_northwest_dev_map = 2 }
-				#set_variable = { var_northwest_dev_map_counter = 50 }
-				SOV = { add_to_array = { northwest_states = 213 } }
-				SOV = { add_to_array = { northwest_states = 215 } }
-				SOV = { add_to_array = { northwest_states = 216 } }
-				SOV = { add_to_array = { northwest_states = 351 } }
-				SOV = { add_to_array = { northwest_states = 880 } }
-				SOV = { add_to_array = { northwest_states = 879 } }
-				SOV = { add_to_array = { northwest_states = 214 } }
-				SOV = { add_to_array = { northwest_states = 825 } }
-				SOV = { add_to_array = { northwest_states = 262 } }
-				SOV = { add_to_array = { northwest_states = 397 } }
-				SOV = { add_to_array = { northwest_states = 400 } }
-				for_each_scope_loop = {
-					array = SOV.northwest_states
-					add_dynamic_modifier = {
-						modifier =  SOV_regional_development_stage_2
-					}
-				}
-				
-				# MOSCOW
-				set_variable = { var_moscow_dev_map = 4 }
-				#set_variable = { var_moscow_dev_map_counter = 5 }
-				SOV = { add_to_array = { moscow_states = 248 } }
-				SOV = { add_to_array = { moscow_states = 247 } }
-				SOV = { add_to_array = { moscow_states = 246 } }
-				SOV = { add_to_array = { moscow_states = 242 } }
-				SOV = { add_to_array = { moscow_states = 243 } }
-				SOV = { add_to_array = { moscow_states = 205 } }
-				SOV = { add_to_array = { moscow_states = 219 } }
-				SOV = { add_to_array = { moscow_states = 223 } }
-				SOV = { add_to_array = { moscow_states = 254 } }
-				SOV = { add_to_array = { moscow_states = 253 } }
-				for_each_scope_loop = {
-					array = SOV.moscow_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_4
-					}
-				}
-				
-				# Leningrad
-				set_variable = { var_leningrad_dev_map = 4 }
-				#set_variable = { var_leningrad_dev_map_counter = 0 }
-				SOV = { add_to_array = { leningrad_states = 195 } }
-				SOV = { add_to_array = { leningrad_states = 244 } }
-				SOV = { add_to_array = { leningrad_states = 264 } }
-				SOV = { add_to_array = { leningrad_states = 263 } }
-				SOV = { add_to_array = { leningrad_states = 210 } }
-				SOV = { add_to_array = { leningrad_states = 209 } }
-				SOV = { add_to_array = { leningrad_states = 208 } }
-				for_each_scope_loop = {
-					array = SOV.leningrad_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_4
-					}
-				}
-				
-				# Belarus
-				set_variable = { var_belarus_dev_map = 3 }
-				#set_variable = { var_belarus_dev_map_counter = 50 }
-				#SOV = { add_to_array = { belarus_states = 194 } }
-				SOV = { add_to_array = { belarus_states = 207 } }
-				SOV = { add_to_array = { belarus_states = 206 } }
-				SOV = { add_to_array = { belarus_states = 204 } }
-				SOV = { add_to_array = { belarus_states = 241 } }
-				for_each_scope_loop = {
-					array = SOV.belarus_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_3
-					}
-				}
-				
-				# Ukraine West
-				set_variable = { var_ukraine_west_dev_map = 3 }
-				#set_variable = { var_ukraine_west_dev_map_counter = 50 }
-				SOV = { add_to_array = { ukraine_west_states = 137 } }
-				SOV = { add_to_array = { ukraine_west_states = 196 } }
-				SOV = { add_to_array = { ukraine_west_states = 200 } }
-				SOV = { add_to_array = { ukraine_west_states = 226 } }
-				SOV = { add_to_array = { ukraine_west_states = 203 } }
-				SOV = { add_to_array = { ukraine_west_states = 197 } }
-				SOV = { add_to_array = { ukraine_west_states = 192 } }
-				SOV = { add_to_array = { ukraine_west_states = 834 } }
-				SOV = { add_to_array = { ukraine_west_states = 198 } }
-				SOV = { add_to_array = { ukraine_west_states = 199 } }
-				SOV = { add_to_array = { ukraine_west_states = 201 } }
-				SOV = { add_to_array = { ukraine_west_states = 202 } }
-				for_each_scope_loop = {
-					array = SOV.ukraine_west_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_3
-					}
-				}
-				
-				# Ukraine East
-				set_variable = { var_ukraine_east_dev_map = 3 }
-				#set_variable = { var_ukraine_east_dev_map_counter = 70 }
-				SOV = { add_to_array = { ukraine_east_states = 227 } }
-				SOV = { add_to_array = { ukraine_east_states = 218 } }
-				SOV = { add_to_array = { ukraine_east_states = 228 } }
-				SOV = { add_to_array = { ukraine_east_states = 221 } }
-				SOV = { add_to_array = { ukraine_east_states = 259 } }
-				SOV = { add_to_array = { ukraine_east_states = 193 } }
-				SOV = { add_to_array = { ukraine_east_states = 224 } }
-				SOV = { add_to_array = { ukraine_east_states = 225 } }
-				SOV = { add_to_array = { ukraine_east_states = 222 } }
-				SOV = { add_to_array = { ukraine_east_states = 220 } }
-				SOV = { add_to_array = { ukraine_east_states = 240 } }
-				SOV = { add_to_array = { ukraine_east_states = 258 } }
-				SOV = { add_to_array = { ukraine_east_states = 260 } }
-				SOV = { add_to_array = { ukraine_east_states = 257 } }
-				for_each_scope_loop = {
-					array = SOV.ukraine_east_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_3
-					}
-				}
-				
-				# Caucasus
-				set_variable = { var_caucasus_dev_map = 2 }
-				#set_variable = { var_caucasus_dev_map_counter = 0 }
-				SOV = { add_to_array = { caucasus_states = 234 } }
-				SOV = { add_to_array = { caucasus_states = 235 } }
-				SOV = { add_to_array = { caucasus_states = 232 } }
-				SOV = { add_to_array = { caucasus_states = 821 } }
-				SOV = { add_to_array = { caucasus_states = 828 } }
-				SOV = { add_to_array = { caucasus_states = 827 } }
-				SOV = { add_to_array = { caucasus_states = 233 } }
-				SOV = { add_to_array = { caucasus_states = 826 } }
-				SOV = { add_to_array = { caucasus_states = 231 } }
-				SOV = { add_to_array = { caucasus_states = 230 } }
-				SOV = { add_to_array = { caucasus_states = 229 } }
-				for_each_scope_loop = {
-					array = SOV.caucasus_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_2
-					}
-				}
-				
-				# Volga
-				set_variable = { var_volga_dev_map = 2 }
-				#set_variable = { var_volga_dev_map_counter = 15 }
-				SOV = { add_to_array = { volga_states = 237 } }
-				SOV = { add_to_array = { volga_states = 236 } }
-				SOV = { add_to_array = { volga_states = 238 } }
-				SOV = { add_to_array = { volga_states = 217 } }
-				SOV = { add_to_array = { volga_states = 407 } }
-				SOV = { add_to_array = { volga_states = 265 } }
-				SOV = { add_to_array = { volga_states = 829 } }
-				SOV = { add_to_array = { volga_states = 401 } }
-				SOV = { add_to_array = { volga_states = 251 } }
-				SOV = { add_to_array = { volga_states = 250 } }
-				SOV = { add_to_array = { volga_states = 255 } }
-				SOV = { add_to_array = { volga_states = 239 } }
-				SOV = { add_to_array = { volga_states = 833 } }
-				SOV = { add_to_array = { volga_states = 252 } }
-				SOV = { add_to_array = { volga_states = 256 } }
-				SOV = { add_to_array = { volga_states = 652 } }
-				SOV = { add_to_array = { volga_states = 249 } }
-				SOV = { add_to_array = { volga_states = 245 } }
-				SOV = { add_to_array = { volga_states = 406 } }
-				for_each_scope_loop = {
-					array = SOV.volga_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_2
-					}
-				}
-				
-				# Urals
-				set_variable = { var_urals_dev_map = 1 }
-				#set_variable = { var_urals_dev_map_counter = 0 }
-				SOV = { add_to_array = { urals_states = 582 } }
-				SOV = { add_to_array = { urals_states = 572 } }
-				SOV = { add_to_array = { urals_states = 573 } }
-				SOV = { add_to_array = { urals_states = 651 } }
-				SOV = { add_to_array = { urals_states = 399 } }
-				SOV = { add_to_array = { urals_states = 398 } }
-				SOV = { add_to_array = { urals_states = 581 } }
-				SOV = { add_to_array = { urals_states = 579 } }
-				SOV = { add_to_array = { urals_states = 580 } }
-				SOV = { add_to_array = { urals_states = 403 } }
-				SOV = { add_to_array = { urals_states = 653 } }
-				SOV = { add_to_array = { urals_states = 571 } }
-				# Formally Central Asia
-				SOV = { add_to_array = { urals_states = 587 } }
-				SOV = { add_to_array = { urals_states = 584 } }
-				SOV = { add_to_array = { urals_states = 832 } }
-				SOV = { add_to_array = { urals_states = 831 } }
-				SOV = { add_to_array = { urals_states = 823 } }
-				SOV = { add_to_array = { urals_states = 402 } }
-				SOV = { add_to_array = { urals_states = 583 } }
-				SOV = { add_to_array = { urals_states = 590 } }
-				SOV = { add_to_array = { urals_states = 881 } }
-				SOV = { add_to_array = { urals_states = 404 } }
-				SOV = { add_to_array = { urals_states = 585 } }
-				SOV = { add_to_array = { urals_states = 830 } }
-				SOV = { add_to_array = { urals_states = 742 } }
-				SOV = { add_to_array = { urals_states = 405 } }
-				SOV = { add_to_array = { urals_states = 732 } }
-				SOV = { add_to_array = { urals_states = 586 } }
-				SOV = { add_to_array = { urals_states = 589 } }
-				SOV = { add_to_array = { urals_states = 882 } }
-				SOV = { add_to_array = { urals_states = 588 } }
-				for_each_scope_loop = {
-					array = SOV.urals_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_1
-					}
-				}
-
-				# Siberia
-				set_variable = { var_siberia_dev_map = 1 }
-				#set_variable = { var_siberia_dev_map_counter = 35 }
-				SOV = { add_to_array = { siberia_states = 654 } }
-				SOV = { add_to_array = { siberia_states = 40 } }
-				SOV = { add_to_array = { siberia_states = 570 } }
-				SOV = { add_to_array = { siberia_states = 578 } }
-				SOV = { add_to_array = { siberia_states = 577 } }
-				SOV = { add_to_array = { siberia_states = 824 } }
-				# SOV = { add_to_array = { siberia_states = 329 } } Tannu Tuva
-				SOV = { add_to_array = { siberia_states = 569 } }
-				SOV = { add_to_array = { siberia_states = 568 } }
-				SOV = { add_to_array = { siberia_states = 576 } }
-				SOV = { add_to_array = { siberia_states = 516 } }
-				SOV = { add_to_array = { siberia_states = 878 } }
-				SOV = { add_to_array = { siberia_states = 876 } }
-				SOV = { add_to_array = { siberia_states = 575 } }
-				SOV = { add_to_array = { siberia_states = 565 } }
-				SOV = { add_to_array = { siberia_states = 563 } }
-				SOV = { add_to_array = { siberia_states = 564 } }
-				SOV = { add_to_array = { siberia_states = 566 } }
-				SOV = { add_to_array = { siberia_states = 567 } }
-				SOV = { add_to_array = { siberia_states = 408 } }
-				SOV = { add_to_array = { siberia_states = 409 } }
-				SOV = { add_to_array = { siberia_states = 655 } }
-				SOV = { add_to_array = { siberia_states = 560 } }
-				SOV = { add_to_array = { siberia_states = 657 } }
-				SOV = { add_to_array = { siberia_states = 561 } }
-				SOV = { add_to_array = { siberia_states = 574 } }
-				SOV = { add_to_array = { siberia_states = 562 } }
-				SOV = { add_to_array = { siberia_states = 877 } }
-				SOV = { add_to_array = { siberia_states = 644 } }
-				SOV = { add_to_array = { siberia_states = 874 } }
-				SOV = { add_to_array = { siberia_states = 637 } }
-				SOV = { add_to_array = { siberia_states = 822 } }
-				for_each_scope_loop = {
-					array = SOV.siberia_states
-					add_dynamic_modifier = {
-						modifier = SOV_regional_development_stage_1
-					}
-				}
-
-				set_variable = {gosplan_help_industry = 1 }
-			}
-		}
+		# 						has_mio_research_category = mio_cat_tech_all_capital_ship_and_modules
+		# 						has_mio_research_category = mio_cat_tech_all_screen_ship_and_modules
+		# 						has_mio_research_category = mio_cat_tech_all_submarine_and_modules
+		# 						has_mio_research_category = mio_cat_tech_all_carrier_and_modules
+		# 						has_mio_research_category = mio_cat_tech_all_cruiser_and_modules
+		# 						has_mio_research_category = mio_cat_tech_all_destroyer_and_modules
+		# 						has_mio_research_category = naval_equipment
+		# 					}
+		# 				}
+		# 				add_mio_task_capacity = 99
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			has_game_rule = {
+		# 				rule = division_cap
+		# 				option = DISABLED
+		# 			}
+		# 		}
+		# 		every_country = {
+		# 			every_army_leader = {
+		# 				add_unit_leader_trait = fun_haters
+		# 			}
+		# 		}
+		# 		GER = {
+		# 			GER_heinz_guderian = { add_unit_leader_trait = fun_haters }
+		# 			GER_erwin_rommel = { add_unit_leader_trait = fun_haters }
+		# 			GER_hasso_von_manteuffel = { add_unit_leader_trait = fun_haters }
+		# 			GER_walther_nehring = { add_unit_leader_trait = fun_haters }
+		# 			GER_kurt_student = { add_unit_leader_trait = fun_haters }
+		# 			GER_walter_model = { add_unit_leader_trait = fun_haters }
+		# 			GER_hermann_hoth = { add_unit_leader_trait = fun_haters }
+		# 			GER_ernsteberhard_hell = { add_unit_leader_trait = fun_haters }
+		# 			GER_walter_kruger = { add_unit_leader_trait = fun_haters }
+		# 			GER_sepp_dietrich = { add_unit_leader_trait = fun_haters }
+		# 			GER_paul_hausser = { add_unit_leader_trait = fun_haters }
+		# 			GER_alexander_von_falkenhausen = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		BRA = {
+		# 			BRA_lampiao = { add_unit_leader_trait = fun_haters }
+		# 			BRA_olga_benario_prestes = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		GRE = {
+		# 			GRE_stylianos_gonatas = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		POL = {
+		# 			POL_wojtek = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		PER = {
+		# 			PER_jafar_kavian = { add_unit_leader_trait = fun_haters }
+		# 			PER_ghulam_yahya_daneshian = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		DEN = {
+		# 			DEN_erik_moller = { add_unit_leader_trait = fun_haters }
+		# 			DEN_christian_peder_kryssing = { add_unit_leader_trait = fun_haters }
+		# 			DEN_christian_frederik_von_schalburg = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		BEL = {
+		# 			BEL_eddy_blondeel = { add_unit_leader_trait = fun_haters }
+		# 			BEL_jean_baptise_piron = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		RAJ = {
+		# 			RAJ_GOE_ishar_singh = { add_unit_leader_trait = fun_haters }
+		# 			RAJ_GOE_parkash_singh = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		AUS = {
+		# 			AUS_julius_deutsch = { add_unit_leader_trait = fun_haters }
+		# 			AUS_theodor_korner = { add_unit_leader_trait = fun_haters }
+		# 			AUS_ernst_rudiger_starhemberg = { add_unit_leader_trait = fun_haters }
+		# 			AUS_richard_steidle = { add_unit_leader_trait = fun_haters }
+		# 			AUS_johann_jacob_reverta = { add_unit_leader_trait = fun_haters }
+		# 			AUS_mauritz_von_wiktorin = { add_unit_leader_trait = fun_haters }
+		# 			AUS_wilhelm_gebauer = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 		FIN = {
+		# 			FIN_aarne_sihvo = { add_unit_leader_trait = fun_haters }
+		# 			FIN_fanni_luukkonen = { add_unit_leader_trait = fun_haters }
+		# 			FIN_paavo_talvela = { add_unit_leader_trait = fun_haters }
+		# 			FIN_kurt_martti_wallenius = { add_unit_leader_trait = fun_haters }
+		# 			FIN_paavo_susitaival = { add_unit_leader_trait = fun_haters }
+		# 			FIN_lauri_torni = { add_unit_leader_trait = fun_haters }
+		# 			FIN_hannu_hannuksela = { add_unit_leader_trait = fun_haters }
+		# 			FIN_hjalmar_siilasvuo = { add_unit_leader_trait = fun_haters }
+		# 			FIN_taavetti_laatikainen = { add_unit_leader_trait = fun_haters }
+		# 			FIN_matti_aarnio = { add_unit_leader_trait = fun_haters }
+		# 			FIN_erkki_raappana = { add_unit_leader_trait = fun_haters }
+		# 			FIN_ruben_lagus = { add_unit_leader_trait = fun_haters }
+		# 			FIN_svante_sundman = { add_unit_leader_trait = fun_haters }
+		# 		}
+		# 	}
+		# }
 	}
 
+	# on_unit_leader_created = {
+	# 	effect = {
+	# 		if = {
+	# 			limit = {
+	# 				has_game_rule = {
+	# 					rule = division_cap
+	# 					option = DISABLED
+	# 				}
+	# 			}
+	# 			character = {
+	# 				if = { 
+	# 					limit = {
+	# 						is_army_leader = yes
+	# 					}
+	# 					root = {
+	# 						add_unit_leader_trait = fun_haters
+	# 					}
+	# 				}
+	# 			}
+	# 		}
+	# 	}
+	# }
 	on_capitulation = {
 		# Denied Czechs Stuff
 		effect = {
@@ -1419,32 +1700,178 @@ on_actions = {
 					FROM = { tag = JAP }
 				}
 				JAP = {
-					add_ideas = peacetime_training_spirit
+					# white_peace = CHI
+					annex_country = {
+						target = CHI
+						transfer_troops = no
+					}
 					add_named_threat = {
 						threat = 30
 						name = JAP_threat_treaty_of_nanjing
 					}
-					set_country_flag = { flag = JAP_transfer_timer value = 1 days = 100 }
-					country_event = { id = japan.506 }
 				}
 				if = {
+					# limit = {
+					# 	MAN = { always = no }
+					# }
 					limit = {
-						MAN = {
-							exists = yes
-							NOT = { has_idea = MAN_assert_mills }
-						}
+						MAN = { always = no }
 					}
 					MAN = {
-						add_ideas = MAN_assert_mills
-						add_ideas = peacetime_training_spirit
+						# add_ideas = MAN_assert_mills # pre-rework idea removed
 					}
-				}
-				SIA = {
-					add_ideas = peacetime_training_spirit
 				}
 			}
 		}
+		# # Going to the Peace Conference
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			original_tag = CHI
+		# 			FROM = { tag = JAP }
+		# 			AND = {
+		# 				NOT = { has_global_flag = JAP_split_china}
+		# 				NOT = { has_global_flag = JAP_take_china}
+		# 				NOT = { has_global_flag = JAP_give_china}
+		# 				NOT = { has_global_flag = JAP_puppet_china}
+		# 			}
 					
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				MAN = { always = no }
+		# 			}
+		# 			MAN = {
+		# 				add_ideas = MAN_assert_mills
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# # Japan and Manchu split China
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			original_tag = CHI
+		# 			FROM = { tag = JAP }
+		# 			has_global_flag = JAP_split_china
+		# 		}
+		# 		# JAP = {
+		# 		# 	white_peace = CHI
+		# 		# }
+		# 		MAN = {
+		# 			transfer_state = 604 #Qinghai
+		# 			transfer_state = 608 #Beijing
+		# 			transfer_state = 616 #Ningxia
+		# 			transfer_state = 621 #Suiyuan
+		# 			transfer_state = 746 #Ordos
+		# 			transfer_state = 755 #Haixi
+		# 			transfer_state = 756 #Jinquan
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				MAN = { always = no }
+		# 			}
+		# 			MAN = {
+		# 				add_ideas = MAN_assert_mills
+		# 			}
+		# 		}
+		# 		JAP = {
+		# 			annex_country = {
+		# 				target = CHI
+		# 				transfer_troops = no
+		# 			}
+		# 			add_named_threat = {
+		# 				threat = 30
+		# 				name = JAP_threat_treaty_of_nanjing
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# # Japan Takes all of China
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			original_tag = CHI
+		# 			FROM = { tag = JAP }
+		# 			has_global_flag = JAP_take_china
+		# 		}
+		# 		JAP = {
+		# 			# white_peace = CHI
+		# 			annex_country = {
+		# 				target = CHI
+		# 				transfer_troops = no
+		# 			}
+		# 			add_named_threat = {
+		# 				threat = 30
+		# 				name = JAP_threat_treaty_of_nanjing
+		# 			}
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				MAN = { always = no }
+		# 			}
+		# 			MAN = {
+		# 				add_ideas = MAN_assert_mills
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# # Manchu takes all of China
+		# effect = {
+		# 	if = {
+		# 		limit = {
+		# 			original_tag = CHI
+		# 			FROM = { tag = JAP }
+		# 			has_global_flag = JAP_give_china
+		# 		}
+		# 		MAN = {
+		# 			# white_peace = CHI
+		# 			annex_country = {
+		# 				target = CHI
+		# 				transfer_troops = no
+		# 			}
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				MAN = { always = no }
+		# 			}
+		# 			MAN = {
+		# 				add_ideas = MAN_assert_mills
+		# 			}
+		# 		}
+		# 		JAP = {
+		# 			add_named_threat = {
+		# 				threat = 30
+		# 				name = JAP_threat_treaty_of_nanjing
+		# 			}
+		# 		}
+		# 	}
+		# }
+		# # Japan Puppets China
+		# effect = { 
+		# 	if = {
+		# 		limit = {
+		# 			original_tag = CHI
+		# 			FROM = { tag = JAP }
+		# 			has_global_flag = JAP_puppet_china
+		# 		}
+		# 		JAP = {
+		# 			puppet = CHI
+		# 			add_named_threat = {
+		# 				threat = 30
+		# 				name = JAP_threat_treaty_of_nanjing
+		# 			}
+		# 		}
+		# 		if = {
+		# 			limit = {
+		# 				MAN = { always = no }
+		# 			}
+		# 			MAN = {
+		# 				add_ideas = MAN_assert_mills
+		# 			}
+		# 		}
+		# 	}
+		# }
 
 		# Italy takes Ethopia
 		effect = { 
@@ -1454,7 +1881,6 @@ on_actions = {
 					FROM = { tag = ITA }
 				}
 				ITA = {
-					add_ideas = peacetime_training_spirit
 					annex_country = {
 						target = ETH
 						transfer_troops = no
@@ -1485,6 +1911,11 @@ on_actions = {
 						amount = 5000
 						producer = ITA
 					}
+					# add_equipment_to_stockpile = {
+					# 	type = horse_equipment_0
+					# 	amount = 5000
+					# 	producer = ITA
+					# }
 					create_corps_commander = {
 						name = "Fresh Prince Amedeo"
 						portrait_path = GFX_Portrait_Duke_of_Aosta
@@ -1636,15 +2067,16 @@ on_actions = {
 						FROM.FROM = { state = 459 }
 						FROM.FROM = { state = 461 }
 						FROM.FROM = { state = 462 }
+						FROM.FROM = { state = 462 }
 						FROM.FROM = { state = 118 }
 						FROM.FROM = { state = 116 }
 						FROM.FROM = { state = 183 }
 						FROM.FROM = { state = 452 }
-						FROM.FROM = { state = 1082 }
+						FROM.FROM = { state = 1047 }
 						FROM.FROM = { state = 447 }
 						FROM.FROM = { state = 907 }
 						FROM.FROM = { state = 446 }
-						FROM.FROM = { state = 1092 }
+						FROM.FROM = { state = 1057 }
 						FROM.FROM = { state = 453 }
 						FROM.FROM = { state = 454 }
 						FROM.FROM = { state = 553 }
@@ -1669,6 +2101,36 @@ on_actions = {
 			}
 		}
 	}
+
+	# on_state_control_changed = {
+	# 	effect = {
+	# 		if = {
+	# 			limit = {
+	# 				FROM.FROM = { state = 110 }
+	# 			}
+	# 			FROM.FROM = {
+    #                 if = {
+	# 					limit = {
+	# 						CONTROLLER = {
+	# 							OR = {
+	# 								tag = ENG
+	# 								is_subject_of = ENG
+	# 								is_in_faction_with = ENG
+	# 								tag = SOV
+	# 								is_subject_of = SOV
+	# 								is_in_faction_with = SOV
+	# 							}
+	# 						}
+	# 					}
+	# 					GER = {
+	# 						set_country_flag = GER_start_sweden_allied_embargo_allies_mission
+	# 					}
+	# 				}
+    #             }
+
+	# 		}
+	# 	}
+	# }
 
 	on_naval_invasion = {
 		effect = { 
@@ -1715,7 +2177,6 @@ on_actions = {
 			}
 		}
 	}
-
 	on_paradrop = {
 		effect = { 
 			THIS = {
@@ -1760,242 +2221,5 @@ on_actions = {
 			}
 		}
 	}
-	
-	on_declare_war = {
-		effect = {
-			if = {
-				limit = {
-					ROOT = { original_tag = SOV }
-					FROM = { original_tag = ROM }
-					SOV = { NOT = { has_war_with = GER } }
-					NOT = { ROM = { has_country_flag = bessarabia_finished } }
-					NOT = { ROM = { has_country_flag = bessarabia_ceded } }
-				}
-				SOV = { activate_mission = SOV_besserabia_war }
-				ROM = { activate_mission = ROM_bessarabia_war_timer }
-			}
-		}
-	}
 
-	on_daily_SOV = {
-		effect = {
-			if = { 
-				limit = { has_war_with_major = yes }
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_war_mobilisation } NOT = { has_country_flag = started_war_mob }}
-					set_country_flag = started_war_mob
-					activate_shine_on_focus = SOV_war_mobilisation
-					set_country_flag = { flag = SOV_war_mobilisation_in_progress_flag days = 7 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.02 days = 7 } 
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_order_270 } has_completed_focus = SOV_war_mobilisation surrender_progress > 0.2 NOT = { has_country_flag = started_order_270 } }
-					set_country_flag = started_order_270
-					activate_shine_on_focus = SOV_order_270
-					set_country_flag = { flag = SOV_order_270_in_progress_flag days = 7 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.03 days = 7 } 
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_allied_lend_lease } has_completed_focus = SOV_war_mobilisation surrender_progress > 0.1 NOT = { has_country_flag = started_lend_lease } }
-					set_country_flag = started_lend_lease
-					activate_shine_on_focus = SOV_allied_lend_lease
-					set_country_flag = { flag = SOV_allied_lend_lease_in_progress_flag days = 7 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.04 days = 7 } 
-				}
-				if = { 
-					limit = { 
-						NOT = { has_completed_focus = SOV_the_road_of_life } 
-						has_completed_focus = SOV_war_mobilisation 
-						OR = {
-							NOT = { controls_state = 146 }
-							NOT = { controls_state = 208 }
-							NOT = { controls_state = 209 }
-							NOT = { controls_state = 263 }
-							NOT = { controls_state = 242 }
-							NOT = { controls_state = 246 }
-							NOT = { controls_state = 247 }
-							NOT = { controls_state = 205 }
-							NOT = { controls_state = 218 }
-							NOT = { controls_state = 234 }
-							NOT = { controls_state = 228 }
-							NOT = { controls_state = 260 }
-							NOT = { controls_state = 196 }
-							NOT = { controls_state = 234 }
-							NOT = { controls_state = 201 }
-							NOT = { controls_state = 198 }
-							NOT = { controls_state = 203 }
-							NOT = { controls_state = 234 }
-						}
-						NOT = { has_country_flag = started_road_of_life }
-					}
-					set_country_flag = started_road_of_life
-					activate_shine_on_focus = SOV_the_road_of_life
-					set_country_flag = { flag = SOV_the_road_of_life_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.05 days = 35 }
-				}
-				if = { 
-					limit = { 
-						NOT = { has_completed_focus = SOV_technical_assistance } 
-						has_completed_focus = SOV_allied_lend_lease 
-						USA = { has_war_with_major = yes } 
-						NOT = { has_country_flag = started_technical_assistance }
-					}
-					set_country_flag = started_technical_assistance
-					activate_shine_on_focus = SOV_technical_assistance
-					set_country_flag = { flag = SOV_technical_assistance_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.06 days = 35 } 
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_found_state_defense_committee } has_completed_focus = SOV_war_mobilisation NOT = { has_country_flag = started_defense_commitee } }
-					set_country_flag = started_defense_commitee
-					activate_shine_on_focus = SOV_found_state_defense_committee
-					set_country_flag = { flag = SOV_found_state_defense_committee_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.07 days = 35 } 
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_empower_stavka } has_completed_focus = SOV_found_state_defense_committee NOT = { has_country_flag = started_empower_stavka } }
-					set_country_flag = started_empower_stavka
-					activate_shine_on_focus = SOV_empower_stavka
-					set_country_flag = { flag = SOV_empower_stavka_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.08 days = 35 } 
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_american_logistical_assistance } has_completed_focus = SOV_technical_assistance surrender_progress > 0.15 NOT = { has_country_flag = started_studebaker } }
-					set_country_flag = started_studebaker
-					activate_shine_on_focus = SOV_american_logistical_assistance
-					set_country_flag = { flag = SOV_american_logistical_assistance_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.09 days = 35 } 
-				}
-				if = { 
-					limit = { 
-						NOT = { has_completed_focus = SOV_defend_leningrad } 
-						has_completed_focus = SOV_found_state_defense_committee 
-						OR = {
-							NOT = { controls_state = 146 }
-							NOT = { controls_state = 208 }
-							NOT = { controls_state = 209 }
-							NOT = { controls_state = 263 }
-						}
-						controls_state = 195
-						NOT = { has_country_flag = started_lenningrad }
-					}
-					set_country_flag = started_lenningrad
-					activate_shine_on_focus = SOV_defend_leningrad
-					set_country_flag = { flag = SOV_defend_leningrad_in_progress_flag days = 14 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.10 days = 14 }
-				}
-				if = { 
-					limit = { 
-						NOT = { has_completed_focus = SOV_defend_moscow } 
-						has_completed_focus = SOV_found_state_defense_committee 
-						OR = {
-							NOT = { controls_state = 242 }
-							NOT = { controls_state = 246 }
-							NOT = { controls_state = 247 }
-							NOT = { controls_state = 205 }
-						}
-						controls_state = 219
-						NOT = { has_country_flag = started_moscow }
-					}
-					set_country_flag = started_moscow
-					activate_shine_on_focus = SOV_defend_moscow
-					set_country_flag = { flag = SOV_defend_moscow_in_progress_flag days = 14 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.11 days = 14 }
-				}
-				if = { 
-					limit = { 
-						NOT = { has_completed_focus = SOV_defend_stalingrad } 
-						has_completed_focus = SOV_found_state_defense_committee 
-						OR = {
-							NOT = { controls_state = 218 }
-							NOT = { controls_state = 234 }
-							NOT = { controls_state = 228 }
-							NOT = { controls_state = 260 }
-						}
-						controls_state = 217
-						NOT = { has_country_flag = started_stalingrad }
-					}
-					set_country_flag = started_stalingrad
-					activate_shine_on_focus = SOV_defend_stalingrad
-					set_country_flag = { flag = SOV_defend_stalingrad_in_progress_flag days = 14 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.12 days = 14 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_coordinate_industry } has_completed_focus = SOV_order_270 surrender_progress > 0.25 NOT = { has_country_flag = started_coordinate } }
-					set_country_flag = started_coordinate
-					activate_shine_on_focus = SOV_coordinate_industry
-					set_country_flag = { flag = SOV_coordinate_industry_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.13 days = 35 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_mass_tank_production } has_completed_focus = SOV_coordinate_industry surrender_progress > 0.3 NOT = { has_country_flag = started_mass_tanks } }
-					set_country_flag = started_mass_tanks
-					activate_shine_on_focus = SOV_mass_tank_production
-					set_country_flag = { flag = SOV_mass_tank_production_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.14 days = 35 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_focus_forced_labour } has_completed_focus = SOV_coordinate_industry surrender_progress > 0.35 NOT = { has_country_flag = started_force_labour } }
-					set_country_flag = started_force_labour
-					activate_shine_on_focus = SOV_focus_forced_labour
-					set_country_flag = { flag = SOV_focus_forced_labour_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.15 days = 35 }
-				}
-				if = { 
-					limit = { 
-						NOT = { has_completed_focus = SOV_reorganize_red_army }
-						has_completed_focus = SOV_empower_stavka
-						OR = {
-							surrender_progress > 0.05
-							date > 1942.1.1
-						}
-						NOT = { has_country_flag = started_reorganize } 
-					}
-					set_country_flag = started_reorganize
-					activate_shine_on_focus = SOV_reorganize_red_army
-					set_country_flag = { flag = SOV_reorganize_red_army_in_progress_flag days = 35 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.16 days = 35 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_new_doctrine } has_completed_focus = SOV_reorganize_red_army surrender_progress > 0.1 NOT = { has_country_flag = started_deep_battle } }
-					set_country_flag = started_deep_battle
-					activate_shine_on_focus = SOV_new_doctrine
-					set_country_flag = { flag = SOV_new_doctrine_in_progress_flag days = 21 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.17 days = 21 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_learn_from_our_losses } has_completed_focus = SOV_new_doctrine surrender_progress > 0.2 NOT = { has_country_flag = started_learn } }
-					set_country_flag = started_learn
-					activate_shine_on_focus = SOV_learn_from_our_losses
-					set_country_flag = { flag = SOV_learn_from_our_losses_in_progress_flag days = 21 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.18 days = 21 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_learn_from_losses_2 } has_completed_focus = SOV_learn_from_our_losses surrender_progress > 0.4 NOT = { has_country_flag = started_learn2 } }
-					set_country_flag = started_learn2
-					activate_shine_on_focus = SOV_learn_from_losses_2
-					set_country_flag = { flag = SOV_learn_from_losses_2_in_progress_flag days = 21 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.19 days = 21 }
-				}
-				if = { 
-					limit = { NOT = { has_completed_focus = SOV_enforced_fanaticism } has_completed_focus = SOV_guards surrender_progress > 0.4 NOT = { has_country_flag = started_no_step } }
-					set_country_flag = started_no_step
-					activate_shine_on_focus = SOV_enforced_fanaticism
-					set_country_flag = { flag = SOV_enforced_fanaticism_in_progress_flag days = 14 value = 1 }
-					country_event = { id = SOV_auto_complete_focus.20 days = 14 }
-				}
-			}
-		}
-	}
-
-	on_send_volunteers = {
-		effect = {
-			if = {
-				limit = {
-					NOT = { has_military_access_to = FROM }
-				}
-				FROM = { give_military_access = ROOT }
-			}
-		}
-	}
 }

@@ -1,9 +1,5 @@
 capital = 328
 
-# Fuel distribution system (Horst)
-set_variable = { var = min_fuel value = 0.800 }
-set_fuel_ratio = 1
-
 oob = "MAN_1936"
 
 set_technology = {
@@ -22,20 +18,69 @@ set_technology = {
 
 set_research_slots = 5
 
-if = {
-	limit = { has_dlc = "Waking the Tiger" }
-	set_country_flag = MAN_northern_bandits
-	set_country_flag = MAN_eastern_bandits
-	set_country_flag = MAN_western_bandits
-	add_ideas = MAN_puyi
-	add_ideas = MAN_banditry
-	add_ideas = MAN_kwantung_veto
-	add_ideas = MAN_low_legitimacy_5
-	add_ideas = MAN_opium_plantations
-	add_ideas = MAN_yamato-damashii
+set_convoys = 25
+
+### Industrial Behemoth of the East ###
+# Spirit variables — MUST be set before add_dynamic_modifier.
+# Accumulated by the Five-Year Plan decisions; future focuses add to them too.
+set_variable = { MAN_behemoth_consumer_goods_factor = 0 }
+set_variable = { MAN_behemoth_stability_factor = 0 }
+set_variable = { MAN_behemoth_political_power_factor = 0 }
+set_variable = { MAN_behemoth_local_resources_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_buildings_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_industrial_complex_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_infrastructure_factor = 0 }
+set_variable = { MAN_behemoth_production_speed_synthetic_refinery_factor = 0 }
+set_variable = { MAN_behemoth_industrial_capacity_factory = 0 }
+set_variable = { MAN_behemoth_production_factory_max_efficiency_factor = 0 }
+set_variable = { MAN_behemoth_production_factory_efficiency_gain_factor = 0 }
+set_variable = { MAN_behemoth_recruitable_population_factor = 0 }
+set_variable = { MAN_fyp_active_slots = 0 }
+set_variable = { MAN_mio_civ_funds_current = 0 }
+
+# Manchurian Army spirit — day-1 penalty values (a weak collaborator army).
+# The military focus branch buys these back and eventually turns them positive.
+set_variable = { MAN_army_org_factor = -0.10 }
+set_variable = { MAN_army_morale_factor = -0.10 }
+set_variable = { MAN_army_attack_factor = -0.05 }
+set_variable = { MAN_army_defence_factor = -0.05 }
+set_variable = { MAN_army_experience_gain_factor = -0.15 }
+set_variable = { MAN_army_speed_factor = -0.05 }
+set_variable = { MAN_army_training_time_factor = 0.15 }
+set_variable = { MAN_army_supply_consumption_factor = 0.05 }
+set_variable = { MAN_army_recruitable_population_factor = -0.45 }
+set_variable = { MAN_army_land_doctrine_cost_factor = 0.25 }
+
+# Plan progress (each project = +20, plan concludes at 100)
+set_variable = { MAN_fyp1_progress = 0 }
+set_variable = { MAN_fyp2_progress = 0 }
+
+add_dynamic_modifier = { modifier = MAN_industrial_behemoth }
+add_dynamic_modifier = { modifier = MAN_manchurian_army }
+
+# The "First Five-Year Plan" focus now sets MAN_first_five_year_plan_active
+# (and the Second Five-Year Plan focus sets MAN_second_five_year_plan_active),
+# so the decision tabs unlock through the focus tree rather than from history.
+
+### Day-1 national spirits ###
+add_ideas = {
+	MAN_old_tax_system
+	MAN_multinational_state
+}
+# Influence-of-Japanese-Corporations spirit variables (grown by JAP economy focuses).
+set_variable = { MAN_influence_extra_trade_to_overlord_factor = 0.5 }
+set_variable = { MAN_influence_local_resources_factor = 0 }
+add_dynamic_modifier = { modifier = MAN_influence_of_japanese_corporations }
+add_dynamic_modifier = { modifier = MAN_dream_of_a_great_pan_asian_nation_state }
+
+### Racial Harmony (balance of power) ###
+set_power_balance = {
+	id = MAN_racial_harmony
+	set_default = yes
 }
 
-set_convoys = 25
+# Setup Politics
 set_politics = {
 	ruling_party = fascism
 	last_election = "1936.1.1"
@@ -46,6 +91,7 @@ set_popularities = {
 	fascism = 80
 	neutrality = 20
 }
+
 #dlc characters
 recruit_character = MAN_pujie
 recruit_character = MAN_songgotu_zhanshan
@@ -73,16 +119,15 @@ recruit_character = MAN_hesehn_tiemei
 recruit_character = MAN_xian_yuan
 recruit_character = MAN_deng_linge
 
-1939.1.1 = {
-}
+# Advisors imported from Oak's Manchukuo.
+recruit_character = MAN_bao_manbo
+recruit_character = MAN_Chu_Kudo
+recruit_character = MAN_ruan_zhenduo
+recruit_character = MAN_masahiko_amakasu
+recruit_character = MAN_Hajime_Satomi
+recruit_character = MAN_naoki_hoshino
 
-add_equipment_production = {
-    equipment = {
-        type = convoy_1
-        creator = MAN
-    }
-    requested_factories = 15
-    progress = 0.0
-    efficiency = 0.7
-    amount = 2000
-}
+# Generals imported from Oak's Manchukuo.
+recruit_character = MAN_grigory_semyonov
+recruit_character = MAN_yoshioka_yasunao
+recruit_character = MAN_zang_shiyi

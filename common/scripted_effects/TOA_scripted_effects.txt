@@ -829,6 +829,100 @@ BRA_mio_military_factory = {
 	}
 }
 
+
+VEN_blockade_countries = {
+
+	if = {
+		limit = {
+
+			event_target:blockade_target = {
+				NOT = { original_tag = ROOT }
+				NOT = { has_government = ROOT }
+				NOT = { has_non_aggression_pact_with = ROOT }
+				NOT = { has_guaranteed = ROOT }
+				ROOT = { NOT = { has_guaranteed = PREV } }
+				NOT = { is_embargoed_by = VEN }
+				
+			}
+			
+		}
+		event_target:blockade_target = {
+			VEN = {
+				if = {
+					limit = { has_dlc = "By Blood Alone"}
+					send_embargo = PREV
+				}
+				add_opinion_modifier = {
+					target = PREV
+					modifier = VEN_embargoed
+				}
+				hidden_effect = {
+					add_opinion_modifier = {
+						target = PREV
+						modifier = VEN_embargoed_2
+					}
+				}
+				country_event = {
+					id = TOA_ven_blockade.1
+					hours = 1
+				}
+			}
+			news_event = {
+				id = TOA_ven_blockade.2
+				hours = 1
+			}
+			ROOT = {
+				add_to_array = {
+					array = ven_countries_that_are_under_embargo
+					value = PREV
+				}
+			}
+		} 
+		hidden_effect = {
+			if = {
+				limit = {
+					event_target:blockade_target = { is_in_faction = yes }
+				}
+				every_country = {
+					limit = {
+						NOT = { is_embargoed_by = VEN }
+						event_target:blockade_target = {
+							OR = {
+								PREV = { is_in_faction_with = PREV }
+								PREV = { is_subject_of = PREV }
+							}
+						}
+					}
+					ROOT = {
+						add_to_array = {
+							array = ven_countries_that_are_under_embargo
+							value = PREV
+						}
+					}
+					news_event = {
+						id = TOA_ven_blockade.2
+						hours = 1
+					}
+					VEN = { 
+						if = {
+							limit = { has_dlc = "By Blood Alone"}
+							send_embargo = PREV
+						}
+						add_opinion_modifier = {
+							target = PREV
+							modifier = VEN_embargoed
+						}
+						add_opinion_modifier = {
+							target = PREV
+							modifier = VEN_embargoed_2
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 BRA_select_leader_flag = {
 	IF = {
 		limit = {
