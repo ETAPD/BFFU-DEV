@@ -273,14 +273,69 @@ scripted_gui = {
 				}
 			}
 
-			wt_add_click = { GER = { add_threat = 0.2 news_event = { id = hosttool.39 } } }
-			wt_remove_click = { GER = { add_threat = -0.2 news_event = { id = hosttool.40 } } }
-			mill_add_click = { owner = { add_offsite_building = { type = arms_factory level = 1 } GER = { news_event = { id = hosttool.11 } } } }
-			civ_add_click = { owner = { add_offsite_building = { type = industrial_complex level = 1 } GER = { news_event = { id = hosttool.13 } } } }
-			remove_mill_add_click = { owner = { add_offsite_building = { type = arms_factory level = -1 } GER = { news_event = { id = hosttool.12 } } } }
-			remove_civ_add_click = { owner = { add_offsite_building = { type = industrial_complex level = -1 } GER = { news_event = { id = hosttool.14 } } } }
-			dockyard_add_click = { owner = { add_offsite_building = { type = dockyard level = 1 } GER = { news_event = { id = hosttool.15 } } } }
-			dockyard_remove_click = { owner = { add_offsite_building = { type = dockyard level = -1 } GER = { news_event = { id = hosttool.16 } } } }
+			wt_add_click = {
+				ROOT = {
+					add_named_threat = { threat = 0.2 name = HOSTTOOL_MANUAL_WT_CHANGE }
+					news_event = { id = hosttool.39 }
+				}
+			}
+			wt_remove_click = {
+				ROOT = {
+					add_named_threat = { threat = -0.2 name = HOSTTOOL_MANUAL_WT_CHANGE }
+					news_event = { id = hosttool.40 }
+				}
+			}
+			mill_add_click = {
+				owner = {
+					add_offsite_building = { type = arms_factory level = 1 }
+					add_to_variable = { hosttool_offsite_military_factories = 1 }
+					GER = { news_event = { id = hosttool.11 } }
+				}
+			}
+			civ_add_click = {
+				owner = {
+					add_offsite_building = { type = industrial_complex level = 1 }
+					add_to_variable = { hosttool_offsite_civilian_factories = 1 }
+					GER = { news_event = { id = hosttool.13 } }
+				}
+			}
+			remove_mill_add_click = {
+				owner = {
+					if = {
+						limit = { check_variable = { hosttool_offsite_military_factories > 0 } }
+						add_offsite_building = { type = arms_factory level = -1 }
+						subtract_from_variable = { hosttool_offsite_military_factories = 1 }
+						GER = { news_event = { id = hosttool.12 } }
+					}
+				}
+			}
+			remove_civ_add_click = {
+				owner = {
+					if = {
+						limit = { check_variable = { hosttool_offsite_civilian_factories > 0 } }
+						add_offsite_building = { type = industrial_complex level = -1 }
+						subtract_from_variable = { hosttool_offsite_civilian_factories = 1 }
+						GER = { news_event = { id = hosttool.14 } }
+					}
+				}
+			}
+			dockyard_add_click = {
+				owner = {
+					add_offsite_building = { type = dockyard level = 1 }
+					add_to_variable = { hosttool_offsite_dockyards = 1 }
+					GER = { news_event = { id = hosttool.15 } }
+				}
+			}
+			dockyard_remove_click = {
+				owner = {
+					if = {
+						limit = { check_variable = { hosttool_offsite_dockyards > 0 } }
+						add_offsite_building = { type = dockyard level = -1 }
+						subtract_from_variable = { hosttool_offsite_dockyards = 1 }
+						GER = { news_event = { id = hosttool.16 } }
+					}
+				}
+			}
 			high_capacity_grid_add_click = {
 				if = {
 					limit = { check_variable = { building_level@industrial_infrastructure < 1 } }
@@ -527,10 +582,16 @@ scripted_gui = {
 			wt_remove_click_enabled = { }
 			mill_add_click_enabled = { }
 			civ_add_click_enabled = { }
-			remove_mill_add_click_enabled = { }
-			remove_civ_add_click_enabled = { }
+			remove_mill_add_click_enabled = {
+				owner = { check_variable = { hosttool_offsite_military_factories > 0 } }
+			}
+			remove_civ_add_click_enabled = {
+				owner = { check_variable = { hosttool_offsite_civilian_factories > 0 } }
+			}
 			dockyard_add_click_enabled = { }
-			dockyard_remove_click_enabled = { }
+			dockyard_remove_click_enabled = {
+				owner = { check_variable = { hosttool_offsite_dockyards > 0 } }
+			}
 			high_capacity_grid_add_click_enabled = {
 				check_variable = { building_level@industrial_infrastructure < 1 }
 			}
