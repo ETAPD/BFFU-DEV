@@ -182,33 +182,6 @@ operations = {
 
 USA_flood_control_cat = {
 
-	# Rush: Accelerate all remaining acts by 60 days
-	USA_rush_flood_control = {
-		icon = GFX_decision_generic_factory
-
-		allowed = { original_tag = USA }
-
-		visible = {
-			has_country_flag = ohio_flood_recovery_active
-			NOT = { has_country_flag = ohio_flood_rushed }
-		}
-
-		available = {
-			has_country_flag = ohio_flood_recovery_active
-			has_completed_focus = USA_rush_the_flood_control_acts
-		}
-
-		fire_only_once = yes
-		cost = 50
-
-		ai_will_do = { factor = 100 }
-
-		complete_effect = {
-			add_stability = 0.15
-			set_country_flag = ohio_flood_rushed
-		}
-	}
-
 	# Provide Care Immediately (Landon path)
 	USA_landon_provide_care_immediately = {
 		icon = GFX_decision_generic_factory
@@ -323,6 +296,54 @@ USA_flood_control_cat = {
 		}
 	}
 
+	# Act I (Rushed): Full → Two-thirds penalty
+	USA_flood_control_act_1_r = {
+		icon = GFX_decision_generic_industry
+
+		allowed = { original_tag = USA }
+
+		visible = {
+			has_country_flag = ohio_flood_recovery_active
+			check_variable = { var = ohio_flood_act value = 1 compare = equals }
+			has_country_flag = ohio_flood_rushed
+		}
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			261 = {
+				remove_dynamic_modifier = { modifier = ohio_flood }
+				add_dynamic_modifier = { modifier = ohio_flood_2 }
+			}
+			360 = {
+				remove_dynamic_modifier = { modifier = ohio_flood }
+				add_dynamic_modifier = { modifier = ohio_flood_2 }
+			}
+			369 = {
+				remove_dynamic_modifier = { modifier = ohio_flood }
+				add_dynamic_modifier = { modifier = ohio_flood_2 }
+			}
+			395 = {
+				remove_dynamic_modifier = { modifier = ohio_flood }
+				add_dynamic_modifier = { modifier = ohio_flood_2 }
+			}
+			396 = {
+				remove_dynamic_modifier = { modifier = ohio_flood }
+				add_dynamic_modifier = { modifier = ohio_flood_2 }
+			}
+			816 = {
+				remove_dynamic_modifier = { modifier = ohio_flood }
+				add_dynamic_modifier = { modifier = ohio_flood_2 }
+			}
+			set_variable = { var = ohio_flood_act value = 2 }
+			activate_mission = USA_flood_control_act_2_r
+		}
+	}
+
 	# Act II: Two-thirds → One-third penalty
 	USA_flood_control_act_2 = {
 		icon = GFX_decision_generic_industry
@@ -405,13 +426,18 @@ USA_flood_control_cat = {
 				395 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
 				396 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
 				816 = { remove_dynamic_modifier = { modifier = ohio_flood_3 } }
-				set_variable = { var = ohio_flood_act value = 4 }
+				# Acts IV & V never fire under Landon — the flood ends at Act III for him.
+				# (Provide Care Immediately is the active route; this is the passive base guarantee.)
 				if = {
-					limit = { has_country_flag = ohio_flood_rushed }
-					activate_mission = USA_flood_control_act_4_r
-				}
-				else = {
-					activate_mission = USA_flood_control_act_4
+					limit = { NOT = { has_country_leader = { ruling_only = yes character = usa_alf_landon } } }
+					set_variable = { var = ohio_flood_act value = 4 }
+					if = {
+						limit = { has_country_flag = ohio_flood_rushed }
+						activate_mission = USA_flood_control_act_4_r
+					}
+					else = {
+						activate_mission = USA_flood_control_act_4
+					}
 				}
 			}
 		}
@@ -1001,6 +1027,7 @@ USA_operation_torch_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1045,6 +1072,7 @@ USA_operation_torch_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1089,6 +1117,7 @@ USA_operation_torch_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1141,6 +1170,7 @@ USA_kaiserrine_pass_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1185,6 +1215,7 @@ USA_kaiserrine_pass_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1237,6 +1268,7 @@ USA_operation_husky_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1289,6 +1321,7 @@ USA_operation_avalanche_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1333,6 +1366,7 @@ USA_operation_avalanche_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1385,6 +1419,7 @@ USA_operation_manna_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1429,6 +1464,7 @@ USA_operation_manna_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1473,6 +1509,7 @@ USA_operation_manna_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1517,6 +1554,7 @@ USA_operation_manna_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1561,6 +1599,7 @@ USA_operation_manna_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1613,6 +1652,7 @@ USA_operation_dragoon_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1657,6 +1697,7 @@ USA_operation_dragoon_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1701,6 +1742,7 @@ USA_operation_dragoon_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1745,6 +1787,7 @@ USA_operation_dragoon_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1797,6 +1840,7 @@ USA_operatation_overlord_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1841,6 +1885,7 @@ USA_operatation_overlord_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1885,6 +1930,7 @@ USA_operatation_overlord_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1929,6 +1975,7 @@ USA_operatation_overlord_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -1973,6 +2020,7 @@ USA_operatation_overlord_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2027,6 +2075,7 @@ USA_break_the_initative_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2071,6 +2120,7 @@ USA_break_the_initative_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2115,6 +2165,7 @@ USA_break_the_initative_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2159,6 +2210,7 @@ USA_break_the_initative_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2203,6 +2255,7 @@ USA_break_the_initative_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2254,6 +2307,7 @@ USA_control_the_phillippines_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2298,6 +2352,7 @@ USA_control_the_phillippines_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2342,6 +2397,7 @@ USA_control_the_phillippines_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2386,6 +2442,7 @@ USA_control_the_phillippines_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2430,6 +2487,7 @@ USA_control_the_phillippines_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2474,6 +2532,7 @@ USA_control_the_phillippines_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2526,6 +2585,7 @@ USA_operation_iceberg_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2570,6 +2630,7 @@ USA_operation_iceberg_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2614,6 +2675,7 @@ USA_operation_iceberg_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2658,6 +2720,7 @@ USA_operation_iceberg_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2702,6 +2765,7 @@ USA_operation_iceberg_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2746,6 +2810,7 @@ USA_operation_iceberg_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2798,6 +2863,7 @@ USA_operation_causeway_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
@@ -2842,6 +2908,7 @@ USA_operation_causeway_cat = {
 					add_province_modifier = {
 						static_modifiers = { USA_torch_bombardment_static }
 						province = { all_provinces = yes }
+						days = 30
 					}
 				}
 				every_state = {
