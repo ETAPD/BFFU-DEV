@@ -27,13 +27,31 @@ country_event = {
 				has_country_leader = { ruling_only = yes character = CZE_konstantin_von_neurath }
 			}
 			if = {
-				limit = { any_owned_state = { arms_factory > 0 } }
+				limit = {
+					any_owned_state = {
+						arms_factory > 0
+						NOT = { has_state_flag = CZE_last_military_sabotage_state }
+					}
+				}
 				random_owned_state = {
-					limit = { arms_factory > 0 }
+					limit = {
+						arms_factory > 0
+						NOT = { has_state_flag = CZE_last_military_sabotage_state }
+					}
 					damage_building = { type = arms_factory damage = 0.5 }
+					set_state_flag = CZE_next_military_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_last_military_sabotage_state }
+					clr_state_flag = CZE_last_military_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_next_military_sabotage_state }
+					clr_state_flag = CZE_next_military_sabotage_state
+					set_state_flag = CZE_last_military_sabotage_state
 				}
 			}
-			country_event = { id = cze_hist.20 days = 10 }
+			country_event = { id = cze_hist.20 days = 20 }
 		}
 	}
 }
@@ -46,20 +64,42 @@ country_event = {
 		if = {
 			limit = {
 				has_idea = CZE_czech_worker_resistance
-				has_country_leader = { ruling_only = yes character = CZE_konstantin_von_neurath }
 			}
 			if = {
-				limit = { any_owned_state = { industrial_complex > 0 } }
+				limit = {
+					any_owned_state = {
+						industrial_complex > 0
+						NOT = { has_state_flag = CZE_last_civilian_sabotage_state }
+					}
+				}
 				random_owned_state = {
-					limit = { industrial_complex > 0 }
+					limit = {
+						industrial_complex > 0
+						NOT = { has_state_flag = CZE_last_civilian_sabotage_state }
+					}
 					damage_building = { type = industrial_complex damage = 0.5 }
+					set_state_flag = CZE_next_civilian_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_last_civilian_sabotage_state }
+					clr_state_flag = CZE_last_civilian_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_next_civilian_sabotage_state }
+					clr_state_flag = CZE_next_civilian_sabotage_state
+					set_state_flag = CZE_last_civilian_sabotage_state
 				}
 			}
 			if = {
-				limit = { has_country_flag = CZE_gestapo_visits_active }
-				country_event = { id = cze_hist.21 days = 14 }
+				limit = {
+					OR = {
+						has_country_flag = CZE_gestapo_visits_active
+						has_country_flag = CZE_worker_resistance_suppressed
+					}
+				}
+				country_event = { id = cze_hist.21 days = 40 }
 			}
-			else = { country_event = { id = cze_hist.21 days = 7 } }
+			else = { country_event = { id = cze_hist.21 days = 20 } }
 		}
 	}
 }
@@ -93,12 +133,8 @@ country_event = {
 			name = CZE_nsdap_party
 		}
 		set_cosmetic_tag = CZE_bohmen_mahren
-		if = {
-			limit = { NOT = { has_character = CZE_konstantin_von_neurath } }
-			recruit_character = CZE_konstantin_von_neurath
-		}
 		promote_character = CZE_konstantin_von_neurath
-		country_event = { id = cze_hist.20 days = 10 }
+		country_event = { id = cze_hist.20 days = 20 }
 		complete_national_focus = CZE_B6_05_HUB_RIGHT
 		ENG = {
 			if = {
