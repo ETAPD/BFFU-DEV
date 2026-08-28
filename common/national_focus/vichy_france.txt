@@ -1,4 +1,4 @@
-﻿focus_tree = {
+focus_tree = {
 	id = vichy_french_focus
 	
 	country = {
@@ -62,7 +62,7 @@
 			focus = VIC_emergency_powers_to_petain
 		}
 		relative_position_id = VIC_emergency_powers_to_petain
-		cost = 2
+		cost = 0.2
 		ai_will_do = {
 			factor = 0
 		}
@@ -78,6 +78,7 @@
 		available_if_capitulated = no
 		search_filters = { FOCUS_FILTER_STABILITY }
 		completion_reward = {
+			add_to_tech_sharing_group = axis_research
 			set_rule = {
 				can_join_factions = yes
 				can_not_declare_war = no
@@ -175,7 +176,7 @@
 		}
 		relative_position_id = VIC_long_term_economic_planning
 		
-		cost = 10
+		cost = 5
 		ai_will_do = {
 			factor = 10
 		}
@@ -225,7 +226,7 @@
 		}
 		relative_position_id = VIC_aid_small_businesses
 		
-		cost = 10
+		cost = 5
 		ai_will_do = {
 			factor = 10
 		}
@@ -276,7 +277,8 @@
 		search_filters = { FOCUS_FILTER_STABILITY }
 
 		completion_reward = {
-			add_political_power = 100
+			add_political_power = 150
+			add_ideas = VIC_forever_loyal
 			add_opinion_modifier = { target = GER modifier = huge_increase }
 			add_opinion_modifier = { target = ITA modifier = huge_increase }
 		}
@@ -331,7 +333,7 @@
 		}
 		relative_position_id = VIC_national_militia
 		
-		cost = 4
+		cost = 5
 		ai_will_do = {
 			factor = 1
 		}
@@ -348,6 +350,7 @@
 		search_filters = { FOCUS_FILTER_STABILITY }
 		completion_reward = {
 			add_stability = 0.1
+			add_ideas = VIC_traditional_family
 		}
 	}
 
@@ -366,7 +369,7 @@
 		}
 		relative_position_id = VIC_no_more_humiliation
 		
-		cost = 3
+		cost = 5
 		ai_will_do = {
 			factor = 1000
 		}
@@ -382,7 +385,7 @@
 		available_if_capitulated = no
 		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
 		completion_reward = {
-			add_war_support = 0.05
+			add_ideas = VIC_losers_prosecuted
 		}
 	}
 	focus = {
@@ -399,7 +402,7 @@
 		}
 		relative_position_id = VIC_prosecute_the_losers
 		
-		cost = 3
+		cost = 5
 		ai_will_do = {
 			factor = 1000
 		}
@@ -434,7 +437,7 @@
 		}
 		relative_position_id = VIC_concessions_to_the_germans
 		
-		cost = 3
+		cost = 5
 		ai_will_do = {
 			factor = 1
 		}
@@ -576,42 +579,6 @@
 					}
 				}
 			}
-			# 24 = {
-			# 	CONTROLLER = {
-			# 		OR = {
-			# 			tag = GER
-			# 			is_in_faction_with = GER
-			# 			is_subject_of = GER
-			# 		}
-			# 	}
-			# }
-			# 27 = {
-			# 	CONTROLLER = {
-			# 		OR = {
-			# 			tag = GER
-			# 			is_in_faction_with = GER
-			# 			is_subject_of = GER
-			# 		}
-			# 	}
-			# }
-			# 18 = {
-			# 	CONTROLLER = {
-			# 		OR = {
-			# 			tag = GER
-			# 			is_in_faction_with = GER
-			# 			is_subject_of = GER
-			# 		}
-			# 	}
-			# }
-			# 17 = {
-			# 	CONTROLLER = {
-			# 		OR = {
-			# 			tag = GER
-			# 			is_in_faction_with = GER
-			# 			is_subject_of = GER
-			# 		}
-			# 	}
-			# }
 		}
 		
 		bypass = {
@@ -628,10 +595,180 @@
 				}
 				remove_ideas = VIC_produce_aircraft_parts
 			}
-			GER = { 
-				country_event = lar_end_the_occupation.1 
+			GER = {
+				country_event = lar_end_the_occupation.1
 				if = { limit = { has_idea = VIC_aircraft_parts }
 					remove_ideas = VIC_aircraft_parts
+				}
+				if = {
+					limit = {
+						has_completed_focus = GER_goring_plan
+					}
+					custom_effect_tooltip = GER_french_repayments_established_tt
+					hidden_effect = {
+						puppet = VIC
+						set_autonomy = {
+							target = VIC
+							autonomy_state = VIC_nominal_subject
+						}
+						VIC = {
+							set_variable = { VIC_go_mic_to_overlord_factor = 0.2 }
+							add_dynamic_modifier = { modifier = VIC_french_repayments_modifier }
+						}
+	        random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				arms_factory > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+		random_controlled_state = {
+			limit = {
+				is_core_of = VIC
+				industrial_complex > 0
+			}
+			remove_building = {
+				type = arms_factory
+				level = 1
+			}
+		}
+        GER = {
+        add_offsite_building = { type = arms_factory level = 15 }
+        }
+					}
 				}
 			}
 		}
@@ -672,15 +809,18 @@
 	focus = {
 		id = VIC_anti_bolshevist_volunteers
 		icon = GFX_focus_generic_military_mission
-		x = 0
+		x = -2
 		y = 2
 		offset = {
 			x = 0
 			y = 0
 		}
 		prerequisite = { 
-			focus = VIC_emergency_powers_to_petain
+			focus = VIC_no_more_humiliation
+			focus = VIC_Obedience
 		}
+
+		mutually_exclusive = { focus = VIC_against_the_atlantic }
 		relative_position_id = VIC_emergency_powers_to_petain
 		
 		cost = 2
@@ -688,9 +828,7 @@
 			factor = 1
 		}
 		available = {
-			NOT = {
-				has_war_with = SOV
-			}
+
 		}
 		
 		bypass = {
@@ -700,9 +838,45 @@
 		continue_if_invalid = no
 		available_if_capitulated = no
 		completion_reward = {
-			add_ideas = { FRA_anti_bolshevist_volunteers }
+			add_ideas = FRA_anti_bolshevist_volunteers
 		}
 	}
+
+	focus = {
+		id = VIC_against_the_atlantic
+		icon = GFX_focus_GER_shatter_usas_hegemony
+		x = 2
+		y = 2
+		offset = {
+			x = 0
+			y = 0
+		}
+		prerequisite = { 
+			focus = VIC_no_more_humiliation
+			focus = VIC_Obedience
+		}
+		mutually_exclusive = { focus = VIC_anti_bolshevist_volunteers }
+
+		relative_position_id = VIC_emergency_powers_to_petain
+		
+		cost = 2
+		ai_will_do = {
+			factor = 1
+		}
+		available = {
+		}
+		
+		bypass = {
+
+		}
+		cancel_if_invalid = yes
+		continue_if_invalid = no
+		available_if_capitulated = no
+		completion_reward = {
+			add_ideas = VIC_against_the_atlantic
+		}
+	}
+
 	focus = {
 		id = VIC_rebuild_the_military
 		icon = GFX_goal_generic_construct_mil_factory
@@ -771,6 +945,7 @@
 					instant_build = yes
 				}
 			}
+			add_ideas = VIC_short_term_investments_idea
 		}
 	}
 
@@ -901,7 +1076,6 @@
 					instant_build = yes
 				}
 			}
-			add_ideas = VIC_short_term_investments_idea
 		}
 	}
 
@@ -939,7 +1113,7 @@
 			}
 			add_timed_idea = {
 				idea = VIC_long_term_investments_idea
-				days = 365
+				days = 180
 			}
 		}
 	}
@@ -966,6 +1140,14 @@
 
 		completion_reward = {
 			21 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			25 = {
 				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = industrial_complex
@@ -1005,6 +1187,14 @@
 					instant_build = yes
 				}
 			}
+			25 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
 		}
 	}
 
@@ -1035,10 +1225,10 @@
 		completion_reward = {
 
 			21 = {
-				add_extra_state_shared_building_slots = 3
+				add_extra_state_shared_building_slots = 4
 				add_building_construction = {
 					type = arms_factory
-					level = 3
+					level = 4
 					instant_build = yes
 				}
 			}
@@ -1303,20 +1493,30 @@
 		prerequisite = { focus = VIC_rival_the_royal_fleet }
 		relative_position_id = VIC_rival_the_royal_fleet
 		available = {
-			GER = { has_full_control_of_state  = 806 }
+			OR = {
+				AND = {
+					GER = { has_full_control_of_state  = 806 }
+					GER = { has_full_control_of_state  = 19 }
+				}
+				has_completed_focus = VIC_end_the_occupation
+			}
 		}
 		
-		bypass = {
-			ROOT = { has_full_control_of_state  = 806 }
-		}
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		completion_reward = {
 			ROOT = { transfer_state  = 806 }
+			ROOT = { transfer_state  = 19 }
 			806 = {
 				add_building_construction = {
-					type = naval_base
+					type = dockyard
 					level = 3
-					province = 9710
+					instant_build = yes
+				}
+			}
+			19 = {
+				add_building_construction = {
+					type = dockyard
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -2279,6 +2479,7 @@
 		}
 		search_filters = { FOCUS_FILTER_RESEARCH }
 		completion_reward = {
+			add_ideas = VIC_look_outwards
 			add_mastery = {
 				amount = 100
 				track = infantry
@@ -2376,7 +2577,7 @@
 		completion_reward = {
 			add_tech_bonus = {
 				name = doc_bonus
-				bonus = 0.50
+				bonus = 1
 				uses = 2
 				category = armor
 			}
@@ -2725,8 +2926,8 @@
 		completion_reward = {
 			add_tech_bonus = {
 				name = doc_bonus
-				bonus = 0.5
-				uses = 1
+				bonus = 1.5
+				uses = 2
 				category = artillery
 			}
 		}
@@ -2862,8 +3063,9 @@
 		}
 		search_filters = { FOCUS_FILTER_STABILITY }
 		completion_reward = {
+			add_political_power = 50
+			add_ideas = VIC_deported_french_jews
 			add_opinion_modifier = { target = GER modifier = huge_increase }
-			add_political_power = 75
 		}
 	}
 

@@ -38,7 +38,7 @@ NDefines.NDiplomacy.EMBARGO_NEIGHBOUR_AI_WEIGHT = -25					-- AI weight for diffe
 -- NDefines.NDiplomacy.NAVAL_BLOCKADE_THREAT_THRESHOLD = 20				-- Target-generated threat threshold to allow naval blockade
 
 NDefines.NCountry.DEFAULT_COASTAL_PROTECTION_STABILITY = 0.0		-- Default stability when the coastal states are fully protected
-NDefines.NCountry.EVENT_PROCESS_OFFSET = 40						-- Events are checked every X day per country or state (1 is ideal but CPU heavy)
+NDefines.NCountry.EVENT_PROCESS_OFFSET = 210000					-- Events are checked every X day per country or state (all MTTH events converted to on_actions)
 NDefines.NCountry.BASE_RESEARCH_SLOTS = 4						-- Base number of research slots per country.
 NDefines.NCountry.AIR_SCORE_MULTIPLIER = 0.0						-- Based on number of planes (which is typically a lot).
 NDefines.NCountry.BASE_STABILITY_WAR_FACTOR = -0.15				-- Default stability war factor
@@ -135,13 +135,15 @@ NDefines.NProduction.CAPITULATE_FUEL_RATIO = 0.75 -- How much fuel will be trans
 NDefines.NProduction.MIN_FIELD_TO_TRAINING_MANPOWER_RATIO = 0.65	-- Ratio which % of army in field can be trained
 NDefines.NProduction.INFRA_MAX_CONSTRUCTION_COST_EFFECT = 0.7 		-- Building in a state with higher infrastructure will reduce the cost of shared buildings.
 NDefines.NProduction.PRODUCTION_RESOURCE_LACK_PENALTY = -0.01			-- Penalty decrease while lack of resource per factory
-NDefines.NProduction.LICENSE_IC_COST_YEAR_INCREASE = 0.25					-- IC cost equipment for every year of equipment after 1936
+NDefines.NProduction.BASE_LICENSE_IC_COST = 0							-- Base IC cost for licensing equipment
+NDefines.NProduction.LICENSE_IC_COST_YEAR_INCREASE = 0					-- IC cost equipment for every year of equipment after 1936
 NDefines.NProduction.LICENSE_EQUIPMENT_BASE_SPEED = -0.20				-- base MIC speed modifier for licensed equipment
 NDefines.NProduction.LICENSE_EQUIPMENT_TECH_SPEED_MAX_YEARS = 3			-- Maximum years for MIC speed modifier
 NDefines.NProduction.LICENSE_EQUIPMENT_SPEED_NOT_FACTION = -0.20		-- MIC speed modifier for licensed equipment for not being in faction
-NDefines.NProduction.EQUIPMENT_MODULE_ADD_XP_COST = 1.0					-- XP cost for adding a new equipment module in an empty slot when creating an equipment variant.
-NDefines.NProduction.EQUIPMENT_MODULE_REPLACE_XP_COST = 2.0				-- XP cost for replacing one equipment module with an unrelated module when creating an equipment variant.
-NDefines.NProduction.EQUIPMENT_MODULE_CONVERT_XP_COST = 1.0				-- XP cost for converting one equipment module to a related module when creating an equipment variant.
+NDefines.NProduction.EQUIPMENT_MODULE_ADD_XP_COST = 0.0					-- XP cost for adding a new equipment module in an empty slot when creating an equipment variant.
+NDefines.NProduction.EQUIPMENT_MODULE_REPLACE_XP_COST = 0.0				-- XP cost for replacing one equipment module with an unrelated module when creating an equipment variant.
+NDefines.NProduction.EQUIPMENT_MODULE_CONVERT_XP_COST = 0.0				-- XP cost for converting one equipment module to a related module when creating an equipment variant.
+NDefines.NProduction.EQUIPMENT_MODULE_REMOVE_XP_COST = 0.0				-- XP cost for removing an equipment module and leaving the slot empty when creating an equipment variant.
 NDefines.NProduction.BASE_NAVAL_EQUIPMENT_CONVERSION_IC_COST_FACTOR = 0.05		-- Fraction of the hull industry cost which is always included in the refitting cost.
 NDefines.NProduction.MIN_NAVAL_EQUIPMENT_CONVERSION_RESOURCE_COST_FACTOR = 0.05	-- Minimum fraction of a naval equipment's strategic resource cost that any conversion will cost.
 NDefines.NProduction.BASE_LAND_EQUIPMENT_CONVERSION_IC_COST_FACTOR = 0.2		-- Fraction of the chassis industry cost which is always included in the conversion cost.
@@ -180,13 +182,21 @@ NDefines.NMilitary.INFRASTRUCTURE_MOVEMENT_SPEED_IMPACT = -0.03	-- speed penalty
 NDefines.NMilitary.CORPS_COMMANDER_DIVISIONS_CAP = 40			-- how many divisions a corps commander is limited to. 0 = inf < 0 = blocked
 NDefines.NMilitary.FIELD_MARSHAL_DIVISIONS_CAP = 40			-- how many divisions a field marshall is limited to. 0 = inf < 0 = blocked
 NDefines.NMilitary.RECON_SKILL_IMPACT = 4 -- how many skillpoints is a recon advantage worth when picking a tactic.
+NDefines.NMilitary.COMMANDER_ABILITY_BASE_RANGE = 20 -- Commander ability radius
+NDefines.NMilitary.COMMS_MAX_DISTANCE = 4            -- Maximum HQ communication distance
 NDefines.NMilitary.MAX_DIVISION_BRIGADE_HEIGHT = 4		-- Max height of regiments in division designer.
 NDefines.NMilitary.MAX_DIVISION_BRIGADE_WIDTH = 5
-NDefines.NMilitary.MAX_DIVISION_SUPPORT_WIDTH = 2			-- Max width of support in division designer.
-NDefines.NMilitary.MAX_DIVISION_SUPPORT_HEIGHT = 4		-- Max height of support in division designer.
-NDefines.NMilitary.BASE_DIVISION_BRIGADE_GROUP_COST = 8 	--Base cost to unlock a regiment slot
-NDefines.NMilitary.BASE_DIVISION_BRIGADE_CHANGE_COST = 2	--Base cost to change a regiment column.
-NDefines.NMilitary.BASE_DIVISION_SUPPORT_SLOT_COST = 4 	--Base cost to unlock a support slot
+NDefines.NMilitary.MAX_DIVISION_SUPPORT_WIDTH = 1			-- Max width of support in division designer.
+NDefines.NMilitary.MAX_DIVISION_SUPPORT_HEIGHT = 6		-- Max height of support in division designer. 
+NDefines.NMilitary.MAX_HQ_BATTALION_WIDTH = 4			-- Army HQ designer: battalion grid columns (Oak-style layout)
+NDefines.NMilitary.MAX_HQ_BATTALION_HEIGHT = 4			-- Army HQ designer: battalion grid rows
+NDefines.NMilitary.MAX_HQ_SUPPORT_WIDTH = 1			-- Army HQ designer: support columns
+NDefines.NMilitary.MAX_HQ_SUPPORT_HEIGHT = 4			-- Army HQ designer: support slots
+NDefines.NMilitary.MAX_HQ_REGIMENTAL_SUPPORT_WIDTH = 0		-- Army HQ designer: no regimental support (Oak)
+NDefines.NMilitary.MAX_HQ_REGIMENTAL_SUPPORT_HEIGHT = 0
+NDefines.NMilitary.BASE_DIVISION_BRIGADE_GROUP_COST = 0 	--Base cost to unlock a regiment slot
+NDefines.NMilitary.BASE_DIVISION_BRIGADE_CHANGE_COST = 0	--Base cost to change a regiment column.
+NDefines.NMilitary.BASE_DIVISION_SUPPORT_SLOT_COST = 0 	--Base cost to unlock a support slot
 NDefines.NMilitary.MAX_ARMY_EXPERIENCE = 999			--Max army experience a country can store
 NDefines.NMilitary.MAX_NAVY_EXPERIENCE = 999			--Max navy experience a country can store
 NDefines.NMilitary.MAX_AIR_EXPERIENCE = 999				--Max air experience a country can store
@@ -258,7 +268,7 @@ NDefines.NMilitary.ENCIRCLED_DISBAND_MANPOWER_FACTOR = 0       -- percentage of 
 NDefines.NMilitary.LOW_ORG_FOR_ATTACK = 0.5                      -- at what org % we start affecting speed when doign hostile moves. scales down ZERO_ORG_MOVEMENT_MODIFIER
 NDefines.NMilitary.PLANNING_DECAY = 0.02
 --NDefines.NMilitary.PLAYER_ORDER_PLANNING_DECAY = 0.1				-- Amount of planning lost due to player manual order
-NDefines.NMilitary.PLANNING_MAX = 0.2                           	-- can get more from techs
+NDefines.NMilitary.PLANNING_MAX = 0.1                           	-- can get more from techs
 NDefines.NMilitary.CIVILWAR_ORGANIZATION_FACTOR = 0.4			  	-- Multiplier of org for both sides when civilwar.	
 NDefines.NMilitary.PLAN_MIN_AUTOMATED_EMPTY_POCKET_SIZE = 5		-- The battle plan system will only automatically attack provinces in pockets that has no resistance and are no bigger than these many provinces
 NDefines.NMilitary.PLAN_SPREAD_ATTACK_WEIGHT = 5.0				-- The higher the value the less it should crowd provinces with multiple attacks.
@@ -437,13 +447,16 @@ NDefines.NAir.AIR_WING_FLIGHT_SPEED_MULT = 0.02					-- Global speed multiplier f
 NDefines.NAir.AIR_WING_XP_LOSS_REDUCTION_OVER_FRIENDLY_TERRITORY_FACTOR = 0.2 --Reduction on XP loss over friendly territory
 
 
-NDefines.NAir.DISRUPTION_FACTOR = 4.0									-- multiplier on disruption damage to scale its effects on planes
+NDefines.NAir.DISRUPTION_FACTOR = 4 -- multiplier on disruption damage to scale its effects on planes
+
+-- NDefines.NAir.AIR_SUPERIORITY_FOR_FRIENDLY_CAS_RATIO = 1.0 -- Demand at least this proportion of our cas planes as air superiority regardless of other needs
+
 -- NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 500.0						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.DISRUPTION_SPEED_FACTOR = 1.5
 NDefines.NAir.DISRUPTION_AGILITY_FACTOR = 1.0
 NDefines.NAir.DISRUPTION_ATTACK_FACTOR = 1.0
 NDefines.NAir.DISRUPTION_DETECTION_FACTOR = 1.0
-NDefines.NAir.ESCORT_FACTOR = 5
+NDefines.NAir.ESCORT_FACTOR = 5.85
 NDefines.NAir.ESCORT_SPEED_FACTOR = 1.0
 NDefines.NAir.ESCORT_AGILITY_FACTOR = 2.0
 NDefines.NAir.ESCORT_ATTACK_FACTOR = 2.0
@@ -866,7 +879,7 @@ NDefines.NDoctrines.THEATER_COMMANDER_UNITS_MASTERY_GAIN_FACTOR_PER_SKILL = 0.01
 ----- SUBMOD DEFINES -----
 --------------------------
 
-NDefines.NGame.GAME_SPEED_SECONDS = { 2000.0, 0.25, 0.2, 0.1, 0.0 } -- game speeds for each level. Must be 5 entries with last one 0 for unbound
+NDefines.NGame.GAME_SPEED_SECONDS = { 2000.0, 0.24, 0.225, 0.125, 0.0 } -- game speeds for each level. Must be 5 entries with last one 0 for unbound
 NDefines.NGame.COMBAT_LOG_MAX_MONTHS = 12
 NDefines.NDiplomacy.VOLUNTEERS_DIVISIONS_REQUIRED = 0	-- This many divisons are required for the country to be able to send volunteers.
 NDefines.NProduction.DEFAULT_MAX_NAV_FACTORIES_PER_LINE = 20
@@ -923,7 +936,7 @@ NDefines.NIntel.STATIC_INTEL_SOURCE_INTEL_NETWORK_MAXIMUMS = { 40.0, 40.0, 40.0,
 NDefines.NIndustrialOrganisation.MAX_FUNDS_FROM_MANUFACTURER_PER_DAY = 0  -- Max funds generated per manufacturer per day. Set to 0 for no Maximum. (Vanilla 100)
 -- NDefines.NIndustrialOrganisation.ENABLE_TASK_CAPACITY = false -- Enable limited task capacity for MIOs
 -- NDefines.NIndustrialOrganisation.DEFAULT_INITIAL_TASK_CAPACITY = 5			-- Default start task capacity for each MIO (may be overriden in DB)
-NDefines.NMilitary.EQUIPMENT_COMBAT_LOSS_FACTOR = 0.50	 	   -- % of equipment lost to strength ratio in combat so some % is returned if below 1
+NDefines.NMilitary.EQUIPMENT_COMBAT_LOSS_FACTOR = 0.5 	   -- % of equipment lost to strength ratio in combat so some % is returned if below 1
 NDefines.NMilitary.COMMANDER_LEVEL_UP_STAT_COUNT = 0
 NDefines.NDoctrines.TRAINING_MASTERY_GAIN_FACTOR = 0				-- How much training contributes to doctrine mastery relative to combat/missions
 -- NDefines.NDoctrines.MASTERY_BANK_CONVERSION_RATE = 0.3 				-- The rate at which mastery gained when a track is finished or empty is "banked"
@@ -946,7 +959,7 @@ NDefines.NMilitary.TRAINING_MAX_LEVEL = 8
 NDefines.NMilitary.DEPLOY_TRAINING_MAX_LEVEL = 6
 NDefines.NMilitary.ARMY_EXP_BASE_LEVEL = 6
 -- NDefines.NMilitary.TRAINING_EXPERIENCE_SCALE = 80.0
-NDefines.NMilitary.UNIT_EXP_LEVELS = { 0.09, 0.18, 0.27, 0.36, 0.45, 0.54, 0.63, 0.72, 0.83, 0.95 }		-- Experience needed to progress to the next level
+NDefines.NMilitary.UNIT_EXP_LEVELS = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.89, 0.99 }		-- Experience needed to progress to the next level
 NDefines.NMilitary.EXPERIENCE_COMBAT_FACTOR = 0.05
 
 -------------------------    
@@ -1024,16 +1037,40 @@ NDefines.NNavy.SUBMARINE_ESCAPE_RATIOS = {
 
 NDefines.NRailwayGun.BASE_CAPTURE_CHANCE = 0						-- The base chance of railway guns being captured during an overrrun. Will be further modified by the equipment capture chance of the capturing unit.
 
---------------------------	
+--------------------------
 --- SUBMOD PERFORMANCE ---
 --------------------------
 
 NDefines.NGame.TRADE_ROUTE_RECALCULATE_FREQUENCY_DAYS = 30
 NDefines.NCountry.INTERPOLATED_FRONT_STEPS_SHORT = 2
 NDefines_Graphics.NGraphics.MAPICON_GROUP_PASSES = 10
-NDefines.NAI.AI_UPDATE_ROLES_FREQUENCY_HOURS = 480
+NDefines.NAI.AI_UPDATE_ROLES_FREQUENCY_HOURS = 48000000 -- vanilla 480, current value from horst
+NDefines.NAI.AI_NAVAL_GOALS_UPDATE_FREQUENCY_DAYS = 7000 -- vanilla 7
+NDefines.NAI.RAIDS_ENABLE_AI = false -- vanilla true
 NDefines.NGame.LAG_DAYS_FOR_LOWER_SPEED = 250
 NDefines.NGame.LAG_DAYS_FOR_PAUSE = 200
 
 NDefines.NAI.UPDATE_SUPPLY_MOTORIZATION_FREQUENCY_HOURS = 8760     -- Check if activating motorization would improve supply situation this often.
-NDefines.NAI.DIVISION_SUPPLY_RATIO_TO_MOTORIZE = 0						-- If supply ratio is less than this, consider motorizing any applicable nearby supply hub
+NDefines.NAI.DIVISION_SUPPLY_RATIO_TO_MOTORIZE = 0
+
+NDefines.NNavy.NAVAL_COMBAT_RESULT_TIMEOUT_YEARS = 0				-- clear naval combat results immediately instead of holding 2 years (save/memory bloat)
+NDefines.NNavy.CONVOY_LOSS_HISTORY_TIMEOUT_MONTHS = 1				-- down from vanilla 24; no UI shows old convoy losses, just bloats saves
+NDefines.NCountry.POPULATION_YEARLY_GROWTH_BASE = 0				-- removes per-country yearly population recalc; reduces desync risk in MP
+NDefines.NMilitary.GENERATE_AI_DIV_COMMAND_HISTORY_ENTRIES = false	-- stops AI division command history from bloating saves
+NDefines.NMilitary.HISTORICAL_ORDER_NAME_EXHAUSTION = false		-- avoids tracking which order names have been used
+
+NDefines_Graphics.NAirGfx.MAX_MISSILE_BOMBING_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_BOMBING_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_PATROL_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_DOGFIGHTS_SCENARIOS = 0
+NDefines_Graphics.NAirGfx.MAX_TRANSPORT_SCENARIOS = 0
+
+NDefines_Graphics.NGraphics.BLOOM_WIDTH = 0
+NDefines_Graphics.NGraphics.BLOOM_SCALE = 0
+NDefines_Graphics.NGraphics.BRIGHT_THRESHOLD = 0
+NDefines_Graphics.NGraphics.EMISSIVE_BLOOM_STRENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_SHADOWS_CUTOFF = 0
+NDefines_Graphics.NGraphics.DRAW_SHADOWS_FADE_LENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_FOW_CUTOFF = 0
+NDefines_Graphics.NGraphics.DRAW_FOW_FADE_LENGTH = 0
+NDefines_Graphics.NGraphics.DRAW_REFRACTIONS_CUTOFF = 0						-- If supply ratio is less than this, consider motorizing any applicable nearby supply hub

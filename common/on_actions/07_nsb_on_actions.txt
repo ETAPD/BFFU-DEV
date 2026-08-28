@@ -1,59 +1,8 @@
 on_actions = {
 	#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
 	on_state_control_changed = {
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			FROM.FROM = {
-		# 				is_core_of = SOV
-		# 			}
-		# 			FROM = {
-		# 				tag = SOV
-		# 			}
-		# 		}
-		# 		SOV = { set_country_flag = achievement_lost_state }
-		# 	}
-		# }
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			FROM.FROM = {
-		# 				is_core_of = GER
-		# 				NOT = { #these two cores are given to germany in the Danzig or War event, but the states are not transfered immediately
-		# 					state = 85
-		# 					state = 807
-		# 					state = 8 #Luxembourg & Alsace
-		# 					state = 28
-		# 				}
-		# 			}
-		# 			has_global_flag = achievement_france_surrender
-		# 			NOT = { tag = SOV }
-		# 			NOT = { tag = GER }#in case Germany recaptures a state
-		# 		}
-		# 		set_global_flag = GER_lost_core_state
-		# 	}
-		# }
+		
 		effect = {
-			# IF = {
-			# 	limit = {
-			# 		FROM.FROM = { 
-			# 			state = 742 
-			# 			NOT = { has_state_flag = dushanbe_flag }
-			# 		}
-			# 		OR = {
-			# 			ROOT = { original_tag = TAJ }
-			# 			ROOT = { original_tag = BUK }
-			# 		}
-			# 	}
-			# 	742 = { 
-			# 		set_state_name = SOV_Dushanbe 
-			# 		set_state_flag = dushanbe_flag
-			# 	}
-			# 	set_province_name = {
-			# 		id = 1384
-			# 		name = SOV_Dushanbe
-			# 	}
-			# }
 			if = {
 				limit = {
 					FROM.FROM = { state = 85 }
@@ -82,30 +31,6 @@ on_actions = {
 					}
 				}
 			}
-			# if = {
-			# 	limit = {
-			# 		divisions_in_state = { state = FROM.FROM size > 0 }
-			# 		FROM.FROM = { 
-			# 			NOT = { 
-			# 				AND = { 
-			# 					has_state_flag = already_sabotaged_flag
-			# 					is_core_of = controller # Should solve most instances of peaceful annexation
-			# 				}
-			# 			}
-			# 		}
-			# 		FROM = {
-			# 			original_tag = POL
-			# 			has_completed_focus = POL_sabotage_polish_industry
-			# 			NOT = { 
-			# 				has_country_flag = GER_sent_annex_proposal_flag # To solve GER European Confederation
-			# 			}
-			# 		}
-			# 	}
-			# 	FROM.FROM = { 
-			# 		set_state_flag = poland_state_withdrawn
-			# 		state_event = { id = poland.23 trigger_for = controller }
-			# 	}
-			# }
 			if = {
 				limit = {
 					FROM.FROM = { state = 119 }
@@ -125,30 +50,6 @@ on_actions = {
 					}
 					reset_province_name = 385
 				}
-				# if = {
-				# 	limit = {
-				# 		ROOT = { original_tag = NIR }
-				# 	}
-				# 	random_list = { #Difficult to say if an independent Northern Ireland would call it Derry or Londonderry, let's let the dice gods decide.
-				# 		1 = {
-				# 			set_province_name = {
-				# 				id = 385
-				# 				name = "Derry"
-				# 			}
-				# 			modifier = {
-				# 				factor = 0
-				# 				is_subject_of = ENG
-				# 			}
-				# 		}
-				# 		1 = {
-				# 			reset_province_name = 385
-				# 			modifier = {
-				# 				factor = 0
-				# 				is_subject_of = IRE
-				# 			}
-				# 		}
-				# 	}
-				# }
 			}
 		}
 
@@ -228,137 +129,6 @@ on_actions = {
 			}
 		}
 
-		#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
-		#SOVIET CIVIL WAR
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			has_global_flag = SOV_soviet_civil_war
-		# 			check_variable = { SOV_civil_war_months > 1 }
-		# 			SOS = { surrender_progress < 0.85 }
-		# 			ROOT = { tag = SOV }
-		# 			FROM = { tag = SOS }
-		# 			FROM.FROM = { 
-		# 				NOT = { has_state_flag = captured_by_opposition_flag }
-		# 				is_core_of = SOV 
-		# 			}
-		# 		}
-		# 		FROM.FROM = { set_state_flag = captured_by_opposition_flag } # Only first capture
-		# 		random_list = {
-		# 			# Army Defections 
-		# 			10 = { 
-		# 				modifier = {
-		# 					factor = 0
-		# 					SOV = { has_country_flag = SOV_defections_army_flag }
-		# 				}
-		# 				modifier = {
-		# 					factor = 2
-		# 					FROM.FROM = { check_variable = { state_strategic_value > 19 } }
-		# 				}
-		# 				SOV = {
-		# 					set_country_flag = SOV_defections_army_flag
-		# 					FROM.FROM = { 
-		# 						set_variable = { SOV.SOV_defections_army_state = THIS.id }
-		# 					}
-		# 					country_event = {
-		# 						id = NSB_soviet_civil_war_common.125
-		# 						hours = 1
-		# 					}
-		# 				}
-		# 			}
-		# 			# Capture Stockpile
-		# 			10 = { 
-		# 				modifier = {
-		# 					factor = 0
-		# 					SOV = { has_country_flag = SOV_stockpiles_flag }
-		# 				}
-		# 				SOV = {
-		# 					set_country_flag = SOV_stockpiles_flag
-		# 					FROM.FROM = { 
-		# 						set_variable = { SOV.SOV_captured_stockpile_state = THIS.id }
-		# 					}
-		# 					country_event = {
-		# 						id = NSB_soviet_civil_war_common.126
-		# 						hours = 1
-		# 					}
-		# 				}
-		# 			}
-		# 			# Navy Defections 
-		# 			10 = { 
-		# 				modifier = {
-		# 					factor = 0
-		# 					SOV = { has_country_flag = SOV_defections_navy_flag }
-		# 				}
-		# 				modifier = {
-		# 					factor = 0
-		# 					check_variable = { SOS.num_ships < 10 } # No point if number of ships too low
-		# 				}
-		# 				modifier = {
-		# 					factor = 0
-		# 					FROM.FROM = { naval_base < 1 } # Only happening when capturing port areas
-		# 				}
-		# 				modifier = {
-		# 					factor = 4
-		# 					FROM.FROM = { naval_base > 4 } # Very likely when capturing major port 
-		# 				}
-						
-		# 				SOV = {
-		# 					set_country_flag = SOV_defections_navy_flag
-		# 					FROM.FROM = { 
-		# 						set_variable = { SOV.SOV_defections_navy_state = THIS.id }
-		# 					}
-		# 					country_event = {
-		# 						id = NSB_soviet_civil_war_common.127
-		# 						hours = 1
-		# 					}
-		# 				}
-
-		# 			}
-		# 			# Civilian Unrest
-		# 			5 = { 
-		# 				modifier = {
-		# 					factor = 0
-		# 					SOV = { has_country_flag = SOV_civilian_unrest_flag }
-		# 				}
-		# 				modifier = {
-		# 					factor = 0
-		# 					check_variable = { SOS.SOV_surrender_modifier < -0.8 } # don't win this way
-		# 				}
-						
-		# 				SOV = {
-		# 					set_country_flag = SOV_civilian_unrest_flag
-		# 					FROM.FROM = { 
-		# 						set_variable = { SOV.SOV_civilian_unrest_state = THIS.id }
-		# 					}
-		# 					country_event = {
-		# 						id = NSB_soviet_civil_war_common.128
-		# 						hours = 1
-		# 					}
-		# 				}
-
-		# 			}	
-
-		# 			# No effect this time
-		# 			20 = {
-		# 				modifier = {
-		# 					factor = 0
-		# 					FROM.FROM = { check_variable = { state_strategic_value > 80 } }
-		# 				}
-		# 				modifier = {
-		# 					factor = 1.5
-		# 					FROM.FROM = { check_variable = { state_strategic_value < 10 } }
-		# 				}
-		# 				modifier = {
-		# 					factor = 2 # Exiles need some more help I guess. 
-		# 					SOV = { SOV_is_exiles = no }
-		# 				}
-
-		# 			}
-
-		# 		}
-		# 	}
-		# }
-
 		#GERMANY - If Soviet Imports is active, remove it
 		effect = {
 			if = {
@@ -370,27 +140,6 @@ on_actions = {
 			}
 		}
 
-		#SOVIET - Nikolay Kuznetsov becomes an operative (Ukrainian state occupied)
-		# effect = { #ROOT is new controller #FROM is old controller #FROM.FROM is state ID
-		# 	if = {
-		# 		limit = {
-		# 			has_dlc = "La Resistance"
-		# 			FROM.FROM = {
-		# 				is_core_of = UKR
-		# 				NOT = { is_owned_by = ROOT }
-		# 			}
-		# 			FROM = {
-		# 				original_tag = SOV
-		# 				has_government = communism
-		# 			}
-		# 			ROOT = { has_war_with = SOV }
-		# 		}
-		# 		FROM = {
-		# 			set_variable = { SOV_invader_of_ukraine = ROOT } #Store invader in SOV for loc purposes in the event below
-		# 			country_event = { id = NSB_soviet_great_patriotic_war.01 days = 10 random_days = 30 }
-		# 		}
-		# 	}
-		# }
 	}
 	#ROOT is winner #FROM gets annexed - This will also fire on_annex
 	on_civil_war_end = {
@@ -523,12 +272,6 @@ on_actions = {
 						add_dynamic_modifier = {
 							modifier = international_city_2
 						}
-						# force_enable_resistance = { 
-						# 	clear = no
-						# 	occupier = POL
-						# 	occupied = DNZ
-						# }
-						#start_resistance = DNZ
 						set_resistance = 40
 						set_compliance = 30
 					}
@@ -695,19 +438,6 @@ on_actions = {
 							}
 						}
 					}
-					# else_if = {
-					# 	limit = {
-					# 		FROM = { has_idea = superior_firepower_academy_spirit } #done here instead of the trait file to avoid some oddness with generating assignable traits under certain circumstances, makes it easier to control probabilities
-					# 	}
-					# 	root = {
-					# 		random_list = {
-					# 			50 = { 
-					# 				add_unit_leader_trait = engineer_officer
-					# 			}
-					# 			50 = {}
-					# 		}
-					# 	}
-					# } 
 					else_if = {
 						limit = {
 							FROM = { has_idea = theatre_training_spirit } #done here instead of the trait file to avoid some oddness with generating assignable traits under certain circumstances, makes it easier to control probabilities
@@ -722,41 +452,6 @@ on_actions = {
 								}
 								50 = {}
 							}
-						}
-					}
-				}
-				else_if = {
-					limit = {
-						FROM = { has_idea = bold_attack_spirit } #done here instead of the trait file to avoid some oddness with generating assignable traits under certain circumstances, makes it easier to control probabilities
-					}
-					root = {
-						random_list = {
-							25 = { 
-								add_unit_leader_trait = trait_reckless
-							}
-							25 = { 
-								add_unit_leader_trait = harsh_leader
-							}
-							50 = {}
-						}
-					}
-				}
-				else_if = {
-					limit = {
-						FROM = { has_idea = tenacious_defense_spirit } #done here instead of the trait file to avoid some oddness with generating assignable traits under certain circumstances, makes it easier to control probabilities
-					}
-					root = {
-						random_list = {
-							16 = { 
-								add_unit_leader_trait = old_guard
-							}
-							16 = { 
-								add_unit_leader_trait = trait_cautious
-							}
-							17 = { 
-								add_unit_leader_trait = trait_engineer
-							}
-							50 = {}
 						}
 					}
 				}
@@ -843,10 +538,6 @@ on_actions = {
 				GER = { #Stop democratic Germany from doing Anschluss and awakening their ambition of global domination
 					uncomplete_national_focus = {
 						focus = GER_remilitarize_the_rhineland
-						uncomplete_children = yes
-					}
-					uncomplete_national_focus = {
-						focus = GER_oppose_hitler
 						uncomplete_children = yes
 					}
 				}
@@ -949,7 +640,7 @@ on_actions = {
 								target = PREV
 								transfer_troops = yes
 							}
-							country_event = { id = baltic.8 } #This lets the player know that they were given a baltic state. 
+							# country_event = { id = baltic.8 } # neutralized: baltic.8 is undefined; BALTIC_events.19 (above) already notifies the player. 
 						}
 					}
 				}
@@ -975,26 +666,11 @@ on_actions = {
 				}
 				set_country_flag = SOV_fourth_five_year_plan_available_flag
 				clr_country_flag = SOV_great_patriotic_war_flag
-				complete_national_focus = SOV_restoration_and_development
 			}
 		}
 	}
 
-	#ROOT = attacking side
-	#FROM = defending side
-	#fired when two countries end up at war with each other (on_war is fired when a country goes to war against anyone and is not fired again when it enters war against another country unless it went to peace first)
 	on_war_relation_added = { # ---> Fires in 2nd place (1st is on_declare_war) -> This one is triggered ALWAYS 
-		# effect = {
-		# 	if = {
-		# 		limit = {
-		# 			original_tag = GER
-		# 			FROM = {
-		# 				original_tag = POL
-		# 			}
-		# 		}
-		# 		SOV = { set_country_flag = achievement_GER_attacked_POL_first }
-		# 	}
-		# }
 		effect = { #SOV - Great Patriotic War and Third Five Year Plan
 			if = {
 				limit = {
@@ -1055,7 +731,7 @@ on_actions = {
 				}
 				if = {
 					limit = {
-						SOV = { has_completed_focus = SOV_ural_factories}
+						SOV = { has_completed_focus = SOV_war_mobilisation}
 					}
 					SOV = { country_event = soviet.2222 }
 				}
@@ -1142,7 +818,8 @@ on_actions = {
 					AND = {
 						FROM = { original_tag = FIN }
 						ROOT = { original_tag = SOV }
-						SOV = { has_completed_focus = SOV_claim_bessarabia}
+						SOV = { has_completed_focus = SOV_pol_invade_bessarabia}
+						GER = { has_war_with = SOV }
 					}
 				}
 				FIN = {
@@ -1238,7 +915,7 @@ on_actions = {
 						SOV = { has_war_with = FIN }
 					}
 					remove_ideas = {
-						FIN_the_lone_wolf
+						FIN_the_lone_wolf_spirit
 					}
 					GER = {
 						add_to_faction = FIN
@@ -1280,7 +957,7 @@ on_actions = {
 					limit = {
 						check_variable = { num_captures > 0}
 					}
-					log = "Japan has taken points: [?num_captures]"
+					#log = "Japan has taken points: [?num_captures]"
 					for_loop_effect = {
 						end = num_captures
 						PACIFIC_state_up = yes
@@ -1289,14 +966,14 @@ on_actions = {
 					limit = {
 						check_variable = { num_captures < 0}
 					}
-					log = "Japan has lost points: [?num_captures]"
+					#log = "Japan has lost points: [?num_captures]"
 					for_loop_effect = {
 						end = num_captures
 						PACIFIC_state_down = yes
 					}
 				} else = {
 					# Nothing taken
-					log = "The Pacific is Stable: [?num_captures]"
+					#log = "The Pacific is Stable: [?num_captures]"
 				}
 				# Initial Swap to Correct Modifier
 				for_each_scope_loop = {
@@ -1542,202 +1219,7 @@ on_actions = {
 		}
 	}
 
-	on_weekly_SOV = {
-		effect ={ #Weekly Paranoia modifiers
-			if = { #If other modifiers affect Paranoia, then use the same flag with different values, which will work as a multiplier
-				limit = {
-					has_country_flag = SOV_paranoia_system_active_flag
-					has_country_flag = SOV_paranoia_modifier_active_flag #Stalin's Paranoid leader trait
-				}
-				SOV_paranoia_modifier_increase_effect = yes
-			}
-		}
 
-		effect = { #Randomly Triggered Purges
-			if = {
-				limit = {
-					NOT = { has_country_flag = SOV_civil_war_triggered_flag } # check if Civil war has been triggered first TODO_THOMAS: remove if not using paranoia
-					has_country_flag = SOV_paranoia_system_active_flag
-				}
-				set_temp_variable = { SOV_temp_paranoia_days = SOV_medium_paranoia_days }
-				add_to_temp_variable = { SOV_temp_paranoia_days = SOV_high_paranoia_days }
-				#log = "Total Paranoia days = [?SOV_temp_paranoia_days]"
-
-				if = {
-					limit = {
-						check_variable = { SOV_temp_paranoia_days > 3 }
-						NOT = { has_country_flag = SOV_paranoia_conducting_inspection_flag } #Don't trigger a random purge if one is already going to be triggered from decision
-						SOV_paranoia_is_finishing_purge_focus = no #Don't trigger a random purge if one is already going to be triggered from focus
-						NOT = { has_country_flag = SOV_paranoia_random_purge_cooldown_from_focus_flag } #Wait 15 days after a purge has been triggered from focus
-						NOT = { has_country_flag = SOV_paranoia_random_purge_cooldown_from_decision_flag } #Wait 15 days after a purge has been triggered from decision
-					}
-					random_list = {
-						100 = { # Nothing Happens
-							modifier = {
-								factor = 5
-								check_variable = { SOV_paranoia_weekly_bucket < 400 }
-							}
-							modifier = {
-								factor = 0.75
-								check_variable = { SOV_paranoia_weekly_bucket > 500 }
-							}
-							#log = "Lucky you: No random purge this week"
-						}
-
-						100 = { # Regular Purge
-							modifier = {
-								factor = 0
-								check_variable = { SOV_medium_paranoia_days = 0 }
-							}
-							modifier = {
-								factor = 1.5
-								check_variable = { SOV_paranoia_weekly_bucket > 400 }
-							}
-							modifier = {
-								factor = 2
-								check_variable = { SOV_medium_paranoia_days > SOV_high_paranoia_days }
-							}
-							SOV_manage_a_regular_purge_effect = yes
-						}
-
-						100 = { #Great Purge
-							modifier = {
-								factor = 0
-								check_variable = { SOV_high_paranoia_days = 0 }
-							}
-							modifier = {
-								factor = 0.5
-								check_variable = { SOV_high_paranoia_days < 3 }
-							}
-							modifier = {
-								factor = 2
-								check_variable = { SOV_high_paranoia_days > SOV_medium_paranoia_days }
-							}
-							modifier = {
-								factor = 1.5
-								check_variable = { SOV_paranoia_weekly_bucket > 400 }
-							}
-
-							SOV_manage_a_great_purge_effect = yes
-						}
-					}
-				}
-
-				#CLEAN STUFF FOR NEXT WEEK
-				set_variable = { SOV_medium_paranoia_days = 0 }
-				set_variable = { SOV_high_paranoia_days = 0 }
-				set_variable = { SOV_paranoia_weekly_bucket = 0 }
-			}
-		}
-	}
-
-	on_daily_SOV = {
-		effect = {
-			if = {
-				limit = {
-					has_country_flag = { flag = SOV_last_purge_flag days > 15 }
-				}
-				add_to_variable = { SOV_paranoia_weekly_bucket = SOV_paranoia }
-				#log = "Added [?SOV_paranoia] Paranoia. Weekly BUCKET = [?SOV_paranoia_weekly_bucket]" #Debug 
-
-				if = { #MEDIUM PARANOIA LEVEL
-					limit = {
-						SOV_paranoia_is_medium_level = yes
-					}
-					add_to_variable = { SOV_medium_paranoia_days = 1 } #Used to randomize having a Great or a Regular purge (so that every day kinda counts)
-				}
-				else_if = { #HIGH PARANOIA LEVEL
-					limit = {
-						SOV_paranoia_is_high_level = yes
-					}
-					add_to_variable = { SOV_high_paranoia_days = 1 } #Used to randomize having a Great or a Regular purge (so that every day kinda counts)
-				}
-				#log = "Medium Paranoia days = [?SOV_medium_paranoia_days] // High Paranoia days = [?SOV_high_paranoia_days]" #Debug
-			}
-			else = {
-				#log = "NOT A PURGE WEEK" #Debug
-			}
-
-			### SOVIET CIVIL WAR TRIGGER
-			IF = {
-				limit = { 
-					SOV_is_opposition = yes # Don't test for Stalin
-					SOV_soviet_civil_war_not_started = yes # Only test before the war has started 
-					check_variable = { SOV_paranoia > 89}
-					is_ai = no # Slight cheat, but the ai needs some support
-				}
-				random_list = {
-					80 = { } # No effect
-					20 = { 
-						set_country_flag = SOV_civil_war_triggered_flag 
-						country_event = {
-							id = NSB_soviet_civil_war_common.003
-							hours = 0
-						}
-					}
-				}
-			}
-		}
-	}
-
-	on_monthly_SOV = { 
-		effect = { 
-			IF = {
-				limit = { has_global_flag = SOV_soviet_civil_war }
-				# nationalist uprisings 
-				IF = { 
-					limit = { 
-						check_variable = { SOV.SOV_civil_war_months > 2 }
-						SOV = { SOV_is_exiles = yes } # currently exiles only
-					}
-					SOV = {
-						country_event = {
-							id = NSB_soviet_nationalist.000
-							days = 2
-							random_days = 4
-						}
-					}
-				}
-				add_to_variable = { SOV.SOV_civil_war_months = 1 } # Civil war counter
-			}
-			# Check for leader desertions
-			IF = {
-				limit = {
-					ROOT = { has_global_flag = SOV_soviet_civil_war }
-
-					SOS = {
-						any_unit_leader = {
-							has_trait = trait_SOV_cowed_by_stalin_army
-							NOT = { has_trait = trait_SOV_stalinist }
-						}
-					}
-				}
-				SOS = {
-					random_unit_leader = {
-						limit = {
-							has_trait = trait_SOV_cowed_by_stalin_army
-							NOT = { has_trait = trait_SOV_stalinist }
-						}
-						set_variable = { SOS.SOV_general_to_desert = THIS }
-					}
-					
-				}
-				random_list = {
-					25 = {
-				        # defections
-				        country_event = {
-				        	id = NSB_soviet_communist_civil_war.010
-				        	hours = 1
-				        }
-				    }
-					75 = {
-				        # Nothing happens
-				    }
-				}
-			}
-		} 
-	}
-	
 	#FROM is faction leader on join faction requests. THIS DOES NOT FIRE ON ADD_TO_FACTION EFFECT! USE ON_OFFER_JOIN_FACTION!
 	on_join_faction = {
 		effect = {
@@ -1764,51 +1246,6 @@ on_actions = {
 			}
 		}
 	}
-
-	#FROM is country getting invited.
-	on_offer_join_faction = {
-		effect = {
-			if = {
-				limit = {
-					FROM = { tag = SIK }
-					original_tag = SOV
-				}
-				SOV = { set_country_flag = SOV_sinkiang_joined_comintern_counter_flag }
-			}
-		}
-	}
-
-	# on_release_as_puppet = { 
-	# 	effect = { 
-	# 		if = {
-	# 			limit = {
-	# 				FROM = { 
-	# 					tag = SOV 
-	# 					has_completed_focus = SOV_autonomous_soviet_republics
-	# 				}
-	# 			}
-	# 			ROOT = {
-	# 				add_ideas = {
-	# 					SOV_system_decentralization_idea
-	# 					SOV_the_local_soviets_idea
-	# 				}
-	# 			}
-	# 		}
-	# 		if = {
-	# 			limit = {
-	# 				FROM = { 
-	# 					tag = SOV 
-	# 					has_completed_focus = SOV_international_union_of_soviet_republics
-	# 				}
-	# 			}
-	# 			ROOT = {
-	# 				add_ideas = {
-	# 					SOV_puppet_international_of_soviet_republics_idea
-	# 				}
-	# 			}
-	# 		}
-	# 	}
-	# }
 
 	# called when a country send volunteers to another
 	# ROOT is sender, FROM is receiver
@@ -1920,24 +1357,6 @@ on_actions = {
 			}
 		}
 
-		#Spanish general from SPD/SPC exile in SOV -> NSB
-		#effect = {
-		#	if = {
-		#		limit = {
-		#			SOV = { has_country_flag = SOV_spanish_refugee_generals_welcome_flag }
-		#			has_dlc = "La Resistance"
-		#			OR = {
-		#				tag = SPD
-		#				tag = SPC
-		#			}
-		#			OR = {
-		#				SPR_scw_in_progress = yes #In case someone else caps the Spanish faction
-		#				FROM = { original_tag = SPR }
-		#			}
-		#		}
-		#		SOV_manage_spanish_generals_exiled_in_ussr_effect = yes
-		#	}
-		#}
 		#If Soviet capitulates, remove dynamic modifiers from propagandas and stuff
 		effect = {
 			if = {
@@ -1996,19 +1415,6 @@ on_actions = {
 						remove_dynamic_modifier = { modifier = SOV_factory_worker_militias_raised }
 					}
 				}
-				# if = { #SOV_civilian_labor_in_defense_mod
-				# 	limit = {
-				# 		any_state = {
-				# 			has_dynamic_modifier = { modifier = SOV_civilian_labor_in_defense_mod }
-				# 		}
-				# 	}
-				# 	every_state = {
-				# 		limit = {
-				# 			has_dynamic_modifier = { modifier = SOV_civilian_labor_in_defense_mod }
-				# 		}
-				# 		remove_dynamic_modifier = { modifier = SOV_civilian_labor_in_defense_mod }
-				# 	}
-				# }
 			}
 		}
 
@@ -2027,24 +1433,4 @@ on_actions = {
 			}
 		}
 	}
-
-	#ROOT is new controller #FROM is old controller #FROM.FROM is state ID
-	# on_state_control_changed = {
-	# 	effect = {
-	# 		if = {
-	# 			limit = {
-	# 				FROM.FROM = {
-	# 					state = 217
-	# 				}
-	# 				tag = GER
-	# 				has_country_flag = achievement_stalingrad_not_taken
-	# 				divisions_in_state = { state = 217 size > 1 } #only happens if Germany has at least one division in the state, because state control changes before on_capitulation fires
-	# 			}
-	# 			clr_country_flag = achievement_stalingrad_not_taken
-	# 		}
-	# 	}
-	# }
-
-	
 }
-

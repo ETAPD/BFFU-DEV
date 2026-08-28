@@ -1,0 +1,92 @@
+on_actions = {
+	# All occupation-cost logic is GER-only, so it runs as a single on_weekly_GER
+	on_weekly_GER = {
+		effect = {
+			if = {
+				limit = {
+					tag = GER
+					POL = { has_capitulated = yes }
+					NOT = { has_country_flag = cg_increase1 }
+				}
+				country_event = germany.903
+				set_country_flag = cg_increase1
+			}
+
+			if = {
+				limit = {
+					NOT = { has_country_flag = cg_increase2 }
+					tag = GER
+		        OR = {
+		        AND = {
+		        BEL = { has_capitulated = yes }
+		        HOL = { has_capitulated = yes }
+		        }
+		        BEL = { exists = no }
+		        }
+				}
+				set_country_flag = cg_increase2
+				custom_effect_tooltip = GER_plunder_tt
+				add_to_variable = {
+					GER2_industrial_consumer_goods_expected_value = 0.04
+					tooltip = consumer_goods_expected_value_tt
+				}
+			}
+
+			if = {
+				limit = {
+					tag = GER
+					FRA = { has_capitulated = yes }
+					NOT = { has_country_flag = cg_increase3 }
+				}
+				set_country_flag = cg_increase3
+				custom_effect_tooltip = GER_plunder_tt
+				add_to_variable = {
+					GER2_industrial_consumer_goods_expected_value = 0.04
+					tooltip = consumer_goods_expected_value_tt
+				}
+			}
+
+			if = {
+				limit = {
+					tag = GER
+					has_completed_focus = GER_operation_weserubung
+					NOT = { has_country_flag = cg_increase4 }
+				}
+				set_country_flag = cg_increase4
+				custom_effect_tooltip = GER_plunder_tt
+				add_to_variable = {
+					GER2_industrial_consumer_goods_expected_value = 0.04
+					tooltip = consumer_goods_expected_value_tt
+				}
+			}
+
+
+			# Track civilian factories in occupied (non-core) controlled states
+			set_variable = { global_occupied_civs = 0 }
+			every_controlled_state = {
+				limit = {
+					NOT = { is_core_of = ROOT }
+					check_variable = { industrial_complex_level > 0 }
+				}
+				ROOT = {
+					add_to_variable = {
+						global_occupied_civs = PREV.num_of_civilian_factories
+					}
+				}
+			}
+		}
+	}
+
+	on_declare_war = {
+		effect = {
+			if = {
+				limit = {
+					tag = GER
+					ROOT = { tag = GER }
+					FROM = { tag = POL }
+				}
+				GER = { country_event = germany.902 }
+			}
+		}
+	}
+}

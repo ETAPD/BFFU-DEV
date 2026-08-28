@@ -9,13 +9,6 @@ scripted_gui = {
 		
 		visible = {
 			has_country_flag = ui_country_selection
-			#OR = { 
-			#	has_country_flag = ai_difficulty_add_countries
-			#	has_country_flag = topbar_show_countries
-			#	has_country_flag = BI_performance_show_countries
-			#	has_country_flag = BI_AI_show_countries
-			#	has_country_flag = EAI_show_countries
-			#}
 		}
 		
 		dynamic_lists = { 
@@ -215,17 +208,21 @@ scripted_gui = {
 							}
 							
 							else = {
-								random_country = {
+								# deterministic first-match pick (was random_country; any holder works)
+								set_temp_variable = { bi_holder_picked = 0 }
+								every_country = {
 									limit = {
 										is_in_array = { ai_difficulty_setting_targets = add_country }
+										check_variable = { bi_holder_picked = 0 }
 									}
-									ROOT = { 
+									set_temp_variable = { bi_holder_picked = 1 }
+									ROOT = {
 										set_variable = { setting_holder = PREV }
 										set_variable = { setting_add_country = add_country }
-										country_event = BI_on_action.141 
+										country_event = BI_on_action.141
 									}
 								}
-								
+
 							}
 						}
 						else = {
@@ -258,17 +255,21 @@ scripted_gui = {
 									}
 								}
 								else = {
-									random_country = {
+									# deterministic first-match pick (was random_country; any holder works)
+									set_temp_variable = { bi_holder_picked = 0 }
+									every_country = {
 										limit = {
 											is_in_array = { ai_difficulty_setting_targets = add_country }
+											check_variable = { bi_holder_picked = 0 }
 										}
-										ROOT = { 
+										set_temp_variable = { bi_holder_picked = 1 }
+										ROOT = {
 											set_variable = { setting_holder = PREV }
 											set_variable = { setting_add_country = add_country }
-											country_event = BI_on_action.140 
+											country_event = BI_on_action.140
 										}
 									}
-									
+
 								}
 								
 								
