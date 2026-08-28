@@ -70,7 +70,42 @@ on_actions = {
 				limit = { original_tag = CZE }
 				if = {
 					limit = {
-						date > 1937.11.4
+						has_completed_focus = CZE_B6_05_HUB_RIGHT
+						NOT = { has_completed_focus = CZE_B6R_01_B }
+						check_variable = {
+							var = CZE_heydrich_delay_bonus
+							value = 0.10
+							compare = less_than
+						}
+					}
+					add_to_variable = { CZE_heydrich_delay_days = 1 }
+					if = {
+						limit = {
+							check_variable = {
+								var = CZE_heydrich_delay_days
+								value = 30
+								compare = greater_than_or_equals
+							}
+						}
+						set_variable = { CZE_heydrich_delay_days = 0 }
+						add_to_variable = { CZE_heydrich_delay_bonus = 0.005 }
+						add_to_variable = { CZE_heydrich_delay_stat = 0.5 }
+						if = {
+							limit = {
+								check_variable = {
+									var = CZE_heydrich_delay_bonus
+									value = 0.10
+									compare = greater_than
+								}
+							}
+							set_variable = { CZE_heydrich_delay_bonus = 0.10 }
+							set_variable = { CZE_heydrich_delay_stat = 10 }
+						}
+					}
+				}
+				if = {
+					limit = {
+						date > 1936.3.31
 						NOT = { has_country_flag = CZE_hossbach_event_applied }
 						NOT = { has_completed_focus = CZE_B6_ROOT }
 					}
@@ -91,19 +126,39 @@ on_actions = {
 				}
 				if = {
 					limit = {
+						date > 1937.4.30
 						NOT = { has_country_flag = CZE_sudeten_demand_event_applied }
-						GER = { has_completed_focus = GER_demand_sudetenland }
+						NOT = { has_completed_focus = CZE_B6_01_C }
 					}
 					set_country_flag = CZE_sudeten_demand_event_applied
 					country_event = { id = cze_crisis.2 }
 				}
 				if = {
 					limit = {
+						date > 1937.11.30
+						NOT = { has_country_flag = CZE_runciman_event_applied }
+						NOT = { has_completed_focus = CZE_B6_02_MERGE }
+					}
+					set_country_flag = CZE_runciman_event_applied
+					country_event = { id = cze_crisis.4 }
+				}
+				if = {
+					limit = {
+						date > 1938.2.28
+						NOT = { has_country_flag = CZE_general_mobilisation_event_applied }
+						NOT = { has_completed_focus = CZE_B6_03_A }
+					}
+					set_country_flag = CZE_general_mobilisation_event_applied
+					country_event = { id = cze_crisis.6 }
+				}
+				if = {
+					limit = {
 						NOT = { has_country_flag = CZE_sudeten_transfer_event_applied }
+						NOT = { has_completed_focus = CZE_B6_03_B }
 						GER = { has_country_flag = sudetenland_acquired }
 					}
 					set_country_flag = CZE_sudeten_transfer_event_applied
-					country_event = { id = cze_crisis.4 }
+					country_event = { id = cze_crisis.5 }
 				}
 				if = {
 					limit = {
