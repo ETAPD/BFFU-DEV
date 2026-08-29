@@ -1,0 +1,148 @@
+add_namespace = CZE_HUN
+
+country_event = {
+	id = CZE_HUN.7
+	title = CZE_HUN.1.t
+	desc = CZE_HUN.1.d
+	picture = GFX_report_event_vienna_award_negotiations
+	is_triggered_only = yes
+
+	option = {
+		name = CZE_HUN.1.a
+		ai_chance = { base = 35 }
+		664 = { transfer_state_to = HUN }
+		add_stability = -0.05
+		HUN = { country_event = { id = CZE_HUN.2 days = 1 } }
+	}
+
+	option = {
+		name = CZE_HUN.1.b
+		ai_chance = { base = 65 }
+		HUN = {
+			set_country_flag = HUN_southern_slovakia_refused
+			country_event = { id = CZE_HUN.2 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = CZE_HUN.1
+	title = CZE_HUN.1.t
+	desc = CZE_HUN.1.d
+	picture = GFX_report_event_generic_parliament
+	is_triggered_only = yes
+
+	option = {
+		name = CZE_HUN.1.a
+		ai_chance = { base = 35 }
+		664 = { transfer_state_to = FROM }
+		add_stability = -0.05
+		FROM = { country_event = { id = CZE_HUN.2 days = 1 } }
+	}
+
+	option = {
+		name = CZE_HUN.1.b
+		ai_chance = { base = 65 }
+		FROM = {
+			set_country_flag = HUN_southern_slovakia_refused
+			country_event = { id = CZE_HUN.2 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = CZE_HUN.2
+	title = CZE_HUN.2.t
+	desc = {
+		trigger = { 664 = { is_owned_by = HUN } }
+		text = CZE_HUN.2.accepted
+	}
+	desc = {
+		trigger = { NOT = { 664 = { is_owned_by = HUN } } }
+		text = CZE_HUN.2.refused
+	}
+	picture = GFX_report_event_generic_parliament
+	is_triggered_only = yes
+	option = { name = CZE_HUN.2.a }
+}
+
+country_event = {
+	id = CZE_HUN.3
+	title = CZE_HUN.3.t
+	desc = CZE_HUN.3.d
+	picture = GFX_report_event_japanese_army_parade
+	is_triggered_only = yes
+	option = {
+		name = CZE_HUN.3.a
+		trigger = {
+			owns_state = 154
+			NOT = { owns_state = 73 }
+			73 = { OR = { is_owned_by = CZE is_owned_by = SLO } }
+		}
+		ai_chance = { base = 70 }
+		start_border_war = {
+			attacker = {
+				state = 154
+				num_provinces = 3
+				on_win = CZE_HUN.4
+				on_lose = CZE_HUN.5
+				on_cancel = CZE_HUN.6
+			}
+			defender = {
+				state = 73
+				num_provinces = 3
+				on_win = CZE_HUN.5
+				on_lose = CZE_HUN.4
+				on_cancel = CZE_HUN.6
+			}
+		}
+	}
+
+	option = {
+		name = CZE_HUN.3.b
+		ai_chance = { base = 30 }
+		clr_country_flag = HUN_southern_slovakia_refused
+	}
+}
+
+country_event = {
+	id = CZE_HUN.4
+	title = CZE_HUN.4.t
+	desc = CZE_HUN.4.d
+	picture = GFX_report_event_japanese_transport_soldiers
+	is_triggered_only = yes
+	option = {
+		name = CZE_HUN.4.a
+		trigger = { original_tag = HUN }
+		73 = { transfer_state_to = ROOT }
+		clr_country_flag = HUN_southern_slovakia_refused
+	}
+	option = {
+		name = CZE_HUN.4.b
+		trigger = { NOT = { original_tag = HUN } }
+	}
+}
+
+country_event = {
+	id = CZE_HUN.5
+	title = CZE_HUN.5.t
+	desc = CZE_HUN.5.d
+	picture = GFX_report_event_japanese_soldiers_03
+	is_triggered_only = yes
+	option = {
+		name = CZE_HUN.5.a
+		if = { limit = { original_tag = HUN } clr_country_flag = HUN_southern_slovakia_refused }
+	}
+}
+
+country_event = {
+	id = CZE_HUN.6
+	title = CZE_HUN.6.t
+	desc = CZE_HUN.6.d
+	picture = GFX_report_event_japanese_army_parade
+	is_triggered_only = yes
+	option = {
+		name = CZE_HUN.6.a
+		if = { limit = { original_tag = HUN } clr_country_flag = HUN_southern_slovakia_refused }
+	}
+}
