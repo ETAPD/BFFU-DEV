@@ -7,7 +7,7 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="BFFU-DEV"
+name="Secret Rearmament DEV (Japan-Manchu)"
 picture="thumbnail.png"
 replace_path="common/units/names_divisions"
 replace_path="common/units/names_ships"

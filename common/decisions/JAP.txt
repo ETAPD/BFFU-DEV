@@ -1150,3 +1150,93 @@ BRM_burmah_oils_oil_fields = {
 	}
 
 }
+
+
+war_measures = {
+	CHI_china_pledging_to_hold_state_mission = {
+
+		icon = GFX_decision_generic_prepare_civil_war
+
+		highlight_states = {
+			highlight_states_trigger = {
+				has_state_flag = CHI_holding_state_mission_flag
+			} 
+		}
+
+		allowed = {
+			always = no #overridden by activate_mission
+		}
+
+		visible = {
+			has_war_with = CHI
+			is_major = yes
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = CHI_holding_state_mission_trigger
+				CHI = {
+					NOT = {
+						has_active_mission = CHI_holding_state_mission
+					}
+				}
+			}
+			
+		}
+		
+		days_mission_timeout = CHI.CHI_holding_state_mission_time_var 
+
+		complete_effect = {
+
+			effect_tooltip = {
+				CHI = {
+					add_war_support = -0.05
+				}
+			}
+
+		}
+
+		is_good = no
+
+		timeout_effect = {
+
+			effect_tooltip = {
+				CHI = {
+					add_war_support = 0.05
+					add_cic = var:demonstrate_resolve_cic_reward
+					if = {
+						limit = {
+							NOT = {
+								has_dynamic_modifier = {
+									modifier = CHI_american_support
+								}
+							}
+						}
+
+						add_equipment_to_stockpile = {
+							type = artillery_equipment
+							amount = var:demonstrate_resolve_art_reward
+							producer = SOV
+						}
+					}
+					else = {
+						add_equipment_to_stockpile = {
+							type = artillery_equipment
+							amount = var:demonstrate_resolve_art_reward
+							producer = USA
+						}
+					}
+					every_subject_country = {
+						add_autonomy_score = { 
+							value = -30 
+							localization = CHI_holding_state_mission
+						}
+					}
+				}
+			}
+
+			
+		}
+		
+	}
+}
