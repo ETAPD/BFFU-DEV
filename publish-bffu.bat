@@ -62,6 +62,13 @@ REM %~1 = target .mod file, %~2 = mod name
 >> "%~1" echo }
 >> "%~1" echo name="%~2"
 >> "%~1" echo picture="thumbnail.png"
+>> "%~1" echo replace_path="common/units/names_divisions"
+>> "%~1" echo replace_path="common/units/names_ships"
+>> "%~1" echo replace_path="common/national_focus"
+>> "%~1" echo replace_path="common/decisions"
+>> "%~1" echo replace_path="common/decisions/categories"
+>> "%~1" echo replace_path="common/technologies"
+>> "%~1" echo replace_path="events"
 >> "%~1" echo replace_path="common/ai_equipment"
 >> "%~1" echo replace_path="common/ai_strategy"
 >> "%~1" echo replace_path="common/ai_strategy_plans"
