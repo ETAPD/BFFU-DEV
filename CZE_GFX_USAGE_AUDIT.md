@@ -1,0 +1,226 @@
+# Czech GFX usage audit
+
+Generated: 2026-08-30 18:55:41
+
+Scope: Czech focus icons, imported idea icons, advisor portraits, leader portraits, and Czech decision-category artwork. Flags and model textures were preserved because Hearts of Iron IV can resolve them by filename convention.
+
+## Used (107)
+
+- `gfx/ideas/CZE/CZE_czechoslovak_identity.dds` — GFX_idea_CZE_czechoslovak_identity — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/CZE_lions_sword.dds` — GFX_idea_CZE_lions_sword — used by: common\dynamic_modifiers\CZE_research_institutions_dynamic_modifiers.txt
+- `gfx/ideas/CZE/CZE_moravian_autonomy.dds` — GFX_idea_CZE_moravian_autonomy — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/CZE_promised_democracy.dds` — GFX_idea_CZE_promised_democracy — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/CZE_unclear_identity.dds` — GFX_idea_CZE_unclear_identity — used by: common\dynamic_modifiers\CZE_research_institutions_dynamic_modifiers.txt
+- `gfx/ideas/CZE/CZE_unorganised_military.dds` — GFX_idea_CZE_unorganised_military — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/idea_cze_aero.dds` — GFX_idea_idea_cze_aero — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/idea_cze_ckd.dds` — GFX_idea_idea_cze_ckd — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/idea_CZE_csd.dds` — GFX_idea_idea_CZE_csd — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/idea_cze_praga.dds` — GFX_idea_idea_cze_praga — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/idea_cze_skoda_armor.dds` — GFX_idea_idea_cze_skoda_armor — used by: common\military_industrial_organization\organizations\CZE_organization.txt
+- `gfx/ideas/CZE/idea_cze_skoda_works.dds` — GFX_idea_idea_cze_skoda_works — used by: common\dynamic_modifiers\CZE_research_institutions_dynamic_modifiers.txt
+- `gfx/ideas/CZE/idea_cze_tatra.dds` — GFX_idea_idea_cze_tatra — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/ideas/CZE/idea_cze_zbrojovka_brno.dds` — GFX_idea_idea_cze_zbrojovka_brno — used by: common\ideas\CZE_submod_ideas.txt
+- `gfx/interface/decisions/CZE_research_institutions.dds` — GFX_decision_category_CZE_research_institutions — used by: common\decisions\categories\CZE_RESEARCH_INSTITUTIONS_decision_categories.txt
+- `gfx/interface/decisions/CZE_worker_resistance.dds` — GFX_decision_category_CZE_worker_resistance — used by: common\decisions\categories\CZE_worker_resistance_categories.txt
+- `gfx/interface/decisions/decision_category_heydrich_assassination.dds` — GFX_decision_category_heydrich_assassination — used by: common\decisions\categories\CZE_heydrich_decision_categories.txt, common\decisions\categories\ENG_heydrich_decision_categories.txt
+- `gfx/interface/goals/cze/anschluss.dds` — GFX_focus_cze_anschluss, GFX_focus_cze_anschluss_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (103).dds` — GFX_focus_cze_103, GFX_focus_cze_103_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (109).dds` — GFX_focus_cze_109, GFX_focus_cze_109_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (110).dds` — GFX_focus_cze_110, GFX_focus_cze_110_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (111).dds` — GFX_focus_cze_111, GFX_focus_cze_111_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (113).dds` — GFX_focus_cze_113, GFX_focus_cze_113_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (114).dds` — GFX_focus_cze_114, GFX_focus_cze_114_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (116).dds` — GFX_focus_cze_116, GFX_focus_cze_116_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (117).dds` — GFX_focus_cze_117, GFX_focus_cze_117_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (121).dds` — GFX_focus_cze_121, GFX_focus_cze_121_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (124).dds` — GFX_focus_cze_124, GFX_focus_cze_124_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (125).dds` — GFX_focus_cze_125, GFX_focus_cze_125_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (16).dds` — GFX_focus_cze_016, GFX_focus_cze_016_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (18).dds` — GFX_focus_cze_018, GFX_focus_cze_018_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (20).dds` — GFX_focus_cze_020, GFX_focus_cze_020_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (21).dds` — GFX_focus_cze_021, GFX_focus_cze_021_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (22).dds` — GFX_focus_cze_022, GFX_focus_cze_022_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (30).dds` — GFX_focus_cze_030, GFX_focus_cze_030_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (36).dds` — GFX_focus_cze_036, GFX_focus_cze_036_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (39).dds` — GFX_focus_cze_039, GFX_focus_cze_039_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (4).dds` — GFX_focus_cze_004, GFX_focus_cze_004_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (40).dds` — GFX_focus_cze_040, GFX_focus_cze_040_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (42).dds` — GFX_focus_cze_042, GFX_focus_cze_042_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (43).dds` — GFX_focus_cze_043, GFX_focus_cze_043_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (45).dds` — GFX_focus_cze_045, GFX_focus_cze_045_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (47).dds` — GFX_focus_cze_047, GFX_focus_cze_047_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (48).dds` — GFX_focus_cze_048, GFX_focus_cze_048_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (55).dds` — GFX_focus_cze_055, GFX_focus_cze_055_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (59).dds` — GFX_focus_cze_059, GFX_focus_cze_059_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (60).dds` — GFX_focus_cze_060, GFX_focus_cze_060_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (61).dds` — GFX_focus_cze_061, GFX_focus_cze_061_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (63).dds` — GFX_focus_cze_063, GFX_focus_cze_063_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (64).dds` — GFX_focus_cze_064, GFX_focus_cze_064_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (68).dds` — GFX_focus_cze_068, GFX_focus_cze_068_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (73).dds` — GFX_focus_cze_073, GFX_focus_cze_073_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (74).dds` — GFX_focus_cze_074, GFX_focus_cze_074_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (75).dds` — GFX_focus_cze_075, GFX_focus_cze_075_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (86).dds` — GFX_focus_cze_086, GFX_focus_cze_086_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (88).dds` — GFX_focus_cze_088, GFX_focus_cze_088_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (9).dds` — GFX_focus_cze_009, GFX_focus_cze_009_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (90).dds` — GFX_focus_cze_090, GFX_focus_cze_090_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (92).dds` — GFX_focus_cze_092, GFX_focus_cze_092_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (94).dds` — GFX_focus_cze_094, GFX_focus_cze_094_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (97).dds` — GFX_focus_cze_097, GFX_focus_cze_097_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/cze (98).dds` — GFX_focus_cze_098, GFX_focus_cze_098_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/doctrine.dds` — GFX_focus_cze_doctrine, GFX_focus_cze_doctrine_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/invite.dds` — GFX_focus_cze_invite, GFX_focus_cze_invite_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/lights.dds` — GFX_focus_cze_lights, GFX_focus_cze_lights_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/mech.dds` — GFX_focus_cze_mech, GFX_focus_cze_mech_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/oldman.dds` — GFX_focus_cze_oldman, GFX_focus_cze_oldman_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/sf.dds` — GFX_focus_cze_sf, GFX_focus_cze_sf_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/slovakia.dds` — GFX_focus_cze_slovakia, GFX_focus_cze_slovakia_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/goals/cze/unitecze.dds` — GFX_focus_cze_unite, GFX_focus_cze_unite_shine — used by: common\national_focus\czechoslovakia.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_frantishek_havlik.dds` — GFX_idea_CZE_submod_frantishek_havlik — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_jaroslav_preiss.dds` — GFX_idea_CZE_jaroslav_preiss — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_kurt_daluege.dds` — GFX_idea_CZE_submod_kurt_daluege — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_anton_pulanich.dds` — GFX_idea_CZE_submod_SLO_anton_pulanich — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_emil_lendvay.dds` — GFX_idea_CZE_submod_SLO_emil_lendvay — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_ferdinand_durcansky.dds` — GFX_idea_CZE_submod_SLO_ferdinand_durcansky — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_frantisek_straka.dds` — GFX_idea_CZE_submod_SLO_frantisek_straka — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_janko_jesensky.dds` — GFX_idea_CZE_submod_SLO_janko_jesensky — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_karol_sidor.dds` — GFX_idea_CZE_submod_SLO_karol_sidor — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_peter_zatko.dds` — GFX_idea_CZE_submod_SLO_peter_zatko — used by: common\characters\CZE.txt
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_stefan_tiso.dds` — GFX_idea_CZE_submod_SLO_stefan_tiso — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Anton_Pulanish_Portrait.dds` — GFX_Anton_Pulanish_Portrait — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/CZE_submod_officers/CZE_SLO_cyril_kuchta.dds` — GFX_portrait_CZE_submod_SLO_cyril_kuchta — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/CZE_submod_officers/CZE_SLO_juraj_mesko.dds` — GFX_portrait_CZE_submod_SLO_juraj_mesko — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/CZE_submod_officers/CZE_SLO_rudolf_pilfousek.dds` — GFX_portrait_CZE_submod_SLO_rudolf_pilfousek — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/CZE_submod_officers/CZE_SLO_viliam_talsky.dds` — GFX_portrait_CZE_submod_SLO_viliam_talsky — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Heydrich.dds` — GFX_Heydrich — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Jan_Antonin_Bata.dds` — GFX_portrait_CZE_jan_antonin_bata — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Jan_Golian.dds` — GFX_Jan_Golian — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Jaroslav_Preiss.dds` — GFX_portrait_CZE_jaroslav_preiss — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Konstantin_von_Neurath.png` — GFX_portrait_CZE_konstantin_von_neurath — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Kurt_Daluege.dds` — GFX_portrait_CZE_kurt_daluege — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Ludvik_Svoboda.png` — GFX_portrait_CZE_ludvik_svoboda — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/operatives/CZE_jan_kubis.dds` — GFX_portrait_CZE_jan_kubis — used by: events\CZE_submod_events.txt
+- `gfx/leaders/CZE/operatives/CZE_jozef_gabcik.dds` — GFX_portrait_CZE_jozef_gabcik — used by: events\CZE_submod_events.txt
+- `gfx/leaders/CZE/Portrait_Czech_Josef_Votruba.dds` — GFX_Portrait_Czech_Josef_Votruba — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Portrait_Czech_Josef_Zmek.dds` — GFX_Portrait_Czech_Josef_Zmek — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Portrait_Czech_Lev_Prchala.dds` — GFX_Portrait_Czech_Lev_Prchala — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Portrait_Czech_Ludvik_Krejci.dds` — GFX_Portrait_Czech_Ludvik_Krejci — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Portrait_Rudolf_Viest.dds` — GFX_Portrait_Rudolf_Viest — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/Portrait_Slovakia_Jozef_Tiso.dds` — GFX_Portrait_Slovakia_Jozef_Tiso — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/r56_portrait_CZE_Bedrich_Neumann.dds` — GFX_r56_portrait_CZE_Bedrich_Neumann — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/r56_portrait_CZE_Radola_Gajda.dds` — GFX_r56_portrait_CZE_Radola_Gajda — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/r56_portrait_SLO_Augustin_Malar.dds` — GFX_r56_portrait_SLO_Augustin_Malar — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/r56_portrait_SLO_gustav_husak.dds` — GFX_r56_portrait_SLO_gustav_husak — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/SLO_Portrait_Jozef_Turanec.dds` — GFX_SLO_Portrait_Jozef_Turanec — used by: common\characters\CZE.txt
+- `gfx/leaders/CZE/tom_pearl.dds` — GFX_tom_pearl — used by: common\characters\CZE.txt
+
+## Removed as unused (108)
+
+- `gfx/ideas/CZE/CZE_max_lobkowitz.dds` — GFX_idea_CZE_max_lobkowitz
+- `gfx/ideas/CZE/idea_cze_avia.dds` — GFX_idea_idea_cze_avia
+- `gfx/ideas/CZE/idea_cze_ckd_praga.dds` — GFX_idea_idea_cze_ckd_praga
+- `gfx/ideas/CZE/idea_cze_letov.dds` — GFX_idea_idea_cze_letov
+- `gfx/ideas/CZE/idea_cze_skoda_artillery.dds` — GFX_idea_idea_cze_skoda_artillery
+- `gfx/interface/goals/cze/cze (1).dds` — GFX_focus_cze_001, GFX_focus_cze_001_shine
+- `gfx/interface/goals/cze/cze (10).dds` — GFX_focus_cze_010, GFX_focus_cze_010_shine
+- `gfx/interface/goals/cze/cze (100).dds` — GFX_focus_cze_100, GFX_focus_cze_100_shine
+- `gfx/interface/goals/cze/cze (101).dds` — GFX_focus_cze_101, GFX_focus_cze_101_shine
+- `gfx/interface/goals/cze/cze (102).dds` — GFX_focus_cze_102, GFX_focus_cze_102_shine
+- `gfx/interface/goals/cze/cze (104).dds` — GFX_focus_cze_104, GFX_focus_cze_104_shine
+- `gfx/interface/goals/cze/cze (105).dds` — GFX_focus_cze_105, GFX_focus_cze_105_shine
+- `gfx/interface/goals/cze/cze (106).dds` — GFX_focus_cze_106, GFX_focus_cze_106_shine
+- `gfx/interface/goals/cze/cze (107).dds` — GFX_focus_cze_107, GFX_focus_cze_107_shine
+- `gfx/interface/goals/cze/cze (108).dds` — GFX_focus_cze_108, GFX_focus_cze_108_shine
+- `gfx/interface/goals/cze/cze (11).dds` — GFX_focus_cze_011, GFX_focus_cze_011_shine
+- `gfx/interface/goals/cze/cze (112).dds` — GFX_focus_cze_112, GFX_focus_cze_112_shine
+- `gfx/interface/goals/cze/cze (115).dds` — GFX_focus_cze_115, GFX_focus_cze_115_shine
+- `gfx/interface/goals/cze/cze (118).dds` — GFX_focus_cze_118, GFX_focus_cze_118_shine
+- `gfx/interface/goals/cze/cze (119).dds` — GFX_focus_cze_119, GFX_focus_cze_119_shine
+- `gfx/interface/goals/cze/cze (12).dds` — GFX_focus_cze_012, GFX_focus_cze_012_shine
+- `gfx/interface/goals/cze/cze (120).dds` — GFX_focus_cze_120, GFX_focus_cze_120_shine
+- `gfx/interface/goals/cze/cze (122).dds` — GFX_focus_cze_122, GFX_focus_cze_122_shine
+- `gfx/interface/goals/cze/cze (123).dds` — GFX_focus_cze_123, GFX_focus_cze_123_shine
+- `gfx/interface/goals/cze/cze (13).dds` — GFX_focus_cze_013, GFX_focus_cze_013_shine
+- `gfx/interface/goals/cze/cze (14).dds` — GFX_focus_cze_014, GFX_focus_cze_014_shine
+- `gfx/interface/goals/cze/cze (15).dds` — GFX_focus_cze_015, GFX_focus_cze_015_shine
+- `gfx/interface/goals/cze/cze (17).dds` — GFX_focus_cze_017, GFX_focus_cze_017_shine
+- `gfx/interface/goals/cze/cze (19).dds` — GFX_focus_cze_019, GFX_focus_cze_019_shine
+- `gfx/interface/goals/cze/cze (2).dds` — GFX_focus_cze_002, GFX_focus_cze_002_shine
+- `gfx/interface/goals/cze/cze (23).dds` — GFX_focus_cze_023, GFX_focus_cze_023_shine
+- `gfx/interface/goals/cze/cze (24).dds` — GFX_focus_cze_024, GFX_focus_cze_024_shine
+- `gfx/interface/goals/cze/cze (25).dds` — GFX_focus_cze_025, GFX_focus_cze_025_shine
+- `gfx/interface/goals/cze/cze (26).dds` — GFX_focus_cze_026, GFX_focus_cze_026_shine
+- `gfx/interface/goals/cze/cze (27).dds` — GFX_focus_cze_027, GFX_focus_cze_027_shine
+- `gfx/interface/goals/cze/cze (28).dds` — GFX_focus_cze_028, GFX_focus_cze_028_shine
+- `gfx/interface/goals/cze/cze (29).dds` — GFX_focus_cze_029, GFX_focus_cze_029_shine
+- `gfx/interface/goals/cze/cze (3).dds` — GFX_focus_cze_003, GFX_focus_cze_003_shine
+- `gfx/interface/goals/cze/cze (31).dds` — GFX_focus_cze_031, GFX_focus_cze_031_shine
+- `gfx/interface/goals/cze/cze (32).dds` — GFX_focus_cze_032, GFX_focus_cze_032_shine
+- `gfx/interface/goals/cze/cze (33).dds` — GFX_focus_cze_033, GFX_focus_cze_033_shine
+- `gfx/interface/goals/cze/cze (34).dds` — GFX_focus_cze_034, GFX_focus_cze_034_shine
+- `gfx/interface/goals/cze/cze (35).dds` — GFX_focus_cze_035, GFX_focus_cze_035_shine
+- `gfx/interface/goals/cze/cze (37).dds` — GFX_focus_cze_037, GFX_focus_cze_037_shine
+- `gfx/interface/goals/cze/cze (38).dds` — GFX_focus_cze_038, GFX_focus_cze_038_shine
+- `gfx/interface/goals/cze/cze (41).dds` — GFX_focus_cze_041, GFX_focus_cze_041_shine
+- `gfx/interface/goals/cze/cze (44).dds` — GFX_focus_cze_044, GFX_focus_cze_044_shine
+- `gfx/interface/goals/cze/cze (46).dds` — GFX_focus_cze_046, GFX_focus_cze_046_shine
+- `gfx/interface/goals/cze/cze (49).dds` — GFX_focus_cze_049, GFX_focus_cze_049_shine
+- `gfx/interface/goals/cze/cze (5).dds` — GFX_focus_cze_005, GFX_focus_cze_005_shine
+- `gfx/interface/goals/cze/cze (50).dds` — GFX_focus_cze_050, GFX_focus_cze_050_shine
+- `gfx/interface/goals/cze/cze (51).dds` — GFX_focus_cze_051, GFX_focus_cze_051_shine
+- `gfx/interface/goals/cze/cze (52).dds` — GFX_focus_cze_052, GFX_focus_cze_052_shine
+- `gfx/interface/goals/cze/cze (53).dds` — GFX_focus_cze_053, GFX_focus_cze_053_shine
+- `gfx/interface/goals/cze/cze (54).dds` — GFX_focus_cze_054, GFX_focus_cze_054_shine
+- `gfx/interface/goals/cze/cze (56).dds` — GFX_focus_cze_056, GFX_focus_cze_056_shine
+- `gfx/interface/goals/cze/cze (57).dds` — GFX_focus_cze_057, GFX_focus_cze_057_shine
+- `gfx/interface/goals/cze/cze (58).dds` — GFX_focus_cze_058, GFX_focus_cze_058_shine
+- `gfx/interface/goals/cze/cze (6).dds` — GFX_focus_cze_006, GFX_focus_cze_006_shine
+- `gfx/interface/goals/cze/cze (62).dds` — GFX_focus_cze_062, GFX_focus_cze_062_shine
+- `gfx/interface/goals/cze/cze (65).dds` — GFX_focus_cze_065, GFX_focus_cze_065_shine
+- `gfx/interface/goals/cze/cze (66).dds` — GFX_focus_cze_066, GFX_focus_cze_066_shine
+- `gfx/interface/goals/cze/cze (67).dds` — GFX_focus_cze_067, GFX_focus_cze_067_shine
+- `gfx/interface/goals/cze/cze (69).dds` — GFX_focus_cze_069, GFX_focus_cze_069_shine
+- `gfx/interface/goals/cze/cze (7).dds` — GFX_focus_cze_007, GFX_focus_cze_007_shine
+- `gfx/interface/goals/cze/cze (70).dds` — GFX_focus_cze_070, GFX_focus_cze_070_shine
+- `gfx/interface/goals/cze/cze (71).dds` — GFX_focus_cze_071, GFX_focus_cze_071_shine
+- `gfx/interface/goals/cze/cze (72).dds` — GFX_focus_cze_072, GFX_focus_cze_072_shine
+- `gfx/interface/goals/cze/cze (76).dds` — GFX_focus_cze_076, GFX_focus_cze_076_shine
+- `gfx/interface/goals/cze/cze (77).dds` — GFX_focus_cze_077, GFX_focus_cze_077_shine
+- `gfx/interface/goals/cze/cze (78).dds` — GFX_focus_cze_078, GFX_focus_cze_078_shine
+- `gfx/interface/goals/cze/cze (79).dds` — GFX_focus_cze_079, GFX_focus_cze_079_shine
+- `gfx/interface/goals/cze/cze (8).dds` — GFX_focus_cze_008, GFX_focus_cze_008_shine
+- `gfx/interface/goals/cze/cze (80).dds` — GFX_focus_cze_080, GFX_focus_cze_080_shine
+- `gfx/interface/goals/cze/cze (81).dds` — GFX_focus_cze_081, GFX_focus_cze_081_shine
+- `gfx/interface/goals/cze/cze (82).dds` — GFX_focus_cze_082, GFX_focus_cze_082_shine
+- `gfx/interface/goals/cze/cze (83).dds` — GFX_focus_cze_083, GFX_focus_cze_083_shine
+- `gfx/interface/goals/cze/cze (84).dds` — GFX_focus_cze_084, GFX_focus_cze_084_shine
+- `gfx/interface/goals/cze/cze (85).dds` — GFX_focus_cze_085, GFX_focus_cze_085_shine
+- `gfx/interface/goals/cze/cze (87).dds` — GFX_focus_cze_087, GFX_focus_cze_087_shine
+- `gfx/interface/goals/cze/cze (89).dds` — GFX_focus_cze_089, GFX_focus_cze_089_shine
+- `gfx/interface/goals/cze/cze (91).dds` — GFX_focus_cze_091, GFX_focus_cze_091_shine
+- `gfx/interface/goals/cze/cze (93).dds` — GFX_focus_cze_093, GFX_focus_cze_093_shine
+- `gfx/interface/goals/cze/cze (95).dds` — GFX_focus_cze_095, GFX_focus_cze_095_shine
+- `gfx/interface/goals/cze/cze (96).dds` — GFX_focus_cze_096, GFX_focus_cze_096_shine
+- `gfx/interface/goals/cze/cze (99).dds` — GFX_focus_cze_099, GFX_focus_cze_099_shine
+- `gfx/interface/goals/cze/cze.dds` — GFX_focus_cze_000, GFX_focus_cze_000_shine
+- `gfx/interface/goals/cze/economy.dds` — GFX_focus_cze_economy, GFX_focus_cze_economy_shine
+- `gfx/interface/goals/cze/soldiers.dds` — GFX_focus_cze_soldiers, GFX_focus_cze_soldiers_shine
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_alexander_mach.dds` — (no sprite declaration)
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_cyril_kuchta.dds` — (no sprite declaration)
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_julius_trnka.dds` — (no sprite declaration)
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_juraj_mesko.dds` — (no sprite declaration)
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_rudolf_pilfousek.dds` — (no sprite declaration)
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_tom_pearl.dds` — (no sprite declaration)
+- `gfx/interface/ideas/CZE_advisors/CZE_SLO_viliam_talsky.dds` — (no sprite declaration)
+- `gfx/leaders/CZE/CZE_jozef_tiso.dds` — (no sprite declaration)
+- `gfx/leaders/CZE/CZE_reinhard_heydrich.dds` — (no sprite declaration)
+- `gfx/leaders/CZE/nayf.dds` — GFX_nayf
+- `gfx/leaders/CZE/nayf2.dds` — (no sprite declaration)
+- `gfx/leaders/CZE/Portrait_Czech_Jan_Syrovy.dds` — GFX_Portrait_Czech_Jan_Syrovy
+- `gfx/leaders/CZE/Portrait_Josef_Nemisla.dds` — GFX_Portrait_Josef_Nemisla
+- `gfx/leaders/CZE/portrait_SLO_Franza_Karmasin.dds` — GFX_portrait_SLO_Franza_Karmasin
+- `gfx/leaders/CZE/Portrait_Slovakia_Vojtech_Tuka.dds` — GFX_Portrait_Slovakia_Vojtech_Tuka
+- `gfx/leaders/CZE/r56_portrait_SLO_Jan_Ursiny.dds` — GFX_r56_portrait_SLO_Jan_Ursiny
+- `gfx/leaders/CZE/SLO_stranger_from_the_future.dds` — GFX_SLO_stranger_from_the_future
+- `gfx/leaders/CZE/tom_pearl2.dds` — (no sprite declaration)
+- `gfx/leaders/CZE/Tuka.dds` — GFX_Tuka
