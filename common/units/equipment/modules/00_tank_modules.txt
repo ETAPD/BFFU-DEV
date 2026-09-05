@@ -2457,32 +2457,6 @@ equipment_modules = {
 	}
 
 }
-####################################################################
-# BFFU TANK REWORK — ASSEMBLED MODULE POOL (chunks 1-5)
-# Staged full replacement for common/units/equipment/modules/00_tank_modules.txt
-# HOI4 merges multiple top-level equipment_modules{} blocks in one file.
-# NOT YET DEPLOYED. Chassis wiring (slots/count-limits/upgrades) pending.
-####################################################################
-
-####################################################################
-# BFFU TANK REWORK — MAIN ARMAMENT (CANNON) MODULE POOL
-# Build chunk 1 (rev2). From-scratch content on BFFU's proven category架构.
-#
-# TWO orthogonal gating axes:
-#   1) category = tank_armament_tier_*  -> which TURRET can mount it (size gate,
-#      turrets list these in allowed_module_categories.main_armament_slot).
-#      Tiers: tiny_1 < small_1/2/3 < medium_1/2/3 < heavy_1/2/3 ; arty/heavy_arty ; aa/heavy_aa ; flamethrower
-#   2) allow_equipment_type -> which VARIANT can use it (role gate):
-#        (omitted)   -> universal, mounts on turreted TANKS (BFFU has NO 'allow = armor')
-#        anti_tank   -> Tank Destroyers (dedicated high-pen)
-#        artillery   -> SP-Artillery (howitzers)     [+ forbid_equipment_type_exact_match = armor]
-#        anti_air    -> SPAA                          [+ forbid_equipment_type_exact_match = armor]
-#        flame       -> Flame tanks
-# Piercing: Oak gradual model; AP sized to survive ~0.57x division dilution
-#   (30w tank div ~half motorised/mech at ~0 pen). Final calibration in balance pass.
-# Costs: BFFU IC baseline; tungsten/chromium scale with power; reliability penalty per Oak.
-# All available day 1.
-####################################################################
 
 equipment_modules = {
 
@@ -2783,20 +2757,6 @@ equipment_modules = {
 
 }
 
-####################################################################
-# BFFU TANK REWORK — TURRETS  (build chunk 2)
-#
-# Turret = the gun-size gate (allowed_module_categories.main_armament_slot lists
-# which armament tiers it accepts) AND the variant-role gate (forbid/allow_equipment_type).
-#
-# Identity design (improvement over current BFFU turrets, which add only IC):
-#   Rotating turrets  -> +breakthrough & +soft scaling with crew; TANK-only
-#                        (forbid anti_air/anti_tank/artillery). Bigger crew = more brkthr.
-#   Casemate          -> +armour, +AP mult, -breakthrough; TD/fixed-gun (allow anti_tank)
-#   Open turret       -> +soft/+air, -armour/-hardness, cheaper, +speed; SPAA/open
-#   Open superstruct. -> big -armour/-hardness/-brkthr, +speed; SP-artillery platform
-# Each tier's rotating turret accepts a rising window of armament tiers.
-####################################################################
 
 equipment_modules = {
 
@@ -3076,17 +3036,6 @@ equipment_modules = {
 
 }
 
-####################################################################
-# BFFU TANK REWORK — SUSPENSION / ARMOUR / ENGINE  (build chunk 3)
-#
-# Categories kept from BFFU (chassis slots depend on them):
-#   tank_engine_type · tank_armor_type · tank_suspension_type · tank_non_tracked_suspension_type
-# Progression handled by the 20-click engine/armour sliders (chunk: upgrades);
-#   these TYPE modules set the *character* (fuel / reliability / hardness / speed trade-offs).
-# FUEL axis: engines carry differentiated fuel_consumption (efficient diesel -> thirsty turbine)
-#   so engine choice is a real logistics decision. (Base chassis stays low; fuel-tank special
-#   module added in the specials chunk for range.)
-####################################################################
 
 equipment_modules = {
 
@@ -3258,19 +3207,6 @@ equipment_modules = {
 
 }
 
-####################################################################
-# BFFU TANK REWORK — SPECIALS / RADIO / SECONDARY TURRETS  (build chunk 4)
-#
-# The variety layer. Categories: tank_special_module, tank_radio_module,
-#   tank_secondary_turret, tank_secondary_turret_2.
-# All names the chassis' module_count_limit currently reference are PRESERVED
-#   (amphibious_drive, stabilizer, extra_ammo_storage, wet_ammo_storage, armor_skirts,
-#    easy_maintenance, additional_heavy_machine_guns, hull_flamethrower, dozer_blade,
-#    add_on_rockets, sloped_armor, apcr_round, secondary_turret_howitzer, auto_loader,
-#    squeezebore_adaptor) so no chassis rewiring is forced by this chunk.
-# Each module = a distinct, meaningful trade (no filler). Reliability + fuel are
-#   first-class picks so early/cheap chassis have real reasons to spend a slot.
-####################################################################
 
 equipment_modules = {
 
@@ -3302,8 +3238,7 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	### ============================ CREW / FIRE-CONTROL (unique picks) ============================
-	# Commander's cupola: better situational awareness -> +hard attack & initiative (your example)
+
 	commander_cupola = {
 		abbreviation = "cup"
 		category = tank_cupola_module
@@ -3311,7 +3246,7 @@ equipment_modules = {
 		add_stats = { hard_attack = 3 initiative = 0.2 recon = 0.05 build_cost_ic = 1 }
 		xp_cost = 0
 	}
-	# Gyro-stabiliser: fire on the move
+	# Gyro-stabiliser
 	stabilizer = {
 		abbreviation = "stab"
 		category = tank_special_module
@@ -3319,7 +3254,7 @@ equipment_modules = {
 		multiply_stats = { soft_attack = 0.075 hard_attack = 0.075 build_cost_ic = 0.05 }
 		xp_cost = 0
 	}
-	# Improved gun sights: accuracy against hard targets
+	# Improved gun sights
 	improved_gun_sight = {
 		abbreviation = "sight"
 		category = tank_special_module
@@ -3328,7 +3263,7 @@ equipment_modules = {
 		multiply_stats = { ap_attack = 0.05 }
 		xp_cost = 0
 	}
-	# Autoloader: rate of fire up, reliability down (fewer crew to fix jams)
+	# Autoloader
 	auto_loader = {
 		abbreviation = "auto"
 		category = tank_special_module
@@ -3353,7 +3288,7 @@ equipment_modules = {
 		add_stats = { reliability = 0.1 build_cost_ic = 3 }
 		xp_cost = 0
 	}
-	# APCR: penetration up (tungsten cost)
+	# APCR
 	apcr_round = {
 		abbreviation = "apr"
 		category = tank_special_module
@@ -3363,7 +3298,7 @@ equipment_modules = {
 		build_cost_resources = { tungsten = 2 }
 		xp_cost = 0
 	}
-	# Squeezebore adaptor: big penetration spike, less reliable (tungsten)
+	# Squeezebore adaptor 
 	squeezebore_adaptor = {
 		abbreviation = "sqz"
 		category = tank_special_module
@@ -3374,10 +3309,7 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	### ============================ PROTECTION ============================
-	# NOTE: armour SLOPING moved to its own dedicated slot (chunk 5, category
-	# tank_armor_sloping). The old 'sloped_armor' special is removed.
-	# Bolt-on appliqué armour: flat armour, costs speed (field upgrade)
+
 	applique_armor = {
 		abbreviation = "app"
 		category = tank_special_module
@@ -3388,7 +3320,7 @@ equipment_modules = {
 		dismantle_cost_ic = 1
 		xp_cost = 0
 	}
-	# Side skirts: shaped-charge protection + breakthrough
+	# Side skirts: 
 	armor_skirts = {
 		abbreviation = "skirt"
 		category = tank_special_module
@@ -3397,7 +3329,7 @@ equipment_modules = {
 		dismantle_cost_ic = 1
 		xp_cost = 0
 	}
-	# Smoke launchers: disengage / defensive
+	# Smoke launchers: 
 	smoke_launchers = {
 		abbreviation = "smok"
 		category = tank_special_module
@@ -3406,8 +3338,8 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	### ============================ RELIABILITY / PRODUCTION (early-chassis picks) ============================
-	# Easy maintenance: straightforward reliability boost
+	
+	# Easy maintenanc 
 	easy_maintenance = {
 		abbreviation = "easy"
 		category = tank_special_module
@@ -3415,7 +3347,7 @@ equipment_modules = {
 		add_stats = { reliability = 0.1 build_cost_ic = 1 }
 		xp_cost = 0
 	}
-	# Cheap materials: cheaper to build, less reliable (mass production)
+	# Cheap materials
 	cheap_materials = {
 		abbreviation = "cheap"
 		category = tank_special_module
@@ -3425,8 +3357,7 @@ equipment_modules = {
 		build_cost_resources = { steel = -1 }
 		xp_cost = 0
 	}
-	# Design simplification: reliability + modest cost cut, but small stat drag
-	design_simplification = {
+	# Design simplification: 
 		abbreviation = "simp"
 		category = tank_special_module
 		sfx = sfx_ui_sd_module_turret
@@ -3435,8 +3366,7 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	### ============================ MOBILITY / FUEL ============================
-	# Expanded fuel tank: range (fuel capacity)
+	# Expanded fuel tank:
 	expanded_fuel_tank = {
 		abbreviation = "fuel"
 		category = tank_special_module
@@ -3444,7 +3374,7 @@ equipment_modules = {
 		add_stats = { fuel_capacity = 300 build_cost_ic = 1.5 weight = 0.1 }
 		xp_cost = 0
 	}
-	# Wider tracks: cross-country breakthrough, slight fuel use
+	# Wider tracks: 
 	wider_tracks = {
 		abbreviation = "trk"
 		category = tank_special_module
@@ -3453,7 +3383,7 @@ equipment_modules = {
 		multiply_stats = { fuel_consumption = 0.05 }
 		xp_cost = 0
 	}
-	# Dozer blade: engineering support, obstacle clearing (specialist only)
+	# Dozer blade:
 	dozer_blade = {
 		abbreviation = "dozer"
 		category = tank_special_module
@@ -3464,7 +3394,6 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	### ============================ SECONDARY WEAPONS ============================
 	additional_machine_guns = {
 		abbreviation = "mg"
 		category = tank_special_module
@@ -3534,19 +3463,9 @@ equipment_modules = {
 
 }
 
-####################################################################
-# BFFU TANK REWORK — ARMOUR SLOPING SLOT  (build chunk 5)
-#
-# New dedicated slot (as in Oak & Horst): category tank_armor_sloping.
-# The chassis gets a REQUIRED armor_sloping_slot with 'unsloped_armor' as the
-# cheap default (slot must have a module). Sloping gives FLAT armour + hardness
-# at rising IC/weight — a separate axis from armour TYPE (riveted/welded/cast...).
-# Replaces the old 'sloped_armor' special module (removed from chunk 4).
-####################################################################
-
 equipment_modules = {
 
-	# Default: vertical plates, cheap, minimal benefit
+	# Default: 
 	unsloped_armor = {
 		abbreviation = "flat"
 		category = tank_armor_sloping
@@ -3573,7 +3492,7 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	# Advanced sloping (steep, optimised angles)
+	# Advanced sloping
 	advanced_sloped_armor = {
 		abbreviation = "aslp"
 		category = tank_armor_sloping
@@ -3582,7 +3501,7 @@ equipment_modules = {
 		xp_cost = 0
 	}
 
-	# Modern composite/compound sloping (chromium)
+	# Modern composite/compound sloping 
 	composite_sloped_armor = {
 		abbreviation = "cslp"
 		category = tank_armor_sloping
@@ -3594,10 +3513,9 @@ equipment_modules = {
 
 }
 
-#################### BFFU TANK REWORK — extra specials + cupolas (feedback batch) ####################
 equipment_modules = {
 
-	# ---- Extra special modules (Oak/Horst-style variety) ----
+	# ---- Extra special modules
 	spare_parts_bin = {
 		abbreviation = "spb"
 		category = tank_special_module
