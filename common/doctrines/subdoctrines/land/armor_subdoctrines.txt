@@ -473,7 +473,7 @@ self_propelled_support = {
         committed_operational_units = {
             category_self_propelled_artillery = {
                 max_organisation = 3
-                soft_attack = 0.05
+                soft_attack = 0.1
                 hard_attack = -0.05
             }
         }
@@ -481,11 +481,12 @@ self_propelled_support = {
         armored_fire_support_sections = {
             category_self_propelled_artillery = {
                 defense = 0.03
+                default_morale = 0.1
             }
             category_tanks = {
                 hard_attack = -0.1
                 soft_attack = 0.04
-                breakthrough = -0.25
+                breakthrough = -0.05
             }
         }
 
@@ -499,12 +500,13 @@ self_propelled_support = {
 
         assault_gun_coordination = {
             category_self_propelled_artillery = {
-                breakthrough = 0.03
+                breakthrough = 0.13
             }
             category_self_propelled_anti_air = {
                 anti_air_attack = 0.05
                 ap_attack = 0.05
                 initiative = 0.02
+                breakthrough = 0.1
             }
         }
 
@@ -596,11 +598,12 @@ tank_destroyer_force = {
         committed_operational_units = {
             category_tank_destroyers = {
                 max_organisation = 3
+                default_morale = 0.05
             }
             category_tanks = {
                 hard_attack = 0.04
                 soft_attack = -0.1
-                breakthrough = -0.25
+                breakthrough = -0.05
             }
         }
 
@@ -616,7 +619,7 @@ tank_destroyer_force = {
             category_tank_destroyers = {
                 max_organisation = 3
                 initiative = 0.02
-                hard_attack = 0.03
+                hard_attack = 0.08
             }
         }
 
@@ -625,11 +628,159 @@ tank_destroyer_force = {
                 max_organisation = 3
                 soft_attack = -0.08
                 ap_attack = 0.05
+                breakthrough = 0.1
             }
             category_self_propelled_anti_air = {
                 anti_air_attack = 0.05
                 hard_attack = 0.05
                 ap_attack = 0.05
+                breakthrough = 0.1
+            }
+        }
+    }
+}
+
+assault_gun_warfare = {
+    track = armor
+    name = SUBDOCTRINE_ASSAULT_GUN_WARFARE
+    description = SUBDOCTRINE_ASSAULT_GUN_WARFARE_DESC
+    icon = GFX_doctrine_assault_gun_warfare_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    effect = {
+        custom_effect_tooltip = generic_skip_one_line_tt
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = assault_gun_warfare_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = ASSAULT_GUN_WARFARE_MASTERY_GAIN
+                sub_doctrine = assault_gun_warfare
+            }
+            set_country_flag = {
+                flag = assault_gun_warfare_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = armored_standardization_doctrine_check
+                }
+                set_technology = { flexible_armored_battalions_equipment_req = 0 popup = no }
+                clr_country_flag = armored_standardization_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = streamlined_deployment_doctrine_check
+                }
+                set_technology = { streamline_production_tank = 0 popup = no }
+                clr_country_flag = streamlined_deployment_doctrine_check
+            }
+        }
+    }
+
+    category_assault_gun = {
+        soft_attack = 0.05
+    }
+
+    rewards = {
+        direct_fire_training = {
+            category_assault_gun = {
+                soft_attack = 0.04
+                max_organisation = 2
+            }
+        }
+        infantry_liaison = {
+            category_assault_gun = {
+                breakthrough = 0.05
+                default_morale = 0.05
+            }
+        }
+        forward_repair_sections = {
+            category_assault_gun = {
+                reliability = 0.05
+                supply_consumption = -0.05
+            }
+        }
+        strongpoint_reduction = {
+            light_assault_gun_brigade = {
+                town = {
+                    attack = 0.05
+                }
+            }
+            # light_assault_gun_support = {
+            #     town = {
+            #         attack = 0.05
+            #     }
+            # }
+            medium_assault_gun_brigade = {
+                urban_terrain = {
+                    attack = 0.05
+                }
+            }
+            # medium_assault_gun_support = {
+            #     urban_terrain = {
+            #         attack = 0.05
+            #     }
+            # }
+            heavy_assault_gun_brigade = {
+                dense_urban = {
+                    attack = 0.05
+                }
+            }
+            # heavy_assault_gun_support = {
+            #     dense_urban = {
+            #         attack = 0.05
+            #     }
+            # }
+            category_assault_gun = {
+                soft_attack = 0.04
+            }
+        }
+        assault_gun_battlegroups = {
+            light_assault_gun_brigade = {
+                fort = {
+                    attack = 0.025
+                }
+            }
+            light_assault_gun_support = {
+                fort = {
+                    attack = 0.025
+                }
+            }
+            medium_assault_gun_brigade = {
+                fort = {
+                    attack = 0.025
+                }
+            }
+            medium_assault_gun_support = {
+                fort = {
+                    attack = 0.025
+                }
+            }
+            heavy_assault_gun_brigade = {
+                fort = {
+                    attack = 0.025
+                }
+            }
+            heavy_assault_gun_support = {
+                fort = {
+                    attack = 0.025
+                }
+            }
+            category_assault_gun = {
+                soft_attack = 0.06
+                breakthrough = 0.06
+                max_organisation = 4
             }
         }
     }
