@@ -7,7 +7,7 @@ tags={
 	"National Focuses"
 	"Technologies"
 }
-name="BFFU-DEV1"
+name="BFFU-DEV"
 picture="thumbnail.png"
 replace_path="common/units/names_divisions"
 replace_path="common/units/names_ships"
