@@ -2493,7 +2493,7 @@ focus_tree = {
 	focus = {
 		id = JAP_tohoku_industrial_development_company
 		icon = GFX_JAP_tohoku_industrial_development_company-905240
-		x = 42
+		x = 46
 		y = 2
 		cost = 35
 		completion_reward = {
@@ -2505,6 +2505,97 @@ focus_tree = {
 		}
 		search_filters = {
 			FOCUS_FILTER_INDUSTRY
+		}
+	}
+
+	####################################################################
+	### DEVELOP SIAM (x=52, y=2-4)                                   ###
+	####################################################################
+
+	#Develop Siam
+	focus = {
+		id = JAP_develop_siam
+		icon = GFX_focus_generic_diplomatic_treaty
+		x = 52
+		y = 3
+		cost = 35
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = JAP_tohoku_industrial_development_company }
+		available = {
+			OR = {
+				SIA = { is_subject_of = ROOT }
+				SIA = { is_in_faction_with = ROOT }
+			}
+		}
+		completion_reward = {
+			SIA = {
+				add_timed_idea = { idea = JAP_japanese_investments days = 720 }
+			}
+			add_political_power = 50
+		}
+	}
+
+	#Bangkok Modernisation
+	focus = {
+		id = JAP_bangkok_modernization
+		icon = GFX_goal_generic_construct_civ_factory
+		x = 50
+		y = 4
+		cost = 35
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = JAP_develop_siam }
+		completion_reward = {
+			1076 = {
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+				add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+			}
+		}
+	}
+
+	#Siamese Resource Extraction
+	focus = {
+		id = JAP_siamese_resource_extraction
+		icon = GFX_goal_generic_oil_refinery
+		x = 54
+		y = 4
+		cost = 35
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = JAP_develop_siam }
+		completion_reward = {
+			289 = {
+				add_resource = { type = rubber amount = 12 }
+				add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+			}
+		}
+	}
+
+	#Integrate Siam into the Yen Bloc
+	focus = {
+		id = JAP_integrate_siam_yen_bloc
+		icon = GFX_goal_generic_national_unity
+		x = 52
+		y = 4
+		cost = 35
+		search_filters = {
+			FOCUS_FILTER_INDUSTRY
+		}
+		prerequisite = { focus = JAP_bangkok_modernization focus = JAP_siamese_resource_extraction }
+		completion_reward = {
+			SIA = {
+				add_timed_idea = { idea = JAP_japanese_investments days = 720 }
+			}
+			1076 = {
+				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			}
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_local_resources_factor value = 0.05 tooltip = local_resources_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 		}
 	}
 
@@ -2575,7 +2666,7 @@ focus_tree = {
 	focus = {
 		id = JAP_begin_the_chosen_proejct
 		icon = GFX_JAP_begin_the_chosen_proejct-905282
-		x = 37
+		x = 40
 		y = 3
 		cost = 5
 		completion_reward = {
@@ -2595,7 +2686,7 @@ focus_tree = {
 	focus = {
 		id = JAP_economic_unification_with_korea
 		icon = GFX_JAP_economic_unification_with_korea-905285
-		x = 37
+		x = 39
 		y = 4
 		cost = 5
 		available = {
@@ -2636,7 +2727,7 @@ focus_tree = {
 	focus = {
 		id = JAP_industralise_taiwan
 		icon = GFX_JAP_industralise_taiwan-905287
-		x = 39
+		x = 43
 		y = 3
 		cost = 5
 		completion_reward = {
@@ -2783,7 +2874,7 @@ focus_tree = {
 	focus = {
 		id = JAP_form_a_cabinet_planning_council
 		icon = GFX_JAP_form_a_cabinet_planning_council-905297
-		x = 42
+		x = 46
 		y = 3
 		cost = 5
 		completion_reward = {
@@ -2804,7 +2895,7 @@ focus_tree = {
 	focus = {
 		id = JAP_nationalise_nippon_electric
 		icon = GFX_focus_generic_industry_1
-		x = 40
+		x = 48
 		y = 4
 		cost = 5
 		completion_reward = {
@@ -2822,28 +2913,25 @@ focus_tree = {
 	}
 
 	####################################################################
-	### EMPOWER THE SHINKO ZAIBATSU (militarist capital)            ###
-	### Progressively unlocks the Zaibatsu decision tab (JAP.txt).   ###
+	### THE ZAIBATSU (economic focus tree, y=4-8)                    ###
+	### Five zaibatsu branches with two mutual-exclusive pairs        ###
+	### (Nissan/Mitsubishi, Sumitomo/Mitsui) and Yasuda standalone.  ###
 	####################################################################
 
-	# Reorganize the War Economy - OPENER: unlocks the zaibatsu tab + Big Four investment decisions
+	# Reorganize the War Economy
 	focus = {
 		id = JAP_reorganize_the_war_economy
 		icon = GFX_JAP_zaibatsu_reorganize_war_economy
-		x = 42
+		x = 46
 		y = 4
 		cost = 10
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		prerequisite = { focus = JAP_form_a_cabinet_planning_council }
 		completion_reward = {
-			set_country_flag = JAP_zaibatsu_economy_active
-			custom_effect_tooltip = JAP_zaibatsu_economy_unlocked_tt
-			custom_effect_tooltip = JAP_reorganize_eco_tt
-			hidden_effect = {
-				add_to_variable = { JAP_eco_production_factory_efficiency_gain_factor = 0.02 }
-				force_update_dynamic_modifier = yes
-			}
-			custom_effect_tooltip = available_industrial_concern
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_factory_efficiency_gain_factor value = 0.02 tooltip = production_factory_efficiency_gain_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			custom_effect_tooltip = JAP_industrial_concerns_available_tt
 			show_ideas_tooltip = sumitomo
 			show_ideas_tooltip = mitsubishi_civilian
 			show_ideas_tooltip = mitsui_bank
@@ -2851,92 +2939,153 @@ focus_tree = {
 		}
 	}
 
-	# Empower the Shinko Zaibatsu - unlocks Nissan + Nakajima decisions, favours them over the Big Four
+	# Nissan
 	focus = {
-		id = JAP_empower_the_shinko_zaibatsu
-		icon = GFX_JAP_zaibatsu_empower_shinko
-		x = 39
+		id = JAP_nissan_zaibatsu
+		icon = GFX_focus_generic_tank_production
+		x = 38
 		y = 5
-		cost = 10
+		cost = 5
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 		prerequisite = { focus = JAP_reorganize_the_war_economy }
-		mutually_exclusive = { focus = JAP_accommodate_the_big_four }
+		mutually_exclusive = { focus = JAP_mitsubishi_zaibatsu }
 		completion_reward = {
-			set_country_flag = JAP_shinko_zaibatsu_unlocked
-			custom_effect_tooltip = JAP_zaibatsu_shinko_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_nissan_favor value = 15 }
-			add_to_variable = { var = JAP_zaibatsu_nakajima_favor value = 15 }
-			clamp_variable = { var = JAP_zaibatsu_nissan_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_nakajima_favor min = 0 max = 100 }
-			custom_effect_tooltip = JAP_zaibatsu_big4_minus5_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = -5 }
-			add_to_variable = { var = JAP_zaibatsu_mitsubishi_favor value = -5 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = -5 }
-			add_to_variable = { var = JAP_zaibatsu_yasuda_favor value = -5 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_mitsubishi_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_yasuda_favor min = 0 max = 100 }
 			custom_effect_tooltip = JAP_eco_spirit_changed_tt
-			custom_effect_tooltip = JAP_shinko_eco_tt
-			hidden_effect = {
-				add_to_variable = { JAP_eco_production_speed_industrial_complex_factor = 0.15 }
-				add_to_variable = { JAP_eco_production_speed_arms_factory_factor = 0.10 }
-				force_update_dynamic_modifier = yes
-			}
-			custom_effect_tooltip = JAP_shinko_dockyard_tt
-			if = {
-				limit = { has_war_with = CHI CHI = { has_capitulated = yes } }
-				add_timed_idea = { idea = JAP_shinko_dockyard_boost days = 365 }
-			}
+			add_to_variable = { var = JAP_eco_production_speed_arms_factory_factor value = 0.10 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.05 tooltip = industrial_capacity_factory_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 		}
 	}
 
-	# Motorize the Army - Nissan flavour
+	# Mitsubishi
 	focus = {
-		id = JAP_motorize_the_army
-		icon = GFX_focus_CHL_domestic_production_of_the_willys_mb
+		id = JAP_mitsubishi_zaibatsu
+		icon = GFX_goal_generic_construct_naval_dockyard
+		x = 42
+		y = 5
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_reorganize_the_war_economy }
+		mutually_exclusive = { focus = JAP_nissan_zaibatsu }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_speed_dockyard_factor value = 0.10 tooltip = production_speed_dockyard_factor_tt }
+			add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.05 tooltip = industrial_capacity_dockyard_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# Yasuda
+	focus = {
+		id = JAP_yasuda_zaibatsu
+		icon = GFX_focus_generic_self_management
+		x = 46
+		y = 5
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_reorganize_the_war_economy }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_political_power_gain value = 0.25 tooltip = JAP_pp_gain_025_tt }
+			add_to_variable = { var = JAP_eco_consumer_goods_factor value = -0.025 tooltip = consumer_goods_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# Sumitomo
+	focus = {
+		id = JAP_sumitomo_zaibatsu
+		icon = GFX_focus_generic_steel
+		x = 50
+		y = 5
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_reorganize_the_war_economy }
+		mutually_exclusive = { focus = JAP_mitsui_zaibatsu }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_local_resources_factor value = 0.10 tooltip = local_resources_factor_tt }
+			add_to_variable = { var = JAP_eco_production_factory_max_efficiency_factor value = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# Mitsui
+	focus = {
+		id = JAP_mitsui_zaibatsu
+		icon = GFX_goal_generic_positive_trade_relations
+		x = 54
+		y = 5
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_reorganize_the_war_economy }
+		mutually_exclusive = { focus = JAP_sumitomo_zaibatsu }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_speed_buildings_factor value = 0.10 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { var = JAP_eco_production_speed_industrial_complex_factor value = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# Dowa Automobile Works (Nissan sub 1)
+	focus = {
+		id = JAP_dowa_automobile_works
+		icon = GFX_goal_generic_construct_mil_factory
 		x = 37
 		y = 6
-		cost = 8
+		cost = 5
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_empower_the_shinko_zaibatsu }
+		prerequisite = { focus = JAP_nissan_zaibatsu }
 		completion_reward = {
-			custom_effect_tooltip = JAP_zaibatsu_nissan_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_nissan_favor value = 10 tooltip = JAP_zaibatsu_favor_plus10_tt }
-			clamp_variable = { var = JAP_zaibatsu_nissan_favor min = 0 max = 100 }
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.025 tooltip = industrial_capacity_factory_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			random_owned_controlled_state = {
 				limit = { is_core_of = JAP free_building_slots = { building = arms_factory size > 0 include_locked = yes } }
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = { type = arms_factory level = 4 instant_build = yes }
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = { type = arms_factory level = 3 instant_build = yes }
 			}
 		}
 	}
 
-	# Collaborate with Mangyo - Manchukuo already runs Mangyo, so Nissan partners
-	# with it instead, tightening the two war economies together.
+	# Nissan Manchurian Motors (Nissan sub 2)
 	focus = {
-		id = JAP_found_mangyo_focus
-		icon = GFX_JAP_zaibatsu_found_mangyo
+		id = JAP_nissan_manchurian_motors
+		icon = GFX_focus_generic_army_trucks
 		x = 39
 		y = 6
-		cost = 10
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_empower_the_shinko_zaibatsu }
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = JAP_nissan_zaibatsu }
 		completion_reward = {
-			custom_effect_tooltip = JAP_zaibatsu_nissan_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_nissan_favor value = 10 tooltip = JAP_zaibatsu_favor_plus10_tt }
-			clamp_variable = { var = JAP_zaibatsu_nissan_favor min = 0 max = 100 }
+			add_tech_bonus = { name = JAP_nissan_motorized bonus = 1.0 uses = 2 category = motorized_equipment }
 			if = {
 				limit = { has_subject = MAN }
 				MAN = {
-					custom_effect_tooltip = JAP_mangyo_collab_man_tt
+					custom_effect_tooltip = MAN_eco_spirit_changed_tt
 					hidden_effect = {
 						add_to_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0.10 }
 						force_update_dynamic_modifier = yes
 					}
 				}
 			}
+		}
+	}
+
+	# Nagasaki Shipyards (Mitsubishi sub 1)
+	focus = {
+		id = JAP_nagasaki_shipyards
+		icon = GFX_goal_generic_construct_naval_dockyard
+		x = 41
+		y = 6
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_mitsubishi_zaibatsu }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.05 tooltip = industrial_capacity_dockyard_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			random_owned_controlled_state = {
 				limit = { is_core_of = JAP is_coastal = yes free_building_slots = { building = dockyard size > 0 include_locked = yes } }
 				add_extra_state_shared_building_slots = 4
@@ -2945,25 +3094,21 @@ focus_tree = {
 		}
 	}
 
-	# Aircraft for the Empire - Nakajima; unlocks the Ota Plant decision + MIO funds
+	# Mitsubishi Aircraft Division (Mitsubishi sub 2)
 	focus = {
-		id = JAP_aircraft_for_the_empire
-		icon = GFX_JAP_zaibatsu_aircraft_empire
-		x = 41
+		id = JAP_mitsubishi_aircraft
+		icon = GFX_goal_generic_air_fighter2
+		x = 43
 		y = 6
-		cost = 8
+		cost = 5
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
-		prerequisite = { focus = JAP_empower_the_shinko_zaibatsu }
+		prerequisite = { focus = JAP_mitsubishi_zaibatsu }
 		completion_reward = {
-			set_country_flag = JAP_nakajima_ota_unlocked
-			custom_effect_tooltip = JAP_nakajima_ota_unlocked_tt
-			custom_effect_tooltip = JAP_zaibatsu_nakajima_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_nakajima_favor value = 10 tooltip = JAP_zaibatsu_favor_plus10_tt }
-			clamp_variable = { var = JAP_zaibatsu_nakajima_favor min = 0 max = 100 }
 			air_experience = 25
+			add_tech_bonus = { name = JAP_mitsubishi_air bonus = 1.0 uses = 2 category = light_fighter category = naval_bomber }
 			if = {
 				limit = { has_dlc = "Arms Against Tyranny" }
-				mio:JAP_nakajima_organization = {
+				mio:JAP_mitsubishi_organization = {
 					add_mio_funds = 2000
 					add_mio_funds_gain_factor = 0.05
 				}
@@ -2971,212 +3116,170 @@ focus_tree = {
 		}
 	}
 
-	# Break the Old Houses - strips the Big Four, turns ON the rivalry/demand system
+	# Yasuda Financial Networks (Yasuda sub)
 	focus = {
-		id = JAP_break_the_old_houses
-		icon = GFX_JAP_zaibatsu_break_old_houses
-		x = 39
-		y = 7
-		cost = 10
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
-		prerequisite = { focus = JAP_motorize_the_army }
-		prerequisite = { focus = JAP_found_mangyo_focus }
-		prerequisite = { focus = JAP_aircraft_for_the_empire }
-		completion_reward = {
-			set_country_flag = JAP_zaibatsu_rivalry_active
-			custom_effect_tooltip = JAP_zaibatsu_rivalry_active_tt
-			add_stability = -0.05
-			custom_effect_tooltip = JAP_zaibatsu_big4_minus20_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = -20 }
-			add_to_variable = { var = JAP_zaibatsu_mitsubishi_favor value = -20 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = -20 }
-			add_to_variable = { var = JAP_zaibatsu_yasuda_favor value = -20 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_mitsubishi_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_yasuda_favor min = 0 max = 100 }
-			add_equipment_to_stockpile = { type = infantry_equipment amount = 3000 producer = JAP }
-		}
-	}
-
-	# The Military-Industrial Order - capstone
-	focus = {
-		id = JAP_the_military_industrial_order
-		icon = GFX_JAP_zaibatsu_military_industrial_order
-		x = 39
-		y = 8
-		cost = 10
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_break_the_old_houses }
-		completion_reward = {
-			custom_effect_tooltip = JAP_mil_ind_order_eco_tt
-			hidden_effect = {
-				add_to_variable = { JAP_eco_production_speed_arms_factory_factor = 0.05 }
-				add_to_variable = { JAP_eco_industrial_capacity_factory = 0.05 }
-				force_update_dynamic_modifier = yes
-			}
-			custom_effect_tooltip = JAP_zaibatsu_shinko_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_nissan_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_nakajima_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_nissan_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_nakajima_favor min = 0 max = 100 }
-		}
-	}
-
-	####################################################################
-	### ACCOMMODATE THE BIG FOUR (private capital)                   ###
-	### Mutually exclusive with the Shinko path. Cooperative: boosts  ###
-	### Big Four favour and neutralises the obstruction system.       ###
-	####################################################################
-
-	# Accommodate the Big Four - the fork's right branch, ME with Empower the Shinko Zaibatsu
-	focus = {
-		id = JAP_accommodate_the_big_four
-		icon = GFX_JAP_zaibatsu_accommodate_big_four
-		x = 45
-		y = 5
-		cost = 10
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_reorganize_the_war_economy }
-		mutually_exclusive = { focus = JAP_empower_the_shinko_zaibatsu }
-		completion_reward = {
-			set_country_flag = JAP_big_four_path
-			custom_effect_tooltip = JAP_zaibatsu_big4_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_mitsubishi_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_yasuda_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_mitsubishi_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_yasuda_favor min = 0 max = 100 }
-			custom_effect_tooltip = JAP_eco_spirit_changed_tt
-			custom_effect_tooltip = JAP_accommodate_big4_tt
-			hidden_effect = {
-				add_to_variable = { JAP_eco_political_power_gain = 0.25 }
-				add_to_variable = { JAP_eco_production_speed_industrial_complex_factor = 0.15 }
-				add_to_variable = { JAP_eco_production_speed_arms_factory_factor = 0.10 }
-				force_update_dynamic_modifier = yes
-			}
-		}
-	}
-
-	# The Zaibatsu Banks - Mitsui/Yasuda finance
-	focus = {
-		id = JAP_the_zaibatsu_banks
-		icon = GFX_JAP_zaibatsu_banks
-		x = 43
+		id = JAP_yasuda_financial_networks
+		icon = GFX_focus_generic_industry_3
+		x = 46
 		y = 6
-		cost = 8
+		cost = 5
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_accommodate_the_big_four }
+		prerequisite = { focus = JAP_yasuda_zaibatsu }
 		completion_reward = {
-			custom_effect_tooltip = JAP_zaibatsu_banks_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_yasuda_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_yasuda_favor min = 0 max = 100 }
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_consumer_goods_factor value = -0.025 tooltip = consumer_goods_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			random_owned_controlled_state = {
 				limit = { is_core_of = JAP free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
-				add_extra_state_shared_building_slots = 6
-				add_building_construction = { type = industrial_complex level = 6 instant_build = yes }
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
 			}
 		}
 	}
 
-	# Heavy Industry Partnership - Mitsubishi/Sumitomo
+	# Sumitomo Metal Industries (Sumitomo sub 1)
 	focus = {
-		id = JAP_heavy_industry_partnership
-		icon = GFX_JAP_zaibatsu_heavy_industry
-		x = 45
+		id = JAP_sumitomo_metal_industries
+		icon = GFX_focus_generic_aluminum
+		x = 49
 		y = 6
-		cost = 8
+		cost = 5
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_accommodate_the_big_four }
+		prerequisite = { focus = JAP_sumitomo_zaibatsu }
 		completion_reward = {
-			custom_effect_tooltip = JAP_heavy_industry_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsubishi_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_mitsubishi_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_factory_max_efficiency_factor value = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			282 = { add_resource = { type = chromium amount = 250 } }
 			282 = { add_resource = { type = aluminium amount = 300 } }
 		}
 	}
 
-	# The Trading Houses - Mitsui/Sumitomo commerce
+	# Besshi Copper Refineries (Sumitomo sub 2)
 	focus = {
-		id = JAP_the_trading_houses
-		icon = GFX_JAP_zaibatsu_trading_houses
-		x = 47
+		id = JAP_besshi_copper_refineries
+		icon = GFX_focus_generic_industry_2
+		x = 51
 		y = 6
-		cost = 8
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_accommodate_the_big_four }
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = JAP_sumitomo_zaibatsu }
 		completion_reward = {
-			custom_effect_tooltip = JAP_trading_houses_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
-			add_tech_bonus = { name = JAP_industry_bonus bonus = 1.0 uses = 2 category = industry }
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_factory_efficiency_gain_factor value = 0.02 tooltip = production_factory_efficiency_gain_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			add_tech_bonus = { name = JAP_sumitomo_industry bonus = 1.0 uses = 2 category = industry }
 		}
 	}
 
-	# Cartel Agreements - convergence; the houses self-police, ending obstruction
+	# Mitsui Trading Company (Mitsui sub 1)
 	focus = {
-		id = JAP_cartel_agreements
-		icon = GFX_JAP_zaibatsu_cartel_agreements
-		x = 45
+		id = JAP_mitsui_trading_company
+		icon = GFX_goal_generic_construct_civ_factory
+		x = 53
+		y = 6
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_mitsui_zaibatsu }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_speed_industrial_complex_factor value = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			random_owned_controlled_state = {
+				limit = { is_core_of = JAP free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+			}
+		}
+	}
+
+	# Miike Coal Expansion (Mitsui sub 2)
+	focus = {
+		id = JAP_miike_coal_expansion
+		icon = GFX_focus_generic_industry_1
+		x = 55
+		y = 6
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = JAP_mitsui_zaibatsu }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.05 tooltip = industrial_capacity_factory_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			add_tech_bonus = { name = JAP_mitsui_industry bonus = 1.0 uses = 2 category = industry }
+		}
+	}
+
+	# The Shinko Combine (Left convergence - Nissan/Mitsubishi path)
+	focus = {
+		id = JAP_shinko_combine
+		icon = GFX_goal_generic_production2
+		x = 40
 		y = 7
 		cost = 10
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_the_zaibatsu_banks }
-		prerequisite = { focus = JAP_heavy_industry_partnership }
-		prerequisite = { focus = JAP_the_trading_houses }
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		prerequisite = { focus = JAP_dowa_automobile_works focus = JAP_nagasaki_shipyards }
+		prerequisite = { focus = JAP_nissan_manchurian_motors focus = JAP_mitsubishi_aircraft }
 		completion_reward = {
-			set_country_flag = JAP_zaibatsu_cartel_flag
-			custom_effect_tooltip = JAP_zaibatsu_big4_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_mitsubishi_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_yasuda_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_mitsubishi_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_yasuda_favor min = 0 max = 100 }
+			add_tech_bonus = { name = JAP_shinko_industry bonus = 0.50 uses = 3 category = industry }
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_production_speed_arms_factory_factor value = 0.05 tooltip = production_speed_arms_factory_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# Financial Mobilization (Center convergence - Yasuda path)
+	focus = {
+		id = JAP_financial_mobilization
+		icon = GFX_focus_generic_self_management
+		x = 46
+		y = 7
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		prerequisite = { focus = JAP_yasuda_financial_networks }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_consumer_goods_factor value = -0.05 tooltip = consumer_goods_factor_tt }
+			add_to_variable = { var = JAP_eco_political_power_gain value = 0.25 tooltip = JAP_pp_gain_025_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			add_stability = 0.10
 		}
 	}
 
-	# Partnership of Throne and Capital - capstone
+	# The Zaibatsu Compact (Right convergence - Sumitomo/Mitsui path)
 	focus = {
-		id = JAP_partnership_of_throne_and_capital
-		icon = GFX_JAP_zaibatsu_partnership_throne_capital
-		x = 45
+		id = JAP_zaibatsu_compact
+		icon = GFX_goal_generic_production
+		x = 52
+		y = 7
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		prerequisite = { focus = JAP_sumitomo_metal_industries focus = JAP_mitsui_trading_company }
+		prerequisite = { focus = JAP_besshi_copper_refineries focus = JAP_miike_coal_expansion }
+		completion_reward = {
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.10 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { var = JAP_eco_production_factory_max_efficiency_factor value = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# Greater East Asia Co-Prosperity Sphere Industrial Directive (Capstone)
+	focus = {
+		id = JAP_gecaps_industrial_directive
+		icon = GFX_focus_generic_industry_3
+		x = 46
 		y = 8
 		cost = 10
 		search_filters = { FOCUS_FILTER_INDUSTRY }
-		prerequisite = { focus = JAP_cartel_agreements }
+		prerequisite = { focus = JAP_shinko_combine }
+		prerequisite = { focus = JAP_financial_mobilization }
+		prerequisite = { focus = JAP_zaibatsu_compact }
 		completion_reward = {
-			custom_effect_tooltip = JAP_partnership_eco_tt
-			hidden_effect = {
-				add_to_variable = { JAP_eco_production_speed_industrial_complex_factor = 0.10 }
-				add_to_variable = { JAP_eco_production_factory_efficiency_gain_factor = 0.10 }
-				add_to_variable = { JAP_eco_production_factory_max_efficiency_factor = 0.10 }
-				add_to_variable = { JAP_eco_stability_factor = 0.05 }
-				add_to_variable = { JAP_eco_consumer_goods_factor = -0.05 }
-				force_update_dynamic_modifier = yes
-			}
-			custom_effect_tooltip = JAP_zaibatsu_big4_favor_gain_tt
-			add_to_variable = { var = JAP_zaibatsu_mitsui_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_mitsubishi_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_sumitomo_favor value = 10 }
-			add_to_variable = { var = JAP_zaibatsu_yasuda_favor value = 10 }
-			clamp_variable = { var = JAP_zaibatsu_mitsui_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_mitsubishi_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_sumitomo_favor min = 0 max = 100 }
-			clamp_variable = { var = JAP_zaibatsu_yasuda_favor min = 0 max = 100 }
+			custom_effect_tooltip = JAP_eco_spirit_changed_tt
+			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.15 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.15 tooltip = industrial_capacity_dockyard_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 		}
 	}
 
