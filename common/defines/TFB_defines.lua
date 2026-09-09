@@ -372,9 +372,9 @@ NDefines.NAir.AIR_NAVAL_KAMIKAZE_LOSSES_MULT = 5.0          			-- Balancing valu
 NDefines.NAir.BASE_STRATEGIC_BOMBING_HIT_SHIP_CHANCE = 0.01		-- Chance to hit a ship in port when it is bombed.
 NDefines.NAir.PORT_STRIKES_DELAY_MULTIPLIER = 4                 -- multplies HOURS_DELAY_AFTER_EACH_COMBAT (2 in vanilla, 4 in the mod) if port strikes
 NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_ORG = 1.00				-- Balancing value to convert damage ( naval_strike_attack * hits ) to Organisation reduction.
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO = 0.1		-- Max planes that can join a combat comparing to the total strength of the ships
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO_PER_DAY = 0.25 -- max extra plane % that can join every day
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 30			-- Min cap for planes that can join naval combat
+NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO = 0.03		-- Max planes that can join a combat comparing to the total strength of the ships
+NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO_PER_DAY = 0.09 -- max extra plane % that can join every day
+NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 20			-- Min cap for planes that can join naval combat
 NDefines.NAir.COMBAT_MAX_WINGS_AT_ONCE_PORT_STRIKE = 10         -- we can really pounce a naval strike and escalate (10k Vanilla)
 NDefines.NAir.ACE_WING_SIZE =  100								-- size of wing ace bonuses are set up for. if lower more bonus if higher less bonus
 NDefines.NAir.SUPPLY_NEED_FACTOR = 0.25 							-- multiplies supply usage
@@ -382,8 +382,7 @@ NDefines.NAir.NAVAL_STRIKE_DETECTION_BALANCE_FACTOR = 0.3		-- Value used to scal
 NDefines.NAir.ANTI_AIR_PLANE_DAMAGE_FACTOR = 0.3					-- Anti Air Gun Damage factor
 NDefines.NAir.ANTI_AIR_PLANE_DAMAGE_CHANCE = 0.08					-- Anti Air Gun hit chance
 NDefines.NAir.ANTI_AIR_MAXIMUM_DAMAGE_REDUCTION_FACTOR = 0.8	-- Maximum damage reduction factor applied to incoming air attacks against units with AA.
-NDefines.NAir.ANTI_AIR_ATTACK_TO_DAMAGE_REDUCTION_FACTOR = 2.3	-- Balancing value to convert equipment stat anti_air_attack to the damage reduction modifier apply to incoming air attacks against units with AA.
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 500			-- Min cap for planes that can join naval combat
+NDefines.NAir.ANTI_AIR_ATTACK_TO_DAMAGE_REDUCTION_FACTOR = 0.5	-- Balancing value to convert equipment stat anti_air_attack to the damage reduction modifier apply to incoming air attacks against units with AA.
 NDefines.NAir.EFFICIENCY_REGION_CHANGE_DAILY_GAIN_STRATEGIC_BOMBER = 0.1	-- How much efficiency to regain per day. Gain applied hourly.						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.FUEL_COST_MULT = 0.7 -- fuel multiplier for all air missions
 
@@ -679,8 +678,8 @@ NDefines.NNavy.NAVY_PIERCING_THRESHOLD_CRITICAL_VALUES = {	-- 0 armor will alway
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_DAMAGE_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
-	4.00,
-	3.00,
+	1.00,
+	1.00,
 	1.00,
 	1.00,
 	1.00,
@@ -1056,7 +1055,7 @@ NDefines.NNavy.MAX_ORG_ON_MANUAL_MOVE = 1.0 -- org will clamped to this ratio on
 NDefines.NNavy.BASE_CARRIER_SORTIE_EFFICIENCY = 0.3	
 NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 2.0                        -- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.CARRIER_HOURS_DELAY_AFTER_EACH_COMBAT = 6          -- how often carrier planes do battle inside naval combat
-NDefines.NAir.COMBAT_DAMAGE_SCALE_CARRIER = 1						-- same as above but used inside naval combat for carrier battles
+NDefines.NAir.COMBAT_DAMAGE_SCALE_CARRIER = 8					-- same as above but used inside naval combat for carrier battles
 NDefines.NAir.CARRIER_PERCENTAGE_DEFEND = 0.5                    -- Percentage of planes able to defend a carrier from air attacks (historically 15% - 35%)
 NDefines.NNavy.NAVAL_COMBAT_AIR_LOW_AA_TARGET_SCORE = 40
 
@@ -1065,7 +1064,7 @@ NDefines.NNavy.NAVAL_COMBAT_PLANE_STACKING_PENALTY_EFFECT = 0.002
 
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CAPITAL = 50                    -- For dynamic plane efficacy, silhouette value (nominally in planes, but very abstract)
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_SCREEN = 12                    -- As Above. This one would be nice to split by type, but that's problematic.
-NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CARRIER = 50                    -- As Above
+NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CARRIER = 45                    -- As Above
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_SUPPORT = 6                    -- As Above
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CONVOY = 12                    -- As Above
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_SUBMARINE = 6                    -- As Above
