@@ -86,6 +86,19 @@ on_actions = {
 					FROM = {
 						set_country_flag = CHI_evacuation_blocked
 						set_country_flag = { flag = CHI_no_volunteers days = 90 }
+						every_country = {
+							limit = { has_volunteers_amount_from = { tag = PREV count > 0 } }
+							recall_volunteers_from = PREV
+						}
+						every_country = {
+							limit = { NOT = { tag = PREV } }
+							add_relation_rule_override = {
+								target = PREV
+								can_send_volunteers = no
+								trigger = CHI_no_volunteers_trigger
+								usage_desc = CHI_no_volunteers_tt
+							}
+						}
 					}
 				}
                 every_country = {
