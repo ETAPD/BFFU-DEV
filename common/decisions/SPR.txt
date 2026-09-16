@@ -586,67 +586,6 @@ SPR_expand_resource_extraction = {
 
 economy_decisions = {
 
-	SPR_famine = {
-		activation = {
-			SPR = {
-				has_war_with = ENG 
-			}
-		}
-		available = {
-			original_tag = SPR
-			SPR = {
-				has_completed_focus = SPA_agricultural_stability
-			}
-		}
-		is_good = no
-		fire_only_once = yes
-		
-		icon = generic_propaganda
-		
-		days_mission_timeout = 250
-
-		timeout_effect = {
-			
-			if = {
-				limit = {
-					has_idea = SPA_famine4
-				}
-				swap_ideas = {
-					remove_idea = SPA_famine4
-					add_idea = SPA_famine3
-				}
-			}
-			else_if = {
-				limit = {
-					has_idea = SPA_famine3
-				}
-				swap_ideas = {
-					remove_idea = SPA_famine3
-					add_idea = SPA_famine2
-				}
-			}
-			else_if = {
-				limit = {
-					has_idea = SPA_famine2
-				}
-				swap_ideas = {
-					remove_idea = SPA_famine2
-					add_idea = SPA_famine1
-				}
-			}
-			else_if = {
-				limit = {
-					has_idea = SPA_famine1
-				}
-				swap_ideas = {
-					remove_idea = SPA_famine1
-					add_idea = SPA_famine0
-				}
-			}
-			activate_mission = SPR_famine
-		}
-	}
-
 	SPR_unlock_verdeja = { #792
 		
 		icon = generic_tank
@@ -927,7 +866,7 @@ SPR_auxiliary_forces_category = {
 	
 		cost = 25
 
-		days_remove = 70
+		days_remove = 30
 
 		remove_effect = {
 			add_war_support = 0.05
@@ -1039,13 +978,13 @@ SPR_auxiliary_forces_category = {
                 # Define the template once inside the first spawn
                 # HOI4 will only create it if it doesn't already exist
                 create_unit = {
-                    division = "name = \"Brigada de Auxiliares\" division_template = \"Auxiliary Forces\" start_experience_factor = 0.1 start_equipment_factor = 0.8"
+                    division = "name = \"Brigada de Auxiliares\" division_template = \"Auxiliary Forces\" start_experience_factor = 0.1 start_equipment_factor = 1"
                     owner = ROOT
 
                 }
                 # Spawn a second brigade in the same state
                 create_unit = {
-                    division = "name = \"Brigada de Auxiliares\" division_template = \"Auxiliary Forces\" start_experience_factor = 0.1"
+                    division = "name = \"Brigada de Auxiliares\" division_template = \"Auxiliary Forces\" start_experience_factor = 0.1 start_equipment_factor = 1"
                     owner = ROOT
                 }
             }
@@ -1543,7 +1482,7 @@ SPR_empire_reborn_category = {
 			add_war_support = 0.05
 			315 = { 
 				transfer_state_to = ROOT 
-				add_manpower = 4299999
+				add_manpower = 429999
 				add_building_construction = {
 					type = infrastructure
 					level = 4
@@ -1575,7 +1514,7 @@ SPR_empire_reborn_category = {
 			}
 			318 = { 
 				transfer_state_to = ROOT 
-				add_manpower = 4199999
+				add_manpower = 419999
 				add_building_construction = {
 					type = infrastructure
 					level = 4
@@ -1598,7 +1537,7 @@ SPR_empire_reborn_category = {
 			}
 			319 = { 
 				transfer_state_to = ROOT 
-				add_manpower = 1699999
+				add_manpower = 16999
 				add_building_construction = {
 					type = infrastructure
 					level = 4
@@ -1816,38 +1755,18 @@ SPR_empire_reborn_category = {
 			# 	tooltip = GER_reichskommissariat_highlighted_required_states
 				112 = {
 					is_controlled_by = ROOT
-					OR = {
-						compliance > 80
-						is_core_of = ROOT
-					}
 				}
 				179 = {
 					is_controlled_by = ROOT
-					OR = {
-						compliance > 80
-						is_core_of = ROOT
-					}
 				}
 				181 = {
 					is_controlled_by = ROOT
-					OR = {
-						compliance > 80
-						is_core_of = ROOT
-					}
 				}
 				180 = {
 					is_controlled_by = ROOT
-					OR = {
-						compliance > 80
-						is_core_of = ROOT
-					}
 				}
 				795 = {
 					is_controlled_by = ROOT
-					OR = {
-						compliance > 80
-						is_core_of = ROOT
-					}
 				}
 			#}
     	}
@@ -1880,6 +1799,125 @@ SPR_empire_reborn_category = {
 				remove_dynamic_modifier = { modifier = autonomous_state }
 			}
         }
+		
+		ai_will_do = {
+			base = 999
+		}
+	}
+
+	SPR_africa = {
+
+		icon = GFX_decision_CHL_mapuche_reorganize_the_bolivian_government
+
+		priority = 1
+
+		fire_only_once = yes
+	
+		cost = 0
+
+		available = {
+        	# custom_trigger_tooltip = {
+			# 	tooltip = GER_reichskommissariat_highlighted_required_states
+				699 = {
+					is_controlled_by = ROOT
+				}
+				178 = {
+					is_controlled_by = ROOT
+				}
+				783 = {
+					is_controlled_by = ROOT
+				}
+				462 = {
+					is_controlled_by = ROOT
+				}
+				461 = {
+					is_controlled_by = ROOT
+				}
+				459 = {
+					is_controlled_by = ROOT
+				}
+				513 = {
+					is_controlled_by = ROOT
+				}
+				460 = {
+					is_controlled_by = ROOT
+				}
+			#}
+    	}
+
+		highlight_states = {
+			highlight_state_targets = {
+				state = 699
+				state = 178
+				state = 783
+				state = 462
+				state = 461
+				state = 459
+				state = 513
+				state = 460
+			}
+		}
+
+		complete_effect = {
+			add_political_power = 75
+			add_stability = 0.05
+			add_war_support = 0.05
+			
+			every_controlled_state = {
+				limit = {
+					OR = {
+						state = 699
+						state = 178
+						state = 783
+						state = 462
+						state = 461
+						state = 459
+						state = 513
+						state = 460
+					}
+				}
+				add_compliance = 40
+			}
+        }
+		
+		ai_will_do = {
+			base = 999
+		}
+	}
+
+	SPR_gibraltar = {
+
+		icon = GFX_decision_CHL_mapuche_reorganize_the_bolivian_government
+
+		priority = 1
+
+		fire_only_once = yes
+	
+		cost = 0
+
+		available = {
+			118 = {
+				is_controlled_by_ROOT_or_subject = yes
+			}
+		}
+
+		highlight_states = {
+			highlight_state_targets = {
+				state = 118
+			}
+		}
+
+		complete_effect = {
+			add_political_power = 200
+			add_stability = 0.15
+			add_war_support = 0.15
+			swap_ideas = {
+				remove_idea = SPA_the_royal_army_7
+				add_idea = SPA_the_royal_army_8
+			}
+			
+			118 = { add_core_of = SPR }
+		}
 		
 		ai_will_do = {
 			base = 999
