@@ -7553,8 +7553,8 @@ completion_reward = {
 	focus = {
 		id = GER_Bewegungskrieg
 
-		icon = GFX_GER_panzer_school
-		alternate_icon = GFX_GER_panzer_school
+		icon = GFX_ger_goal_med_division
+		alternate_icon = GFX_ger_goal_med_division
 
 		prerequisite = { focus = GER_develop_modern_maneuver_warfare }
 		mutually_exclusive = { focus = GER_the_prussian_legacy focus = GER_adopt_new_panzer_doctrine focus = GER_Schwere_Panzertruppen }
@@ -7629,8 +7629,8 @@ completion_reward = {
 	focus = {
 		id = GER_Schwere_Panzertruppen
 
-		icon = GFX_GER_heavy_tiger
-		alternate_icon = GFX_GER_heavy_tiger
+		icon = GFX_GER_heavy_tank_focus #GFX_ger_goal_heavy_tank 
+		alternate_icon = GFX_GER_heavy_tank_focus #GFX_ger_goal_heavy_tank
 
 		prerequisite = { focus = GER_develop_modern_maneuver_warfare }
 		mutually_exclusive = { focus = GER_the_prussian_legacy focus = GER_Bewegungskrieg focus = GER_adopt_new_panzer_doctrine }
@@ -7929,7 +7929,7 @@ completion_reward = {
 
 	focus = {
 		id = GER_increase_armor_quality
-		icon = GFX_GER_panzer_school
+		icon = GFX_ger_goal_TD
 		prerequisite = { focus = GER_heavy_turret_developments }
 		prerequisite = { focus = GER_Tiger_developments }
 
@@ -7952,8 +7952,8 @@ completion_reward = {
 
 	focus = {
 		id = GER_bust_down_strategy
-		icon = GFX_GER_panzer_school
-		prerequisite = { focus = GER_open_old_stockpiles }
+		icon = GFX_ger_goal_TD_2
+		prerequisite = { focus = GER_sturmpanzer_doctrine }
 		prerequisite = { focus = GER_Tiger_developments }
 
 		x = 1
@@ -7966,50 +7966,77 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
 
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
+		}
+	}
+	
+	focus = {
+		id = GER_101st_SS_Heavy_Panzer_Battalion
+		icon = GFX_ger_armor_production
+		prerequisite = { focus = GER_bust_down_strategy focus = GER_SPG_regimental_force }
+        mutually_exclusive = { focus = GER_Sturmtiger_infantry_support_division focus = GER_SS-Panzer-Division_Das_Reich }
 
-			custom_effect_tooltip = generic_skip_one_line_tt
+		x = 3
+		y = 3
+		relative_position_id = GER_Schwere_Panzertruppen
+		cost = 5
+		available = {
+			has_completed_focus = GER_hegemony_of_the_ss
+		}
 
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+		completion_reward = {
+			
 		}
 	}
 
 	focus = {
-		id = GER_open_old_stockpiles
-		icon = GFX_GER_panzer_school
+		id = GER_Sturmtiger_infantry_support_division
+		icon = GFX_GER_heavy_tiger #GFX_ger_goal_TD_2
+		prerequisite = { focus = GER_increase_armor_quality focus = GER_stormtroopers }
+        mutually_exclusive = { focus = GER_101st_SS_Heavy_Panzer_Battalion focus = GER_SS-Panzer-Division_Das_Reich }
+
+		x = -2
+		y = 1
+		relative_position_id = GER_increase_armor_quality
+		cost = 5
+		available = {
+			has_completed_focus = GER_hegemony_of_the_ss
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			
+		}
+	}
+
+	focus = {
+		id = GER_SS-Panzer-Division_Das_Reich
+		icon = GFX_SS_panzer_elite
+		prerequisite = { focus = GER_maintenance_crews focus = GER_expand_kummersdorfs_capacity }
+        mutually_exclusive = { focus = GER_Sturmtiger_infantry_support_division focus = GER_101st_SS_Heavy_Panzer_Battalion }
+	
+
+		x = -2
+		y = 1
+		relative_position_id = GER_expand_kummersdorfs_capacity
+		cost = 5
+		available = {
+			has_completed_focus = GER_hegemony_of_the_ss
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			
+		}
+	}
+
+	focus = {
+		id = GER_sturmpanzer_doctrine
+		icon = GFX_GER_hummel_spg
 		prerequisite = { focus = GER_Schwere_Panzertruppen }
 
 		x = 2
@@ -8248,7 +8275,7 @@ completion_reward = {
 
 	focus = {
 		id = GER_Schwerpunkt
-		icon = GFX_GER_pak_front
+		icon = GFX_GER_rommel_time #GFX_ger_goal_stug
 		prerequisite = { focus = GER_expand_kummersdorfs_capacity focus = GER_combined_arms }
 
 		x = 1
@@ -8463,7 +8490,7 @@ completion_reward = {
 
 	focus = {
 		id = GER_maintenance_crews
-		icon = GFX_focus_SIA_reverse_engineer_allied_tanks
+		icon = GFX_ger_kampfgruppen2
 		prerequisite = { focus = GER_light_tank_studies }
 		prerequisite = { focus = GER_early_mechanization_efforts }
 
@@ -8649,7 +8676,7 @@ completion_reward = {
 
 	focus = {
 		id = GER_cannon_developments
-		icon = GFX_ger_second_gen_tanks2
+		icon = GFX_ger_achtung_panzer
 		prerequisite = { focus = GER_adopt_new_panzer_doctrine }
 
 		x = 2
@@ -9808,7 +9835,7 @@ completion_reward = {
 		icon = GFX_focus_generic_paratrooper
 		prerequisite = { focus = GER_messerschmitt_109 }
 		prerequisite = { focus = GER_focke_wulf }
-		mutually_exclusive = { focus = GER_cheap_small_fighter }
+		mutually_exclusive = { focus = GER_external_fuel_tanks_expansion }
 
 		x = -1
 		y = 2
@@ -9825,7 +9852,7 @@ completion_reward = {
 	}
 
 	focus = {
-		id = GER_cheap_small_fighter
+		id = GER_external_fuel_tanks_expansion
 		icon = GFX_focus_SMB_purchase_aircraft
 		prerequisite = { focus = GER_messerschmitt_109 }
 		prerequisite = { focus = GER_focke_wulf }
@@ -9848,7 +9875,7 @@ completion_reward = {
     focus = {
 		id = GER_give_goring_command
 		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_agile_fighter_design focus = GER_cheap_small_fighter}
+		prerequisite = { focus = GER_agile_fighter_design focus = GER_external_fuel_tanks_expansion}
 
 		x = 1
 		y = 2
