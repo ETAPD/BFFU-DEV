@@ -563,12 +563,12 @@ focus_tree = {
 			}
 			add_equipment_to_stockpile = {
 				type = infantry_equipment
-				amount = 2000
+				amount = 10000
 				producer = ITA
 			}
 			add_equipment_to_stockpile = {
 				type = squad_equipment
-				amount = 500
+				amount = 1300
 				producer = ITA
 			}
 			add_equipment_to_stockpile = {
@@ -725,7 +725,7 @@ focus_tree = {
 		prerequisite = { focus = SPA_consolidate_the_north focus = SPA_a_methodical_approach focus = SPA_buy_italian_equipment }
 		
 		icon = GFX_goal_generic_build_tank
-		x = -1
+		x = -2
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
 		cost = 3
@@ -742,6 +742,84 @@ focus_tree = {
 				add_ai_strategy = { type = send_lend_lease_desire id = SPA value = 200 }
 			}
 			add_timed_idea = { idea = SPR_equipment_shipments_spain days = 730 }
+		}
+	}
+
+	focus = {
+		id = SPA_royal_intelligence_service
+		available = {
+		}
+		prerequisite = { focus = SPA_consolidate_the_north focus = SPA_a_methodical_approach focus = SPA_buy_italian_equipment }
+		
+		icon = GFX_focus_generic_secret_service_agency
+		x = 0
+		y = 1
+		relative_position_id = SPA_consolidate_the_north
+		cost = 3
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_STABILITY}
+		completion_reward = {
+			if = {
+				limit = {
+					has_intelligence_agency = no
+				}
+				create_intelligence_agency = yes
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+			add_ideas = SPA_intel1
+		}
+	}
+
+	focus = {
+		id = SPA_share_intelligence
+		available = {
+		}
+		prerequisite = { focus = SPA_royal_intelligence_service }
+		
+		icon = GFX_goal_generic_intelligence_exchange
+		x = -1
+		y = 1
+		relative_position_id = SPA_royal_intelligence_service
+		cost = 3
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_STABILITY}
+		completion_reward = {
+			swap_ideas = {
+				remove_idea = SPA_intel1
+				add_idea = SPA_intel2
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_empower_royal_police
+		available = {
+		}
+		prerequisite = { focus = SPA_royal_intelligence_service }
+		
+		icon = GFX_focus_GER_expand_ss_security_duties
+		x = 1
+		y = 1
+		relative_position_id = SPA_royal_intelligence_service
+		cost = 3
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_STABILITY}
+		completion_reward = {
+			add_tech_bonus = {
+				name = GER_expand_ss_security_duties
+				bonus = 0.5
+				uses = 2
+				category = military_police_tech
+			}
+			upgrade_intelligence_agency = upgrade_passive_defense
+			upgrade_intelligence_agency = upgrade_passive_defense
+			upgrade_intelligence_agency = upgrade_passive_defense
+			upgrade_intelligence_agency = upgrade_passive_defense
+			upgrade_intelligence_agency = upgrade_anti_partisan
+			upgrade_intelligence_agency = upgrade_anti_partisan
 		}
 	}
 
@@ -765,7 +843,7 @@ focus_tree = {
 		prerequisite = { focus = SPA_consolidate_the_north focus = SPA_a_methodical_approach focus = SPA_buy_italian_equipment }
 		
 		icon = GFX_goal_generic_army_doctrines
-		x = 1
+		x = 2
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
 		cost = 3
@@ -2883,9 +2961,6 @@ focus_tree = {
 
 	focus = {
 		id = SPA_german_technical_mission
-		available = {
-			has_completed_focus = SPA_bar_program
-		}
 		bypass = {
 		}
 		prerequisite = { focus = SPA_an_armored_corps }
@@ -2966,7 +3041,7 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_RESEARCH}
 		completion_reward = {
 			set_technology = {
-				ger_p3_tank_1 = 1
+				ger_p4_tank_1 = 1
 			}
 		}
 	}
@@ -3528,84 +3603,6 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SPA_royal_intelligence_service
-		available = {
-		}
-		prerequisite = { focus = SPA_spain_reborn_in_faith }
-		
-		icon = GFX_focus_generic_secret_service_agency
-		x = -3
-		y = 1
-		relative_position_id = SPA_spain_reborn_in_faith
-		cost = 5
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_STABILITY}
-		completion_reward = {
-			if = {
-				limit = {
-					has_intelligence_agency = no
-				}
-				create_intelligence_agency = yes
-				custom_effect_tooltip = generic_skip_one_line_tt
-			}
-			add_ideas = SPA_intel1
-		}
-	}
-
-	focus = {
-		id = SPA_share_intelligence
-		available = {
-		}
-		prerequisite = { focus = SPA_royal_intelligence_service }
-		
-		icon = GFX_goal_generic_intelligence_exchange
-		x = -1
-		y = 1
-		relative_position_id = SPA_royal_intelligence_service
-		cost = 6
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_STABILITY}
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = SPA_intel1
-				add_idea = SPA_intel2
-			}
-		}
-	}
-
-	focus = {
-		id = SPA_empower_royal_police
-		available = {
-		}
-		prerequisite = { focus = SPA_royal_intelligence_service }
-		
-		icon = GFX_focus_GER_expand_ss_security_duties
-		x = 1
-		y = 1
-		relative_position_id = SPA_royal_intelligence_service
-		cost = 6
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_STABILITY}
-		completion_reward = {
-			add_tech_bonus = {
-				name = GER_expand_ss_security_duties
-				bonus = 0.5
-				uses = 2
-				category = military_police_tech
-			}
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_anti_partisan
-			upgrade_intelligence_agency = upgrade_anti_partisan
-		}
-	}
-
-	focus = {
 		id = SPA_reconstruction_through_faith
 		available = {
 		}
@@ -3615,7 +3612,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_spain_reborn_in_faith
-		cost = 6
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -3651,16 +3648,62 @@ focus_tree = {
 		}
 	}
 
+
+
 	focus = {
-		id = SPA_most_catholic_monarch
+		id = SPA_spirit_of_the_reconquista
 		available = {
 		}
 		prerequisite = { focus = SPA_restore_the_royal_army }
 		
-		icon = GFX_focus_generic_catholic_dominion
-		x = -3
+		icon = GFX_focus_CHL_restore_the_old_kingdom
+		x = 0
 		y = 1
 		relative_position_id = SPA_restore_the_royal_army
+		cost = 6
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_STABILITY}
+		completion_reward = {
+			swap_ideas = {
+				remove_idea = SPA_the_royal_army_2
+				add_idea = SPA_the_royal_army_4
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_defenders_of_catholicism
+		available = {
+		}
+		prerequisite = { focus = SPA_spirit_of_the_reconquista }
+
+		icon = GFX_focus_ger_bulwark_against_bolshevism
+		x = 0
+		y = 1
+		relative_position_id = SPA_spirit_of_the_reconquista
+		cost = 6
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_STABILITY}
+		completion_reward = {
+			swap_ideas = {
+				remove_idea = SPA_the_royal_army_4
+				add_idea = SPA_the_royal_army_5
+			}
+		}
+	}
+
+		focus = {
+		id = SPA_most_catholic_monarch
+		available = {
+		}
+		prerequisite = { focus = SPA_defenders_of_catholicism }
+		
+		icon = GFX_focus_generic_catholic_dominion
+		x = 3
+		y = 1
+		relative_position_id = SPA_defenders_of_catholicism
 		cost = 6
 
 		available_if_capitulated = yes
@@ -3725,6 +3768,11 @@ focus_tree = {
 			}
 		}
 		bypass = {
+			SPR = {
+				controls_state = 461
+				controls_state = 462
+			}
+		
 		}
 		prerequisite = { focus = SPA_unite_the_crowns_once_more }
 
@@ -3748,8 +3796,7 @@ focus_tree = {
 
 			random_other_country = {
 				limit = {
-					original_tag = FRA
-					has_focus_tree = vichy_french_focus
+					original_tag = VIC
 					controls_state = 461
 					controls_state = 462
 				}
@@ -3767,89 +3814,17 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SPA_spirit_of_the_reconquista
-		available = {
-		}
-		prerequisite = { focus = SPA_restore_the_royal_army }
-		
-		icon = GFX_focus_CHL_restore_the_old_kingdom
-		x = 0
-		y = 1
-		relative_position_id = SPA_restore_the_royal_army
-		cost = 6
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_STABILITY}
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = SPA_the_royal_army_2
-				add_idea = SPA_the_royal_army_4
-			}
-		}
-	}
-
-	focus = {
-		id = SPA_defenders_of_catholicism
-		available = {
-		}
-		prerequisite = { focus = SPA_spirit_of_the_reconquista }
-
-		icon = GFX_focus_ger_bulwark_against_bolshevism
-		x = -1
-		y = 1
-		relative_position_id = SPA_spirit_of_the_reconquista
-		cost = 6
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_STABILITY}
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = SPA_the_royal_army_4
-				add_idea = SPA_the_royal_army_5
-			}
-		}
-	}
-
-	focus = {
-		id = SPA_launch_the_last_crusade
-		available = {
-			GER = { has_war_with = SOV }
-			has_any_power_balance = yes
-		}
-		bypass = {
-			NOT = { has_any_power_balance = yes }
-		}
-		prerequisite = { focus = SPA_spirit_of_the_reconquista }
-
-		icon = GFX_focus_ger_strike_at_the_source
-		x = 1
-		y = 1
-		relative_position_id = SPA_spirit_of_the_reconquista
-		cost = 6
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_STABILITY}
-		completion_reward = {
-			add_power_balance_value = {
-				id = SPR_spain_appeasement_struggle
-				value = 2
-			}
-		}
-	}
-
-	focus = {
 		id = SPA_defenders_of_king_and_crown
 		prerequisite = { focus = SPA_defenders_of_catholicism }
-		prerequisite = { focus = SPA_launch_the_last_crusade }
 		
 		available = {
 			SPR = {	has_war = yes }
 		}
 
 		icon = GFX_focus_generic_home_defense
-		x = -1
+		x = 0
 		y = 1
-		relative_position_id = SPA_launch_the_last_crusade
+		relative_position_id = SPA_defenders_of_catholicism
 		cost = 6
 
 		available_if_capitulated = yes
@@ -3879,9 +3854,10 @@ focus_tree = {
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
-			GER = {
-                country_event = { id = lar_spain.659 days = 1 }
-            }
+			SPR = {
+				add_political_power = -100
+				add_stability = 0.075
+			}
 		}
 	}
 
@@ -3900,6 +3876,7 @@ focus_tree = {
 		completion_reward = {
 			set_technology = {
 				sp_shock_hardening_techniques = 1
+				sp_variable_time_fuze_shells = 1
 			}
 		}
 	}
@@ -3926,10 +3903,10 @@ focus_tree = {
 		prerequisite = { focus = SPA_reconstruction_through_faith }
 		
 		icon = GFX_focus_generic_modernize_industry
-		x = 4
+		x = -4
 		y = 1
 		relative_position_id = SPA_reconstruction_through_faith
-		cost = 6
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -4000,7 +3977,6 @@ focus_tree = {
 		cost = 6
 
 		available = {
-			date > 1939.7.1
 		}
 
 		available_if_capitulated = yes
@@ -4141,6 +4117,7 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
 			add_research_slot = 1
+			add_to_tech_sharing_group = axis_research
 		}
 	}
 
@@ -4223,7 +4200,7 @@ focus_tree = {
 
 	focus = {
 		id = SPA_espana_en_guerra
-		prerequisite = { focus = SPA_the_old_order_restored focus = SPA_enact_defense_of_spain }
+		prerequisite = { focus = SPA_demand_french_north_africa focus = SPA_enact_defense_of_spain }
 
 		available = {
 			has_war = yes
@@ -4232,7 +4209,7 @@ focus_tree = {
 		icon = GFX_focus_spr_no_pasaran
 		x = 4
 		y = 1
-		relative_position_id = SPA_the_old_order_restored
+		relative_position_id = SPA_demand_french_north_africa
 		cost = 2
 
 		available_if_capitulated = yes
@@ -4378,42 +4355,42 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
 			174 = {
-				add_extra_state_shared_building_slots = 1
+				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = industrial_complex
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
 			176 = {
-				add_extra_state_shared_building_slots = 1
+				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = industrial_complex
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
 			793 = {
-				add_extra_state_shared_building_slots = 1
+				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = industrial_complex
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
 			172 = {
-				add_extra_state_shared_building_slots = 1
+				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = industrial_complex
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
 			168 = {
-				add_extra_state_shared_building_slots = 1
+				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = industrial_complex
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -4434,6 +4411,46 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
 			add_ideas = SPA_improve_irrigation
+			174 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			176 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			793 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			172 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+			168 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
 		}
 	}
 
@@ -4452,38 +4469,9 @@ focus_tree = {
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
-			remove_ideas = SPA_mechanize_the_countryside
-			remove_ideas = SPA_improve_irrigation	
-			#remove_ideas = SPA_famine_recovery_2
-			if = {
-				limit = {
-					has_idea = SPA_famine0
-				}
-				remove_ideas = SPA_famine0
-			}	
-			if = {
-				limit = {
-					has_idea = SPA_famine1
-				}
-				remove_ideas = SPA_famine1
-			}
-			if = {
-				limit = {
-					has_idea = SPA_famine2
-				}
-				remove_ideas = SPA_famine2
-			}
-			if = {
-				limit = {
-					has_idea = SPA_famine3
-				}
-				remove_ideas = SPA_famine3
-			}
-			if = {
-				limit = {
-					has_idea = SPA_famine4
-				}
-				remove_ideas = SPA_famine4
+			swap_ideas = {
+				remove_idea = SPA_famine_recovery_3
+				add_idea = SPA_famine_recovery_4
 			}
 		}
 	}
@@ -4675,7 +4663,7 @@ focus_tree = {
 		x = 3
 		y = 1
 		relative_position_id = SPA_famine_recovery
-		cost = 7
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -4721,7 +4709,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_nationalize_western_investments
-		cost = 7
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -4739,7 +4727,7 @@ focus_tree = {
 		x = 5
 		y = 1
 		relative_position_id = SPA_famine_recovery
-		cost = 7
+		cost = 4
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -4760,7 +4748,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_import_axis_industrial_parts
-		cost = 7
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -4789,15 +4777,15 @@ focus_tree = {
 		x = 2
 		y = 1
 		relative_position_id = SPA_shift_our_industry
-		cost = 6
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
 			add_tech_bonus = {
 				name = SOV_PC_mechanical_engineering
-				bonus = 0.33
-				uses = 1
+				bonus = 1
+				uses = 2
 				category = cat_production
 			}
 		}
@@ -4938,7 +4926,7 @@ focus_tree = {
 		x = -1
 		y = 1
 		relative_position_id = SPA_las_fortalezas_pirineas
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -4978,15 +4966,12 @@ focus_tree = {
 		cost = 7
 
 		available = {
-			OR = {
-				controls_state = 112
-				controls_state = 500
-			}
 		}
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
+			custom_effect_tooltip = SPA_the_empire_reborn_tt
 			set_cosmetic_tag = SPR_habsburg_neutrality
 		}
 	}
@@ -5005,7 +4990,7 @@ focus_tree = {
 		x = 1
 		y = 1
 		relative_position_id = SPA_las_fortalezas_pirineas
-		cost = 7
+		cost = 3
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -5026,7 +5011,7 @@ focus_tree = {
 		x = -3
 		y = 1
 		relative_position_id = SPA_keep_tungsten_flowing
-		cost = 7
+		cost = 4
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
@@ -5045,7 +5030,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_deploy_the_auxiliary_force
-		cost = 7
+		cost = 4
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
