@@ -17,7 +17,6 @@ JAP_strike_south = {
 	}
 	every_army_leader = { remove_unit_leader_trait = jap_kwantung_veto }
 
-	# Seed the island-hopping spirit at the mid tier, exactly as oak does at the Pacific war start.
 	# The USA gets the mirrored spirit at the same tier; from here the two move in opposite directions
 	# (every island Japan takes drops the USA a tier, every island the Allies retake raises it).
 	add_ideas = JAP_island_hopping8
@@ -30,6 +29,7 @@ JAP_strike_south = {
 	# Festung Europa - add the state modifier to every European coastal state.
 	# Globals start at 0 and are scaled to the islands held by the first recompute below.
 	set_variable = { global.JAP_festung_inv = 0 }
+	set_variable = { global.JAP_festung_ground = 0 }
 	set_variable = { global.JAP_festung_islands = 0 }
 	every_state = {
 		limit = { is_on_continent = europe is_coastal = yes }
@@ -63,15 +63,21 @@ JAP_pacific_recompute = {
 	if = { limit = { 523 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Papua
 	if = { limit = { 524 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Taiwan
 	if = { limit = { 647 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Palau
-	if = { limit = { 684 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Caroline / Truk
+	if = { limit = { 1098 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Truk (was Caroline state 684 before the atoll split)
+	if = { limit = { 1096 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Chichijima (Bonins)
 	if = { limit = { 326 = { is_controlled_by = JAP } } add_to_temp_variable = { isl = 1 } } # Hong Kong
 	set_variable = { JAP_pac_islands = isl }
 
-	# --- Festung Europa: scale the Allied naval invasion penalty with islands held (oak's token) ---
-	# Each island held: +3% Allied naval invasion penalty (max ~+39% with all 13).
+	# --- Festung Europa
+	# AND the attacker's ground attack debuff with islands held. Each island held: +6% invasion
+	# penalty, -5% enemy ground attack, clamped at oak's top tier (+80% invasion, -70% ground).
 	set_variable = { global.JAP_festung_islands = isl }
 	set_variable = { global.JAP_festung_inv = isl }
-	multiply_variable = { global.JAP_festung_inv = 0.03 }
+	multiply_variable = { global.JAP_festung_inv = 0.06 }
+	clamp_variable = { var = global.JAP_festung_inv min = 0 max = 0.8 }
+	set_variable = { global.JAP_festung_ground = isl }
+	multiply_variable = { global.JAP_festung_ground = -0.05 }
+	clamp_variable = { var = global.JAP_festung_ground min = -0.7 max = 0 }
 
 	# --- capitulated objective nations (Dutch East Indies tracked by control of Java) ---
 	set_temp_variable = { caps = 0 }
