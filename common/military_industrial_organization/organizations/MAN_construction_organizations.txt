@@ -638,26 +638,31 @@ generic_building_organization = {
 }
 
 ##########################################################################
-# MAN construction MIOs — include the template above (full trait tree).
-# Focus/flag gates removed for now (focus blocks come later); the source's
-# bespoke Mantetsu railway-line-days plumbing is intentionally dropped.
+# MAN construction MIOs
 ##########################################################################
 
+# =========================================================================
 # South Manchuria Railway Company (Mantetsu)
+# =========================================================================
 MAN_south_manchuria_railway_company_organisation = {
 	name = MAN_south_manchuria_railway_company
-	include = generic_building_organization
 	icon = GFX_idea_MAN_mantetsu_concern
+
 	allowed = {
 		original_tag = MAN
 		has_dlc = "Arms Against Tyranny"
 	}
-	# Founded by the "Manetsu Reborn" focus (sets MAN_mantetsu_founded).
 	available = {
 		FROM = { has_country_flag = MAN_mantetsu_founded }
 	}
 
-	# Funds scale with Manchukuo's total civilian factories (see MAN_apply_mio_civ_funds).
+	equipment_type = { mio_cat_eq_build }
+	research_categories = { industry }
+	research_bonus = 0.0
+	task_capacity = 1
+
+	tree_header_text = { text = mio_header_construction x = 7 }
+
 	on_design_team_assigned_to_variant = {
 		custom_effect_tooltip = MAN_mio_civ_funds_tt
 	}
@@ -670,23 +675,408 @@ MAN_south_manchuria_railway_company_organisation = {
 			military_industrial_organization_size_up_requirement = -0.10
 		}
 	}
+
+	# --- Root ---
+	trait = {
+		token = MAN_mantetsu_industrial_base
+		name = MAN_mantetsu_industrial_base
+		icon = GFX_idea_MAN_mantetsu_industrial_base
+		on_complete = {
+			hidden_effect = { FROM = { if = { limit = { NOT = { has_dynamic_modifier = { modifier = generic_building_organization_dyn } } } add_dynamic_modifier = { modifier = generic_building_organization_dyn } } } }
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_industrial_complex_factor = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.05 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		position = { x=7 y=0 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 1: five arms ---
+	trait = {
+		token = MAN_mantetsu_railway_arteries
+		name = MAN_mantetsu_railway_arteries
+		icon = GFX_idea_MAN_mantetsu_railway_arteries
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_rail_way_factor = 0.10 tooltip = production_speed_rail_way_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_infrastructure_factor = 0.08 tooltip = production_speed_infrastructure_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_industrial_base }
+		position = { x=1 y=1 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_heavy_industry
+		name = MAN_mantetsu_heavy_industry
+		icon = GFX_idea_MAN_mantetsu_heavy_industry
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_industrial_complex_factor = 0.08 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.06 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_industrial_base }
+		position = { x=4 y=1 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_showa_steelworks
+		name = MAN_mantetsu_showa_steelworks
+		icon = GFX_idea_MAN_mantetsu_showa_steelworks
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_local_resources_factor = 0.05 tooltip = local_resources_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_synthetic_refinery_factor = 0.07 tooltip = production_speed_synthetic_refinery_factor_tooltip }
+		}
+		any_parent = { MAN_mantetsu_industrial_base }
+		position = { x=7 y=1 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_dalian_shipbuilding
+		name = MAN_mantetsu_dalian_shipbuilding
+		icon = GFX_idea_MAN_mantetsu_dalian_shipbuilding
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_dockyard_factor = 0.08 tooltip = production_speed_dockyard_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_dockyard = 0.03 tooltip = industrial_capacity_dockyard_tt }
+		}
+		any_parent = { MAN_mantetsu_industrial_base }
+		position = { x=10 y=1 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_corporate_admin
+		name = MAN_mantetsu_corporate_admin
+		icon = GFX_idea_MAN_mantetsu_corporate_admin
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.10
+			military_industrial_organization_design_team_assign_cost = -0.05
+		}
+		any_parent = { MAN_mantetsu_industrial_base }
+		position = { x=13 y=1 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 2: paired specialisations (mutually exclusive) ---
+	trait = {
+		token = MAN_mantetsu_continental_rail
+		name = MAN_mantetsu_continental_rail
+		icon = GFX_idea_MAN_mantetsu_continental_rail
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_rail_way_factor = 0.10 tooltip = production_speed_rail_way_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_supply_node_factor = 0.10 tooltip = production_speed_supply_node_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_railway_arteries }
+		mutually_exclusive = { MAN_mantetsu_motor_transport }
+		position = { x=0 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_motor_transport
+		name = MAN_mantetsu_motor_transport
+		icon = GFX_idea_MAN_mantetsu_motor_transport
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_infrastructure_factor = 0.08 tooltip = production_speed_infrastructure_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_truck_attrition_factor = -0.10 tooltip = truck_attrition_factor_tooltip }
+		}
+		any_parent = { MAN_mantetsu_railway_arteries }
+		mutually_exclusive = { MAN_mantetsu_continental_rail }
+		position = { x=2 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_assembly_lines
+		name = MAN_mantetsu_assembly_lines
+		icon = GFX_idea_MAN_mantetsu_assembly_lines
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { FROM.generic_building_organization_equipment_conversion_speed = 0.10 tooltip = equipment_conversion_speed_tt }
+		}
+		any_parent = { MAN_mantetsu_heavy_industry }
+		mutually_exclusive = { MAN_mantetsu_arsenal_lines }
+		position = { x=3 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_arsenal_lines
+		name = MAN_mantetsu_arsenal_lines
+		icon = GFX_idea_MAN_mantetsu_arsenal_lines
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.10 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_heavy_industry }
+		mutually_exclusive = { MAN_mantetsu_assembly_lines }
+		position = { x=5 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_blast_furnaces
+		name = MAN_mantetsu_blast_furnaces
+		icon = GFX_idea_MAN_mantetsu_blast_furnaces
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_local_resources_factor = 0.08 tooltip = local_resources_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_showa_steelworks }
+		mutually_exclusive = { MAN_mantetsu_synthetic_chemistry }
+		position = { x=6 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_synthetic_chemistry
+		name = MAN_mantetsu_synthetic_chemistry
+		icon = GFX_idea_MAN_mantetsu_synthetic_chemistry
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_synthetic_refinery_factor = 0.10 tooltip = production_speed_synthetic_refinery_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_fuel_silo_factor = 0.07 tooltip = production_speed_fuel_silo_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_showa_steelworks }
+		mutually_exclusive = { MAN_mantetsu_blast_furnaces }
+		position = { x=8 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_naval_yards
+		name = MAN_mantetsu_naval_yards
+		icon = GFX_idea_MAN_mantetsu_naval_yards
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_dockyard_factor = 0.10 tooltip = production_speed_dockyard_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_dockyard = 0.05 tooltip = industrial_capacity_dockyard_tt }
+		}
+		any_parent = { MAN_mantetsu_dalian_shipbuilding }
+		mutually_exclusive = { MAN_mantetsu_merchant_marine }
+		position = { x=9 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_merchant_marine
+		name = MAN_mantetsu_merchant_marine
+		icon = GFX_idea_MAN_mantetsu_merchant_marine
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_naval_base_factor = 0.08 tooltip = production_speed_naval_base_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_floating_harbor_range = 0.15 tooltip = floating_harbor_range_tooltip }
+		}
+		any_parent = { MAN_mantetsu_dalian_shipbuilding }
+		mutually_exclusive = { MAN_mantetsu_naval_yards }
+		position = { x=11 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_research_bureau
+		name = MAN_mantetsu_research_bureau
+		icon = GFX_idea_MAN_mantetsu_research_bureau
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.06
+			military_industrial_organization_funds_gain = 0.10
+		}
+		any_parent = { MAN_mantetsu_corporate_admin }
+		mutually_exclusive = { MAN_mantetsu_rapid_expansion }
+		position = { x=12 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_rapid_expansion
+		name = MAN_mantetsu_rapid_expansion
+		icon = GFX_idea_MAN_mantetsu_rapid_expansion
+		organization_modifier = {
+			military_industrial_organization_size_up_requirement = -0.15
+			military_industrial_organization_design_team_assign_cost = -0.10
+		}
+		any_parent = { MAN_mantetsu_corporate_admin }
+		mutually_exclusive = { MAN_mantetsu_research_bureau }
+		position = { x=14 y=2 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 3: convergences ---
+	trait = {
+		token = MAN_mantetsu_transcontinental_line
+		name = MAN_mantetsu_transcontinental_line
+		icon = GFX_idea_MAN_mantetsu_transcontinental_line
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_supply_node_range = 0.10 tooltip = supply_node_range_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_rail_way_factor = 0.05 tooltip = production_speed_rail_way_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_continental_rail MAN_mantetsu_motor_transport }
+		position = { x=1 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_mass_production
+		name = MAN_mantetsu_mass_production
+		icon = GFX_idea_MAN_mantetsu_mass_production
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+		}
+		any_parent = { MAN_mantetsu_assembly_lines MAN_mantetsu_arsenal_lines }
+		position = { x=4 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_kwantung_mines
+		name = MAN_mantetsu_kwantung_mines
+		icon = GFX_idea_MAN_mantetsu_kwantung_mines
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_local_resources_factor = 0.05 tooltip = local_resources_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_rail_way_factor = 0.05 tooltip = production_speed_rail_way_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_blast_furnaces MAN_mantetsu_synthetic_chemistry }
+		position = { x=7 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_fleet_logistics
+		name = MAN_mantetsu_fleet_logistics
+		icon = GFX_idea_MAN_mantetsu_fleet_logistics
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_naval_base_factor = 0.06 tooltip = production_speed_naval_base_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_dockyard = 0.05 tooltip = industrial_capacity_dockyard_tt }
+		}
+		any_parent = { MAN_mantetsu_naval_yards MAN_mantetsu_merchant_marine }
+		position = { x=10 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_state_investment
+		name = MAN_mantetsu_state_investment
+		icon = GFX_idea_MAN_mantetsu_state_investment
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_political_power_gain = 0.5 tooltip = political_power_gain_tt }
+		}
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.10
+			military_industrial_organization_research_bonus = 0.02
+		}
+		any_parent = { MAN_mantetsu_research_bureau MAN_mantetsu_rapid_expansion }
+		position = { x=13 y=3 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 4: factory-spawning capstones ---
+	trait = {
+		token = MAN_mantetsu_new_industrial_zones
+		name = MAN_mantetsu_new_industrial_zones
+		icon = GFX_idea_MAN_mantetsu_new_industrial_zones
+		on_complete = {
+			custom_effect_tooltip = MAN_mantetsu_spawn_civ_tt
+			hidden_effect = { FROM = { capital_scope = { add_building_construction = { type = industrial_complex level = 2 instant_build = yes } } } }
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_industrial_complex_factor = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_transcontinental_line MAN_mantetsu_mass_production }
+		position = { x=4 y=4 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_arsenal_complex
+		name = MAN_mantetsu_arsenal_complex
+		icon = GFX_idea_MAN_mantetsu_arsenal_complex
+		on_complete = {
+			custom_effect_tooltip = MAN_mantetsu_spawn_mil_tt
+			hidden_effect = { FROM = { capital_scope = { add_building_construction = { type = arms_factory level = 2 instant_build = yes } } } }
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.05 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_mass_production MAN_mantetsu_kwantung_mines }
+		position = { x=7 y=4 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_dockyard_expansion
+		name = MAN_mantetsu_dockyard_expansion
+		icon = GFX_idea_MAN_mantetsu_dockyard_expansion
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_dockyard_factor = 0.05 tooltip = production_speed_dockyard_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_dockyard = 0.05 tooltip = industrial_capacity_dockyard_tt }
+		}
+		any_parent = { MAN_mantetsu_fleet_logistics }
+		position = { x=10 y=4 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_state_capital_fund
+		name = MAN_mantetsu_state_capital_fund
+		icon = GFX_idea_MAN_mantetsu_state_capital_fund
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.15
+			military_industrial_organization_size_up_requirement = -0.10
+			military_industrial_organization_research_bonus = 0.02
+		}
+		any_parent = { MAN_mantetsu_state_investment }
+		position = { x=13 y=4 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 5: grand capstones ---
+	trait = {
+		token = MAN_mantetsu_five_year_industrialization
+		name = MAN_mantetsu_five_year_industrialization
+		icon = GFX_idea_MAN_mantetsu_five_year_industrialization
+		on_complete = {
+			custom_effect_tooltip = MAN_mantetsu_spawn_civ3_tt
+			hidden_effect = { FROM = { capital_scope = { add_building_construction = { type = industrial_complex level = 3 instant_build = yes } } } }
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.06 tooltip = production_speed_buildings_factor_tt }
+		}
+		any_parent = { MAN_mantetsu_new_industrial_zones MAN_mantetsu_arsenal_complex }
+		position = { x=6 y=5 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mantetsu_industrial_juggernaut
+		name = MAN_mantetsu_industrial_juggernaut
+		icon = GFX_idea_MAN_mantetsu_industrial_juggernaut
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_industrial_capacity_factory = 0.08 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+		}
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.03
+			military_industrial_organization_funds_gain = 0.15
+		}
+		any_parent = { MAN_mantetsu_arsenal_complex MAN_mantetsu_dockyard_expansion MAN_mantetsu_state_capital_fund }
+		position = { x=9 y=5 }
+		ai_will_do = { base = 1 }
+	}
 }
 
-# Mange / Mangyo — Manchurian Industrial Development Company
+# =========================================================================
+# Mange / Mangyo — Manchurian Industrial Development Company.
+# =========================================================================
 MAN_mange_organisation = {
 	name = MAN_mange_concern
-	include = generic_building_organization
 	icon = GFX_idea_MAN_mangyo_concern
+
 	allowed = {
 		original_tag = MAN
 		has_dlc = "Arms Against Tyranny"
 	}
-	# Founded by the "Found Mangyō" focus.
 	available = {
 		FROM = { has_country_flag = MAN_mangyo_founded }
 	}
 
-	# Funds scale with Manchukuo's total civilian factories (see MAN_apply_mio_civ_funds).
+	equipment_type = { mio_cat_eq_build }
+	research_categories = { industry }
+	research_bonus = 0.0
+	task_capacity = 1
+
+	tree_header_text = { text = mio_header_construction x = 4 }
+
 	on_design_team_assigned_to_variant = {
 		custom_effect_tooltip = MAN_mio_civ_funds_tt
 	}
@@ -694,9 +1084,394 @@ MAN_mange_organisation = {
 	initial_trait = {
 		name = construction
 		organization_modifier = {
-			military_industrial_organization_research_bonus = 0.1
+			military_industrial_organization_research_bonus = 0.10
 			military_industrial_organization_funds_gain = 0.10
 			military_industrial_organization_size_up_requirement = -0.10
 		}
+	}
+
+	# --- Root ---
+	trait = {
+		token = MAN_mangyo_planned_construction
+		name = MAN_mangyo_planned_construction
+		icon = GFX_idea_MAN_mangyo_planned_construction
+		on_complete = {
+			hidden_effect = { FROM = { if = { limit = { NOT = { has_dynamic_modifier = { modifier = generic_building_organization_dyn } } } add_dynamic_modifier = { modifier = generic_building_organization_dyn } } } }
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.06 tooltip = production_speed_buildings_factor_tt }
+		}
+		position = { x=4 y=0 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 1: three tracks ---
+	trait = {
+		token = MAN_mangyo_construction_bureau
+		name = MAN_mangyo_construction_bureau
+		icon = GFX_idea_MAN_mangyo_construction_bureau
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+		}
+		any_parent = { MAN_mangyo_planned_construction }
+		position = { x=1 y=1 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_research_directorate
+		name = MAN_mangyo_research_directorate
+		icon = GFX_idea_MAN_mangyo_research_directorate
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.04
+			military_industrial_organization_funds_gain = 0.10
+		}
+		any_parent = { MAN_mangyo_planned_construction }
+		position = { x=4 y=1 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_administrative_corps
+		name = MAN_mangyo_administrative_corps
+		icon = GFX_idea_MAN_mangyo_administrative_corps
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_political_power_gain = 0.5 tooltip = political_power_gain_tt }
+		}
+		organization_modifier = {
+			military_industrial_organization_size_up_requirement = -0.05
+			military_industrial_organization_design_team_assign_cost = -0.10
+		}
+		any_parent = { MAN_mangyo_planned_construction }
+		position = { x=7 y=1 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 2: mutually-exclusive forks ---
+	trait = {
+		token = MAN_mangyo_infrastructure_drive
+		name = MAN_mangyo_infrastructure_drive
+		icon = GFX_idea_MAN_mangyo_infrastructure_drive
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_infrastructure_factor = 0.10 tooltip = production_speed_infrastructure_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_rail_way_factor = 0.08 tooltip = production_speed_rail_way_factor_tt }
+		}
+		any_parent = { MAN_mangyo_construction_bureau }
+		mutually_exclusive = { MAN_mangyo_factory_construction }
+		position = { x=0 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_factory_construction
+		name = MAN_mangyo_factory_construction
+		icon = GFX_idea_MAN_mangyo_factory_construction
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_industrial_complex_factor = 0.08 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_arms_factory_factor = 0.06 tooltip = production_speed_arms_factory_factor_tt }
+		}
+		any_parent = { MAN_mangyo_construction_bureau }
+		mutually_exclusive = { MAN_mangyo_infrastructure_drive }
+		position = { x=2 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_technical_institutes
+		name = MAN_mangyo_technical_institutes
+		icon = GFX_idea_MAN_mangyo_technical_institutes
+		organization_modifier = { military_industrial_organization_research_bonus = 0.07 }
+		any_parent = { MAN_mangyo_research_directorate }
+		mutually_exclusive = { MAN_mangyo_capital_reserves }
+		position = { x=3 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_capital_reserves
+		name = MAN_mangyo_capital_reserves
+		icon = GFX_idea_MAN_mangyo_capital_reserves
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.20
+			military_industrial_organization_size_up_requirement = -0.10
+		}
+		any_parent = { MAN_mangyo_research_directorate }
+		mutually_exclusive = { MAN_mangyo_technical_institutes }
+		position = { x=5 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_urban_expansion
+		name = MAN_mangyo_urban_expansion
+		icon = GFX_idea_MAN_mangyo_urban_expansion
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_global_building_slots_factor = 0.08 tooltip = global_building_slots_factor_tt }
+		}
+		any_parent = { MAN_mangyo_administrative_corps }
+		mutually_exclusive = { MAN_mangyo_efficient_bureaucracy }
+		position = { x=6 y=2 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_efficient_bureaucracy
+		name = MAN_mangyo_efficient_bureaucracy
+		icon = GFX_idea_MAN_mangyo_efficient_bureaucracy
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_consumer_goods_factor = -0.05 tooltip = consumer_goods_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_stability_factor = 0.05 tooltip = stability_factor_tt }
+		}
+		any_parent = { MAN_mangyo_administrative_corps }
+		mutually_exclusive = { MAN_mangyo_urban_expansion }
+		position = { x=8 y=2 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 3: track continuations ---
+	trait = {
+		token = MAN_mangyo_rail_modernization
+		name = MAN_mangyo_rail_modernization
+		icon = GFX_idea_MAN_mangyo_rail_modernization
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_supply_node_factor = 0.10 tooltip = production_speed_supply_node_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_supply_node_range = 0.10 tooltip = supply_node_range_tooltip }
+		}
+		any_parent = { MAN_mangyo_infrastructure_drive MAN_mangyo_factory_construction }
+		position = { x=0 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_concrete_industry
+		name = MAN_mangyo_concrete_industry
+		icon = GFX_idea_MAN_mangyo_concrete_industry
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_bunker_factor = 0.08 tooltip = production_speed_bunker_factor_tooltip }
+		}
+		any_parent = { MAN_mangyo_infrastructure_drive MAN_mangyo_factory_construction }
+		position = { x=2 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_applied_science
+		name = MAN_mangyo_applied_science
+		icon = GFX_idea_MAN_mangyo_applied_science
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_operation_steal_tech_outcome = 0.15 tooltip = operation_steal_tech_outcome_tooltip }
+		}
+		organization_modifier = { military_industrial_organization_research_bonus = 0.03 }
+		any_parent = { MAN_mangyo_technical_institutes MAN_mangyo_capital_reserves }
+		position = { x=3 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_design_standardization
+		name = MAN_mangyo_design_standardization
+		icon = GFX_idea_MAN_mangyo_design_standardization
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_equipment_conversion_speed = 0.10 tooltip = equipment_conversion_speed_tt }
+			add_to_variable = { FROM.generic_building_organization_conversion_cost_factor = -0.15 tooltip = conversion_cost_mil_to_civ_factor_tooltip }
+		}
+		organization_modifier = { military_industrial_organization_design_team_assign_cost = -0.05 }
+		any_parent = { MAN_mangyo_technical_institutes MAN_mangyo_capital_reserves }
+		position = { x=5 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_planned_urbanization
+		name = MAN_mangyo_planned_urbanization
+		icon = GFX_idea_MAN_mangyo_planned_urbanization
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_global_building_slots_factor = 0.05 tooltip = global_building_slots_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.04 tooltip = production_speed_buildings_factor_tt }
+		}
+		any_parent = { MAN_mangyo_urban_expansion MAN_mangyo_efficient_bureaucracy }
+		position = { x=6 y=3 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_resource_administration
+		name = MAN_mangyo_resource_administration
+		icon = GFX_idea_MAN_mangyo_resource_administration
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_local_resources_factor = 0.05 tooltip = local_resources_factor_tt }
+		}
+		any_parent = { MAN_mangyo_urban_expansion MAN_mangyo_efficient_bureaucracy }
+		position = { x=8 y=3 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 4: mid-tier ---
+	trait = {
+		token = MAN_mangyo_hydroelectric_program
+		name = MAN_mangyo_hydroelectric_program
+		icon = GFX_idea_MAN_mangyo_hydroelectric_program
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_infrastructure_factor = 0.06 tooltip = production_speed_infrastructure_factor_tt }
+		}
+		any_parent = { MAN_mangyo_rail_modernization MAN_mangyo_concrete_industry }
+		position = { x=1 y=4 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_five_year_research
+		name = MAN_mangyo_five_year_research
+		icon = GFX_idea_MAN_mangyo_five_year_research
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.04
+			military_industrial_organization_funds_gain = 0.10
+		}
+		any_parent = { MAN_mangyo_applied_science MAN_mangyo_design_standardization }
+		position = { x=4 y=4 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_state_planning_committee
+		name = MAN_mangyo_state_planning_committee
+		icon = GFX_idea_MAN_mangyo_state_planning_committee
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_political_power_gain = 0.5 tooltip = political_power_gain_tt }
+			add_to_variable = { FROM.generic_building_organization_stability_factor = 0.05 tooltip = stability_factor_tt }
+		}
+		any_parent = { MAN_mangyo_planned_urbanization MAN_mangyo_resource_administration }
+		position = { x=7 y=4 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 5: deep tier ---
+	trait = {
+		token = MAN_mangyo_industrial_dispersal
+		name = MAN_mangyo_industrial_dispersal
+		icon = GFX_idea_MAN_mangyo_industrial_dispersal
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_industry_air_damage_factor = -0.10 tooltip = industry_air_damage_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_industry_free_repair_factor = 0.10 tooltip = industry_free_repair_factor_tooltip }
+		}
+		any_parent = { MAN_mangyo_hydroelectric_program }
+		position = { x=1 y=5 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_institute_of_technology
+		name = MAN_mangyo_institute_of_technology
+		icon = GFX_idea_MAN_mangyo_institute_of_technology
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_radar_station_factor = 0.07 tooltip = production_speed_radar_station_factor_tooltip }
+			add_to_variable = { FROM.generic_building_organization_production_speed_nuclear_reactor_factor = 0.07 tooltip = production_speed_nuclear_reactor_factor_tooltip }
+		}
+		organization_modifier = { military_industrial_organization_research_bonus = 0.05 }
+		any_parent = { MAN_mangyo_five_year_research }
+		position = { x=4 y=5 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_war_economy_board
+		name = MAN_mangyo_war_economy_board
+		icon = GFX_idea_MAN_mangyo_war_economy_board
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.15
+			military_industrial_organization_size_up_requirement = -0.10
+		}
+		any_parent = { MAN_mangyo_state_planning_committee }
+		position = { x=7 y=5 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 6: convergence ---
+	trait = {
+		token = MAN_mangyo_planned_industrial_leap
+		name = MAN_mangyo_planned_industrial_leap
+		icon = GFX_idea_MAN_mangyo_planned_industrial_leap
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.06 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_global_building_slots_factor = 0.05 tooltip = global_building_slots_factor_tt }
+		}
+		any_parent = { MAN_mangyo_industrial_dispersal MAN_mangyo_institute_of_technology }
+		position = { x=3 y=6 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_scientific_management
+		name = MAN_mangyo_scientific_management
+		icon = GFX_idea_MAN_mangyo_scientific_management
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.03
+			military_industrial_organization_design_team_assign_cost = -0.10
+		}
+		any_parent = { MAN_mangyo_institute_of_technology MAN_mangyo_war_economy_board }
+		position = { x=6 y=6 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 7: near-capstones ---
+	trait = {
+		token = MAN_mangyo_socialist_construction_drive
+		name = MAN_mangyo_socialist_construction_drive
+		icon = GFX_generic_mio_trait_bringing_to_automatism
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.06 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_cic_construction_boost_factor = 0.05 tooltip = cic_construction_boost_factor_tooltip }
+		}
+		any_parent = { MAN_mangyo_planned_industrial_leap MAN_mangyo_scientific_management }
+		position = { x=4 y=7 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_total_mobilization_planning
+		name = MAN_mangyo_total_mobilization_planning
+		icon = GFX_idea_MAN_mangyo_total_mobilization_planning
+		organization_modifier = {
+			military_industrial_organization_size_up_requirement = -0.15
+			military_industrial_organization_funds_gain = 0.15
+		}
+		any_parent = { MAN_mangyo_scientific_management MAN_mangyo_war_economy_board }
+		position = { x=7 y=7 }
+		ai_will_do = { base = 1 }
+	}
+
+	# --- Row 8: grand capstones ---
+	trait = {
+		token = MAN_mangyo_new_manchukuo_program
+		name = MAN_mangyo_new_manchukuo_program
+		icon = GFX_idea_MAN_mangyo_new_manchukuo_program
+		on_complete = {
+			custom_effect_tooltip = MAN_mangyo_spawn_civ_tt
+			hidden_effect = { FROM = { capital_scope = { add_building_construction = { type = industrial_complex level = 2 instant_build = yes } } } }
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+		}
+		any_parent = { MAN_mangyo_planned_industrial_leap MAN_mangyo_socialist_construction_drive }
+		position = { x=3 y=8 }
+		ai_will_do = { base = 1 }
+	}
+	trait = {
+		token = MAN_mangyo_industrial_leviathan
+		name = MAN_mangyo_industrial_leviathan
+		icon = GFX_idea_MAN_mangyo_industrial_leviathan
+		on_complete = {
+			custom_effect_tooltip = generic_building_organization_tt
+			add_to_variable = { FROM.generic_building_organization_global_building_slots_factor = 0.05 tooltip = global_building_slots_factor_tt }
+			add_to_variable = { FROM.generic_building_organization_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
+		}
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.03
+			military_industrial_organization_funds_gain = 0.15
+			military_industrial_organization_size_up_requirement = -0.10
+		}
+		any_parent = { MAN_mangyo_socialist_construction_drive MAN_mangyo_total_mobilization_planning }
+		position = { x=6 y=8 }
+		ai_will_do = { base = 1 }
 	}
 }
