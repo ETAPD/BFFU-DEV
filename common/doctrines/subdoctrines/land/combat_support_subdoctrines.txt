@@ -351,6 +351,138 @@ pack_artillery = {
     }
 }
 
+heavy_artillery = {
+    track = combat_support
+    name = SUBDOCTRINE_HEAVY_ARTILLERY
+    description = SUBDOCTRINE_HEAVY_ARTILLERY_DESC
+    icon = GFX_doctrine_heavy_artillery_medium
+
+    xp_cost = 100
+    xp_type = army
+
+    # EFFECTS
+    effect = {
+        if = {
+            limit = {
+                NOT = {
+                    has_country_flag = heavy_artillery_doctrine_selected
+                }
+            }
+            add_daily_mastery = {
+                amount = 0.4
+                days = 1250
+                name = HEAVY_ARTILLERY_MASTERY_GAIN
+                sub_doctrine = heavy_artillery
+            }
+            set_country_flag = {
+                flag = heavy_artillery_doctrine_selected
+                value = 1
+                days = 1250
+            }
+            custom_effect_tooltip = generic_skip_one_line_tt
+        }
+        hidden_effect = {
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_doctrine_check
+                }
+                set_technology = { all_terrain_arty_1 = 0 popup = no }
+                set_technology = { all_terrain_arty_2 = 0 popup = no }
+                set_technology = { all_terrain_arty_3 = 0 popup = no }
+                set_technology = { all_terrain_arty_4 = 0 popup = no }
+                set_technology = { all_terrain_arty_5 = 0 popup = no }
+                set_technology = { all_terrain_arty_6 = 0 popup = no }
+                clr_country_flag = pack_artillery_doctrine_check
+            }
+            else_if = {
+                limit = {
+                    has_country_flag = fire_concentration_doctrine_check
+                }
+                set_technology = { fire_concentration = 0 popup = no }
+                clr_country_flag = fire_concentration_doctrine_check
+            }
+        }
+    }
+
+    heavy_artillery_brigade = {
+        soft_attack = 0.05
+    }
+    mot_heavy_artillery_brigade = {
+        soft_attack = 0.05
+    }
+
+    rewards = {
+        massed_heavy_batteries = {
+            heavy_artillery_brigade = {
+                soft_attack = 0.05
+                max_organisation = 3
+            }
+            mot_heavy_artillery_brigade = {
+                soft_attack = 0.05
+                max_organisation = 3
+            }
+        }
+        counter_battery_surveys = {
+            heavy_anti_air = {
+                anti_air_attack = 0.05
+                defense = 0.05
+            }
+            mot_heavy_anti_air = {
+                anti_air_attack = 0.05
+                defense = 0.05
+            }
+            heavy_artillery_brigade = {
+                hard_attack = 0.05
+                defense = 0.05
+            }
+            mot_heavy_artillery_brigade = {
+                hard_attack = 0.05
+                defense = 0.05
+            }
+        }
+        ammunition_columns = {
+            heavy_artillery_brigade = {
+                supply_consumption = -0.10
+                default_morale = 0.05
+            }
+            mot_heavy_artillery_brigade = {
+                supply_consumption = -0.10
+                default_morale = 0.05
+            }
+        }
+        planned_destruction_fire = {
+            heavy_artillery_brigade = {
+                soft_attack = 0.05
+                breakthrough = 0.05
+                max_organisation = 3
+                town = { attack = 0.10 }
+                urban_terrain = { attack = 0.10 }
+            }
+            mot_heavy_artillery_brigade = {
+                soft_attack = 0.05
+                breakthrough = 0.05
+                max_organisation = 3
+                town = { attack = 0.10 }
+                urban_terrain = { attack = 0.10 }
+            }
+        }
+        rolling_heavy_barrages = {
+            heavy_artillery_brigade = {
+                soft_attack = 0.08
+                breakthrough = 0.08
+                max_organisation = 4
+                dense_urban = { attack = 0.10 }
+            }
+            mot_heavy_artillery_brigade = {
+                soft_attack = 0.08
+                breakthrough = 0.08
+                max_organisation = 4
+                dense_urban = { attack = 0.10 }
+            }
+        }
+    }
+}
+
 siege_artillery = {
     track = combat_support
     name = SUBDOCTRINE_SIEGE_ARTILLERY
