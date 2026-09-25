@@ -7164,6 +7164,10 @@ completion_reward = {
 		relative_position_id = GER_develop_modern_maneuver_warfare
 		cost = 5
 		available = {
+			OR = {
+				has_completed_focus = GER_follow_speers_plan
+				has_completed_focus = GER_goring_plan
+			}
 			if = {
 				limit = {
 					has_global_flag = rhineland_first_flag
@@ -7175,7 +7179,21 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-
+			air_experience = 100
+			add_doctrine_cost_reduction = {
+				name = GER_expanding_the_luftwaffe
+				cost_reduction = 0.5
+				uses = 2
+				category = air_doctrine
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			if = {
+				limit = { has_completed_focus = GER_goring_plan }
+				add_ideas = GER_mefo_air_expanded
+			}
+			else = {
+				add_ideas = GER_mefo_air
+			}
 		}
 	}
 
@@ -7194,7 +7212,28 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_political_power = -75
+			custom_effect_tooltip = generic_skip_one_line_tt
+			GER_modify_airforce_modifier = yes
+			add_to_variable = {
+				GER_military_air_cas_present_factor = 0.1
+				tooltip = air_cas_present_factor_tt
+			}
+			add_to_variable = {
+				GER_military_air_close_air_support_org_damage_factor = 0.1
+				tooltip = air_close_air_support_org_damage_factor_tt
+			}
+			add_to_variable = {
+				GER_military_air_ace_generation_chance_factor = 0.1
+				tooltip = air_ace_generation_chance_factor_tt
+			}
+			add_to_variable = {
+				GER_military_air_cas_efficiency = 0.15
+				tooltip = air_cas_efficiency_tt
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_theorist
+			show_ideas_tooltip = ernst_udet
 		}
 	}
 
@@ -7213,7 +7252,17 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_tech_bonus = {
+				name = GER_invest_in_long_range_fighters
+				bonus = 0.75
+				uses = 2
+				category = cat_heavy_fighter
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			mio:GER_arado_flugzeugwerke_organization = {
+				add_mio_size = 3
+				add_mio_funds_gain_factor = 0.25
+			}
 		}
 	}
 
@@ -7233,7 +7282,18 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-
+			add_tech_bonus = {
+				name = GER_uralbomber_program
+				bonus = 1
+				ahead_reduction = 0.5
+				uses = 1
+				technology = strategic_bomber2
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			mio:GER_heinkel_organization = {
+				add_mio_size = 2
+				add_mio_funds_gain_factor = 0.3
+			}
 		}
 	}
 
@@ -7253,7 +7313,17 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-
+			add_tech_bonus = {
+				name = GER_tactical_bombers
+				bonus = 2
+				uses = 1
+				category = tactical_bomber
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			mio:GER_dornier_organization = {
+				add_mio_size = 3
+				add_mio_funds_gain_factor = 0.3
+			}
 		}
 	}
 
@@ -7273,7 +7343,51 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-
+			custom_effect_tooltip = GER_fallschirmjager_divisions_tt
+			hidden_effect = {
+				division_template = {
+					name = "Fallschirmjäger-Division"
+					regiments = {
+						paratrooper = { x = 0 y = 0 }
+						paratrooper = { x = 0 y = 1 }
+						paratrooper = { x = 0 y = 2 }
+						paratrooper = { x = 0 y = 3 }
+						paratrooper = { x = 0 y = 4 }
+						paratrooper = { x = 1 y = 0 }
+						paratrooper = { x = 1 y = 1 }
+						paratrooper = { x = 1 y = 2 }
+						paratrooper = { x = 1 y = 3 }
+						paratrooper = { x = 1 y = 4 }
+						paratrooper = { x = 2 y = 0 }
+						paratrooper = { x = 2 y = 1 }
+						paratrooper = { x = 2 y = 2 }
+						paratrooper = { x = 2 y = 3 }
+						paratrooper = { x = 2 y = 4 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"1. Fallschirmjäger-Division\" division_template = \"Fallschirmjäger-Division\" start_equipment_factor = 1"
+						owner = ROOT
+					}
+					create_unit = {
+						division = "name = \"2. Fallschirmjäger-Division\" division_template = \"Fallschirmjäger-Division\" start_equipment_factor = 1"
+						owner = ROOT
+					}
+					create_unit = {
+						division = "name = \"3. Fallschirmjäger-Division\" division_template = \"Fallschirmjäger-Division\" start_equipment_factor = 1"
+						owner = ROOT
+					}
+					create_unit = {
+						division = "name = \"4. Fallschirmjäger-Division\" division_template = \"Fallschirmjäger-Division\" start_equipment_factor = 1"
+						owner = ROOT
+					}
+					create_unit = {
+						division = "name = \"5. Fallschirmjäger-Division\" division_template = \"Fallschirmjäger-Division\" start_equipment_factor = 1"
+						owner = ROOT
+					}
+				}
+			}
 		}
 	}
 
@@ -7292,7 +7406,15 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			GER_modify_airforce_modifier = yes
+			add_to_variable = {
+				GER_military_air_superiority_efficiency = 0.1
+				tooltip = air_superiority_efficiency_tt
+			}
+			add_to_variable = {
+				GER_military_air_mission_efficiency = 0.1
+				tooltip = air_mission_efficiency_tt
+			}
 		}
 	}
 
@@ -7312,7 +7434,12 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-
+			add_tech_bonus = {
+				name = GER_dive_bombers
+				bonus = 3
+				uses = 1
+				technology = CAS2
+			}
 		}
 	}
 
@@ -7331,7 +7458,24 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_ace = {
+				name = "Hans-Ulrich"
+				surname = "Rudel"
+				callsign = "Adler"
+				type = support_genius
+			}
+			add_ace = {
+				name = "Anton"
+				surname = "Hubsch"
+				callsign = "Toni"
+				type = support_unique
+			}
+			add_ace = {
+				name = "Gerhard"
+				surname = "Studemann"
+				callsign = "Stutz"
+				type = support_unique
+			}
 		}
 	}
 
@@ -7350,7 +7494,17 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_tech_bonus = {
+				name = GER_reach_out_to_junkers_and_henschel
+				bonus = 0.75
+				uses = 1
+				technology = CAS3
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			mio:GER_junkers_organization = {
+				add_mio_size = 3
+				add_mio_funds_gain_factor = 0.25
+			}
 		}
 	}
 
@@ -7370,7 +7524,42 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-
+			GER_modify_airforce_modifier = yes
+			add_to_variable = {
+				GER_military_air_ace_generation_chance_factor = 0.15
+				tooltip = air_ace_generation_chance_factor_tt
+			}
+			add_to_variable = {
+				GER_military_ace_effectiveness_factor = 0.1
+				tooltip = ace_effectiveness_factor_tt
+			}
+			add_to_variable = {
+				GER_military_air_agility_factor = 0.05
+				tooltip = air_agility_factor_tt
+			}
+			add_to_variable = {
+				GER_military_air_maximum_speed_factor = 0.05
+				tooltip = air_maximum_speed_factor_tt
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_ace = {
+				name = "Erich"
+				surname = "Hartmann"
+				callsign = "Bubi"
+				type = fighter_genius
+			}
+			add_ace = {
+				name = "Gerhard"
+				surname = "Barkhorn"
+				callsign = "Gerd"
+				type = fighter_unique
+			}
+			add_ace = {
+				name = "Günther"
+				surname = "Rall"
+				callsign = "Adlerauge"
+				type = fighter_unique
+			}
 		}
 	}
 
@@ -7391,7 +7580,11 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-
+			mio:GER_messerschmitt_organization = {
+				add_mio_size = 3
+				add_mio_funds_gain_factor = 0.25
+				add_mio_research_bonus = 0.25
+			}
 		}
 	}
 
@@ -7412,7 +7605,59 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
+			mio:GER_focke_wulf_organization = {
+				add_mio_size = 3
+				add_mio_funds_gain_factor = 0.25
+				add_mio_research_bonus = 0.25
+			}
+		}
+	}
 
+	focus = {
+		id = GER_bf_109_gustav
+		icon = GFX_GER_messershit
+		prerequisite = { focus = GER_messerschmitt_109 }
+
+		x = 4
+		y = 3
+		relative_position_id = GER_expanding_the_luftwaffe
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			add_tech_bonus = {
+				name = GER_bf_109_gustav
+				bonus = 2
+				uses = 1
+				technology = fighter2
+			}
+		}
+	}
+
+	focus = {
+		id = GER_fw_190_dora
+		icon = GFX_GER_focke
+		prerequisite = { focus = GER_focke_wulf }
+
+		x = 6
+		y = 3
+		relative_position_id = GER_expanding_the_luftwaffe
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			add_tech_bonus = {
+				name = GER_fw_190_dora
+				bonus = 1.5
+				uses = 1
+				technology = fighter3
+			}
 		}
 	}
 
@@ -7431,7 +7676,25 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_equipment_to_stockpile = {
+				type = CAS_equipment_2
+				amount = 400
+				producer = GER
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_equipment_bonus = {
+				name = GER_lessons_from_britain
+				bonus = {
+					CAS_equipment = {
+						air_range = 0.1
+						instant = yes
+					}
+					cv_CAS_equipment = {
+						air_range = 0.1
+						instant = yes
+					}
+				}
+			}
 		}
 	}
 
@@ -7450,7 +7713,11 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			GER_modify_airforce_modifier = yes
+			add_to_variable = {
+				GER_military_naval_strike_targetting_factor = 0.2
+				tooltip = naval_strike_targetting_factor_tt
+			}
 		}
 	}
 
@@ -7464,22 +7731,34 @@ completion_reward = {
 		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_fall_of_an_eagle_tt
+				always = no
+			}
 		}
 
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_equipment_bonus = {
+				name = GER_fall_of_an_eagle
+				bonus = {
+					mio_cat_eq_all_airplanes = {
+						build_cost_ic = 0.1
+						instant = yes
+					}
+				}
+			}
 		}
 	}
 
 	focus = {
 		id = GER_establish_night_fighter_squadrons
 		icon = GFX_GER_night
-		prerequisite = { focus = GER_messerschmitt_109 focus = GER_focke_wulf }
+		prerequisite = { focus = GER_bf_109_gustav focus = GER_fw_190_dora }
 
 		x = 5
-		y = 3
+		y = 4
 		relative_position_id = GER_expanding_the_luftwaffe
 
 		cost = 5
@@ -7489,7 +7768,36 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_ace = {
+				name = "Heinz-Wolfgang"
+				surname = "Schnaufer"
+				callsign = "The Spook"
+				type = fighter_unique
+			}
+			add_ace = {
+				name = "Helmut"
+				surname = "Lent"
+				callsign = "The Moonlight Hunter"
+				type = fighter_unique
+			}
+			add_ace = {
+				name = "Heinrich"
+				surname = "zu Sayn-Wittgenstein"
+				callsign = "Prinz"
+				type = fighter_unique
+			}
+			add_ace = {
+				name = "Werner"
+				surname = "Streib"
+				callsign = "Vater der Nachtjagd"
+				type = fighter_good
+			}
+			add_ace = {
+				name = "Paul"
+				surname = "Zorner"
+				callsign = "Nachtfalke"
+				type = fighter_good
+			}
 		}
 	}
 
@@ -7562,7 +7870,7 @@ completion_reward = {
 		prerequisite = { focus = GER_establish_night_fighter_squadrons }
 
 		x = 5
-		y = 4
+		y = 5
 		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
@@ -7571,7 +7879,23 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_equipment_bonus = {
+				name = GER_werner_molders
+				bonus = {
+					fighter_equipment = {
+						air_range = 0.15
+						maximum_speed = 0.1
+						air_superiority = 0.05
+						instant = yes
+					}
+					cv_fighter_equipment = {
+						air_range = 0.15
+						maximum_speed = 0.1
+						air_superiority = 0.05
+						instant = yes
+					}
+				}
+			}
 		}
 	}
 
@@ -7611,7 +7935,7 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_research_slot = 1
 		}
 	}
 
@@ -7631,7 +7955,15 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-
+			GER_modify_airforce_modifier = yes
+			add_to_variable = {
+				GER_military_air_superiority_efficiency = -0.1
+				tooltip = air_superiority_efficiency_tt
+			}
+			add_to_variable = {
+				GER_military_air_home_defence_factor = 0.15
+				tooltip = air_home_defence_factor_tt
+			}
 		}
 	}
 
@@ -7672,7 +8004,10 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			add_timed_idea = {
+				idea = GER_jagernotprogramm_idea
+				days = 180
+			}
 		}
 	}
 
