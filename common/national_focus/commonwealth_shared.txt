@@ -25,7 +25,7 @@ shared_focus = {
 		}
 	}
 	offset = {
-		x = -5
+		x = -2
 		y = 0
 		trigger = {
 			tag = SAF
@@ -74,221 +74,28 @@ shared_focus = {
 	}
 }
 
+#MIO & PRODUCTION FOCUSES
 shared_focus = {
-	id = COM_continue_the_fight
-	icon = GFX_focus_spr_torchbearers_of_tomorrow
-	prerequisite = { focus = COM_commonwealth_command }
-	x = -3
-	y = 1
-	relative_position_id = COM_commonwealth_command
-
-	cost = 5
-	
-	offset = {
-		x = 1
-		y = 0
-		trigger = {
-			tag = ENG
-		}
-	}
-
-	available = {
-		has_capitulated = yes
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_offsite_building = { type = industrial_complex level = 3 }
-		add_offsite_building = { type = arms_factory level = 3 }
-		add_legitimacy = 25
-	}
+    id = COM_funding_the_empire
+    icon = GFX_goal_tfv_strengthen_commonwealth_ties
+    prerequisite = { focus = COM_commonwealth_command }
+    x = -4
+    y = 1
+    relative_position_id = COM_commonwealth_command
+    
+    cost = 5
+    
+    completion_reward = {
+        add_ideas = COM_funds_gain_idea
+    }
 }
-
-shared_focus = {
-	id = COM_royal_donations
-	icon = GFX_focus_generic_industry_3
-	prerequisite = { focus = COM_continue_the_fight }
-	x = -1
-	y = 1
-	relative_position_id = COM_continue_the_fight
-
-	cost = 5
-
-	available = {
-		has_capitulated = yes
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_offsite_building = { type = industrial_complex level = 2 }
-		add_offsite_building = { type = arms_factory level = 2 }
-	}
-}
-
-shared_focus = {
-	id = COM_appeal_to_people
-	icon = GFX_goal_generic_propaganda
-	prerequisite = { focus = COM_royal_donations }
-	x = 0
-	y = 1
-	relative_position_id = COM_royal_donations
-
-	cost = 5
-
-	available = {
-		has_capitulated = yes
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_offsite_building = { type = industrial_complex level = 2 }
-		add_offsite_building = { type = arms_factory level = 2 }
-	}
-}
-
-shared_focus = {
-	id = COM_expatriate_volunteers
-	icon = GFX_focus_generic_little_entente
-	prerequisite = { focus = COM_continue_the_fight }
-	x = 1
-	y = 1
-	relative_position_id = COM_continue_the_fight
-
-	cost = 5
-
-	available = {
-		has_capitulated = yes
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_manpower = 50000
-	}
-}
-
-shared_focus = {
-	id = COM_resistance_contacts
-	icon = GFX_focus_generic_diplomatic_treaty
-	prerequisite = { focus = COM_expatriate_volunteers }
-	x = 0
-	y = 1
-	relative_position_id = COM_expatriate_volunteers
-
-	cost = 5
-
-	available = {
-		has_capitulated = yes
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_ideas = COM_rebels_idea
-	}
-}
-
-shared_focus = {
-	id = COM_reclaim_homeland
-	icon = GFX_focus_prc_infiltration
-	prerequisite = { focus = COM_resistance_contacts }
-	prerequisite = { focus = COM_appeal_to_people }
-	x = -1
-	y = 1
-	relative_position_id = COM_resistance_contacts
-
-	cost = 5
-
-	available = {
-		has_capitulated = yes
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_timed_idea = {
-			idea = COM_national_uprising_idea
-			days = 365
-		}
-	}
-}
-
-shared_focus = {
-	id = COM_armed_forces_development
-	icon = GFX_focus_generic_manpower
-	prerequisite = { focus = COM_commonwealth_command }
-	x = 3
-	y = 1
-	relative_position_id = COM_commonwealth_command
-
-	cost = 5
-
-	offset = {
-		x = -1
-		y = 0
-		trigger = {
-			tag = ENG
-		}
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		army_experience = 100
-		air_experience = 100
-		navy_experience = 100
-	}
-}
-
-shared_focus = {
-	id = COM_invite_british_experts
-	icon = GFX_focus_chi_british_cooperation
-	prerequisite = { focus = COM_armed_forces_development }
-	x = 4
-	y = 1
-	relative_position_id = COM_armed_forces_development
-
-	cost = 5
-
-	allow_branch = {
-		NOT = {
-			tag = ENG
-		}
-	}
-
-	cancel_if_invalid = yes
-	continue_if_invalid = no
-	available_if_capitulated = yes
-
-	completion_reward = {
-		add_ideas = COM_british_experts_idea
-	}
-}
-
 joint_focus = {
 	id = COM_contract_royal_arsenal
 	icon = GFX_goal_generic_army_artillery
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = -3
 	y = 1
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -347,6 +154,8 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        
+        add_ideas = COM_artillery_equipment_production
 	}
 
 	completion_reward_joint_member = {
@@ -362,10 +171,10 @@ joint_focus = {
 joint_focus = {
 	id = COM_employ_nuffield
 	icon = GFX_goal_generic_army_tanks
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = -2
 	y = 2
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -430,6 +239,8 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        
+        add_ideas = COM_medium_tank_production
 	}
 
 	completion_reward_joint_member = {
@@ -445,10 +256,10 @@ joint_focus = {
 joint_focus = {
 	id = COM_contract_humber
 	icon = GFX_focus_NOR_rikstanken
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = -1
 	y = 1
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -527,6 +338,7 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        add_ideas = COM_light_tank_production
 	}
 
 	completion_reward_joint_member = {
@@ -542,10 +354,10 @@ joint_focus = {
 joint_focus = {
 	id = COM_employ_vauxhall
 	icon = GFX_focus_generic_tank_production
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = 2
 	y = 2
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -602,6 +414,8 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        
+        add_ideas = COM_heavy_tank_production
 	}
 
 	completion_reward_joint_member = {
@@ -617,10 +431,10 @@ joint_focus = {
 joint_focus = {
 	id = COM_contract_vauxhall_automotive
 	icon = GFX_goal_generic_army_motorized
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = 1
 	y = 1
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -677,6 +491,7 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        add_ideas = COM_mechanized_equipment_production
 	}
 
 	completion_reward_joint_member = {
@@ -692,10 +507,10 @@ joint_focus = {
 joint_focus = {
 	id = COM_contract_enfield
 	icon = GFX_focus_focus_fra_maquis
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = 0
 	y = 2
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -768,6 +583,8 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        
+        add_ideas = COM_infantry_equipment_production 
 	}
 
 	completion_reward_joint_member = {
@@ -783,10 +600,10 @@ joint_focus = {
 joint_focus = {
 	id = COM_contract_pye
 	icon = GFX_focus_SOV_organize_wreckers
-	prerequisite = { focus = COM_invite_british_experts }
+	prerequisite = { focus = COM_funding_the_empire }
 	x = 3
 	y = 1
-	relative_position_id = COM_invite_british_experts
+	relative_position_id = COM_funding_the_empire
 
 	cost = 5
 	
@@ -851,6 +668,7 @@ joint_focus = {
 			}
 			set_variable = { number_of_mios = 2 }
 		}
+        add_ideas = COM_radio_equipment_production 
 	}
 
 	completion_reward_joint_member = {
@@ -862,6 +680,62 @@ joint_focus = {
 		}
 	}
 }
+
+shared_focus = {
+	id = COM_armed_forces_development
+	icon = GFX_focus_generic_manpower
+	prerequisite = { focus = COM_commonwealth_command }
+	x = 3
+	y = 1
+	relative_position_id = COM_commonwealth_command
+
+	cost = 5
+
+	offset = {
+		x = -1
+		y = 0
+		trigger = {
+			tag = ENG
+		}
+	}
+
+	cancel_if_invalid = yes
+	continue_if_invalid = no
+	available_if_capitulated = yes
+
+	completion_reward = {
+		army_experience = 100
+		air_experience = 100
+		navy_experience = 100
+	}
+}
+
+shared_focus = {
+	id = COM_invite_british_experts
+	icon = GFX_focus_chi_british_cooperation
+	prerequisite = { focus = COM_armed_forces_development }
+	x = 4
+	y = 1
+	relative_position_id = COM_armed_forces_development
+
+	cost = 5
+
+	allow_branch = {
+		NOT = {
+			tag = ENG
+		}
+	}
+
+	cancel_if_invalid = yes
+	continue_if_invalid = no
+	available_if_capitulated = yes
+
+	completion_reward = {
+		add_ideas = COM_british_experts_idea
+	}
+}
+
+
 
 
 # 	cost = 5
