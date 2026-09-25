@@ -7022,481 +7022,58 @@ completion_reward = {
 
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY FOCUS_FILTER_MILITARY_CHARACTER }
 
-		complete_tooltip = {
-			
-			air_experience = 25
-			every_state = {
-				limit = { has_state_flag = GER_expanding_the_luftwaffe_flag }
-				add_building_construction = {
-					type = air_base
-					level = 2
-					instant_build = yes
-				}
-			}
-			every_state = {
-				limit = { has_state_flag = GER_expanding_the_luftwaffe_flag }
-				add_building_construction = {
-					type = air_base
-					level = 6
-					instant_build = yes
-				}
-			}
-		}
-		
-		completion_reward = {			
-			
-			air_experience = 25
-
-			if = {
-				limit = {
-					NOT = {
-						any_owned_state = {
-							air_base > 3
-							air_base < 9
-						}
-					}
-				}
-				random_owned_controlled_state = {
-					limit = {
-						free_building_slots = {
-							building = air_base
-							size > 5
-						}
-					}
-					add_building_construction = {
-						type = air_base
-						level = 6
-						instant_build = yes
-					}
-					set_state_flag = GER_expanding_the_luftwaffe_flag
-				}				
-			}
-
-			random_owned_controlled_state = {
-				limit = {
-					air_base > 3
-					air_base < 9
-				}
-				add_building_construction = {
-					type = air_base
-					level = 2
-					instant_build = yes
-				}
-				set_state_flag = GER_expanding_the_luftwaffe_flag
-			}
-			random_owned_controlled_state = {
-				limit = {
-					air_base > 3
-					air_base < 9
-				}
-				add_building_construction = {
-					type = air_base
-					level = 2
-					instant_build = yes
-				}
-				set_state_flag = GER_expanding_the_luftwaffe_flag
-			}
-			random_owned_controlled_state = {
-				limit = {
-					air_base > 2
-					air_base < 9
-				}
-				add_building_construction = {
-					type = air_base
-					level = 2
-					instant_build = yes
-				}
-				set_state_flag = GER_expanding_the_luftwaffe_flag
-			}
-			
-			
-			IF = {
-				limit = { has_dlc = "Gotterdammerung" }
-				custom_effect_tooltip = generic_skip_one_line_tt
-				custom_effect_tooltip = GER_unlocks_eben_emael_raid_tt
-
-				custom_effect_tooltip = generic_skip_one_line_tt
-			}
-
-			custom_effect_tooltip = available_chief_of_airforce
-			show_ideas_tooltip = ritter_von_greim
-		}
-	}
-	
-	focus = {
-		id = GER_aeronautical_research_institute
-		icon = GFX_GER_fight_dev
-		#prerequisite = { focus = GER_expanding_the_luftwaffe }
-
-		x = -4
-		y = 15
-		#relative_position_id = GER_expanding_the_luftwaffe
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL }
-
 		completion_reward = {
-			if = {
-				limit = {
-					controls_state = 59
-				}
-				59 = { #Hannover
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = {
-						type = arms_factory
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			else = {
-				random_core_state = {
-					limit = {
-						is_fully_controlled_by = ROOT
-					}
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = {
-						type = arms_factory
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_aeronautical_research_institute
-				bonus = 0.25
-				uses = 2
-				category = air_equipment
-			}
-			add_breakthrough_progress = {
-				specialization = specialization_air
-				value = 0.5
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = GER_arado_flugzeugwerke
-					}
-					swap_ideas = {
-						remove_idea = GER_arado_flugzeugwerke
-						add_idea = GER_arado_flugzeugwerke_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = GER_arado_flugzeugwerke
-							add_idea = GER_arado_flugzeugwerke_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_arado_flugzeugwerke_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
 		}
 	}
-	
-	focus = {
-		id = GER_dive_bombers
 
+	focus = {
+		id = GER_shut_down_richthofens_reports
 		icon = GFX_GER_junkers_company
-		alternate_icon = GFX_GER_junkers_company
+		prerequisite = { focus = GER_expanding_the_luftwaffe }
 
-		prerequisite = { focus = GER_aeronautical_research_institute }
-		mutually_exclusive = { focus = GER_tactical_bombers focus = GER_uralbomber_program }
 		x = -4
-		y = 4
-		relative_position_id = GER_aeronautical_research_institute
+		y = 1
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
 
-			add_mastery_bonus = {
-				name = GER_dive_bombers
-				bonus = 0.05
-				days = 180
-				grand_doctrine = new_battlefield_support
-			}
-			add_mastery_bonus = {
-				name = GER_dive_bombers
-				bonus = 0.15
-				days = 180
-				track = strike_aircraft
-			}
-			add_mastery = {
-                amount = 50
-                track = strike_aircraft
-            }
-			add_doctrine_cost_reduction = {
-				name = GER_dive_bombers
-				cost_reduction = 0.25
-				uses = 1
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = GER_dive_bombers
-				bonus = 0.5
-				uses = 1
-				category = light_air
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_cas_efficiency = 0.1
-				tooltip = air_cas_efficiency_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Hans
-				surname = Rudel
-				callsign = Adler #made-up-ish; "Eagle of the Eastern Front" was his real nickname
-				type = support_genius
-			}
-			add_ace = {
-				name = Anton
-				surname = Hubsch
-				callsign = Toni
-				type = support_unique
-			}
-			add_ace = {
-				name = Gerhard
-				surname = Studemann
-				callsign = Stutz
-				type = support_unique
-			}
-			add_ace = {
-				name = Alois
-				surname = Wosnitza
-				callsign = Ritter #Made-up
-				type = support_unique
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = junkers
-					}
-					swap_ideas = {
-						remove_idea = junkers
-						add_idea = GER_junkers_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = junkers
-							add_idea = GER_junkers_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_junkers_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = hugo_sperrle
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = ernst_udet
 		}
 	}
-	
+
 	focus = {
-		id = GER_tactical_bombers
-		icon = GFX_GER_strategic_bomber
-		prerequisite = { focus = GER_aeronautical_research_institute }
-		mutually_exclusive = { focus = GER_dive_bombers focus = GER_uralbomber_program }
+		id = GER_invest_in_long_range_fighters
+		icon = GFX_focus_usa_escort_fighters
+		prerequisite = { focus = GER_expanding_the_luftwaffe }
+
 		x = -2
-		y = 4
-		relative_position_id = GER_aeronautical_research_institute
+		y = 1
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = erhard_milch
 
-			add_mastery_bonus = {
-				name = GER_tactical_bombers
-				bonus = 0.15
-				days = 180
-				grand_doctrine = new_operational_integrity
-			}
-			add_mastery_bonus = {
-				name = GER_tactical_bombers
-				bonus = 0.05
-				days = 180
-				track = medium_aircraft
-			}
-            add_mastery = {
-                amount = 50
-                track = medium_aircraft
-            }
-			add_doctrine_cost_reduction = {
-				name = GER_tactical_bombers
-				cost_reduction = 0.25
-				uses = 2
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = GER_tactical_bombers
-				bonus = 0.5
-				uses = 1
-				category = medium_air
-			}
-
-			if = {
-				limit = {
-					has_dlc = "By Blood Alone"
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				create_equipment_variant = { 
-					name = "Ju 88" 
-					type = medium_plane_airframe_2
-					allow_without_tech = no
-					design_team = mio:GER_dornier_organization
-					modules = {
-						fixed_main_weapon_slot = medium_bomb_bay
-						fixed_auxiliary_weapon_slot_1 = medium_bomb_bay
-						fixed_auxiliary_weapon_slot_2 = torpedo_mounting
-						engine_type_slot = engine_2_2x
-						special_type_slot_1 = lmg_defense_turret_2x
-						special_type_slot_2 = empty	
-					}
-					icon = "GFX_GER_tactical_bomber2_medium"
-					model = "GER_medium_plane_entity"
-				}
-			}
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_strategic_bomber_bombing_factor = 0.1
-				tooltip = air_strategic_bomber_bombing_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_cas_efficiency = 0.05
-				tooltip = air_cas_efficiency_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Werner
-				surname = Baumbach
-				callsign = "Papa Bär" #made-up
-				type = bomber_unique
-			}
-			add_ace = {
-				name = Bernhard
-				surname = Jope
-				callsign = Senker #made-up
-				type = bomber_unique
-			}
-			add_ace = {
-				name = Anton
-				surname = Hubsch
-				callsign = Toni
-				type = support_unique
-			}
-			add_ace = {
-				name = Gerhard
-				surname = Studemann
-				callsign = Stutz
-				type = support_unique
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = dornier
-					}
-					swap_ideas = {
-						remove_idea = dornier
-						add_idea = GER_dornier_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = dornier
-							add_idea = GER_dornier_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_dornier_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
 		}
 	}
-	
+
 	focus = {
 		id = GER_uralbomber_program
 		icon = GFX_GER_ural_bomber
-		prerequisite = { focus = GER_aeronautical_research_institute }
-		mutually_exclusive = { focus = GER_dive_bombers focus = GER_tactical_bombers }
-		x = 0
-		y = 4
-		relative_position_id = GER_aeronautical_research_institute
+		prerequisite = { focus = GER_expanding_the_luftwaffe }
+		mutually_exclusive = { focus = GER_tactical_bombers }
+
+		x = -1
+		y = 1
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
@@ -7504,196 +7081,39 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = GER_robert_knauss
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_mastery_bonus = {
-				name = GER_uralbomber_program
-				bonus = 0.05
-				days = 180
-				grand_doctrine = new_strategic_destruction
-			}
-			add_mastery_bonus = {
-				name = GER_uralbomber_program
-				bonus = 0.15
-				days = 180
-				track = heavy_aircraft
-			}
-			add_doctrine_cost_reduction = {
-				name = GER_uralbomber_program
-				cost_reduction = 0.25
-				uses = 2
-				category = air_doctrine
-			}
-			add_mastery = {
-                amount = 50
-                track = heavy_aircraft
-            }
-			add_tech_bonus = {
-				name = GER_uralbomber_program
-				bonus = 0.5
-				uses = 1
-				category = heavy_air
-			}
-
-			if = {
-				limit = {
-					has_dlc = "By Blood Alone"
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				create_equipment_variant = { 
-					name = "Ju 89" 
-					type = large_plane_airframe_1
-					allow_without_tech = no
-					design_team = mio:GER_heinkel_organization
-					modules = {
-						fixed_main_weapon_slot = large_bomb_bay
-						fixed_auxiliary_weapon_slot_1 = empty
-						fixed_auxiliary_weapon_slot_2 = empty
-						engine_type_slot = engine_2_4x
-						special_type_slot_1 = lmg_defense_turret_2x
-						special_type_slot_2 = lmg_defense_turret
-					}
-					icon = "GFX_GER_strategic_bomber1_medium"
-					model = "GER_strat_bomber_equipment_1_entity"
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_range_factor = 0.15
-				tooltip = air_range_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_strategic_bomber_bombing_factor = 0.05
-				tooltip = air_strategic_bomber_bombing_factor_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Hansgeorg
-				surname = Batcher
-				callsign = Schützin #made-up
-				type = bomber_genius
-			}
-			add_ace = {
-				name = Werner
-				surname = Baumbach
-				callsign = "Papa Bär" #made-up
-				type = bomber_unique
-			}
-			add_ace = {
-				name = Bernhard
-				surname = Jope
-				callsign = Senker #made-up
-				type = bomber_unique
-			}
-			add_ace = {
-				name = Horst
-				surname = Rudat
-				callsign = Mistel #made-up
-				type = bomber_unique
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = heinkel
-					}
-					swap_ideas = {
-						remove_idea = heinkel
-						add_idea = GER_heinkel_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = heinkel
-							add_idea = GER_heinkel_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_heinkel_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
 		}
 	}
-	
-	focus = {
-		id = GER_rocketry_innovations
-		icon = GFX_GER_rocketry
-		prerequisite = { focus = GER_aerodynamic_research_institute}
 
-		x = -2
+	focus = {
+		id = GER_tactical_bombers
+		icon = GFX_GER_strategic_bomber
+		prerequisite = { focus = GER_expanding_the_luftwaffe }
+		mutually_exclusive = { focus = GER_uralbomber_program }
+
+		x = 1
 		y = 1
-		relative_position_id = GER_aerodynamic_research_institute
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			add_tech_bonus = {
-				name = GER_aerodynamic_research_institute
-				bonus = 0.5
-				uses = 1
-				category = rocketry
-			}
 
-			add_breakthrough_progress = {
-				specialization = specialization_air
-				value = 0.75
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_timed_idea = {
-				idea = GER_rocketry_idea
-				days = 730
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_add_or_modify_wunderwaffen = yes
-			add_to_variable = { 
-				GER_wunderwaffen_sp_tag_rocket_speed_factor = 0.15
-				tooltip = sp_tag_rocket_speed_factor_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = GER_walter_dornberger
-			
 		}
 	}
-	
+
 	focus = {
 		id = GER_fallschirmjager
 		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_aerodynamic_research_institute }
+		prerequisite = { focus = GER_expanding_the_luftwaffe }
 
-		x = -4
+		x = 3
 		y = 1
-		relative_position_id = GER_aerodynamic_research_institute
+		relative_position_id = GER_expanding_the_luftwaffe
+
 		cost = 5
 		available = {
 		}
@@ -7701,54 +7121,14 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			#set_technology = {
-			#	hs132 = 1
-			#}
-			if = {
-				limit = {
-					has_dlc = "Arms Against Tyranny"
-				}
-				if = {
-					limit = {
-						NOT = { has_completed_focus = GER_marinestosstrupp }
-					}
-					add_potential_special_forces_tree = yes
-				}
-				add_doctrine_cost_reduction = {
-					name = GER_fallschirmjager
-					cost_reduction = 0.25
-					uses = 2
-					category = cat_paratroopers_doctrine
-				}
-			}
-			add_tech_bonus = {
-				name = GER_fallschirmjager
-				bonus = 1
-				uses = 1
-				category = para_tech
-			}
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_para_cap = -0.15
-				tooltip = paras_cap_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_kurt_student
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = kurt_student
 		}
 	}
 
 	focus = {
-		id = GER_battlefield_support
-		icon = GFX_GER_fight_dev
+		id = GER_general_der_jagdflieger
+		icon = GFX_GER_heavy_fighter
 		prerequisite = { focus = GER_expanding_the_luftwaffe }
-		mutually_exclusive = { focus = GER_stuka_cas focus = GER_operational_integrity }
 
 		x = 5
 		y = 1
@@ -7757,7 +7137,85 @@ completion_reward = {
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_dive_bombers
+		icon = GFX_ger_junker
+		prerequisite = { focus = GER_shut_down_richthofens_reports }
+
+		x = -6
+		y = 2
+		relative_position_id = GER_expanding_the_luftwaffe
+
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_sturzkampfgeschwader_2
+		icon = GFX_GER_german_cas_doctrine
+		prerequisite = { focus = GER_shut_down_richthofens_reports }
+
+		x = -4
+		y = 2
+		relative_position_id = GER_expanding_the_luftwaffe
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_reach_out_to_junkers_and_henschel
+		icon = GFX_ger_junkers
+		prerequisite = { focus = GER_shut_down_richthofens_reports }
+
+		x = -2
+		y = 2
+		relative_position_id = GER_expanding_the_luftwaffe
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_reorganize_the_luftwaffe
+		icon = GFX_GER_reorganize_the_luftwaffe
+		prerequisite = { focus = GER_uralbomber_program focus = GER_tactical_bombers }
+
+		x = 0
+		y = 2
+		relative_position_id = GER_expanding_the_luftwaffe
+
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
 
@@ -7767,11 +7225,13 @@ completion_reward = {
 	focus = {
 		id = GER_messerschmitt_109
 		icon = GFX_GER_messershit
-		prerequisite = { focus = GER_battlefield_support }
+		prerequisite = { focus = GER_general_der_jagdflieger }
+		mutually_exclusive = { focus = GER_focke_wulf }
 
-		x = -1
-		y = 1
-		relative_position_id = GER_battlefield_support
+		x = 4
+		y = 2
+		relative_position_id = GER_expanding_the_luftwaffe
+
 		cost = 5
 		available = {
 		}
@@ -7779,203 +7239,20 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-		air_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_form_the_jagdwaffe
-				cost_reduction = 0.5
-				uses = 1
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 1.5
-				uses = 1
-				technology = fighter2
-			}
 
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_ace_generation_chance_factor = 0.25
-				tooltip = air_ace_generation_chance_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_agility_factor = 0.05
-				tooltip = air_agility_factor_tt
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Erich
-				surname = Hartmann
-				callsign = Bubi
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gerhard
-				surname = Barkhorn
-				callsign = Gerd
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gunther
-				surname = Rall
-				callsign = Adlerauge #Made-up nickname
-				type = fighter_genius
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = messerschmitt
-					}
-					swap_ideas = {
-						remove_idea = messerschmitt
-						add_idea = GER_messerschmitt_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = messerschmitt
-							add_idea = GER_messerschmitt_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_messerschmitt_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
 		}
 	}
 
 	focus = {
 		id = GER_focke_wulf
 		icon = GFX_GER_focke
-		prerequisite = { focus = GER_battlefield_support }
+		prerequisite = { focus = GER_general_der_jagdflieger }
+		mutually_exclusive = { focus = GER_messerschmitt_109 }
 
-		x = 1
-		y = 1
-		relative_position_id = GER_battlefield_support
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-		air_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_form_the_jagdwaffe
-				cost_reduction = 0.5
-				uses = 1
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 1.25
-				uses = 1
-				technology = fighter2
-			}
-
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_ace_generation_chance_factor = 0.25
-				tooltip = air_ace_generation_chance_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_agility_factor = 0.05
-				tooltip = air_agility_factor_tt
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Erich
-				surname = Hartmann
-				callsign = Bubi
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gerhard
-				surname = Barkhorn
-				callsign = Gerd
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gunther
-				surname = Rall
-				callsign = Adlerauge #Made-up nickname
-				type = fighter_genius
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = focke_wulf
-					}
-					swap_ideas = {
-						remove_idea = focke_wulf
-						add_idea = GER_focke_wulf_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = focke_wulf
-							add_idea = GER_focke_wulf_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_focke_wulf_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_agile_fighter_design
-		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_messerschmitt_109 }
-		prerequisite = { focus = GER_focke_wulf }
-		mutually_exclusive = { focus = GER_external_fuel_tanks_expansion }
-
-		x = -1
+		x = 6
 		y = 2
-		relative_position_id = GER_battlefield_support
+		relative_position_id = GER_expanding_the_luftwaffe
+
 		cost = 5
 		available = {
 		}
@@ -7988,185 +7265,76 @@ completion_reward = {
 	}
 
 	focus = {
-		id = GER_external_fuel_tanks_expansion
-		icon = GFX_focus_SMB_purchase_aircraft
-		prerequisite = { focus = GER_messerschmitt_109 }
-		prerequisite = { focus = GER_focke_wulf }
-		mutually_exclusive = { focus = GER_agile_fighter_design }
-
-		x = 1
-		y = 2
-		relative_position_id = GER_battlefield_support
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-    focus = {
-		id = GER_give_goring_command
-		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_agile_fighter_design focus = GER_external_fuel_tanks_expansion}
-
-		x = 1
-		y = 2
-		relative_position_id = GER_agile_fighter_design
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-	focus = {
-		id = GER_stuka_cas
-		icon = GFX_GER_junkers_company
-		prerequisite = { focus = GER_expanding_the_luftwaffe }
-		mutually_exclusive = { focus = GER_battlefield_support focus = GER_operational_integrity }
+		id = GER_lessons_from_britain
+		icon = GFX_GER_contest
+		prerequisite = { focus = GER_dive_bombers }
 
 		x = -5
-		y = 1
+		y = 3
 		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
 
-			add_mastery_bonus = {
-				name = GER_dive_bombers
-				bonus = 0.05
-				days = 180
-				grand_doctrine = new_battlefield_support
-			}
-			add_mastery_bonus = {
-				name = GER_dive_bombers
-				bonus = 0.15
-				days = 180
-				track = strike_aircraft
-			}
-			add_mastery = {
-                amount = 50
-                track = strike_aircraft
-            }
-			add_doctrine_cost_reduction = {
-				name = GER_dive_bombers
-				cost_reduction = 0.25
-				uses = 1
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = GER_dive_bombers
-				bonus = 0.5
-				uses = 1
-				category = light_air
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_cas_efficiency = 0.1
-				tooltip = air_cas_efficiency_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Hans
-				surname = Rudel
-				callsign = Adler #made-up-ish; "Eagle of the Eastern Front" was his real nickname
-				type = support_genius
-			}
-			add_ace = {
-				name = Anton
-				surname = Hubsch
-				callsign = Toni
-				type = support_unique
-			}
-			add_ace = {
-				name = Gerhard
-				surname = Studemann
-				callsign = Stutz
-				type = support_unique
-			}
-			add_ace = {
-				name = Alois
-				surname = Wosnitza
-				callsign = Ritter #Made-up
-				type = support_unique
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = junkers
-					}
-					swap_ideas = {
-						remove_idea = junkers
-						add_idea = GER_junkers_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = junkers
-							add_idea = GER_junkers_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_junkers_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = hugo_sperrle
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = ernst_udet
 		}
 	}
 
 	focus = {
-		id = GER_junkers_cas
-		icon = GFX_ger_junker
-		prerequisite = { focus = GER_stuka_cas }
+		id = GER_lay_down_the_fritz_x
+		icon = GFX_GER_rocketry
+		prerequisite = { focus = GER_reach_out_to_junkers_and_henschel }
 
-		x = -1
-		y = 1
-		relative_position_id = GER_stuka_cas
+		x = -3
+		y = 3
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_fall_of_an_eagle
+		icon = GFX_goal_luftwaffe
+		prerequisite = { focus = GER_reorganize_the_luftwaffe }
+
+		x = 0
+		y = 3
+		relative_position_id = GER_expanding_the_luftwaffe
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_establish_night_fighter_squadrons
+		icon = GFX_GER_night
+		prerequisite = { focus = GER_messerschmitt_109 focus = GER_focke_wulf }
+
+		x = 5
+		y = 3
+		relative_position_id = GER_expanding_the_luftwaffe
+
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
 
@@ -8175,92 +7343,15 @@ completion_reward = {
 
 	focus = {
 		id = GER_flying_artillery_strategy
-		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_stuka_cas }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_stuka_cas
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-	focus = {
-		id = GER_improved_cas_bomb_locks
-		icon = GFX_GER_german_cas_doctrine
-		prerequisite = { focus = GER_flying_artillery_strategy }
-		prerequisite = { focus = GER_junkers_cas }
-		mutually_exclusive = { focus = GER_mass_cas_production }
-
-		x = -1
-		y = 2
-		relative_position_id = GER_stuka_cas
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-focus = {
-		id = GER_mass_cas_production
-		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_flying_artillery_strategy }
-		prerequisite = { focus = GER_junkers_cas }
-		mutually_exclusive = { focus = GER_improved_cas_bomb_locks }
-
-		x = 1
-		y = 2
-		relative_position_id = GER_stuka_cas
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-	focus = {
-		id = GER_wilberg_dive_bomber_terror_bombing
-		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_improved_cas_bomb_locks focus = GER_mass_cas_production }
-
-		x = 0
-		y = 4
-		relative_position_id = GER_stuka_cas
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-	focus = {
-		id = GER_strategic_terror_bombing
 		icon = GFX_GER_strategic_bombing
-		prerequisite = { focus = GER_cheaper_fighter_design focus = GER_improve_tactical_mobility }
+		prerequisite = { focus = GER_sturzkampfgeschwader_2 }
+		prerequisite = { focus = GER_lessons_from_britain }
+		prerequisite = { focus = GER_lay_down_the_fritz_x }
 
-		x = 1
-		y = 2
-		relative_position_id = GER_cheaper_fighter_design
+		x = -4
+		y = 4
+		relative_position_id = GER_expanding_the_luftwaffe
+
 		cost = 5
 		available = {
 		}
@@ -8273,256 +7364,40 @@ focus = {
 	}
 
 	focus = {
-		id = GER_operational_integrity
-		icon = GFX_GER_strategic_bomber
-		prerequisite = { focus = GER_expanding_the_luftwaffe }
-		mutually_exclusive = { focus = GER_battlefield_support focus = GER_stuka_cas }
+		id = GER_give_goring_command
+		icon = GFX_GER_goring_plan
+		prerequisite = { focus = GER_fall_of_an_eagle }
+		mutually_exclusive = { focus = GER_heed_udets_warning }
 
-		x = 0
-		y = 1
+		x = -2
+		y = 4
+		relative_position_id = GER_expanding_the_luftwaffe
+
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_heed_udets_warning
+		icon = GFX_GER_luftwaffe_investment
+		prerequisite = { focus = GER_fall_of_an_eagle }
+		mutually_exclusive = { focus = GER_give_goring_command }
+
+		x = 2
+		y = 4
 		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = erhard_milch
-
-			add_mastery_bonus = {
-				name = GER_tactical_bombers
-				bonus = 0.15
-				days = 180
-				grand_doctrine = new_operational_integrity
-			}
-			add_mastery_bonus = {
-				name = GER_tactical_bombers
-				bonus = 0.05
-				days = 180
-				track = medium_aircraft
-			}
-            add_mastery = {
-                amount = 50
-                track = medium_aircraft
-            }
-			add_doctrine_cost_reduction = {
-				name = GER_tactical_bombers
-				cost_reduction = 0.25
-				uses = 2
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = GER_tactical_bombers
-				bonus = 0.5
-				uses = 1
-				category = medium_air
-			}
-
-			if = {
-				limit = {
-					has_dlc = "By Blood Alone"
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				create_equipment_variant = { 
-					name = "Ju 88" 
-					type = medium_plane_airframe_2
-					allow_without_tech = no
-					design_team = mio:GER_dornier_organization
-					modules = {
-						fixed_main_weapon_slot = medium_bomb_bay
-						fixed_auxiliary_weapon_slot_1 = medium_bomb_bay
-						fixed_auxiliary_weapon_slot_2 = torpedo_mounting
-						engine_type_slot = engine_2_2x
-						special_type_slot_1 = lmg_defense_turret_2x
-						special_type_slot_2 = empty	
-					}
-					icon = "GFX_GER_tactical_bomber2_medium"
-					model = "GER_medium_plane_entity"
-				}
-			}
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_strategic_bomber_bombing_factor = 0.1
-				tooltip = air_strategic_bomber_bombing_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_cas_efficiency = 0.05
-				tooltip = air_cas_efficiency_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Werner
-				surname = Baumbach
-				callsign = "Papa Bär" #made-up
-				type = bomber_unique
-			}
-			add_ace = {
-				name = Bernhard
-				surname = Jope
-				callsign = Senker #made-up
-				type = bomber_unique
-			}
-			add_ace = {
-				name = Anton
-				surname = Hubsch
-				callsign = Toni
-				type = support_unique
-			}
-			add_ace = {
-				name = Gerhard
-				surname = Studemann
-				callsign = Stutz
-				type = support_unique
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = dornier
-					}
-					swap_ideas = {
-						remove_idea = dornier
-						add_idea = GER_dornier_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = dornier
-							add_idea = GER_dornier_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_dornier_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_messerschmitt_me_210
-		icon = GFX_focus_usa_escort_fighters
-		prerequisite = { focus = GER_operational_integrity }
-
-		x = -1
-		y = 1
-		relative_position_id = GER_operational_integrity
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-		if = {
-				limit = {
-					controls_state = 59
-				}
-				59 = { #Hannover
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = {
-						type = arms_factory
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			else = {
-				random_core_state = {
-					limit = {
-						is_fully_controlled_by = ROOT
-					}
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = {
-						type = arms_factory
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_aeronautical_research_institute
-				bonus = 0.25
-				uses = 2
-				category = air_equipment
-			}
-			add_breakthrough_progress = {
-				specialization = specialization_air
-				value = 0.5
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = GER_arado_flugzeugwerke
-					}
-					swap_ideas = {
-						remove_idea = GER_arado_flugzeugwerke
-						add_idea = GER_arado_flugzeugwerke_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = GER_arado_flugzeugwerke
-							add_idea = GER_arado_flugzeugwerke_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_arado_flugzeugwerke_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_heavy_fighter_stockpile
-		icon = GFX_focus_generic_paratrooper
-		prerequisite = { focus = GER_operational_integrity }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_operational_integrity
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
 
@@ -8530,1027 +7405,124 @@ focus = {
 	}
 
 	focus = {
-		id = GER_cheaper_fighter_design
-		icon = GFX_GER_ural_bomber
-		prerequisite = { focus = GER_heavy_fighter_stockpile }
-		prerequisite = { focus = GER_messerschmitt_me_210 }
-		mutually_exclusive = { focus = GER_improve_tactical_mobility }
-
-		x = -2
-		y = 1
-		relative_position_id = GER_heavy_fighter_stockpile
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-
-focus = {
-		id = GER_improve_tactical_mobility
-		icon = GFX_GER_sonic_plane
-		prerequisite = { focus = GER_heavy_fighter_stockpile }
-		prerequisite = { focus = GER_messerschmitt_me_210 }
-		mutually_exclusive = { focus = GER_cheaper_fighter_design }
-
-		x = 0
-		y = 1
-		relative_position_id = GER_heavy_fighter_stockpile
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-
-		}
-	}
-	
-	focus = {
-		id = GER_form_the_jagdwaffe
-		icon = GFX_GER_messershit
-		#prerequisite = { focus = GER_expanding_the_luftwaffe }
-		#mutually_exclusive = { focus = GER_form_the_jagdwaffe2 }
-
-		x = 4
-		y = 20
-		#relative_position_id = GER_expanding_the_luftwaffe
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_HISTORICAL FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			air_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_form_the_jagdwaffe
-				cost_reduction = 0.5
-				uses = 1
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 1.5
-				uses = 1
-				technology = fighter2
-			}
-
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_ace_generation_chance_factor = 0.25
-				tooltip = air_ace_generation_chance_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_agility_factor = 0.05
-				tooltip = air_agility_factor_tt
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Erich
-				surname = Hartmann
-				callsign = Bubi
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gerhard
-				surname = Barkhorn
-				callsign = Gerd
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gunther
-				surname = Rall
-				callsign = Adlerauge #Made-up nickname
-				type = fighter_genius
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = messerschmitt
-					}
-					swap_ideas = {
-						remove_idea = messerschmitt
-						add_idea = GER_messerschmitt_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = messerschmitt
-							add_idea = GER_messerschmitt_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_messerschmitt_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_form_the_jagdwaffe2
-		icon = GFX_GER_focke
-		#prerequisite = { focus = GER_expanding_the_luftwaffe }
-		#mutually_exclusive = { focus = GER_form_the_jagdwaffe }
-
-		x = 0
-		y = 25
-		#relative_position_id = GER_expanding_the_luftwaffe
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_HISTORICAL FOCUS_FILTER_AIR_XP FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			air_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_form_the_jagdwaffe
-				cost_reduction = 0.5
-				uses = 1
-				category = air_doctrine
-			}
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 1.25
-				uses = 1
-				technology = fighter2
-			}
-
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_ace_generation_chance_factor = 0.25
-				tooltip = air_ace_generation_chance_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_agility_factor = 0.05
-				tooltip = air_agility_factor_tt
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Erich
-				surname = Hartmann
-				callsign = Bubi
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gerhard
-				surname = Barkhorn
-				callsign = Gerd
-				type = fighter_genius
-			}
-
-			add_ace = {
-				name = Gunther
-				surname = Rall
-				callsign = Adlerauge #Made-up nickname
-				type = fighter_genius
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = focke_wulf
-					}
-					swap_ideas = {
-						remove_idea = focke_wulf
-						add_idea = GER_focke_wulf_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = focke_wulf
-							add_idea = GER_focke_wulf_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_focke_wulf_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = GER_reorganize_the_luftwaffe
-		icon = GFX_GER_reorganize_the_luftwaffe
-		prerequisite = { focus = GER_aerodynamic_research_institute }
-
-		x = 0
-		y = 2
-		relative_position_id = GER_aerodynamic_research_institute
-		cost = 5
-		available = {
-			OR = {
-            FRA = { has_capitulated = yes }
-			has_completed_focus = GER_goring_plan
-			#date > 1941.1.1
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_MILITARY_CHARACTER }
-
-		completion_reward = {
-			add_command_power = 25
-			air_experience = 25
-			custom_effect_tooltip = generic_skip_one_line_tt
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_attack_factor = 0.05
-				tooltip = air_attack_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_defence_factor = 0.05
-				tooltip = air_defence_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_agility_factor = 0.025
-				tooltip = air_agility_factor_tt
-			}
-            custom_effect_tooltip = generic_skip_one_line_tt
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 0.5
-				uses = 1
-				category = light_fighter
-			}
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 0.75
-				uses = 1
-				category = light_fighter
-			}
-			add_tech_bonus = {
-				name = fighter_bonus
-				bonus = 0.75
-				uses = 1
-				category = cat_heavy_fighter
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_reorganize_the_luftwaffe
-				cost_reduction = 0.25
-				uses = 2
-				category = air_doctrine
-			}
-			add_mastery_bonus = {
-                name = GER_reorganize_the_luftwaffe
-                bonus = 0.2
-                days = 360
-                folder = air
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_chief_of_airforce
-			show_ideas_tooltip = GER_helmuth_wilberg
-		}
-	}
-
-	focus = {
-		id = GER_solve_the_logistical_bottlenecks
+		id = GER_werner_molders
 		icon = GFX_GER_heavy_fighter2
-		prerequisite = { focus = GER_establish_night_fighter_squadrons focus = GER_construct_the_kammhuber_line }
+		prerequisite = { focus = GER_establish_night_fighter_squadrons }
 
-		x = 1
-		y = 1
-		relative_position_id = GER_establish_night_fighter_squadrons
-		cost = 5
-		available = {
-		}
-
-		search_filters = {}
-
-		completion_reward = {
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_accidents_factor = -0.1
-				tooltip = air_accidents_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_manpower_requirement_factor = -0.1
-				tooltip = air_manpower_requirement_factor_tt
-			}
-			add_to_variable = { 
-				GER_military_air_fuel_consumption_factor = -0.1
-				tooltip = air_fuel_consumption_factor_tt
-			}
-		}
-	}
-
-	#focus = {
-	#	id = GER_experimental_rotorcrafts
-	#	icon = GFX_GER_helikopter
-	#	prerequisite = { focus = GER_form_the_jagdwaffe }
-	#	x = 0
-	#	y = 1
-	#	relative_position_id = GER_form_the_jagdwaffe
-    #
-	#	allow_branch = {
-	#		has_dlc = "Gotterdammerung"
-	#	}
-    #
-	#	cost = 5
-	#	available = {
-	#	}
-	#	search_filters = { FOCUS_FILTER_RESEARCH }
-	#	completion_reward = {
-	#		add_breakthrough_progress = {
-    #   specialization = specialization_air
-	#			value = 0.5
-	#		}
-	#	custom_effect_tooltip = generic_skip_one_line_tt
-    #
-	#	if = {
-	#			limit = {
-	#				NOT = { is_special_project_completed = sp:sp_air_helicopter }
-	#			}
-	#			GER_add_or_modify_wunderwaffen = yes
-	#			add_to_variable = { 
-	#				GER_wunderwaffen_sp_air_helicopter_speed_factor = GER_wunderwaffe_research_speed_bonus
-	#				tooltip = sp_air_helicopter_speed_factor_tt
-	#			}
-	#			custom_effect_tooltip = generic_skip_one_line_tt
-	#		}
-	#		if = {
-	#			limit = {
-	#				has_dlc = "Arms Against Tyranny"
-	#			}
-	#			custom_effect_tooltip = generic_skip_one_line_tt
-	#			mio:GER_focke_achgelis_organization = {
-	#				add_mio_size = 1
-	#				add_mio_funds_gain_factor = 0.25
-	#			add_mio_research_bonus = 0.05
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-	#			}
-	#		}
-	#	}
-	#}
-	
-	focus = {
-		id = GER_develop_the_knickebein
-		icon = GFX_GER_focke
-		prerequisite = { focus = GER_form_the_jagdwaffe focus = GER_form_the_jagdwaffe2}
-
-		x = -2
+		x = 5
 		y = 4
-		relative_position_id = GER_form_the_jagdwaffe
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
 		available = {
-			has_tech = hq_radio2
 		}
 
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			add_timed_idea = {
-				idea = GER_knickebein
-				days = 545
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_develop_the_knickebein
-				bonus = 0.5
-				uses = 1
-				category = radar_tech
-			}
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = focke_wulf
-					}
-					swap_ideas = {
-						remove_idea = focke_wulf
-						add_idea = GER_focke_wulf_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = focke_wulf
-							add_idea = GER_focke_wulf_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_focke_wulf_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_defense_of_the_reich
-		icon = GFX_GER_defense_of_the_reich
-		prerequisite = { focus = GER_reorganize_the_luftwaffe }
-		prerequisite = { focus = GER_solve_the_logistical_bottlenecks focus = GER_amerikabomber }
-		mutually_exclusive = { focus = GER_contest_the_spitfire }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_reorganize_the_luftwaffe
-		cost = 5
-		available = {
-			has_war_with_major = yes
-		}
-
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			add_timed_idea = {
-				idea = GER_defense_of_the_reich_ns
-				days = 730
-			}
-		}
-	}
-
-	focus = {
-		id = GER_contest_the_spitfire
-		icon = GFX_GER_contest
-		prerequisite = { focus = GER_reorganize_the_luftwaffe }
-		prerequisite = { focus = GER_solve_the_logistical_bottlenecks focus = GER_amerikabomber }
-		mutually_exclusive = { focus = GER_defense_of_the_reich }
-
-		x = -1
-		y = 1
-		relative_position_id = GER_reorganize_the_luftwaffe
-		cost = 5
-		available = {
-			has_war_with_major = yes
-		}
-
-		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
 
 		}
 	}
-	
+
 	focus = {
 		id = GER_construct_the_kammhuber_line
 		icon = GFX_GER_kamhuber
-		prerequisite = { focus = GER_aerodynamic_research_institute }
+		prerequisite = { focus = GER_give_goring_command focus = GER_heed_udets_warning }
 
-		x = 4
-		y = 1
-		relative_position_id = GER_aerodynamic_research_institute
+		x = -2
+		y = 5
+		relative_position_id = GER_expanding_the_luftwaffe
+
 		cost = 5
 		available = {
-			has_war_with_major = yes
-			is_special_project_completed = sp:sp_air_radar
-			custom_trigger_tooltip = {
-				tooltip = GER_controls_atlantic_coast_brittany_finnmark_tt
-				OR = {
-					925 = { #Finnmark
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					924 = { #Troms
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					144 = { #Nordland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					923 = { #Helgeland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					143 = { #Trondelag
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					142 = { #Vestlandet
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					922 = { #Agder
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					921 = { #Telemark
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					110 = { #Oslo
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					915 = { #Halland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					140 = { #Västergötland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					99 = { #Jylland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					912 = { #Sonderjylland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					36 = { #Friesland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					7 = { #Holland
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					35 = { #Brabant
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					6 = { #Vlaanderen
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					29 = { #Nord-Pas-de_calais
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					785 = { #Picardy
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					15 = { #Normandy
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					14 = { #Brittany
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-			}
 		}
 
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-			add_timed_idea = {
-				idea = GER_the_kammhuber_line
-				days = 365
-			}
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			custom_effect_tooltip = GER_controls_atlantic_coast_brittany_finnmark_effects_tt
-			every_state = {
-				limit = { 
-					anti_air_building < 5
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-					is_coastal = yes 
-					OR = {
-						state = 925
-						state = 924
-						state = 144
-						state = 923
-						state = 143
-						state = 142
-						state = 922
-						state = 921
-						state = 110
-						state = 915
-						state = 140
-						state = 99
-						state = 912
-						state = 909
-						state = 58 
-						state = 59
-						state = 56
-						state = 36
-						state = 7
-						state = 35
-						state = 6
-						state = 977
-						state = 29
-						state = 785
-						state = 15
-						state = 14
-					}
-				}
-				add_building_construction = {
-					type = anti_air_building
-					level = 1
-					instant_build = yes
-				}
-			}
 		}
 	}
-	
+
 	focus = {
-		id = GER_establish_night_fighter_squadrons
-		icon = GFX_GER_night
-		prerequisite = { focus = GER_aerodynamic_research_institute }
+		id = GER_aeronautical_research_institute
+		icon = GFX_GER_fight_dev
+		prerequisite = { focus = GER_give_goring_command focus = GER_heed_udets_warning }
+
+		x = 0
+		y = 5
+		relative_position_id = GER_expanding_the_luftwaffe
+
+		cost = 5
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+
+		}
+	}
+
+	focus = {
+		id = GER_defense_of_the_reich
+		icon = GFX_GER_defense_of_the_reich
+		prerequisite = { focus = GER_give_goring_command focus = GER_heed_udets_warning }
 
 		x = 2
-		y = 1
-		relative_position_id = GER_aerodynamic_research_institute
-		cost = 5
-		available = {
-			has_tech = centimetric_radar
-			has_war_with_major = yes
-		}
+		y = 5
+		relative_position_id = GER_expanding_the_luftwaffe
 
-		search_filters = { FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			add_timed_idea = {
-				idea = GER_nachtjagdgeschwader
-				days = 365
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_ace = {
-				name = Heinz
-				surname = Schnaufer
-				callsign = "The Spook" #actually "The Spook of St. Trond"
-				type = fighter_unique
-			}
-			add_ace = {
-				name = Helmut
-				surname = Lent
-				callsign = "The Moonlight Hunter" #made-up
-				type = fighter_unique
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_torpedobomber
-		icon = GFX_goal_generic_air_naval_bomber
-		prerequisite = { focus = GER_develop_the_knickebein }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_develop_the_knickebein
 		cost = 5
 		available = {
 		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			add_tech_bonus = {
-				name = GER_torpedobomber
-				bonus = 0.5
-				uses = 1
-				category = cat_air_bombs
-			}
 
-
-			if = {
-				limit = {
-					has_dlc = "By Blood Alone"
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				create_equipment_variant = { 
-					name = "He 115" 
-					type = small_plane_naval_bomber_airframe_2
-					allow_without_tech = no
-					design_team = mio:GER_fieseler_organization
-					modules = {
-						fixed_main_weapon_slot = torpedo_mounting
-						fixed_auxiliary_weapon_slot_1 = bomb_locks
-						engine_type_slot = engine_2_2x
-						special_type_slot_1 = lmg_defense_turret	
-						special_type_slot_2 = empty
-					}
-					icon = "GFX_GER_naval_bomber2_medium"
-					model = "GER_nav_bomber_equipment_2_entity"
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_nav_efficiency = 0.1
-				tooltip = air_nav_efficiency_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					NOT = { has_dlc = "Arms Against Tyranny" }
-				}
-				if = {
-					limit = {
-						has_idea = GER_fieseler
-					}
-					swap_ideas = {
-						remove_idea = GER_fieseler
-						add_idea = GER_fieseler_improved
-					}
-				}
-				else = {
-					effect_tooltip = {
-						swap_ideas = {
-							remove_idea = GER_fieseler
-							add_idea = GER_fieseler_improved
-						}
-					}
-				}
-			}
-			else = {
-				mio:GER_fieseler_organization = {
-					add_mio_size = 1
-					add_mio_funds_gain_factor = 0.25
-					add_mio_research_bonus = 0.05
-
-					#unlock_mio_trait_tooltip = 
-					#unlock_mio_trait_tooltip = 
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = GER_establish_carrier_groups
-		icon = GFX_GER_carrier_groups
-		prerequisite = { focus = GER_torpedobomber }
-		prerequisite = { focus = GER_construct_aircraft_carriers }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_torpedobomber
-		cost = 5
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-
-		completion_reward = {
-			add_ideas = GER_tragergruppen_ns
-
-			if = {
-				limit = {
-					has_dlc = "Gotterdammerung"
-					NOT = { is_special_project_completed = sp:sp_naval_modern_carrier }
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				GER_add_or_modify_wunderwaffen = yes
-				add_to_variable = { 
-					GER_wunderwaffen_sp_naval_modern_carrier_speed_factor = GER_wunderwaffe_research_speed_bonus
-					tooltip = sp_naval_modern_carrier_speed_factor_tt
-				}
-			}
 		}
 	}
 
 	focus = {
 		id = GER_aerodynamic_research_institute
 		icon = GFX_GER_me_262
-		prerequisite = { focus = GER_wilberg_dive_bomber_terror_bombing focus = GER_strategic_terror_bombing focus = GER_give_goring_command}
+		prerequisite = { focus = GER_construct_the_kammhuber_line }
+		prerequisite = { focus = GER_aeronautical_research_institute }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_strategic_terror_bombing
+		x = -1
+		y = 6
+		relative_position_id = GER_expanding_the_luftwaffe
+
 		cost = 5
 		available = {
-			has_war_with_major = yes
 		}
 
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			if = {
-				limit = {
-					controls_state = 59
-				}
-				59 = { #Hannover
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = {
-						type = arms_factory
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			else = {
-				random_owned_state = {
-					limit = {
-						is_controlled_by = ROOT
-					}
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = {
-						type = arms_factory
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_breakthrough_progress = {
-				specialization = specialization_air
-				value = 0.5
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					has_dlc = "By Blood Alone"
-				}
-				create_equipment_variant = { 
-					name = "Me 262" 
-					allow_without_tech = no
-					type = small_plane_airframe_4
-					design_team = mio:GER_messerschmitt_organization
-					modules = {
-						fixed_main_weapon_slot = aircraft_cannon_2_2x
-						fixed_auxiliary_weapon_slot_1 = aircraft_cannon_2_2x
-						engine_type_slot = jet_engine_2x
-						special_type_slot_1 = armor_plate_small
-						special_type_slot_2 = drop_tanks	
-						special_type_slot_3 = self_sealing_fuel_tanks_small	
-					}
-					icon = "GFX_GER_jet_plane_1_medium"
-					model = "GER_jet_plane_entity"
-				}
-				create_equipment_variant = { 
-					name = "Ar 234" 
-					allow_without_tech = no
-					type = medium_plane_airframe_4
-					design_team = mio:GER_dornier_organization
-					modules = {
-						fixed_main_weapon_slot = medium_bomb_bay
-						fixed_auxiliary_weapon_slot_1 = medium_bomb_bay
-						fixed_auxiliary_weapon_slot_2 = bomb_locks
-						engine_type_slot = jet_engine_2x
-						special_type_slot_1 = fuel_tanks_medium
-						special_type_slot_2 = empty	
-					}
-					icon = "GFX_medium_plane_4_medium"
-					model = "GER_medium_jet_plane_1_entity"
-				}
-				
-				custom_effect_tooltip = generic_skip_one_line_tt
-			}
-
-
-			GER_modify_airforce_modifier = yes
-			add_to_variable = { 
-				GER_military_air_agility_factor = 0.05
-				tooltip = air_agility_factor_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_add_or_modify_wunderwaffen = yes
-			add_to_variable = { 
-				GER_wunderwaffen_sp_tag_jet_speed_factor = GER_wunderwaffe_research_speed_bonus
-				tooltip = sp_tag_jet_speed_factor_tt
-			}
-
-			IF = {
-				limit = {
-					has_dlc = "Arms Against Tyranny"
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				custom_effect_tooltip = GER_aerodynamic_research_institute_tt
-			}
 		}
 	}
-	
+
 	focus = {
-		id = GER_amerikabomber
-		icon = GFX_GER_amerika_bomber
-		prerequisite = { focus = GER_rocketry_innovations focus = GER_fallschirmjager}
+		id = GER_jagernotprogramm
+		icon = GFX_GER_sonic_plane
+		prerequisite = { focus = GER_defense_of_the_reich }
+		prerequisite = { focus = GER_aeronautical_research_institute }
 
-		x = -1
-		y = 1
-		relative_position_id = GER_rocketry_innovations
+		x = 1
+		y = 6
+		relative_position_id = GER_expanding_the_luftwaffe
 		cost = 5
-
-		continue_if_invalid = yes
-		cancel_if_invalid = no
-
 		available = {
-			custom_trigger_tooltip = {
-				tooltip = GER_war_with_american_country_tt
-				 any_enemy_country = {
-					capital_scope = { 
-						OR = {
-							is_on_continent = north_america
-							is_on_continent = south_america
-						}
-					}
-				}
-			}
 		}
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
-
-		select_effect = {
-			if = {
-				limit = {
-					OR = {
-						NOT = { has_dlc = "Gotterdammerung" }
-						NOT = {
-							is_special_project_being_researched = sp:sp_air_intercontinental_bomber
-						}
-					}
-				}
-				country_event = { id = GOT_GER_amerikabomber.01 days = 14 random_days = 7 }
-			}
-		}
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-			set_technology = {
-				amerikabomber = 1
-			}
-			if = {
-				limit = {
-					has_dlc = "Gotterdammerung"
-				}
-				custom_effect_tooltip = GER_unlocks_statue_of_liberty_raid_tt
 
-				custom_effect_tooltip = generic_skip_one_line_tt
-
-				GER_add_or_modify_wunderwaffen = yes
-				if = {
-					limit = {
-						NOT = { is_special_project_completed = sp_air_intercontinental_bomber }
-					}
-					add_to_variable = { 
-						GER_wunderwaffen_sp_air_intercontinental_bomber_speed_factor = 0.2 #MM: This is the focus of this focus, so extra speed
-						tooltip = sp_air_intercontinental_bomber_speed_factor_tt
-					}
-				}
-				if = {
-					limit = {
-						NOT = { is_special_project_completed = sp_air_mothership_aircraft }
-					}
-					add_to_variable = { 
-						GER_wunderwaffen_sp_air_mothership_aircraft_speed_factor = GER_wunderwaffe_research_speed_bonus
-						tooltip = sp_air_mothership_aircraft_speed_factor_tt
-					}
-				}
-			}
-			else = {
-				add_tech_bonus = {
-					name = GER_amerikabomber
-					bonus = 2
-					uses = 1
-					category = transport_planes_cat
-					category = cat_strategic_bomber
-				}
-			}
 		}
 	}
-
 
 	#KRIEGSMARINE
 	focus = {
@@ -10491,12 +8463,7 @@ focus = {
 				limit = {
 					has_dlc = "Arms Against Tyranny"
 				}
-				if = {
-					limit = {
-						NOT = { has_completed_focus = GER_fallschirmjager }
-					}
-					add_potential_special_forces_tree = yes
-				}
+				add_potential_special_forces_tree = yes
 				add_doctrine_cost_reduction = {
 					name = GER_marinestosstrupp
 					cost_reduction = 0.25
