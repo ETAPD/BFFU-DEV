@@ -230,7 +230,7 @@ NDefines.NMilitary.ENEMY_AIR_SUPERIORITY_DEFENSE = 0.25	       -- more AA attack
 NDefines.NMilitary.ENEMY_AIR_SUPERIORITY_DEFENSE_STEEPNESS = 610 -- how quickly defense approaches the max impact diminishing returns curve
 NDefines.NMilitary.ENEMY_AIR_SUPERIORITY_SPEED_IMPACT = -0.10     -- effect on speed due to enemy air superiority
 NDefines.NMilitary.ANTI_AIR_TARGETTING_TO_CHANCE = 0.05			-- Balancing value to determine the chance of ground AA hitting an attacking airplane affecting both the effective average damage done by AA to airplanes and the reduction of damage done by airplanes due to AA support
-NDefines.NMilitary.ANTI_AIR_ATTACK_TO_AMOUNT = 0.001				-- Balancing value to convert equipment stat anti_air_attack to the random % value of airplanes being hit.
+NDefines.NMilitary.ANTI_AIR_ATTACK_TO_AMOUNT = 0.001			-- Balancing value to convert equipment stat anti_air_attack to the random % value of airplanes being hit.
 NDefines.NMilitary.ENCIRCLED_PENALTY = -0.35                      -- penalty when completely encircled
 -- NDefines.NMilitary.TRAINING_MAX_LEVEL = 4
 NDefines.NMilitary.TRAINING_EXPERIENCE_SCALE = 80.0
@@ -364,17 +364,17 @@ NDefines.NAir.COMBAT_DAMAGE_SCALE = 0.1						-- Higher value = more shot down pl
 -- NDefines.NAir.CARRIER_HOURS_DELAY_AFTER_EACH_COMBAT = 8          -- how often carrier planes do battle inside naval combat
 NDefines.NAir.NAVAL_STRIKE_TARGETTING_TO_AMOUNT = 0.4			-- Balancing value to convert the naval_strike_targetting equipment stats to chances of how many airplanes managed to do successfull strike.
 NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_STR = 1.25					-- Balancing value to convert damage ( naval_strike_attack * hits ) to Strength reduction.
-NDefines.NAir.NAVAL_STRIKE_CARRIER_MULTIPLIER = 1.75              -- damage bonus when planes are in naval combat where their carrier is present (and can thus sortie faster and more effectively)
+NDefines.NAir.NAVAL_STRIKE_CARRIER_MULTIPLIER = 4              -- damage bonus when planes are in naval combat where their carrier is present (and can thus sortie faster and more effectively)
 NDefines.NAir.ACE_EARN_CHANCE_BASE = 0.01						-- Base chance % for ace pilot to be created. Happens only when successfully kill airplane/ship or damage the buildings.
 NDefines.NAir.ACE_EARN_CHANCE_PLANES_MULT = 0.002				-- The more airplanes the wing shots the higher chance of earning Ace.
 NDefines.NAir.AIR_NAVAL_KAMIKAZE_DAMAGE_MULT = 10.0				-- Balancing value to increase usual damage to Strength for Kamikaze
 NDefines.NAir.AIR_NAVAL_KAMIKAZE_LOSSES_MULT = 5.0          			-- Balancing value to increase usual losses if Kamikaze participating in the battle
 NDefines.NAir.BASE_STRATEGIC_BOMBING_HIT_SHIP_CHANCE = 0.01		-- Chance to hit a ship in port when it is bombed.
 NDefines.NAir.PORT_STRIKES_DELAY_MULTIPLIER = 4                 -- multplies HOURS_DELAY_AFTER_EACH_COMBAT (2 in vanilla, 4 in the mod) if port strikes
-NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_ORG = 1.25					-- Balancing value to convert damage ( naval_strike_attack * hits ) to Organisation reduction.
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO = 0.1		-- Max planes that can join a combat comparing to the total strength of the ships
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO_PER_DAY = 0.25 -- max extra plane % that can join every day
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 30			-- Min cap for planes that can join naval combat
+NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_ORG = 1.00				-- Balancing value to convert damage ( naval_strike_attack * hits ) to Organisation reduction.
+NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO = 0.03		-- Max planes that can join a combat comparing to the total strength of the ships
+NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO_PER_DAY = 0.09 -- max extra plane % that can join every day
+NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 300		-- Min cap for planes that can join naval combat
 NDefines.NAir.COMBAT_MAX_WINGS_AT_ONCE_PORT_STRIKE = 10         -- we can really pounce a naval strike and escalate (10k Vanilla)
 NDefines.NAir.ACE_WING_SIZE =  100								-- size of wing ace bonuses are set up for. if lower more bonus if higher less bonus
 NDefines.NAir.SUPPLY_NEED_FACTOR = 0.25 							-- multiplies supply usage
@@ -382,10 +382,10 @@ NDefines.NAir.NAVAL_STRIKE_DETECTION_BALANCE_FACTOR = 0.3		-- Value used to scal
 NDefines.NAir.ANTI_AIR_PLANE_DAMAGE_FACTOR = 0.3					-- Anti Air Gun Damage factor
 NDefines.NAir.ANTI_AIR_PLANE_DAMAGE_CHANCE = 0.08					-- Anti Air Gun hit chance
 NDefines.NAir.ANTI_AIR_MAXIMUM_DAMAGE_REDUCTION_FACTOR = 0.8	-- Maximum damage reduction factor applied to incoming air attacks against units with AA.
-NDefines.NAir.ANTI_AIR_ATTACK_TO_DAMAGE_REDUCTION_FACTOR = 2.3	-- Balancing value to convert equipment stat anti_air_attack to the damage reduction modifier apply to incoming air attacks against units with AA.
-NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 500			-- Min cap for planes that can join naval combat
+NDefines.NAir.ANTI_AIR_ATTACK_TO_DAMAGE_REDUCTION_FACTOR = 0.5	-- Balancing value to convert equipment stat anti_air_attack to the damage reduction modifier apply to incoming air attacks against units with AA.
 NDefines.NAir.EFFICIENCY_REGION_CHANGE_DAILY_GAIN_STRATEGIC_BOMBER = 0.1	-- How much efficiency to regain per day. Gain applied hourly.						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.FUEL_COST_MULT = 0.7 -- fuel multiplier for all air missions
+
 -- NDefines.NAir.BOMBING_TARGETING_RANDOM_FACTOR = 0.35							-- % of picking the wrong target
 -- NDefines.NAir.BOMBING_INFRA_PRIO_SCALE = 0.7									-- Scale of the selected priority for infastryctyre
 NDefines.NAir.NON_CORE_STRATEGIC_IMPACT = 0.2                                -- multiplier for strategic impact of non-core bombing	
@@ -448,11 +448,7 @@ NDefines.NAir.AIR_WING_FLIGHT_SPEED_MULT = 0.02					-- Global speed multiplier f
 NDefines.NAir.AIR_WING_XP_LOSS_REDUCTION_OVER_FRIENDLY_TERRITORY_FACTOR = 0.2 --Reduction on XP loss over friendly territory
 
 
-NDefines.NAir.DISRUPTION_FACTOR = 4 -- multiplier on disruption damage to scale its effects on planes
-
--- NDefines.NAir.AIR_SUPERIORITY_FOR_FRIENDLY_CAS_RATIO = 1.0 -- Demand at least this proportion of our cas planes as air superiority regardless of other needs
-
--- NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 500.0						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
+NDefines.NAir.DISRUPTION_FACTOR = 4.0									-- multiplier on disruption damage to scale its effects on planes
 NDefines.NAir.DISRUPTION_SPEED_FACTOR = 1.5
 NDefines.NAir.DISRUPTION_AGILITY_FACTOR = 1.0
 NDefines.NAir.DISRUPTION_ATTACK_FACTOR = 1.0
@@ -469,8 +465,8 @@ NDefines.NAir.DETECT_CHANCE_FROM_RADARS = 0.7 					-- How much the radars in are
 NDefines.NAir.DETECT_EFFICIENCY_FROM_RADAR = 0.8					-- How much radars affect the efficiency. (Vanilla 0.7)
 NDefines.NNavy.DETECTION_CHANCE_MULT_RADAR_BONUS = 0.2						-- detection chance bonus from radars. (Vanilla 0.1)
 
-NDefines.NNavy.COMBAT_DAMAGE_RANDOMNESS = 0.20								-- random factor in damage. So if max damage is fe. 10 and randomness is 30% then damage will be between 7-10.
-NDefines.NNavy.COMBAT_MAX_GROUPS = 2										-- Max amount of "Fire Exchange" groups (FEX).
+NDefines.NNavy.COMBAT_DAMAGE_RANDOMNESS = 0.30								-- random factor in damage. So if max damage is fe. 10 and randomness is 30% then damage will be between 7-10.
+NDefines.NNavy.COMBAT_MAX_GROUPS = 4										-- Max amount of "Fire Exchange" groups (FEX).
 NDefines.NNavy.CONVOY_EFFICIENCY_LOSS_MODIFIER = 1.00							-- How much efficiency drops when losing convoys. If modifier is 0.5 then losing 100% of convoys in short period the efficiency will drop by 50%.
 NDefines.NNavy.CONVOY_EFFICIENCY_REGAIN_AFTER_DAYS = 3						-- Convoy starts regaining it's efficiency after X days without any convoys being sink.
 NDefines.NNavy.CONVOY_SINKING_SPILLOVER = 0.1								-- Damaged convoys roll for if they sink in the end of combat by accumulating the damage. This scales that chance.
@@ -481,16 +477,17 @@ NDefines.NNavy.NAVAL_SPEED_MODIFIER = 0.08	                    				-- basic spee
 -- NDefines.NNavy.NAVAL_SUPREMACY_CAN_INVADE = 0.6								-- required naval supremacy to perform invasions on an area
 -- NDefines.NNavy.CARRIER_STACK_PENALTY = 8										-- The most efficient is 4 carriers in combat. 5+ brings the penalty to the amount of wings in battle.
 NDefines.NNavy.ANTI_AIR_TARGETING = 0.4                                       -- how good ships are at hitting aircraft
--- Maybe Later NDefines.NNavy.ANTI_AIR_ATTACK_TO_AMOUNT = 0.008								-- Balancing value to convert equipment stat anti_air_attack to the random % value of airplanes being hit.
+NDefines.NNavy.ANTI_AIR_TARGETTING_TO_CHANCE = 0.002		  					-- Balancing value to convert averaged equipment stats (anti_air_targetting and naval_strike_agility) to probability chances of airplane being hit by navies AA.
+NDefines.NNavy.ANTI_AIR_ATTACK_TO_AMOUNT = 0.000001								-- Balancing value to convert equipment stat anti_air_attack to the random % value of airplanes being hit.
 NDefines.NNavy.CAPITAL_ONLY_COMBAT_ACTIVATE_TIME = 8                          -- hours from start of combat when only carriers capitals and subs get to attack
 NDefines.NNavy.ALL_SHIPS_ACTIVATE_TIME = 12                                    -- hours where all get to attack
 NDefines.NNavy.HIGHER_CARRIER_RATIO_POSITIONING_PENALTY_FACTOR	= 0.1  		-- penalty if other side has stronger carrier air force
-NDefines.NNavy.MAX_CARRIER_RATIO_POSITIONING_PENALTY_FACTOR = 0.1  			-- max penalty from stronger carrier air force
+NDefines.NNavy.MAX_CARRIER_RATIO_POSITIONING_PENALTY_FACTOR = 0.2  			-- max penalty from stronger carrier air force
 NDefines.NNavy.NAVAL_COMBAT_AIR_SUB_TARGET_SCALE = 10                             -- scoring for target picking for planes inside naval combat, one define per ship typ
 NDefines.NNavy.NAVAL_COMBAT_AIR_CAPITAL_TARGET_SCALE = 30
 NDefines.NNavy.NAVAL_COMBAT_AIR_CARRIER_TARGET_SCALE = 100
-NDefines.NNavy.NAVAL_COMBAT_AIR_STRENGTH_TARGET_SCALE = 4                         -- how much score factor from low health (scales between 0->this number)
-NDefines.NNavy.NAVAL_COMBAT_AIR_LOW_AA_TARGET_SCALE = 6                           -- how much score factor from low AA guns (scales between 0->this number)
+NDefines.NNavy.NAVAL_COMBAT_AIR_STRENGTH_TARGET_SCALE = 40                         -- how much score factor from low health (scales between 0->this number)
+NDefines.NNavy.NAVAL_COMBAT_AIR_LOW_AA_TARGET_SCALE = 40                          -- how much score factor from low AA guns (scales between 0->this number)
 
 -- NDefines.NNavy.NAVAL_COMBAT_PLANE_MIN_STACKING_PENALTY = 200
 -- NDefines.NNavy.NAVAL_COMBAT_PLANE_STACKING_PENALTY_EFFECT = 0.001				-- Each plane above the optimal amount decreases the amount of airplanes being able to takeoff by such %. Subject to diminishing returns
@@ -532,35 +529,37 @@ NDefines.NNavy.UNIT_TRANSFER_SPOTTING_SPEED_MULT = 1.0						-- spotting speed mu
 NDefines.NNavy.NAVAL_INVASION_SPOTTING_SPEED_MULT = 1.0						-- spotting speed mult against naval invasion armies
 NDefines.NNavy.UNIT_TRANSFER_DETECTION_CHANCE_BASE = 4.12							-- unit transfer and naval invasion base chance detection percentage (if this fails no detection is done on that tick)
 NDefines.NNavy.BASE_JOIN_COMBAT_HOURS						= 24				-- the taskforces that wants to join existing combats will wait for at least this amount
-NDefines.NNavy.MAX_POSITIONING_BONUS_FROM_SURFACE_DETECTION					= 0.05  -- will clamp the bonus that you get from detection
+NDefines.NNavy.MAX_POSITIONING_BONUS_FROM_SURFACE_DETECTION					= 0.1  -- will clamp the bonus that you get from detection
 NDefines.NNavy.HIGHER_SHIP_RATIO_POSITIONING_PENALTY_FACTOR					= 0.4 -- if one side has more ships than the other that side will get this penalty for each +100% ship ratio it has
 --NDefines.NNavy.POSITIONING_PENALTY_FOR_SHIPS_JOINED_COMBAT_AFTER_IT_STARTS		= 0.015 -- each ship that joins the combat will have this penalty to be added into positioning
 NDefines.NNavy.MAX_POSITIONING_PENALTY_FROM_HIGHER_SHIP_RATIO					= 1.2  -- maximum penalty to get from larger fleets
-NDefines.NNavy.MIN_SHIPS_FOR_HIGHER_SHIP_RATIO_PENALTY                         = 99    -- the minimum fleet size in ships that a fleet must be before having the large fleet penalty applied to them
+NDefines.NNavy.MIN_SHIPS_FOR_HIGHER_SHIP_RATIO_PENALTY                         = 50    -- the minimum fleet size in ships that a fleet must be before having the large fleet penalty applied to them
 
 NDefines.NNavy.UNDERWAY_REPLENISHMENT_CONVOY_COST_PER_FUEL = 0.05	-- Cost in convoys for underway replenishment multiplied by max daily fuel consumption (rounded up)
 
-NDefines.NNavy.DAMAGE_PENALTY_ON_MINIMUM_POSITIONING 							= 0.75	-- damage penalty at 0% positioning
-NDefines.NNavy.SCREENING_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING				= 0.40	-- screening efficiency (screen to capital ratio) at 0% positioning
-NDefines.NNavy.AA_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING						= 0.40  -- AA penalty at 0% positioning
+NDefines.NNavy.DAMAGE_PENALTY_ON_MINIMUM_POSITIONING 							= 0.90	-- damage penalty at 0% positioning
+NDefines.NNavy.SCREENING_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING				= 0.60	-- screening efficiency (screen to capital ratio) at 0% positioning
+NDefines.NNavy.AA_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING						= 0.70  -- AA penalty at 0% positioning
 
 NDefines.NNavy.MAX_POSITIONING_PENALTY_FOR_NEWLY_JOINED_SHIPS 					= 0.80  -- the accumulated penalty from new ships will be clamped to this value
+NDefines.NNavy.HIGHER_SHIP_RATIO_POSITIONING_PENALTY_FACTOR 					= 0.60
+NDefines.NNavy.MAX_POSITIONING_PENALTY_FROM_HIGHER_SHIP_RATIO 					= 2
 NDefines.NNavy.POSITIONING_PENALTY_HOURLY_DECAY_FOR_NEWLY_JOINED_SHIPS			= 0.02  -- the accumulated penalty from new ships will decay hourly by this value
 NDefines.NNavy.SCREEN_RATIO_FOR_FULL_SCREENING_FOR_CAPITALS 					= 3.0	-- this screen ratio to num capital/carriers is needed for full screening beyond screen line
 NDefines.NNavy.LIGHT_GUN_ATTACK_TO_SHORE_BOMBARDMENT							= 0.02 -- light gun attack value is divided by this value * 100 and added to shore bombardment modifier 
 NDefines.NNavy.GUN_HIT_PROFILES = { -- hit profiles for guns if target ih profile is lower the gun will have lower accuracy
-	95.0,	-- big guns
+	65.0,	-- big guns
 	130.0,	-- torpedos
-	60.0	-- small guns
+	45.0	-- small guns
 }
 NDefines.NNavy.DEPTH_CHARGES_HIT_PROFILE 										= 80	-- hit profile for depth charges
 NDefines.NNavy.BASE_GUN_COOLDOWNS = { -- number of hours for a gun to be ready after shooting
-	3.0,	-- big guns
-	5.0,	-- torpedoes
-	2.0,	-- small guns
+	3.75,	-- big guns
+	6.5,	-- torpedoes
+	4.0,	-- small guns
 }
-NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_CHANCE 									= 0.25		-- chance for critical hit from torpedo.
-NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_DAMAGE_MULT								= 3.75		-- multiplier to damage when got critical hit from torpedo. (Critical hits are devastating as usually torpedo_attack are pretty high base values)
+NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_CHANCE 									= 0.5		-- chance for critical hit from torpedo.
+NDefines.NNavy.COMBAT_TORPEDO_CRITICAL_DAMAGE_MULT								= 10		-- multiplier to damage when got critical hit from torpedo. (Critical hits are devastating as usually torpedo_attack are pretty high base values)
 NDefines.NNavy.COMBAT_EVASION_TO_HIT_CHANCE_TORPEDO_MULT						= 24		-- the above evasion hit chance is multiplied by 400% if shooting with torpedoes. Torpedoes are slow, so evasion matters more.
 NDefines.NNavy.DEPTH_CHARGES_HIT_CHANCE_MULT 									= 1.25 		-- multiplies hit chance of small guns
 NDefines.NNavy.COMBAT_ARMOR_PIERCING_CRITICAL_BONUS = 2.0						-- Bonus to critical chance when shooter armor piercing is higher then target armor.
@@ -572,8 +571,8 @@ NDefines.NNavy.RESOURCE_LENDLEASE_PRIORITY = 3
 NDefines.NNavy.RESOURCE_ORIGIN_PRIORITY = 3
 NDefines.NNavy.SUPPLY_NEED_FACTOR = 0.5 													-- multiplies supply usage
 NDefines.NNavy.HIT_PROFILE_SPEED_FACTOR = 0.85												-- factors speed value when determining it profile (Vis * HIT_PROFILE_MULT * Ship Hit Profile Mult)
-NDefines.NNavy.HIT_PROFILE_SPEED_BASE = 5													-- Base value added to hitprofile speed calulation
-NDefines.NNavy.SHIP_TO_FLEET_ANTI_AIR_RATIO 								= 0.25	-- total sum of fleet's anti air will be multiplied with this ratio and added to calculations anti-air of individual ships while air damage reduction
+NDefines.NNavy.HIT_PROFILE_SPEED_BASE = 20													-- Base value added to hitprofile speed calulation
+NDefines.NNavy.SHIP_TO_FLEET_ANTI_AIR_RATIO 								= 0.00	-- total sum of fleet's anti air will be multiplied with this ratio and added to calculations anti-air of individual ships while air damage reduction
 NDefines.NNavy.ANTI_AIR_POW_ON_INCOMING_AIR_DAMAGE							= 0.58	-- received air damage is calculated using following: 1 - ( (ship_anti_air + fleet_anti_air * SHIP_TO_FLEET_ANTI_AIR_RATIO )^ANTI_AIR_POW_ON_INCOMING_AIR_DAMAGE ) * ANTI_AIR_MULT_ON_INCOMING_AIR_DAMAGE
 NDefines.NNavy.ANTI_AIR_MULT_ON_INCOMING_AIR_DAMAGE 						= 0.03
 NDefines.NNavy.ADMIRAL_TASKFORCE_CAP = 5									-- admirals will start getting penalties after this amount of taskforces
@@ -625,39 +624,84 @@ NDefines.NNavy.SPOTTING_ENEMY_SPOTTING_MULTIPLIER_FOR_RUNNING_AWAY = 0.50		-- en
 NDefines.NNavy.NAVY_VISIBILITY_BONUS_ON_RETURN_FOR_REPAIR = 0.5				-- Multiplier for the surface/sub visiblity when the heavily damaged fleet is returning to the home base for reparation. 1.0 = no bonus. 0.0 = invisible
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor must be this value to deal damage fraction equal to the index in the array below [higher number = higher penetration]. If armor is 0, 1.00 will be returned.
+	9.00,
+	8.00,
+	7.00,
+	6.00,
+	5.00,
+	4.00,
+	3.00,
+	2.50,
 	2.00,
+	1.75,
 	1.50,
-	1.00,
+	1.35,
+	1.25,
+	1.15,
+	1.10,
+	1.00, --100%
 	0.90,
-	0.75,
+	0.80,
+	0.70,
+	0.65,
 	0.50,
 	0.25,
-	0.10,
+	0.15,
 	0.00 --there isn't much point setting this higher than 0
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_CRITICAL_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
-	1.75,
-	1.10,
+	9.00,
+	8.00,
+	7.00,
+	6.00,
+	5.00,
+	4.00,
+	3.00,
+	2.50,
+	2.00,
+	1.50,
 	1.00,
-	0.90,
-	0.75,
-	0.50,
+	0.70,
+	0.30,
 	0.25,
-	0.10,
-	0.00 -- For criticals, you could reduce crit chance unlike damage in army combat, but we do not for now.
+	0.20,
+	0.00, --100%
+	-0.10,
+	-0.25,
+	-0.50,
+	-0.70, -- For criticals, you could reduce crit chance unlike damage in army combat, but we do not for now.
+	-0.80,
+	-0.90,
+	-0.95,
+	-1.00
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_DAMAGE_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
 	1.00,
 	1.00,
 	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00,
+	1.00, --100%
 	0.85,
 	0.70,
-	0.40,
-	0.30,
-	0.20,
-	0.10 -- 
+	0.55,
+	0.45,
+	0.25,
+	0.15,
+	0.10,
+	0.00 -- 
 }
 
 NDefines.NNavy.MISSION_DOMINANCE_RATIOS = { -- dominance multipliers for different mission types
@@ -1009,17 +1053,18 @@ NDefines.NDoctrines.NAVAL_MISSION_MASTERY_GAIN_FACTORS = {  -- Mastery gain from
 NDefines.NNavy.MAX_ORG_ON_MANUAL_MOVE = 1.0 -- org will clamped to this ratio on manual move
 
 NDefines.NNavy.BASE_CARRIER_SORTIE_EFFICIENCY = 0.3	
-NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 6.0                        -- multiplier on disruption damage to scale its effects on carrier vs carrier planes
+NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 2.0                        -- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.CARRIER_HOURS_DELAY_AFTER_EACH_COMBAT = 6          -- how often carrier planes do battle inside naval combat
-NDefines.NAir.COMBAT_DAMAGE_SCALE_CARRIER = 3
-NDefines.NAir.CARRIER_PERCENTAGE_DEFEND = 0.35                    -- Percentage of planes able to defend a carrier from air attacks (historically 15% - 35%)
+NDefines.NAir.COMBAT_DAMAGE_SCALE_CARRIER = 8					-- same as above but used inside naval combat for carrier battles
+NDefines.NAir.CARRIER_PERCENTAGE_DEFEND = 0.5                    -- Percentage of planes able to defend a carrier from air attacks (historically 15% - 35%)
+NDefines.NNavy.NAVAL_COMBAT_AIR_LOW_AA_TARGET_SCORE = 40
 
 NDefines.NNavy.NAVAL_COMBAT_PLANE_MIN_STACKING_PENALTY = 800
 NDefines.NNavy.NAVAL_COMBAT_PLANE_STACKING_PENALTY_EFFECT = 0.002
 
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CAPITAL = 50                    -- For dynamic plane efficacy, silhouette value (nominally in planes, but very abstract)
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_SCREEN = 12                    -- As Above. This one would be nice to split by type, but that's problematic.
-NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CARRIER = 50                    -- As Above
+NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CARRIER = 45                    -- As Above
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_SUPPORT = 6                    -- As Above
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_CONVOY = 12                    -- As Above
 NDefines.NNavy.SHIP_SILHOUETTE_VALUE_PLANES_SUBMARINE = 6                    -- As Above
