@@ -7291,6 +7291,22 @@ completion_reward = {
 				add_mio_size = 2
 				add_mio_funds_gain_factor = 0.3
 			}
+			add_tech_bonus = {
+				name = GER_uralbomber_program
+				bonus = 0.5
+				ahead_reduction = 1
+				uses = 1
+				category = heavy_air
+			}
+			if = {
+				limit = { has_dlc = "Gotterdammerung" }
+				sp:sp_air_intercontinental_bomber = {
+					add_project_progress_ratio = 0.25
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_military_high_command
+			show_ideas_tooltip = GER_walther_wever_high_command
 		}
 	}
 
@@ -7321,6 +7337,9 @@ completion_reward = {
 				add_mio_size = 3
 				add_mio_funds_gain_factor = 0.3
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_theorist
+			show_ideas_tooltip = GER_hugo_sperrle_theorist
 		}
 	}
 
@@ -7991,7 +8010,73 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-
+			custom_effect_tooltip = GER_kammhuber_line_tt
+			hidden_effect = {
+				every_state = {
+					limit = {
+						is_controlled_by = ROOT
+						OR = {
+							state = 99
+							state = 912
+							state = 909
+							state = 58
+							state = 59
+							state = 56
+							state = 57
+							state = 42
+							state = 36
+							state = 7
+							state = 35
+							state = 6
+							state = 977
+							state = 34
+							state = 29
+							state = 785
+							state = 18
+						}
+					}
+					if = {
+						limit = { anti_air_building < 1 }
+						add_building_construction = {
+							type = anti_air_building
+							level = 3
+							instant_build = yes
+						}
+					}
+					else_if = {
+						limit = { anti_air_building < 2 }
+						add_building_construction = {
+							type = anti_air_building
+							level = 2
+							instant_build = yes
+						}
+					}
+					else_if = {
+						limit = { anti_air_building < 3 }
+						add_building_construction = {
+							type = anti_air_building
+							level = 1
+							instant_build = yes
+						}
+					}
+					if = {
+						limit = { radar_station < 1 }
+						add_building_construction = {
+							type = radar_station
+							level = 2
+							instant_build = yes
+						}
+					}
+					else_if = {
+						limit = { radar_station < 2 }
+						add_building_construction = {
+							type = radar_station
+							level = 1
+							instant_build = yes
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -8055,12 +8140,16 @@ completion_reward = {
 
 		cost = 5
 		available = {
+			if = {
+				limit = { has_dlc = "Gotterdammerung" }
+				is_special_project_completed = sp:sp_air_jet_engine
+			}
 		}
 
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-
+			country_event = GER_luftwaffe.2
 		}
 	}
 
