@@ -173,6 +173,182 @@ GER_mefo_bills_category = {
 			add_stability = -0.15
 		}
 	}
+
+	GER_develop_axis_partner = { #unlocked by Build Up an Axis Partner - pick one minor, once
+		icon = generic_industry
+
+		allowed = {
+			original_tag = GER
+		}
+
+		visible = {
+			has_completed_focus = GER_invest_in_axis_partner
+			NOT = { has_country_flag = GER_axis_partner_developed }
+		}
+
+		targets = { HUN ROM BUL SLO CRO FIN }
+
+		target_trigger = {
+			FROM = {
+				exists = yes
+				is_major = no
+				NOT = { has_war_with = ROOT }
+			}
+		}
+
+		cost = 50
+
+		fire_only_once = yes
+
+		complete_effect = {
+			set_country_flag = GER_axis_partner_developed
+			FROM = {
+				capital_scope = {
+					add_extra_state_shared_building_slots = 10
+					add_building_construction = { type = industrial_complex level = 4 instant_build = yes }
+					add_building_construction = { type = arms_factory level = 6 instant_build = yes }
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = 0
+		}
+	}
+
+	GER_axis_rubber_refineries = { #visible from the start, locked until Form the Zentrale Planung
+		icon = generic_industry
+
+		allowed = {
+			original_tag = GER
+		}
+
+		available = {
+			has_completed_focus = GER_zentrale_planung
+		}
+
+		cost = 50
+
+		fire_only_once = yes
+
+		complete_effect = {
+			if = {
+				limit = {
+					country_exists = ROM
+					NOT = { has_war_with = ROM }
+				}
+				ROM = {
+					add_stability = -0.10
+					capital_scope = {
+						add_extra_state_shared_building_slots = 3
+						add_building_construction = { type = synthetic_rubber_refinery level = 3 instant_build = yes }
+					}
+				}
+			}
+			if = {
+				limit = {
+					country_exists = BUL
+					NOT = { has_war_with = BUL }
+				}
+				BUL = {
+					add_stability = -0.10
+					capital_scope = {
+						add_extra_state_shared_building_slots = 3
+						add_building_construction = { type = synthetic_rubber_refinery level = 3 instant_build = yes }
+					}
+				}
+			}
+			if = {
+				limit = {
+					country_exists = HUN
+					NOT = { has_war_with = HUN }
+				}
+				HUN = {
+					add_stability = -0.10
+					capital_scope = {
+						add_extra_state_shared_building_slots = 3
+						add_building_construction = { type = synthetic_rubber_refinery level = 3 instant_build = yes }
+					}
+				}
+			}
+			if = {
+				limit = {
+					country_exists = CRO
+					NOT = { has_war_with = CRO }
+				}
+				CRO = {
+					add_stability = -0.10
+					capital_scope = {
+						add_extra_state_shared_building_slots = 3
+						add_building_construction = { type = synthetic_rubber_refinery level = 3 instant_build = yes }
+					}
+				}
+			}
+			if = {
+				limit = {
+					country_exists = YUG
+					NOT = { has_war_with = YUG }
+					NOT = { country_exists = CRO }
+				}
+				YUG = {
+					add_stability = -0.10
+					capital_scope = {
+						add_extra_state_shared_building_slots = 3
+						add_building_construction = { type = synthetic_rubber_refinery level = 3 instant_build = yes }
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = 0
+		}
+	}
+
+	GER_axis_oil_rights = { #repeatable
+		icon = generic_industry
+
+		allowed = {
+			original_tag = GER
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_axis_oil_rights_available_tt
+				any_allied_country = {
+					NOT = { tag = ROOT }
+					any_owned_state = {
+						has_resources_amount = { resource = oil amount > 0 }
+						NOT = { has_resources_rights = { receiver = GER resources = { oil } } }
+					}
+				}
+			}
+		}
+
+		cost = 0
+
+		complete_effect = {
+			custom_effect_tooltip = GER_axis_oil_rights_tt
+			hidden_effect = {
+				every_allied_country = {
+					limit = { NOT = { tag = ROOT } }
+					every_owned_state = {
+						limit = {
+							has_resources_amount = { resource = oil amount > 0 }
+							NOT = { has_resources_rights = { receiver = GER resources = { oil } } }
+						}
+						OWNER = {
+							give_resource_rights = { receiver = ROOT state = PREV resources = { oil } }
+						}
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			base = 1
+		}
+	}
 }
 
 GER_seize_gold_reserves_cat = {
@@ -6135,8 +6311,7 @@ GER_propaganda_campaigns = {
 		cost = 25
 
 		modifier = {
-			stability_weekly = 0.002
-			war_support_weekly = 0.002
+			political_power_factor = 0.10
 		}
 
 		complete_effect = {
