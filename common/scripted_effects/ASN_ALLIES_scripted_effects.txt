@@ -308,3 +308,56 @@ PACIFIC_state_swap = {
 	}
 	# If Controlled by the axis make it the axis modifier
 }
+
+### State of Africa ###
+AFRICA_recalculate_penalty = {
+	set_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = global.AFRICA_BASES_AXIS }
+	multiply_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = 0.45 }
+	divide_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = 9 }
+	set_variable = { global.SOTA_ALLIES_LOCATIONS = 9 }
+	subtract_from_variable = { global.SOTA_ALLIES_LOCATIONS = global.AFRICA_BASES_AXIS }
+}
+
+AFRICA_state_up = {
+	add_to_variable = { global.AFRICA_BASES_AXIS = 1 }
+	AFRICA_recalculate_penalty = yes
+}
+
+AFRICA_state_down = {
+	subtract_from_variable = { global.AFRICA_BASES_AXIS = 1 }
+	AFRICA_recalculate_penalty = yes
+}
+
+AFRICA_state_swap_single = {
+	if = {
+		limit = { AFRICA_is_allied_controlled = yes }
+		if = {
+			limit = {
+				has_dynamic_modifier = { modifier = AFRICA_axis_controlled }
+			}
+			remove_dynamic_modifier = { modifier = AFRICA_axis_controlled }
+		}
+	}
+	else_if = {
+		limit = { AFRICA_is_axis_controlled = yes }
+		if = {
+			limit = {
+				NOT = {	has_dynamic_modifier = { modifier = AFRICA_axis_controlled } }
+			}
+			add_dynamic_modifier = { modifier = AFRICA_axis_controlled }
+		}
+	}
+}
+
+AFRICA_state_swap = {
+	if = {
+		limit = {
+			GER = { has_war_with = SOV }
+		}
+		for_each_scope_loop = {
+			array = global.africa_modifier_states_europe
+			AFRICA_state_swap_single = yes
+		}
+	}
+}
+

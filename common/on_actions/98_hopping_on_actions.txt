@@ -507,6 +507,94 @@ on_actions = {
 				}
 			}
 		}
+
+		### State of Africa ###
+		# Swap the modifier on a europe state that changed hands
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = capitulation_state_reversal }
+					GER = { has_war_with = SOV }
+					FROM.FROM = {
+						is_on_continent = europe
+						is_in_array = { global.africa_modifier_states_europe = THIS }
+					}
+				}
+				FROM.FROM = { AFRICA_state_swap_single = yes }
+			}
+		}
+		# Axis Takes an African base
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = capitulation_state_reversal }
+					FROM = {
+						OR = {
+							is_in_faction_with = ENG
+							is_in_faction_with = USA
+							is_in_faction_with = FRA
+							tag = ENG
+							tag = USA
+							tag = FRA
+							tag = INS
+						}
+					}
+					ROOT = {
+						OR = {
+							is_in_faction_with = GER
+							is_in_faction_with = JAP
+							tag = GER
+							tag = JAP
+							tag = ITA
+						}
+					}
+					FROM.FROM = {
+						has_state_flag = AFRICA_ALLIES_controls
+					}
+				}
+				FROM.FROM = {
+					set_state_flag = NOT_AFRICA_ALLIES_controls
+					clr_state_flag = AFRICA_ALLIES_controls
+				}
+				AFRICA_state_up = yes
+			}
+		}
+		# Allies Take an African base
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = capitulation_state_reversal }
+					FROM = {
+						OR = {
+							is_in_faction_with = GER
+							is_in_faction_with = JAP
+							tag = GER
+							tag = JAP
+							tag = ITA
+						}
+					}
+					ROOT = {
+						OR = {
+							is_in_faction_with = ENG
+							is_in_faction_with = USA
+							is_in_faction_with = FRA
+							tag = ENG
+							tag = USA
+							tag = FRA
+							tag = INS
+						}
+					}
+					FROM.FROM = {
+						has_state_flag = NOT_AFRICA_ALLIES_controls
+					}
+				}
+				FROM.FROM = {
+					set_state_flag = AFRICA_ALLIES_controls
+					clr_state_flag = NOT_AFRICA_ALLIES_controls
+				}
+				AFRICA_state_down = yes
+			}
+		}
 	}
 
 	# Weekly consistency sweep of the Pacific/Commonwealth europe-state modifiers.
@@ -520,6 +608,7 @@ on_actions = {
 					GER = { has_war_with = SOV }
 				}
 				PACIFIC_state_swap = yes
+				AFRICA_state_swap = yes
 			}
 		}
 	}
