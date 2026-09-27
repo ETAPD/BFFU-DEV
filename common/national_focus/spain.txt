@@ -1937,10 +1937,10 @@ focus_tree = {
 		complete_tooltip = {
 			every_state = {
 				limit = { has_state_flag = SPA_invest_in_naval_infrastructure_3DY }
-				add_extra_state_shared_building_slots = 2
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = dockyard
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
@@ -1980,7 +1980,7 @@ focus_tree = {
 		icon = GFX_goal_generic_navy_doctrines_tactics
 		x = -2
 		y = 1
-		cost = 6
+		cost = 5
 		relative_position_id = SPA_rebuild_the_armada
 
 		available_if_capitulated = yes
@@ -2031,7 +2031,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_invest_in_naval_infrastructure
-		cost = 6
+		cost = 5
 
 		available_if_capitulated = yes
 
@@ -2099,7 +2099,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_expand_the_slipways
-		cost = 6
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_RESEARCH}
@@ -2113,10 +2113,64 @@ focus_tree = {
 			}
 		}
 	}
+	
+	focus = {
+		id = SPA_italian_steel_investments
+		available = {
+			is_in_faction_with = ITA
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_italian_shipbuilding_expertises }
+		
+		icon = GFX_focus_generic_navy_battleship2
+		x = 0
+		y = 1
+		relative_position_id = SPA_italian_shipbuilding_expertise
+		cost = 6
+
+		available_if_capitulated = yes
+		
+		completion_reward = {
+			168 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = steel_refinery
+					level = 1
+					instant_build = yes
+				}
+			}
+			167 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = steel_refinery
+					level = 1
+					instant_build = yes
+				}
+			}
+			165 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = steel_refinery
+					level = 1
+					instant_build = yes
+				}
+			}
+			173 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = steel_refinery
+					level = 1
+					instant_build = yes
+				}
+			}
+		}
+	}
 
 	focus = {
 		id = SPA_the_plan_imperial
 		available = {
+			has_completed_focus = SPA_supremacy_of_the_communion
 		}
 		bypass = {
 		}
@@ -2129,7 +2183,7 @@ focus_tree = {
 		x = 3
 		y = 1
 		relative_position_id = SPA_rebuild_the_armada
-		cost = 6
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_RESEARCH}
@@ -2137,19 +2191,179 @@ focus_tree = {
 			navy_experience = 50
 			add_ideas = SPA_the_plan_imperial
 			add_tech_bonus = {
-				name = SPA_glory_and_wealth_on_the_sea_lanes
-				bonus = 0.5
+				name = cv_bonus
+				bonus = 0.50
+				uses = 1
+				technology = improved_heavy_battery
+				technology = advanced_heavy_battery
+			}
+			add_tech_bonus = {
+				name = cv_bonus
+				bonus = 0.50
+				ahead_reduction = 0.25
 				uses = 1
 				category = bb_tech
 			}
+		}
+	}
+	
+	focus = {
+		id = SPA_looking_to_the_past
+		available = {
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_the_plan_imperial }
+		
+		icon = GFX_focus_generic_free_iberia
+		x = 0
+		y = 1
+		relative_position_id = SPA_the_plan_imperial
+		cost = 5
+
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_ideas = SPA_schizo_naval_focus
+			
+			#create_navy_leader = {
+			#	name = "Javier I"
+			#	picture = "GFX_portrait_SPA_xavier_of_bourbon_parma"
+			#	traits = { superior_tactician }
+			#	skill = 4
+			#	defense_skill = 3
+			#	maneuvering_skill = 3
+			#	coordination_skill = 3
+			#}
+		}
+	}
+	
+	focus = {
+		id = SPA_screens_for_the_armada
+		available = {
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_looking_to_the_past }
+
+		icon = GFX_focus_CHL_armada_de_chile
+		x = 0
+		y = 1
+		relative_position_id = SPA_looking_to_the_past
+		cost = 5
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			navy_experience = 50
+			
+			swap_ideas = {
+				remove_idea = SPA_the_plan_imperial
+				add_idea = SPA_the_plan_imperial_2
+			}
+			
 			add_tech_bonus = {
 				name = SPA_glory_and_wealth_on_the_sea_lanes
-				bonus = 0.5
+				bonus = 1
 				uses = 1
-				category = cv_tech
+				category = ca_tech
 			}
 		}
 	}
+	
+	focus = {
+		id = SPA_emergency_refitting
+		available = {
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_screens_for_the_armada }
+		
+		icon = GFX_focus_generic_refit_civilian_ships
+		x = 0
+		y = 1
+		relative_position_id = SPA_screens_for_the_armada
+		cost = 2
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			add_timed_idea = {
+				idea = SPA_emergency_refitting
+				days = 180
+			}
+		}
+	}
+	
+	focus = {
+		id = SPA_santiago_y_cierra_espana
+		
+		available = {
+			has_navy_size = {
+				unit = battleship
+				size > 7
+			}
+			has_navy_size = {
+				unit = light_cruiser
+				size > 29
+			}
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_emergency_refitting }
+		
+		icon = GFX_focus_generic_refit_civilian_ships
+		x = 0
+		y = 1
+		relative_position_id = SPA_emergency_refitting
+		cost = 10
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			add_timed_idea = {
+				idea = SPA_santiago_idea
+				days = 180
+			}
+		}
+	}
+	
+	focus = {
+		id = SPA_avenging_Gravelines
+		
+		available = {
+			118 = {
+				is_controlled_by_ROOT_or_subject = yes
+			}
+			126 = {
+				is_controlled_by_ROOT_or_subject = yes
+			}
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_italian_steel_investments focus = SPA_santiago_y_cierra_espana }
+		
+		icon = GFX_focus_generic_refit_civilian_ships
+		x = -2
+		y = 2
+		relative_position_id = SPA_santiago_y_cierra_espana
+		cost = 5
+
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_RESEARCH}
+		completion_reward = {
+			swap_ideas = {
+				remove_idea = SPA_schizo_naval_focus
+				add_idea = SPA_a_new_marquis
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
 
 	focus = {
 		id = SPA_defenses_against_invasion
@@ -2206,12 +2420,12 @@ focus_tree = {
 		}
 		bypass = {
 		}
-		prerequisite = { focus = SPA_defenses_against_invasion focus = SPA_the_plan_imperial }
+		prerequisite = { focus = SPA_defenses_against_invasion}
 		
 		icon = GFX_focus_generic_destroyer
-		x = -1
+		x = 0
 		y = 1
-		relative_position_id = SPA_the_plan_imperial
+		relative_position_id = SPA_defenses_against_invasion
 		cost = 6
 
 		available_if_capitulated = yes
@@ -2220,13 +2434,7 @@ focus_tree = {
 			navy_experience = 25
 			add_tech_bonus = {
 				name = SPA_restart_small_scale_shipbuilding
-				bonus = 0.5
-				uses = 1
-				category = ca_tech
-			}
-			add_tech_bonus = {
-				name = SPA_restart_small_scale_shipbuilding
-				bonus = 0.5
+				bonus = 0.75
 				uses = 1
 				category = dd_tech
 			}
@@ -2265,6 +2473,29 @@ focus_tree = {
 			}
 		}
 	}
+	
+	focus = {
+		id = SPA_defense_of_iberia
+		available = {
+		}
+		bypass = {
+		}
+		prerequisite = { focus = SPA_bolster_trading_fleet }
+		
+		icon = GFX_goal_generic_fortify_city
+		x = 0
+		y = 1
+		
+		relative_position_id = SPA_bolster_trading_fleet
+		cost = 5
+
+		available_if_capitulated = yes
+		
+		completion_reward = {
+			add_ideas = FRA_fortification_focus
+		}
+	}
+	
 	 ###### ARMY ##############
 
 	focus = {
@@ -3548,7 +3779,7 @@ focus_tree = {
 				expire = "1965.1.1"
 				ideology = despotism
 				traits = {
-					the_sacred_king
+					the_sacred_king 
 				}
 			}
 		}
