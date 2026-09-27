@@ -5638,3 +5638,38 @@ country_event = {
 		}
     }
 }
+
+country_event = { #MEFO Bills rearmament debt - political power cost rises every six months until Danzig
+	id = germany_mefo_bills.20
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		add_to_variable = { GER_industrial_political_power_cost = 0.125 }
+		clamp_variable = { var = GER_industrial_political_power_cost max = 1 }
+	}
+}
+
+country_event = { #Work and Bread: after 12 March 1938
+	id = germany_mefo_bills.21
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				date > 1938.3.12
+				NOT = { has_country_flag = GER_work_and_bread_swapped }
+			}
+			set_country_flag = GER_work_and_bread_swapped
+			add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.72 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.75 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { GER_industrial_consumer_goods_expected_value = -0.05 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { GER_industrial_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = GER_work_and_bread_swapped } }
+			country_event = { id = germany_mefo_bills.21 days = 7 }
+		}
+	}
+}

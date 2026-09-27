@@ -1,6 +1,8 @@
 # Fuel distribution system
 # Managers (GER/JAP/ENG) redistribute fuel to their faction members toward each
-# member's min_fuel target. Wired up in common/on_actions/fuel_system_on_actions.txt.
+# member's min_fuel target, and pull members' surplus (above their own target) back
+# when the manager itself drops below its target. Countries at war with the manager
+# are skipped both ways. Wired up in common/on_actions/fuel_system_on_actions.txt.
 
 fuel_system_refresh_list = {
     clear_array = ROOT.faction_members_array
@@ -189,6 +191,45 @@ on_daily_fuel = {
         multiply_variable = { fuel_spare = max_fuel_k }
         multiply_variable = { fuel_spare = 1000 }
 
+        # Controller below its own target: members holding fuel above THEIR target send the surplus back,
+        # never dropping below their own target, until the controller's deficit is covered.
+        if = {
+            limit = { check_variable = { fuel_spare < 0 } }
+            set_variable = { fuel_deficit = fuel_spare }
+            multiply_variable = { fuel_deficit = -1 }
+
+            for_each_scope_loop = {
+                array = THIS.faction_members_array
+
+                if = {
+                    limit = {
+                        check_variable = { PREV.fuel_deficit > 0 }   # controller still short
+                        NOT = { has_war_with = PREV }
+                    }
+                    set_variable = { fuel_surplus = fuel_ratio }
+                    subtract_from_variable = { fuel_surplus = min_fuel }
+                    multiply_variable = { fuel_surplus = max_fuel_k }
+                    multiply_variable = { fuel_surplus = 1000 }
+
+                    if = {
+                        limit = { check_variable = { fuel_surplus > 0 } }   # member is above its target
+                        # Move min(member surplus, controller's remaining deficit).
+                        set_variable = { fuel_move = fuel_surplus }
+                        if = {
+                            limit = { check_variable = { fuel_move > PREV.fuel_deficit } }
+                            set_variable = { fuel_move = PREV.fuel_deficit }
+                        }
+                        set_variable = { fuel_move_out = fuel_move }
+                        multiply_variable = { fuel_move_out = -1 }
+                        add_fuel = fuel_move_out                                   # member loses
+                        subtract_from_variable = { PREV.fuel_deficit = fuel_move }
+                        set_variable = { PREV.fuel_move_in = fuel_move }
+                        PREV = { add_fuel = fuel_move_in }                         # controller gains the same amount
+                    }
+                }
+            }
+        }
+
         # Loop over all faction members of this controller.
         for_each_scope_loop = {
             array = THIS.faction_members_array
@@ -204,6 +245,7 @@ on_daily_fuel = {
                 limit = {
                     check_variable = { PREV.fuel_spare > 0 }   # controller still has spare (persistent, resolves via PREV)
                     check_variable = { fuel_need > 0 }         # member is below its target
+                    NOT = { has_war_with = PREV }              # never fuel a listed country we are at war with
                 }
 
                 # Move min(member deficit, controller's remaining spare).
