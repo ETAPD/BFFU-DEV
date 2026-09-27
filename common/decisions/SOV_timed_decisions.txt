@@ -194,27 +194,18 @@ SOV_gosplan_decisions_category = {
 					add_to_temp_variable = { current_air_fighters = SOV.num_deployed_planes_with_type@fighter_equipment }
 					check_variable = { current_air_fighters = 3500 compare = greater_than_or_equals }
 				}
-				# has_equipment = {
-				# 	fighter_equipment > 3499
-				# }
 				custom_trigger_tooltip = {
 					tooltip = SOV_air_needed_heavy_fighters_tt
 					set_temp_variable = { current_air_heavy_fighters = SOV.num_equipment@heavy_fighter_equipment }
 					add_to_temp_variable = { current_air_heavy_fighters = SOV.num_deployed_planes_with_type@heavy_fighter_equipment }
 					check_variable = { current_air_heavy_fighters = 1000 compare = greater_than_or_equals }
 				}
-				# has_equipment = {
-				# 	heavy_fighter_equipment > 1499
-				# }
 				custom_trigger_tooltip = {
 					tooltip = SOV_air_needed_cas_tt
 					set_temp_variable = { current_air_cas = SOV.num_equipment@cas_equipment }
 					add_to_temp_variable = { current_air_cas = SOV.num_deployed_planes_with_type@cas_equipment }
 					check_variable = { current_air_cas = 1000 compare = greater_than_or_equals }
 				}
-				# has_equipment = {
-				# 	CAS_equipment > 1499
-				# }
 			}
 		}
 
@@ -231,14 +222,47 @@ SOV_gosplan_decisions_category = {
 			add_political_power = -75
 			add_stability = -0.05
 			add_ideas = SOV_enemy_air_confidence
+			custom_effect_tooltip = generic_skip_one_line_tt
 		}
 		
 		complete_effect = {
 			add_political_power = 75
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_timed_idea = {
 				idea = SOV_stalin_happy_planes
 				days = 360
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			IF = {
+				limit = {
+					has_tech = CAS3
+				}
+				add_equipment_to_stockpile = {
+					type = CAS_equipment_3
+					amount = 500
+				}
+			}
+			ELSE = {
+				IF = {
+					limit = {
+						NOT = { has_tech = CAS2 }
+					}
+					#to show reward when they have no cas researched
+					custom_effect_tooltip = SOV_air_plan_cas_tt
+					hidden_effect = {
+						set_technology = {
+							CAS2 = 1 popup = no
+						}
+					}
+				}
+				
+				add_equipment_to_stockpile = {
+					type = CAS_equipment_2
+					amount = 500
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			set_country_flag = SOV_completed_air_plan
 		}
 		
 		modifier = {

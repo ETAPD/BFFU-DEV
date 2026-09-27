@@ -1,0 +1,200 @@
+add_namespace = cze_hist
+add_namespace = CZE_sudeten
+country_event = {
+	id = CZE_sudeten.1
+	title = CZE_sudeten.1.t
+	desc = CZE_sudeten.1.d
+	picture = GFX_report_event_cze_divided_nation
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = CZE_sudeten.1.a
+		set_country_flag = CZE_sudeten_embargo_applied
+		69 = { add_dynamic_modifier = { modifier = CZE_sudeten_construction_embargo days = 1095 } }
+		972 = { add_dynamic_modifier = { modifier = CZE_sudeten_construction_embargo days = 1095 } }
+		74 = { add_dynamic_modifier = { modifier = CZE_sudeten_construction_embargo days = 1095 } }
+	}
+}
+
+country_event = {
+	id = cze_hist.20
+	hidden = yes
+	is_triggered_only = yes
+	option = {
+		if = {
+			limit = {
+				has_country_leader = { ruling_only = yes character = CZE_konstantin_von_neurath }
+			}
+			if = {
+				limit = {
+					any_owned_state = {
+						arms_factory > 0
+						NOT = { has_state_flag = CZE_last_military_sabotage_state }
+					}
+				}
+				random_owned_state = {
+					limit = {
+						arms_factory > 0
+						NOT = { has_state_flag = CZE_last_military_sabotage_state }
+					}
+					damage_building = { type = arms_factory damage = 0.5 }
+					set_state_flag = CZE_next_military_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_last_military_sabotage_state }
+					clr_state_flag = CZE_last_military_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_next_military_sabotage_state }
+					clr_state_flag = CZE_next_military_sabotage_state
+					set_state_flag = CZE_last_military_sabotage_state
+				}
+			}
+			country_event = { id = cze_hist.20 days = 20 }
+		}
+	}
+}
+
+country_event = {
+	id = cze_hist.21
+	hidden = yes
+	is_triggered_only = yes
+	option = {
+		if = {
+			limit = {
+				has_idea = CZE_czech_worker_resistance
+			}
+			if = {
+				limit = {
+					any_owned_state = {
+						industrial_complex > 0
+						NOT = { has_state_flag = CZE_last_civilian_sabotage_state }
+					}
+				}
+				random_owned_state = {
+					limit = {
+						industrial_complex > 0
+						NOT = { has_state_flag = CZE_last_civilian_sabotage_state }
+					}
+					damage_building = { type = industrial_complex damage = 0.5 }
+					set_state_flag = CZE_next_civilian_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_last_civilian_sabotage_state }
+					clr_state_flag = CZE_last_civilian_sabotage_state
+				}
+				every_owned_state = {
+					limit = { has_state_flag = CZE_next_civilian_sabotage_state }
+					clr_state_flag = CZE_next_civilian_sabotage_state
+					set_state_flag = CZE_last_civilian_sabotage_state
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = CZE_gestapo_visits_active
+						has_country_flag = CZE_worker_resistance_suppressed
+					}
+				}
+				country_event = { id = cze_hist.21 days = 40 }
+			}
+			else = { country_event = { id = cze_hist.21 days = 20 } }
+		}
+	}
+}
+
+country_event = {
+	id = cze_hist.9
+	title = cze_hist.9.t
+	desc = cze_hist.9.d
+	picture = GFX_news_event_german_inspect_troops
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = cze_hist.9.a
+		set_country_flag = CZE_protectorate_outcome_applied
+		set_politics = {
+			ruling_party = fascism
+			last_election = "1939.3.16"
+			election_frequency = 48
+			elections_allowed = no
+		}
+		set_popularities = {
+			fascism = 100
+			democratic = 0
+			communism = 0
+			neutrality = 0
+		}
+		set_party_name = {
+			ideology = fascism
+			long_name = CZE_nsdap_party_long
+			name = CZE_nsdap_party
+		}
+		set_cosmetic_tag = CZE_bohmen_mahren
+		promote_character = CZE_konstantin_von_neurath
+		country_event = { id = cze_hist.20 days = 20 }
+		complete_national_focus = CZE_B6_05_HUB_RIGHT
+		ENG = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = ENG_anthropoid_operatives_recruited }
+				}
+				set_country_flag = ENG_anthropoid_operatives_recruited
+				create_operative_leader = {
+					name = CZE_jan_kubis
+					GFX = GFX_portrait_CZE_jan_kubis
+					gender = male
+					traits = { CZE_czech_patriot }
+					bypass_recruitment = yes
+					available_to_spy_master = yes
+					nationalities = { CZE }
+				}
+				create_operative_leader = {
+					name = CZE_jozef_gabcik
+					GFX = GFX_portrait_CZE_jozef_gabcik
+					gender = male
+					traits = { CZE_czech_patriot }
+					bypass_recruitment = yes
+					available_to_spy_master = yes
+					nationalities = { CZE }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = cze_hist.10
+	title = cze_hist.10.t
+	desc = cze_hist.10.d
+	picture = GFX_report_event_generic_parliament
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = cze_hist.10.a
+		set_country_flag = CZE_slovak_outcome_applied
+		set_politics = {
+			ruling_party = fascism
+			last_election = "1939.3.14"
+			election_frequency = 48
+			elections_allowed = no
+		}
+		set_popularities = {
+			fascism = 100
+			democratic = 0
+			communism = 0
+			neutrality = 0
+		}
+		set_party_name = {
+			ideology = fascism
+			long_name = CZE_hlinka_party_long
+			name = CZE_hlinka_party
+		}
+		set_cosmetic_tag = CZE_slovak_republic
+		promote_character = CZE_jozef_tiso
+		complete_national_focus = CZE_B6_05_HUB_LEFT
+	}
+}
