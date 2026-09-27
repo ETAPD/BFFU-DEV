@@ -1956,11 +1956,6 @@ focus_tree = {
 				add_extra_state_shared_building_slots = 5
 				add_building_construction = { type = arms_factory level = 5 instant_build = yes }
 			}
-			random_core_state = {
-				prioritize = { 65 }
-				add_extra_state_shared_building_slots = 5
-				add_building_construction = { type = arms_factory level = 5 instant_build = yes }
-			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = GER_victory_in_the_desert_unlocked_tt
 		}
@@ -5645,7 +5640,7 @@ completion_reward = {
 		x = 0
 		y = 2
 		relative_position_id = GER_zentrale_planung
-		cost = 5
+		cost = 2
 		available = {
 			has_completed_focus = GER_fate_of_czechoslovakia
 		}
@@ -13929,6 +13924,8 @@ completion_reward = {
 		}
 
 		available = {
+			POL = { has_capitulated = yes }
+			controls_state = 10
 			#always = no
 		}
 
@@ -13936,25 +13933,38 @@ completion_reward = {
 		}
 		
 		completion_reward = { #Central Industrial Region (COP) taken over by the Reichswerke
-			if = {
-				limit = { 88 = { is_controlled_by = ROOT } } #Kielce: Radom, Starachowice, Skarzysko-Kamienna
-				88 = {
-					add_extra_state_shared_building_slots = 4
-					add_building_construction = { type = arms_factory level = 3 instant_build = yes }
-					add_building_construction = { type = steel_refinery level = 1 instant_build = yes }
-				}
-			}
-			if = {
-				limit = { 89 = { is_controlled_by = ROOT } } #Krakow
-				89 = {
-					add_extra_state_shared_building_slots = 2
-					add_building_construction = { type = arms_factory level = 2 instant_build = yes }
-				}
-			}
+		    custom_effect_tooltip = GER_occupation_spawn_2_tt
 			custom_effect_tooltip = generic_skip_one_line_tt
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.05 tooltip = production_speed_arms_factory_factor_tt }
-			add_to_variable = { GER_industrial_compliance_growth = 0.15 tooltip = compliance_growth_tt }
+            every_state = {
+            limit = {
+            is_core_of = POL
+            NOT = { is_controlled_by = POL }
+            }
+            add_resistance = 10
+            add_compliance = -5
+            }
+		    hidden_effect = {
+		    load_oob = GER_occupation_2
+		    }		
+			#if = {
+			#	limit = { 88 = { is_controlled_by = ROOT } } #Kielce: Radom, Starachowice, Skarzysko-Kamienna
+			#	88 = {
+			#		add_extra_state_shared_building_slots = 4
+			#		add_building_construction = { type = arms_factory level = 3 instant_build = yes }
+			#		add_building_construction = { type = steel_refinery level = 1 instant_build = yes }
+			#	}
+			#}
+			#if = {
+			#	limit = { 89 = { is_controlled_by = ROOT } } #Krakow
+			#	89 = {
+			#		add_extra_state_shared_building_slots = 2
+			#		add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			#	}
+			#}
+			#custom_effect_tooltip = generic_skip_one_line_tt
+			#GER_modify_industrial_modifier = yes
+			#add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.05 tooltip = production_speed_arms_factory_factor_tt }
+			#add_to_variable = { GER_industrial_compliance_growth = 0.15 tooltip = compliance_growth_tt }
 		}
 	}
 
@@ -13972,6 +13982,8 @@ completion_reward = {
 		}
 
 		available = {
+			FRA = { has_capitulated = yes }
+			controls_state = 16
 			#always = no
 		}
 
@@ -13979,12 +13991,25 @@ completion_reward = {
 		}
 		
 		completion_reward = { #equipment for 20 infantry divisions from western arsenals
-			add_equipment_to_stockpile = { type = infantry_equipment amount = 19000 }
-			add_equipment_to_stockpile = { type = squad_equipment amount = 3700 }
-			add_equipment_to_stockpile = { type = support_equipment amount = 2600 }
-			add_equipment_to_stockpile = { type = artillery_equipment amount = 480 }
-			add_equipment_to_stockpile = { type = radio_equipment amount = 760 }
-			add_equipment_to_stockpile = { type = motorized_equipment amount = 600 }
+		custom_effect_tooltip = GER_occupation_spawn_tt
+		custom_effect_tooltip = generic_skip_one_line_tt
+        every_state = {
+        limit = {
+        is_core_of = FRA
+        NOT = { is_controlled_by = FRA }
+        }
+        add_resistance = 10
+        add_compliance = -5
+        }
+		hidden_effect = {
+		load_oob = GER_occupation
+		}
+			#add_equipment_to_stockpile = { type = infantry_equipment amount = 19000 }
+			#add_equipment_to_stockpile = { type = squad_equipment amount = 3700 }
+			#add_equipment_to_stockpile = { type = support_equipment amount = 2600 }
+			#add_equipment_to_stockpile = { type = artillery_equipment amount = 480 }
+			#add_equipment_to_stockpile = { type = radio_equipment amount = 760 }
+			#add_equipment_to_stockpile = { type = motorized_equipment amount = 600 }
 		}
 	}
 
@@ -14103,95 +14128,29 @@ completion_reward = {
 	}
 	
 	focus = {
-		id = GER_occupation_switzerland
-		icon = GFX_GER_exploit_and_plunder
-		prerequisite = { focus = GER_operation_tannenbaum focus = GER_the_swiss_gold }
-		x = 1
-		y = 1
-		relative_position_id = GER_operation_tannenbaum
-		cost = 3
+		id = GER_demands_to_switzerland
+		icon = GFX_ger_trade_deals2
+		prerequisite = { focus = GER_operation_tannenbaum focus = GER_the_swiss_gold}
+		x = 0
+		y = 2
+		relative_position_id = GER_occupation_france2
+		cost = 5
+
+		
+
 		available = {
-		SWI = { has_capitulated = yes }
-		has_completed_focus = GER_goring_plan
+
 		}
 
-		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = {
+			factor = 1
+		}
 
-	completion_reward = {
-		custom_effect_tooltip = GER_conversion_SWI
-		hidden_effect = {
-		random_controlled_state = {
-			limit = {
-				is_core_of = SWI
-				industrial_complex > 0
-			}
-			remove_building = {
-				type = industrial_complex
-				level = 1
-			}
-			add_building_construction = {
-				type = arms_factory
-				level = 2
-			}
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+		
+		completion_reward = {
+
 		}
-		random_controlled_state = {
-			limit = {
-				is_core_of = SWI
-				industrial_complex > 0
-			}
-			remove_building = {
-				type = industrial_complex
-				level = 1
-			}
-			add_building_construction = {
-				type = arms_factory
-				level = 2
-			}
-		}
-		random_controlled_state = {
-			limit = {
-				is_core_of = SWI
-				industrial_complex > 0
-			}
-			remove_building = {
-				type = industrial_complex
-				level = 1
-			}
-			add_building_construction = {
-				type = arms_factory
-				level = 2
-			}
-		}
-		random_controlled_state = {
-			limit = {
-				is_core_of = SWI
-				industrial_complex > 0
-			}
-			remove_building = {
-				type = industrial_complex
-				level = 1
-			}
-			add_building_construction = {
-				type = arms_factory
-				level = 2
-			}
-		}
-        }
-	custom_effect_tooltip = generic_skip_one_line_tt
-	GER_modify_industrial_modifier = yes
-	add_to_variable = { 
-		GER_industrial_industrial_capacity_factory = 0.015
-		tooltip = industrial_capacity_factory_tt
-	}
-	add_to_variable = { 
-		GER_industrial_production_speed_arms_factory_factor = -0.025
-		tooltip = production_speed_arms_factory_factor_tt
-	}
-	add_to_variable = { 
-		GER_industrial_production_speed_dockyard_factor = -0.01
-		tooltip = production_speed_dockyard_factor_tt
-	}
-	}
 	}
 
 	focus = {
