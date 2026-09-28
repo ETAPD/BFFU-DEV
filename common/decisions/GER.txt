@@ -1322,358 +1322,279 @@ GER_operational_planning_category = {
 }
 
 GER_price_controls_cat = {
-	GER_guns_before_butter = {
 
-		icon = GFX_decision_ger_military_buildup
-
-		ai_will_do = {
-			base = 5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
-		}
-
-		available = {
-		}
-
-		visible = { #This decision is not available for the 1939 Start
-			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
-		}
-
-		cost = 30
-
-		fire_only_once = yes
-
-		complete_effect = {
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
-			add_war_support = 0.025
-		}
-	}
-
-	GER_arbeit_und_brot = {
-
-		icon = GFX_decision_generic_political_address
-
-		ai_will_do = {
-			base = 5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
-		}
-
-		available = {
-		}
-
-		visible = { #This decision is not available for the 1939 Start
-			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
-		}
-
-		cost = 30
-
-		fire_only_once = yes
-
-		complete_effect = {
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
-			add_popularity = { ideology = ROOT popularity = 0.025 }
-		}
-	}
-	GER_collect_scrap_metal = {
-
-		icon = GFX_decision_steel
-
-		ai_will_do = {
-			base = 5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
-		}
-
-		available = {
-		}
-
-		visible = { #This decision is not available for the 1939 Start
-			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
-		}
-
-		cost = 30
-
-		fire_only_once = yes
-
-		complete_effect = {
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
-			add_timed_idea = {
-				idea = GER_collect_scrap_metal_ns
-				days = 90
-			}
-		}
-	}
-	GER_ersatz_material = {
-
+	GER_price_stop_decree = {
 		icon = GFX_decision_generic_consumer_goods
 
-		ai_will_do = {
-			base = 5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
 		}
 
 		available = {
+		}
+
+		cost = 50
+		fire_only_once = yes
+
+		complete_effect = {
+			set_country_flag = GER_price_stop_decreed
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.15 tooltip = consumer_goods_factor_tt }
+			add_to_variable = { GER_industrial_political_power_cost = 0.05 tooltip = political_power_cost_tt }
+			add_stability = -0.03
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_price_stop_unlocks_tt
+		}
+
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	GER_winterhilfswerk = {
+		icon = GFX_decision_generic_fundraising
+
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
+		}
+
+		available = {
+		}
+
+		cost = 25
+
+		days_remove = 150
+		days_re_enable = 215
+
+		modifier = {
+			stability_factor = 0.05
+			consumer_goods_factor = -0.05
+		}
+
+		complete_effect = {
+		}
+
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	GER_kdf_wagen_savings = {
+		icon = GFX_decision_generic_political_address
+
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_price_stop_decreed_tt
+				has_country_flag = GER_price_stop_decreed
+			}
+			has_completed_focus = GER_kdf_wagen_factories
+		}
+
+		cost = 40
+		fire_only_once = yes
+
+		complete_effect = {
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_consumer_goods_expected_value = -0.03 tooltip = consumer_goods_expected_value_tt }
+		}
+
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	GER_lohnstopp = {
+		icon = GFX_decision_eng_trade_unions_demand
+
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
+			NOT = { has_country_flag = GER_wage_policy_chosen }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_price_stop_decreed_tt
+				has_country_flag = GER_price_stop_decreed
+			}
+			has_stability > 0.2
+		}
+
+		cost = 30
+		fire_only_once = yes
+
+		complete_effect = {
+			set_country_flag = GER_wage_policy_chosen
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.1 tooltip = consumer_goods_factor_tt }
+			add_to_variable = { GER_industrial_conversion_cost_civ_to_mil_factor = -0.2 tooltip = conversion_cost_civ_to_mil_factor_tt }
+			add_stability = -0.05
+		}
+
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	GER_leistungslohn = {
+		icon = GFX_decision_eng_trade_unions_support
+
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
+			NOT = { has_country_flag = GER_wage_policy_chosen }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_price_stop_decreed_tt
+				has_country_flag = GER_price_stop_decreed
+			}
+		}
+
+		cost = 30
+		fire_only_once = yes
+
+		complete_effect = {
+			set_country_flag = GER_wage_policy_chosen
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_consumer_goods_expected_value = 0.02 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { GER_industrial_industrial_capacity_factory = 0.03 tooltip = industrial_capacity_factory_tt }
+			add_stability = 0.02
+		}
+
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	GER_devisenbewirtschaftung = {
+		icon = GFX_decision_hol_attract_foreign_investors
+
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_price_stop_decreed_tt
+				has_country_flag = GER_price_stop_decreed
+			}
+		}
+
+		cost = 25
+		fire_only_once = yes
+
+		complete_effect = {
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.05 tooltip = consumer_goods_factor_tt }
+			add_to_variable = { GER_industrial_political_power_cost = 0.05 tooltip = political_power_cost_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_ideas = GER_foreign_exchange_control
+		}
+
+		ai_will_do = {
+			base = 5
+		}
+	}
+
+	GER_ersatz_material = {
+		icon = GFX_decision_oil
+
+		visible = {
+			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_price_stop_decreed_tt
+				has_country_flag = GER_price_stop_decreed
+			}
 			has_completed_focus = GER_coal_liquefaction
 		}
 
-		visible = { #This decision is not available for the 1939 Start
-			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
-		}
-
 		cost = 30
-
 		fire_only_once = yes
+
+		days_remove = 365
+
+		modifier = {
+			production_speed_synthetic_refinery_factor = 0.25
+			production_speed_synthetic_rubber_refinery_factor = 0.25
+		}
 
 		complete_effect = {
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.1 tooltip = consumer_goods_factor_tt }
+			add_stability = -0.02
 		}
-	}
-	GER_import_tariffs = {
-
-		icon = GFX_decision_eng_trade_unions_demand
 
 		ai_will_do = {
-			base = 2.5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
+			base = 5
 		}
+	}
 
-		available = {
-		}
+	GER_ration_cards = {
+		icon = GFX_decision_ger_military_buildup
 
-		visible = { #This decision is not available for the 1939 Start
+		visible = {
 			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
 		}
 
-		cost = 15
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_price_stop_decreed_tt
+				has_country_flag = GER_price_stop_decreed
+			}
+			OR = {
+				has_war = yes
+				date > 1939.8.26
+			}
+		}
 
+		cost = 25
 		fire_only_once = yes
 
 		complete_effect = {
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.15
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
-			add_timed_idea = {
-				idea = GER_import_tariffs_ns
-				days = 365
-			}
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.15 tooltip = consumer_goods_factor_tt }
+			add_stability = -0.05
+			add_war_support = -0.03
 		}
-	}
-	GER_implement_rations = {
-
-		icon = GFX_decision_eng_trade_unions_support
 
 		ai_will_do = {
-			base = 2.5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
+			base = 5
 		}
+	}
 
-		available = {
-			has_stability > 0.2
-		}
+	GER_metallspende = {
+		icon = GFX_decision_steel
 
-		visible = { #This decision is not available for the 1939 Start
+		visible = {
 			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
 		}
 
-		cost = 15
+		available = {
+			has_war = yes
+		}
 
-		fire_only_once = yes
+		cost = 35
+
+		days_re_enable = 365
 
 		complete_effect = {
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.1
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
-			add_stability = -0.025
+			add_timed_idea = { idea = GER_collect_scrap_metal_ns days = 180 }
 		}
-	}
-	GER_implement_wage_controls = {
-
-		icon = GFX_decision_hol_attract_foreign_investors
 
 		ai_will_do = {
-			base = 2.5
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.2 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.4 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
-		}
-
-		available = {
-			has_stability > 0.2
-		}
-
-		visible = { #This decision is not available for the 1939 Start
-			NOT = { has_country_flag = GER_inactivate_price_control_measures_flag }
-		}
-
-		cost = 15
-
-		fire_only_once = yes
-
-		complete_effect = {
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.1
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_reduce_mefo_bills_penalty = yes
-			add_stability = -0.025
+			base = 5
 		}
 	}
+
 	GER_exploit_the_gombos_treaty = {
-
-		icon = GFX_decision_generic_fundraising
-
-		ai_will_do = {
-			base = 1
-			modifier = {
-				factor = 1.2
-				check_variable = { GER_industrial_consumer_goods_factor > 0.3 }
-			}
-			modifier = {
-				factor = 1.3
-				check_variable = { GER_industrial_consumer_goods_factor > 0.5 }
-			}
-			modifier = {
-				factor = 1.5
-				check_variable = { GER_industrial_consumer_goods_factor > 0.7 }
-			}
-			modifier = {
-				factor = 0
-				check_variable = { GER_industrial_consumer_goods_factor < 0.1 }
-			}
-			modifier = {
-				factor = 0
-				is_historical_focus_on = yes 
-				has_government = fascism
-			}
-		}
+		icon = GFX_decision_generic_factory
 
 		visible = {
 			has_dlc = "Gotterdammerung"
@@ -1704,14 +1625,10 @@ GER_price_controls_cat = {
 
 		complete_effect = {
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.15
-				tooltip = consumer_goods_factor_tt
-			}
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.1 tooltip = consumer_goods_factor_tt }
+			add_stability = 0.03
 			custom_effect_tooltip = GER_exploit_the_gombos_treaty_tt
-			GER_reduce_mefo_bills_penalty = yes
 			custom_effect_tooltip = generic_skip_one_line_tt
-
 			HUN = {
 				country_event = {
 					id = wuw_GER_diplomacy.56
@@ -1727,6 +1644,10 @@ GER_price_controls_cat = {
 					remove_ideas = HUN_gombos_trade_treaty
 				}
 			}
+		}
+
+		ai_will_do = {
+			base = 0
 		}
 	}
 }

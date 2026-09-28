@@ -5647,6 +5647,7 @@ country_event = { #MEFO Bills rearmament debt - political power cost rises every
 	immediate = {
 		add_to_variable = { GER_industrial_political_power_cost = 0.125 }
 		clamp_variable = { var = GER_industrial_political_power_cost max = 1 }
+		add_to_variable = { GER_industrial_consumer_goods_expected_value = 0.015 } #rearmament inflation
 	}
 }
 
@@ -5685,6 +5686,49 @@ country_event = { #Armaments Miracle (Lex Krupp): +2% factory output on MEFO / E
 		if = {
 			limit = { check_variable = { GER_armaments_miracle_ticks < 20 } }
 			country_event = { id = germany_mefo_bills.22 days = 30 }
+		}
+	}
+}
+
+country_event = { #Four Year Plan Office: on 1 January 1937 its civilian bonus ends and the civilian malus of the Plan applies
+	id = germany_mefo_bills.23
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				date > 1936.12.31
+				NOT = { has_country_flag = GER_four_year_plan_office_expired }
+			}
+			set_country_flag = GER_four_year_plan_office_expired
+			add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.75 } #remove +25%, apply -50%
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = GER_four_year_plan_office_expired } }
+			country_event = { id = germany_mefo_bills.23 days = 7 }
+		}
+	}
+}
+
+country_event = { #8 February 1942: Fritz Todt killed when his aircraft crashes after take-off from Rastenburg
+	id = germany_mefo_bills.24
+	title = germany_mefo_bills.24.t
+	desc = germany_mefo_bills.24.d
+	picture = GFX_report_event_airplane_crash
+
+	is_triggered_only = yes
+
+	trigger = {
+		original_tag = GER
+	}
+
+	option = {
+		name = germany_mefo_bills.24.a
+		set_country_flag = GER_todt_dead
+		remove_advisor_role = {
+			character = GER_fritz_todt
+			slot = political_advisor
 		}
 	}
 }

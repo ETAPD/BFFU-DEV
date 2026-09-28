@@ -1554,11 +1554,16 @@ focus_tree = {
 
 		completion_reward = {
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_production_speed_industrial_complex_factor = 0.25
-				tooltip = production_speed_industrial_complex_factor_tt
+			if = {
+				limit = { date < 1937.1.1 }
+				add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = 0.25 tooltip = production_speed_industrial_complex_factor_tt }
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_four_year_plan_office_expiry_tt
+				hidden_effect = { country_event = { id = germany_mefo_bills.23 days = 7 } }
 			}
-			custom_effect_tooltip = GER_1st_plan_tt
+			else = {
+				add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.50 tooltip = production_speed_industrial_complex_factor_tt }
+			}
 		}
 	}
 
@@ -1877,23 +1882,8 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 
 		completion_reward = {
-			hidden_effect = {
 			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_production_speed_industrial_complex_factor = -0.5
-				tooltip = production_speed_industrial_complex_factor_tt
-			}
-			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.40 tooltip = production_speed_arms_factory_factor_tt }
-			}
-			custom_effect_tooltip = GER_2nd_arms_production_plan_tt
-			#add_to_variable = { 
-			#	GER_industrial_industrial_capacity_factory = 0.05
-			#	tooltip = industrial_capacity_factory_tt
-			#}
-			#add_to_variable = { 
-			#	GER_industrial_industrial_capacity_dockyard = 0.05
-			#	tooltip = industrial_capacity_dockyard_tt
-			#}
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.20 tooltip = production_speed_arms_factory_factor_tt }
 		}
 	}
 
@@ -1923,7 +1913,7 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { GER_industrial_production_speed_buildings_factor = -0.10 tooltip = production_speed_buildings_factor_tt }
-			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.20 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.40 tooltip = production_speed_arms_factory_factor_tt }
 		}
 	}
 
@@ -2819,27 +2809,30 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-    #every_owned_state = {
-    #limit = {
-      #  is_core_of = GER
-     #   free_building_slots = {
-     #       building = infrastructure
-    #       size > 0
-    #    }
-    #}
-   # add_building_construction = {
-     #   type = infrastructure
-     #   level = 1
-     #   instant_build = yes
-    #}
-    #}
-	custom_effect_tooltip = generic_skip_one_line_tt
-		GER_modify_industrial_modifier = yes
-		add_to_variable = { 
-			GER_industrial_production_speed_infrastructure_factor = 0.1
-			tooltip = production_speed_infrastructure_factor_tt
+			if = {
+				limit = { 58 = { is_controlled_by = ROOT } }
+				58 = { add_building_construction = { type = infrastructure level = 3 instant_build = yes } } #Hamburg
+			}
+			if = {
+				limit = { 56 = { is_controlled_by = ROOT } }
+				56 = { add_building_construction = { type = infrastructure level = 3 instant_build = yes } } #Bremen
+			}
+			if = {
+				limit = { 57 = { is_controlled_by = ROOT } }
+				57 = { add_building_construction = { type = infrastructure level = 3 instant_build = yes } } #Ruhr
+			}
+			if = {
+				limit = { 55 = { is_controlled_by = ROOT } }
+				55 = { add_building_construction = { type = infrastructure level = 3 instant_build = yes } } #Frankfurt
+			}
+			if = {
+				limit = { 978 = { is_controlled_by = ROOT } }
+				978 = { add_building_construction = { type = infrastructure level = 3 instant_build = yes } } #towards Basel
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_production_speed_infrastructure_factor = 0.25 tooltip = production_speed_infrastructure_factor_tt }
 		}
-	}
 	}
 
 	focus = {
@@ -2992,7 +2985,7 @@ focus_tree = {
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.15 tooltip = production_speed_arms_factory_factor_tt }
 			custom_effect_tooltip = GER_armaments_miracle_tt
-			hidden_effect = { country_event = { id = germany_mefo_bills.22 days = 120 } }
+			hidden_effect = { country_event = { id = germany_mefo_bills.22 days = 90 } }
 			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_add_or_modify_wehrwirtschaft = yes
 			add_to_variable = { GER_wehrwirtschaft_local_resources_factor = 0.15 tooltip = local_resources_factor_tt }
@@ -14034,7 +14027,10 @@ completion_reward = {
 		}
 		
 		completion_reward = {
-			
+			add_manpower = 150000
+			custom_effect_tooltip = generic_skip_one_line_tt
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_production_speed_buildings_factor = 0.05 tooltip = production_speed_buildings_factor_tt }
 		}
 	}
 
@@ -14082,12 +14078,15 @@ completion_reward = {
 		}
 
 		bypass = {
+			has_country_flag = GER_todt_dead
 		}
 		
 		completion_reward = {
 			set_country_flag = GER_todt_summoned
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = todt
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_todt_death_warning_tt
 		}
 	}
 	
@@ -14139,7 +14138,10 @@ completion_reward = {
 		
 
 		available = {
-
+			SWI = {
+				exists = yes
+				NOT = { has_war_with = ROOT }
+			}
 		}
 
 		ai_will_do = {
@@ -14148,8 +14150,17 @@ completion_reward = {
 
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
 		
-		completion_reward = {
-
+		completion_reward = { #1940 German-Swiss agreement: coal deliveries in return for clearing credits, aluminium and transit
+			GER_modify_industrial_modifier = yes
+			add_to_variable = { GER_industrial_political_power_cost = -0.15 tooltip = political_power_cost_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			if = {
+				limit = { SWI = { owns_state = 3 } }
+				SWI = {
+					give_resource_rights = { receiver = ROOT state = 3 resources = { aluminium } }
+				}
+			}
+			SWI = { add_opinion_modifier = { target = ROOT modifier = medium_decrease } }
 		}
 	}
 
