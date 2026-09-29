@@ -509,6 +509,17 @@ on_actions = {
 		}
 
 		### State of Africa ###
+		# Soviet cities counter (Leningrad/Moscow/Stalingrad)
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						OR = { state = 195 state = 219 state = 217 }
+					}
+				}
+				AFRICA_count_sov_cities = yes
+			}
+		}
 		# Swap the modifier on a europe state that changed hands
 		effect = {
 			if = {
@@ -523,84 +534,22 @@ on_actions = {
 				FROM.FROM = { AFRICA_state_swap_single = yes }
 			}
 		}
-		# Axis Takes an African base
+		# Africa
 		effect = {
 			if = {
 				limit = {
-					NOT = { has_global_flag = capitulation_state_reversal }
-					FROM = {
-						OR = {
-							is_in_faction_with = ENG
-							is_in_faction_with = USA
-							is_in_faction_with = FRA
-							tag = ENG
-							tag = USA
-							tag = FRA
-							tag = INS
-						}
-					}
-					ROOT = {
-						OR = {
-							is_in_faction_with = GER
-							is_in_faction_with = JAP
-							tag = GER
-							tag = JAP
-							tag = ITA
-						}
-					}
 					FROM.FROM = {
-						has_state_flag = AFRICA_ALLIES_controls
-					}
-				}
-				FROM.FROM = {
-					set_state_flag = NOT_AFRICA_ALLIES_controls
-					clr_state_flag = AFRICA_ALLIES_controls
-				}
-				AFRICA_state_up = yes
-			}
-		}
-		# Allies Take an African base
-		effect = {
-			if = {
-				limit = {
-					NOT = { has_global_flag = capitulation_state_reversal }
-					FROM = {
 						OR = {
-							is_in_faction_with = GER
-							is_in_faction_with = JAP
-							tag = GER
-							tag = JAP
-							tag = ITA
+							has_state_flag = AFRICA_ALLIES_controls
+							has_state_flag = NOT_AFRICA_ALLIES_controls
 						}
 					}
-					ROOT = {
-						OR = {
-							is_in_faction_with = ENG
-							is_in_faction_with = USA
-							is_in_faction_with = FRA
-							tag = ENG
-							tag = USA
-							tag = FRA
-							tag = INS
-						}
-					}
-					FROM.FROM = {
-						has_state_flag = NOT_AFRICA_ALLIES_controls
-					}
 				}
-				FROM.FROM = {
-					set_state_flag = AFRICA_ALLIES_controls
-					clr_state_flag = NOT_AFRICA_ALLIES_controls
-				}
-				AFRICA_state_down = yes
+				AFRICA_recount_bases = yes
 			}
 		}
 	}
 
-	# Weekly consistency sweep of the Pacific/Commonwealth europe-state modifiers.
-	# The hot path (state control changes) only updates the flipped state, so this
-	# catches the rare cases a state's modifier goes stale without a control change
-	# (e.g. its controller joins or leaves a faction).
 	on_weekly_USA = {
 		effect = {
 			if = {
@@ -609,6 +558,18 @@ on_actions = {
 				}
 				PACIFIC_state_swap = yes
 				AFRICA_state_swap = yes
+			}
+		}
+	}
+
+
+	on_monthly_USA = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_game_rule = { rule = state_of_africa option = DISABLED } }
+				}
+				AFRICA_sov_cities_tick = yes
 			}
 		}
 	}
