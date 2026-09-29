@@ -361,13 +361,28 @@ AFRICA_sov_cities_tick = {
 	AFRICA_recalculate_penalty = yes
 }
 
-AFRICA_state_up = {
-	add_to_variable = { global.AFRICA_BASES_AXIS = 1 }
-	AFRICA_recalculate_penalty = yes
-}
-
-AFRICA_state_down = {
-	subtract_from_variable = { global.AFRICA_BASES_AXIS = 1 }
+# Recount
+AFRICA_recount_bases = {
+	set_variable = { global.AFRICA_BASES_AXIS = 0 }
+	every_state = {
+		limit = {
+			OR = {
+				state = 461 state = 459 state = 458
+				state = 448 state = 450 state = 447
+				state = 454 state = 551 state = 291
+			}
+		}
+		if = {
+			limit = { AFRICA_is_axis_controlled = yes }
+			set_state_flag = NOT_AFRICA_ALLIES_controls
+			clr_state_flag = AFRICA_ALLIES_controls
+			add_to_variable = { global.AFRICA_BASES_AXIS = 1 }
+		}
+		else = {
+			set_state_flag = AFRICA_ALLIES_controls
+			clr_state_flag = NOT_AFRICA_ALLIES_controls
+		}
+	}
 	AFRICA_recalculate_penalty = yes
 }
 
