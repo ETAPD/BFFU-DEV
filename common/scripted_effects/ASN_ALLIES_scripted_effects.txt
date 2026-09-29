@@ -314,8 +314,51 @@ AFRICA_recalculate_penalty = {
 	set_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = global.AFRICA_BASES_AXIS }
 	multiply_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = 0.45 }
 	divide_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = 9 }
+	if = {
+		limit = { check_variable = { global.AFRICA_SOV_DECAY > global.AFRICA_DEBUFF_INVASION_PENALTY } }
+		set_variable = { global.AFRICA_SOV_DECAY = global.AFRICA_DEBUFF_INVASION_PENALTY }
+	}
+	subtract_from_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = global.AFRICA_SOV_DECAY }
+	if = {
+		limit = { check_variable = { global.AFRICA_BASES_AXIS < 1 } }
+		set_variable = { global.AFRICA_DEBUFF_INVASION_PENALTY = -0.1 }
+	}
 	set_variable = { global.SOTA_ALLIES_LOCATIONS = 9 }
 	subtract_from_variable = { global.SOTA_ALLIES_LOCATIONS = global.AFRICA_BASES_AXIS }
+}
+
+# sov
+AFRICA_count_sov_cities = {
+	set_variable = { global.AFRICA_SOV_CITIES_HELD = 0 }
+	if = { limit = { 195 = { is_controlled_by = SOV } } add_to_variable = { global.AFRICA_SOV_CITIES_HELD = 1 } }
+	if = { limit = { 219 = { is_controlled_by = SOV } } add_to_variable = { global.AFRICA_SOV_CITIES_HELD = 1 } }
+	if = { limit = { 217 = { is_controlled_by = SOV } } add_to_variable = { global.AFRICA_SOV_CITIES_HELD = 1 } }
+	set_variable = { global.AFRICA_SOV_CITIES_LOST = 3 }
+	subtract_from_variable = { global.AFRICA_SOV_CITIES_LOST = global.AFRICA_SOV_CITIES_HELD }
+}
+
+AFRICA_sov_cities_tick = {
+	if = {
+		limit = {
+			count_triggers = {
+				amount = 2
+				195 = { NOT = { is_controlled_by = SOV } }
+				219 = { NOT = { is_controlled_by = SOV } }
+				217 = { NOT = { is_controlled_by = SOV } }
+			}
+		}
+		add_to_variable = { global.AFRICA_SOV_DECAY = 0.025 }
+	}
+	else_if = {
+		limit = { check_variable = { global.AFRICA_SOV_DECAY > 0 } }
+		subtract_from_variable = { global.AFRICA_SOV_DECAY = 0.025 }
+		if = {
+			limit = { check_variable = { global.AFRICA_SOV_DECAY < 0 } }
+			set_variable = { global.AFRICA_SOV_DECAY = 0 }
+		}
+	}
+	AFRICA_count_sov_cities = yes
+	AFRICA_recalculate_penalty = yes
 }
 
 AFRICA_state_up = {
