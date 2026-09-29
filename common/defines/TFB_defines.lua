@@ -348,6 +348,8 @@ NDefines.NMilitary.UNIT_LEADER_TRAIT_SLOT_PER_LEVEL = { 			-- num extra traits o
 		0.35, -- navy general
 		0.0, -- operative
 	}
+NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_ON_DEPLOY = 7			-- Vanilla 3, scaled by HQ manpower -- flat 7 days to deploy a general on any HQ
+NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_MANPOWER_EXPONENT = 0	-- Vanilla 1.4 -- 0 removes the HQ-size scaling (also makes withdraw a flat 3 days)
 
 NDefines.NAir.AIR_WING_MAX_STATS_ATTACK = 500
 NDefines.NAir.AIR_WING_MAX_STATS_DEFENCE = 300
