@@ -124,6 +124,135 @@ focus_tree = {
 			}
 		}
 	}
+
+	focus = {
+		id = GER_legion_condor
+		icon = GFX_goal_support_fascism
+		prerequisite = { focus = GER_develop_modern_maneuver_warfare }
+		x = -14
+		y = 1
+		relative_position_id = GER_develop_modern_maneuver_warfare
+		cost = 3
+		ai_will_do = {
+			factor = 1
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			army_experience = 40
+			air_experience = 25
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_legion_condor_veterans_tt
+			hidden_effect = {
+				division_template = {
+					name = "Legion Condor Veterans"
+					regiments = {
+						light_armor = { x = 0 y = 0 }
+						light_armor = { x = 0 y = 1 }
+						motorized = { x = 1 y = 0 }
+						motorized = { x = 1 y = 1 }
+						motorized = { x = 1 y = 2 }
+						motorized = { x = 1 y = 3 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						anti_air = { x = 0 y = 1 }
+						signal_company = { x = 0 y = 2 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Legion Condor Veterans\" division_template = \"Legion Condor Veterans\" start_experience_factor = 0.6 start_equipment_factor = 1"
+						officer = { name = GER_officer_wilhelm_von_thoma portraits = { army = { large = GFX_portrait_GER_wilhelm_ritter_von_thoma small = GFX_portrait_GER_wilhelm_ritter_von_thoma_small } } }
+						owner = ROOT
+						count = 2
+					}
+				}
+				every_country_division = {
+					limit = { has_officer_name = GER_officer_wilhelm_von_thoma }
+					add_history_entry = {
+						key = GER_legion_condor_entry
+						allow = yes
+					}
+					add_unit_medal_to_latest_entry = { unit_medals = GER_spanish_cross }
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = GER_kriegsakademie
+		icon = GFX_goal_generic_army_doctrines
+		prerequisite = { focus = GER_legion_condor }
+		x = 1
+		y = 1
+		relative_position_id = GER_legion_condor
+		cost = 3
+		ai_will_do = {
+			factor = 1
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			add_doctrine_cost_reduction = { name = GER_kriegsakademie cost_reduction = 0.25 uses = 2 category = land_doctrine }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_experience_gain_army_factor = 0.05 tooltip = experience_gain_army_factor_tt }
+		}
+	}
+
+
+	focus = {
+		id = GER_brandenburgers
+		icon = GFX_goal_generic_special_forces
+		prerequisite = { focus = GER_legion_condor }
+		x = -1
+		y = 1
+		relative_position_id = GER_legion_condor
+		cost = 3
+		ai_will_do = {
+			factor = 1
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			add_tech_bonus = { name = GER_brandenburgers bonus = 0.5 uses = 1 category = cat_special_forces_generic }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_special_forces_cap = 0.05 tooltip = special_forces_cap_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_brandenburg_regiment_tt
+			hidden_effect = {
+				division_template = {
+					name = "Lehr-Regiment Brandenburg"
+					regiments = {
+						ranger_battalion = { x = 0 y = 0 }
+						ranger_battalion = { x = 0 y = 1 }
+						ranger_battalion = { x = 1 y = 0 }
+						ranger_battalion = { x = 1 y = 1 }
+					}
+					support = {
+						recon = { x = 0 y = 0 }
+						engineer = { x = 0 y = 1 }
+						signal_company = { x = 0 y = 2 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Lehr-Regiment Brandenburg z.b.V. 800\" division_template = \"Lehr-Regiment Brandenburg\" start_experience_factor = 0.5 start_equipment_factor = 1"
+						officer = { name = GER_officer_theodor_von_hippel }
+						owner = ROOT
+						count = 1
+					}
+				}
+			}
+		}
+	}
+
+
 	
 
 	# 	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL FOCUS_FILTER_RESEARCH FOCUS_FILTER_MILITARY_CHARACTER }
@@ -144,36 +273,14 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			add_command_power = 25
-			army_experience = 15
-
+			army_experience = 20
+			add_mastery = { amount = 75 track = infantry }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_mastery = {
-				amount = 150
-				track = infantry
-			}
-
-
-			add_tech_bonus = {
-				name = GER_infantry2
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = inf_radio1
-			}
-
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_planning_speed = 0.1 tooltip = planning_speed_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_the_prussian_legacy
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			# custom_effect_tooltip = generic_skip_one_line_tt
-
+			custom_effect_tooltip = available_chief_of_army
+			show_ideas_tooltip = franz_halder
 		}
 	}
 
@@ -194,31 +301,14 @@ focus_tree = {
 
 		completion_reward = {
 			army_experience = 15
-			
+			add_mastery_bonus = { name = GER_lessons_of_the_great_war bonus = 0.15 days = 360 track = infantry }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_lessons_of_the_great_war
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_friedrich_schulz
-			show_unit_leaders_tooltip = GER_ernsteberhard_hell
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_max_dig_in_factor = 0.1
-				tooltip = max_dig_in_factor_tt
-			}
-
-			# custom_effect_tooltip = generic_skip_one_line_tt
-
+			add_to_variable = { GER_military_army_infantry_attack_factor = 0.05 tooltip = army_infantry_attack_factor_tt }
+			add_to_variable = { GER_military_army_infantry_defence_factor = 0.05 tooltip = army_infantry_defence_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_equipment_to_stockpile = { type = infantry_equipment_1 amount = 12000 producer = GER }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = 500 producer = GER }
 		}
 	}			
 
@@ -237,32 +327,13 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			army_experience = 15
-			
+			add_tech_bonus = { name = GER_howitzer_barrage bonus = 0.75 uses = 1 category = artillery }
+			add_mastery = { amount = 50 track = combat_support }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_lessons_of_the_great_war
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_friedrich_schulz
-			show_unit_leaders_tooltip = GER_ernsteberhard_hell
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_max_dig_in_factor = 0.1
-				tooltip = max_dig_in_factor_tt
-			}
-
-			# custom_effect_tooltip = generic_skip_one_line_tt
-
+			add_to_variable = { GER_military_army_artillery_attack_factor = 0.05 tooltip = army_artillery_attack_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = 400 producer = GER }
 		}
 	}	
 
@@ -274,7 +345,7 @@ focus_tree = {
 
 		x = -49
 		y = 3
-		cost = 5
+		cost = 3
 		available = {
 		}
 
@@ -349,7 +420,19 @@ focus_tree = {
 				}
 				custom_effect_tooltip = generic_skip_one_line_tt
 			}
-
+			if = {
+				limit = { has_dlc = "No Step Back" }
+				custom_effect_tooltip = GER_k5_railway_guns_tt
+				hidden_effect = {
+					if = {
+						limit = { NOT = { has_tech = railway_gun } }
+						set_technology = { railway_gun = 1 popup = no }
+					}
+					create_railway_gun = { equipment = railway_gun_equipment_1 name = "Robert" }
+					create_railway_gun = { equipment = railway_gun_equipment_1 name = "Leopold" }
+				}
+				unlock_decision_tooltip = GER_krupp_80cm_gun
+			}
 		}
 	}
 	
@@ -453,7 +536,7 @@ focus_tree = {
 
 		x = -39
 		y = 8
-		cost = 5
+		cost = 3
 		available = {
 		}
 
@@ -541,7 +624,7 @@ focus_tree = {
 
 		x = -41
 		y = 8
-		cost = 5
+		cost = 3
 		available = {
 			has_war_with_major = yes
 		}
@@ -603,6 +686,30 @@ focus_tree = {
 					}
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			if = {
+				limit = { 9 = { is_controlled_by = ROOT } }
+				custom_effect_tooltip = GER_beutepanzer_38t_tt
+				hidden_effect = {
+					create_equipment_variant = {
+						name = "PzKpfw 38(t)"
+						type = ger_light_tank_chassis_p38
+						parent_version = 0
+						modules = {
+							main_armament_slot = tank_small_gun_2
+							turret_type_slot = tank_light_turret_2
+							suspension_type_slot = tank_bogie_suspension
+							armor_type_slot = tank_riveted_armor
+							engine_type_slot = tank_gasoline_engine
+						}
+						icon = "gfx/interface/technologies/tanks/ger/ger_cze_tank_2.dds"
+					}
+					add_equipment_to_stockpile = { type = ger_light_tank_chassis_p38 amount = 300 producer = GER variant_name = "PzKpfw 38(t)" }
+				}
+			}
+			else = {
+				custom_effect_tooltip = GER_beutepanzer_38t_missing_tt
+			}
 		}
 	}
 	
@@ -616,23 +723,22 @@ focus_tree = {
 		x = 2
 		y = 5
 		relative_position_id = GER_the_prussian_legacy
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
+			custom_effect_tooltip = GER_ersatzheer_law_tt
+			show_ideas_tooltip = GER_ersatzheer_law
+			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_initiative_factor = 0.1
-				tooltip = initiative_factor_tt
-			}
-
+			add_to_variable = { GER_military_mobilization_speed = 0.15 tooltip = mobilization_speed_tt }
 		}
 	}
 
-    focus = {
+	focus = {
 		id = GER_clean_the_tanks_with_croatian_soap
 		icon = GFX_ger_goal_heavy_tank
 		#prerequisite = { focus = GER_the_prussian_legacy focus = GER_adopt_new_panzer_doctrine }
@@ -642,19 +748,34 @@ focus_tree = {
 		x = 4
 		y = 5
 		relative_position_id = GER_the_prussian_legacy
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
+			add_tech_bonus = { name = GER_westwall_pioneers bonus = 0.5 uses = 1 category = support_tech }
+			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_initiative_factor = 0.1
-				tooltip = initiative_factor_tt
+			add_to_variable = { GER_military_max_dig_in_factor = 0.1 tooltip = max_dig_in_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_westwall_tt
+			hidden_effect = {
+				every_owned_state = {
+					limit = {
+						OR = { state = 42 state = 51 state = 978 }
+						is_controlled_by = ROOT
+						is_demilitarized_zone = no
+					}
+					add_building_construction = {
+						type = bunker
+						level = 2
+						instant_build = yes
+						province = { all_provinces = yes limit_to_border = yes }
+					}
+				}
 			}
-
 		}
 	}
 
@@ -668,23 +789,19 @@ focus_tree = {
 		x = 14
 		y = 5
 		relative_position_id = GER_the_prussian_legacy
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_initiative_factor = 0.1
-				tooltip = initiative_factor_tt
-			}
-
+			army_experience = 15
+			unlock_decision_tooltip = GER_issue_pervitin
 		}
 	}
 
-    focus = {
+	focus = {
 		id = GER_increase_tank_quality
 		icon = GFX_GER_panzer_doctrine
 		#prerequisite = { focus = GER_the_prussian_legacy focus = GER_adopt_new_panzer_doctrine }
@@ -694,19 +811,17 @@ focus_tree = {
 		x = 16
 		y = 5
 		relative_position_id = GER_the_prussian_legacy
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
+			add_tech_bonus = { name = GER_increase_tank_quality bonus = 0.75 uses = 1 category = armor }
+			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_initiative_factor = 0.1
-				tooltip = initiative_factor_tt
-			}
-
+			add_to_variable = { GER_military_army_armor_attack_factor = 0.05 tooltip = army_armor_attack_factor_tt }
 		}
 	}
 
@@ -731,9 +846,154 @@ focus_tree = {
 				GER_military_initiative_factor = 0.1
 				tooltip = initiative_factor_tt
 			}
-
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_auftragstaktik_trait_tt
+			hidden_effect = {
+				every_army_leader = {
+					limit = {
+						skill > 2
+						NOT = { has_trait = GER_auftragstaktik_trait }
+					}
+					add_unit_leader_trait = GER_auftragstaktik_trait
+				}
+			}
 		}
 	}
+
+	focus = {
+		id = GER_waffen_ss_primacy
+		icon = GFX_goal_generic_special_forces
+		prerequisite = { focus = GER_instill_auftragstaktik }
+		mutually_exclusive = { focus = GER_heer_primacy }
+		x = 5
+		y = 1
+		relative_position_id = GER_instill_auftragstaktik
+		cost = 3
+		ai_will_do = {
+			factor = 1
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			add_advisor_role = {
+				character = GER_paul_hausser
+				advisor = {
+					slot = high_command
+					cost = 150
+					can_be_fired = yes
+					idea_token = GER_hausser_ss_organiser
+					traits = { GER_trait_waffen_ss_organiser }
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_leibstandarte_tt
+			hidden_effect = {
+				division_template = {
+					name = "Leibstandarte SS Adolf Hitler"
+					is_locked = yes
+					division_cap = 2
+					regiments = {
+						mechanized = { x = 0 y = 0 }
+						mechanized = { x = 0 y = 1 }
+						mechanized = { x = 0 y = 2 }
+						motorized = { x = 1 y = 0 }
+						motorized = { x = 1 y = 1 }
+						motorized = { x = 1 y = 2 }
+						medium_armor = { x = 2 y = 0 }
+						medium_armor = { x = 2 y = 1 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						mot_recon = { x = 0 y = 1 }
+						anti_air = { x = 0 y = 2 }
+						logistics_company = { x = 0 y = 3 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Leibstandarte SS Adolf Hitler\" division_template = \"Leibstandarte SS Adolf Hitler\" start_experience_factor = 0.5 start_equipment_factor = 1"
+						officer = { name = GER_officer_sepp_dietrich portraits = { army = { large = GFX_portrait_GER_sepp_dietrich small = GFX_portrait_GER_sepp_dietrich_small } } }
+						owner = ROOT
+						count = 1
+					}
+				}
+				every_country_division = {
+					limit = { has_officer_name = GER_officer_sepp_dietrich }
+					add_history_entry = {
+						key = GER_leibstandarte_entry
+						allow = yes
+					}
+					add_unit_medal_to_latest_entry = { unit_medals = GER_close_combat_clasp }
+				}
+			}
+		}
+	}
+
+
+	focus = {
+		id = GER_heer_primacy
+		icon = GFX_goal_generic_army_tanks
+		prerequisite = { focus = GER_instill_auftragstaktik }
+		mutually_exclusive = { focus = GER_waffen_ss_primacy }
+		x = -5
+		y = 1
+		relative_position_id = GER_instill_auftragstaktik
+		cost = 3
+		ai_will_do = {
+			factor = 1
+		}
+
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER }
+
+		completion_reward = {
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_morale_factor = 0.05 tooltip = army_morale_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_grossdeutschland_tt
+			hidden_effect = {
+				division_template = {
+					name = "Großdeutschland"
+					is_locked = yes
+					division_cap = 3
+					regiments = {
+						mechanized = { x = 0 y = 0 }
+						mechanized = { x = 0 y = 1 }
+						mechanized = { x = 0 y = 2 }
+						mechanized = { x = 1 y = 0 }
+						mechanized = { x = 1 y = 1 }
+						mechanized = { x = 1 y = 2 }
+						medium_armor = { x = 2 y = 0 }
+						medium_armor = { x = 2 y = 1 }
+						medium_armor = { x = 2 y = 2 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						mot_recon = { x = 0 y = 1 }
+						anti_air = { x = 0 y = 2 }
+						logistics_company = { x = 0 y = 3 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Großdeutschland\" division_template = \"Großdeutschland\" start_experience_factor = 0.5 start_equipment_factor = 1"
+						officer = { name = GER_officer_hasso_von_manteuffel portraits = { army = { large = GFX_portrait_GER_hasso_von_manteuffel small = GFX_portrait_GER_hasso_von_manteuffel_small } } }
+						owner = ROOT
+						count = 1
+					}
+				}
+				every_country_division = {
+					limit = { has_officer_name = GER_officer_hasso_von_manteuffel }
+					add_history_entry = {
+						key = GER_grossdeutschland_entry
+						allow = yes
+					}
+					add_unit_medal_to_latest_entry = { unit_medals = GER_close_combat_clasp }
+				}
+			}
+		}
+	}
+
 	
 	focus = {
 		id = GER_establish_the_afrikakorps
@@ -938,7 +1198,7 @@ focus_tree = {
 		x = -2
 		y = 1
 		relative_position_id = GER_the_prussian_legacy
-		cost = 5
+		cost = 3
 		available = {
 		}
 
@@ -973,6 +1233,45 @@ focus_tree = {
 				uses = 1
 				category = mountaineers_tech
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_edelweiss_badge_unlocked_tt
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_gebirgs_division_tt
+			hidden_effect = {
+				division_template = {
+					name = "Gebirgs-Division"
+					regiments = {
+						mountaineers = { x = 0 y = 0 }
+						mountaineers = { x = 0 y = 1 }
+						mountaineers = { x = 0 y = 2 }
+						mountaineers = { x = 1 y = 0 }
+						mountaineers = { x = 1 y = 1 }
+						mountaineers = { x = 1 y = 2 }
+						artillery_brigade = { x = 2 y = 0 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						recon = { x = 0 y = 1 }
+						signal_company = { x = 0 y = 2 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"1. Gebirgs-Division\" division_template = \"Gebirgs-Division\" start_experience_factor = 0.5 start_equipment_factor = 1"
+						officer = { name = GER_officer_ludwig_kubler }
+						owner = ROOT
+						count = 1
+					}
+				}
+				every_country_division = {
+					limit = { has_officer_name = GER_officer_ludwig_kubler }
+					add_history_entry = {
+						key = GER_gebirgs_entry
+						allow = yes
+					}
+					add_unit_medal_to_latest_entry = { unit_medals = GER_edelweiss_badge }
+				}
+			}
 		}
 	}
 	
@@ -984,7 +1283,7 @@ focus_tree = {
 		x = 1
 		y = 1
 		relative_position_id = GER_instill_auftragstaktik
-		cost = 5
+		cost = 3
 		available = {
 		}
 
@@ -1048,7 +1347,7 @@ focus_tree = {
 		x = -1
 		y = 1
 		relative_position_id = GER_instill_auftragstaktik
-		cost = 5
+		cost = 3
 		available = {
 			has_war = yes
 			51 = {
@@ -1169,7 +1468,7 @@ focus_tree = {
 		x = 1
 		y = 1
 		relative_position_id = GER_panzergrenadier
-		cost = 5
+		cost = 3
 		available = {
 			has_war = yes
 		}
@@ -1251,7 +1550,7 @@ focus_tree = {
 		x = -1
 		y = 2
 		relative_position_id = GER_panzergrenadier
-		cost = 5
+		cost = 3
 		available = {
 			has_war = yes
 		}
@@ -1268,6 +1567,27 @@ focus_tree = {
 			add_to_variable = { 
 				GER_military_army_fuel_consumption_factor = -0.1
 				tooltip = army_fuel_consumption_factor_tt
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_otto_programm_tt
+			hidden_effect = {
+				build_railway = { level = 1 start_state = 64 target_state = 5 build_only_on_allied = yes }
+				if = {
+					limit = { 10 = { is_controlled_by = ROOT } }
+					build_railway = { level = 1 start_state = 64 target_state = 10 build_only_on_allied = yes }
+					if = {
+						limit = { 97 = { is_controlled_by = ROOT } }
+						build_railway = { level = 1 start_state = 10 target_state = 97 build_only_on_allied = yes }
+					}
+					if = {
+						limit = { 92 = { is_controlled_by = ROOT } }
+						build_railway = { level = 1 start_state = 10 target_state = 92 build_only_on_allied = yes }
+					}
+				}
+				if = {
+					limit = { 88 = { is_controlled_by = ROOT } }
+					build_railway = { level = 1 start_state = 66 target_state = 88 build_only_on_allied = yes }
+				}
 			}
 		}
 	}
@@ -6098,61 +6418,9 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			add_command_power = 25
-			army_experience = 15
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			hidden_effect = {
-				unlock_tactic = tactic_masterful_blitz
-			}
-			add_tech_bonus = {
-				name = GER_advanced_panzer_research
-				#ahead_reduction = 1
-				bonus = 0.5
-				uses = 1
-				category = cat_medium_armor
-			}
-			add_mastery_bonus = {
-				name = GER_adopt_new_panzer_doctrine
-				bonus = 0.1
-				days = 240
-				track = armor
-			}
-			add_mastery_bonus = {
-				name = GER_adopt_new_panzer_doctrine
-				bonus = 0.1
-				days = 240
-				track = infantry
-				grand_doctrine = new_mobile_warfare
-			}
-			add_mastery = {
-                amount = 50
-                track = armor
-            }
-            add_mastery = {
-                amount = 50
-                sub_doctrine = mobile_infantry
-            }
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.5
-				uses = 1
-				category = land_doctrine
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_heinz_guderian
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = heinz_guderian
-			show_unit_leaders_tooltip = GER_erwin_rommel
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = erwin_rommel
-
-			# custom_effect_tooltip = generic_skip_one_line_tt
-
+			add_doctrine_cost_reduction = { name = GER_adopt_new_panzer_doctrine cost_reduction = 0.25 uses = 1 category = land_doctrine }
+			army_experience = 20
+			add_mastery = { amount = 50 track = combat_support }
 		}
 	}
 
@@ -6174,61 +6442,12 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			add_command_power = 25
-			army_experience = 15
-
+			army_experience = 20
+			add_tech_bonus = { name = GER_Bewegungskrieg bonus = 0.5 uses = 1 category = cat_medium_armor }
+			add_mastery = { amount = 50 track = operations }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			hidden_effect = {
-				unlock_tactic = tactic_masterful_blitz
-			}
-			add_tech_bonus = {
-				name = GER_advanced_panzer_research
-				#ahead_reduction = 1
-				bonus = 0.5
-				uses = 1
-				category = cat_medium_armor
-			}
-			add_mastery_bonus = {
-				name = GER_adopt_new_panzer_doctrine
-				bonus = 0.1
-				days = 240
-				track = armor
-			}
-			add_mastery_bonus = {
-				name = GER_adopt_new_panzer_doctrine
-				bonus = 0.1
-				days = 240
-				track = infantry
-				grand_doctrine = new_mobile_warfare
-			}
-			add_mastery = {
-                amount = 50
-                track = armor
-            }
-            add_mastery = {
-                amount = 50
-                sub_doctrine = mobile_infantry
-            }
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.5
-				uses = 1
-				category = land_doctrine
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_heinz_guderian
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = heinz_guderian
-			show_unit_leaders_tooltip = GER_erwin_rommel
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = erwin_rommel
-
-			# custom_effect_tooltip = generic_skip_one_line_tt
-
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_armor_speed_factor = 0.05 tooltip = army_armor_speed_factor_tt }
 		}
 	}
 
@@ -6251,61 +6470,11 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			add_command_power = 25
-			army_experience = 15
-
+			army_experience = 20
+			add_tech_bonus = { name = GER_Schwere_Panzertruppen bonus = 0.75 uses = 1 category = cat_heavy_armor }
+			add_mastery = { amount = 50 track = armor }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			hidden_effect = {
-				unlock_tactic = tactic_masterful_blitz
-			}
-			add_tech_bonus = {
-				name = GER_advanced_panzer_research
-				#ahead_reduction = 1
-				bonus = 0.5
-				uses = 1
-				category = cat_medium_armor
-			}
-			add_mastery_bonus = {
-				name = GER_adopt_new_panzer_doctrine
-				bonus = 0.1
-				days = 240
-				track = armor
-			}
-			add_mastery_bonus = {
-				name = GER_adopt_new_panzer_doctrine
-				bonus = 0.1
-				days = 240
-				track = infantry
-				grand_doctrine = new_mobile_warfare
-			}
-			add_mastery = {
-                amount = 50
-                track = armor
-            }
-            add_mastery = {
-                amount = 50
-                sub_doctrine = mobile_infantry
-            }
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.5
-				uses = 1
-				category = land_doctrine
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_heinz_guderian
-			custom_effect_tooltip = available_theorist
-			show_ideas_tooltip = heinz_guderian
-			show_unit_leaders_tooltip = GER_erwin_rommel
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = erwin_rommel
-
-			# custom_effect_tooltip = generic_skip_one_line_tt
-
+			unlock_decision_tooltip = GER_raise_heavy_abteilung
 		}
 	}
 
@@ -6317,51 +6486,18 @@ completion_reward = {
 		x = 2
 		y = 1
 		relative_position_id = GER_Bewegungskrieg
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_light_tank_studies bonus = 0.75 uses = 1 category = cat_light_armor }
+			add_tech_bonus = { name = GER_light_tank_studies bonus = 0.5 uses = 1 category = cat_armored_cars }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			add_equipment_to_stockpile = { type = ger_light_tank_chassis_p1 amount = 150 producer = GER variant_name = "PzKpfw I A" }
+			add_equipment_to_stockpile = { type = ger_light_tank_chassis_p2 amount = 200 producer = GER variant_name = "PzKpfw II A" }
 		}
 	}
 
@@ -6380,44 +6516,14 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_early_mechanization_efforts bonus = 0.75 uses = 1 category = cat_mechanized_equipment }
+			add_tech_bonus = { name = GER_early_mechanization_efforts bonus = 0.5 uses = 1 category = motorized_equipment }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_mechanized_attack_factor = 0.05 tooltip = mechanized_attack_factor_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			add_equipment_to_stockpile = { type = mechanized_equipment_1 amount = 300 producer = GER }
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 800 producer = GER }
 		}
 	}
 
@@ -6436,44 +6542,11 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_Tiger_developments bonus = 1.0 uses = 1 category = cat_heavy_armor }
+			add_breakthrough_progress = { specialization = specialization_land value = 0.5 }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			custom_effect_tooltip = GER_tigerfibel_tech_tt
+			hidden_effect = { set_technology = { GER_tigerfibel_tech = 1 popup = no } }
 		}
 	}
 
@@ -6492,44 +6565,10 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_heavy_turret_developments bonus = 0.5 uses = 2 category = armor }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_armor_attack_factor = 0.05 tooltip = army_armor_attack_factor_tt }
 		}
 	}
 
@@ -6542,17 +6581,15 @@ completion_reward = {
 		x = -1
 		y = 2
 		relative_position_id = GER_Schwere_Panzertruppen
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			every_army_leader = {
-				add_attack = 1
-				add_logistics = -1
-			}
+			add_tech_bonus = { name = GER_increase_armor_quality bonus = 0.5 uses = 1 category = armor }
+			add_mastery = { amount = 50 track = armor }
 		}
 	}
 
@@ -6565,14 +6602,29 @@ completion_reward = {
 		x = 1
 		y = 2
 		relative_position_id = GER_Schwere_Panzertruppen
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-
+			if = {
+				limit = { has_character = GER_wilhelm_ritter_von_leeb }
+				GER_wilhelm_ritter_von_leeb = { add_unit_leader_trait = fortress_buster }
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_artillery_attack_factor = 0.05 tooltip = army_artillery_attack_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment_1 amount = 150 producer = GER }
+			if = {
+				limit = { has_dlc = "Gotterdammerung" }
+				custom_effect_tooltip = GER_karl_geraet_tt
+				hidden_effect = {
+					sp:sp_land_self_propelled_super_heavy_howitzer = { add_project_progress_ratio = 0.5 }
+				}
+			}
 		}
 	}
 	
@@ -6851,51 +6903,17 @@ completion_reward = {
 		x = 2
 		y = 1
 		relative_position_id = GER_Schwere_Panzertruppen
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			custom_effect_tooltip = GER_sturmgeschuetz_tech_tt
+			hidden_effect = { set_technology = { GER_sturmgeschuetz_tech = 1 popup = no } }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			add_tech_bonus = { name = GER_sturmpanzer_doctrine bonus = 0.5 uses = 1 category = cat_heavy_armor }
 		}
 	}
 
@@ -6914,44 +6932,10 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_Panzerkampfwagen_IV_A bonus = 1.0 uses = 1 category = cat_medium_armor }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			add_equipment_to_stockpile = { type = ger_medium_tank_chassis_p3 amount = 100 producer = GER variant_name = "PzKpfw III A" }
+			add_equipment_to_stockpile = { type = ger_medium_tank_chassis_p4 amount = 60 producer = GER variant_name = "PzKpfw IV A" }
 		}
 	}
 
@@ -6964,51 +6948,17 @@ completion_reward = {
 		x = 1
 		y = 1
 		relative_position_id = GER_Panzerkampfwagen_IV_A
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			custom_effect_tooltip = GER_sturmartillerie_regiments_tech_tt
+			hidden_effect = { set_technology = { GER_sturmartillerie_regiments_tech = 1 popup = no } }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			add_tech_bonus = { name = GER_SPG_regimental_force bonus = 0.5 uses = 1 category = artillery }
 		}
 	}
 
@@ -7027,59 +6977,28 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			every_army_leader = {
-				add_planning = 1
-				add_logistics = -1
-		    }
-        custom_effect_tooltip = generic_skip_one_line_tt
-		army_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_instill_auftragstaktik
-				cost_reduction = 0.25
-				uses = 1
-				category = land_doctrine
-			}
-			add_mastery = {
-                amount = 50
-                track = operations
-            }
-
-			#GER_modify_army_modifier = yes
-			#add_to_variable = { 
-			#	GER_military_initiative_factor = 0.1
-			#	tooltip = initiative_factor_tt
-			#}
-
+			add_doctrine_cost_reduction = { name = GER_Blitzkrieg cost_reduction = 0.25 uses = 1 category = land_doctrine }
+			army_experience = 25
+			every_army_leader = { add_planning = 1 add_logistics = -1 }
 			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_chief_of_army
-			show_ideas_tooltip = franz_halder
-
-			if = {
-				limit = {
-					has_character = GER_gerd_von_rundstedt
-					GER_gerd_von_rundstedt = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gerd_von_rundstedt = {
-					promote_leader = yes
-				}
-			}
-
-			if = {
-				limit = {
-					has_character = GER_gunther_von_kluge
-					GER_gunther_von_kluge = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gunther_von_kluge = {
-					promote_leader = yes
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_org_loss_when_moving = -0.05 tooltip = org_loss_when_moving_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_army_spirit_unlocked_tt
+			show_ideas_tooltip = GER_bewegungskrieg_army_spirit
+			custom_effect_tooltip = GER_panzer_assault_badge_unlocked_tt
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_advisor_role = {
+				character = GER_heinz_guderian
+				advisor = {
+					slot = high_command
+					cost = 150
+					can_be_fired = yes
+					idea_token = GER_guderian_inspector_of_panzer_troops
+					traits = { GER_trait_inspector_of_panzer_troops }
 				}
 			}
-		}	
+}	
 	}
 
 	focus = {
@@ -7096,57 +7015,25 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			every_army_leader = {
-				add_planning = 1
-				add_defense = -1
-		    }
-        custom_effect_tooltip = generic_skip_one_line_tt
-		army_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_instill_auftragstaktik
-				cost_reduction = 0.25
-				uses = 1
-				category = land_doctrine
-			}
-			add_mastery = {
-                amount = 50
-                track = operations
-            }
-			
-
-			#GER_modify_army_modifier = yes
-			#add_to_variable = { 
-			#	GER_military_initiative_factor = 0.1
-			#	tooltip = initiative_factor_tt
-			#}
-
+			add_doctrine_cost_reduction = { name = GER_Schwerpunkt cost_reduction = 0.25 uses = 1 category = land_doctrine }
+			army_experience = 25
+			every_army_leader = { add_planning = 1 add_defense = -1 }
 			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_chief_of_army
-			show_ideas_tooltip = franz_halder
-
-			if = {
-				limit = {
-					has_character = GER_gerd_von_rundstedt
-					GER_gerd_von_rundstedt = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gerd_von_rundstedt = {
-					promote_leader = yes
-				}
-			}
-
-			if = {
-				limit = {
-					has_character = GER_gunther_von_kluge
-					GER_gunther_von_kluge = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gunther_von_kluge = {
-					promote_leader = yes
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_coordination_bonus = 0.05 tooltip = coordination_bonus_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_army_spirit_unlocked_tt
+			show_ideas_tooltip = GER_schwerpunkt_army_spirit
+			custom_effect_tooltip = GER_close_combat_clasp_unlocked_tt
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_advisor_role = {
+				character = GER_erich_von_manstein
+				advisor = {
+					slot = high_command
+					cost = 150
+					can_be_fired = yes
+					idea_token = GER_manstein_sichelschnitt
+					traits = { GER_trait_sichelschnitt }
 				}
 			}
 		}
@@ -7167,59 +7054,16 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			every_army_leader = {
-				add_attack = 1
-				add_logistics = -1
-		    }
-		custom_effect_tooltip = generic_skip_one_line_tt
-		army_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_instill_auftragstaktik
-				cost_reduction = 0.25
-				uses = 1
-				category = land_doctrine
-			}
-			add_mastery = {
-                amount = 50
-                track = operations
-            }
-			
-
-			#GER_modify_army_modifier = yes
-			#add_to_variable = { 
-			#	GER_military_initiative_factor = 0.1
-			#	tooltip = initiative_factor_tt
-			#}
-
+			add_doctrine_cost_reduction = { name = GER_Vernichtungsgedanke cost_reduction = 0.25 uses = 1 category = land_doctrine }
+			army_experience = 25
+			every_army_leader = { add_attack = 1 add_logistics = -1 }
 			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_chief_of_army
-			show_ideas_tooltip = franz_halder
-
-			if = {
-				limit = {
-					has_character = GER_gerd_von_rundstedt
-					GER_gerd_von_rundstedt = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gerd_von_rundstedt = {
-					promote_leader = yes
-				}
-			}
-
-			if = {
-				limit = {
-					has_character = GER_gunther_von_kluge
-					GER_gunther_von_kluge = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gunther_von_kluge = {
-					promote_leader = yes
-				}
-			}
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_armor_attack_factor = 0.05 tooltip = army_armor_attack_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_army_spirit_unlocked_tt
+			show_ideas_tooltip = GER_vernichtungsgedanke_army_spirit
+			custom_effect_tooltip = GER_panzer_assault_badge_heavy_unlocked_tt
 		}
 	}
 
@@ -7238,61 +7082,17 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			every_army_leader = {
-				add_attack = 1
-				add_defense = 1
-				add_planning = -1
-				add_logistics = -1
-		    }
-        custom_effect_tooltip = generic_skip_one_line_tt
-		army_experience = 25
-			add_doctrine_cost_reduction = {
-				name = GER_instill_auftragstaktik
-				cost_reduction = 0.25
-				uses = 1
-				category = land_doctrine
-			}
-			add_mastery = {
-                amount = 50
-                track = operations
-            }
-			
-
-			#GER_modify_army_modifier = yes
-			#add_to_variable = { 
-			#	GER_military_initiative_factor = 0.1
-			#	tooltip = initiative_factor_tt
-			#}
-
+			add_doctrine_cost_reduction = { name = GER_Stellungskrieg cost_reduction = 0.25 uses = 1 category = land_doctrine }
+			army_experience = 25
+			every_army_leader = { add_attack = 1 add_defense = 1 add_planning = -1 add_logistics = -1 }
 			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_chief_of_army
-			show_ideas_tooltip = franz_halder
-
-			if = {
-				limit = {
-					has_character = GER_gerd_von_rundstedt
-					GER_gerd_von_rundstedt = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gerd_von_rundstedt = {
-					promote_leader = yes
-				}
-			}
-
-			if = {
-				limit = {
-					has_character = GER_gunther_von_kluge
-					GER_gunther_von_kluge = {
-						is_field_marshal = no
-					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				GER_gunther_von_kluge = {
-					promote_leader = yes
-				}
-			}
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_max_dig_in_factor = 0.1 tooltip = max_dig_in_factor_tt }
+			add_to_variable = { GER_military_army_infantry_defence_factor = 0.05 tooltip = army_infantry_defence_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_army_spirit_unlocked_tt
+			show_ideas_tooltip = GER_stellungskrieg_army_spirit
+			custom_effect_tooltip = GER_assault_badge_unlocked_tt
 		}
 	}
 
@@ -7305,51 +7105,17 @@ completion_reward = {
 		x = 3
 		y = 1
 		relative_position_id = GER_Panzerkampfwagen_IV_A
-		cost = 5
+		cost = 3
 		available = {
 		}
 
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_maintenance_crews bonus = 0.75 uses = 1 category = support_tech }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
-			}
+			GER_modify_army_modifier = yes
+			add_to_variable = { GER_military_army_fuel_consumption_factor = -0.05 tooltip = army_fuel_consumption_factor_tt }
 		}
 	}
 	
@@ -7368,43 +7134,50 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			army_experience = 15
-
-			add_tech_bonus = {
-				name = GER_panzer
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = mot_radio2
-			}
-
+			add_tech_bonus = { name = GER_panzer_troops_school bonus = 0.5 uses = 1 category = cat_medium_armor }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_adopt_new_panzer_doctrine
-				cost_reduction = 0.25
-				uses = 2
-				category = land_doctrine
-			}
-
-			add_mastery_bonus = {
-                name = GER_adopt_new_panzer_doctrine
-                bonus = 0.2
-                days = 720
-                track = armor
-            }
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			show_unit_leaders_tooltip = GER_hasso_von_manteuffel
-			show_unit_leaders_tooltip = GER_walther_nehring
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_army_modifier = yes			
-			add_to_variable = { 
-				GER_military_org_loss_when_moving = -0.1
-				tooltip = org_loss_when_moving_tt
+			custom_effect_tooltip = GER_panzer_lehr_tt
+			hidden_effect = {
+				division_template = {
+					name = "Panzer-Lehr-Division"
+					is_locked = yes
+					division_cap = 1
+					regiments = {
+						medium_armor = { x = 0 y = 0 }
+						medium_armor = { x = 0 y = 1 }
+						medium_armor = { x = 0 y = 2 }
+						medium_armor = { x = 0 y = 3 }
+						medium_armor = { x = 1 y = 0 }
+						medium_armor = { x = 1 y = 1 }
+						mechanized = { x = 2 y = 0 }
+						mechanized = { x = 2 y = 1 }
+						mechanized = { x = 2 y = 2 }
+						mechanized = { x = 2 y = 3 }
+					}
+					support = {
+						engineer = { x = 0 y = 0 }
+						mot_recon = { x = 0 y = 1 }
+						signal_company = { x = 0 y = 2 }
+						maintenance_company = { x = 0 y = 3 }
+						logistics_company = { x = 0 y = 4 }
+					}
+				}
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Panzer-Lehr-Division\" division_template = \"Panzer-Lehr-Division\" start_experience_factor = 0.75 start_equipment_factor = 1"
+						officer = { name = GER_officer_fritz_bayerlein portraits = { army = { large = GFX_portrait_GER_fritz_bayerlein small = GFX_portrait_GER_fritz_bayerlein_small } } }
+						owner = ROOT
+						count = 1
+					}
+				}
+				every_country_division = {
+					limit = { has_officer_name = GER_officer_fritz_bayerlein }
+					add_history_entry = {
+						key = GER_panzer_lehr_entry
+						allow = yes
+					}
+					add_unit_medal_to_latest_entry = { unit_medals = GER_close_combat_clasp }
+				}
 			}
 		}
 	}
@@ -7490,7 +7263,7 @@ completion_reward = {
 		x = 2
 		y = 1
 		relative_position_id = GER_adopt_new_panzer_doctrine
-		cost = 5
+		cost = 3
 		available = {
 			has_tech = radio
 		}
@@ -7552,6 +7325,9 @@ completion_reward = {
 					#unlock_mio_trait_tooltip = 
 				}
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_panzerjaeger_tech_tt
+			hidden_effect = { set_technology = { GER_panzerjaeger_tech = 1 popup = no } }
 		}
 	}
 	
@@ -7653,7 +7429,7 @@ completion_reward = {
 		x = 1
 		y = 1
 		relative_position_id = GER_advanced_panzer_research
-		cost = 5
+		cost = 3
 		available = {
 		}
 
@@ -7669,6 +7445,9 @@ completion_reward = {
 				GER_military_coordination_bonus = 0.05
 				tooltip = coordination_bonus_tt
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_flakpanzer_tech_tt
+			hidden_effect = { set_technology = { GER_flakpanzer_tech = 1 popup = no } }
 		}
 	}
 
@@ -14527,7 +14306,7 @@ completion_reward = {
 		}
 	}
 	
-		focus = {
+	focus = {
 		id = GER_reorganize_the_wehrmacht #von Ribbentrop
 
 		icon = GFX_GER_reorganize_the_wehrmacht
@@ -14766,7 +14545,7 @@ completion_reward = {
 			ITA= { add_ideas = ITA_GER_trade }
 		}
 	}
-		focus = {
+	focus = {
 		id = GER_anti_comintern_pact
 
 		icon = GFX_GER_anti_comitern_pact
