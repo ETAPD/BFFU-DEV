@@ -348,8 +348,11 @@ NDefines.NMilitary.UNIT_LEADER_TRAIT_SLOT_PER_LEVEL = { 			-- num extra traits o
 		0.35, -- navy general
 		0.0, -- operative
 	}
-NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_ON_DEPLOY = 7			-- Vanilla 3, scaled by HQ manpower -- flat 7 days to deploy a general on any HQ
-NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_MANPOWER_EXPONENT = 0	-- Vanilla 1.4 -- 0 removes the HQ-size scaling (also makes withdraw a flat 3 days)
+-- Army HQ deploy/withdraw time = max(MIN, base * (HQ manpower / REFERENCE_MANPOWER) ^ EXPONENT)
+-- A huge reference manpower makes the scaled part ~0 for any HQ, so the MIN values become the fixed times.
+NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_REFERENCE_MANPOWER = 100000000	-- Vanilla 2000
+NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_ON_DEPLOY_MIN = 7				-- Vanilla 1 -- flat 7 days to deploy an Army HQ of any size
+NDefines.NMilitary.UNIT_LEADER_MODIFIER_COOLDOWN_ON_WITHDRAW_MIN = 3			-- Vanilla 1 -- flat 3 days to withdraw
 
 NDefines.NAir.AIR_WING_MAX_STATS_ATTACK = 500
 NDefines.NAir.AIR_WING_MAX_STATS_DEFENCE = 300
