@@ -6577,3 +6577,144 @@ GER_propaganda_campaigns = {
 		}
 	}	
 }
+
+GER_wehrmacht_cat = {
+	GER_issue_pervitin = { #Panzerschokolade: a boost now, withdrawal after
+		icon = generic_army_support
+
+		allowed = { original_tag = GER }
+
+		visible = { has_completed_focus = GER_deliver_panzerschokolade }
+
+		cost = 25
+		days_remove = 120
+		days_re_enable = 60
+
+		modifier = {
+			army_morale_factor = 0.10
+			army_speed_factor = 0.05
+			org_loss_when_moving = -0.10
+		}
+
+		remove_effect = {
+			add_timed_idea = { idea = GER_pervitin_withdrawal days = 60 }
+		}
+
+		ai_will_do = { base = 1 }
+	}
+	GER_krupp_80cm_gun = { # Schwerer Gustav: ordered from Krupp, delivered a year later
+		icon = generic_industry
+
+		allowed = {
+			original_tag = GER
+			has_dlc = "No Step Back"
+		}
+
+		visible = { has_completed_focus = GER_artillery_bombardment }
+
+		available = {
+			date > 1940.1.1
+			has_tech = railway_gun
+		}
+
+		fire_only_once = yes
+		cost = 50
+		days_remove = 365
+
+		complete_effect = {
+			custom_effect_tooltip = GER_krupp_80cm_gun_order_tt
+		}
+
+		remove_effect = {
+			custom_effect_tooltip = GER_krupp_80cm_gun_delivered_tt
+			hidden_effect = {
+				if = {
+					limit = { has_dlc = "Gotterdammerung" }
+					if = {
+						limit = { NOT = { is_special_project_completed = sp:sp_land_super_heavy_railway_gun } }
+						complete_special_project = sp:sp_land_super_heavy_railway_gun
+					}
+					create_railway_gun = { equipment = super_heavy_railway_gun_equipment_1 name = "Schwerer Gustav" }
+				}
+				else = {
+					create_railway_gun = { equipment = railway_gun_equipment_1 name = "Schwerer Gustav" }
+				}
+			}
+		}
+
+		ai_will_do = { base = 1 }
+	}
+	GER_raise_heavy_abteilung = { # Heer heavy tank battalions 501-503
+		icon = generic_tank
+
+		allowed = { original_tag = GER }
+
+		visible = {
+			has_completed_focus = GER_Schwere_Panzertruppen
+			check_variable = { GER_heavy_abteilungen < 3 }
+		}
+
+		available = {
+			has_tech = ger_heavy_tank_1
+			command_power > 24
+		}
+
+		cost = 50
+		days_re_enable = 60
+
+		complete_effect = {
+			add_command_power = -25
+			custom_effect_tooltip = GER_raise_heavy_abteilung_tt
+			hidden_effect = {
+				if = {
+					limit = { NOT = { has_variable = GER_heavy_abteilungen } }
+					set_variable = { GER_heavy_abteilungen = 0 }
+					division_template = {
+						name = "schwere Panzer-Abteilung"
+						is_locked = yes
+						division_cap = 3
+						regiments = {
+							heavy_armor = { x = 0 y = 0 }
+							heavy_armor = { x = 0 y = 1 }
+							heavy_armor = { x = 0 y = 2 }
+						}
+						support = {
+							recon = { x = 0 y = 0 }
+							maintenance_company = { x = 0 y = 1 }
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { GER_heavy_abteilungen = 0 } }
+					capital_scope = {
+						create_unit = {
+							division = "name = \"schwere Panzer-Abteilung 501\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 0.3 start_equipment_factor = 1"
+							owner = ROOT
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { GER_heavy_abteilungen = 1 } }
+					capital_scope = {
+						create_unit = {
+							division = "name = \"schwere Panzer-Abteilung 502\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 0.3 start_equipment_factor = 1"
+							owner = ROOT
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { GER_heavy_abteilungen = 2 } }
+					capital_scope = {
+						create_unit = {
+							division = "name = \"schwere Panzer-Abteilung 503\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 0.3 start_equipment_factor = 1"
+							owner = ROOT
+						}
+					}
+				}
+				add_to_variable = { GER_heavy_abteilungen = 1 }
+			}
+		}
+
+		ai_will_do = { base = 1 }
+	}
+}
