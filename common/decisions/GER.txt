@@ -6579,29 +6579,6 @@ GER_propaganda_campaigns = {
 }
 
 GER_wehrmacht_cat = {
-	GER_issue_pervitin = { #Panzerschokolade: a boost now, withdrawal after
-		icon = generic_army_support
-
-		allowed = { original_tag = GER }
-
-		visible = { has_completed_focus = GER_deliver_panzerschokolade }
-
-		cost = 25
-		days_remove = 120
-		days_re_enable = 60
-
-		modifier = {
-			army_morale_factor = 0.10
-			army_speed_factor = 0.05
-			org_loss_when_moving = -0.10
-		}
-
-		remove_effect = {
-			add_timed_idea = { idea = GER_pervitin_withdrawal days = 60 }
-		}
-
-		ai_will_do = { base = 1 }
-	}
 	GER_krupp_80cm_gun = { # Schwerer Gustav: ordered from Krupp, delivered a year later
 		icon = generic_industry
 
@@ -6712,6 +6689,159 @@ GER_wehrmacht_cat = {
 					}
 				}
 				add_to_variable = { GER_heavy_abteilungen = 1 }
+			}
+		}
+
+		ai_will_do = { base = 1 }
+	}
+	GER_westwall_pionierprogramm = { # Westwall 1: army pioneers fortify the Rhine border
+		icon = generic_construction
+
+		allowed = { original_tag = GER }
+
+		visible = { has_completed_focus = GER_clean_the_tanks_with_croatian_soap }
+
+		available = {
+			42 = { is_demilitarized_zone = no }
+		}
+
+		fire_only_once = yes
+		cost = 25
+		days_remove = 60
+
+		complete_effect = {
+			custom_effect_tooltip = GER_westwall_pionierprogramm_tt
+		}
+
+		remove_effect = {
+			set_country_flag = GER_westwall_stage_1
+			hidden_effect = {
+				every_owned_state = {
+					limit = {
+						OR = { state = 42 state = 51 state = 978 }
+						is_controlled_by = ROOT
+						is_demilitarized_zone = no
+					}
+					add_building_construction = {
+						type = bunker
+						level = 1
+						instant_build = yes
+						province = { all_provinces = yes limit_to_border = yes }
+					}
+				}
+			}
+		}
+
+		ai_will_do = { base = 1 }
+	}
+
+	GER_westwall_limes = { # Westwall 2: Todt's Limes programme
+		icon = generic_construction
+
+		allowed = { original_tag = GER }
+
+		visible = { has_country_flag = GER_westwall_stage_1 }
+
+		available = {
+			date > 1938.5.1
+		}
+
+		fire_only_once = yes
+		cost = 50
+		days_remove = 120
+
+		modifier = {
+			production_speed_buildings_factor = -0.10
+		}
+
+		complete_effect = {
+			custom_effect_tooltip = GER_westwall_limes_tt
+		}
+
+		remove_effect = {
+			set_country_flag = GER_westwall_stage_2
+			hidden_effect = {
+				every_owned_state = {
+					limit = {
+						OR = { state = 42 state = 51 state = 978 }
+						is_controlled_by = ROOT
+						is_demilitarized_zone = no
+					}
+					add_building_construction = {
+						type = bunker
+						level = 2
+						instant_build = yes
+						province = { all_provinces = yes limit_to_border = yes }
+					}
+				}
+			}
+		}
+
+		ai_will_do = { base = 1 }
+	}
+
+	GER_westwall_lvz_west = { # Westwall 3: Luftverteidigungszone West
+		icon = generic_air
+
+		allowed = { original_tag = GER }
+
+		visible = { has_country_flag = GER_westwall_stage_1 }
+
+		available = {
+			date > 1938.6.1
+		}
+
+		fire_only_once = yes
+		cost = 35
+		days_remove = 90
+
+		complete_effect = {
+			custom_effect_tooltip = GER_westwall_lvz_west_tt
+		}
+
+		remove_effect = {
+			set_country_flag = GER_westwall_lvz_done
+			hidden_effect = {
+				every_owned_state = {
+					limit = {
+						OR = { state = 42 state = 51 state = 978 }
+						is_controlled_by = ROOT
+					}
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+		}
+
+		ai_will_do = { base = 1 }
+	}
+
+	GER_westwall_propaganda = { # Westwall 4: show it off
+		icon = generic_speech
+
+		allowed = { original_tag = GER }
+
+		visible = { has_country_flag = GER_westwall_stage_2 }
+
+		available = {
+			has_country_flag = GER_westwall_stage_2
+			has_country_flag = GER_westwall_lvz_done
+		}
+
+		fire_only_once = yes
+		cost = 25
+
+		complete_effect = {
+			add_war_support = 0.05
+			if = {
+				limit = {
+					country_exists = FRA
+					NOT = { FRA = { is_in_faction_with = ROOT } }
+				}
+				FRA = { add_war_support = -0.05 }
 			}
 		}
 

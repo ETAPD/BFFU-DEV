@@ -16,9 +16,8 @@
 
 
 GER_porsche_organization = {
-	include = generic_heavy_tank_organization
 	icon = GFX_idea_porsche
-	
+
 	allowed = {	
 		OR = {
 			original_tag = GER 
@@ -73,212 +72,229 @@ GER_porsche_organization = {
 				}
 			}
 		}
+		IF = {
+			limit = { FROM = { original_tag = GER } }
+			FROM = { has_completed_focus = GER_heavy_turret_developments }
+		}
+	}
+
+	equipment_type = { heavy_tank_chassis heavy_tank_destroyer_chassis heavy_assault_gun_chassis heavy_tank_artillery_chassis heavy_tank_aa_chassis heavy_tank_flame_chassis super_heavy_tank_chassis super_heavy_tank_destroyer_chassis super_heavy_assault_gun_chassis super_heavy_tank_artillery_chassis super_heavy_tank_aa_chassis }
+	research_categories = { mio_cat_tech_heavy_armor_and_modules }
+
+	tree_header_text = {
+		text = GER_mio_ps_header_safe
+		x = 1
 	}
 
 	tree_header_text = {
-		text = mio_header_engine_and_drive_system
-		x = 0.5
+		text = GER_mio_ps_header_gamble
+		x = 5
 	}
 
-	tree_header_text = {
-		text = mio_header_chassis
-		x = 4
-	}
+	initial_trait = {
+		name = GER_mio_initial_trait_porsche
 
-	tree_header_text = {
-		text = mio_header_guns_and_turret
-		x = 7
-	}
-
-	override_trait = {
-		token = generic_mio_trait_wide_tracks
-		
-		position = { x=0 y=0 }
-	}
-
-	override_trait = {
-		token = generic_mio_trait_one_piece_hull_side_coverings
-		
-		position = { x=3 y=0 }
-	}
-
-	override_trait = {
-		token = generic_mio_trait_improved_crew_ergonomics
-
-		position = { x=0 y=2 }
-	}
-
-	override_trait = {
-		token = generic_mio_trait_fully_cast_turret
-
-		position = { x=4 y=0 }
-	}
-
-	add_trait = {
-		token = GER_mio_trait_hoesch_facilities
-		name = GER_mio_trait_hoesch_facilities
-		icon = GFX_generic_mio_trait_icon_production_capacity
-		special_trait_background = yes
-
-		position = { x=@tank_hoesch_X y=@tank_hoesch_Y }
-
-		visible = {
-			FROM = { original_tag = GER }
+		equipment_bonus = {
+			armor_value = 0.03
+			reliability = -0.04
 		}
 
-		available = {
-			FROM = {
-				NOT = { has_country_flag = GER_hoesch_facilities_trait_taken_flag }
-			}
-		}
-
-		on_complete = {
-			custom_effect_tooltip = generic_trait_will_not_be_available_in_other_organizations
-			FROM = {
-				set_country_flag = GER_hoesch_facilities_trait_taken_flag
-			}
-		}
-
-		production_bonus = {
-			production_capacity_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.1
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_involve_porsche_in_special_projects
-		name = GER_mio_trait_involve_porsche_in_special_projects
-		icon = GFX_generic_mio_department_icon_facilities
-		special_trait_background = yes
+	trait = {
+		token = GER_mio_trait_ps_vk3001p
+		name = GER_mio_trait_ps_vk3001p
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_technology
+
+		position = { x=1 y=0 }
+
+		equipment_bonus = {
+			armor_value = 0.05
+			breakthrough = 0.03
+			reliability = -0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_conventional_drive
+		name = GER_mio_trait_ps_conventional_drive
+		icon = GFX_generic_mio_trait_icon_reliability
 
 		position = { x=0 y=1 }
-		relative_position_id = GER_mio_trait_hoesch_facilities
+		all_parents = { GER_mio_trait_ps_vk3001p }
+		mutually_exclusive = { GER_mio_trait_ps_petrol_electric }
 
-		visible = {
-			FROM = { original_tag = GER }
+		equipment_bonus = {
+			reliability = 0.05
 		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_petrol_electric
+		name = GER_mio_trait_ps_petrol_electric
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_engine
+
+		position = { x=2 y=1 }
+		all_parents = { GER_mio_trait_ps_vk3001p }
+		mutually_exclusive = { GER_mio_trait_ps_conventional_drive }
+
+		equipment_bonus = {
+			breakthrough = 0.06
+			maximum_speed = 0.03
+			reliability = -0.03
+			fuel_consumption = 0.1
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_vk4501p
+		name = GER_mio_trait_ps_vk4501p
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank
+
+		position = { x=7 y=2 }
+		any_parent = { GER_mio_trait_ps_conventional_drive GER_mio_trait_ps_petrol_electric }
+
+		equipment_bonus = {
+			armor_value = 0.06
+			hard_attack = 0.03
+			build_cost_ic = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_krupp_turret
+		name = GER_mio_trait_ps_krupp_turret
+		icon = GFX_generic_mio_trait_icon_defense
+
+		position = { x=3 y=2 }
+		any_parent = { GER_mio_trait_ps_conventional_drive GER_mio_trait_ps_petrol_electric }
+		mutually_exclusive = { GER_mio_trait_ps_l71_gun }
+
+		equipment_bonus = {
+			hard_attack = 0.04
+			defense = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_l71_gun
+		name = GER_mio_trait_ps_l71_gun
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_at
+
+		position = { x=5 y=2 }
+		any_parent = { GER_mio_trait_ps_conventional_drive GER_mio_trait_ps_petrol_electric }
+		mutually_exclusive = { GER_mio_trait_ps_krupp_turret }
+
+		equipment_bonus = {
+			hard_attack = 0.07
+			ap_attack = 0.06
+			reliability = -0.04
+			build_cost_ic = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_ferdinand_hulls
+		name = GER_mio_trait_ps_ferdinand_hulls
+		icon = GFX_generic_mio_trait_icon_armor_value
+
+		position = { x=6 y=3 }
+		any_parent = { GER_mio_trait_ps_krupp_turret GER_mio_trait_ps_l71_gun }
+
+		equipment_bonus = {
+			armor_value = 0.05
+			hard_attack = 0.03
+			maximum_speed = -0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_elefant_refit
+		name = GER_mio_trait_ps_elefant_refit
+		icon = GFX_generic_mio_trait_icon_soft_attack
+
+		position = { x=1 y=3 }
+		any_parent = { GER_mio_trait_ps_krupp_turret GER_mio_trait_ps_l71_gun }
+		mutually_exclusive = { GER_mio_trait_ps_heavier_plate }
+
+		equipment_bonus = {
+			soft_attack = 0.04
+			reliability = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_heavier_plate
+		name = GER_mio_trait_ps_heavier_plate
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_armor
+
+		position = { x=4 y=3 }
+		any_parent = { GER_mio_trait_ps_krupp_turret GER_mio_trait_ps_l71_gun }
+		mutually_exclusive = { GER_mio_trait_ps_elefant_refit }
+
+		equipment_bonus = {
+			armor_value = 0.08
+			hardness = 0.03
+			maximum_speed = -0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_command_tanks
+		name = GER_mio_trait_ps_command_tanks
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_quality
+
+		position = { x=2 y=4 }
+		all_parents = { GER_mio_trait_ps_conventional_drive GER_mio_trait_ps_krupp_turret GER_mio_trait_ps_elefant_refit }
+
+		equipment_bonus = {
+			reliability = 0.05
+			defense = 0.05
+			breakthrough = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_ps_maus
+		name = GER_mio_trait_ps_maus
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_armor
+
+		position = { x=5 y=4 }
+		all_parents = { GER_mio_trait_ps_petrol_electric GER_mio_trait_ps_l71_gun GER_mio_trait_ps_heavier_plate }
+
+		equipment_bonus = {
+			armor_value = 0.08
+			hardness = 0.04
+			hard_attack = 0.03
+			maximum_speed = -0.05
+			fuel_consumption = 0.1
+			build_cost_ic = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_involve_porsche_in_special_projects
+		name = GER_mio_trait_involve_porsche_in_special_projects
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_technology
+
+		position = { x=7 y=0 }
 
 		available = {
 			has_mio_size > 4
 		}
 
-		on_complete = {
-			custom_effect_tooltip = {
-				localization_key = available_scientist_one_line_tt
-				CHARACTER = GER_ferdinand_porsche
-			}
-		}
-
 		organization_modifier = {
-			military_industrial_organization_research_bonus = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-		}
-	}
-
-	add_trait = {
-		token = GER_mio_trait_multi_role_tanks
-		name = GER_mio_trait_multi_role_tanks
-		icon = GFX_generic_mio_department_icon_tank_heavy_tank_aa
-		special_trait_background = yes
-
-		position = { x=2 y=0 }
-		relative_position_id = generic_mio_trait_one_piece_hull_side_coverings
-
-		visible = {
-			FROM = { original_tag = GER }
-		}
-
-		available = {
-		}
-
-		equipment_bonus = {
-			soft_attack = 0.05
-			air_attack = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-		}
-	}
-
-	add_trait = {
-		token = GER_mio_trait_anti_tank_specialization
-		name = GER_mio_trait_anti_tank_specialization
-		icon = GFX_generic_mio_department_icon_tank_heavy_tank_at
-		special_trait_background = yes
-
-		all_parents = {
-            generic_mio_trait_one_piece_hull_side_coverings
-            GER_mio_trait_multi_role_tanks
-        }
-
-		position = { x=1 y=1 }
-		relative_position_id = generic_mio_trait_one_piece_hull_side_coverings
-
-		visible = {
-			FROM = { original_tag = GER }
-		}
-
-		available = {
-		}
-
-		equipment_bonus = {
-			hard_attack = 0.05
-			ap_attack = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-		}
-	}
-
-	add_trait = {
-		token = GER_mio_trait_unorthodox_transmission_design
-		name = GER_mio_trait_unorthodox_transmission_design
-		icon = GFX_generic_mio_department_icon_tank_heavy_tank_engine
-		special_trait_background = yes
-
-		all_parents = {
-            generic_mio_trait_simplified_transmission_system
-        }
-
-		position = { x=-1 y=1 }
-		relative_position_id = generic_mio_trait_simplified_transmission_system
-
-		visible = {
-			FROM = { original_tag = GER }
-		}
-
-		available = {
-			
-		}
-
-		limit_to_equipment_type = { 
-			armor
-		}
-
-		equipment_bonus = {
-			maximum_speed = 0.05
-			reliability = -0.02
-		}
-
-		ai_will_do = {
-			base = 2
+			military_industrial_organization_research_bonus = 0.1
 		}
 	}
 }
 
 GER_henschel_organization = {
-	#include = generic_pmfu_light_tank_organization
-	include = generic_infantry_tank_organization
 	icon = GFX_idea_henschel
-	
+
 	allowed = {	
 		OR = {
 			original_tag = GER 
@@ -299,7 +315,7 @@ GER_henschel_organization = {
 			original_tag = YUG
 		}
 	}
-	
+
 	visible = {
 		IF = {
 			limit = { FROM = { original_tag = ETH } }
@@ -362,78 +378,204 @@ GER_henschel_organization = {
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_hoesch_facilities
-		name = GER_mio_trait_hoesch_facilities
-		icon = GFX_generic_mio_trait_icon_production_capacity
-		special_trait_background = yes
+	equipment_type = { armor }
+	research_categories = { mio_cat_tech_all_armor_and_modules }
 
-		position = { x=@tank_hoesch_X y=@tank_hoesch_Y }  
-		
-		visible = {
-			FROM = { original_tag = GER }
-		}
+	tree_header_text = {
+		text = GER_mio_hs_header
+		x = 3
+	}
 
-		available = {
-			FROM = {
-				NOT = { has_country_flag = GER_hoesch_facilities_trait_taken_flag }
-			}
-		}
+	initial_trait = {
+		name = GER_mio_initial_trait_henschel
 
-		on_complete = {
-			custom_effect_tooltip = generic_trait_will_not_be_available_in_other_organizations
-			FROM = {
-				set_country_flag = GER_hoesch_facilities_trait_taken_flag
-			}
-		}
-
-		production_bonus = {
-			production_capacity_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
+		equipment_bonus = {
+			reliability = 0.02
 		}
 	}
 
-	add_trait = {
+	trait = {
+		token = GER_mio_trait_hs_maybach_engines
+		name = GER_mio_trait_hs_maybach_engines
+		icon = GFX_generic_mio_department_icon_tank_general_engine
+
+		position = { x=0 y=0 }
+		mutually_exclusive = { GER_mio_trait_hs_low_revving_engines }
+
+		equipment_bonus = {
+			breakthrough = 0.04
+			maximum_speed = 0.03
+			fuel_consumption = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_low_revving_engines
+		name = GER_mio_trait_hs_low_revving_engines
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=2 y=0 }
+		mutually_exclusive = { GER_mio_trait_hs_maybach_engines }
+
+		equipment_bonus = {
+			soft_attack = 0.03
+			reliability = 0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_krupp_plate
+		name = GER_mio_trait_hs_krupp_plate
+		icon = GFX_generic_mio_trait_icon_armor_value
+
+		position = { x=4 y=0 }
+		mutually_exclusive = { GER_mio_trait_hs_dillinger_plate }
+
+		equipment_bonus = {
+			hard_attack = 0.04
+			armor_value = 0.03
+			build_cost_ic = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_dillinger_plate
+		name = GER_mio_trait_hs_dillinger_plate
+		icon = GFX_generic_mio_trait_icon_hardness
+
+		position = { x=6 y=0 }
+		mutually_exclusive = { GER_mio_trait_hs_krupp_plate }
+
+		equipment_bonus = {
+			soft_attack = 0.04
+			hardness = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_torsion_bars
+		name = GER_mio_trait_hs_torsion_bars
+		icon = GFX_generic_mio_department_icon_tank_general_quality
+
+		position = { x=1 y=1 }
+		any_parent = { GER_mio_trait_hs_maybach_engines GER_mio_trait_hs_low_revving_engines }
+
+		equipment_bonus = {
+			breakthrough = 0.05
+			reliability = 0.01
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_welded_hulls
+		name = GER_mio_trait_hs_welded_hulls
+		icon = GFX_generic_mio_department_icon_tank_general_armor
+
+		position = { x=3 y=1 }
+		any_parent = { GER_mio_trait_hs_low_revving_engines GER_mio_trait_hs_krupp_plate }
+
+		equipment_bonus = {
+			hard_attack = 0.04
+			soft_attack = 0.03
+			maximum_speed = -0.01
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_cast_mantlets
+		name = GER_mio_trait_hs_cast_mantlets
+		icon = GFX_generic_mio_trait_icon_breakthrough
+
+		position = { x=5 y=1 }
+		any_parent = { GER_mio_trait_hs_krupp_plate GER_mio_trait_hs_dillinger_plate }
+
+		equipment_bonus = {
+			hard_attack = 0.03
+			breakthrough = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_tzf_sights
+		name = GER_mio_trait_hs_tzf_sights
+		icon = GFX_generic_mio_trait_icon_soft_attack
+
+		position = { x=2 y=2 }
+		all_parents = { GER_mio_trait_hs_torsion_bars GER_mio_trait_hs_welded_hulls }
+
+		equipment_bonus = {
+			soft_attack = 0.04
+			hard_attack = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_high_velocity_rounds
+		name = GER_mio_trait_hs_high_velocity_rounds
+		icon = GFX_generic_mio_trait_icon_ap_attack
+
+		position = { x=4 y=2 }
+		all_parents = { GER_mio_trait_hs_welded_hulls GER_mio_trait_hs_cast_mantlets }
+
+		equipment_bonus = {
+			ap_attack = 0.04
+			defense = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_tigerfibel
+		name = GER_mio_trait_hs_tigerfibel
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=2 y=3 }
+		any_parent = { GER_mio_trait_hs_tzf_sights GER_mio_trait_hs_high_velocity_rounds }
+		mutually_exclusive = { GER_mio_trait_hs_uberschwer }
+
+		equipment_bonus = {
+			reliability = 0.05
+			defense = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_hs_uberschwer
+		name = GER_mio_trait_hs_uberschwer
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_armor
+
+		position = { x=4 y=3 }
+		any_parent = { GER_mio_trait_hs_tzf_sights GER_mio_trait_hs_high_velocity_rounds }
+		mutually_exclusive = { GER_mio_trait_hs_tigerfibel }
+
+		equipment_bonus = {
+			armor_value = 0.07
+			hardness = 0.02
+			defense = 0.03
+			maximum_speed = -0.02
+			build_cost_ic = 0.02
+		}
+	}
+
+	trait = {
 		token = GER_mio_trait_involve_henschel_in_special_projects
 		name = GER_mio_trait_involve_henschel_in_special_projects
-		icon = GFX_generic_mio_department_icon_facilities
-		special_trait_background = yes
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_technology
 
-		position = { x=0 y=1 }
-		relative_position_id = GER_mio_trait_hoesch_facilities
-
-		visible = {
-			FROM = { original_tag = GER }
-		}
+		position = { x=8 y=0 }
 
 		available = {
 			has_mio_size > 4
 		}
 
-		on_complete = {
-			custom_effect_tooltip = {
-				localization_key = available_scientist_one_line_tt
-				CHARACTER = GER_erwin_aders
-			}
-		}
-
 		organization_modifier = {
 			military_industrial_organization_research_bonus = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
 		}
 	}
 }
 
 GER_man_organization = {
-	include = axis_medium_tank_organization
 	icon = GFX_idea_GER_MAN
-	
+
 	allowed = {	
 		OR = {
 			original_tag = GER 
@@ -443,7 +585,7 @@ GER_man_organization = {
 			}
 		}
 	}
-	
+
 	available = {
 		# When in a Foreign MIO, countries need to be at peace with original country
 		IF = {
@@ -452,304 +594,824 @@ GER_man_organization = {
 			}
 #			FROM = { NOT = { has_war_with = GER } }
 		}
+		IF = {
+			limit = { FROM = { original_tag = GER } }
+			FROM = { has_completed_focus = GER_advanced_panzer_research }
+		}
+	}
+
+	equipment_type = { mio_cat_eq_all_medium_tank medium_tank_destroyer_chassis }
+	research_categories = { mio_cat_tech_medium_armor_and_modules }
+
+	tree_header_text = {
+		text = GER_mio_man_header_hull
+		x = 1
 	}
 
 	tree_header_text = {
-		text = mio_header_design
+		text = GER_mio_man_header_gun
+		x = 6
+	}
+
+	tree_header_text = {
+		text = GER_mio_man_header_fixes
 		x = 3
 	}
 
-	tree_header_text = {
-		text = mio_header_engines
-		x = 8
-	}
+	initial_trait = {
+		name = GER_mio_initial_trait_man
 
-	override_trait = {
-		token = generic_mio_trait_armor_steel_working
-
-		position = { x=4 y=0 }
-	}
-
-	add_trait = {
-		token = GER_mio_trait_hoesch_facilities
-		name = GER_mio_trait_hoesch_facilities
-		icon = GFX_generic_mio_trait_icon_production_capacity
-		special_trait_background = yes
-
-		position = { x=@tank_hoesch_X y=@tank_hoesch_Y }  
-		
-		visible = {
-			FROM = { original_tag = GER }
-		}
-
-		available = {
-			FROM = {
-				NOT = { has_country_flag = GER_hoesch_facilities_trait_taken_flag }
-			}
-		}
-
-		on_complete = {
-			custom_effect_tooltip = generic_trait_will_not_be_available_in_other_organizations
-			FROM = {
-				set_country_flag = GER_hoesch_facilities_trait_taken_flag
-			}
-		}
-
-		production_bonus = {
-			production_capacity_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-		}
-	}
-
-	add_trait = {
-		token = GER_mio_trait_high_velocity_armament
-		name = GER_mio_trait_high_velocity_armament
-		icon = GFX_generic_mio_department_icon_tank_general_at
-		special_trait_background = yes
-
-		position = { x=0 y=1 }
-		relative_position_id = generic_mio_trait_specialist_shells
-
-
-		any_parent = { generic_mio_trait_specialist_shells generic_mio_trait_improved_gun_metallurgy }
-		
-		available = {
-		}
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
 
 		equipment_bonus = {
-			soft_attack = 0.03
-			hard_attack = 0.03
-			ap_attack = 0.03
-		}
-
-		ai_will_do = {
-			base = 2
+			hard_attack = 0.04
+			breakthrough = 0.02
+			reliability = -0.08
+			build_cost_ic = 0.03
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_schachtellaufwerk 
-		name = GER_mio_trait_schachtellaufwerk 
-		icon = GFX_generic_mio_trait_icon_fuel_consumption
-		special_trait_background = yes
+	trait = {
+		token = GER_mio_trait_man_sloped_hull
+		name = GER_mio_trait_man_sloped_hull
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_armor
 
-		position = { x=0 y=1 }
-		relative_position_id = generic_mio_trait_efficient_fuel_engines
+		position = { x=0 y=0 }
+		mutually_exclusive = { GER_mio_trait_man_conventional_hull }
 
-		all_parents = { generic_mio_trait_efficient_fuel_engines }
-
-		
-		available = {
-		}
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
 
 		equipment_bonus = {
-			fuel_capacity = 0.05
-			build_cost_ic = 0.05
-		}
-		
-
-		ai_will_do = {
-			base = 2
+			armor_value = 0.05
+			maximum_speed = -0.02
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_mobility_design_philosophy
-		name = GER_mio_trait_mobility_design_philosophy 
-		icon = GFX_generic_mio_department_icon_tank_medium_tank_engine
-		special_trait_background = yes
+	trait = {
+		token = GER_mio_trait_man_conventional_hull
+		name = GER_mio_trait_man_conventional_hull
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=2 y=0 }
+		mutually_exclusive = { GER_mio_trait_man_sloped_hull }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.04
+			defense = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_kwk42
+		name = GER_mio_trait_man_kwk42
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_at
+
+		position = { x=5 y=0 }
+		mutually_exclusive = { GER_mio_trait_man_kwk43 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank medium_tank_destroyer_chassis }
+
+		equipment_bonus = {
+			hard_attack = 0.05
+			ap_attack = 0.06
+			soft_attack = -0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_kwk43
+		name = GER_mio_trait_man_kwk43
+		icon = GFX_generic_mio_trait_icon_hard_attack
+
+		position = { x=7 y=0 }
+		mutually_exclusive = { GER_mio_trait_man_kwk42 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank medium_tank_destroyer_chassis }
+
+		equipment_bonus = {
+			hard_attack = 0.07
+			ap_attack = 0.04
+			reliability = -0.03
+			build_cost_ic = 0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_ausf_d
+		name = GER_mio_trait_man_ausf_d
+		icon = GFX_generic_mio_department_icon_tank_medium_tank
 
 		position = { x=1 y=1 }
-		relative_position_id = generic_mio_trait_improved_suspension
+		any_parent = { GER_mio_trait_man_sloped_hull GER_mio_trait_man_conventional_hull }
 
-		all_parents = { generic_mio_trait_improved_suspension }
-
-		
-		available = {
-		}
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
 
 		equipment_bonus = {
+			breakthrough = 0.03
+			reliability = -0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_jagdpanther
+		name = GER_mio_trait_man_jagdpanther
+		icon = GFX_generic_mio_trait_icon_ap_attack
+
+		position = { x=6 y=1 }
+		any_parent = { GER_mio_trait_man_kwk42 GER_mio_trait_man_kwk43 }
+
+		limit_to_equipment_type = { medium_tank_destroyer_chassis }
+
+		equipment_bonus = {
+			hard_attack = 0.05
+			ap_attack = 0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_ausf_a
+		name = GER_mio_trait_man_ausf_a
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_quality
+
+		position = { x=3 y=2 }
+		all_parents = { GER_mio_trait_man_ausf_d GER_mio_trait_man_jagdpanther }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.04
+			defense = 0.02
+			soft_attack = 0.01
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_final_drive
+		name = GER_mio_trait_man_final_drive
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=1 y=3 }
+		all_parents = { GER_mio_trait_man_ausf_a }
+		mutually_exclusive = { GER_mio_trait_man_engine_fires }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.08
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_engine_fires
+		name = GER_mio_trait_man_engine_fires
+		icon = GFX_generic_mio_trait_icon_maximum_speed
+
+		position = { x=3 y=3 }
+		all_parents = { GER_mio_trait_man_ausf_a }
+		mutually_exclusive = { GER_mio_trait_man_final_drive }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.03
 			maximum_speed = 0.05
 		}
+	}
 
-		ai_will_do = {
-			base = 2
+	trait = {
+		token = GER_mio_trait_man_bergepanther
+		name = GER_mio_trait_man_bergepanther
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_engine
+
+		position = { x=6 y=2 }
+		all_parents = { GER_mio_trait_man_ausf_a }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_ausf_g
+		name = GER_mio_trait_man_ausf_g
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_engine
+
+		position = { x=3 y=4 }
+		any_parent = { GER_mio_trait_man_final_drive GER_mio_trait_man_engine_fires GER_mio_trait_man_schmalturm GER_mio_trait_man_infrared }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			breakthrough = 0.04
+			maximum_speed = 0.02
+			hardness = 0.02
+			build_cost_ic = -0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_schmalturm
+		name = GER_mio_trait_man_schmalturm
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_weapons
+
+		position = { x=5 y=3 }
+		all_parents = { GER_mio_trait_man_ausf_a }
+		mutually_exclusive = { GER_mio_trait_man_infrared }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hard_attack = 0.06
+			ap_attack = 0.03
+			defense = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_infrared
+		name = GER_mio_trait_man_infrared
+		icon = GFX_generic_mio_trait_icon_soft_attack
+
+		position = { x=7 y=3 }
+		all_parents = { GER_mio_trait_man_ausf_a }
+		mutually_exclusive = { GER_mio_trait_man_schmalturm }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			soft_attack = 0.05
+			hard_attack = 0.03
+			defense = 0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_man_panther_ii
+		name = GER_mio_trait_man_panther_ii
+		icon = GFX_generic_mio_department_icon_tank_medium_tank
+
+		position = { x=6 y=4 }
+		all_parents = { GER_mio_trait_man_ausf_g }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hard_attack = 0.08
+			soft_attack = 0.04
+			breakthrough = 0.08
+			defense = 0.03
+			reliability = 0.02
+			build_cost_ic = 0.02
+		}
+	}
+}
+
+GER_krupp_organization = {
+	icon = GFX_idea_krupp
+
+	allowed = {
+		original_tag = GER
+	}
+
+	available = {
+		FROM = { has_completed_focus = GER_Panzerkampfwagen_IV_A }
+	}
+
+	equipment_type = { mio_cat_eq_all_medium_tank medium_tank_aa_chassis }
+	research_categories = { mio_cat_tech_medium_armor_and_modules }
+
+	tree_header_text = {
+		text = GER_mio_kr_header_gun
+		x = 1
+	}
+
+	tree_header_text = {
+		text = GER_mio_kr_header_turret
+		x = 4
+	}
+
+	tree_header_text = {
+		text = GER_mio_kr_header_flak
+		x = 6
+	}
+
+	initial_trait = {
+		name = GER_mio_initial_trait_krupp
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			soft_attack = 0.04
+			reliability = -0.02
+		}
+
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_begleitwagen
+		name = GER_mio_trait_kr_begleitwagen
+		icon = GFX_generic_mio_department_icon_tank_medium_tank
+
+		position = { x=1 y=0 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			soft_attack = 0.05
+			breakthrough = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_kwk37
+		name = GER_mio_trait_kr_kwk37
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_weapons
+
+		position = { x=0 y=1 }
+		all_parents = { GER_mio_trait_kr_begleitwagen }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			soft_attack = 0.05
+			hard_attack = -0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_hardened_turret
+		name = GER_mio_trait_kr_hardened_turret
+		icon = GFX_generic_mio_trait_icon_hardness
+
+		position = { x=4 y=0 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hardness = 0.03
+			armor_value = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_kwk40_43
+		name = GER_mio_trait_kr_kwk40_43
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_at
+
+		position = { x=2 y=2 }
+		all_parents = { GER_mio_trait_kr_kwk37 GER_mio_trait_kr_hardened_turret }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hard_attack = 0.07
+			ap_attack = 0.06
+			soft_attack = -0.03
+			reliability = -0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_cupola
+		name = GER_mio_trait_kr_cupola
+		icon = GFX_generic_mio_trait_icon_breakthrough
+
+		position = { x=4 y=1 }
+		all_parents = { GER_mio_trait_kr_hardened_turret }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			breakthrough = 0.05
+			defense = 0.02
+			build_cost_ic = 0.01
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_kwk40_48
+		name = GER_mio_trait_kr_kwk40_48
+		icon = GFX_generic_mio_trait_icon_ap_attack
+
+		position = { x=1 y=3 }
+		all_parents = { GER_mio_trait_kr_kwk40_43 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hard_attack = 0.04
+			ap_attack = 0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_electric_traverse
+		name = GER_mio_trait_kr_electric_traverse
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_quality
+
+		position = { x=5 y=2 }
+		all_parents = { GER_mio_trait_kr_cupola }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			breakthrough = 0.03
+			hard_attack = 0.02
+			reliability = -0.02
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_ausf_h
+		name = GER_mio_trait_kr_ausf_h
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=2 y=4 }
+		all_parents = { GER_mio_trait_kr_kwk40_48 GER_mio_trait_kr_electric_traverse }
+		mutually_exclusive = { GER_mio_trait_kr_ausf_j }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.08
+			defense = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_ausf_j
+		name = GER_mio_trait_kr_ausf_j
+		icon = GFX_generic_mio_trait_icon_fuel_consumption
+
+		position = { x=4 y=4 }
+		all_parents = { GER_mio_trait_kr_kwk40_48 GER_mio_trait_kr_electric_traverse }
+		mutually_exclusive = { GER_mio_trait_kr_ausf_h }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			fuel_consumption = -0.15
+			maximum_speed = 0.03
+			reliability = -0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_kr_mobelwagen
+		name = GER_mio_trait_kr_mobelwagen
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_aa
+
+		position = { x=6 y=0 }
+		all_parents = { GER_mio_trait_kr_hardened_turret }
+
+		limit_to_equipment_type = { medium_tank_aa_chassis }
+
+		equipment_bonus = {
+			air_attack = 0.12
+			maximum_speed = -0.03
 		}
 	}
 }
 
 #Alkett
 GER_alkett_organization = {
-	include = generic_assault_guns_organization
 	icon = GFX_idea_GER_alkett
-	
+
 	allowed = {	
 		original_tag = GER 
 	}
 
+	equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis light_tank_destroyer_chassis }
+	research_categories = { mio_cat_tech_all_armor_and_modules mio_cat_all_artillery_equipment }
+
 	tree_header_text = {
-		text = mio_header_light_tank_department
+		text = GER_mio_al_header_stug
 		x = 1
 	}
 
 	tree_header_text = {
-		text = mio_header_medium_tank_department
-		x = 4
+		text = GER_mio_al_header_works
+		x = 3
 	}
 
 	tree_header_text = {
-		text = mio_header_heavy_tank_department
-		x = 7
+		text = GER_mio_al_header_spg
+		x = 5
 	}
 
-	override_trait = {
-		token = generic_mio_medium_assault_gun_rocket_tubes
-
-		mutually_exclusive = { GER_mio_trait_panzerjager }	
+	tree_header_text = {
+		text = GER_mio_al_header_marder
+		x = 9
 	}
 
-	
-	add_trait = {
-		token = GER_mio_trait_hoesch_facilities
-		name = GER_mio_trait_hoesch_facilities
-		icon = GFX_generic_mio_trait_icon_production_capacity
-		special_trait_background = yes
-		
-		position = { x=@tank_hoesch_X y=@tank_hoesch_Y }  
+	initial_trait = {
+		name = GER_mio_initial_trait_alkett
 
-		visible = {
-			FROM = { original_tag = GER }
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+
+		equipment_bonus = {
+			maximum_speed = 0.04
+			defense = 0.025
 		}
 
-		available = {
-			FROM = {
-				NOT = { has_country_flag = GER_hoesch_facilities_trait_taken_flag }
-			}
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.5
 		}
+	}
 
-		on_complete = {
-			custom_effect_tooltip = generic_trait_will_not_be_available_in_other_organizations
-			FROM = {
-				set_country_flag = GER_hoesch_facilities_trait_taken_flag
-			}
+	trait = {
+		token = GER_mio_trait_al_stug_a
+		name = GER_mio_trait_al_stug_a
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_spg
+
+		position = { x=1 y=0 }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
+
+		equipment_bonus = {
+			soft_attack = 0.07
+			armor_value = 0.085
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_workshops
+		name = GER_mio_trait_al_workshops
+		icon = GFX_generic_mio_trait_icon_efficiency_gain
+
+		position = { x=3 y=0 }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+
+		equipment_bonus = {
+			reliability = 0.07
 		}
 
 		production_bonus = {
-			production_capacity_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
+			production_efficiency_gain_factor = 0.15
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_panzerjager
-		name = GER_mio_trait_panzerjager
-		icon = GFX_generic_mio_department_icon_tank_general_at
-		special_trait_background = yes 
+	trait = {
+		token = GER_mio_trait_al_stug_mass_production
+		name = GER_mio_trait_al_stug_mass_production
+		icon = GFX_generic_mio_trait_icon_production_capacity
 
-		position = { x = 0 y = 1 }
-		relative_position_id = generic_mio_medium_assault_gun_75_mm_43M_tank_gun
+		position = { x=3 y=1 }
+		all_parents = { GER_mio_trait_al_workshops }
+		mutually_exclusive = { GER_mio_trait_al_continuous_development }
 
-		all_parents = { generic_mio_medium_assault_gun_75_mm_43M_tank_gun }
-
-		visible = {
-			FROM = { original_tag = GER }
-		}
-
-		available = {
-			FROM = {
-				has_tech = antitank2
-			}
-		}
-
-		mutually_exclusive = { generic_mio_medium_assault_gun_rocket_tubes }
-
-		limit_to_equipment_type = { medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
 
 		equipment_bonus = {
-			ap_attack = 0.05
+			build_cost_ic = -0.05
+		}
+
+		production_bonus = {
+			production_efficiency_cap_factor = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_continuous_development
+		name = GER_mio_trait_al_continuous_development
+		icon = GFX_generic_mio_department_icon_tank_general_technology
+
+		position = { x=4 y=1 }
+		all_parents = { GER_mio_trait_al_workshops }
+		mutually_exclusive = { GER_mio_trait_al_stug_mass_production }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+
+		equipment_bonus = {
+			soft_attack = 0.04
+			hard_attack = 0.04
+		}
+
+		organization_modifier = {
+			military_industrial_organization_research_bonus = 0.15
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_wespe
+		name = GER_mio_trait_al_wespe
+		icon = GFX_generic_mio_department_icon_tank_light_tank_spg
+
+		position = { x=5 y=0 }
+
+		limit_to_equipment_type = { light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+
+		equipment_bonus = {
+			soft_attack = 0.07
+			maximum_speed = 0.04
+			armor_value = -0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_marder_i
+		name = GER_mio_trait_al_marder_i
+		icon = GFX_generic_mio_department_icon_tank_light_tank_at
+
+		position = { x=9 y=0 }
+
+		available = {
+			FROM = { controls_state = 16 }
+		}
+
+		limit_to_equipment_type = { light_tank_destroyer_chassis }
+
+		equipment_bonus = {
+			hard_attack = 0.085
+			reliability = -0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_stuk37
+		name = GER_mio_trait_al_stuk37
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_weapons
+
+		position = { x=0 y=1 }
+		all_parents = { GER_mio_trait_al_stug_a }
+		mutually_exclusive = { GER_mio_trait_al_stuk40 }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
+
+		equipment_bonus = {
+			soft_attack = 0.085
+			breakthrough = 0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_stuk40
+		name = GER_mio_trait_al_stuk40
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_at
+
+		position = { x=2 y=1 }
+		all_parents = { GER_mio_trait_al_stug_a }
+		mutually_exclusive = { GER_mio_trait_al_stuk37 }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
+
+		equipment_bonus = {
 			hard_attack = 0.1
-			reliability = -0.05
-		}
-
-		ai_will_do = {
-			base = 2
+			ap_attack = 0.085
+			soft_attack = -0.04
 		}
 	}
-	
-	add_trait = {
-		token = GER_mio_trait_armored_superstructure_specialist
-		name = GER_mio_trait_armored_superstructure_specialist
-		icon = GFX_generic_mio_department_icon_tank_general_armor
-		special_trait_background = yes 
 
-		position = { x = 9 y = 1 }
+	trait = {
+		token = GER_mio_trait_al_hummel
+		name = GER_mio_trait_al_hummel
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_spg
 
-		visible = {
-			FROM = { original_tag = GER }
-		}
+		position = { x=5 y=1 }
+		all_parents = { GER_mio_trait_al_wespe }
 
-		available = {
-		}
+		limit_to_equipment_type = { light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
 
 		equipment_bonus = {
-			armor_value = 0.05
-			defense = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
+			soft_attack = 0.085
+			hard_attack = 0.04
+			reliability = -0.025
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_sturmhaubitze
-		name = GER_mio_trait_sturmhaubitze
-		icon = GFX_generic_mio_department_icon_tank_general_at
-		special_trait_background = yes 
+	trait = {
+		token = GER_mio_trait_al_marder_ii
+		name = GER_mio_trait_al_marder_ii
+		icon = GFX_generic_mio_trait_icon_hard_attack
 
-		position = { x = 9 y = 2 }
-		
-		visible = {
-			FROM = { original_tag = GER }
-		}
+		position = { x=9 y=1 }
+		all_parents = { GER_mio_trait_al_marder_i }
 
-		available = {
-			#TODO_Danne fix this with a flag or something! GER should integrate CZE industries or something before doing this
-			FROM = {
-				OR = {
-					has_completed_focus = GER_fate_of_czechoslovakia
-					#has_completed_focus = GER_integrate_czechoslovakia
-					always = no # was: has_completed_focus = GER_carve_up_czechoslovakia (focus removed in GER cleanup)
-				}
-			}
-		}
-
-		limit_to_equipment_type = { medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+		limit_to_equipment_type = { light_tank_destroyer_chassis }
 
 		equipment_bonus = {
-			soft_attack = 0.03
-			hard_attack = 0.05
-			breakthrough = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
+			hard_attack = 0.07
+			maximum_speed = 0.04
 		}
 	}
 
+	trait = {
+		token = GER_mio_trait_al_low_silhouette
+		name = GER_mio_trait_al_low_silhouette
+		icon = GFX_generic_mio_trait_icon_defense
+
+		position = { x=0 y=2 }
+		any_parent = { GER_mio_trait_al_stuk37 GER_mio_trait_al_stuk40 }
+		mutually_exclusive = { GER_mio_trait_al_saukopf }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
+
+		equipment_bonus = {
+			defense = 0.1
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_saukopf
+		name = GER_mio_trait_al_saukopf
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_armor
+
+		position = { x=1 y=2 }
+		any_parent = { GER_mio_trait_al_stuk37 GER_mio_trait_al_stuk40 }
+		mutually_exclusive = { GER_mio_trait_al_low_silhouette }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
+
+		equipment_bonus = {
+			armor_value = 0.085
+			defense = 0.04
+			maximum_speed = -0.015
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_sturmhaubitze
+		name = GER_mio_trait_al_sturmhaubitze
+		icon = GFX_generic_mio_trait_icon_soft_attack
+
+		position = { x=3 y=2 }
+		any_parent = { GER_mio_trait_al_stuk40 GER_mio_trait_al_hummel }
+
+		limit_to_equipment_type = { light_assault_gun_chassis medium_assault_gun_chassis heavy_assault_gun_chassis }
+
+		equipment_bonus = {
+			soft_attack = 0.085
+			breakthrough = 0.07
+			hard_attack = -0.025
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_brummbar
+		name = GER_mio_trait_al_brummbar
+		icon = GFX_generic_mio_department_icon_tank_heavy_tank_spg
+
+		position = { x=7 y=2 }
+		any_parent = { GER_mio_trait_al_hummel GER_mio_trait_al_marder_ii }
+
+		limit_to_equipment_type = { light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+
+		equipment_bonus = {
+			breakthrough = 0.085
+			armor_value = 0.13
+			maximum_speed = -0.04
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_hetzer_pattern
+		name = GER_mio_trait_al_hetzer_pattern
+		icon = GFX_generic_mio_trait_icon_defense
+
+		position = { x=9 y=2 }
+		all_parents = { GER_mio_trait_al_marder_ii }
+
+		limit_to_equipment_type = { light_tank_destroyer_chassis }
+
+		equipment_bonus = {
+			defense = 0.085
+			hard_attack = 0.04
+			maximum_speed = -0.025
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_al_sturmtiger
+		name = GER_mio_trait_al_sturmtiger
+		icon = GFX_generic_mio_trait_icon_breakthrough
+
+		position = { x=5 y=3 }
+		all_parents = { GER_mio_trait_al_sturmhaubitze GER_mio_trait_al_brummbar }
+
+		limit_to_equipment_type = { light_tank_artillery_chassis medium_tank_artillery_chassis heavy_tank_artillery_chassis }
+
+		equipment_bonus = {
+			soft_attack = 0.17
+			breakthrough = 0.085
+			maximum_speed = -0.085
+			reliability = -0.04
+			build_cost_ic = 0.04
+		}
+	}
 }
 
 #Benz 
 GER_daimler_benz_organization = {
-	include = generic_tank_organization
 	icon = GFX_idea_GER_daimler_benz
-	
+
 	allowed = {	
 		# OR = {
 		OR = {
@@ -787,182 +1449,275 @@ GER_daimler_benz_organization = {
 				has_completed_focus = wuw_HUN_seek_german_contracts
 			}
 		}
+		IF = {
+			limit = { FROM = { original_tag = GER } }
+			FROM = { NOT = { has_completed_focus = GER_nationalize_ford_factories } }
+		}
+	}
+
+	equipment_type = { mio_cat_eq_all_light_tank mio_cat_eq_all_medium_tank medium_assault_gun_chassis mechanized_equipment }
+	research_categories = { mio_cat_tech_light_armor_and_modules mio_cat_tech_medium_armor_and_modules }
+
+	tree_header_text = {
+		text = GER_mio_db_header_pz3
+		x = 1
 	}
 
 	tree_header_text = {
-		text = mio_header_tank_construction
-		x = 2
+		text = GER_mio_db_header_bridge
+		x = 4
 	}
 
 	tree_header_text = {
-		text = mio_header_equipment_and_specialization
+		text = GER_mio_db_header_materials
 		x = 6
 	}
 
 	tree_header_text = {
-		text = mio_header_armor
-		x = 8
+		text = GER_mio_db_header_maultier
+		x = 9
 	}
 
 	initial_trait = {
-		organization_modifier = {
-			military_industrial_organization_research_bonus = 0.05
-		}
-	}
+		name = GER_mio_initial_trait_daimler_benz
 
-	override_trait = {
-		token = generic_mio_trait_simplified_suspension
-		
-		position = { x=0 y=0 }
-	}
+		limit_to_equipment_type = { mio_cat_eq_all_light_tank mio_cat_eq_all_medium_tank }
 
-	override_trait = {
-    	token = generic_mio_trait_improved_tooling
-
-    	relative_position_id = GER_mio_trait_versatile_chassis
-		
-		all_parents = { generic_mio_trait_improved_tracks generic_mio_trait_command_upgrades GER_mio_trait_versatile_chassis }
-
-    	position = { x=0 y=1 }
-  	}
-
-	add_trait = {  
-		token = GER_mio_trait_hotrolled_armor
-		name = GER_mio_trait_hotrolled_armor
-		icon = GFX_generic_mio_department_icon_tank_general_technology
-		special_trait_background = yes
-
-		position = { x=8 y=0 }  
-		
-		limit_to_equipment_type = { light_tank_chassis medium_tank_chassis }
-		production_bonus = {
-			production_efficiency_cap_factor = 0.05
-			production_efficiency_gain_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-			modifier = {
-				factor = 1.5
-				date > 1937.1.1
-			}
-		}
-	}
-
-	add_trait = {
-		token = GER_mio_trait_multilayer_armour
-		name = GER_mio_trait_multilayer_armour
-		icon = GFX_generic_mio_trait_icon_armor_value
-		special_trait_background = yes
-
-		position = { x=0 y=2 }
-		relative_position_id = GER_mio_trait_hotrolled_armor
-		
-		any_parent = { GER_mio_trait_hotrolled_armor }
-		
-		limit_to_equipment_type = { light_tank_chassis medium_tank_chassis }
-		
 		equipment_bonus = {
-			armor_value = 0.1
-		} 
-
-		ai_will_do = {
-			base = 2
-			modifier = {
-				factor = 1.5
-				date > 1937.1.1
-			}
+			reliability = 0.055
+			maximum_speed = -0.015
 		}
 	}
 
-	add_trait = {
-		token = GER_mio_trait_hoesch_facilities
-		name = GER_mio_trait_hoesch_facilities
-		icon = GFX_generic_mio_trait_icon_production_capacity
-		special_trait_background = yes
+	trait = {
+		token = GER_mio_trait_db_zw
+		name = GER_mio_trait_db_zw
+		icon = GFX_generic_mio_department_icon_tank_medium_tank
 
-		position = { x=@tank_hoesch_X y=@tank_hoesch_Y }  
-		
-		visible = {
-			FROM = { original_tag = GER }
-		}
+		position = { x=1 y=0 }
 
-		available = {
-			FROM = {
-				NOT = { has_country_flag = GER_hoesch_facilities_trait_taken_flag }
-			}
-		}
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
 
-		on_complete = {
-			custom_effect_tooltip = generic_trait_will_not_be_available_in_other_organizations
-			FROM = {
-				set_country_flag = GER_hoesch_facilities_trait_taken_flag
-			}
-		}
-
-		production_bonus = {
-			production_capacity_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-		}
-	}
-
-	add_trait = {  
-		token = GER_mio_trait_versatile_chassis
-		name = GER_mio_trait_versatile_chassis
-		icon = GFX_generic_mio_department_icon_tank_general_production
-		special_trait_background = yes
-
-		relative_position_id = generic_mio_trait_standardized_components
-		
-		all_parents = {  generic_mio_trait_standardized_components }
-
-		position = { x=0 y=1 }  
-		
-		production_bonus = {
-			production_capacity_factor = 0.05
-		}
-
-		ai_will_do = {
-			base = 2
-			modifier = {
-				factor = 1.5
-				date > 1937.1.1
-			}
-		}
-	}
-
-	add_trait = {  
-		token = GER_mio_trait_tungsten_tipped_rounds
-		name = GER_mio_trait_tungsten_tipped_rounds
-		icon = GFX_generic_mio_department_icon_tank_general_at
-		special_trait_background = yes
-
-		relative_position_id = generic_mio_trait_long_barreled_guns
-		
-		all_parents = {  generic_mio_trait_long_barreled_guns }
-
-		position = { x=0 y=1 }  
-
-		available = {
-            FROM = {
-                has_tech = antitank2
-            }
-        }
-		
 		equipment_bonus = {
-			ap_attack = 0.05
-			hard_attack = 0.05
+			breakthrough = 0.03
+			soft_attack = 0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_kwk38
+		name = GER_mio_trait_db_kwk38
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_at
+
+		position = { x=0 y=1 }
+		all_parents = { GER_mio_trait_db_zw }
+		mutually_exclusive = { GER_mio_trait_db_kwk37 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hard_attack = 0.045
+			ap_attack = 0.03
+			soft_attack = -0.015
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_kwk37
+		name = GER_mio_trait_db_kwk37
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_weapons
+
+		position = { x=2 y=1 }
+		all_parents = { GER_mio_trait_db_zw }
+		mutually_exclusive = { GER_mio_trait_db_kwk38 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			soft_attack = 0.055
+			breakthrough = 0.03
+			hard_attack = -0.015
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_torsion_bars
+		name = GER_mio_trait_db_torsion_bars
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_engine
+
+		position = { x=1 y=2 }
+		any_parent = { GER_mio_trait_db_kwk38 GER_mio_trait_db_kwk37 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			maximum_speed = 0.055
+			reliability = -0.015
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_manganese
+		name = GER_mio_trait_db_manganese
+		icon = GFX_generic_mio_trait_icon_resources
+
+		position = { x=6 y=0 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_light_tank mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			hardness = -0.015
 		}
 
-		ai_will_do = {
-			base = 2
-			modifier = {
-				factor = 1.5
-				date > 1937.1.1
-			}
+		production_bonus = {
+			production_resource_need_factor = -0.08
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_buna
+		name = GER_mio_trait_db_buna
+		icon = GFX_generic_mio_trait_icon_resources
+
+		position = { x=5 y=1 }
+		all_parents = { GER_mio_trait_db_manganese }
+
+		limit_to_equipment_type = { mio_cat_eq_all_light_tank mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = -0.015
+		}
+
+		production_bonus = {
+			production_resource_penalty_factor = -0.15
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_steel_wheels
+		name = GER_mio_trait_db_steel_wheels
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_materials
+
+		position = { x=7 y=1 }
+		all_parents = { GER_mio_trait_db_manganese }
+
+		limit_to_equipment_type = { mio_cat_eq_all_light_tank mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			maximum_speed = -0.01
+		}
+
+		production_bonus = {
+			production_resource_need_factor = -0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_einheitsteile
+		name = GER_mio_trait_db_einheitsteile
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=6 y=2 }
+		all_parents = { GER_mio_trait_db_buna GER_mio_trait_db_steel_wheels }
+
+		limit_to_equipment_type = { mio_cat_eq_all_light_tank mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.03
+			build_cost_ic = -0.04
+		}
+
+		production_bonus = {
+			production_resource_penalty_factor = -0.1
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_stug_chassis
+		name = GER_mio_trait_db_stug_chassis
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_spg
+
+		position = { x=3 y=1 }
+		any_parent = { GER_mio_trait_db_zw GER_mio_trait_db_manganese }
+
+		limit_to_equipment_type = { medium_assault_gun_chassis }
+
+		equipment_bonus = {
+			defense = 0.055
+			armor_value = 0.055
+			maximum_speed = -0.015
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_ausf_m
+		name = GER_mio_trait_db_ausf_m
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_quality
+
+		position = { x=4 y=2 }
+		all_parents = { GER_mio_trait_db_torsion_bars GER_mio_trait_db_einheitsteile }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			armor_value = 0.085
+			reliability = 0.03
+		}
+
+		production_bonus = {
+			production_resource_need_factor = -0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_ausf_n
+		name = GER_mio_trait_db_ausf_n
+		icon = GFX_generic_mio_trait_icon_soft_attack
+
+		position = { x=3 y=3 }
+		all_parents = { GER_mio_trait_db_ausf_m }
+		mutually_exclusive = { GER_mio_trait_db_schurzen_kits }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			soft_attack = 0.055
+			breakthrough = 0.03
+			hard_attack = -0.03
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_schurzen_kits
+		name = GER_mio_trait_db_schurzen_kits
+		icon = GFX_generic_mio_trait_icon_defense
+
+		position = { x=5 y=3 }
+		all_parents = { GER_mio_trait_db_ausf_m }
+		mutually_exclusive = { GER_mio_trait_db_ausf_n }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			defense = 0.055
+			armor_value = 0.03
+			maximum_speed = -0.015
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_db_maultier
+		name = GER_mio_trait_db_maultier
+		icon = GFX_generic_mio_department_icon_mechanized_production
+
+		position = { x=9 y=0 }
+
+		limit_to_equipment_type = { mechanized_equipment }
+
+		equipment_bonus = {
+			reliability = 0.055
+			fuel_consumption = -0.055
+			maximum_speed = -0.03
 		}
 	}
 
@@ -987,10 +1742,277 @@ GER_daimler_benz_organization = {
         }
 		
 		equipment_bonus = {
-			maximum_speed = 0.1
-			breakthrough = 0.05
+			maximum_speed = 0.055
+			breakthrough = 0.03
 		}
 
+	}
+}
+
+GER_vomag_organization = {
+	icon = GFX_idea_generic_tank_manufacturer_2
+
+	allowed = {
+		original_tag = GER
+	}
+
+	available = {
+		FROM = { NOT = { has_completed_focus = GER_panzergrenadier } }
+	}
+
+	equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers motorized_equipment }
+	research_categories = { mio_cat_tech_medium_armor_and_modules }
+
+	tree_header_text = {
+		text = GER_mio_vm_header_licence
+		x = 0
+	}
+
+	tree_header_text = {
+		text = GER_mio_vm_header_conversion
+		x = 3
+	}
+
+	tree_header_text = {
+		text = GER_mio_vm_header_jagdpanzer
+		x = 6
+	}
+
+	tree_header_text = {
+		text = GER_mio_vm_header_lorries
+		x = 9
+	}
+
+	initial_trait = {
+		name = GER_mio_initial_trait_vomag
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers }
+
+		production_bonus = {
+			production_efficiency_gain_factor = -0.1
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_retool
+		name = GER_mio_trait_vm_retool
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_line_efficiency
+
+		position = { x=3 y=0 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers }
+
+		production_bonus = {
+			production_efficiency_gain_factor = 0.15
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_krupp_fitters
+		name = GER_mio_trait_vm_krupp_fitters
+		icon = GFX_generic_mio_trait_icon_efficiency_cap
+
+		position = { x=2 y=1 }
+		all_parents = { GER_mio_trait_vm_retool }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers }
+
+		production_bonus = {
+			production_efficiency_cap_factor = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_press_shop
+		name = GER_mio_trait_vm_press_shop
+		icon = GFX_generic_mio_trait_icon_efficiency_gain
+
+		position = { x=4 y=1 }
+		all_parents = { GER_mio_trait_vm_retool }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers }
+
+		equipment_bonus = {
+			hardness = -0.03
+			build_cost_ic = -0.05
+		}
+
+		production_bonus = {
+			production_efficiency_gain_factor = 0.1
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_full_conversion
+		name = GER_mio_trait_vm_full_conversion
+		icon = GFX_generic_mio_trait_icon_production_capacity
+
+		position = { x=3 y=2 }
+		all_parents = { GER_mio_trait_vm_krupp_fitters GER_mio_trait_vm_press_shop }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers }
+
+		production_bonus = {
+			production_capacity_factor = 0.1
+			production_efficiency_cap_factor = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_dispersal
+		name = GER_mio_trait_vm_dispersal
+		icon = GFX_generic_mio_trait_icon_efficiency_cap
+
+		position = { x=3 y=3 }
+		all_parents = { GER_mio_trait_vm_full_conversion }
+
+		available = {
+			FROM = { OR = { has_war_with = ENG has_war_with = USA } }
+		}
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank mio_cat_eq_all_tank_destroyers }
+
+		production_bonus = {
+			production_capacity_factor = 0.05
+			production_efficiency_cap_factor = 0.05
+			production_efficiency_gain_factor = -0.1
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_licence
+		name = GER_mio_trait_vm_licence
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_production
+
+		position = { x=0 y=1 }
+		all_parents = { GER_mio_trait_vm_retool }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.035
+			armor_value = 0.035
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_final_inspection
+		name = GER_mio_trait_vm_final_inspection
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=0 y=2 }
+		all_parents = { GER_mio_trait_vm_licence }
+		mutually_exclusive = { GER_mio_trait_vm_rushed_deliveries }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = 0.07
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_rushed_deliveries
+		name = GER_mio_trait_vm_rushed_deliveries
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_conversion
+
+		position = { x=1 y=2 }
+		all_parents = { GER_mio_trait_vm_licence }
+		mutually_exclusive = { GER_mio_trait_vm_final_inspection }
+
+		limit_to_equipment_type = { mio_cat_eq_all_medium_tank }
+
+		equipment_bonus = {
+			reliability = -0.06
+		}
+
+		production_bonus = {
+			production_capacity_factor = 0.05
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_jagdpanzer_iv
+		name = GER_mio_trait_vm_jagdpanzer_iv
+		icon = GFX_generic_mio_department_icon_tank_medium_tank_at
+
+		position = { x=6 y=1 }
+		all_parents = { GER_mio_trait_vm_retool }
+
+		limit_to_equipment_type = { mio_cat_eq_all_tank_destroyers }
+
+		equipment_bonus = {
+			hard_attack = 0.07
+			armor_value = 0.11
+			maximum_speed = -0.035
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_pz4_70
+		name = GER_mio_trait_vm_pz4_70
+		icon = GFX_generic_mio_trait_icon_hard_attack
+
+		position = { x=5 y=2 }
+		all_parents = { GER_mio_trait_vm_jagdpanzer_iv }
+		mutually_exclusive = { GER_mio_trait_vm_l48 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_tank_destroyers }
+
+		equipment_bonus = {
+			hard_attack = 0.085
+			ap_attack = 0.11
+			reliability = -0.07
+			maximum_speed = -0.035
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_l48
+		name = GER_mio_trait_vm_l48
+		icon = GFX_generic_mio_trait_icon_reliability
+
+		position = { x=7 y=2 }
+		all_parents = { GER_mio_trait_vm_jagdpanzer_iv }
+		mutually_exclusive = { GER_mio_trait_vm_pz4_70 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_tank_destroyers }
+
+		equipment_bonus = {
+			reliability = 0.07
+			hard_attack = 0.02
+			defense = 0.035
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_low_silhouette
+		name = GER_mio_trait_vm_low_silhouette
+		icon = GFX_generic_mio_trait_icon_defense
+
+		position = { x=6 y=3 }
+		any_parent = { GER_mio_trait_vm_pz4_70 GER_mio_trait_vm_l48 }
+
+		limit_to_equipment_type = { mio_cat_eq_all_tank_destroyers }
+
+		equipment_bonus = {
+			defense = 0.07
+		}
+	}
+
+	trait = {
+		token = GER_mio_trait_vm_heavy_lorries
+		name = GER_mio_trait_vm_heavy_lorries
+		icon = GFX_generic_mio_department_icon_motorized_production
+
+		position = { x=9 y=0 }
+
+		limit_to_equipment_type = { motorized_equipment }
+
+		equipment_bonus = {
+			reliability = 0.07
+			fuel_consumption = -0.035
+		}
 	}
 }
 
