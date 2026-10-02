@@ -592,6 +592,80 @@ focus_tree = {
 			unlock_decision_tooltip = GER_westwall_limes
 			unlock_decision_tooltip = GER_westwall_lvz_west
 			unlock_decision_tooltip = GER_westwall_propaganda
+			custom_effect_tooltip = generic_skip_one_line_tt
+			50 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					custom_effect_tooltip = GER_west_wall_forts
+					hidden_effect = {
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 11640
+							instant_build = yes
+						}
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 6712
+							instant_build = yes
+						}
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 6542
+							instant_build = yes
+						}
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 3530
+							instant_build = yes
+						}
+					}
+				}
+			}
+			if = {
+				limit = { 42 = { is_demilitarized_zone = yes } }
+				custom_effect_tooltip = GER_west_wall_tt
+			}
+			42 = {
+				custom_effect_tooltip = GER_west_wall_forts
+			}
+			hidden_effect = {
+				42 = {
+					if = {
+						limit = { is_controlled_by = ROOT }
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 3558
+							instant_build = yes
+						}
+						
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 563
+							instant_build = yes
+						}
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 11531
+							instant_build = yes
+						}
+						add_building_construction = {
+							type = bunker
+							level = 3
+							province = 9575
+							instant_build = yes
+						}
+						
+					}
+				}
+			}	
+
 		}
 	}
 
@@ -6137,11 +6211,19 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			army_experience = 20
-			add_tech_bonus = { name = GER_Schwere_Panzertruppen bonus = 0.75 uses = 1 category = cat_heavy_armor }
-			add_mastery = { amount = 50 track = armor }
+			army_experience = 25
+			add_command_power = 25
 			custom_effect_tooltip = generic_skip_one_line_tt
-			unlock_decision_tooltip = GER_raise_heavy_abteilung
+			GER_modify_army_modifier = yes
+			custom_effect_tooltip = GER_army_GER_Schwere_Panzertruppen_tt
+			hidden_effect = {
+				add_equipment_bonus = {
+					name = GER_Schwere_Panzertruppen
+					bonus = {
+						heavy_tank_chassis = { build_cost_ic = -0.05 }
+					}
+				}
+			}
 		}
 	}
 
@@ -6153,7 +6235,7 @@ completion_reward = {
 		x = 4
 		y = 1
 		relative_position_id = GER_develop_modern_maneuver_warfare
-		cost = 3
+		cost = 5
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = GER_army_three_arms_tt
@@ -6243,7 +6325,7 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			add_tech_bonus = { name = GER_Tiger_developments bonus = 1.0 uses = 1 category = cat_heavy_armor }
+			add_tech_bonus = { name = GER_Tiger_developments bonus = 1.0 ahead_reduction = 1 uses = 1 technology = ger_heavy_tank_1 }
 			add_breakthrough_progress = { specialization = specialization_land value = 0.5 }
 		}
 	}
@@ -6285,8 +6367,16 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			add_tech_bonus = { name = GER_increase_armor_quality bonus = 0.5 uses = 1 category = armor }
-			add_mastery = { amount = 50 track = armor }
+			GER_modify_army_modifier = yes
+			custom_effect_tooltip = GER_army_GER_increase_armor_quality_tt
+			hidden_effect = {
+				add_equipment_bonus = {
+					name = GER_increase_armor_quality
+					bonus = {
+						heavy_tank_chassis = { build_cost_ic = -0.05 reliability = 0.1 }
+					}
+				}
+			}
 		}
 	}
 
@@ -6849,11 +6939,11 @@ completion_reward = {
 	focus = {
 		id = GER_maintenance_crews
 		icon = GFX_ger_kampfgruppen2
-		prerequisite = { focus = GER_panzer_troops_school }
-		prerequisite = { focus = GER_all_terrain_military_motorcycle }
+		prerequisite = { focus = GER_light_tank_studies }
+		prerequisite = { focus = GER_early_mechanization_efforts }
 
 		x = 7
-		y = 3
+		y = 2
 		relative_position_id = GER_develop_modern_maneuver_warfare
 		cost = 3
 		available = {
@@ -7002,11 +7092,11 @@ completion_reward = {
 	focus = {
 		id = GER_expand_kummersdorfs_capacity
 		icon = GFX_GER_kanfuffe
-		prerequisite = { focus = GER_Tiger_developments }
-		prerequisite = { focus = GER_panzer_troops_school }
+		prerequisite = { focus = GER_Schwere_Panzertruppen }
+		prerequisite = { focus = GER_light_tank_studies }
 
 		x = 1
-		y = 3
+		y = 2
 		relative_position_id = GER_develop_modern_maneuver_warfare
 		cost = 3
 		available = {
@@ -10155,93 +10245,7 @@ completion_reward = {
 		}
 	}
 
-	focus = {
-		id = GER_west_wall
-		icon = GFX_goal_generic_construct_military
-		prerequisite = { focus = GER_heed_von_neuraths_concerns focus = GER_reorganize_the_wehrmacht }
-		x = -6
-		y = 0
-		relative_position_id = GER_uplift_the_rosenberg_office
-		cost = 2
-		ai_will_do = {
-			factor = 8
-		}
-			
-		completion_reward = {
-			50 = {
-				if = {
-					limit = { is_controlled_by = ROOT }
-					custom_effect_tooltip = GER_west_wall_forts
-					hidden_effect = {
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 11640
-							instant_build = yes
-						}
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 6712
-							instant_build = yes
-						}
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 6542
-							instant_build = yes
-						}
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 3530
-							instant_build = yes
-						}
-					}
-				}
-			}
-			if = {
-				limit = { 42 = { is_demilitarized_zone = yes } }
-				custom_effect_tooltip = GER_west_wall_tt
-			}
-			42 = {
-				custom_effect_tooltip = GER_west_wall_forts
-			}
-			hidden_effect = {
-				42 = {
-					if = {
-						limit = { is_controlled_by = ROOT }
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 3558
-							instant_build = yes
-						}
-						
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 563
-							instant_build = yes
-						}
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 11531
-							instant_build = yes
-						}
-						add_building_construction = {
-							type = bunker
-							level = 3
-							province = 9575
-							instant_build = yes
-						}
-						
-					}
-				}
-			}	
-		}
-	}
+
 
 	focus = {
 		id = GER_expand_ss_recruitment
@@ -11015,16 +11019,11 @@ completion_reward = {
 			#custom_effect_tooltip = GER_soviet_treaty_research_nsb_tt #Obsolete now
 			effect_tooltip = {
 				add_tech_bonus = {
-					name = med_armor_bonus
-					bonus = 0.5
-					ahead_reduction = 0.5
-					category = cat_medium_armor
-				}
-				add_tech_bonus = {
-					name = hvy_armor_bonus
-					bonus = 0.5
-					ahead_reduction = 0.5
-					category = cat_heavy_armor
+					name = GER_treaty_with_the_ussr
+					bonus = 1
+					ahead_reduction = 1
+					uses = 2
+					category = industry
 				}
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
