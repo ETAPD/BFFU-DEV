@@ -278,14 +278,8 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			army_experience = 20
-			add_mastery = { amount = 75 track = infantry }
-			custom_effect_tooltip = generic_skip_one_line_tt
-			GER_modify_army_modifier = yes
-			add_to_variable = { GER_military_planning_speed = 0.1 tooltip = planning_speed_tt }
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_chief_of_army
-			show_ideas_tooltip = franz_halder
+			custom_effect_tooltip = available_military_high_command
+			show_ideas_tooltip = ferdinand_schorner
 		}
 	}
 
@@ -306,7 +300,6 @@ focus_tree = {
 
 		completion_reward = {
 			army_experience = 15
-			add_mastery_bonus = { name = GER_lessons_of_the_great_war bonus = 0.15 days = 360 track = infantry }
 			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_modify_army_modifier = yes
 			add_to_variable = { GER_military_army_infantry_attack_factor = 0.05 tooltip = army_infantry_attack_factor_tt }
@@ -345,13 +338,10 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			add_tech_bonus = { name = GER_howitzer_barrage bonus = 0.75 uses = 1 category = artillery }
-			add_mastery = { amount = 50 track = combat_support }
-			custom_effect_tooltip = generic_skip_one_line_tt
-			GER_modify_army_modifier = yes
-			add_to_variable = { GER_military_army_artillery_attack_factor = 0.05 tooltip = army_artillery_attack_factor_tt }
-			custom_effect_tooltip = generic_skip_one_line_tt
-			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = 400 producer = GER }
+			custom_effect_tooltip = GER_alkett_mio_unlocked_tt
+			mio:GER_alkett_organization = {
+				add_mio_size = 2
+			}
 		}
 	}	
 
@@ -370,71 +360,15 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
 
 		completion_reward = {
-			
-			mio:GER_rheinmetall_organization = {
-				add_mio_size = 1
-				add_mio_funds_gain_factor = 0.25
-				add_mio_research_bonus = 0.05
-			}
-			mio:GER_mauser_organization = {
-				add_mio_size = 1
-				add_mio_funds_gain_factor = 0.1
-			}
+			add_tech_bonus = { name = GER_artillery_bombardment bonus = 1 uses = 3 category = artillery }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_tech_bonus = {
-				name = GER_artillery_bombardment
-				bonus = 0.5
-				uses = 2
-				category = artillery
-			}
-			add_tech_bonus = {
-				name = GER_artillery_bombardment
-				bonus = 0.5
-				uses = 1
-				category = infantry_weapons
-			}
-
-			add_breakthrough_progress = {
-				specialization = specialization_land
-				value = 0.5
-			}
-
-			add_tech_bonus = {
-				name = GER_artillery2
-				bonus = 100
-				ahead_reduction = 10
-				uses = 1
-				technology = art_radio1
-			}
-
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_army_artillery_defence_factor = 0.1
-				tooltip = army_artillery_defence_factor_tt
-			}
-			
+			add_to_variable = { GER_military_army_artillery_attack_factor = 0.10 tooltip = army_artillery_attack_factor_tt }
+			add_to_variable = { GER_military_army_artillery_defence_factor = 0.10 tooltip = army_artillery_defence_factor_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_add_or_modify_wunderwaffen = yes
-			add_to_variable = { 
-				GER_wunderwaffen_sp_tag_artillery_speed_factor = GER_wunderwaffe_research_speed_bonus
-				tooltip = sp_tag_artillery_speed_factor_tt
+			mio:GER_rheinmetall_organization = {
+				add_mio_size = 3
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_k5_railway_guns_tt
-			hidden_effect = {
-				if = {
-					limit = { NOT = { has_tech = railway_gun } }
-					set_technology = { railway_gun = 1 popup = no }
-				}
-				create_railway_gun = { equipment = railway_gun_equipment_1 name = "Robert" }
-				create_railway_gun = { equipment = railway_gun_equipment_1 name = "Leopold" }
-			}
-			unlock_decision_tooltip = GER_krupp_80cm_gun
 		}
 	}
 	
@@ -686,11 +620,12 @@ focus_tree = {
 	focus = {
 		id = GER_increase_tank_quality
 		icon = GFX_GER_panzer_doctrine
-		prerequisite = { focus = GER_Schwerpunkt }
+		prerequisite = { focus = GER_cannon_developments }
+		prerequisite = { focus = GER_combined_arms }
 		#prerequisite = { focus = GER_the_prussian_legacy focus = GER_adopt_new_panzer_doctrine }
 
-		x = 0
-		y = 8
+		x = 1
+		y = 6
 		relative_position_id = GER_develop_modern_maneuver_warfare
 		cost = 3
 		available = {
@@ -769,48 +704,7 @@ focus_tree = {
 				}
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_leibstandarte_tt
-			hidden_effect = {
-				division_template = {
-					name = "Leibstandarte SS Adolf Hitler"
-					is_locked = yes
-					division_cap = 2
-					regiments = {
-						mechanized = { x = 0 y = 0 }
-						mechanized = { x = 0 y = 1 }
-						mechanized = { x = 0 y = 2 }
-						motorized = { x = 1 y = 0 }
-						motorized = { x = 1 y = 1 }
-						motorized = { x = 1 y = 2 }
-						medium_armor = { x = 2 y = 0 }
-						medium_armor = { x = 2 y = 1 }
-					}
-					support = {
-						engineer = { x = 0 y = 0 }
-						mot_recon = { x = 0 y = 1 }
-						anti_air = { x = 0 y = 2 }
-						logistics_company = { x = 0 y = 3 }
-					}
-				}
-				capital_scope = {
-					create_unit = {
-						division = "name = \"Leibstandarte SS Adolf Hitler\" division_template = \"Leibstandarte SS Adolf Hitler\" start_experience_factor = 0.5 start_equipment_factor = 1"
-						officer = { name = GER_officer_sepp_dietrich portraits = { army = { large = GFX_portrait_GER_sepp_dietrich small = GFX_portrait_GER_sepp_dietrich_small } } }
-						owner = ROOT
-						count = 1
-					}
-				}
-				every_country_division = {
-					limit = { has_officer_name = GER_officer_sepp_dietrich }
-					add_history_entry = {
-						key = GER_leibstandarte_entry
-						allow = yes
-					}
-					add_unit_medal_to_latest_entry = { unit_medals = GER_close_combat_clasp }
-				}
-			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_ss_generals_revealed_tt
+			custom_effect_tooltip = GER_ss_primacy_himmler_tt
 			if = {
 				limit = { has_completed_focus = GER_strengthen_the_waffen_ss }
 				GER_increase_SS_cap = yes
@@ -832,6 +726,7 @@ focus_tree = {
 		cost = 3
 		available = {
 			has_tech = mechanised_infantry
+			has_equipment = { medium_tank_chassis > 999 }
 		}
 		ai_will_do = {
 			factor = 1
@@ -842,8 +737,10 @@ focus_tree = {
 		completion_reward = {
 			GER_modify_army_modifier = yes
 			add_to_variable = { GER_military_army_morale_factor = 0.05 tooltip = army_morale_factor_tt }
+			add_to_variable = { GER_military_army_org_factor = 0.05 tooltip = army_org_factor_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = GER_grossdeutschland_tt
+			add_equipment_to_stockpile = { type = medium_tank_chassis amount = -1000 }
 			hidden_effect = {
 				division_template = {
 					name = "Großdeutschland"
@@ -853,26 +750,41 @@ focus_tree = {
 						mechanized = { x = 0 y = 0 }
 						mechanized = { x = 0 y = 1 }
 						mechanized = { x = 0 y = 2 }
+						mechanized = { x = 0 y = 3 }
 						mechanized = { x = 1 y = 0 }
 						mechanized = { x = 1 y = 1 }
 						mechanized = { x = 1 y = 2 }
 						medium_armor = { x = 2 y = 0 }
 						medium_armor = { x = 2 y = 1 }
 						medium_armor = { x = 2 y = 2 }
+						medium_armor = { x = 3 y = 0 }
+						medium_armor = { x = 3 y = 1 }
+						medium_armor = { x = 3 y = 2 }
+						medium_armor = { x = 4 y = 0 }
+						medium_armor = { x = 4 y = 1 }
 					}
 					support = {
-						engineer = { x = 0 y = 0 }
-						mot_recon = { x = 0 y = 1 }
-						anti_air = { x = 0 y = 2 }
-						logistics_company = { x = 0 y = 3 }
+						signal_company = { x = 0 y = 0 }
+						field_hospital = { x = 0 y = 1 }
+						logistics_company = { x = 0 y = 2 }
+						maintenance_company = { x = 0 y = 3 }
+						military_police = { x = 0 y = 4 }
+						recon = { x = 0 y = 5 }
 					}
 				}
 				capital_scope = {
 					create_unit = {
-						division = "name = \"Großdeutschland\" division_template = \"Großdeutschland\" start_experience_factor = 0.5 start_equipment_factor = 1"
+						division = "name = \"Panzergrenadier-Division Großdeutschland\" division_template = \"Großdeutschland\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
 						officer = { name = GER_officer_hasso_von_manteuffel portraits = { army = { large = GFX_portrait_GER_hasso_von_manteuffel small = GFX_portrait_GER_hasso_von_manteuffel_small } } }
 						owner = ROOT
-						count = 1
+					}
+					create_unit = {
+						division = "name = \"Panzergrenadier-Division Brandenburg\" division_template = \"Großdeutschland\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+						owner = ROOT
+					}
+					create_unit = {
+						division = "name = \"Panzer-Division Kurmark\" division_template = \"Großdeutschland\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+						owner = ROOT
 					}
 				}
 				every_country_division = {
@@ -6399,13 +6311,20 @@ completion_reward = {
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			GER_modify_army_modifier = yes
-			add_to_variable = { GER_military_army_artillery_attack_factor = 0.05 tooltip = army_artillery_attack_factor_tt }
+			add_to_variable = { GER_military_fortification_damage = 0.15 tooltip = GER_fortification_damage_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
-			add_equipment_to_stockpile = { type = heavy_artillery_equipment_1 amount = 150 producer = GER }
-			custom_effect_tooltip = GER_karl_geraet_tt
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment amount = 500 producer = GER }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = GER_k5_railway_guns_tt
 			hidden_effect = {
-				sp:sp_land_self_propelled_super_heavy_howitzer = { add_project_progress_ratio = 0.5 }
+				if = {
+					limit = { NOT = { has_tech = railway_gun } }
+					set_technology = { railway_gun = 1 popup = no }
+				}
+				create_railway_gun = { equipment = railway_gun_equipment_1 name = "Robert" }
+				create_railway_gun = { equipment = railway_gun_equipment_1 name = "Leopold" }
 			}
+			unlock_decision_tooltip = GER_krupp_80cm_gun
 		}
 	}
 	
@@ -6439,33 +6358,33 @@ completion_reward = {
 						division_cap = 3 
 						template_counter = 107		
 						regiments = {
-							mechanized = { x = 0 y = 0 }
-							mechanized = { x = 0 y = 1 }
-							mechanized = { x = 0 y = 2 }
+							ss_mechanized = { x = 0 y = 0 }
+							ss_mechanized = { x = 0 y = 1 }
+							ss_mechanized = { x = 0 y = 2 }
 
-							mechanized = { x = 1 y = 0 }
-							mechanized = { x = 1 y = 1 }
+							ss_mechanized = { x = 1 y = 0 }
+							ss_mechanized = { x = 1 y = 1 }
 
-							heavy_armor = { x = 2 y = 0 }
-							heavy_armor = { x = 2 y = 1 }
-							heavy_armor = { x = 2 y = 2 }
-							heavy_armor = { x = 2 y = 3 }
+							ss_heavy_armor = { x = 2 y = 0 }
+							ss_heavy_armor = { x = 2 y = 1 }
+							ss_heavy_armor = { x = 2 y = 2 }
+							ss_heavy_armor = { x = 2 y = 3 }
 							
-							heavy_armor = { x = 3 y = 0 }
-							heavy_armor = { x = 3 y = 1 }
-							heavy_armor = { x = 3 y = 2 }
-							heavy_armor = { x = 3 y = 3 }
+							ss_heavy_armor = { x = 3 y = 0 }
+							ss_heavy_armor = { x = 3 y = 1 }
+							ss_heavy_armor = { x = 3 y = 2 }
+							ss_heavy_armor = { x = 3 y = 3 }
 
-							heavy_armor = { x = 4 y = 0 }
-							heavy_armor = { x = 4 y = 1 }
+							ss_heavy_armor = { x = 4 y = 0 }
+							ss_heavy_armor = { x = 4 y = 1 }
 						}
 						support = {
 						engineer = { x = 0 y = 0 }
 						recon = { x = 0 y = 1 }
 						signal_company = { x = 0 y = 2 }
 						anti_air = { x = 0 y = 3 }
-						logistics_company = { x = 1 y = 0 }
-						maintenance_company = { x = 1 y = 1 }
+						logistics_company = { x = 0 y = 4 }
+						maintenance_company = { x = 0 y = 5 }
 						}
 					}
 
@@ -6528,12 +6447,12 @@ completion_reward = {
 						division_cap = 3 
 						template_counter = 107		
 						regiments = {
-							mechanized = { x = 0 y = 0 }
-							mechanized = { x = 0 y = 1 }
-							mechanized = { x = 0 y = 2 }
+							ss_mechanized = { x = 0 y = 0 }
+							ss_mechanized = { x = 0 y = 1 }
+							ss_mechanized = { x = 0 y = 2 }
 
-							mechanized = { x = 1 y = 0 }
-							mechanized = { x = 1 y = 1 }
+							ss_mechanized = { x = 1 y = 0 }
+							ss_mechanized = { x = 1 y = 1 }
 
 							heavy_assault_gun_brigade = { x = 2 y = 0 }
 							heavy_assault_gun_brigade = { x = 2 y = 1 }
@@ -6553,8 +6472,8 @@ completion_reward = {
 						recon = { x = 0 y = 1 }
 						signal_company = { x = 0 y = 2 }
 						anti_air = { x = 0 y = 3 }
-						logistics_company = { x = 1 y = 0 }
-						maintenance_company = { x = 1 y = 1 }
+						logistics_company = { x = 0 y = 4 }
+						maintenance_company = { x = 0 y = 5 }
 						}
 					}
 
@@ -6618,22 +6537,22 @@ completion_reward = {
 						division_cap = 3 
 						template_counter = 107		
 						regiments = {
-							mechanized = { x = 0 y = 0 }
-							mechanized = { x = 0 y = 1 }
-							mechanized = { x = 0 y = 2 }
+							ss_mechanized = { x = 0 y = 0 }
+							ss_mechanized = { x = 0 y = 1 }
+							ss_mechanized = { x = 0 y = 2 }
 
-							mechanized = { x = 1 y = 0 }
-							mechanized = { x = 1 y = 1 }
+							ss_mechanized = { x = 1 y = 0 }
+							ss_mechanized = { x = 1 y = 1 }
 
-							medium_armor = { x = 2 y = 0 }
-							medium_armor = { x = 2 y = 1 }
-							medium_armor = { x = 2 y = 2 }
-							medium_armor = { x = 2 y = 3 }
+							ss_medium_armor = { x = 2 y = 0 }
+							ss_medium_armor = { x = 2 y = 1 }
+							ss_medium_armor = { x = 2 y = 2 }
+							ss_medium_armor = { x = 2 y = 3 }
 							
-							medium_armor = { x = 3 y = 0 }
-							medium_armor = { x = 3 y = 1 }
-							medium_armor = { x = 3 y = 2 }
-							medium_armor = { x = 3 y = 3 }
+							ss_medium_armor = { x = 3 y = 0 }
+							ss_medium_armor = { x = 3 y = 1 }
+							ss_medium_armor = { x = 3 y = 2 }
+							ss_medium_armor = { x = 3 y = 3 }
 
 							medium_tank_destroyer_brigade = { x = 4 y = 0 }
 							medium_tank_destroyer_brigade = { x = 4 y = 1 }
@@ -6643,8 +6562,8 @@ completion_reward = {
 						recon = { x = 0 y = 1 }
 						signal_company = { x = 0 y = 2 }
 						anti_air = { x = 0 y = 3 }
-						logistics_company = { x = 1 y = 0 }
-						maintenance_company = { x = 1 y = 1 }
+						logistics_company = { x = 0 y = 4 }
+						maintenance_company = { x = 0 y = 5 }
 						}
 					}
 
@@ -10428,13 +10347,13 @@ completion_reward = {
 					division_names_group = GER_SS_01
 					is_locked = yes
 					regiments = {
-						motorized = { x = 0 y = 0 }
-						motorized = { x = 0 y = 1 }
-						motorized = { x = 0 y = 2 }
+						ss_motorized = { x = 0 y = 0 }
+						ss_motorized = { x = 0 y = 1 }
+						ss_motorized = { x = 0 y = 2 }
 
-						motorized = { x = 1 y = 0 }
-						motorized = { x = 1 y = 1 }
-						motorized = { x = 1 y = 2 }
+						ss_motorized = { x = 1 y = 0 }
+						ss_motorized = { x = 1 y = 1 }
+						ss_motorized = { x = 1 y = 2 }
 
 					}
 					support = {
@@ -15395,8 +15314,8 @@ completion_reward = {
 						engineer = { x = 0 y = 1 }   
 						recon = { x = 0 y = 2 }
 						#logistics_company  = { x = 0 y = 3 }
-						anti_air = { x = 1 y = 0 }
-						logistics_company = { x = 1 y = 1 }
+						anti_air = { x = 0 y = 3 }
+						logistics_company = { x = 0 y = 4 }
 					}
 				}
 				random_owned_controlled_state = {
@@ -16830,25 +16749,6 @@ completion_reward = {
 
 			custom_effect_tooltip = generic_skip_one_line_tt
 
-			custom_effect_tooltip = available_military_high_command
-			show_ideas_tooltip = GER_walter_dornberger
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_wunderwaffe_dornberger_trait_tt
-			hidden_effect = {
-				remove_trait = {
-					character = GER_walter_dornberger
-					slot = high_command
-					trait = GER_head_of_the_missile_department
-				}
-				add_trait = {
-					character = GER_walter_dornberger
-					slot = high_command
-					trait = GER_head_of_experimental_weapons
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			GER_add_or_modify_wunderwaffen = yes
 			add_to_variable = { 
 				GER_wunderwaffen_special_project_speed_factor = 0.05
@@ -17580,7 +17480,7 @@ completion_reward = {
 						support = {
 							engineer = { x = 0 y = 0 }
 							recon = { x = 0 y = 1 }
-							artillery = { x = 0 y = 2 }
+							field_guns = { x = 0 y = 2 }
 							military_police = { x = 0 y = 3 }
 						}
 					}
@@ -17775,16 +17675,6 @@ completion_reward = {
 			}
 			
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			add_doctrine_cost_reduction = {
-				name = GER_strengthen_the_waffen_ss
-				cost_reduction = 0.5
-				uses = 2
-				category = special_forces_doctrine
-			}
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			swap_ideas = {
 				remove_idea = GER_himmler_director_reich_security
 				add_idea = GER_himmler_reichsfuhrer_ss
@@ -17798,47 +17688,12 @@ completion_reward = {
 
 			custom_effect_tooltip = generic_skip_one_line_tt
 
-			custom_effect_tooltip = GER_ss_motorised_divisions_tt
 			hidden_effect = {
-				if = {
-					limit = { NOT = { has_template = "SS-Infanterie-Division (mot.)" } }
-					division_template = {
-						name = "SS-Infanterie-Division (mot.)"
-						priority = 2
-						division_names_group = GER_SS_01
-						is_locked = no
-						regiments = {
-							motorized = { x = 0 y = 0 }
-							motorized = { x = 0 y = 1 }
-							motorized = { x = 0 y = 2 }
-							motorized = { x = 1 y = 0 }
-							motorized = { x = 1 y = 1 }
-							motorized = { x = 1 y = 2 }
-						}
-						support = {
-							engineer = { x = 0 y = 0 }
-							mot_recon = { x = 0 y = 1 }
-							artillery = { x = 0 y = 2 }
-							anti_air = { x = 0 y = 3 }
-						}
-					}
-				}
-				capital_scope = {
-					create_unit = {
-						division = "name = \"SS-Verfügungs-Division\" division_template = \"SS-Infanterie-Division (mot.)\" start_experience_factor = 0.4 start_equipment_factor = 1"
-						owner = ROOT
-					}
-					create_unit = {
-						division = "name = \"SS-Division Wiking\" division_template = \"SS-Infanterie-Division (mot.)\" start_experience_factor = 0.3 start_equipment_factor = 1"
-						owner = ROOT
-					}
-				}
 				if = {
 					limit = { NOT = { has_template = "Waffen-SS Panzer Division" } }
 					SS_armored_division_standard = yes
 				}
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
 			if = {
 				limit = { has_completed_focus = GER_waffen_ss_primacy }
 				GER_increase_SS_cap_double = yes
@@ -17929,7 +17784,6 @@ completion_reward = {
 				add_to_variable = { GER_military_minimum_training_level = 0.10 tooltip = minimum_training_level_tt }
 				add_to_variable = { GER_military_mobilization_speed = 0.10 tooltip = mobilization_speed_tt }
 				add_to_variable = { GER_military_army_org_factor = 0.05 tooltip = army_org_factor_tt }
-				custom_effect_tooltip = GER_himmler_ersatzheer_law_tt
 				hidden_effect = {
 					if = {
 						limit = { NOT = { has_template = "Waffen-SS Panzer Division" } }
