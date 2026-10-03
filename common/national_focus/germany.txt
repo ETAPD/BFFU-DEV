@@ -880,8 +880,9 @@ focus_tree = {
 		icon = GFX_GER_afrikakorp
 		prerequisite = { focus = GER_around_maginot }
 
-		x = 43
+		x = -2
 		y = 10
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 		available = {
 			OR = {
@@ -1332,8 +1333,10 @@ focus_tree = {
 	focus = {
 		id = GER_beginning_of_the_end
 		icon = GFX_focus_ger_oppose_hitler
-		x = 48
-		y = 7
+		prerequisite = { focus = GER_danzig_or_war }
+		x = -5
+		y = 8
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 		available = {
 			always = no
@@ -1355,9 +1358,9 @@ focus_tree = {
 		#mutually_exclusive = { focus = GER_improve_the_logistics_system }
 		prerequisite = { focus = GER_beginning_of_the_end }
 
-		x = 1
-		y = 1
-		relative_position_id = GER_beginning_of_the_end
+		x = -6
+		y = 9
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			surrender_progress > 0.15
@@ -5689,7 +5692,7 @@ completion_reward = {
 	focus = {
 		id = GER_mobilise_the_reich
 		icon = GFX_GER_mobilize_the_reich
-		prerequisite = { focus = GER_the_national_war_economy focus = GER_deutsch_military_complexes }
+		prerequisite = { focus = GER_the_national_war_economy focus = GER_deutsch_military_complexes focus = GER_coal_liquefaction}
 
 		x = 0
 		y = 2
@@ -9724,7 +9727,7 @@ completion_reward = {
 		alternate_icon = GFX_focus_GER_remilitarize_the_rhineland_historical
 
 
-		x = 47
+		x = 40
 		y = 0
 
 		cost = 5
@@ -9805,7 +9808,7 @@ completion_reward = {
 		icon = GFX_GER_heed_von
 		prerequisite = { focus = GER_remilitarize_the_rhineland }
 		mutually_exclusive = { focus = GER_reorganize_the_wehrmacht }
-		x = -9
+		x = -1
 		y = 1
 		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
@@ -9817,15 +9820,6 @@ completion_reward = {
 		completion_reward = {
 			add_political_power = 50
 			add_stability = 0.05
-			
-			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_supply_consumption_factor = 0.15
-				tooltip = supply_consumption_factor_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = konstantin_von_neurath
 
@@ -9838,44 +9832,7 @@ completion_reward = {
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					has_country_leader_with_trait = GER_der_fuhrer
-				}
-				random_character = {
-					limit = {
-						is_country_leader = yes
-					}
-					swap_country_leader_traits = {
-						remove = GER_der_fuhrer
-						add = GER_der_fuhrer_neurath
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					has_country_leader_with_trait = GER_der_fuhrer_fuhrerprinzip
-				}
-				random_character = {
-					limit = {
-						is_country_leader = yes
-					}
-					swap_country_leader_traits = {
-						remove = GER_der_fuhrer_fuhrerprinzip
-						add = GER_der_fuhrer_fuhrerprinzip_neurath
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					has_completed_focus = GER_fuhrerprinzip
-				}
-				add_country_leader_trait = GER_der_fuhrer_fuhrerprinzip_neurath
-			}
-			else = {
-				add_country_leader_trait = GER_der_fuhrer_neurath
-			}
+			add_country_leader_trait = GER_heeds_the_foreign_office
 		}
 	}
 
@@ -9885,10 +9842,10 @@ completion_reward = {
 		#icon = GFX_goal_generic_military_sphere
 		#icon = GFX_goal_generic_small_arms
 		
-		prerequisite = { focus = GER_heed_von_neuraths_concerns }
-		x = 0
-		y = 1
-		relative_position_id = GER_heed_von_neuraths_concerns
+		prerequisite = { focus = GER_heed_von_neuraths_concerns focus = GER_reorganize_the_wehrmacht }
+		x = -6
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			has_war = no
@@ -9912,9 +9869,9 @@ completion_reward = {
 		icon = GFX_goal_generic_navy_cruiser
 		prerequisite = { focus = GER_war_preparations }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_war_preparations
+		x = -6
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			is_subject = no
@@ -9961,9 +9918,9 @@ completion_reward = {
 
 		prerequisite = { focus = GER_reorganize_the_wehrmacht focus = GER_heed_von_neuraths_concerns }
 
-		x = 5
-		y = 1
-		relative_position_id = GER_heed_von_neuraths_concerns
+		x = 0
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP FOCUS_FILTER_STABILITY }
@@ -9988,12 +9945,12 @@ completion_reward = {
 		id = GER_uplift_the_rosenberg_office
 		icon = GFX_GER_final_cookery
 		alternate_icon = GFX_GER_final_cookery
-		prerequisite = { focus = GER_reorganize_the_wehrmacht }
+		prerequisite = { focus = GER_heed_von_neuraths_concerns focus = GER_reorganize_the_wehrmacht }
 		#prerequisite = { focus = GER_heed_von_neuraths_concerns focus = GER_reorganize_the_wehrmacht }
 
-		x = 13
-		y = 1
-		relative_position_id = GER_heed_von_neuraths_concerns
+		x = 4
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			has_government = fascism
@@ -10019,9 +9976,9 @@ completion_reward = {
 		icon = GFX_focus_generic_fascist_troops
 		prerequisite = { focus = GER_uplift_the_rosenberg_office }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_uplift_the_rosenberg_office
+		x = 4
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			has_government = fascism
@@ -10180,9 +10137,9 @@ completion_reward = {
 
 		# mutually_exclusive = { focus = GER_befriend_czechoslovakia }
 
-		x = -2
-		y = 1
-		relative_position_id = GER_anschluss
+		x = 0
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 
 		cost = 0
 
@@ -10207,8 +10164,8 @@ completion_reward = {
 		prerequisite = { focus = GER_demand_sudetenland }
 
 		x = 0
-		y = 1
-		relative_position_id = GER_demand_sudetenland
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_POLITICAL }
@@ -10235,8 +10192,8 @@ completion_reward = {
 		prerequisite = { focus = GER_first_vienna_award }
 
 		x = 0
-		y = 1
-		relative_position_id = GER_first_vienna_award
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_HISTORICAL }
@@ -10264,9 +10221,9 @@ completion_reward = {
 		prerequisite = { focus = GER_fate_of_czechoslovakia }
 		prerequisite = { focus = GER_reassert_eastern_claims }
 		#mutually_exclusive = { focus = GER_anti_soviet_pact }
-		x = 2
-		y = 1
-		relative_position_id = GER_fate_of_czechoslovakia 
+		x = 0
+		y = 6
+		relative_position_id = GER_remilitarize_the_rhineland 
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_POLITICAL }
@@ -10290,8 +10247,8 @@ completion_reward = {
 		prerequisite = { focus = GER_molotov_ribbentrop_pact }
 
 		x = -2
-		y = 1
-		relative_position_id = GER_molotov_ribbentrop_pact
+		y = 7
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
@@ -10314,9 +10271,9 @@ completion_reward = {
 		icon = GFX_GER_demonstration
 		prerequisite = { focus = GER_anschluss }
 
-		x = 4
-		y = 1
-		relative_position_id = GER_anschluss
+		x = -4
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			surrender_progress < 0.1
@@ -10350,9 +10307,9 @@ completion_reward = {
 		icon = GFX_GER_invincible
 		prerequisite = { focus = GER_demonstration_of_military_achievements }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_demonstration_of_military_achievements
+		x = -4
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			surrender_progress < 0.05
@@ -10408,9 +10365,9 @@ completion_reward = {
 		id = GER_the_supreme_leader
 		icon = GFX_ger_loyalty_to_the_fuhrer
 		prerequisite = { focus = GER_an_invincible_army }
-		x = 0
-		y = 1
-		relative_position_id = GER_an_invincible_army
+		x = -4
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			surrender_progress < 0.01
@@ -10494,9 +10451,9 @@ completion_reward = {
 		icon = GFX_GER_eastern_claims
 		prerequisite = { focus = GER_anschluss }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_anschluss
+		x = -2
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_HISTORICAL }
@@ -10518,10 +10475,10 @@ completion_reward = {
 	focus = {
 		id = GER_italian_social_republic
 		icon = GFX_focus_ITA_the_social_republic_prevails
-		prerequisite = { focus = GER_fate_of_czechoslovakia }
-		x = -2
-		y = 2
-		relative_position_id = GER_fate_of_czechoslovakia
+		prerequisite = { focus = GER_danzig_or_war }
+		x = 4
+		y = 8
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		available = {
@@ -10541,10 +10498,10 @@ completion_reward = {
 		id = GER_gustav_line
 		icon = GFX_goal_generic_fortify_city
 		prerequisite = { focus = GER_italian_social_republic}
-		x = -1
-		y = 1
-		relative_position_id = GER_italian_social_republic
-		cost = 2
+		x = 3
+		y = 9
+		relative_position_id = GER_remilitarize_the_rhineland
+		cost = 0
 		
 		available = {
 			ITA = {
@@ -10585,9 +10542,9 @@ completion_reward = {
 		id = GER_gothic_line
 		icon = GFX_goal_generic_fortify_city
 		prerequisite = { focus = GER_italian_social_republic}
-		x = 1
-		y = 1
-		relative_position_id = GER_italian_social_republic
+		x = 5
+		y = 9
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -10722,8 +10679,8 @@ completion_reward = {
 
 		prerequisite = { focus = GER_molotov_ribbentrop_pact }
 		x = 0
-		y = 1
-		relative_position_id = GER_molotov_ribbentrop_pact
+		y = 7
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ANNEXATION }
@@ -10746,8 +10703,8 @@ completion_reward = {
 		icon = GFX_goal_generic_cavalry
 				prerequisite = { focus = GER_danzig_or_war }
 		x = 2
-		y = 2
-		relative_position_id = GER_danzig_or_war
+		y = 8
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		available = {
@@ -10772,8 +10729,8 @@ completion_reward = {
 		icon = GFX_GER_integrate_war_economics #GFX_focus_GER_subjugate_romanian_economy
 		prerequisite = { focus = GER_danzig_or_war }
 		x = -2
-		y = 1
-		relative_position_id = GER_danzig_or_war
+		y = 8
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
@@ -10799,8 +10756,8 @@ completion_reward = {
 
 		prerequisite = { focus = GER_danzig_or_war }
 		x = 0
-		y = 1
-		relative_position_id = GER_danzig_or_war
+		y = 8
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		historical_ai = {
@@ -10839,8 +10796,8 @@ completion_reward = {
 
 		prerequisite = { focus = GER_operation_weserubung }
 		x = 0
-		y = 1
-		relative_position_id = GER_operation_weserubung
+		y = 9
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 		historical_ai = {
@@ -12113,9 +12070,9 @@ completion_reward = {
 
 		prerequisite = { focus = GER_remilitarize_the_rhineland }
 		mutually_exclusive = { focus = GER_heed_von_neuraths_concerns }
-		x = 14
-		y = 0
-		relative_position_id = GER_heed_von_neuraths_concerns
+		x = 1
+		y = 1
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 		}
@@ -12125,15 +12082,6 @@ completion_reward = {
 		completion_reward = {
 			add_political_power = 50
 			add_war_support = 0.05
-
-			GER_modify_army_modifier = yes
-			add_to_variable = { 
-				GER_military_supply_consumption_factor = 0.15
-				tooltip = supply_consumption_factor_tt
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = joachim_von_ribbentrop
 
@@ -12167,45 +12115,6 @@ completion_reward = {
 				ROLE = cc_leader
 			}
 
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			if = {
-				limit = {
-					has_country_leader_with_trait = GER_der_fuhrer
-				}
-				random_character = {
-					limit = {
-						is_country_leader = yes
-					}
-					swap_country_leader_traits = {
-						remove = GER_der_fuhrer
-						add = GER_der_fuhrer_wehrmacht
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					has_country_leader_with_trait = GER_der_fuhrer_fuhrerprinzip
-				}
-				random_character = {
-					limit = {
-						is_country_leader = yes
-					}
-					swap_country_leader_traits = {
-						remove = GER_der_fuhrer_fuhrerprinzip
-						add = GER_der_fuhrer_fuhrerprinzip_wehrmacht
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					has_completed_focus = GER_fuhrerprinzip
-				}
-				add_country_leader_trait = GER_der_fuhrer_fuhrerprinzip_wehrmacht
-			}
-			else = {
-				add_country_leader_trait = GER_der_fuhrer_wehrmacht
-			}
 		}
 	}
 
@@ -12213,9 +12122,9 @@ completion_reward = {
 		id = GER_reorganize_secret_services
 		icon = GFX_GER_reorganize
 		prerequisite = { focus = GER_heed_von_neuraths_concerns focus = GER_reorganize_the_wehrmacht }
-		x = -3
-		y = 1
-		relative_position_id = GER_reorganize_the_wehrmacht
+		x = 2
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 
 		available = {
@@ -12279,9 +12188,9 @@ completion_reward = {
 		icon = GFX_GER_crush
 		prerequisite = { focus = GER_reorganize_secret_services }
 
-		x = 0
-		y = 1
-		relative_position_id = GER_reorganize_secret_services
+		x = 2
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		available = {
 			has_war_with_major = yes
@@ -12310,8 +12219,8 @@ completion_reward = {
 		id = GER_italy_friend
 		icon = GFX_ITA_pact_of_steel
 
-		prerequisite = { focus = GER_reorganize_the_wehrmacht }
-		relative_position_id = GER_reorganize_the_wehrmacht
+		prerequisite = { focus = GER_heed_von_neuraths_concerns focus = GER_reorganize_the_wehrmacht }
+		relative_position_id = GER_remilitarize_the_rhineland
 
 		available = {
 			AND = {
@@ -12320,8 +12229,8 @@ completion_reward = {
 				NOT = { has_war_with = ITA }
 			}
 		}
-		x = 1
-		y = 1
+		x = 6
+		y = 2
 		cost = 3
 		
 
@@ -12334,82 +12243,6 @@ completion_reward = {
 			ITA= { add_ideas = ITA_GER_trade }
 		}
 	}
-	focus = {
-		id = GER_anti_comintern_pact
-
-		icon = GFX_GER_anti_comitern_pact
-		alternate_icon = GFX_GER_anti_comitern_pact
-
-		prerequisite = { focus = GER_remilitarize_the_rhineland }
-
-		x = 3
-		y = 0
-		relative_position_id = GER_reorganize_the_wehrmacht
-		cost = 1
-		
-		bypass = {
-			SOU = {
-				OR = {
-					NOT = {
-						has_government = communism
-					}
-					exists = no
-				}
-			}
-		}
-
-		available = {
-			is_subject = no
-			NOT = { has_government = communism }
-			NOT = { is_in_faction_with = SOU }
-		}
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				OR = {
-					has_government = democratic
-					has_government = communism
-				}
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			SOU = { add_opinion_modifier = { target = ROOT modifier = pact_against_us } }
-			#add_named_threat = { threat = 2 name = GER_anti_comintern_pact }
-			every_other_country = {
-				limit = {
-					NOT = { tag = GER }
-					NOT = { has_war_with = GER }
-					NOT = { is_in_faction_with = SOU }
-					is_subject = no
-					OR = {
-						capital_scope = {
-							is_on_continent = europe
-						}
-						capital_scope = {
-							is_on_continent = asia
-						}
-						original_tag = TUR
-						original_tag = PER
-						num_of_factories > 30
-					}
-					OR = {
-						has_government = fascism 
-						AND = {
-							is_neighbor_of = SOU
-							NOT = { has_government = communism }
-						}
-					}
-				}
-				country_event = germany.5
-			}
-		}
-	}
-
 		
 	# 	search_filters = {}
 		
@@ -12423,7 +12256,7 @@ completion_reward = {
 	focus = {
 		id = GER_prepare_barb
 		icon = GFX_GER_prepare_for_barb
-		prerequisite = { focus = GER_anti_comintern_pact }
+		prerequisite = { focus = GER_around_maginot }
 		
 		available = {
 			hidden_trigger = {
@@ -12511,9 +12344,9 @@ completion_reward = {
 			}
 		}
 		
-		x = 0
-		y = 2
-		relative_position_id = GER_anti_comintern_pact
+		x = 2
+		y = 10
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		ai_will_do = {
 			factor = 10	
@@ -12609,10 +12442,10 @@ completion_reward = {
 		icon = GFX_GER_barb
 		alternate_icon = GFX_GER_barb
 
-		prerequisite = { focus = GER_prepare_barb }
+		prerequisite = { focus = GER_around_maginot }
 		x = 0
-		y = 3
-		relative_position_id = GER_prepare_barb
+		y = 10
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 0
 
 
@@ -12641,9 +12474,9 @@ completion_reward = {
 		id = GER_the_winter_of_1941
 		icon = GFX_goal_winter_41
 		prerequisite = { focus = GER_war_with_the_ussr }
-		relative_position_id = GER_war_with_the_ussr
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 0
-		y = 1
+		y = 11
 		cost = 2
 		ai_will_do = {
 			factor = 12
@@ -12672,9 +12505,9 @@ completion_reward = {
 		icon = GFX_goal_festung_principle
 		prerequisite = { focus = GER_the_winter_of_1941 }
 		mutually_exclusive = { focus = GER_offense_is_the_best_defense }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = -2
-		y = 1
+		y = 12
 		cost = 3
 		ai_will_do = {
 			factor = 12
@@ -12702,9 +12535,9 @@ completion_reward = {
 		id = GER_mobile_fortresses
 		icon = GFX_GER_heavy_tiger
 		prerequisite = { focus = GER_festung_principle }
-		relative_position_id = GER_festung_principle
-		x = 1
-		y = 1
+		relative_position_id = GER_remilitarize_the_rhineland
+		x = -1
+		y = 13
 		cost = 5
 		ai_will_do = {
 			factor = 12
@@ -12724,9 +12557,9 @@ completion_reward = {
 		id = GER_grenadiers_never_retreat
 		icon = GFX_GER_pioneer
 		prerequisite = { focus = GER_festung_principle }
-		relative_position_id = GER_festung_principle
-		x = -1
-		y = 1
+		relative_position_id = GER_remilitarize_the_rhineland
+		x = -3
+		y = 13
 		cost = 5
 		ai_will_do = {
 			factor = 12
@@ -12753,9 +12586,9 @@ completion_reward = {
 		id = GER_new_weapons
 		icon = GFX_GER_stg44
 		prerequisite = { focus = GER_grenadiers_never_retreat }
-		relative_position_id = GER_festung_principle
-		x = -1
-		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
+		x = -3
+		y = 14
 		cost = 5
 		ai_will_do = {
 			factor = 12
@@ -12774,9 +12607,9 @@ completion_reward = {
 		id = GER_ambush_tactics
 		icon = GFX_GER_pak_front
 		prerequisite = { focus = GER_mobile_fortresses }
-		relative_position_id = GER_mobile_fortresses
-		x = 0
-		y = 1
+		relative_position_id = GER_remilitarize_the_rhineland
+		x = -1
+		y = 14
 		cost = 5
 		available = {
 			date > 1942.08.01
@@ -12814,9 +12647,9 @@ completion_reward = {
 		icon = GFX_GER_typhoon
 		prerequisite = { focus = GER_the_winter_of_1941 }
 		mutually_exclusive = { focus = GER_festung_principle }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 2
-		y = 1
+		y = 12
 		cost = 3
 		ai_will_do = {
 			factor = 12
@@ -12855,9 +12688,9 @@ completion_reward = {
 		id = GER_the_wild_cats_that_roam_in_russia
 		icon = GFX_GER_the_wild_cats_that_roam_russia
 		prerequisite = { focus = GER_offense_is_the_best_defense }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 1
-		y = 2
+		y = 13
 		cost = 5
 		ai_will_do = {
 			factor = 12
@@ -12877,9 +12710,9 @@ completion_reward = {
 		id = GER_endless_offensives
 		icon = GFX_GER_modern_blitzkrieg
 		prerequisite = { focus = GER_the_wild_cats_that_roam_in_russia }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 1
-		y = 3
+		y = 14
 		cost = 5
 		available = {
 			date > 1942.08.01
@@ -12913,9 +12746,9 @@ completion_reward = {
 		id = GER_modern_grenadiers
 		icon = GFX_GER_artillery_expansion2
 		prerequisite = { focus = GER_offense_is_the_best_defense }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 3
-		y = 2
+		y = 13
 		cost = 5
 		ai_will_do = {
 			factor = 12
@@ -12935,9 +12768,9 @@ completion_reward = {
 		id = GER_division_support_structure
 		icon = GFX_GER_div_support
 		prerequisite = { focus = GER_modern_grenadiers }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 3
-		y = 3
+		y = 14
 		cost = 5
 		ai_will_do = {
 			factor = 12
@@ -12967,9 +12800,9 @@ completion_reward = {
 		icon = GFX_ger_final_crusade
 		prerequisite = { focus = GER_new_weapons focus = GER_division_support_structure  } 
 		prerequisite = { focus = GER_endless_offensives focus = GER_ambush_tactics }
-		relative_position_id = GER_the_winter_of_1941
+		relative_position_id = GER_remilitarize_the_rhineland
 		x = 0
-		y = 4
+		y = 15
 		cost = 5
 		available = {
 			date > 1943.03.01
@@ -13000,8 +12833,8 @@ completion_reward = {
 
 		
 		x = 4
-		y = 1
-		relative_position_id = GER_war_with_the_ussr
+		y = 11
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		completion_reward = {
 			custom_effect_tooltip = GER_ROA_TT
@@ -13051,9 +12884,9 @@ completion_reward = {
 				}
 			}
 		}
-		x = -4
-		y = 1
-		relative_position_id = GER_war_with_the_ussr
+		x = -6
+		y = 11
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		ai_will_do = {
 			factor = 1
@@ -13419,9 +13252,9 @@ completion_reward = {
 		id = GER_confiscate_hungarian_alunimium
 		icon = GFX_focus_generic_aluminum
 		prerequisite = { focus = GER_war_with_the_ussr }
-		x = -2
-		y = 1
-		relative_position_id = GER_war_with_the_ussr
+		x = -4
+		y = 11
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		ai_will_do = {
 			factor = 1
@@ -13449,8 +13282,8 @@ completion_reward = {
 		icon = GFX_focus_generic_chromium
 		prerequisite = { focus = GER_war_with_the_ussr }
 		x = 2
-		y = 1
-		relative_position_id = GER_war_with_the_ussr
+		y = 11
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		ai_will_do = {
 			factor = 1
@@ -13528,9 +13361,9 @@ completion_reward = {
 		bypass = {
 		}
 		cancel_if_invalid = yes
-		x = -1
-		y = 1
-		relative_position_id = GER_beginning_of_the_end
+		x = -4
+		y = 9
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		ai_will_do = {
 			factor = 10
@@ -13560,9 +13393,9 @@ completion_reward = {
 		icon = GFX_GER_defend_berlin
 		prerequisite = { focus = GER_volksturm}
 		prerequisite = { focus = GER_defend_the_vaterland }
-		x = 1
-		y = 1
-		relative_position_id = GER_volksturm
+		x = -5
+		y = 10
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 1
 		
 		available = {
@@ -13829,15 +13662,19 @@ completion_reward = {
 		icon = GFX_focus_chi_collaboration_with_the_japanese
 		alternate_icon = GFX_focus_GER_befriend_japan
 
-		prerequisite = { focus = GER_anti_comintern_pact }
-		x = 2
-		y = 1
-		relative_position_id = GER_anti_comintern_pact
+		prerequisite = { focus = GER_reorganize_the_wehrmacht focus = GER_heed_von_neuraths_concerns }
+		x = -3
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 		
 		available_if_capitulated = yes
 
 		available = {
+			custom_trigger_tooltip = {
+				tooltip = GER_anti_comintern_signed_tt
+				has_global_flag = GER_anti_comintern_signed
+			}
 			is_subject = no
 			AND = {
 				country_exists = JAP
@@ -13863,35 +13700,29 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_POLITICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			JAP = {
-				country_event = {
-					id = wuw_GER_diplomacy.90
-					hours = 12
-				}
-				set_country_flag = GER_JAP_nap_request_flag
-			}
-
+			custom_effect_tooltip = GER_eyes_east_nap_tt
+			custom_effect_tooltip = GER_eyes_east_falkenhausen_tt
+			custom_effect_tooltip = GER_eyes_east_trade_tt
 			custom_effect_tooltip = generic_skip_one_line_tt
-			effect_tooltip = {
-				JAP = {
-					add_opinion_modifier = { target = GER modifier = ger_jap_diplomacy_focus }
-				}
-				diplomatic_relation = { 
-					country = JAP
-					relation = non_aggression_pact 
-				}
-
+			add_tech_bonus = {
+				name = GER_befriend_japan
+				bonus = 0.75
+				uses = 2
+				category = mio_cat_tech_all_capital_ship_and_modules
+				category = mio_cat_tech_all_carrier_and_modules
 			}
-
-			event_target:WTT_current_china_leader = {
-				add_opinion_modifier = { target = GER modifier = withdrew_advisors }
-				country_event = { id = china.3 hours = 6 }
-			}
-			custom_effect_tooltip = GER_japan_friend_tt
-			set_global_flag = falkenhausen_recalled
-			show_unit_leaders_tooltip = GER_alexander_von_falkenhausen
-
+			navy_experience = 25
+			custom_effect_tooltip = GER_eyes_east_naval_tt
 			hidden_effect = {
+				JAP = {
+					country_event = { id = wuw_GER_diplomacy.90 hours = 12 }
+					set_country_flag = GER_JAP_nap_request_flag
+					country_event = { id = wuw_GER_diplomacy.26 hours = 6 }
+					add_ideas = JAP_GER_trade
+				}
+				event_target:WTT_current_china_leader = { country_event = { id = china.3 hours = 6 } }
+				set_global_flag = falkenhausen_recalled
+				add_ideas = GER_JAP_trade
 				delete_unit_template_and_units = {
 					division_template = "Afrikanische Schutztruppe"
 					disband = yes #if yes, will refund equipment/manpower.
@@ -13957,7 +13788,6 @@ completion_reward = {
 					override_model = GER_infantry_alt_3_entity
 				}
 			}
-			complete_national_focus = GER_japan_friend2
 		}
 	}
 
@@ -13971,42 +13801,18 @@ completion_reward = {
 
 	
 	focus = {
-		id = GER_japan_friend2
-		icon = GFX_goal_military_agreement_germany
-		available = {
-			AND = {
-				country_exists = JAP
-				JAP = { is_puppet = no }
-				NOT = { has_war_with = JAP }
-			}
-		}
-		prerequisite = { focus = GER_befriend_japan }
-		x = 0
-		y = 1
-		cost = 2
-		relative_position_id = GER_befriend_japan
-
-		available_if_capitulated = yes
-
-		completion_reward = {
-			add_ideas = GER_JAP_trade
-			JAP = { add_ideas = JAP_GER_trade }
-		}
-	}
-
-	focus = {
 		id = GER_tripartite
 		icon = GFX_GER_form_rome
 		available = {
 		}
 		#prerequisite = { focus = GER_japan_friend2 }
 		#prerequisite = { focus = GER_italy_friend2 }
-		prerequisite = { focus = GER_prepare_barb }
-		x = 0
-		y = 1
+		prerequisite = { focus = GER_italy_friend }
+		x = 6
+		y = 3
 		cost = 1
 		#relative_position_id = GER_japan_friend2
-		relative_position_id = GER_prepare_barb
+		relative_position_id = GER_remilitarize_the_rhineland
 
 		available_if_capitulated = yes
 
@@ -14055,83 +13861,6 @@ completion_reward = {
 	# 	}
 	# }
 		
-	focus = {
-		id = GER_japanese_naval_cooperation
-		icon = GFX_focus_GER_japanese_naval_cooperation
-		prerequisite = { focus = GER_befriend_japan }
-
-		x = 2
-		y = 1
-		relative_position_id = GER_befriend_japan
-		cost = 5
-
-		available = {
-			is_subject = no
-			NOT = { has_war_with = JAP }
-			has_government = fascism
-			JAP = {
-				is_subject = no
-				OR = {
-					is_in_faction = no
-					has_government = fascism
-					NOT = {
-						any_allied_country = {
-							has_war_with = ROOT
-						}
-					}
-				}
-			}
-			any_controlled_state = {
-				OR = {
-					is_on_continent = asia
-					is_on_continent = australia
-				}
-			}
-		}
-
-		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_RESEARCH }
-
-		completion_reward = {
-			add_tech_bonus = {
-				bonus = 0.75
-				uses = 2
-				category = mio_cat_tech_all_capital_ship_and_modules
-				category = mio_cat_tech_all_carrier_and_modules
-			}
-			navy_experience = 25
-
-			JAP = {
-				country_event = {
-					id = wuw_GER_diplomacy.26
-					hours = 6
-				}
-			}
-
-			custom_effect_tooltip = if_they_accept_tt
-			effect_tooltip = {
-				every_country = {
-					limit = {
-						OR = {
-							AND = {
-								original_tag = GER
-								has_government = fascism
-							}
-							AND = {
-								original_tag = JAP
-								has_government = fascism
-							}
-						}
-					}
-					add_to_tech_sharing_group = GER_JAP_naval_tech_sharing
-				}
-
-				add_named_threat = { 
-					threat = 2
-					name = GER_japanese_naval_cooperation
-				}
-			}
-		}
-	}
 	
 	#### ##    ## ##    ## ######## ########      ######  #### ########   ######  ##       ######## 
 	##  ###   ## ###   ## ##       ##     ##    ##    ##  ##  ##     ## ##    ## ##       ##       
@@ -14224,8 +13953,8 @@ completion_reward = {
 		icon = GFX_GER_fuhrerprinzip2
 
 		prerequisite = { focus = GER_remilitarize_the_rhineland }
-		x = -16
-		y = 10
+		x = 15
+		y = 1
 		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		available = {
@@ -14258,34 +13987,6 @@ completion_reward = {
 					}
 				}
 			}
-			else_if = {
-				limit = {
-					has_country_leader_with_trait = GER_der_fuhrer_wehrmacht
-				}
-				random_character = {
-					limit = {
-						is_country_leader = yes
-					}
-					swap_country_leader_traits = {
-						remove = GER_der_fuhrer_wehrmacht
-						add = GER_der_fuhrer_fuhrerprinzip_wehrmacht
-					}
-				}
-			}
-			else_if = {
-				limit = {
-					has_country_leader_with_trait = GER_der_fuhrer_neurath
-				}
-				random_character = {
-					limit = {
-						is_country_leader = yes
-					}
-					swap_country_leader_traits = {
-						remove = GER_der_fuhrer_neurath
-						add = GER_der_fuhrer_fuhrerprinzip_neurath
-					}
-				}
-			}
 			# No fallback if country leader is not Hitler and the Werhmacht / Neurath focuses are completed
 
 			hidden_effect = {
@@ -14301,9 +14002,9 @@ completion_reward = {
 		icon = GFX_GER_economy
 		prerequisite = { focus = GER_fuhrerprinzip }
 
-		x = -7
-		y = 1
-		relative_position_id = GER_fuhrerprinzip
+		x = 8
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -14455,9 +14156,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_ascension_of_todt
+		x = 8
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -14523,9 +14224,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_form_organization_todt
+		x = 8
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -14642,9 +14343,9 @@ completion_reward = {
 		icon = GFX_GER_ascension_of_speer
 		prerequisite = { focus = GER_fuhrerprinzip }
 
-		x = 2
-		y = 0
-		relative_position_id = GER_ascension_of_todt
+		x = 10
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -14790,9 +14491,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_ascension_of_speer
+		x = 10
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -14874,9 +14575,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_employ_philipp_holzmann
+		x = 10
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -14995,9 +14696,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 1
-		y = 1
-		relative_position_id = GER_autonomous_organization_todt
+		x = 9
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_3
 		
 		available = {
@@ -15106,9 +14807,9 @@ completion_reward = {
 		icon = GFX_GER_ascension_of_goring
 		prerequisite = { focus = GER_fuhrerprinzip }
 
-		x = 2
-		y = 0
-		relative_position_id = GER_ascension_of_speer
+		x = 12
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -15252,9 +14953,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_ascension_of_goring
+		x = 12
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -15422,9 +15123,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_prioritize_the_four_year_plan
+		x = 12
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -15552,9 +15253,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_plenipotentiary_of_the_four_year_plan
+		x = 12
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_3
 		
 		available = {
@@ -15600,9 +15301,9 @@ completion_reward = {
 		id = GER_ascension_of_himmler
 		icon = GFX_GER_ascension_of_himmler
 		prerequisite = { focus = GER_fuhrerprinzip }
-		x = 0
-		y = 1
-		relative_position_id = GER_fuhrerprinzip
+		x = 15
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -15744,9 +15445,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = -1
-		y = 1
-		relative_position_id = GER_ascension_of_himmler
+		x = 14
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -15842,9 +15543,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_expand_gestapo
+		x = 14
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -15904,9 +15605,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 1
-		y = 1
-		relative_position_id = GER_ascension_of_himmler
+		x = 16
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -15974,9 +15675,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_expand_ss_security_duties
+		x = 16
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		available = {
 			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
@@ -16053,9 +15754,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 1
-		y = 1
-		relative_position_id = GER_absorb_the_abwehr
+		x = 15
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_3
 		
 		available = {
@@ -16140,9 +15841,9 @@ completion_reward = {
 		icon = GFX_GER_ascension_of_cook
 		prerequisite = { focus = GER_fuhrerprinzip }
 
-		x = 3
-		y = 1
-		relative_position_id = GER_fuhrerprinzip
+		x = 18
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -16279,9 +15980,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_ascension_of_goebbels
+		x = 18
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -16337,9 +16038,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_ministry_of_public_enlightenment
+		x = 18
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -16398,9 +16099,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 0
-		y = 1
-		relative_position_id = GER_fund_the_film_department
+		x = 18
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_3
 		
 		available = {
@@ -16448,9 +16149,9 @@ completion_reward = {
 		icon = GFX_GER_chancellor_hess
 		prerequisite = { focus = GER_fuhrerprinzip }
 		mutually_exclusive = { focus = GER_party_chancellor_bormann }
-		x = 5
-		y = 1
-		relative_position_id = GER_fuhrerprinzip
+		x = 20
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -16593,9 +16294,9 @@ completion_reward = {
 		icon = GFX_GER_chancellor_bormann
 		prerequisite = { focus = GER_fuhrerprinzip }
 		mutually_exclusive = { focus = GER_party_chancellor_hess }
-		x = 2
-		y = 0
-		relative_position_id = GER_party_chancellor_hess
+		x = 22
+		y = 2
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 2
 		
 		available = {
@@ -16740,9 +16441,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 1
-		y = 1
-		relative_position_id = GER_party_chancellor_hess
+		x = 21
+		y = 3
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_1
 		
 		available = {
@@ -16805,9 +16506,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = -1
-		y = 1
-		relative_position_id = GER_optimize_reich_labour_service
+		x = 20
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -16860,9 +16561,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 1
-		y = 1
-		relative_position_id = GER_optimize_reich_labour_service
+		x = 22
+		y = 4
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_2
 		
 		available = {
@@ -16913,9 +16614,9 @@ completion_reward = {
 
 		text_icon = GER_inner_circle_focus_style
 
-		x = 1
-		y = 1
-		relative_position_id = GER_rally_the_industrialists
+		x = 21
+		y = 5
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = @inner_circle_time_tier_3
 		
 		available = {
@@ -17014,9 +16715,9 @@ completion_reward = {
 		icon = GFX_GER_strong_successor
 		prerequisite = { focus = GER_hegemony_of_the_ss focus = GER_wunderwaffe focus = GER_integration_of_puppet_economies focus = GER_propaganda_master focus = GER_total_control_over_domestic_affairs }
 		mutually_exclusive = { focus = GER_loyalty_to_the_fuhrer }
-		x = -2
-		y = 5
-		relative_position_id = GER_fuhrerprinzip
+		x = 13
+		y = 6
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 
 		available = {
@@ -17126,9 +16827,9 @@ completion_reward = {
 		icon = GFX_GER_loyalty
 		prerequisite = { focus = GER_hegemony_of_the_ss focus = GER_wunderwaffe focus = GER_integration_of_puppet_economies focus = GER_propaganda_master focus = GER_total_control_over_domestic_affairs }
 		mutually_exclusive = { focus = GER_a_strong_successor }
-		x = 2
-		y = 5
-		relative_position_id = GER_fuhrerprinzip
+		x = 17
+		y = 6
+		relative_position_id = GER_remilitarize_the_rhineland
 		cost = 5
 
 		available = {
