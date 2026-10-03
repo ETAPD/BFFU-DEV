@@ -24,7 +24,6 @@ CZE_ckd_organization = {
 		}
 	}
 
-	available = { always = yes }
 }
 
   CZE_tatra_organization = {
@@ -32,12 +31,11 @@ CZE_ckd_organization = {
 	icon = 	GFX_idea_CZE_tatra
 
 	allowed = {
-				OR = {
-					original_tag = CZE
-					original_tag = SLO
-				}
-			}
-	available = { always = yes }
+		OR = {
+			original_tag = CZE
+			original_tag = SLO
+		}
+	}
 	equipment_type = { armor }
 	research_categories = { armor }
 
@@ -273,16 +271,52 @@ CZE_ckd_organization = {
 
 CZE_skoda_armor_organization = {
 	name = CZE_skoda_armor_organization
-	include = generic_tank_organization
 	icon = GFX_idea_idea_cze_skoda_armor
 
 	allowed = {
-				OR = {
-					original_tag = CZE
-					original_tag = SLO
-				}
+		OR = {
+			original_tag = CZE
+			original_tag = SLO
+			original_tag = ROM
+			AND = {
+				original_tag = ETH
+				has_dlc = "By Blood Alone"
 			}
-	available = { always = yes }
+		}
+	}
+
+	visible = {
+		IF = {
+			limit = { FROM = { original_tag = ETH } }
+			FROM = { has_completed_focus = ETH_invite_foreign_industrialists }
+		}
+		IF = {
+			limit = { FROM = { original_tag = ROM } }
+			FROM = { has_completed_focus = ROM_acquire_czech_tanks }
+		}
+	}
+
+	available = {
+		# When in a Foreign MIO, countries need to be at peace with original country
+		IF = {
+			limit = {
+				FROM = { NOT = { original_tag = CZE original_tag = SLO } }
+			}
+			FROM = { NOT = { has_war_with = CZE } }
+		}
+		IF = {
+			limit = { FROM = { original_tag = ETH } }
+			custom_trigger_tooltip = {
+				tooltip = has_invited_mio_tt
+				FROM = { has_country_flag = has_invited_CZE_skoda_armor_organization_flag }
+			}
+		}
+		IF = {
+			limit = { FROM = { original_tag = ROM } }
+			FROM = { has_completed_focus = ROM_acquire_czech_tanks }
+		}
+	}
+
 	equipment_type = { armor }
 	research_categories = { armor }
 
@@ -294,89 +328,23 @@ CZE_skoda_armor_organization = {
 		}
 
 		equipment_bonus = {
-
-			reliability = -0.1
-			maximum_speed = 0.15
+			soft_attack = 0.05
+			hard_attack = 0.05
+			reliability = -0.10
 		}
 		production_bonus = {
 			production_resource_need_factor = -0.05
 		}
 	}
-	trait = {
-		token = skoda_art
-		name = "Co-operation with Škoda Artillery"
-		icon = GFX_generic_mio_department_icon_facilities
-		position = { x=5 y=0}
-		equipment_bonus = {
-			soft_attack = 0.03
-			hard_attack = 0.03
-		}
-	}
-	trait = {
-		token = agile_td
-		name = "Prioritize Gun Depression"
-		icon = GFX_generic_mio_trait_icon_hard_attack
-		position = { x=4 y=1}
-		all_parents = { skoda_art }
-				mutually_exclusive = { flex_for_fire mob_art }
-		equipment_bonus = {
-			hard_attack = 0.05
-		}
-	}
-	trait = {
-		token = flex_for_fire
-		name = "Sacrifice Flexibility for Firepower"
-		icon = GFX_generic_mio_department_icon_tank_general_at
-		position = { x=5 y=1}
-		all_parents = { skoda_art }
-				mutually_exclusive = { agile_td mob_art }
-		equipment_bonus = {
-			maximum_speed = -0.1
-			hard_attack = 0.04
-			soft_attack = 0.04
-		}
-	}
-	trait = {
-		token = mob_art
-		name = "Mobile Artillery"
-		icon = GFX_generic_mio_department_icon_tank_general_spg
-		position = { x=6 y=1}
-		all_parents = { skoda_art }
-		mutually_exclusive = { flex_for_fire agile_td }
-		equipment_bonus = {
-			soft_attack = 0.05
-		}
-	}
-	trait = {
-		token = spaa
-		name = "Armoured Air Defence"
-		icon = GFX_generic_mio_department_icon_tank_general_spg
-		position = { x=5 y=2}
-	    any_parent = { mob_art flex_for_fire agile_td }
 
-		equipment_bonus = {
-			air_attack = 0.1
-		}
-	}
 	trait = {
-		token = optimized_production
-		name = "Optimized Gun Production Methods"
-		icon = GFX_generic_mio_trait_icon_production_capacity
-		position = { x=5 y=3}
-	    any_parent = { spaa }
-		equipment_bonus = {
-			build_cost_ic = -0.05
-		}
-	}
-	trait = {
-		token = czech
-		name = "Expertise from Exporting Arms"
+		token = czech	
+		name = CZE_skoda_mio_trait_czech
 		icon = GFX_generic_mio_trait_icon_reliability
-
 		position = { x=1 y=0 }
 
 		production_bonus = {
-			production_efficiency_cap_factor = 0.02
+			production_efficiency_cap_factor = 0.05
 		}
 		equipment_bonus = {
 			reliability = 0.05
@@ -384,13 +352,11 @@ CZE_skoda_armor_organization = {
 	}
 	trait = {
 		token = state_growth
-		name = "State Sponsored Growth"
+		name = CZE_skoda_mio_trait_state_growth
 		icon = GFX_generic_mio_department_icon_facilities
-
 		position = { x=0 y=1 }
 		relative_position_id = czech
 		all_parents = { czech }
-
 
 		organization_modifier = {
 			military_industrial_organization_size_up_requirement = -0.15
@@ -398,100 +364,263 @@ CZE_skoda_armor_organization = {
 	}
 	trait = {
 		token = cap
-		name = "High Capacity Facilities"
+		name = CZE_skoda_mio_trait_cap
 		icon = GFX_generic_mio_trait_icon_efficiency_cap
-
 		position = { x=-1 y=1 }
 		relative_position_id = state_growth
 		all_parents = { state_growth }
 		mutually_exclusive = { flexible_line }
 
 		production_bonus = {
-			production_efficiency_cap_factor = 0.03
+			production_efficiency_cap_factor = 0.05
 			production_efficiency_gain_factor = -0.2
 		}
 	}
 	trait = {
 		token = flexible_line
-		name = "Flexible Facilities"
+		name = CZE_skoda_mio_trait_flexible_line
 		icon = GFX_generic_mio_trait_icon_efficiency_gain
-
 		position = { x=1 y=1 }
 		relative_position_id = state_growth
-		mutually_exclusive = { cap }
 		all_parents = { state_growth }
+		mutually_exclusive = { cap }
 
 		production_bonus = {
 			production_efficiency_gain_factor = 0.25
 		}
 	}
+	trait = {
+		token = CZE_skoda_export_contracts
+		name = CZE_skoda_mio_trait_export_contracts
+		icon = GFX_generic_mio_trait_icon_resources
+		position = { x=-1 y=2 }
+		relative_position_id = state_growth
+		any_parent = { cap flexible_line }
+		mutually_exclusive = { CZE_skoda_domestic_orders }
+
+		organization_modifier = {
+			military_industrial_organization_funds_gain = -0.05
+		}
+		production_bonus = {
+			production_resource_need_factor = -0.10
+			production_resource_penalty_factor = 0.075
+		}
+	}
+	trait = {
+		token = CZE_skoda_domestic_orders
+		name = CZE_skoda_mio_trait_domestic_orders
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x=1 y=2 }
+		relative_position_id = state_growth
+		any_parent = { cap flexible_line }
+		mutually_exclusive = { CZE_skoda_export_contracts }
+
+		organization_modifier = {
+			military_industrial_organization_funds_gain = 0.10
+		}
+		production_bonus = {
+			production_capacity_factor = 0.05
+		}
+	}
 
 	trait = {
-		token = improved_fightingcompartment
-		name = "Improved Fighting Compartment"
-		icon = GFX_generic_mio_trait_icon_max_strength
-
+		token = CZE_skoda_heavy_programme
+		name = CZE_skoda_mio_trait_heavy_programme
+		icon = GFX_generic_mio_department_icon_tank_general_weapons
+		special_trait_background = yes
 		position = { x=3 y=0 }
+		mutually_exclusive = { CZE_skoda_standard_hulls }
 
+		visible = {
+			FROM = { original_tag = CZE }
+		}
+		available = {
+			FROM = { has_completed_focus = CZE_skoda_heavy_gambit }
+		}
 
+		limit_to_equipment_type = {
+			mio_cat_eq_all_heavy_tank
+		}
 		equipment_bonus = {
-			build_cost_ic =0.02
-			soft_attack = 0.04
-			hard_attack = 0.04
+			hard_attack = 0.10
+			armor_value = 0.05
+			build_cost_ic = 0.05
+		}
+
+		ai_will_do = {
+			base = 2
 		}
 	}
 	trait = {
-		token = generic_mio_gunner_sight_improvements
-		name = generic_mio_gunner_sight_improvements
-		icon = GFX_generic_mio_trait_icon_hard_attack
-
-		position = { x=0 y=1 }
-		relative_position_id = improved_fightingcompartment
-		all_parents = { improved_fightingcompartment }
-		equipment_bonus = {
-			build_cost_ic =0.02
-			soft_attack = 0.045
-			hard_attack = 0.045
-		}
-	}
-	trait = {
-		token = pneumatic
-		name = "Pneumatic Controls"
-		icon = GFX_generic_mio_trait_icon_naval_strike_targetting
-
-		position = { x= 8 y=0 }
-
-		equipment_bonus = {
-			soft_attack = 0.035
-			hard_attack = 0.035
-			reliability = -0.1
-		}
-	}
-	trait = {
-		token = cylinders
-		name = "Advanced Cylinder Heads"
-		icon = GFX_generic_mio_department_icon_tank_general_engine
-
-		position = { x=1 y=1 }
-		mutually_exclusive = { cooling }
-		relative_position_id = pneumatic
-		all_parents = { pneumatic }
-		equipment_bonus = {
-			maximum_speed = 0.15
-		}
-	}
-	trait = {
-		token = cooling
-		name = "Improved Engine Cooling"
+		token = CZE_skoda_standard_hulls
+		name = CZE_skoda_mio_trait_standard_hulls
 		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x=5 y=0 }
+		mutually_exclusive = { CZE_skoda_heavy_programme }
 
-		position = { x=-1 y=1 }
-		relative_position_id = pneumatic
-		mutually_exclusive = { cylinders }
-		all_parents = { pneumatic }
 		equipment_bonus = {
-			reliability = 0.1
+			reliability = 0.05
+			build_cost_ic = -0.05
+		}
+	}
+	trait = {
+		token = CZE_skoda_plzen_plate
+		name = CZE_skoda_mio_trait_plzen_plate
+		icon = GFX_generic_mio_trait_icon_armor_value
+		position = { x=3 y=1 }
+		any_parent = { CZE_skoda_heavy_programme CZE_skoda_standard_hulls }
+		mutually_exclusive = { CZE_skoda_lightened_hull }
 
+		equipment_bonus = {
+			armor_value = 0.05
+			maximum_speed = -0.05
+		}
+	}
+	trait = {
+		token = CZE_skoda_lightened_hull
+		name = CZE_skoda_mio_trait_lightened_hull
+		icon = GFX_generic_mio_department_icon_tank_general_engine
+		position = { x=5 y=1 }
+		any_parent = { CZE_skoda_heavy_programme CZE_skoda_standard_hulls }
+		mutually_exclusive = { CZE_skoda_plzen_plate }
+
+		equipment_bonus = {
+			maximum_speed = 0.05
+			armor_value = -0.05
+			build_cost_ic = -0.05
+		}
+	}
+
+	trait = {
+		token = skoda_art
+		name = CZE_skoda_mio_trait_skoda_art
+		icon = GFX_generic_mio_department_icon_facilities
+		position = { x=7 y=0 }
+
+		equipment_bonus = {
+			soft_attack = 0.05
+			hard_attack = 0.05
+		}
+	}
+	trait = {
+		token = agile_td
+		name = CZE_skoda_mio_trait_agile_td
+		icon = GFX_generic_mio_trait_icon_hard_attack
+		position = { x=-1 y=1 }
+		relative_position_id = skoda_art
+		all_parents = { skoda_art }
+		mutually_exclusive = { flex_for_fire mob_art }
+
+		limit_to_equipment_type = {
+			mio_cat_eq_all_tank_destroyers
+		}
+		equipment_bonus = {
+			hard_attack = 0.10
+		}
+	}
+	trait = {
+		token = flex_for_fire
+		name = CZE_skoda_mio_trait_flex_for_fire
+		icon = GFX_generic_mio_department_icon_tank_general_at
+		position = { x=0 y=1 }
+		relative_position_id = skoda_art
+		all_parents = { skoda_art }
+		mutually_exclusive = { agile_td mob_art }
+
+		equipment_bonus = {
+			maximum_speed = -0.1
+			hard_attack = 0.05
+			soft_attack = 0.05
+		}
+	}
+	trait = {
+		token = mob_art
+		name = CZE_skoda_mio_trait_mob_art
+		icon = GFX_generic_mio_department_icon_tank_general_spg
+		position = { x=1 y=1 }
+		relative_position_id = skoda_art
+		all_parents = { skoda_art }
+		mutually_exclusive = { flex_for_fire agile_td }
+
+		limit_to_equipment_type = {
+			mio_cat_eq_all_spg
+		}
+		equipment_bonus = {
+			soft_attack = 0.10
+		}
+	}
+	trait = {
+		token = spaa
+		name = CZE_skoda_mio_trait_spaa
+		icon = GFX_generic_mio_department_icon_tank_general_aa
+		position = { x=0 y=2 }
+		relative_position_id = skoda_art
+		any_parent = { mob_art flex_for_fire agile_td }
+
+		limit_to_equipment_type = {
+			mio_cat_eq_all_spaa
+		}
+		equipment_bonus = {
+			air_attack = 0.15
+		}
+	}
+	trait = {
+		token = optimized_production
+		name = CZE_skoda_mio_trait_optimized_production
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x=-1 y=3 }
+		relative_position_id = skoda_art
+		all_parents = { spaa }
+		mutually_exclusive = { CZE_skoda_overbored_guns }
+
+		equipment_bonus = {
+			build_cost_ic = -0.05
+			soft_attack = -0.05
+			hard_attack = -0.05
+		}
+	}
+	trait = {
+		token = CZE_skoda_overbored_guns
+		name = CZE_skoda_mio_trait_overbored_guns
+		icon = GFX_generic_mio_trait_icon_soft_attack
+		position = { x=1 y=3 }
+		relative_position_id = skoda_art
+		all_parents = { spaa }
+		mutually_exclusive = { optimized_production }
+
+		equipment_bonus = {
+			soft_attack = 0.05
+			hard_attack = 0.05
+			reliability = -0.05
+			build_cost_ic = 0.05
+		}
+	}
+
+	trait = {
+		token = CZE_skoda_integrated_works
+		name = CZE_skoda_mio_trait_integrated_works
+		icon = GFX_generic_mio_department_icon_tank_general_line_efficiency
+		special_trait_background = yes
+		position = { x=4 y=4 }
+		parent = {
+			traits = {
+				CZE_skoda_export_contracts CZE_skoda_domestic_orders
+				optimized_production CZE_skoda_overbored_guns
+			}
+			num_parents_needed = 2
+		}
+
+		production_bonus = {
+			production_capacity_factor = 0.05
+		}
+		equipment_bonus = {
+			reliability = 0.05
+			soft_attack = 0.05
+			hard_attack = 0.05
+		}
+
+		ai_will_do = {
+			base = 3
 		}
 	}
 }
@@ -505,7 +634,6 @@ CZE_skoda_shipyards_organization = {
 	allowed = {
 		tag = CZE
 	}
-	available = { always = yes }
 }
 
 
@@ -517,7 +645,6 @@ CZE_aero_organization = {
 	allowed = {
 		tag = CZE
 	}
-	available = { always = yes }
 }
 
 CZE_letov_organization = {
@@ -526,7 +653,6 @@ CZE_letov_organization = {
 	allowed = {
 		tag = CZE
 	}
-	available = { always = yes }
 }
 
 CZE_avia_organization = {
@@ -536,7 +662,6 @@ name = CZE_avia
 	allowed = {
 		tag = CZE
 	}
-	available = { always = yes }
 }
 
 
@@ -549,7 +674,6 @@ CZE_zbrojovka_brno_organization = {
 	allowed = {
 		tag = CZE
 	}
-	available = { always = yes }
 }
 
 CZE_skoda_artillery_organization = {
@@ -572,7 +696,6 @@ CZE_skoda_artillery_organization = {
 		}
 	}
 
-	available = { always = yes }
 }
 
   CZE_praga_organization = {
@@ -585,7 +708,6 @@ CZE_skoda_artillery_organization = {
 				original_tag = SLO
 			}
 		}
-	available = { always = yes }
 	equipment_type = { armor }
 	research_categories = { armor }
 
@@ -802,7 +924,6 @@ CZE_mototechna_organization = {
 			original_tag = SLO
 		}
 	}
-	available = { always = yes }
 }
 
 
