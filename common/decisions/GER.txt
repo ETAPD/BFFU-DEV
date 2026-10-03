@@ -6874,6 +6874,49 @@ GER_wehrmacht_cat = {
 
 		ai_will_do = { base = 1 }
 	}
+
+	GER_nero_decree = { # The Beginning of the End: scorched earth along the front line
+		icon = generic_scorched_earth
+
+		allowed = { original_tag = GER }
+
+		visible = {
+			has_completed_focus = GER_beginning_of_the_end
+		}
+
+		available = {
+			has_war = yes
+			OR = {
+				surrender_progress > 0.05
+				custom_trigger_tooltip = {
+					tooltip = GER_enemy_on_german_soil_tt
+					any_core_state = {
+						controller = { has_war_with = ROOT }
+					}
+				}
+			}
+		}
+
+		cost = 25
+		days_re_enable = 60
+
+		complete_effect = {
+			add_stability = -0.15
+			custom_effect_tooltip = GER_nero_decree_tt
+			hidden_effect = {
+				every_core_state = {
+					limit = {
+						is_controlled_by = ROOT
+						any_neighbor_state = { controller = { has_war_with = ROOT } }
+					}
+					damage_building = { type = rail_way damage = 5 }
+					damage_building = { type = supply_node damage = 1 }
+				}
+			}
+		}
+
+		ai_will_do = { base = 0 }
+	}
 }
 
 # Foreign policy: these drive the political tree's foreign policy focuses, which are now markers
