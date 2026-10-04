@@ -52,6 +52,75 @@ focus_tree = {
 
 
 	focus = {
+		id = GER_remilitarize_the_rhineland
+
+		icon = GFX_focus_GER_remilitarize_the_rhineland
+		alternate_icon = GFX_focus_GER_remilitarize_the_rhineland_historical
+
+
+		x = 39
+		y = 0
+
+		cost = 4.3
+
+		bypass = {
+			42 = { is_demilitarized_zone = no } #RHINELAND
+			51 = { is_demilitarized_zone = no } #MOSSELLAND
+			978 = { is_demilitarized_zone = no } #BADEN
+		}
+
+		available = {
+			is_subject = no
+			has_government = fascism
+			42 = { is_fully_controlled_by = ROOT } #RHINELAND
+			51 = { is_fully_controlled_by = ROOT } #MOSSELLAND
+			978 = { is_fully_controlled_by = ROOT } #BADEN
+		}
+		
+		ai_will_do = {
+			factor = 10
+		}
+
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ARMY_XP }	
+
+		completion_reward = {
+			
+			42 = { set_demilitarized_zone = no }
+			51 = { set_demilitarized_zone = no }
+			978 = { set_demilitarized_zone = no }
+			set_global_flag = rhineland_remilitarized
+			custom_effect_tooltip = GER_rhineland_ultimatum
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_political_power = 75
+			army_experience = 5
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_named_threat = { threat = 5 name = GER_remilitarize_the_rhineland }
+
+			if = {
+				limit = { FRA = { is_subject = no } }
+				FRA = {
+					country_event = { id = germany.60 hours = 1 }
+					custom_effect_tooltip = may_provoke_hostility
+				}
+			}
+
+			hidden_effect = {
+				if = {
+					limit = {
+						has_game_rule = {
+							rule = obsolete_focus_branches_visibility
+							option = HIDE
+						}
+					}
+					mark_focus_tree_layout_dirty = yes
+				}
+			}
+
+		}
+	}
+
+	focus = {
 		id = GER_develop_modern_maneuver_warfare
 		icon = GFX_GER_develop_manuever
 		#prerequisite = { focus = }
@@ -1951,7 +2020,7 @@ focus_tree = {
 		prerequisite = { focus = GER_indulge_gorings_graft focus = GER_milchs_audit }
 
 		x = 7
-		y = 6
+		y = 7
 		relative_position_id = GER_goring_plan
 		cost = 5
 		available = {
@@ -1996,7 +2065,7 @@ focus_tree = {
 		prerequisite = { focus = GER_concentrated_armament_program }
 
 		x = 1
-		y = 7
+		y = 6
 		relative_position_id = GER_goring_plan
 		icon = GFX_GER_from_workers_to_soldiers
 		cost = 5
@@ -2628,7 +2697,7 @@ focus_tree = {
 		prerequisite = { focus = GER_krupp_assembly_lines focus = GER_dispersed_assembly_production }
 
 		x = 0
-		y = 7
+		y = 6
 		relative_position_id = GER_follow_speers_plan
 		icon = GFX_goal_ammunitions
 		cost = 4
@@ -2947,9 +3016,6 @@ focus_tree = {
 				limit = { 978 = { is_controlled_by = ROOT } }
 				978 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #towards Basel
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { GER_industrial_production_speed_infrastructure_factor = 0.25 tooltip = production_speed_infrastructure_factor_tt }
 		}
 	}
 
@@ -5605,10 +5671,10 @@ completion_reward = {
 	focus = {
 		id = GER_zentrale_planung
 		icon = GFX_GER_factory_mobilisation
-		prerequisite = { focus = GER_coal_liquefaction}
+		prerequisite = { focus = GER_mobilise_the_reich }
 
 		x = -2
-		y = 2
+		y = 4
 		
 		relative_position_id = GER_develop_heraeus_facilities
 
@@ -5752,9 +5818,9 @@ completion_reward = {
 		icon = GFX_GER_mobilize_the_reich
 		prerequisite = { focus = GER_the_national_war_economy focus = GER_deutsch_military_complexes focus = GER_coal_liquefaction}
 
-		x = 0
-		y = 2
-		relative_position_id = GER_zentrale_planung
+		x = -2
+		y = 3
+		relative_position_id = GER_develop_heraeus_facilities
 		cost = 2
 		available = {
 			has_completed_focus = GER_fate_of_czechoslovakia
@@ -6238,7 +6304,7 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER FOCUS_FILTER_ARMY_XP }
 
 		completion_reward = {
-			add_tech_bonus = { name = GER_Bewegungskrieg bonus = 0.75 uses = 2 technology = ger_p4_tank_1 technology = ger_p4_turret_1 }
+			add_tech_bonus = { name = GER_Bewegungskrieg bonus = 1.0 uses = 2 technology = ger_p4_tank_1 technology = ger_p4_turret_1 }
 		}
 	}
 
@@ -7040,8 +7106,6 @@ completion_reward = {
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_HISTORICAL FOCUS_FILTER_MILITARY_CHARACTER }
 
 		completion_reward = {
-			add_tech_bonus = { name = GER_panzer_troops_school bonus = 0.5 uses = 1 category = cat_medium_armor }
-			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = GER_panzer_lehr_tt
 			hidden_effect = {
 				division_template = {
@@ -9781,74 +9845,6 @@ completion_reward = {
 	##     ## ####  ######     ##     #######  ##     ## ####  ######  ##     ## ########     ###  ###   ###  ###  
 
 
-	focus = {
-		id = GER_remilitarize_the_rhineland
-
-		icon = GFX_focus_GER_remilitarize_the_rhineland
-		alternate_icon = GFX_focus_GER_remilitarize_the_rhineland_historical
-
-
-		x = 39
-		y = 0
-
-		cost = 4.3
-
-		bypass = {
-			42 = { is_demilitarized_zone = no } #RHINELAND
-			51 = { is_demilitarized_zone = no } #MOSSELLAND
-			978 = { is_demilitarized_zone = no } #BADEN
-		}
-
-		available = {
-			is_subject = no
-			has_government = fascism
-			42 = { is_fully_controlled_by = ROOT } #RHINELAND
-			51 = { is_fully_controlled_by = ROOT } #MOSSELLAND
-			978 = { is_fully_controlled_by = ROOT } #BADEN
-		}
-		
-		ai_will_do = {
-			factor = 10
-		}
-
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_HISTORICAL FOCUS_FILTER_ARMY_XP }	
-
-		completion_reward = {
-			
-			42 = { set_demilitarized_zone = no }
-			51 = { set_demilitarized_zone = no }
-			978 = { set_demilitarized_zone = no }
-			set_global_flag = rhineland_remilitarized
-			custom_effect_tooltip = GER_rhineland_ultimatum
-			custom_effect_tooltip = generic_skip_one_line_tt
-			add_political_power = 75
-			army_experience = 5
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-			add_named_threat = { threat = 5 name = GER_remilitarize_the_rhineland }
-
-			if = {
-				limit = { FRA = { is_subject = no } }
-				FRA = {
-					country_event = { id = germany.60 hours = 1 }
-					custom_effect_tooltip = may_provoke_hostility
-				}
-			}
-
-			hidden_effect = {
-				if = {
-					limit = {
-						has_game_rule = {
-							rule = obsolete_focus_branches_visibility
-							option = HIDE
-						}
-					}
-					mark_focus_tree_layout_dirty = yes
-				}
-			}
-
-		}
-	}
 
 
 	# 	cost = 2
@@ -10989,7 +10985,7 @@ completion_reward = {
 	focus = {
 		id = GER_avenge_versailles
 		icon = GFX_GER_ein_reich
-		prerequisite = { focus = GER_mobilise_the_reich }
+		prerequisite = { focus = GER_zentrale_planung }
 		available = {
 			has_full_control_of_state = 16
 		}
@@ -10998,7 +10994,7 @@ completion_reward = {
 		cancel_if_invalid = yes
 		x = 0
 		y = 1
-		relative_position_id = GER_mobilise_the_reich
+		relative_position_id = GER_zentrale_planung
 		cost = 5
 		ai_will_do = {
 			factor = 10
