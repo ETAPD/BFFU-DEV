@@ -366,6 +366,7 @@ NDefines.NAir.BIGGEST_SPEED_FACTOR_DIFF = 3.0					-- biggest factor difference i
 NDefines.NAir.AIR_WING_BOMB_DAMAGE_FACTOR = 10					-- Used to balance the damage done while bombing.
 NDefines.NAir.COMBAT_MULTIPLANE_CAP = 3							-- How many planes can shoot at each plane on other side ( if there are 100 planes we are atttacking COMBAT_MULTIPLANE_CAP * 100 of our planes can shoot )
 NDefines.NAir.COMBAT_DAMAGE_SCALE = 0.1						-- Higher value = more shot down planes
+NDefines.NAir.COMBAT_DAMAGE_SCALE_CARRIER = 8					-- same as above but used inside naval combat for carrier battles
 -- NDefines.NAir.CARRIER_HOURS_DELAY_AFTER_EACH_COMBAT = 8          -- how often carrier planes do battle inside naval combat
 NDefines.NAir.NAVAL_STRIKE_TARGETTING_TO_AMOUNT = 0.4			-- Balancing value to convert the naval_strike_targetting equipment stats to chances of how many airplanes managed to do successfull strike.
 NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_STR = 1.25					-- Balancing value to convert damage ( naval_strike_attack * hits ) to Strength reduction.
@@ -376,7 +377,7 @@ NDefines.NAir.AIR_NAVAL_KAMIKAZE_DAMAGE_MULT = 10.0				-- Balancing value to inc
 NDefines.NAir.AIR_NAVAL_KAMIKAZE_LOSSES_MULT = 5.0          			-- Balancing value to increase usual losses if Kamikaze participating in the battle
 NDefines.NAir.BASE_STRATEGIC_BOMBING_HIT_SHIP_CHANCE = 0.01		-- Chance to hit a ship in port when it is bombed.
 NDefines.NAir.PORT_STRIKES_DELAY_MULTIPLIER = 4                 -- multplies HOURS_DELAY_AFTER_EACH_COMBAT (2 in vanilla, 4 in the mod) if port strikes
-NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_ORG = 1.00				-- Balancing value to convert damage ( naval_strike_attack * hits ) to Organisation reduction.
+NDefines.NAir.NAVAL_STRIKE_DAMAGE_TO_ORG = 0.5			-- Balancing value to convert damage ( naval_strike_attack * hits ) to Organisation reduction.
 NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO = 0.03		-- Max planes that can join a combat comparing to the total strength of the ships
 NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_JOIN_RATIO_PER_DAY = 0.09 -- max extra plane % that can join every day
 NDefines.NAir.NAVAL_COMBAT_EXTERNAL_PLANES_MIN_CAP = 300		-- Min cap for planes that can join naval combat
@@ -538,7 +539,7 @@ NDefines.NNavy.SUB_DETECTION_CHANCE_SPOTTING_SPEED_EFFECT = 1.0				-- effect of 
 NDefines.NNavy.UNIT_TRANSFER_SPOTTING_SPEED_MULT = 1.0						-- spotting speed mult against unit transfers
 NDefines.NNavy.NAVAL_INVASION_SPOTTING_SPEED_MULT = 1.0						-- spotting speed mult against naval invasion armies
 NDefines.NNavy.UNIT_TRANSFER_DETECTION_CHANCE_BASE = 4.12							-- unit transfer and naval invasion base chance detection percentage (if this fails no detection is done on that tick)
-NDefines.NNavy.BASE_JOIN_COMBAT_HOURS						= 24				-- the taskforces that wants to join existing combats will wait for at least this amount
+NDefines.NNavy.BASE_JOIN_COMBAT_HOURS						= 72				-- the taskforces that wants to join existing combats will wait for at least this amount
 NDefines.NNavy.MAX_POSITIONING_BONUS_FROM_SURFACE_DETECTION					= 0.1  -- will clamp the bonus that you get from detection
 NDefines.NNavy.HIGHER_SHIP_RATIO_POSITIONING_PENALTY_FACTOR					= 0.2 -- if one side has more ships than the other that side will get this penalty for each +100% ship ratio it has
 NDefines.NNavy.MAX_POSITIONING_PENALTY_FROM_HIGHER_SHIP_RATIO					= 1.2  -- maximum penalty to get from larger fleets
@@ -551,7 +552,7 @@ NDefines.NNavy.SCREENING_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING				= 0.45	-- 
 NDefines.NNavy.AA_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING						= 0.00  -- AA penalty at 0% positioning
 
 NDefines.NNavy.POSITIONING_PENALTY_FOR_SHIPS_JOINED_COMBAT_AFTER_IT_STARTS		= 0.1 -- each ship that joins the combat will have this penalty to be added into positioning
-NDefines.NNavy.MAX_POSITIONING_PENALTY_FOR_NEWLY_JOINED_SHIPS 					= 1  -- the accumulated penalty from new ships will be clamped to this value
+NDefines.NNavy.MAX_POSITIONING_PENALTY_FOR_NEWLY_JOINED_SHIPS 					= 1.2  -- the accumulated penalty from new ships will be clamped to this value
 NDefines.NNavy.POSITIONING_PENALTY_HOURLY_DECAY_FOR_NEWLY_JOINED_SHIPS			= 0.002  -- the accumulated penalty from new ships will decay hourly by this value
 
 NDefines.NNavy.SCREEN_RATIO_FOR_FULL_SCREENING_FOR_CAPITALS 					= 3.0	-- this screen ratio to num capital/carriers is needed for full screening beyond screen line
@@ -1089,7 +1090,6 @@ NDefines.NAir.AIR_WING_XP_TRAINING_MISSION_GAIN_DAILY = 5.0
 
 NDefines.NAir.DISRUPTION_FACTOR_CARRIER = 2.0                        -- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.CARRIER_HOURS_DELAY_AFTER_EACH_COMBAT = 6          -- how often carrier planes do battle inside naval combat
-NDefines.NAir.COMBAT_DAMAGE_SCALE_CARRIER = 8					-- same as above but used inside naval combat for carrier battles
 NDefines.NAir.CARRIER_PERCENTAGE_DEFEND = 0.5                    -- Percentage of planes able to defend a carrier from air attacks (historically 15% - 35%)
 
 
