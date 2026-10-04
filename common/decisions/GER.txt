@@ -6998,7 +6998,6 @@ GER_foreign_policy_category = {
 						custom_effect_tooltip = generic_skip_one_line_tt
 						annex_country = { target = AUS transfer_troops = yes }
 											
-						GER_anschluss_modify_mefo_bills_or_economy_of_conquest = yes
 						custom_effect_tooltip = if_they_refuse_tt
 						create_wargoal = {
 							type = take_state_focus
@@ -7572,75 +7571,6 @@ GER_foreign_policy_category = {
 							}
 						}
 						country_event = { id = germany.55 hours = 6 }
-					}
-					else =  {
-						if = { #Lower the MEFO Bills 
-							limit = { 
-								OR = {
-									has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-									has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-								}
-							}
-							if = {
-								limit = {
-									CZE = {
-										any_core_state = {
-											is_on_continent = europe
-											is_controlled_by = ROOT
-											NOT = { is_core_of = ROOT }
-											NOT = { has_state_flag = GER_seize_gold_reserves_state_flag }
-										}
-									}
-								}
-							
-								ROOT = { set_temp_variable = { occupied_state_num_factory = 0 } } #This will show how many factories in total Germany controls from FROM's cores
-								#add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_military_factories_in_cores@GER }
-								add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_civilian_factories_in_cores@GER }
-								add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_naval_factories_in_cores@GER }
-								add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_civilian_factories_in_cores@SLO }
-								add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_naval_factories_in_cores@SLO }
-								add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_civilian_factories_in_cores@HUN }
-								add_to_temp_variable = { GER.occupied_state_num_factory = CZE.num_of_naval_factories_in_cores@HUN }
-								hidden_effect = {
-									CZE = {
-										every_core_state = {
-											limit = {
-												is_on_continent = europe
-												is_fully_controlled_by = ROOT
-												NOT = { is_core_of = ROOT }
-												NOT = { has_state_flag = GER_seize_gold_reserves_state_flag }
-											}
-											set_state_flag = GER_seize_gold_reserves_state_flag
-										}
-									}
-								}
-
-								ROOT = {			
-									divide_temp_variable = { occupied_state_num_factory = 200 } #This is necessary since a single factory will increase the occupied_state_num_factory number to 1, which in turn translates to -100% when subtracting from the Consumer Goods. Dividing it by 100 here will give you 1% instead, which is more like what we want.
-									multiply_temp_variable = { occupied_state_num_factory = -1 }
-								
-									if = {
-										limit = {
-											has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-										}
-										custom_effect_tooltip = GER_modify_mefo_bills_modifier_tt
-									}
-									else_if = {
-										limit = {
-											has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-										}
-										custom_effect_tooltip = GER_modify_economy_of_conquest_modifier_tt
-									}
-
-									add_to_variable = {
-										GER_industrial_consumer_goods_factor = occupied_state_num_factory
-										tooltip = consumer_goods_factor_tt
-									}
-									GER_reduce_mefo_bills_penalty = yes
-									custom_effect_tooltip = generic_skip_one_line_tt
-								}
-							}
-						}
 					}
 				}
 				else_if = {
