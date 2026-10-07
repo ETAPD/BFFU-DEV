@@ -5,6 +5,7 @@
 ##############################
 
 add_namespace = germany_mefo_bills
+add_namespace = GER_army
 add_namespace = wuw_GER_military_events
 add_namespace = wuw_GER_diplomacy
 add_namespace = wuw_GER_news
@@ -1301,12 +1302,6 @@ country_event = {
 
 		custom_effect_tooltip =  generic_skip_one_line_tt
 		
-		GER_czechoslovakia_modify_mefo_bills_or_economy_of_conquest = yes
-		add_to_variable = {
-			GER_industrial_consumer_goods_factor = -0.15
-			tooltip = consumer_goods_factor_tt
-		}
-		GER_reduce_mefo_bills_penalty = yes
 	}
 }
 
@@ -5637,4 +5632,138 @@ country_event = {
 			tooltip = consumer_goods_expected_value_tt
 		}
     }
+}
+
+country_event = { #MEFO Bills rearmament debt - political power cost rises every six months until Danzig
+	id = germany_mefo_bills.20
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		add_to_variable = { GER_industrial_political_power_cost = 0.125 }
+		clamp_variable = { var = GER_industrial_political_power_cost max = 1 }
+		add_to_variable = { GER_industrial_consumer_goods_expected_value = 0.015 } #rearmament inflation
+	}
+}
+
+country_event = { #Work and Bread: after 12 March 1938
+	id = germany_mefo_bills.21
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				date > 1938.3.12
+				NOT = { has_country_flag = GER_work_and_bread_swapped }
+			}
+			set_country_flag = GER_work_and_bread_swapped
+			add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.72 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.75 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { GER_industrial_consumer_goods_expected_value = -0.05 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { GER_industrial_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = GER_work_and_bread_swapped } }
+			country_event = { id = germany_mefo_bills.21 days = 7 }
+		}
+	}
+}
+
+country_event = { #Armaments Miracle (Lex Krupp): +1.5% factory output on MEFO / Economy of Conquest every 30 days, 20 times
+	id = germany_mefo_bills.22
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		add_to_variable = { GER_industrial_industrial_capacity_factory = 0.015 }
+		add_to_variable = { GER_armaments_miracle_ticks = 1 }
+		if = {
+			limit = { check_variable = { GER_armaments_miracle_ticks < 20 } }
+			country_event = { id = germany_mefo_bills.22 days = 30 }
+		}
+	}
+}
+
+country_event = { #Four Year Plan Office: on 1 January 1937 its civilian bonus ends and the civilian malus of the Plan applies
+	id = germany_mefo_bills.23
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				date > 1936.12.31
+				NOT = { has_country_flag = GER_four_year_plan_office_expired }
+			}
+			set_country_flag = GER_four_year_plan_office_expired
+			add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.50 } #remove +25%, apply -25%
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = GER_four_year_plan_office_expired } }
+			country_event = { id = germany_mefo_bills.23 days = 7 }
+		}
+	}
+}
+
+country_event = { #8 February 1942: Fritz Todt killed when his aircraft crashes after take-off from Rastenburg
+	id = germany_mefo_bills.24
+	title = germany_mefo_bills.24.t
+	desc = germany_mefo_bills.24.d
+	picture = GFX_report_event_airplane_crash
+
+	is_triggered_only = yes
+
+	trigger = {
+		original_tag = GER
+	}
+
+	option = {
+		name = germany_mefo_bills.24.a
+		set_country_flag = GER_todt_dead
+		remove_advisor_role = {
+			character = GER_fritz_todt
+			slot = political_advisor
+		}
+	}
+}
+
+### German army tree rework
+country_event = { #18 August 1938: Ludwig Beck resigns over the Sudeten crisis
+	id = GER_army.1
+	title = GER_army.1.t
+	desc = GER_army.1.d
+	picture = GFX_report_event_german_troops
+
+	is_triggered_only = yes
+	trigger = { original_tag = GER }
+
+	option = {
+		name = GER_army.1.a
+		set_country_flag = GER_beck_resigned
+		remove_advisor_role = {
+			character = GER_ludwig_beck
+			slot = army_chief
+		}
+		custom_effect_tooltip = available_chief_of_army
+		show_ideas_tooltip = franz_halder
+	}
+}
+
+country_event = { #Walter Model, the Führer's fireman
+	id = GER_army.2
+	title = GER_army.2.t
+	desc = GER_army.2.d
+	picture = GFX_report_event_german_troops
+
+	is_triggered_only = yes
+	trigger = { original_tag = GER }
+
+	option = {
+		name = GER_army.2.a
+		GER_walter_model = {
+			add_unit_leader_trait = GER_model_fireman_trait
+			add_defense = 2
+		}
+	}
 }
