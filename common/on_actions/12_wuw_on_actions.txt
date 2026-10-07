@@ -1047,6 +1047,28 @@ on_actions = {
 
 	on_startup = {
 		effect = {
+			GER = {
+				country_event = { id = GER_luftwaffe.1 days = 2135 } # 1936.1.1 -> 1941.11.7
+
+				#MEFO Bills rearmament debt: political power cost +0.125 on 1936.3.1, then every six months, reaching 1.0 on 1939.9.1 (shown on the MEFO / Economy of Conquest spirit)
+				country_event = { id = germany_mefo_bills.20 days = 60 } # 1936.3.1
+				country_event = { id = germany_mefo_bills.20 days = 244 } # 1936.9.1
+				country_event = { id = germany_mefo_bills.20 days = 425 } # 1937.3.1
+				country_event = { id = germany_mefo_bills.20 days = 609 } # 1937.9.1
+				country_event = { id = germany_mefo_bills.20 days = 790 } # 1938.3.1
+				country_event = { id = germany_mefo_bills.20 days = 974 } # 1938.9.1
+				country_event = { id = germany_mefo_bills.20 days = 1155 } # 1939.3.1
+				country_event = { id = germany_mefo_bills.20 days = 1339 } # 1939.9.1
+
+				#Death of Fritz Todt
+				country_event = { id = germany_mefo_bills.24 days = 2230 } # 1942.2.8
+
+				#Ludwig Beck resigns
+				country_event = { id = GER_army.1 days = 960 } # 1938.8.18
+			}
+		}
+
+		effect = {
 			# European States Array
 			every_country = {
 				limit = {
@@ -1770,4 +1792,19 @@ on_actions = {
 		}
 	}
 
+	on_war_relation_added = { #ROOT = attacker, FROM = defender: Walter Model arrives 150 days into the war with the USSR
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = GER_model_event_scheduled }
+					OR = {
+						AND = { ROOT = { original_tag = GER } FROM = { original_tag = SOV } }
+						AND = { ROOT = { original_tag = SOV } FROM = { original_tag = GER } }
+					}
+				}
+				set_global_flag = GER_model_event_scheduled
+				GER = { country_event = { id = GER_army.2 days = 150 } }
+			}
+		}
+	}
 }
