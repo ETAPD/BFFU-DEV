@@ -752,7 +752,7 @@ NDefines.NNavy.NAVAL_HEADQUARTERS_FIRST_ADJACENT_FACTOR = 0.75					-- naval domi
 NDefines.NNavy.NAVAL_HEADQUARTERS_SECOND_ADJACENT_FACTOR = 0.25					-- naval dominance from naval headquarters is multiplied by this value for the second adjacent region
 
 -- Medals
-NDefines.NNavy.NAVAL_COMBAT_MEDAL_CHANCE										= 2		-- 1/N chance that a ship gains a medal after participating in a battle
+NDefines.NNavy.NAVAL_COMBAT_MEDAL_CHANCE										= 10		-- 1/N chance that a ship gains a medal after participating in a battle
 NDefines.NNavy.NAVAL_COMBAT_MEDAL_MIN_DURATION									= 48		-- Minimum hours the battle must have taken to gain a medal
 NDefines.NNavy.NAVAL_COMBAT_MEDAL_LAST_MEDAL_LIMIT								= 30		-- Minimum days before the ship can gain a new medal
 NDefines.NNavy.NAVAL_COMBAT_MEDAL_ALLOW_CONVOY									= false	-- Do naval attacks on convoy count for medals
