@@ -10,6 +10,7 @@ fuel_system_refresh_list = {
     every_country = {
             limit = {
                 NOT = { tag = ROOT }
+                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }   # a manager is never another manager's member
                 OR = {
                     is_in_faction_with = ROOT
                     AND = { ROOT = { tag = ENG } tag = HOL }
@@ -87,10 +88,9 @@ fuel_startup_effect = {
     if = { limit = { country_exists = ITA } ITA = { add_ideas = fuel_fra } }
 
     # Miss-nothing fallback: any country without an explicit history min_fuel
-    # (unset variables read as 0) gets the standard 0.80 target, so every
-    # possible faction member has a sane value.
+    # gets the standard 0.80 target, so every possible faction member has a sane value.
     every_country = {
-        limit = { check_variable = { min_fuel < 0.01 } }
+        limit = { NOT = { has_variable = min_fuel } }
         set_variable = { var = min_fuel value = 0.80 }
     }
 
@@ -98,9 +98,10 @@ fuel_startup_effect = {
         every_country = {
             limit = {
                 NOT = { tag = GER }
+                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
                 # Hardcoded so expected Axis members are in the list from day 1,
-                # before they formally join Germany's faction.
-                OR = { is_in_faction_with = GER tag = ITA tag = HUN tag = ROM tag = BUL tag = FIN tag = CZE tag = YUG tag = SPR tag = VIC }
+                # before they formally join Germany's faction. Keep identical to fuel_system_refresh_list.
+                OR = { is_in_faction_with = GER tag = ITA tag = HUN tag = ROM tag = BUL tag = FIN tag = DEN tag = CZE tag = YUG tag = SPR tag = VIC }
                 NOT = { is_in_array = { GER.faction_members_array = THIS.id } }
             }
             add_to_array = { GER.faction_members_array = THIS.id }
@@ -124,6 +125,7 @@ fuel_startup_effect = {
                 OR = {
                     AND = {
                         NOT = { tag = ENG }
+                        NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
                         OR = { is_in_faction_with = ENG tag = FRA tag = CAN tag = AST tag = NZL tag = SAF tag = RAJ tag = POL tag = HOL tag = NOR tag = GRE tag = BEL }
                         NOT = { is_in_array = { ENG.faction_members_array = THIS.id } }
                     }
@@ -150,6 +152,7 @@ fuel_startup_effect = {
         every_country = {
             limit = {
                 NOT = { tag = JAP }
+                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
                 OR = { is_in_faction_with = JAP tag = MAN tag = SIA }
                 NOT = { is_in_array = { JAP.faction_members_array = THIS.id } }
             }
@@ -169,13 +172,26 @@ fuel_startup_effect = {
     }
 }
 
+# Once-per-day entry point, called from the on_actions (see fuel_system_on_actions.txt).
+fuel_system_daily_tick = {
+    if = {
+        limit = { NOT = { has_global_flag = fuel_manager_reserve_fixed } }
+        if = { limit = { country_exists = GER } GER = { set_variable = { var = min_fuel value = 0.05 } } }
+        if = { limit = { country_exists = ENG } ENG = { set_variable = { var = min_fuel value = 0.05 } } }
+        if = { limit = { country_exists = JAP } JAP = { set_variable = { var = min_fuel value = 0.05 } } }
+        set_global_flag = fuel_manager_reserve_fixed
+    }
+    on_daily_fuel = yes
+}
+
 on_daily_fuel = {
     for_each_scope_loop = {
         array = GLOBAL.fuel_countries
+        clear_variable = fuel_served    # reset each day: a member listed by two managers is served by only the first one
         if = {
             limit = {
                 NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
-                check_variable = { min_fuel < 0.01 }
+                NOT = { has_variable = min_fuel }   # never set (e.g. a country created after startup); a target the player set to 0% must stay 0%
             }
             set_variable = { var = min_fuel value = 0.80 }
         }
@@ -184,7 +200,6 @@ on_daily_fuel = {
     # Loop over all fuel controllers.
     for_each_scope_loop = {
         array = GLOBAL.fuel_system_manager
-        set_variable = { GLOBAL.controllerscope = THIS.id }
 
         set_variable = { fuel_spare = fuel_ratio }
         subtract_from_variable = { fuel_spare = min_fuel }
@@ -230,12 +245,12 @@ on_daily_fuel = {
             }
         }
 
-        # Loop over all faction members of this controller.
+        # Pooling: members sitting above THEIR target lend that surplus to members below theirs before the
+        # controller spends any of its own reserves (the controller's spare below then only covers what is left).
+        # Scopes: outer loop THIS = short member, PREV = controller; inner loop THIS = donor, PREV = short member.
         for_each_scope_loop = {
             array = THIS.faction_members_array
-            set_variable = { GLOBAL.currentscope = THIS.id }
 
-            # This member's deficit (in the member's own scope).
             set_variable = { fuel_need = min_fuel }
             subtract_from_variable = { fuel_need = fuel_ratio }
             multiply_variable = { fuel_need = max_fuel_k }
@@ -243,23 +258,80 @@ on_daily_fuel = {
 
             if = {
                 limit = {
-                    check_variable = { PREV.fuel_spare > 0 }   # controller still has spare (persistent, resolves via PREV)
-                    check_variable = { fuel_need > 0 }         # member is below its target
+                    check_variable = { fuel_need > 0 }       # member is below its target
+                    NOT = { has_war_with = PREV }            # never fuel a listed country the controller is at war with
+                    NOT = { has_variable = fuel_served }     # another manager already looked after this member today
+                }
+                for_each_scope_loop = {
+                    array = PREV.faction_members_array
+                    if = {
+                        limit = {
+                            check_variable = { PREV.fuel_need > 0 }   # short member still needs fuel
+                            NOT = { tag = PREV }
+                            NOT = { has_war_with = PREV }
+                            NOT = { has_war_with = PREV.PREV }        # donor at war with the controller: skipped
+                        }
+                        set_variable = { fuel_surplus = fuel_ratio }
+                        subtract_from_variable = { fuel_surplus = min_fuel }
+                        multiply_variable = { fuel_surplus = max_fuel_k }
+                        multiply_variable = { fuel_surplus = 1000 }
+
+                        if = {
+                            limit = { check_variable = { fuel_surplus > 0 } }   # donor is above its own target
+                            set_variable = { fuel_pool_move = fuel_surplus }
+                            if = {
+                                limit = { check_variable = { fuel_pool_move > PREV.fuel_need } }
+                                set_variable = { fuel_pool_move = PREV.fuel_need }
+                            }
+                            set_variable = { fuel_pool_out = fuel_pool_move }
+                            multiply_variable = { fuel_pool_out = -1 }
+                            add_fuel = fuel_pool_out                                  # donor loses (never below its own target)
+                            subtract_from_variable = { PREV.fuel_need = fuel_pool_move }
+                            set_variable = { PREV.fuel_pool_in = fuel_pool_move }
+                            PREV = { add_fuel = fuel_pool_in }                        # short member gains the same amount
+                        }
+                    }
+                }
+            }
+        }
+
+        # Loop over all faction members of this controller.
+        for_each_scope_loop = {
+            array = THIS.faction_members_array
+
+            # A member listed by two managers (e.g. both sit in one faction) is served by the first manager only.
+            if = {
+                limit = {
+                    NOT = { has_variable = fuel_served }
                     NOT = { has_war_with = PREV }              # never fuel a listed country we are at war with
                 }
+                set_variable = { fuel_served = 1 }
 
-                # Move min(member deficit, controller's remaining spare).
-                set_variable = { fuel_move = fuel_need }
+                # This member's deficit (in the member's own scope).
+                set_variable = { fuel_need = min_fuel }
+                subtract_from_variable = { fuel_need = fuel_ratio }
+                multiply_variable = { fuel_need = max_fuel_k }
+                multiply_variable = { fuel_need = 1000 }
+
                 if = {
-                    limit = { check_variable = { fuel_move > PREV.fuel_spare } }
-                    set_variable = { fuel_move = PREV.fuel_spare }
-                }
+                    limit = {
+                        check_variable = { PREV.fuel_spare > 0 }   # controller still has spare (persistent, resolves via PREV)
+                        check_variable = { fuel_need > 0 }         # member is below its target
+                    }
 
-                add_fuel = fuel_move                              # member gains
-                subtract_from_variable = { PREV.fuel_spare = fuel_move }   # deplete controller's remaining spare
-                set_variable = { PREV.fuel_move_out = fuel_move }
-                multiply_variable = { PREV.fuel_move_out = -1 }
-                PREV = { add_fuel = fuel_move_out }               # controller loses the same amount
+                    # Move min(member deficit, controller's remaining spare).
+                    set_variable = { fuel_move = fuel_need }
+                    if = {
+                        limit = { check_variable = { fuel_move > PREV.fuel_spare } }
+                        set_variable = { fuel_move = PREV.fuel_spare }
+                    }
+
+                    add_fuel = fuel_move                              # member gains
+                    subtract_from_variable = { PREV.fuel_spare = fuel_move }   # deplete controller's remaining spare
+                    set_variable = { PREV.fuel_move_out = fuel_move }
+                    multiply_variable = { PREV.fuel_move_out = -1 }
+                    PREV = { add_fuel = fuel_move_out }               # controller loses the same amount
+                }
             }
         }
     }
