@@ -8,20 +8,66 @@ on_actions = {
 		}
 	}
 
-	# Run the fuel redistribution once per day. on_daily_SOV fires only in SOV scope
-	# (a permanent major), so on_daily_fuel runs exactly once per day rather than once
-	# per country. The effect operates on the GLOBAL fuel arrays, so the scope only
-	# needs to be a country that exists. (Mirrors Horst's on_daily_SOV wiring.)
+	# Run the fuel redistribution once per day. on_daily_SOV fires only in SOV scope, so
+	# fuel_system_daily_tick runs exactly once per day rather than once per country. The
+	# effect operates on the GLOBAL fuel arrays, so the scope only needs to be a country
+	# that exists. (Mirrors Horst's on_daily_SOV wiring.)
 	on_daily_SOV = {
 		effect = {
+			fuel_system_daily_tick = yes
+		}
+	}
+
+	# Fallbacks: on_daily_<TAG> stops firing when that country no longer exists (annexed), which
+	# would silently stop all fuel sharing. Each fallback only runs while every country before it
+	# is gone, so the tick still happens exactly once per day.
+	on_daily_GER = {
+		effect = {
 			if = {
-				limit = { NOT = { has_global_flag = fuel_manager_reserve_fixed } }
-				if = { limit = { country_exists = GER } GER = { set_variable = { var = min_fuel value = 0.05 } } }
-				if = { limit = { country_exists = ENG } ENG = { set_variable = { var = min_fuel value = 0.05 } } }
-				if = { limit = { country_exists = JAP } JAP = { set_variable = { var = min_fuel value = 0.05 } } }
-				set_global_flag = fuel_manager_reserve_fixed
+				limit = { NOT = { country_exists = SOV } }
+				fuel_system_daily_tick = yes
 			}
-			on_daily_fuel = yes
+		}
+	}
+	on_daily_ENG = {
+		effect = {
+			if = {
+				limit = { NOT = { country_exists = SOV } NOT = { country_exists = GER } }
+				fuel_system_daily_tick = yes
+			}
+		}
+	}
+	on_daily_JAP = {
+		effect = {
+			if = {
+				limit = { NOT = { country_exists = SOV } NOT = { country_exists = GER } NOT = { country_exists = ENG } }
+				fuel_system_daily_tick = yes
+			}
+		}
+	}
+
+	on_monthly_GER = {
+		effect = {
+			if = {
+				limit = { is_ai = yes is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
+				fuel_system_refresh_list = yes
+			}
+		}
+	}
+	on_monthly_ENG = {
+		effect = {
+			if = {
+				limit = { is_ai = yes is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
+				fuel_system_refresh_list = yes
+			}
+		}
+	}
+	on_monthly_JAP = {
+		effect = {
+			if = {
+				limit = { is_ai = yes is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
+				fuel_system_refresh_list = yes
+			}
 		}
 	}
 }
