@@ -436,7 +436,7 @@ ENG_shadow_debug_calc = {
 	subtract_from_variable = { var = shadow_dbg_delta value = var:shadow_civs1 }
 	clamp_variable = { var = shadow_dbg_delta min = 0 max = 120 }
 	set_variable = { var = shadow_dbg_mils value = var:shadow_dbg_delta }
-	divide_variable = { var = shadow_dbg_mils value = 4 }
+	divide_variable = { var = shadow_dbg_mils value = 3 }
 	set_variable = { var = shadow_dbg_tmp value = var:shadow_dbg_mils }
 	round_variable = shadow_dbg_mils
 	if = {
@@ -454,4 +454,44 @@ ENG_shadow_debug_calc = {
 # Shows on UK naval focuses that change the Royal Navy dynamic modifier
 ENG_modify_royal_navy_modifier = {
 	custom_effect_tooltip = ENG_modify_royal_navy_modifier_tt
+}
+
+# Honour the Treaty Limits: paid out once, when war breaks out
+ENG_rn_treaty_war_bonus_effect = {
+	if = {
+		limit = { has_country_flag = ENG_rn_treaty_war_bonus }
+		clr_country_flag = ENG_rn_treaty_war_bonus
+		add_to_variable = { ENG_rn_dock_cap = 0.15 }
+	}
+}
+
+# Operation Compass: shared by the ENG_Compass decision and the Libyan gambit focus (fires when Britain is at war with Italy)
+ENG_operation_compass_effect = {
+	set_country_flag = ENG_compass_launched
+	clr_country_flag = ENG_libyan_gambit_active
+	country_event = { id = speech.14 }
+	add_timed_idea = {
+		idea = ENG_Operation_Compass
+		days = 90
+	}
+	hidden_effect = {
+		CAN = { add_timed_idea = { idea = ENG_Operation_Compass days = 90 } }
+		SAF = { add_timed_idea = { idea = ENG_Operation_Compass days = 90 } }
+		AST = { add_timed_idea = { idea = ENG_Operation_Compass days = 90 } }
+		RAJ = { add_timed_idea = { idea = ENG_Operation_Compass days = 90 } }
+		NZL = { add_timed_idea = { idea = ENG_Operation_Compass days = 90 } }
+	}
+}
+
+# Mediterranean Gambit: starts the monthly Cyprus/Malta check (events/Britain.txt britain.811) once, when Britain is at war with Italy
+ENG_med_gambit_start_effect = {
+	if = {
+		limit = {
+			has_country_flag = ENG_med_gambit_active
+			NOT = { has_country_flag = ENG_med_gambit_running }
+		}
+		set_country_flag = ENG_med_gambit_running
+		set_variable = { ENG_med_gambit_months = 0 }
+		country_event = { id = britain.811 days = 30 }
+	}
 }
