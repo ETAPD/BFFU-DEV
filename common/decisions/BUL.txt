@@ -8,6 +8,299 @@
 #BUL_is_monarchist_ferdinand_ai
 
 operations = {
+	BUL_army = {
+		allowed = { 
+			original_tag = BUL
+		}
+
+		visible = {
+			original_tag = BUL
+		}
+
+		activation = {
+			has_country_flag = BUL_demand_trigger
+		}
+
+		days_mission_timeout = 720
+		days_remove = 1
+		fire_only_once = yes
+
+		available = {
+			#1010inf, 205sqa, 15trucks, 100supp
+			has_equipment = {
+				infantry_equipment > 29999
+			}
+			has_equipment = {
+				squad_equipment > 2999
+			}
+			has_equipment = {
+				support_equipment > 2999
+			}
+			has_equipment = {
+				motorized_equipment > 299
+			}
+		}
+
+		timeout_effect = {
+			add_political_power = -75
+			add_stability = -0.15
+			add_war_support = -0.15
+			add_equipment_to_stockpile = {
+				type = infantry_equipment_0
+				amount = 10000
+			}
+			add_equipment_to_stockpile = {
+				type = squad_equipment_0
+				amount = 1000
+			}
+			set_country_flag = BUL_demand_completed
+		}
+
+		complete_effect = {
+			add_political_power = 150
+			add_timed_idea = {
+				idea = BUL_demand_met
+				days = 30
+			}
+			set_country_flag = BUL_demand_completed
+		}
+	}
+
+	BUL_exploiting_the_imro = {
+		icon = border_war
+		allowed = {
+			always = no
+		}
+
+		available = {
+			hidden_trigger = { always = no }
+		}
+
+		is_good = no
+		days_mission_timeout = 30
+
+		visible = {
+
+		}
+
+		highlight_states = {
+	 		highlight_state_targets = {
+				state = 106
+			} 
+		}
+		
+		fire_only_once = yes
+
+		timeout_effect = { 
+			start_border_war = {
+				change_state_after_war = no
+				attacker = {
+					state = 106
+					num_provinces = 1
+					on_win = bulgaria.997
+					on_lose = bulgaria.998
+				}
+				
+				defender = {
+					state = 48
+					num_provinces = 1
+					on_win = bulgaria.998
+					on_lose = bulgaria.997
+				}
+			}
+		}
+	}
+
+	BUL_collect_pre_war_weaponry = {
+		allowed = { 
+			original_tag = BUL
+		}
+
+		visible = {
+			original_tag = BUL
+			NOT = { has_country_flag = BUL_three_collections }
+		}
+
+		available = {
+			has_completed_focus = BUL_collect_pre_war_weaponry
+			NOT = { has_country_flag = BUL_three_collections }
+		}
+
+		days_remove = 180
+		days_re_enable = 1
+
+		modifier = {
+			industrial_capacity_factory = -0.25
+			war_support_weekly = -0.001
+		}
+
+		cost = BUL_collection_cost
+
+		remove_effect = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = BUL_one_collections }
+					NOT = { has_country_flag = BUL_two_collections }
+					NOT = { has_country_flag = BUL_three_collections }
+				}
+				add_equipment_to_stockpile = {
+					type = infantry_equipment_0
+					amount = 1000
+				}
+				add_equipment_to_stockpile = {
+					type = squad_equipment_0
+					amount = 100
+				}
+				clr_country_flag = BUL_zero_collections
+				set_country_flag = BUL_one_collections
+				add_to_variable = {
+					var = BUL_collection_cost
+					value = 50
+				}
+			}
+			else_if = {
+				limit = {
+					has_country_flag = BUL_one_collections
+				}
+				add_equipment_to_stockpile = {
+					type = infantry_equipment_0
+					amount = 2000
+				}
+				add_equipment_to_stockpile = {
+					type = squad_equipment_0
+					amount = 200
+				}
+				clr_country_flag = BUL_one_collections
+				set_country_flag = BUL_two_collections
+				add_to_variable = {
+					var = BUL_collection_cost
+					value = 50
+				}
+			}
+			else_if = {
+				limit = {
+					has_country_flag = BUL_two_collections
+				}
+				add_equipment_to_stockpile = {
+					type = infantry_equipment_0
+					amount = 4000
+				}
+				add_equipment_to_stockpile = {
+					type = squad_equipment_0
+					amount = 400
+				}
+				clr_country_flag = BUL_two_collections
+				set_country_flag = BUL_three_collections
+				add_to_variable = {
+					var = BUL_collection_cost
+					value = 50
+				}
+			}
+		}
+	}
+
+	BUL_formalize_army = {
+		allowed = { 
+			original_tag = BUL
+		}
+
+		visible = {
+			original_tag = BUL
+			has_completed_focus = BUL_undermine_boris
+		}
+
+		available = {
+			has_completed_focus = BUL_micro_four
+			has_army_experience > 50
+		}
+
+		days_remove = 180
+		days_re_enable = 1
+
+		modifier = {
+			army_org_factor = -0.1
+			army_attack_factor = -0.1
+			army_defence_factor = -0.1
+		}
+
+		complete_effect = {
+			army_experience = -50
+		}
+
+		remove_effect = {
+			add_mastery = {
+				amount = 100
+				track = infantry
+			}
+			add_mastery = {
+				amount = 100
+				track = combat_support
+			}
+			add_mastery = {
+				amount = 100
+				track = armor
+			}
+			add_mastery = {
+				amount = 100
+				track = operations
+			}
+		}
+	}
+	
+	BUL_research_pack_arty = {
+		allowed = { 
+			original_tag = BUL
+		}
+
+		available = {
+			has_completed_focus = BUL_pack_arty
+		}
+
+		visible = {
+			NOT = { has_completed_focus = BUL_rocket_arty }
+			NOT = { has_completed_focus = BUL_heavy_arty }
+			NOT = { has_completed_focus = BUL_mass_mob }
+			NOT = { has_completed_focus = BUL_mobile_army }
+		}
+
+		fire_only_once = yes
+
+		days_remove = 365
+
+		remove_effect = {
+			add_research_slot = 1
+			set_technology = {
+				pack_artillery_2 = 1
+			}
+		}
+	}
+
+	BUL_unlock_tiger = {
+		allowed = { 
+			original_tag = BUL
+		}
+
+		available = {
+			has_completed_focus = BUL_heavies
+			date > 1938.7.1
+		}
+
+		visible = {
+			NOT = { has_completed_focus = BUL_katyusha }
+			NOT = { has_completed_focus = BUL_mass_mob }
+			NOT = { has_completed_focus = BUL_quality_inf }
+		}
+
+		fire_only_once = yes
+
+		days_remove = 365
+
+		remove_effect = {
+			set_technology = {
+				ger_heavy_tank_1 = 1
+			}
+		}
+	}
 
 	BUL_purchase_rom  = {
 
