@@ -394,13 +394,37 @@ USA_ease_depression = {
 }
 
 
-# Cash and Carry — reward for a completed market sale (called in the BUYER scope by the
-# per-type buy decisions). The buyer's cost (5 civilian factories used for 90 days) is the
-# decision's civilian_factory_use modifier; delivery is the decision's remove_effect.
-USA_cnc_purchase_reward = {
-	USA = {
-		add_to_variable = { USA_war_economy_output_var        = 0.002 }
-		add_to_variable = { USA_war_economy_output_fdr_var    = 0.002 }
-		add_to_variable = { USA_war_economy_output_landon_var = 0.002 }
+# Cash and Carry
+# Requires temp variable cnc_invest. The decision's own cost has already taken the PP.
+USA_cnc_invest_pool = {
+	if = {
+		limit = { has_global_flag = USA_cnc_eximbank }
+		multiply_temp_variable = { cnc_invest = 1.25 }
+	}
+	add_to_variable = {
+		global.cnc_pp_pool = cnc_invest
+		tooltip = USA_cnc_add_to_pool_tt
+	}
+	add_to_variable = { cnc_pp_invested = cnc_invest }
+}
+
+# Cash and Carry — pay for a package from the pool (cost set by the chosen package size).
+USA_cnc_pay_from_pool = {
+	subtract_from_variable = { global.cnc_pp_pool = cnc_pkg_cost }
+	add_to_variable = { cnc_pp_drawn = cnc_pkg_cost }
+	# Every 5 lots sold gives the USA +2.5% factory output (USA_cnc_market_output), no cap.
+	custom_effect_tooltip = USA_cnc_sale_output_tt
+	hidden_effect = {
+		set_temp_variable = { cnc_sold = cnc_pkg_lots }
+		add_to_variable = { global.cnc_lots_sold = cnc_sold }
+		USA = {
+			add_to_variable = { USA_cnc_lots_progress = cnc_sold }
+			while_loop_effect = {
+				limit = { check_variable = { USA_cnc_lots_progress > 4.5 } }
+				subtract_from_variable = { USA_cnc_lots_progress = 5 }
+				add_to_variable = { USA_cnc_output_var = 0.025 }
+			}
+			force_update_dynamic_modifier = yes
+		}
 	}
 }
