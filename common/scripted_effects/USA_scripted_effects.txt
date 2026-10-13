@@ -442,6 +442,12 @@ USA_recalc_war_economy = {
 	set_variable = { USA_we_slots = 0 }
 	set_variable = { USA_we_max_eff = 0 }
 	set_variable = { USA_we_eff_gain = 0 }
+	set_variable = { USA_we_start_eff = 0 }
+	set_variable = { USA_we_cg_expected = 0 }
+	set_variable = { USA_we_pp_gain = 0 }
+	set_variable = { USA_we_conscription = 0 }
+	set_variable = { USA_we_stability = 0 }
+	set_variable = { USA_we_war_support = 0 }
 	if = {
 		limit = { has_country_flag = USA_war_economy_active }
 		set_variable = { USA_we_consumer = -0.10 }
@@ -461,8 +467,35 @@ USA_recalc_war_economy = {
 		if = {
 			limit = { has_country_flag = USA_war_economy_subsidies_on }
 			set_variable = { USA_we_max_eff = 0.10 }
-			set_variable = { USA_we_eff_gain = 0.05 }
+			add_to_variable = { USA_we_eff_gain = 0.05 }
 		}
+	}
+	# Wartime agencies (flags set by their focuses)
+	if = {
+		limit = { has_country_flag = USA_we_bonds }                # Series E War Bonds (Issue War Bonds)
+		add_to_variable = { USA_we_cg_expected = -0.025 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_wpa }                  # War Powers Act
+		add_to_variable = { USA_we_pp_gain = 0.15 }
+		add_to_variable = { USA_we_conscription = 0.05 }
+		add_to_variable = { USA_we_stability = -0.001 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_owm }                  # Office of War Mobilisation
+		add_to_variable = { USA_we_eff_gain = 0.10 }
+		add_to_variable = { USA_we_start_eff = 0.10 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_owi }                  # Office of War Information
+		add_to_variable = { USA_we_war_support = 0.003 }
+		add_to_variable = { USA_we_stability = 0.002 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_epca }                 # Emergency Price Control Act
+		add_to_variable = { USA_we_cg_expected = -0.05 }
+		add_to_variable = { USA_we_eff_gain = 0.05 }
+		add_to_variable = { USA_we_stability = 0.001 }
 	}
 	force_update_dynamic_modifier = yes
 }
