@@ -412,7 +412,7 @@ USA_cnc_invest_pool = {
 USA_cnc_pay_from_pool = {
 	subtract_from_variable = { global.cnc_pp_pool = cnc_pkg_cost }
 	add_to_variable = { cnc_pp_drawn = cnc_pkg_cost }
-	# Every 5 lots sold gives the USA +2.5% factory output (USA_cnc_market_output), no cap.
+	# Every 5 lots sold gives the USA +2.5% factory output (War Economy of the United States), no cap.
 	custom_effect_tooltip = USA_cnc_sale_output_tt
 	hidden_effect = {
 		set_temp_variable = { cnc_sold = cnc_pkg_lots }
@@ -424,7 +424,45 @@ USA_cnc_pay_from_pool = {
 				subtract_from_variable = { USA_cnc_lots_progress = 5 }
 				add_to_variable = { USA_cnc_output_var = 0.025 }
 			}
-			force_update_dynamic_modifier = yes
+			USA_recalc_war_economy = yes
 		}
 	}
+}
+
+# War Economy of the United States (USA_war_economy dynamic modifier). Call in the USA scope whenever
+# the market output, the December 7th war economy or Big Business Subsidies change.
+#   flags: USA_war_economy_active (December 7th done), USA_war_economy_landon_path (Willkie path),
+#          USA_war_economy_subsidies_on (Offer Subsidies to Big Business done)
+USA_recalc_war_economy = {
+	set_variable = { USA_we_output = USA_cnc_output_var }
+	set_variable = { USA_we_arms_speed = 0 }
+	set_variable = { USA_we_dock_speed = 0 }
+	set_variable = { USA_we_arms_cost = 0 }
+	set_variable = { USA_we_consumer = 0 }
+	set_variable = { USA_we_slots = 0 }
+	set_variable = { USA_we_max_eff = 0 }
+	set_variable = { USA_we_eff_gain = 0 }
+	if = {
+		limit = { has_country_flag = USA_war_economy_active }
+		set_variable = { USA_we_consumer = -0.10 }
+		set_variable = { USA_we_slots = 2 }
+		if = {
+			limit = { has_country_flag = USA_war_economy_landon_path }
+			add_to_variable = { USA_we_output = 0.45 }
+			set_variable = { USA_we_arms_speed = 0.50 }
+			set_variable = { USA_we_dock_speed = 0.40 }
+			set_variable = { USA_we_arms_cost = -0.15 }
+		}
+		else = {
+			add_to_variable = { USA_we_output = 0.35 }
+			set_variable = { USA_we_arms_speed = 0.70 }
+			set_variable = { USA_we_dock_speed = 0.35 }
+		}
+		if = {
+			limit = { has_country_flag = USA_war_economy_subsidies_on }
+			set_variable = { USA_we_max_eff = 0.10 }
+			set_variable = { USA_we_eff_gain = 0.05 }
+		}
+	}
+	force_update_dynamic_modifier = yes
 }

@@ -350,7 +350,7 @@ focus_tree = {
 			hidden_effect = {
 				set_country_flag = USA_cash_and_carry_active
 				set_variable = { USA_cnc_output_var = -0.10 }
-				add_dynamic_modifier = { modifier = USA_cnc_market_output }
+				USA_recalc_war_economy = yes
 			}
 		}
 	}
@@ -3115,19 +3115,8 @@ focus_tree = {
 		mutually_exclusive = { focus = USA_offer_subsidies_to_small_business  }
 		completion_reward = {
 			hidden_effect = {
-				if = {
-					limit = { has_dynamic_modifier = { modifier = USA_war_economy_landon } }
-					remove_dynamic_modifier = { modifier = USA_war_economy_landon }
-					add_dynamic_modifier = { modifier = USA_war_economy_subsidies_landon }
-				}
-				else_if = {
-					limit = { has_dynamic_modifier = { modifier = USA_war_economy } }
-					remove_dynamic_modifier = { modifier = USA_war_economy }
-					add_dynamic_modifier = { modifier = USA_war_economy_subsidies }
-				}
-				else = {
-					set_country_flag = USA_war_economy_subsidies_pending
-				}
+				set_country_flag = USA_war_economy_subsidies_on
+				USA_recalc_war_economy = yes
 			}
 			custom_effect_tooltip = USA_offer_subsidies_big_business_tt
 		}
@@ -3446,10 +3435,14 @@ focus_tree = {
 				}
 			}
 			if = {
-				limit = { has_country_flag = USA_war_economy_subsidies_pending }
+				limit = {
+					has_country_flag = USA_war_economy_subsidies_on
+					has_completed_focus = USA_wilkiebreaksthestreak
+				}
 				custom_effect_tooltip = USA_dec7_war_economy_subsidies_landon_tt
-				add_dynamic_modifier = { modifier = USA_war_economy_subsidies_landon }
-				clr_country_flag = USA_war_economy_subsidies_pending
+				set_country_flag = USA_war_economy_active
+				set_country_flag = USA_war_economy_landon_path
+				USA_recalc_war_economy = yes
 				if = {
 					limit = { has_idea = laissez_faire }
 					swap_ideas = { remove_idea = laissez_faire add_idea = laissez_faire_wartime }
@@ -3459,7 +3452,9 @@ focus_tree = {
 			else_if = {
 				limit = { has_completed_focus = USA_wilkiebreaksthestreak }
 				custom_effect_tooltip = USA_dec7_war_economy_landon_tt
-				add_dynamic_modifier = { modifier = USA_war_economy_landon }
+				set_country_flag = USA_war_economy_active
+				set_country_flag = USA_war_economy_landon_path
+				USA_recalc_war_economy = yes
 				if = {
 					limit = { has_idea = laissez_faire }
 					swap_ideas = { remove_idea = laissez_faire add_idea = laissez_faire_wartime }
@@ -3468,7 +3463,8 @@ focus_tree = {
 			}
 			else = {
 				custom_effect_tooltip = USA_dec7_war_economy_fdr_tt
-				add_dynamic_modifier = { modifier = USA_war_economy_fdr }
+				set_country_flag = USA_war_economy_active
+				USA_recalc_war_economy = yes
 				if = {
 					limit = { has_idea = militarised_keynesianism }
 					swap_ideas = { remove_idea = militarised_keynesianism add_idea = militarised_keynesianism_wartime }
