@@ -472,7 +472,7 @@ NDefines.NAir.DETECT_EFFICIENCY_FROM_RADAR = 0.8					-- How much radars affect t
 
 NDefines.NAir.AIR_AGILITY_TO_NAVAL_STRIKE_AGILITY = 0.02         		-- conversion factor to bring agility in line with ship AA
 
-NDefines.NNavy.DETECTION_CHANCE_MULT_RADAR_BONUS = 0.2						-- detection chance bonus from radars. (Vanilla 0.1)
+NDefines.NNavy.DETECTION_CHANCE_MULT_RADAR_BONUS = 0.1						-- detection chance bonus from radars. (Vanilla 0.1)
 NDefines.NNavy.COMBAT_DAMAGE_RANDOMNESS = 0.30								-- random factor in damage. So if max damage is fe. 10 and randomness is 30% then damage will be between 7-10.
 NDefines.NNavy.COMBAT_MAX_GROUPS = 4										-- Max amount of "Fire Exchange" groups (FEX).
 -- Convoys
@@ -634,10 +634,11 @@ NDefines.NNavy.AIR_MISSION_SPOTTING_FACTORS = {								-- Multiplier for air-win
 		1.00, -- RECON
 		1.50, -- NAVAL_PATROL
 }
-NDefines.NNavy.MIN_SPOTTING_PROGRESS = 0.002									-- Minimum spotting progress (in percent) per hourly tick
-NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SURFACE = 0.1							-- task force surface spotting value is multiplied by this and added to spotting percentage every hour
+NDefines.NNavy.MIN_SPOTTING_PROGRESS = 0.1								-- Minimum spotting progress (in percent) per hourly tick
+NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SURFACE = 0.4							-- task force surface spotting value is multiplied by this and added to spotting percentage every hour
 NDefines.NNavy.SPOTTING_ENEMY_SPOTTING_MULTIPLIER_FOR_RUNNING_AWAY = 0.5		-- enemy spotting is multiplied by this value to simulate running away
 NDefines.NNavy.NAVY_VISIBILITY_BONUS_ON_RETURN_FOR_REPAIR = 0.5				-- Multiplier for the surface/sub visiblity when the heavily damaged fleet is returning to the home base for reparation. 1.0 = no bonus. 0.0 = invisible
+NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SUB = 2.0
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor must be this value to deal damage fraction equal to the index in the array below [higher number = higher penetration]. If armor is 0, 1.00 will be returned.
 		9.00,
