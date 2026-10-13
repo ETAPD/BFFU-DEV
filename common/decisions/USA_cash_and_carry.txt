@@ -1,5 +1,9 @@
 ####################################################
 # USA — Cash and Carry Market
+# The USA stocks equipment lots from its own stockpile. Market members pay
+# political power into one shared pool (global.cnc_pp_pool) and buy lots
+# from it in three package sizes: Small 1 lot / 50, Medium 2 lots / 75,
+# Large 3 lots / 100 pool PP. Modelled on Kaiserreich's IEDC pool.
 ####################################################
 
 USA_cash_and_carry_cat = {
@@ -18,7 +22,29 @@ USA_cash_and_carry_cat = {
 	}
 
 	#####################################
-	# ====  USA: STOCK THE MARKET (per type, drawn from US stockpile)  ====
+	# ====  USA: MARKET UPGRADE (Push Cash and Carry Through)  ====
+	#####################################
+
+	USA_cnc_eximbank = {
+		icon = USA_cnc_trade_pact
+		allowed = { original_tag = USA }
+		visible = {
+			has_country_flag = USA_cash_and_carry_active  has_war = no
+			has_completed_focus = USA_push_cash_and_carry_through
+		}
+		cost = 100
+		fire_only_once = yes
+
+		complete_effect = {
+			custom_effect_tooltip = USA_cnc_eximbank_effect_tt
+			set_global_flag = USA_cnc_eximbank
+		}
+
+		ai_will_do = { factor = 5 }
+	}
+
+	#####################################
+	# ====  USA: STOCK THE MARKET (one lot per click, drawn from the US stockpile)  ====
 	#####################################
 
 	USA_cnc_stock_infantry = {
@@ -27,7 +53,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_infantry_tt
 				has_equipment = { infantry_equipment > 5999 }
@@ -41,23 +66,7 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = infantry_equipment amount = -6000 }
-			add_equipment_to_stockpile = { type = squad_equipment    amount = -2000 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
+			add_equipment_to_stockpile = { type = squad_equipment amount = -2000 }
 			add_to_variable = { global.cnc_stock_inf = 1 }
 		}
 
@@ -70,7 +79,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_support_tt
 				has_equipment = { support_equipment > 999 }
@@ -83,22 +91,6 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = support_equipment amount = -1000 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_sup = 1 }
 		}
 
@@ -111,7 +103,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_artillery_tt
 				has_equipment = { artillery_equipment > 749 }
@@ -124,22 +115,6 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = artillery_equipment amount = -750 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_art = 1 }
 		}
 
@@ -152,7 +127,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_motorized_tt
 				has_equipment = { motorized_equipment > 1999 }
@@ -165,22 +139,6 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = motorized_equipment amount = -2000 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_mot = 1 }
 		}
 
@@ -193,7 +151,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_mechanized_tt
 				has_equipment = { mechanized_equipment > 499 }
@@ -206,22 +163,6 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = mechanized_equipment amount = -500 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_mec = 1 }
 		}
 
@@ -234,7 +175,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_anti_air_tt
 				has_equipment = { anti_air_equipment > 499 }
@@ -247,22 +187,6 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = anti_air_equipment amount = -500 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_aa = 1 }
 		}
 
@@ -275,7 +199,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_anti_tank_tt
 				has_equipment = { anti_tank_equipment > 499 }
@@ -288,22 +211,6 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = anti_tank_equipment amount = -500 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_at = 1 }
 		}
 
@@ -316,7 +223,6 @@ USA_cash_and_carry_cat = {
 		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 
 		available = {
-			custom_trigger_tooltip = { tooltip = USA_cnc_need_milfactory_tt num_of_military_factories > 0 }
 			custom_trigger_tooltip = {
 				tooltip = USA_cnc_have_rocket_artillery_tt
 				has_equipment = { rocket_artillery_equipment > 799 }
@@ -329,23 +235,79 @@ USA_cash_and_carry_cat = {
 
 		complete_effect = {
 			add_equipment_to_stockpile = { type = rocket_artillery_equipment amount = -800 }
-			add_to_variable = { USA_cnc_consumer_goods_var = 0.25 }
-			if = {
-				limit = {
-					OR = {
-						has_country_leader = { character = usa_alf_landon ruling_only = yes }
-						has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-					}
-				}
-				add_to_variable = { USA_cnc_construction_speed_var = -0.05 }
-			}
-			else = {
-				random_owned_controlled_state = {
-					limit = { arms_factory > 0 }
-					remove_building = { type = arms_factory level = 1 }
-				}
-			}
 			add_to_variable = { global.cnc_stock_rkt = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+
+	USA_cnc_stock_heavy_anti_air = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_heavy_anti_air_tt
+				has_equipment = { heavy_anti_air_equipment > 399 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_equipment_to_stockpile = { type = heavy_anti_air_equipment amount = -400 }
+			add_to_variable = { global.cnc_stock_haa = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+
+	USA_cnc_stock_heavy_anti_tank = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_heavy_anti_tank_tt
+				has_equipment = { heavy_anti_tank_equipment > 239 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_equipment_to_stockpile = { type = heavy_anti_tank_equipment amount = -240 }
+			add_to_variable = { global.cnc_stock_hat = 1 }
+		}
+
+		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
+	}
+
+	USA_cnc_stock_heavy_artillery = {
+		icon = USA_cnc_arms_export
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_have_heavy_artillery_tt
+				has_equipment = { heavy_artillery_equipment > 239 }
+			}
+		}
+
+		cost = 0
+		days_re_enable = 5
+		fire_only_once = no
+
+		complete_effect = {
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment amount = -240 }
+			add_to_variable = { global.cnc_stock_hart = 1 }
 		}
 
 		ai_will_do = { factor = 3 modifier = { factor = 0 has_war = yes } }
@@ -355,8 +317,8 @@ USA_cash_and_carry_cat = {
 USA_cnc_market_cat = {
 
 	#####################################
-	# ====  RECIPIENT: MARKET OVERVIEW (tracker)  ====
-	# Always shown to eligible recipients while the US market is open, so the tab is reachable.
+	# ====  MEMBERS: MARKET OVERVIEW (tracker)  ====
+	# Always shown to eligible members while the US market is open, so the tab is reachable.
 	#####################################
 
 	USA_cnc_buyer_overview = {
@@ -369,16 +331,160 @@ USA_cnc_market_cat = {
 	}
 
 	#####################################
-	# ====  RECIPIENT: BUY FROM THE US MARKET (per type)  ====
+	# ====  MEMBERS: INVEST IN THE SHARED POOL  ====
+	#####################################
+
+	USA_cnc_invest_50 = {
+		icon = USA_cnc_pool
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		cost = 50
+		fire_only_once = no
+
+		complete_effect = {
+			set_temp_variable = { cnc_invest = 50 }
+			USA_cnc_invest_pool = yes
+		}
+
+		ai_will_do = { factor = 0 } # player-only market
+	}
+
+	USA_cnc_invest_75 = {
+		icon = USA_cnc_pool
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		cost = 75
+		fire_only_once = no
+
+		complete_effect = {
+			set_temp_variable = { cnc_invest = 75 }
+			USA_cnc_invest_pool = yes
+		}
+
+		ai_will_do = { factor = 0 } # player-only market
+	}
+
+	USA_cnc_invest_100 = {
+		icon = USA_cnc_pool
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		cost = 100
+		fire_only_once = no
+
+		complete_effect = {
+			set_temp_variable = { cnc_invest = 100 }
+			USA_cnc_invest_pool = yes
+		}
+
+		ai_will_do = { factor = 0 } # player-only market
+	}
+
+	#####################################
+	# ====  MEMBERS: CHOOSE A PACKAGE SIZE  ====
+	# cnc_pkg_lots / cnc_pkg_cost hold the chosen size; every buy decision uses it.
+	#####################################
+
+	USA_cnc_size_small = {
+		icon = USA_cnc_trade_pact
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_current_tt
+				NOT = { check_variable = { cnc_pkg_lots = 1 } }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+
+		complete_effect = {
+			set_variable = { cnc_pkg_lots = 1 }
+			set_variable = { cnc_pkg_cost = 50 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_cnc_size_medium = {
+		icon = USA_cnc_trade_pact
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_current_tt
+				NOT = { check_variable = { cnc_pkg_lots = 2 } }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+
+		complete_effect = {
+			set_variable = { cnc_pkg_lots = 2 }
+			set_variable = { cnc_pkg_cost = 75 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_cnc_size_large = {
+		icon = USA_cnc_trade_pact
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_current_tt
+				NOT = { check_variable = { cnc_pkg_lots = 3 } }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+
+		complete_effect = {
+			set_variable = { cnc_pkg_lots = 3 }
+			set_variable = { cnc_pkg_cost = 100 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	#####################################
+	# ====  MEMBERS: BUY FROM THE US MARKET (per type, paid from the pool)  ====
 	# Eligible tags are governed by the USA_cnc_market_cat category's allowed block.
 	# Timed decision: 5 civilian factories in use for 90 days (civilian_factory_use); the
-	# equipment is delivered by remove_effect when that ends. days_re_enable adds 30 more days.
+	# lots bought are stored per type and delivered by remove_effect when that ends.
+	# days_re_enable adds 30 more days.
 	#####################################
 
 	USA_cnc_buy_infantry = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -387,12 +493,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_inf_tt
-				check_variable = { global.cnc_stock_inf > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_inf < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -402,15 +521,24 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			# On purchase: remove the package from the market and grow the US war economy.
-			subtract_from_variable = { global.cnc_stock_inf = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_inf = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_inf = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			# After 90 days: the equipment arrives.
-			add_equipment_to_stockpile = { type = infantry_equipment amount = 6000 }
-			add_equipment_to_stockpile = { type = squad_equipment    amount = 2000 }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_inf_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_inf }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					add_equipment_to_stockpile = { type = infantry_equipment amount = 6000 }
+					add_equipment_to_stockpile = { type = squad_equipment amount = 2000 }
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
 		}
 
 		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
@@ -419,7 +547,6 @@ USA_cnc_market_cat = {
 	USA_cnc_buy_support = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -428,12 +555,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_sup_tt
-				check_variable = { global.cnc_stock_sup > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_sup < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -443,12 +583,23 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_sup = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_sup = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_sup = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			add_equipment_to_stockpile = { type = support_equipment amount = 1000 }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_sup_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_sup }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					add_equipment_to_stockpile = { type = support_equipment amount = 1000 }
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
 		}
 
 		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
@@ -457,7 +608,6 @@ USA_cnc_market_cat = {
 	USA_cnc_buy_artillery = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -466,12 +616,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_art_tt
-				check_variable = { global.cnc_stock_art > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_art < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -481,12 +644,23 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_art = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_art = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_art = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			add_equipment_to_stockpile = { type = artillery_equipment amount = 750 }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_art_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_art }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					add_equipment_to_stockpile = { type = artillery_equipment amount = 750 }
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
 		}
 
 		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
@@ -495,7 +669,6 @@ USA_cnc_market_cat = {
 	USA_cnc_buy_motorized = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -504,12 +677,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_mot_tt
-				check_variable = { global.cnc_stock_mot > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_mot < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -519,18 +705,28 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_mot = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_mot = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_mot = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			# Buyers without the tech cannot receive the archetype, so they get the US base model instead
-			if = {
-				limit = { has_tech = motorised_infantry }
-				add_equipment_to_stockpile = { type = motorized_equipment amount = 2000 }
-			}
-			else = {
-				add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 2000 producer = USA }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_mot_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_mot }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					if = {
+						limit = { has_tech = motorised_infantry }
+						add_equipment_to_stockpile = { type = motorized_equipment amount = 2000 }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = motorized_equipment_1 amount = 2000 producer = USA }
+					}
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
 			}
 		}
 
@@ -540,7 +736,6 @@ USA_cnc_market_cat = {
 	USA_cnc_buy_mechanized = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -549,12 +744,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_mec_tt
-				check_variable = { global.cnc_stock_mec > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_mec < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -564,18 +772,28 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_mec = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_mec = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_mec = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			# Buyers without the tech cannot receive the archetype, so they get the US base model instead
-			if = {
-				limit = { has_tech = mechanised_infantry }
-				add_equipment_to_stockpile = { type = mechanized_equipment amount = 500 }
-			}
-			else = {
-				add_equipment_to_stockpile = { type = mechanized_equipment_1 amount = 500 producer = USA }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_mec_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_mec }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					if = {
+						limit = { has_tech = mechanised_infantry }
+						add_equipment_to_stockpile = { type = mechanized_equipment amount = 500 }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = mechanized_equipment_1 amount = 500 producer = USA }
+					}
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
 			}
 		}
 
@@ -585,7 +803,6 @@ USA_cnc_market_cat = {
 	USA_cnc_buy_anti_air = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -594,12 +811,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_aa_tt
-				check_variable = { global.cnc_stock_aa > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_aa < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -609,21 +839,31 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_aa = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_aa = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_aa = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			add_equipment_to_stockpile = { type = anti_air_equipment amount = 500 }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_aa_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_aa }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					add_equipment_to_stockpile = { type = anti_air_equipment amount = 500 }
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
 		}
 
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
 	}
 
 	USA_cnc_buy_anti_tank = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -632,12 +872,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_at_tt
-				check_variable = { global.cnc_stock_at > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_at < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -647,21 +900,31 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_at = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_at = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_at = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			add_equipment_to_stockpile = { type = anti_tank_equipment amount = 500 }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_at_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_at }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					add_equipment_to_stockpile = { type = anti_tank_equipment amount = 500 }
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
 		}
 
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
 	}
 
 	USA_cnc_buy_rocket_artillery = {
 		icon = USA_cnc_lend_lease
 		allowed = { always = yes }
-
 		visible = {
 			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
 			NOT = { has_war_with = USA }
@@ -670,12 +933,25 @@ USA_cnc_market_cat = {
 
 		available = {
 			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
 				tooltip = USA_cnc_stock_rkt_tt
-				check_variable = { global.cnc_stock_rkt > 0.5 }
+				NOT = { check_variable = { global.cnc_stock_rkt < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
 			}
 		}
 
-		cost = 60
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
 		days_remove = 90
 		days_re_enable = 30
 		fire_only_once = no
@@ -685,21 +961,226 @@ USA_cnc_market_cat = {
 		}
 
 		complete_effect = {
-			subtract_from_variable = { global.cnc_stock_rkt = 1 }
-			USA_cnc_purchase_reward = yes
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_rkt = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_rkt = cnc_pkg_lots }
 		}
 
 		remove_effect = {
-			# Buyers without the tech cannot receive the archetype, so they get the US base model instead
-			if = {
-				limit = { has_tech = rocket_artillery }
-				add_equipment_to_stockpile = { type = rocket_artillery_equipment amount = 800 }
-			}
-			else = {
-				add_equipment_to_stockpile = { type = rocket_artillery_equipment_1 amount = 800 producer = USA }
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_rkt_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_rkt }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					if = {
+						limit = { has_tech = rocket_artillery }
+						add_equipment_to_stockpile = { type = rocket_artillery_equipment amount = 800 }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = rocket_artillery_equipment_1 amount = 800 producer = USA }
+					}
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
 			}
 		}
 
-		ai_will_do = { factor = 0 }
+		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
+	}
+
+	USA_cnc_buy_heavy_anti_air = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_haa_tt
+				NOT = { check_variable = { global.cnc_stock_haa < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+			}
+		}
+
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
+		days_remove = 90
+		days_re_enable = 30
+		fire_only_once = no
+
+		modifier = {
+			civilian_factory_use = 5
+		}
+
+		complete_effect = {
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_haa = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_haa = cnc_pkg_lots }
+		}
+
+		remove_effect = {
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_haa_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_haa }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					if = {
+						limit = { has_tech = heavy_antiair1 }
+						add_equipment_to_stockpile = { type = heavy_anti_air_equipment amount = 400 }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = heavy_anti_air_equipment_1 amount = 400 producer = USA }
+					}
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
+		}
+
+		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
+	}
+
+	USA_cnc_buy_heavy_anti_tank = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_hat_tt
+				NOT = { check_variable = { global.cnc_stock_hat < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+			}
+		}
+
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
+		days_remove = 90
+		days_re_enable = 30
+		fire_only_once = no
+
+		modifier = {
+			civilian_factory_use = 5
+		}
+
+		complete_effect = {
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_hat = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_hat = cnc_pkg_lots }
+		}
+
+		remove_effect = {
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_hat_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_hat }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					if = {
+						limit = { has_tech = heavy_antitank }
+						add_equipment_to_stockpile = { type = heavy_anti_tank_equipment amount = 240 }
+					}
+					else = {
+						add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_1 amount = 240 producer = USA }
+					}
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
+		}
+
+		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
+	}
+
+	USA_cnc_buy_heavy_artillery = {
+		icon = USA_cnc_lend_lease
+		allowed = { always = yes }
+		visible = {
+			USA = { has_country_flag = USA_cash_and_carry_active  has_war = no }
+			NOT = { has_war_with = USA }
+			NOT = { has_government = fascism }
+		}
+
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_size_chosen_tt
+				check_variable = { cnc_pkg_lots > 0.5 }
+			}
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_stock_hart_tt
+				NOT = { check_variable = { global.cnc_stock_hart < cnc_pkg_lots } }
+			}
+			# custom_cost_trigger only colours the cost; this is what actually blocks the purchase
+			custom_trigger_tooltip = {
+				tooltip = USA_cnc_pool_enough_tt
+				NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+			}
+		}
+
+		custom_cost_trigger = {
+			NOT = { check_variable = { global.cnc_pp_pool < cnc_pkg_cost } }
+		}
+		custom_cost_text = USA_cnc_pool_cost
+
+		days_remove = 90
+		days_re_enable = 30
+		fire_only_once = no
+
+		modifier = {
+			civilian_factory_use = 5
+		}
+
+		complete_effect = {
+			# On purchase: pay from the pool and take the lots off the market.
+			USA_cnc_pay_from_pool = yes
+			set_variable = { cnc_lots_hart = cnc_pkg_lots }
+			subtract_from_variable = { global.cnc_stock_hart = cnc_pkg_lots }
+		}
+
+		remove_effect = {
+			# After 90 days: one package per lot bought arrives.
+			custom_effect_tooltip = USA_cnc_deliver_hart_tt
+			hidden_effect = {
+				set_temp_variable = { cnc_deliver = cnc_lots_hart }
+				while_loop_effect = {
+					limit = { check_variable = { cnc_deliver > 0.5 } }
+					add_equipment_to_stockpile = { type = heavy_artillery_equipment amount = 240 }
+					subtract_from_temp_variable = { cnc_deliver = 1 }
+				}
+			}
+		}
+
+		ai_will_do = { factor = 0 } # player-only: the AI must not buy from the market
 	}
 }
