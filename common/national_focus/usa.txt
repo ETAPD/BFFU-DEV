@@ -239,6 +239,7 @@ focus_tree = {
 			set_country_flag = { flag = USA_tva_cooldown days = 90 }
 			custom_effect_tooltip = USA_tva_cooldown_tt
 			# Display the TVA-Kaiser Conglomerate concern's
+			custom_effect_tooltip = available_industrial_concern
 			show_ideas_tooltip = USA_tva_kaiser_conglomerate
 		}
 	}
@@ -463,13 +464,11 @@ focus_tree = {
 		completion_reward = {
 			add_political_power = -150
 			if = {
-				limit = { has_country_leader = { character = usa_franklin_d_roosevelt } }
-				custom_effect_tooltip = USA_rise_of_evil_fdr_economy_tt
+				limit = { has_country_leader = { character = usa_franklin_d_roosevelt } }		
 				add_ideas = keynesianism
 			}
 			else_if = {
 				limit = { has_country_leader = { character = usa_alf_landon } }
-				custom_effect_tooltip = USA_rise_of_evil_landon_economy_tt
 				add_ideas = laissez_faire
 			}
 		}
@@ -627,7 +626,14 @@ focus_tree = {
 					add_idea = tva_upgraded
 				}
 			}
-			show_ideas_tooltip = tva_upgraded
+			else = {
+				effect_tooltip = {
+					swap_ideas = {
+						remove_idea = tva
+						add_idea = tva_upgraded
+					}
+				}
+			}
 		}
 	}
 
@@ -682,8 +688,15 @@ focus_tree = {
 			FOCUS_FILTER_INDUSTRY
 		}
 		completion_reward = {
-			add_timed_idea = { idea = USA_rural_electrification_administration_spirit days = 365 }
-			add_tech_bonus = { bonus = 0.50 uses = 1 category = radar_tech }
+			add_timed_idea = { 
+				idea = USA_rural_electrification_administration_spirit 
+				days = 365 
+			}
+			add_tech_bonus = { 
+				bonus = 0.50 
+				uses = 1 
+				category = radar_tech 
+			}
 		}
 	}
 
@@ -760,7 +773,12 @@ focus_tree = {
 		prerequisite = { focus = USA_new_cheque_for_a_new_deal  }
 		completion_reward = {
 			add_political_power = 150
-			custom_effect_tooltip = USA_alphabet_agencies_unlocks_tt
+			
+			custom_effect_tooltip = available_industrial_concern
+			show_ideas_tooltip = tva
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = available_industrial_concern
+			show_ideas_tooltip = wpa
 		}
 	}
 
@@ -1248,6 +1266,7 @@ focus_tree = {
 		prerequisite = { focus = USA_utilise_the_usace  }
 
 		completion_reward = {
+			unlock_decision_category_tooltip = USA_federal_project_one_cat
 			custom_effect_tooltip = USA_federal_project_one_unlock_tt
 		}
 	}
@@ -1318,7 +1337,6 @@ focus_tree = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			add_to_variable = { var = USA_army_planning_bonus   value = 0.05 tooltip = max_planning_tt }
 			set_variable    = { var = USA_army_pentagon_cp_bonus value = 0.15 tooltip = command_power_gain_mult_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -1480,8 +1498,10 @@ focus_tree = {
 		prerequisite = { focus = USA_prepare_the_twoocean_navy_act  }
 		prerequisite = { focus = USA_push_forward_the_naval_act }
 		completion_reward = {
-			remove_ideas = USA_two_ocean_navy_act
-			add_ideas = USA_bureau_of_ships
+			swap_ideas = {
+				remove_idea = USA_two_ocean_navy_act
+				add_idea = USA_bureau_of_ships
+			}
 			country_event = { id = USA_naval.1 days = 3 }
 		}
 	}
@@ -1595,7 +1615,6 @@ focus_tree = {
 			add_to_variable = { var = USA_navy_speed_bonus            value = 0.05 tooltip = naval_speed_factor_tt }
 			add_to_variable = { var = USA_navy_capital_attack_bonus   value = 0.05 tooltip = navy_capital_ship_attack_factor_tt }
 			add_to_variable = { var = USA_navy_capital_defence_bonus  value = 0.05 tooltip = navy_capital_ship_defence_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -1787,10 +1806,9 @@ focus_tree = {
 				category = naval_bomber
 			}
 			custom_effect_tooltip = USA_modify_united_states_navy_tt
-			add_to_variable = { var = USA_navy_carrier_air_attack_bonus   value = 0.55 tooltip = navy_carrier_air_attack_factor_tt }
-			add_to_variable = { var = USA_navy_carrier_air_agility_bonus  value = 0.15 tooltip = navy_carrier_air_agility_factor_tt }
-			add_to_variable = { var = USA_navy_carrier_air_defence_bonus  value = 0.15 tooltip = navy_carrier_air_targetting_factor_tt }
-			force_update_dynamic_modifier = yes
+			add_to_variable = { USA_navy_carrier_air_attack_bonus = 0.55 tooltip = navy_carrier_air_attack_factor_tt }
+			add_to_variable = { USA_navy_carrier_air_agility_bonus = 0.15 tooltip = navy_carrier_air_agility_factor_tt }
+			add_to_variable = { USA_navy_carrier_air_defence_bonus = 0.15 tooltip = navy_carrier_air_targetting_factor_tt }
 		}
 	}
 
@@ -1808,10 +1826,9 @@ focus_tree = {
 
 		completion_reward = {
 			custom_effect_tooltip = USA_modify_united_states_navy_tt
-			add_to_variable = { var = USA_navy_carrier_traffic_bonus    value = 0.10 tooltip = carrier_traffic_tt }
-			add_to_variable = { var = USA_navy_sortie_efficiency_bonus   value = 0.10 tooltip = sortie_efficiency_tt }
-			add_to_variable = { var = USA_navy_max_range_bonus           value = 0.15 tooltip = navy_max_range_factor_tt }
-			force_update_dynamic_modifier = yes
+			add_to_variable = { USA_navy_carrier_traffic_bonus = 0.10 tooltip = carrier_traffic_tt }
+			add_to_variable = { USA_navy_sortie_efficiency_bonus = 0.10 tooltip = sortie_efficiency_tt }
+			add_to_variable = { USA_navy_max_range_bonus = 0.15 tooltip = navy_max_range_factor_tt }
 		}
 	}
 
@@ -1927,7 +1944,6 @@ focus_tree = {
 			}
 			custom_effect_tooltip = USA_modify_united_states_navy_tt
 			add_to_variable = { var = USA_navy_torpedo_hit_bonus  value = 0.85 tooltip = naval_torpedo_hit_chance_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2148,7 +2164,10 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_give_power_to_the_bomber_mafia  }
 		completion_reward = {
-			add_timed_idea = { idea = USA_big_week_air_push days = 180 }
+			add_timed_idea = { 
+				idea = USA_big_week_air_push 
+				days = 180 
+			}
 		}
 	}
 
@@ -2164,7 +2183,10 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_offer_a_compromise  }
 		completion_reward = {
-			add_timed_idea = { idea = USA_compromise_procurement days = 180 }
+			add_timed_idea = { 
+				idea = USA_compromise_procurement 
+				days = 180 
+			}
 		}
 	}
 
@@ -2314,7 +2336,10 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_side_with_the_buccaneer  }
 		completion_reward = {
-			add_timed_idea = { idea = USA_strike_aircraft_push days = 180 }
+			add_timed_idea = { 
+				idea = USA_strike_aircraft_push 
+				days = 180 
+			}
 		}
 	}
 
@@ -2330,7 +2355,10 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_clairechennaultsexperiance  }
 		completion_reward = {
-			add_timed_idea = { idea = USA_fighter_armaments_push days = 180 }
+			add_timed_idea = { 
+				idea = USA_fighter_armaments_push 
+				days = 180 
+			}
 		}
 	}
 
@@ -2389,9 +2417,8 @@ focus_tree = {
 		prerequisite = { focus = USA_vinsontrammell_act  }
 		completion_reward = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
-			add_to_variable = { var = USA_army_sf_cap_bonus        value = 0.05  tooltip = special_forces_cap_tt }
-			add_to_variable = { var = USA_army_marine_sf_cap_bonus  value = -0.25 tooltip = marines_special_forces_contribution_factor_tt }
-			force_update_dynamic_modifier = yes
+			add_to_variable = { USA_army_sf_cap_bonus = 0.05  tooltip = special_forces_cap_tt }
+			add_to_variable = { USA_army_marine_sf_cap_bonus = -0.25 tooltip = marines_special_forces_contribution_factor_tt }
 			add_tech_bonus = {
 				bonus = 0.75
 				uses = 1
@@ -2515,7 +2542,10 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			add_to_variable = { var = USA_army_conscription_bonus value = 0.15 tooltip = conscription_factor_tt }
-			force_update_dynamic_modifier = yes
+			# swap_ideas = {
+			# 	remove_idea = USA_extensive_service_drafts
+			# 	add_idea = USA_desegregated_army
+			# }
 		}
 	}
 
@@ -2581,7 +2611,6 @@ focus_tree = {
 			}
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			add_to_variable = { var = USA_army_armor_attack_bonus value = 0.05 tooltip = army_armor_attack_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2626,7 +2655,6 @@ focus_tree = {
 			}
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			set_variable = { var = USA_army_supply_consumption_bonus value = -0.10 tooltip = supply_consumption_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2705,9 +2733,9 @@ focus_tree = {
 		available = { has_completed_focus = USA_break_the_initative }
 		completion_reward = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
-			set_variable = { var = USA_army_invasion_prep_bonus          value = 0.50 tooltip = invasion_preparation_tt }
-			set_variable = { var = USA_army_amphibious_inv_bonus          value = -0.075 tooltip = naval_invasion_penalty_tt }
-			set_variable = { var = USA_army_naval_planning_speed_bonus    value = 0.10  tooltip = naval_invasion_planning_bonus_speed_tt }
+			set_variable = { USA_army_invasion_prep_bonus = 0.50 tooltip = invasion_preparation_tt }
+			set_variable = { USA_army_amphibious_inv_bonus = -0.075 tooltip = naval_invasion_penalty_tt }
+			set_variable = { USA_army_naval_planning_speed_bonus = 0.10  tooltip = naval_invasion_planning_bonus_speed_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -2726,9 +2754,9 @@ focus_tree = {
 		mutually_exclusive = { focus = USA_prepare_for_a_large_scale_invasion  }
 		completion_reward = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
-			set_variable = { var = USA_army_invasion_prep_bonus          value = -1.00 tooltip = invasion_preparation_tt }
-			set_variable = { var = USA_army_naval_inv_capacity_bonus      value = 6     tooltip = naval_invasion_capacity_tt }
-			set_variable = { var = USA_army_marine_supply_grace_bonus     value = 72    tooltip = extra_marine_supply_grace_tt }
+			set_variable = { USA_army_invasion_prep_bonus = -1.00 tooltip = invasion_preparation_tt }
+			set_variable = { USA_army_naval_inv_capacity_bonus = 6 tooltip = naval_invasion_capacity_tt }
+			set_variable = { USA_army_marine_supply_grace_bonus = 72 tooltip = extra_marine_supply_grace_tt }
 			force_update_dynamic_modifier = yes
 		}
 	}
@@ -2808,7 +2836,6 @@ focus_tree = {
 			add_to_variable = { var = USA_army_armor_attack_bonus value = 0.15 tooltip = army_armor_attack_factor_tt }
 			set_variable = { var = USA_army_mech_attack_bonus  value = 0.075 tooltip = mechanized_attack_factor_tt }
 			set_variable = { var = USA_army_mech_defence_bonus value = 0.075 tooltip = mechanized_defence_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2870,7 +2897,6 @@ focus_tree = {
 			set_variable = { var = USA_army_artillery_attack_bonus  value = 0.10 tooltip = army_artillery_attack_factor_tt }
 			set_variable = { var = USA_army_artillery_defence_bonus value = 0.05 tooltip = army_artillery_defence_factor_tt }
 			set_variable = { var = USA_army_breakthrough_bonus      value = 0.05 tooltip = breakthrough_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2894,7 +2920,6 @@ focus_tree = {
 			}
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			set_variable = { var = USA_army_sf_cap_bonus value = 0.05 tooltip = special_forces_cap_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2915,7 +2940,6 @@ focus_tree = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			set_variable = { var = USA_army_mountaineer_attack_bonus  value = 0.10 tooltip = modifier_army_sub_unit_mountaineers_attack_factor_tt }
 			set_variable = { var = USA_army_mountaineer_defence_bonus value = 0.10 tooltip = modifier_army_sub_unit_mountaineers_defence_factor_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -2942,7 +2966,6 @@ focus_tree = {
 			custom_effect_tooltip = USA_modify_united_states_army_tt
 			set_variable = { var = USA_army_ranger_attack_bonus       value = 0.05  tooltip = special_forces_attack_factor_tt }
 			set_variable = { var = USA_army_ranger_coordination_bonus  value = 0.02  tooltip = coordination_bonus_tt }
-			force_update_dynamic_modifier = yes
 		}
 	}
 
@@ -3283,8 +3306,8 @@ focus_tree = {
 			}
 			else = {
 				set_country_flag = USA_big_gas_rubber_pending
-				# Show the deferred +10 rubber/refinery natively (without applying it yet —
-				# it is granted at war start by usa_corporate_on_actions).
+
+				custom_effect_tooltip = USA_big_gas_rubber_at_war_tt
 				effect_tooltip = {
 					modify_building_resources = {
 						building = synthetic_rubber_refinery
@@ -3292,10 +3315,24 @@ focus_tree = {
 						amount = 10
 					}
 				}
+				custom_effect_tooltip = generic_skip_one_line_tt
 			}
-			# Display the Standard Oil concern
-			show_ideas_tooltip = standard_oil
-			show_ideas_tooltip = standard_oil_upgraded
+
+			if = {
+				limit = { has_idea = standard_oil }
+				swap_ideas = {
+					remove_idea = standard_oil
+					add_idea = standard_oil_upgraded
+				}
+			}
+			else = {
+				effect_tooltip = {
+					swap_ideas = {
+						remove_idea = standard_oil
+						add_idea = standard_oil_upgraded
+					}
+				}
+			}
 		}
 	}
 
@@ -3487,6 +3524,7 @@ focus_tree = {
 
 		completion_reward = {
 			# Display the upgraded General Motors concern's 
+			custom_effect_tooltip = available_industrial_concern
 			show_ideas_tooltip = general_motors_upgraded
 			# Unlock the upgraded General Motors concern for hiring
 			set_country_flag = USA_gm_upgraded_unlocked
@@ -3792,10 +3830,10 @@ focus_tree = {
 			custom_effect_tooltip = USA_begin_lend_lease_unlocks_tt
 			hidden_effect = {
 				set_country_flag = USA_lend_lease_act_active
-				set_variable = { var = USA_lend_lease_tier_ENG   value = 0 }
-				set_variable = { var = USA_lend_lease_tier_FRA   value = 0 }
-				set_variable = { var = USA_lend_lease_tier_SOV   value = 0 }
-				set_variable = { var = USA_lend_lease_last_done  value = 0 }
+				set_variable = { USA_lend_lease_tier_ENG = 0 }
+				set_variable = { USA_lend_lease_tier_FRA = 0 }
+				set_variable = { USA_lend_lease_tier_SOV = 0 }
+				set_variable = { USA_lend_lease_last_done = 0 }
 			}
 		}
 	}
