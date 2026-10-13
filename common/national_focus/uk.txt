@@ -3457,12 +3457,29 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_rearmament
 		
-		cost = 1
+		cost = 2
 		
 		ai_will_do = {
 			factor = 1
 		}	
 		completion_reward = {
+			add_dynamic_modifier = { modifier = ENG_royal_navy_modifier }
+			127 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = dockyard
+					level = 3
+					instant_build = yes
+				}
+			}
+			121 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = dockyard
+					level = 3
+					instant_build = yes
+				}
+			}
 			navy_experience = 50
 			add_equipment_to_stockpile = {
 				type = convoy
@@ -3507,389 +3524,318 @@ focus_tree = {
 		}
 	}
 	focus = {
-		id = ENG_expand_dockyards
-		icon = GFX_goal_generic_construct_naval_dockyard
-		prerequisite = { focus = ENG_inchindown_fuel }
-		
-		x = 0
-		y = 3
-		relative_position_id = ENG_naval_rearmament
-		
-		cost = 6.5
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			132 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = dockyard
-					level = 3
-					instant_build = yes
-				}
-			}
-			133 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = dockyard
-					level = 3
-					instant_build = yes
-				}
-			}
-		}
-	}
-	focus = {
-		id = ENG_form_watu
-		icon = GFX_goal_generic_occupy_states_coastal
-		prerequisite = { focus = ENG_naval_investments }
-		
-		x = 0
-		y = 2
-		relative_position_id = ENG_expand_dockyards
-		
-		cost = 5
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			add_ideas = ENG_watu_idea
-			add_mastery_bonus = {
-				name = ENG_anti_submarine_training_school
-				bonus = 0.25
-				days = 180
-				track = screens
-			}
-		}
-	}
-	
-	
-	# Small Navy
-	focus = {
-		id = ENG_stick_our_guns
-		icon = GFX_battleship
+		id = ENG_rn_replacement_programme
+		icon = GFX_ENG_rn_replacement_programme
 		prerequisite = { focus = ENG_naval_rearmament }
-		mutually_exclusive = { focus = ENG_reform_navy }
-		
-		x = -4
+
+		x = 0
 		y = 1
 		relative_position_id = ENG_naval_rearmament
-		
-	cost = 3
-		
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
-			completion_reward = {
-        	add_ideas = royal_navy_old_mindset_1
- 	   }
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_refit_ic_cost_var = -0.1
+				tooltip = ENG_rn_refit_ic_cost_tt
+			}
+			add_to_variable = {
+				ENG_refit_speed_var = 0.1
+				tooltip = ENG_rn_refit_speed_tt
+			}
+			add_to_variable = {
+				ENG_repair_speed_factor_var = 0.1
+				tooltip = ENG_rn_repair_speed_tt
+			}
+		}
 	}
-		
-	
+
 	focus = {
-		id = ENG_legacy_jutland
-		icon = GFX_focus_generic_north_atlantic_fleet
-		prerequisite = { focus = ENG_stick_our_guns }
-		
+		id = ENG_rn_treaty_limits
+		icon = GFX_ENG_rn_treaty_limits
+		prerequisite = { focus = ENG_rn_replacement_programme }
+		mutually_exclusive = { focus = ENG_rn_escalator_clause }
+
+		x = -4
+		y = 2
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			add_political_power = 100
+			custom_effect_tooltip = ENG_rn_treaty_war_tt
+			effect_tooltip = {
+				ENG_modify_royal_navy_modifier = yes
+				add_to_variable = {
+					ENG_rn_dock_cap = 0.15
+					tooltip = ENG_rn_dock_cap_tt
+				}
+			}
+			set_country_flag = ENG_rn_treaty_war_bonus
+			if = {
+				limit = { has_war = yes }
+				hidden_effect = { ENG_rn_treaty_war_bonus_effect = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_escalator_clause
+		icon = GFX_ENG_rn_escalator_clause
+		prerequisite = { focus = ENG_rn_replacement_programme }
+		mutually_exclusive = { focus = ENG_rn_treaty_limits }
+
 		x = -2
-		y = 1
-		relative_position_id = ENG_stick_our_guns
-		
-	cost = 4
-		
+		y = 2
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = royal_navy_old_mindset_1
-				add_idea = royal_navy_old_mindset_2
+			add_dynamic_modifier = {
+				modifier = ENG_rn_escalator_clause_modifier
+				days = 365
 			}
 		}
 	}
-	
+
 	focus = {
-		id = ENG_divert_funding
-		icon = GFX_focus_ARG_anti_corruption_policies
-		prerequisite = { focus = ENG_legacy_jutland }
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_legacy_jutland
-		
-		cost = 4
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			add_tech_bonus = {
-				name = cv_bonus
-				bonus = 0.50
-				uses = 1
-				technology = improved_heavy_battery
-				technology = advanced_heavy_battery
-			}
-			add_tech_bonus = {
-				name = cv_bonus
-				bonus = 0.50
-				ahead_reduction = 0.25
-				uses = 1
-				category = bb_tech
-			}
-		}
-	}
-	
-	focus = {
-		id = ENG_refit_yards
-		icon = GFX_focus_POL_develop_polish_shipbuilding
-		prerequisite = { focus = ENG_stick_our_guns }
-		
-		x = 2
-		y = 1
-		relative_position_id = ENG_stick_our_guns
-		
-	cost = 5
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			add_ideas = ENG_refitting_yards
-		}
-	}
-	
-	focus = {
-		id = ENG_modernise_shipyards
-		icon = GFX_focus_generic_navy_battleship2
-		prerequisite = { focus = ENG_refit_yards }
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_refit_yards
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = ENG_refitting_yards
-				add_idea = ENG_refitting_yards_1
-			}
-		}
-	}
-	
-	focus = {
-		id = ENG_keep_old_guard
-		icon = GFX_goal_generic_neutrality_focus
-		prerequisite =  { focus = ENG_stick_our_guns }
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_stick_our_guns
-		
-	cost = 4
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = royal_navy_old_mindset_2
-				add_idea = royal_navy_old_mindset_3
-			}
-		}
-	}
-	
-	focus = {
-		id = ENG_thicker_armour
-		icon = GFX_goal_generic_navy_battleship
-		prerequisite = { focus = ENG_keep_old_guard }
-		
-		x = 0
-		y = 1
-		relative_position_id = ENG_keep_old_guard
-		
-	cost = 3.6
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = royal_navy_old_mindset_3
-				add_idea = royal_navy_old_mindset_4
-			}
-		}
-	}
-	focus = {
-		id = ENG_battleship_investments
-		icon = GFX_Battleship_Investment
-		prerequisite = { focus = ENG_divert_funding focus = ENG_modernise_shipyards}
-		prerequisite = {focus = ENG_thicker_armour}
-		
+		id = ENG_rn_emergency_shipbuilding
+		icon = GFX_ENG_rn_emergency_shipbuilding
+		prerequisite = { focus = ENG_rn_replacement_programme }
+
 		x = 0
 		y = 2
-		relative_position_id = ENG_thicker_armour
-		
-	cost = 3
-		
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-			    remove_idea = royal_navy_old_mindset_4
-			    add_idea = royal_navy_old_mindset_5
-			}
 		}
-	}
-	
-	focus = {
-		id = ENG_inchindown_fuel
-		icon = GFX_goal_generic_oil_refinery
-		prerequisite = { focus = ENG_stick_our_guns focus = ENG_reform_navy }
-		
-		x = 4
-		y = 1
-		relative_position_id = ENG_stick_our_guns
-		
-	cost = 4
-		
-		ai_will_do = {
-			factor = 1
-		}	
+
 		completion_reward = {
-			120 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = fuel_silo
-					level = 3
-					instant_build = yes
-				}
-			}
-			123 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = fuel_silo
-					level = 3
-					instant_build = yes
-				}
-			}
-			136 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = fuel_silo
-					level = 3
-					instant_build = yes
-				}
-			}
-			121 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = fuel_silo
-					level = 3
-					instant_build = yes
-				}
-			}
-			133 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = fuel_silo
-					level = 3
-					instant_build = yes
+			ENG_modify_royal_navy_modifier = yes
+			custom_effect_tooltip = ENG_rn_fx_emergency_tt
+			hidden_effect = {
+				add_equipment_bonus = {
+					name = ENG_rn_emergency_shipbuilding
+					bonus = {
+						mio_cat_eq_all_ships_no_convoys = {
+							build_cost_ic = -0.05
+							instant = yes
+						}
+					}
 				}
 			}
 			131 = {
 				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
-					type = fuel_silo
+					type = dockyard
 					level = 3
 					instant_build = yes
 				}
 			}
 			132 = {
-				add_extra_state_shared_building_slots = 2
+				add_extra_state_shared_building_slots = 3
 				add_building_construction = {
 					type = dockyard
-					level = 2
+					level = 3
 					instant_build = yes
 				}
 			}
-			custom_effect_tooltip = unlock_propaganda_campaign_tt
-			unlock_decision_tooltip = ENG_oil_prop
-		}
-	}
-	
-	
-	# Big Navy
-	focus = {
-		id = ENG_reform_navy
-		icon = GFX_Imperial_Arsenal
-		prerequisite = { focus = ENG_naval_rearmament }
-		mutually_exclusive = { focus = ENG_stick_our_guns }
-		
-		x = 4
-		y = 1
-		relative_position_id = ENG_naval_rearmament
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-
-		completion_reward = {
-			add_ideas = royal_navy_new_mindset_1
-			add_doctrine_cost_reduction = {
-				name = shp_bonus
-				cost_reduction = 0.25
-				uses = 3
-				category = naval_doctrine
+			133 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = dockyard
+					level = 3
+					instant_build = yes
+				}
 			}
 		}
 	}
-	
+
 	focus = {
-		id = ENG_expand_repair_facilities
-		icon = GFX_goal_navy_upgrade
-		prerequisite = { focus = ENG_reform_navy }
-		
-		x = -1
-		y = 1
-		relative_position_id = ENG_reform_navy
-		
-	cost = 3
-		
+		id = ENG_rn_inskip_award
+		icon = GFX_ENG_rn_inskip_award
+		prerequisite = { focus = ENG_rn_replacement_programme }
+
+		x = 2
+		y = 2
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
-			add_ideas = ENG_expand_the_repair_yards
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_carrier_air_attack = 0.05
+				tooltip = ENG_rn_carrier_air_attack_tt
+			}
+			custom_effect_tooltip = ENG_rn_fx_inskip_tt
+			hidden_effect = {
+				add_to_variable = { ENG_rn_carrier_cost = -0.05 }
+				add_equipment_bonus = {
+					name = ENG_rn_inskip_award
+					bonus = {
+						ship_hull_carrier = {
+							build_cost_ic = -0.05
+							instant = yes
+						}
+					}
+				}
+			}
+			add_tech_bonus = {
+				name = ENG_rn_inskip_award
+				bonus = 1.0
+				uses = 1
+				category = naval_air
+			}
 		}
 	}
-	
+
 	focus = {
-		id = ENG_new_cruisers
-		icon = GFX_focus_SWE_coastal_support
-		prerequisite = { focus = ENG_expand_repair_facilities }
-		mutually_exclusive = { focus = ENG_new_carriers }
-		
-		x = -1
-		y = 1
-		relative_position_id = ENG_expand_repair_facilities
-		
-	cost = 3
-		
+		id = ENG_rn_king_george_v
+		icon = GFX_ENG_rn_king_george_v
+		prerequisite = { focus = ENG_rn_emergency_shipbuilding }
+
+		x = -6
+		y = 3
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
 			add_tech_bonus = {
-				name = cv_bonus
+				name = ENG_rn_king_george_v
+				bonus = 1
+				uses = 1
+				category = bb_tech
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_river_frigates
+		icon = GFX_ENG_rn_river_frigates
+		prerequisite = { focus = ENG_rn_emergency_shipbuilding }
+
+		x = -4
+		y = 3
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_escort = 0.05
+				tooltip = ENG_rn_escort_tt
+			}
+			add_to_variable = {
+				ENG_rn_range = 0.05
+				tooltip = ENG_rn_range_tt
+			}
+			custom_effect_tooltip = ENG_rn_fx_river_tt
+			hidden_effect = {
+				add_to_variable = { ENG_rn_light_cost = -0.05 }
+				add_equipment_bonus = {
+					name = ENG_rn_river_frigates
+					bonus = {
+						ship_hull_light = {
+							build_cost_ic = -0.05
+							instant = yes
+						}
+					}
+				}
+			}
+			add_tech_bonus = {
+				name = ENG_rn_river_frigates
+				bonus = 0.5
+				ahead_reduction = 0.25
+				uses = 1
+				category = dd_tech
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_light_cruisers
+		icon = GFX_ENG_rn_light_cruisers
+		prerequisite = { focus = ENG_rn_emergency_shipbuilding }
+
+		x = -2
+		y = 3
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_screening = 0.05
+				tooltip = ENG_rn_screening_tt
+			}
+			custom_effect_tooltip = ENG_rn_fx_light_cruisers_tt
+			hidden_effect = {
+				add_equipment_bonus = {
+					name = ENG_rn_light_cruisers
+					bonus = {
+						ship_hull_cruiser = {
+							build_cost_ic = -0.1
+							instant = yes
+						}
+					}
+				}
+			}
+			add_tech_bonus = {
+				name = ENG_rn_light_cruisers
 				bonus = 0.5
 				ahead_reduction = 0.25
 				uses = 1
@@ -3897,258 +3843,160 @@ focus_tree = {
 			}
 		}
 	}
-	
+
 	focus = {
-		id = ENG_new_carriers
-		icon = GFX_focus_GER_graf_zeppelin
-		prerequisite = { focus = ENG_expand_repair_facilities }
-		mutually_exclusive = { focus = ENG_new_cruisers }
-		
-		x = 1
-		y = 1
-		relative_position_id = ENG_expand_repair_facilities
-		
-	cost = 3
-		
+		id = ENG_rn_convoy_system
+		icon = GFX_ENG_rn_convoy_system
+		prerequisite = { focus = ENG_rn_replacement_programme }
+
+		x = 4
+		y = 2
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 2
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
-			add_tech_bonus = {
-				name = cv_bonus
-				bonus = 0.5
-				ahead_reduction = 0.25
-				uses = 1
-				category = cv_tech
+			ENG_modify_royal_navy_modifier = yes
+			custom_effect_tooltip = ENG_rn_fx_convoy_tt
+			hidden_effect = {
+				add_equipment_bonus = {
+					name = ENG_rn_convoy_system
+					bonus = {
+						convoy = {
+							build_cost_ic = -0.1
+							instant = yes
+						}
+					}
+				}
+			}
+			add_equipment_to_stockpile = {
+				type = convoy
+				amount = 100
+				producer = ENG
 			}
 		}
 	}
-	
+
 	focus = {
-		id = ENG_new_officers
-		icon = GFX_focus_generic_naval_discipline
-		prerequisite = { focus = ENG_reform_navy }
-		
-		x = 3
-		y = 1
-		relative_position_id = ENG_reform_navy
-		
-	cost = 3
-		
+		id = ENG_rn_armoured_decks
+		icon = GFX_ENG_rn_armoured_decks
+		prerequisite = { focus = ENG_rn_inskip_award }
+
+		x = 2
+		y = 3
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			custom_effect_tooltip = ENG_rn_fx_armoured_tt
+			hidden_effect = {
+				add_to_variable = { ENG_rn_carrier_cost = 0.1 }
+				add_to_variable = { ENG_rn_carrier_armour = 0.15 }
+				add_equipment_bonus = {
+					name = ENG_rn_armoured_decks
+					bonus = {
+						ship_hull_carrier = {
+							build_cost_ic = 0.05
+							max_strength = 0.15
+							instant = yes
+						}
+					}
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_big_hangars
+		icon = GFX_ENG_rn_big_hangars
+		prerequisite = { focus = ENG_rn_inskip_award }
+
+		x = 4
+		y = 3
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 2
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_carrier_air_agility = 0.1
+				tooltip = ENG_rn_carrier_air_agility_tt
+			}
+			custom_effect_tooltip = ENG_rn_fx_hangars_tt
+			hidden_effect = {
+				add_to_variable = { ENG_rn_carrier_cost = -0.05 }
+				add_equipment_bonus = {
+					name = ENG_rn_big_hangars
+					bonus = {
+						ship_hull_carrier = {
+							build_cost_ic = -0.05
+							instant = yes
+						}
+					}
+				}
+			}
 			add_mastery = {
-                amount = 50
-                folder = naval
-            }
-		}
-	}
-	
-	focus = {
-		id = ENG_focus_cruiser
-		icon = GFX_focus_generic_cruiser2
-		prerequisite = { focus = ENG_new_officers }
-		mutually_exclusive = { focus = ENG_focus_carrier }
-
-		x = -1
-		y = 1
-		relative_position_id = ENG_new_officers
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = royal_navy_new_mindset_1
-				add_idea = royal_navy_new_mindset_2
+				amount = 25
+				folder = naval
 			}
 		}
 	}
-	
+
 	focus = {
-		id = ENG_naval_investments
-		icon = GFX_focus_generic_economic_recovery
-		prerequisite = { focus = ENG_expand_dockyards}
+		id = ENG_rn_mediterranean_fleet
+		icon = GFX_ENG_rn_mediterranean_fleet
+		prerequisite = { focus = ENG_rn_emergency_shipbuilding }
 
 		x = 0
-		y = 1
-		relative_position_id = ENG_expand_dockyards
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			add_ideas = ENG_naval_budget
+		y = 3
+		relative_position_id = ENG_naval_rearmament
 
-		}
-	}
-	
-	focus = {
-		id = ENG_perfect_cruisers
-		icon = GFX_focus_GER_panzerschiff
-		prerequisite = { focus = ENG_focus_cruiser }
-
-		x = 0
-		y = 1
-		relative_position_id = ENG_focus_cruiser
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-		#custom_effect_tooltip = ENG_perfect_cruisers_tt
-			if = {
-				limit = { has_completed_focus = ENG_focus_cruiser }
-				swap_ideas = {
-					remove_idea = royal_navy_new_mindset_4
-					add_idea = royal_navy_new_mindset_6
-				}	
-			}
-			if = {
-				limit = { has_completed_focus = ENG_focus_carrier }
-				swap_ideas = {
-					remove_idea = royal_navy_new_mindset_5
-					add_idea = royal_navy_new_mindset_7
-				}
-			}
-			if = {
-				limit = {
-					NOT = { has_completed_focus = ENG_focus_cruiser }
-					NOT = { has_completed_focus = ENG_focus_carrier }
-				}
-				effect_tooltip = {
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_5
-						add_idea = royal_navy_new_mindset_7
-					}
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = ENG_focus_carrier
-		icon = GFX_goal_generic_navy_carrier
-		prerequisite = { focus = ENG_new_officers }
-		mutually_exclusive = { focus = ENG_focus_cruiser }
-
-		x = 1
-		y = 1
-		relative_position_id = ENG_new_officers
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-				remove_idea = royal_navy_new_mindset_1
-				add_idea = royal_navy_new_mindset_3
-			}
-		}
-	}
-	
-	focus = {
-		id = ENG_perfect_carriers
-		icon = GFX_focus_ger_accept_british_naval_dominance
-		prerequisite = { focus = ENG_focus_carrier }
-
-		x = 0
-		y = 1
-		relative_position_id = ENG_focus_carrier
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			#custom_effect_tooltip = ENG_perfect_carriers_tt
-			if = {
-				limit = { has_completed_focus = ENG_focus_cruiser }
-				swap_ideas = {
-					remove_idea = royal_navy_new_mindset_4
-					add_idea = royal_navy_new_mindset_8
-				}	
-			}
-			
-			if = {
-				limit = { has_completed_focus = ENG_focus_carrier }
-				swap_ideas = {
-					remove_idea = royal_navy_new_mindset_5
-					add_idea = royal_navy_new_mindset_9
-				}
-			}
-			if = {
-				limit = {
-					NOT = { has_completed_focus = ENG_focus_cruiser }
-					NOT = { has_completed_focus = ENG_focus_carrier }
-				}
-				effect_tooltip = {
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_4
-						add_idea = royal_navy_new_mindset_8
-					}
-				}
-			}
-		}
-	}
-	
-	focus = {
-		id = ENG_better_torpedo
-		icon = GFX_goal_generic_construct_naval_dockyard
-		prerequisite = { focus = ENG_perfect_carriers focus = ENG_perfect_cruisers }
-		available = {
-		}
-
-		x = -1
-		y = 1
-		relative_position_id = ENG_perfect_carriers
-		
-	cost = 3
-		
-		ai_will_do = {
-			factor = 1
-		}	
-		completion_reward = {
-			swap_ideas = {
-				add_idea = royal_navy_new_mindset_14
-				remove_idea = royal_navy_new_mindset_6
-			}
-		}
-	}
-	focus = {
-		id = ENG_sink_burn_destroy
-		icon = GFX_SINK_BURN_DESTROY
-		prerequisite = { focus = ENG_battleship_investments focus = ENG_form_watu focus = ENG_better_torpedo }
 		available = {
 			OR = {
 				date > 1941.1.1
-				NOT = { ENG = { controls_state = 118} } #GIB
-				NOT = { ENG = { controls_state = 293} } #YEMEN
+				NOT = { controls_state = 118 } # Gibraltar has fallen
 			}
 		}
 
-		x = 0
-		y = 1
-		relative_position_id = ENG_form_watu
-		
-	cost = 3
-		
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
-			add_ideas = ENG_pride_of_britain_navy
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_navy_org = 0.05
+				tooltip = ENG_rn_navy_org_tt
+			}
+			add_to_variable = {
+				ENG_rn_weather = -0.075
+				tooltip = ENG_rn_weather_tt
+			}
 			ENG_andrew_cunningham = {
 				add_unit_leader_trait = ironside
 				add_unit_leader_trait = air_controller
@@ -4156,81 +4004,395 @@ focus_tree = {
 		}
 	}
 
-	
 	focus = {
-		id = ENG_never_at_disadvantage
-		icon = GFX_focus_SMB_blue_water_fleet
-		prerequisite = { focus = ENG_perfect_cruisers focus = ENG_perfect_carriers}
+		id = ENG_rn_oic
+		icon = GFX_ENG_rn_oic
+		prerequisite = { focus = ENG_rn_mediterranean_fleet }
 
-		allow_branch = {
-			always = no
-		}
-		x = 0
+		x = -2
 		y = 4
-		relative_position_id = ENG_new_officers
-		
-	cost = 3
-		
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
 		ai_will_do = {
 			factor = 1
-		}	
+		}
+
 		completion_reward = {
-			#custom_effect_tooltip = ENG_never_at_disadvantage_tt
-			if = {
-				limit = { has_completed_focus = ENG_perfect_cruisers }
-				if = {
-					limit = { has_completed_focus = ENG_focus_cruiser }
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_6
-						add_idea = royal_navy_new_mindset_10
-					}	
-				}
-			}		
-			if = {
-				limit = { has_completed_focus = ENG_focus_carrier }
-				if = {
-					limit = { has_completed_focus = ENG_perfect_cruisers }
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_7
-						add_idea = royal_navy_new_mindset_11
-					}
-				}
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_intel = 0.15
+				tooltip = ENG_rn_intel_tt
 			}
-			if = {
-				limit = { has_completed_focus = ENG_focus_cruiser }
-				if = {
-					limit = { has_completed_focus = ENG_perfect_carriers }
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_8
-						add_idea = royal_navy_new_mindset_12
-					}
-				}
-			}
-			if = {
-				limit = { has_completed_focus = ENG_focus_carrier }
-				if = {
-					limit = { has_completed_focus = ENG_perfect_carriers }
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_9
-						add_idea = royal_navy_new_mindset_13
-					}
-				}
-			}
-			if = {
-				limit = {
-					NOT = { has_completed_focus = ENG_perfect_cruisers }
-					NOT = { has_completed_focus = ENG_perfect_carriers }
-				}
-				effect_tooltip = {
-					swap_ideas = {
-						remove_idea = royal_navy_new_mindset_6
-						add_idea = royal_navy_new_mindset_10
-					}
-				}
+			add_tech_bonus = {
+				name = ENG_rn_oic
+				bonus = 1.0
+				uses = 1
+				category = radar_tech
 			}
 		}
 	}
-	
+
+	focus = {
+		id = ENG_rn_western_approaches
+		icon = GFX_ENG_rn_western_approaches
+		prerequisite = { focus = ENG_rn_mediterranean_fleet }
+
+		x = 2
+		y = 4
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_sub_det = 0.1
+				tooltip = ENG_rn_sub_det_tt
+			}
+			add_to_variable = {
+				ENG_rn_escort = 0.1
+				tooltip = ENG_rn_escort_tt
+			}
+			add_mastery_bonus = {
+				name = ENG_rn_western_approaches
+				bonus = 0.1
+				days = 180
+				track = screens
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_taranto
+		icon = GFX_ENG_rn_taranto
+		prerequisite = { focus = ENG_rn_mediterranean_fleet }
+
+		x = -4
+		y = 5
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			custom_effect_tooltip = ENG_rn_fx_taranto_tt
+			hidden_effect = {
+				add_equipment_bonus = {
+					name = ENG_rn_taranto
+					bonus = {
+						small_plane_naval_bomber_airframe = {
+							naval_strike_attack = 0.1
+							air_range = 0.1
+							instant = yes
+						}
+						cv_small_plane_naval_bomber_airframe = {
+							naval_strike_attack = 0.1
+							air_range = 0.1
+							instant = yes
+						}
+					}
+				}
+			}
+			add_mastery_bonus = {
+				name = ENG_rn_taranto
+				bonus = 0.1
+				days = 180
+				track = carriers
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_vanguard
+		icon = GFX_ENG_rn_vanguard
+		prerequisite = { focus = ENG_rn_mediterranean_fleet }
+
+		x = 0
+		y = 4
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 4.3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			set_technology = {
+				advanced_ship_hull_heavy = 1
+			}
+			hidden_effect = {
+				set_technology = {
+					improved_heavy_battery = 1
+					advanced_dp_light_battery = 1
+					basic_heavy_armor_scheme = 1
+					antiair3 = 1
+					phased_array = 1
+					advanced_fire_control_system = 1
+				}
+			}
+			create_equipment_variant = {
+				name = "Vanguard Class"
+				type = ship_hull_heavy_4
+				name_group = ENG_BB_HISTORICAL
+				parent_version = 0
+				design_team = mio:ENG_john_brown_organization
+				modules = {
+					fixed_ship_battery_slot = ship_heavy_battery_3
+					fixed_ship_anti_air_slot = ship_anti_air_4
+					fixed_ship_fire_control_system_slot = ship_fire_control_system_3
+					fixed_ship_radar_slot = ship_radar_3
+					fixed_ship_engine_slot = heavy_ship_engine_4
+					fixed_ship_secondaries_slot = dp_ship_secondaries_3
+					fixed_ship_armor_slot = ship_armor_bb_3
+					front_1_custom_slot = ship_heavy_battery_3
+					front_2_custom_slot = ship_anti_air_4
+					mid_1_custom_slot = dp_ship_secondaries_3
+					mid_2_custom_slot = ship_anti_air_4
+					mid_3_custom_slot = ship_anti_air_4
+					rear_1_custom_slot = ship_heavy_battery_3
+					rear_2_custom_slot = ship_heavy_battery_3
+				}
+			}
+			create_ship = {
+				type = ship_hull_heavy_4
+				equipment_variant = "Vanguard Class"
+				creator = ENG
+				name = "HMS Vanguard"
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_matapan
+		icon = GFX_ENG_rn_matapan
+		prerequisite = { focus = ENG_rn_vanguard }
+
+		x = 0
+		y = 5
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_night_attack = 0.1
+				tooltip = ENG_rn_night_attack_tt
+			}
+			add_to_variable = {
+				ENG_rn_capital_attack = 0.05
+				tooltip = ENG_rn_capital_attack_tt
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_malta_flotillas
+		icon = GFX_ENG_rn_malta_flotillas
+		prerequisite = { focus = ENG_rn_mediterranean_fleet }
+
+		x = -2
+		y = 5
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_raiding = 0.1
+				tooltip = ENG_rn_raiding_tt
+			}
+			add_tech_bonus = {
+				name = ENG_rn_malta_flotillas
+				bonus = 0.5
+				uses = 1
+				category = ss_tech
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_radar_at_sea
+		icon = GFX_ENG_rn_radar_at_sea
+		prerequisite = { focus = ENG_rn_western_approaches }
+
+		x = 2
+		y = 5
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_screening = 0.05
+				tooltip = ENG_rn_screening_tt
+			}
+			add_to_variable = {
+				ENG_rn_anti_air = 0.05
+				tooltip = ENG_rn_anti_air_tt
+			}
+			add_tech_bonus = {
+				name = ENG_rn_radar_at_sea
+				bonus = 3.0
+				uses = 1
+				technology = advanced_sonar
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_form_watu
+		icon = GFX_ENG_rn_form_watu
+		prerequisite = { focus = ENG_rn_mediterranean_fleet }
+
+		x = 4
+		y = 5
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_escort = 0.2
+				tooltip = ENG_rn_escort_tt
+			}
+			add_to_variable = {
+				ENG_rn_sub_det = 0.1
+				tooltip = ENG_rn_sub_det_tt
+			}
+			add_tech_bonus = {
+				name = ENG_form_watu
+				bonus = 1.0
+				uses = 2
+				technology = basic_depth_charges
+				technology = improved_depth_charges
+				technology = advanced_depth_charges
+				technology = modern_depth_charges
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_support_groups
+		icon = GFX_ENG_rn_support_groups
+		prerequisite = { focus = ENG_rn_inskip_award }
+
+		x = 6
+		y = 3
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 3
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+			add_to_variable = {
+				ENG_rn_escort = 0.05
+				tooltip = ENG_rn_escort_tt
+			}
+			add_to_variable = {
+				ENG_rn_sub_det = 0.05
+				tooltip = ENG_rn_sub_det_tt
+			}
+			add_tech_bonus = {
+				name = ENG_rn_support_groups
+				bonus = 1.0
+				uses = 1
+				category = cv_tech
+			}
+			add_equipment_to_stockpile = {
+				type = cv_nav_bomber_equipment
+				amount = 90
+				producer = ENG
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_rn_never_at_disadvantage
+		icon = GFX_ENG_rn_never_at_disadvantage
+		prerequisite = { focus = ENG_rn_taranto focus = ENG_rn_matapan focus = ENG_form_watu }
+		x = 0
+		y = 6
+		relative_position_id = ENG_naval_rearmament
+
+		cost = 5
+
+		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_HISTORICAL }
+
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			ENG_modify_royal_navy_modifier = yes
+				add_to_variable = {
+				ENG_rn_navy_org = 0.05
+				tooltip = ENG_rn_navy_org_tt
+			}
+			add_to_variable = {
+				ENG_rn_morale = 0.05
+				tooltip = ENG_rn_morale_tt
+			}
+			add_to_variable = {
+				ENG_rn_capital_defence = 0.05
+				tooltip = ENG_rn_capital_defence_tt
+			}
+			navy_experience = 50
+		}
+	}
+
 	# Shared ASW Branch
 	
 	
@@ -5805,7 +5967,7 @@ focus_tree = {
 				min = 0
 				max = 120
 			}
-			divide_variable = { ENG.shadow_civs2 = 4 }
+			divide_variable = { ENG.shadow_civs2 = 3 }
 			set_variable = { ENG.shadow_civs3 = ENG.shadow_civs2 }
 			round_variable = ENG.shadow_civs2
 			if = {
@@ -5844,7 +6006,7 @@ focus_tree = {
 				}
 				subtract_from_variable = { var = shadow_civs2 value = var:shadow_civs1 }
 				clamp_variable = { var = shadow_civs2 min = 0 max = 120 }
-				divide_variable = { var = shadow_civs2 value = 4 }
+				divide_variable = { var = shadow_civs2 value = 3 }
 				set_variable = { var = shadow_civs3 value = var:shadow_civs2 }
 				round_variable = shadow_civs2
 				if = {
@@ -6018,8 +6180,6 @@ focus_tree = {
 		completion_reward = {
 			add_timed_idea = { idea = ENG_dockyard_surge_idea days = 60 }
 						custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = ENG_modify_domestic_situation_tt
-			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.1 tooltip = industrial_capacity_dockyard_tt }
 		}
 	}
 
@@ -6062,9 +6222,6 @@ focus_tree = {
 				add_extra_state_shared_building_slots = 2
 				add_building_construction = { type = dockyard level = 2 instant_build = yes }
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = ENG_modify_domestic_situation_tt
-			add_to_variable = { ENG_industrial_capacity_dockyard_var = 0.1 tooltip = industrial_capacity_dockyard_tt }
 		}
 	}
 
