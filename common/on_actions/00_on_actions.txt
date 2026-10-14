@@ -29,6 +29,22 @@ on_actions = {
 		}
 
 		effect = {
+			# The 1936 campaign works itself: the election focus is not selectable, it completes by event on Election
+			# Day (3 November 1936, 307 days in), like the Soviet auto-completing focuses (SOV_auto_complete_focus).
+			USA = {
+				if = {
+					limit = {
+						date < 1936.11.1
+						NOT = { has_completed_focus = USA_the_1936_election }
+					}
+					set_country_flag = { flag = USA_1936_election_in_progress_flag days = 307 value = 1 }
+					set_variable = { USA_campaign_side = -1 }
+					country_event = { id = usa.230 days = 307 }
+				}
+			}
+		}
+
+		effect = {
 			# Activate the 1936 election polling bar on day 1 (1936 bookmark only).
 			USA = {
 				if = {

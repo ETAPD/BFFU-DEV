@@ -2917,3 +2917,169 @@ USA_operation_causeway_cat = {
 	}
 }
 
+####################################################
+# 1936 Election -- The Road to November (campaign minigame)
+####################################################
+USA_campaign_trail_cat = {
+
+	USA_campaign_overview = {
+		icon = GFX_decision_generic_political_discourse
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		available = {
+			custom_override_tooltip = {
+				tooltip = {
+					localization_key = USA_campaign_overview_hint_tt
+					FLAG_DAYS = [?USA_1936_election_in_progress_flag:days]
+				}
+				always = no
+			}
+		}
+		cost = 0
+		fire_only_once = no
+	}
+
+	USA_campaign_back_roosevelt = {
+		icon = GFX_decision_generic_political_rally
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_campaign_not_backing_roosevelt_tt
+				NOT = { check_variable = { USA_campaign_side < 0 } }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			set_variable = { USA_campaign_side = -1 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_back_landon = {
+		icon = GFX_decision_generic_political_rally
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_campaign_not_backing_landon_tt
+				check_variable = { USA_campaign_side < 0 }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			set_variable = { USA_campaign_side = 1 }
+		}
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_whistle_stop = {
+		icon = GFX_decision_generic_political_rally
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		cost = 25
+		days_re_enable = 45
+		fire_only_once = no
+
+		complete_effect = {
+			custom_effect_tooltip = USA_camp_push_12_tt
+			hidden_effect = { USA_campaign_push_12 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_road_weary days = 40 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_radio_address = {
+		icon = GFX_decision_generic_political_address
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		cost = 15
+		days_re_enable = 30
+		fire_only_once = no
+
+		complete_effect = {
+			custom_effect_tooltip = USA_camp_push_8_tt
+			hidden_effect = { USA_campaign_push_8 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_on_air days = 30 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_party_machine = {
+		icon = GFX_decision_generic_political_discourse
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		cost = 35
+		days_re_enable = 60
+		fire_only_once = no
+
+		complete_effect = {
+			custom_effect_tooltip = USA_camp_push_16_tt
+			hidden_effect = { USA_campaign_push_16 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_machine_debts days = 60 }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_press_conference = {
+		icon = GFX_decision_generic_speech
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		cost = 10
+		days_re_enable = 20
+		fire_only_once = no
+
+		complete_effect = {
+			custom_effect_tooltip = USA_camp_push_4_tt
+			hidden_effect = { USA_campaign_push_4 = yes }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_dirty_tricks = {
+		icon = GFX_decision_generic_police_action
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		cost = 15
+		days_re_enable = 40
+		fire_only_once = no
+
+		complete_effect = {
+			custom_effect_tooltip = USA_camp_dirty_tricks_tt
+			hidden_effect = {
+				random_list = {
+					65 = { USA_campaign_push_16 = yes }
+					35 = {
+						USA_campaign_pushback_12 = yes
+						add_dynamic_modifier = { modifier = USA_camp_scandal days = 60 }
+					}
+				}
+			}
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+
+	USA_campaign_donor_dinner = {
+		icon = GFX_decision_generic_fundraising
+		allowed = { original_tag = USA }
+		visible = { has_country_flag = USA_1936_election_in_progress_flag }
+		cost = 0
+		days_re_enable = 60
+		fire_only_once = no
+
+		complete_effect = {
+			add_political_power = 30
+			custom_effect_tooltip = USA_camp_pushback_4_tt
+			hidden_effect = { USA_campaign_pushback_4 = yes }
+		}
+
+		ai_will_do = { factor = 0 }
+	}
+}

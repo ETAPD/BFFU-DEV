@@ -746,21 +746,295 @@ focus_tree = {
 	}
 
 	#The 1936 Election
+	# Works itself for 307 days (see on_startup in 00_on_actions.txt, event usa.230 completes it on Election Day).
 	focus = {
 		id = USA_the_1936_election
 		icon = GFX_USA_the_1936_election-646378
 		x = 10
 		y = 1
-		cost = 44
+		cost = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
 		cancelable = no
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
+
+		available = {
+			if = {
+				limit = { has_country_flag = USA_1936_election_in_progress_flag }
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = USA_election_in_progress_tt
+						FLAG_DAYS = [?USA_1936_election_in_progress_flag:days]
+					}
+					always = no
+				}
+			}
+			else = {
+				custom_override_tooltip = {
+					tooltip = USA_election_auto_start_tt
+					always = no
+				}
+			}
+		}
+
+		allow_branch = { always = yes }
+
 		completion_reward = {
 			custom_effect_tooltip = USA_1936_election_chain_tt
 			hidden_effect = {
 				country_event = { id = usa.200 }
 			}
+		}
+	}
+
+	# ===== The Road to November: campaign stops (box right of the election), taken while the election focus works itself =====
+
+	# Information node for the campaign minigame: cannot be taken, it only explains how the campaign works.
+	focus = {
+		id = USA_camp_info
+		icon = GFX_goal_generic_scientific_exchange
+		x = 22
+		y = 0
+		cost = 1
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		available = {
+			custom_override_tooltip = {
+				tooltip = USA_camp_info_tt
+				always = no
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 0 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_info_e1
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = USA_camp_info_e2
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = USA_camp_info_e3
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = USA_camp_info_e4
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = USA_camp_info_e5
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = USA_camp_info_e6
+		}
+	}
+
+	focus = {
+		id = USA_camp_defend_new_deal
+		icon = GFX_goal_generic_national_unity
+		x = 19
+		y = 1
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		mutually_exclusive = { focus = USA_camp_liberty_league }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_12_tt
+			hidden_effect = { USA_campaign_push_12 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_new_deal_momentum days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_liberty_league
+		icon = GFX_goal_generic_political_pressure
+		x = 19
+		y = 2
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		mutually_exclusive = { focus = USA_camp_defend_new_deal }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_12_tt
+			hidden_effect = { USA_campaign_push_12 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_business_backing days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_renominate_fdr
+		icon = GFX_goal_generic_propaganda
+		x = 21
+		y = 1
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_defend_new_deal focus = USA_camp_liberty_league }
+		mutually_exclusive = { focus = USA_camp_nominate_landon }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_8_tt
+			hidden_effect = { USA_campaign_push_8 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_party_unity days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_nominate_landon
+		icon = GFX_USA_landonsuproar-896295
+		x = 21
+		y = 2
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_defend_new_deal focus = USA_camp_liberty_league }
+		mutually_exclusive = { focus = USA_camp_renominate_fdr }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_8_tt
+			hidden_effect = { USA_campaign_push_8 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_republican_unity days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_fireside_chats
+		icon = GFX_goal_generic_propaganda
+		x = 23
+		y = 1
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_renominate_fdr focus = USA_camp_nominate_landon }
+		mutually_exclusive = { focus = USA_camp_heartland_tour }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_12_tt
+			hidden_effect = { USA_campaign_push_12 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_fireside_glow days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_heartland_tour
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 23
+		y = 2
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_renominate_fdr focus = USA_camp_nominate_landon }
+		mutually_exclusive = { focus = USA_camp_fireside_chats }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_12_tt
+			hidden_effect = { USA_campaign_push_12 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_heartland_tour_mod days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_msg_rally
+		icon = GFX_USA_on_the_shoulder_of_giants-896310
+		x = 25
+		y = 1
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_fireside_chats focus = USA_camp_heartland_tour }
+		mutually_exclusive = { focus = USA_camp_wall_street_push }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_8_tt
+			hidden_effect = { USA_campaign_push_8 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_msg_afterglow days = 90 }
+		}
+	}
+
+	focus = {
+		id = USA_camp_wall_street_push
+		icon = GFX_goal_generic_consumer_goods
+		x = 25
+		y = 2
+		cost = 10
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_fireside_chats focus = USA_camp_heartland_tour }
+		mutually_exclusive = { focus = USA_camp_msg_rally }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			custom_effect_tooltip = USA_camp_push_8_tt
+			hidden_effect = { USA_campaign_push_8 = yes }
+			add_dynamic_modifier = { modifier = USA_camp_wall_street_money days = 90 }
 		}
 	}
 
