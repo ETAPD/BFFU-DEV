@@ -16,14 +16,16 @@ country_event = {
 
 	immediate = {
 		set_politics = { ruling_party = democratic elections_allowed = no }
-		# The polling bar is the source of truth: cursor on the Landon (right)
-		# side wins it for him, otherwise Roosevelt holds. The cursor can never
-		# rest exactly on 0 (initial -0.1, steps of +/-0.12), so there is no draw.
+		# The polling bar is the source of truth: cursor clearly on the Landon (right)
+		# side wins it for him, otherwise Roosevelt holds. The campaign minigame uses
+		# swings of 0.03-0.12, so the bar CAN land on exactly 0 (and float noise can
+		# push it a hair either way); a dead heat, anything within 0.005 of 0, goes to
+		# the incumbent, Roosevelt.
 		if = {
 			limit = {
 				power_balance_value = {
 					id = USA_1936_election_bop
-					value > 0
+					value > 0.005
 				}
 			}
 			complete_national_focus = USA_landonsuproar
@@ -1485,5 +1487,22 @@ country_event = {
 			add_skill_level = 1
 		}
 		set_country_flag = USA_macarthur_returned
+	}
+}
+
+###########################
+# 1936 Election Day: the campaign focus completes itself
+###########################
+country_event = {
+	id = usa.230
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		complete_national_focus = {
+			focus = USA_the_1936_election
+			use_side_message = yes
+		}
+		clr_country_flag = USA_1936_election_in_progress_flag
 	}
 }
