@@ -18,19 +18,49 @@ country_event = {
 		set_politics = { ruling_party = democratic elections_allowed = no }
 		# The polling bar is the source of truth: cursor clearly on the Landon (right)
 		# side wins it for him, otherwise Roosevelt holds. The campaign minigame uses
-		# swings of 0.03-0.12, so the bar CAN land on exactly 0 (and float noise can
-		# push it a hair either way); a dead heat, anything within 0.005 of 0, goes to
+		# swings of 0.04-0.24, so the bar CAN land on exactly 0 (and float noise can
+		# push it a hair either way); an exact tie, anything within 0.005 of 0, goes to
 		# the incumbent, Roosevelt.
+		# The margin matters: the bigger the win on the polling bar, the bigger the mandate (2 years of buffs).
 		if = {
-			limit = {
-				power_balance_value = {
-					id = USA_1936_election_bop
-					value > 0.005
+			limit = { power_balance_value = { id = USA_1936_election_bop value > 0.005 } }
+			hidden_effect = {
+				if = {
+					limit = { power_balance_value = { id = USA_1936_election_bop value > 0.7 } }
+					set_country_flag = { flag = USA_we_mandate_lan_3 days = 730 value = 1 }
+					add_political_power = 60
 				}
+				else_if = {
+					limit = { power_balance_value = { id = USA_1936_election_bop value > 0.4 } }
+					set_country_flag = { flag = USA_we_mandate_lan_2 days = 730 value = 1 }
+					add_political_power = 30
+				}
+				else = {
+					set_country_flag = { flag = USA_we_mandate_lan_1 days = 730 value = 1 }
+				}
+				USA_recalc_war_economy = yes
+				country_event = { id = usa.231 days = 731 }
 			}
 			complete_national_focus = USA_landonsuproar
 		}
 		else = {
+			hidden_effect = {
+				if = {
+					limit = { power_balance_value = { id = USA_1936_election_bop value < -0.7 } }
+					set_country_flag = { flag = USA_we_mandate_fdr_3 days = 730 value = 1 }
+					add_political_power = 60
+				}
+				else_if = {
+					limit = { power_balance_value = { id = USA_1936_election_bop value < -0.4 } }
+					set_country_flag = { flag = USA_we_mandate_fdr_2 days = 730 value = 1 }
+					add_political_power = 30
+				}
+				else = {
+					set_country_flag = { flag = USA_we_mandate_fdr_1 days = 730 value = 1 }
+				}
+				USA_recalc_war_economy = yes
+				country_event = { id = usa.231 days = 731 }
+			}
 			complete_national_focus = USA_on_the_shoulder_of_giants
 		}
 		remove_power_balance = { id = USA_1936_election_bop }
@@ -63,14 +93,14 @@ country_event = {
 		name = usa.201.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = { # A sign of changing times!
 		name = usa.201.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -95,14 +125,14 @@ country_event = {
 		name = usa.217.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = { # Constitutional liberty must be restored
 		name = usa.217.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -127,14 +157,14 @@ country_event = {
 		name = usa.202.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = { # Landon defeats Vandenburg!
 		name = usa.202.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -159,14 +189,14 @@ country_event = {
 		name = usa.203.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = { # Roosevelt on edge?
 		name = usa.203.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -191,14 +221,14 @@ country_event = {
 		name = usa.218.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = { # Divisive rhetoric — moderates recoil at the combative tone
 		name = usa.218.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -223,14 +253,14 @@ country_event = {
 		name = usa.219.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = {
 		name = usa.219.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -255,14 +285,14 @@ country_event = {
 		name = usa.220.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = {
 		name = usa.220.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -287,14 +317,14 @@ country_event = {
 		name = usa.221.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = {
 		name = usa.221.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -319,14 +349,14 @@ country_event = {
 		name = usa.222.a
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_roosevelt_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
 		custom_effect_tooltip = usa_election_score_roosevelt_tt
 	}
 	option = {
 		name = usa.222.b
 		ai_chance = { factor = 50 }
 		add_to_variable = { USA_landon_score = 1 }
-		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
 		custom_effect_tooltip = usa_election_score_landon_tt
 	}
 }
@@ -1504,5 +1534,16 @@ country_event = {
 			use_side_message = yes
 		}
 		clr_country_flag = USA_1936_election_in_progress_flag
+	}
+}
+
+# Two years after the 1936 election the mandate flags have expired: refresh War Economy of the United States
+country_event = {
+	id = usa.231
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		USA_recalc_war_economy = yes
 	}
 }
