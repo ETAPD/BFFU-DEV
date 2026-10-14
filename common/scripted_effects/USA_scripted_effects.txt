@@ -448,6 +448,8 @@ USA_recalc_war_economy = {
 	set_variable = { USA_we_conscription = 0 }
 	set_variable = { USA_we_stability = 0 }
 	set_variable = { USA_we_war_support = 0 }
+	set_variable = { USA_we_stab_factor = 0 }
+	set_variable = { USA_we_ws_factor = 0 }
 	if = {
 		limit = { has_country_flag = USA_war_economy_active }
 		set_variable = { USA_we_consumer = -0.10 }
@@ -497,6 +499,39 @@ USA_recalc_war_economy = {
 		add_to_variable = { USA_we_eff_gain = 0.05 }
 		add_to_variable = { USA_we_stability = 0.001 }
 	}
+	# 1936 election mandate (flags set for 730 days by event usa.200, by margin of victory)
+	if = {
+		limit = { has_country_flag = USA_we_mandate_fdr_1 }
+		add_to_variable = { USA_we_stab_factor = 0.03 }
+		add_to_variable = { USA_we_pp_gain = 0.05 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_fdr_2 }
+		add_to_variable = { USA_we_stab_factor = 0.05 }
+		add_to_variable = { USA_we_pp_gain = 0.1 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_fdr_3 }
+		add_to_variable = { USA_we_stab_factor = 0.08 }
+		add_to_variable = { USA_we_pp_gain = 0.15 }
+		add_to_variable = { USA_we_ws_factor = 0.03 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_lan_1 }
+		add_to_variable = { USA_we_stab_factor = 0.03 }
+		add_to_variable = { USA_we_output = 0.02 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_lan_2 }
+		add_to_variable = { USA_we_stab_factor = 0.05 }
+		add_to_variable = { USA_we_output = 0.04 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_lan_3 }
+		add_to_variable = { USA_we_stab_factor = 0.08 }
+		add_to_variable = { USA_we_ws_factor = 0.03 }
+		add_to_variable = { USA_we_output = 0.06 }
+	}
 	force_update_dynamic_modifier = yes
 }
 
@@ -540,6 +575,24 @@ USA_campaign_push_16 = {
 		add_power_balance_value = { id = USA_1936_election_bop value = 0.16 }
 	}
 }
+USA_campaign_push_20 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.20 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.20 }
+	}
+}
+USA_campaign_push_24 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.24 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.24 }
+	}
+}
 USA_campaign_pushback_4 = {
 	if = {
 		limit = { check_variable = { USA_campaign_side < 0 } }
@@ -558,3 +611,9 @@ USA_campaign_pushback_12 = {
 		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
 	}
 }
+
+# Campaign stops (focuses) always push toward their own candidate, whoever the USA is backing.
+USA_campaign_for_roosevelt_8 = { add_power_balance_value = { id = USA_1936_election_bop value = -0.08 } }
+USA_campaign_for_landon_8 = { add_power_balance_value = { id = USA_1936_election_bop value = 0.08 } }
+USA_campaign_for_roosevelt_12 = { add_power_balance_value = { id = USA_1936_election_bop value = -0.12 } }
+USA_campaign_for_landon_12 = { add_power_balance_value = { id = USA_1936_election_bop value = 0.12 } }
