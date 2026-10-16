@@ -125,79 +125,34 @@ ohio_flood_3 = {
 	local_resources_factor = -0.05
 }
 
-USA_cnc_market_costs = {
-	enable = {
-		tag = USA
-		has_war = no
-		has_country_flag = USA_cash_and_carry_active
-	}
-	consumer_goods_factor       = USA_cnc_consumer_goods_var
-	production_speed_buildings_factor = USA_cnc_construction_speed_var
-}
-
-# War Economy — Added by the December 7 1941 focus chain
+# War Economy of the United States 
+# Every value is driven by a variable that USA_recalc_war_economy rewrites (USA_scripted_effects.txt):
+#   - day one: only the Cash and Carry market output (-10% when the Neutrality Act opens the market,
+#     +2.5% per 5 lots sold)
+#   - December 7th adds the war economy (Roosevelt or Willkie path), Big Business Subsidies add efficiency.
+#   - the wartime agencies (Series E War Bonds, War Powers Act, Office of War Mobilisation, Office of War
+#     Information, Emergency Price Control Act) add to it instead of being separate national spirits.
+#   - the 1936 election mandate (Roosevelt or Landon, by margin of victory) is added to it for two years.
 USA_war_economy = {
 	icon = GFX_idea_war_economy
 	enable = { tag = USA }
 
-	# Variable-driven: base 0.20 (seeded in history) plus 0.002 per Cash and Carry sale.
-	industrial_capacity_factory          = USA_war_economy_output_var
-	production_speed_arms_factory_factor = 0.25
-	consumer_goods_factor                = -0.10
-	global_building_slots_factor         = 2.0
-}
-
-# War Economy + Big Business Subsidies
-USA_war_economy_subsidies = {
-	icon = GFX_idea_war_economy
-	enable = { tag = USA }
-
-	industrial_capacity_factory               = USA_war_economy_output_var        # base 0.20 + 0.002 per sale
-	production_speed_arms_factory_factor      = 0.25
-	consumer_goods_factor                     = -0.10
-	production_factory_max_efficiency_factor  = 0.10
-	production_factory_efficiency_gain_factor = 0.05
-	global_building_slots_factor              = 2.0
-}
-
-# War Economy — Roosevelt path
-USA_war_economy_fdr = {
-	icon = GFX_idea_war_economy
-	enable = { tag = USA }
-
-	industrial_capacity_factory          = USA_war_economy_output_fdr_var   # base 0.35 + 0.002 per sale
-	production_speed_arms_factory_factor = 0.70   # 0.25 base + 0.45 FDR bonus
-	consumer_goods_factor                = -0.10
-	production_speed_dockyard_factor     = 0.35
-	global_building_slots_factor         = 2.0
-}
-
-# War Economy — Landon/Willkie path (no subsidies)
-USA_war_economy_landon = {
-	icon = GFX_idea_war_economy
-	enable = { tag = USA }
-
-	industrial_capacity_factory          = USA_war_economy_output_landon_var   # base 0.45 + 0.002 per sale
-	production_speed_arms_factory_factor = 0.50   # 0.25 base + 0.25 Landon bonus
-	consumer_goods_factor                = -0.10
-	production_cost_arms_factory_factor  = -0.15
-	production_speed_dockyard_factor     = 0.40
-	global_building_slots_factor         = 2.0
-}
-
-# War Economy — Landon/Willkie path + Big Business Subsidies
-USA_war_economy_subsidies_landon = {
-	icon = GFX_idea_war_economy
-	enable = { tag = USA }
-
-	industrial_capacity_factory               = USA_war_economy_output_landon_var   # base 0.45 + 0.002 per sale
-	production_speed_arms_factory_factor      = 0.50   # same as landon base
-	consumer_goods_factor                     = -0.10  # same as landon base
-	production_cost_arms_factory_factor       = -0.15  # same as landon base
-	production_speed_dockyard_factor          = 0.40   # same as landon base
-	production_factory_max_efficiency_factor  = 0.10   # subsidies bonus
-	production_factory_efficiency_gain_factor = 0.05   # subsidies bonus
-	global_building_slots_factor              = 2.0
+	industrial_capacity_factory               = USA_we_output
+	production_speed_arms_factory_factor      = USA_we_arms_speed
+	production_speed_dockyard_factor          = USA_we_dock_speed
+	production_cost_arms_factory_factor       = USA_we_arms_cost
+	consumer_goods_factor                     = USA_we_consumer
+	global_building_slots_factor              = USA_we_slots
+	production_factory_max_efficiency_factor  = USA_we_max_eff
+	production_factory_efficiency_gain_factor = USA_we_eff_gain
+	production_factory_start_efficiency_factor = USA_we_start_eff
+	consumer_goods_expected_value             = USA_we_cg_expected
+	political_power_gain                      = USA_we_pp_gain
+	conscription_factor                       = USA_we_conscription
+	stability_weekly                          = USA_we_stability
+	war_support_weekly                        = USA_we_war_support
+	stability_factor                          = USA_we_stab_factor
+	war_support_factor                        = USA_we_ws_factor
 }
 
 ############################################################
@@ -211,4 +166,77 @@ USA_torch_bombardment = {
 
 	max_dig_in_factor    = -0.5
 	fortification_damage = 0.4
+}
+
+# ---- 1936 election campaign (Road to November) -- timed buffs / debuffs from the campaign focuses and decisions ----
+USA_camp_new_deal_momentum = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	political_power_gain = 0.15
+	consumer_goods_factor = 0.03
+}
+USA_camp_business_backing = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	industrial_capacity_factory = 0.03
+	political_power_gain = -0.1
+}
+USA_camp_party_unity = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	stability_factor = 0.05
+	war_support_factor = -0.03
+}
+USA_camp_republican_unity = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	stability_factor = 0.03
+	consumer_goods_factor = -0.02
+}
+USA_camp_fireside_glow = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	political_power_gain = 0.1
+	consumer_goods_factor = 0.02
+}
+USA_camp_heartland_tour_mod = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	stability_factor = 0.04
+	political_power_gain = -0.05
+}
+USA_camp_msg_afterglow = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	political_power_gain = 0.15
+	stability_factor = -0.03
+}
+USA_camp_wall_street_money = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	stability_factor = 0.03
+	political_power_gain = -0.1
+}
+USA_camp_road_weary = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	stability_factor = -0.03
+	political_power_gain = -0.05
+}
+USA_camp_on_air = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	political_power_gain = 0.05
+	stability_factor = 0.02
+}
+USA_camp_machine_debts = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	consumer_goods_factor = 0.03
+	stability_factor = -0.02
+}
+USA_camp_scandal = {
+	icon = GFX_idea_war_economy
+	enable = { always = yes }
+	stability_factor = -0.08
 }

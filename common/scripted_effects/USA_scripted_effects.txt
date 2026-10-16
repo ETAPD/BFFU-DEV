@@ -394,13 +394,226 @@ USA_ease_depression = {
 }
 
 
-# Cash and Carry — reward for a completed market sale (called in the BUYER scope by the
-# per-type buy decisions). The buyer's cost (5 civilian factories used for 90 days) is the
-# decision's civilian_factory_use modifier; delivery is the decision's remove_effect.
-USA_cnc_purchase_reward = {
-	USA = {
-		add_to_variable = { USA_war_economy_output_var        = 0.002 }
-		add_to_variable = { USA_war_economy_output_fdr_var    = 0.002 }
-		add_to_variable = { USA_war_economy_output_landon_var = 0.002 }
+# Cash and Carry
+# Requires temp variable cnc_invest. The decision's own cost has already taken the PP.
+USA_cnc_invest_pool = {
+	if = {
+		limit = { has_global_flag = USA_cnc_eximbank }
+		multiply_temp_variable = { cnc_invest = 1.25 }
+	}
+	add_to_variable = {
+		global.cnc_pp_pool = cnc_invest
+		tooltip = USA_cnc_add_to_pool_tt
+	}
+	add_to_variable = { cnc_pp_invested = cnc_invest }
+}
+
+# Cash and Carry — pay for a package from the pool (cost set by the chosen package size).
+USA_cnc_pay_from_pool = {
+	subtract_from_variable = { global.cnc_pp_pool = cnc_pkg_cost }
+	add_to_variable = { cnc_pp_drawn = cnc_pkg_cost }
+	# Every 5 lots sold gives the USA +2.5% factory output (War Economy of the United States), no cap.
+	custom_effect_tooltip = USA_cnc_sale_output_tt
+	hidden_effect = {
+		set_temp_variable = { cnc_sold = cnc_pkg_lots }
+		add_to_variable = { global.cnc_lots_sold = cnc_sold }
+		USA = {
+			add_to_variable = { USA_cnc_lots_progress = cnc_sold }
+			while_loop_effect = {
+				limit = { check_variable = { USA_cnc_lots_progress > 4.5 } }
+				subtract_from_variable = { USA_cnc_lots_progress = 5 }
+				add_to_variable = { USA_cnc_output_var = 0.025 }
+			}
+			USA_recalc_war_economy = yes
+		}
 	}
 }
+
+# War Economy of the United States (USA_war_economy dynamic modifier). Call in the USA scope whenever
+# the market output, the December 7th war economy or Big Business Subsidies change.
+#   flags: USA_war_economy_active (December 7th done), USA_war_economy_landon_path (Willkie path),
+#          USA_war_economy_subsidies_on (Offer Subsidies to Big Business done)
+USA_recalc_war_economy = {
+	set_variable = { USA_we_output = USA_cnc_output_var }
+	set_variable = { USA_we_arms_speed = 0 }
+	set_variable = { USA_we_dock_speed = 0 }
+	set_variable = { USA_we_arms_cost = 0 }
+	set_variable = { USA_we_consumer = 0 }
+	set_variable = { USA_we_slots = 0 }
+	set_variable = { USA_we_max_eff = 0 }
+	set_variable = { USA_we_eff_gain = 0 }
+	set_variable = { USA_we_start_eff = 0 }
+	set_variable = { USA_we_cg_expected = 0 }
+	set_variable = { USA_we_pp_gain = 0 }
+	set_variable = { USA_we_conscription = 0 }
+	set_variable = { USA_we_stability = 0 }
+	set_variable = { USA_we_war_support = 0 }
+	set_variable = { USA_we_stab_factor = 0 }
+	set_variable = { USA_we_ws_factor = 0 }
+	if = {
+		limit = { has_country_flag = USA_war_economy_active }
+		set_variable = { USA_we_consumer = -0.10 }
+		set_variable = { USA_we_slots = 2 }
+		if = {
+			limit = { has_country_flag = USA_war_economy_landon_path }
+			add_to_variable = { USA_we_output = 0.45 }
+			set_variable = { USA_we_arms_speed = 0.50 }
+			set_variable = { USA_we_dock_speed = 0.40 }
+			set_variable = { USA_we_arms_cost = -0.15 }
+		}
+		else = {
+			add_to_variable = { USA_we_output = 0.35 }
+			set_variable = { USA_we_arms_speed = 0.70 }
+			set_variable = { USA_we_dock_speed = 0.35 }
+		}
+		if = {
+			limit = { has_country_flag = USA_war_economy_subsidies_on }
+			set_variable = { USA_we_max_eff = 0.10 }
+			add_to_variable = { USA_we_eff_gain = 0.05 }
+		}
+	}
+	# Wartime agencies (flags set by their focuses)
+	if = {
+		limit = { has_country_flag = USA_we_bonds }                # Series E War Bonds (Issue War Bonds)
+		add_to_variable = { USA_we_cg_expected = -0.025 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_wpa }                  # War Powers Act
+		add_to_variable = { USA_we_pp_gain = 0.15 }
+		add_to_variable = { USA_we_conscription = 0.05 }
+		add_to_variable = { USA_we_stability = -0.001 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_owm }                  # Office of War Mobilisation
+		add_to_variable = { USA_we_eff_gain = 0.10 }
+		add_to_variable = { USA_we_start_eff = 0.10 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_owi }                  # Office of War Information
+		add_to_variable = { USA_we_war_support = 0.003 }
+		add_to_variable = { USA_we_stability = 0.002 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_epca }                 # Emergency Price Control Act
+		add_to_variable = { USA_we_cg_expected = -0.05 }
+		add_to_variable = { USA_we_eff_gain = 0.05 }
+		add_to_variable = { USA_we_stability = 0.001 }
+	}
+	# 1936 election mandate (flags set for 730 days by event usa.200, by margin of victory)
+	if = {
+		limit = { has_country_flag = USA_we_mandate_fdr_1 }
+		add_to_variable = { USA_we_stab_factor = 0.03 }
+		add_to_variable = { USA_we_pp_gain = 0.05 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_fdr_2 }
+		add_to_variable = { USA_we_stab_factor = 0.05 }
+		add_to_variable = { USA_we_pp_gain = 0.1 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_fdr_3 }
+		add_to_variable = { USA_we_stab_factor = 0.08 }
+		add_to_variable = { USA_we_pp_gain = 0.15 }
+		add_to_variable = { USA_we_ws_factor = 0.03 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_lan_1 }
+		add_to_variable = { USA_we_stab_factor = 0.03 }
+		add_to_variable = { USA_we_output = 0.02 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_lan_2 }
+		add_to_variable = { USA_we_stab_factor = 0.05 }
+		add_to_variable = { USA_we_output = 0.04 }
+	}
+	if = {
+		limit = { has_country_flag = USA_we_mandate_lan_3 }
+		add_to_variable = { USA_we_stab_factor = 0.08 }
+		add_to_variable = { USA_we_ws_factor = 0.03 }
+		add_to_variable = { USA_we_output = 0.06 }
+	}
+	force_update_dynamic_modifier = yes
+}
+
+# 1936 campaign minigame: push the polling bar toward the candidate the USA is backing
+# (USA_campaign_side: -1 = Roosevelt, +1 = Landon). Pushback goes the other way.
+# Every swing is a multiple of 0.04 (as are the +/-0.12 swings of the campaign events) and the bar starts
+# at -0.10, so it stays on values that are 2 mod 4 in hundredths: it can never land on exactly 0.
+USA_campaign_push_4 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
+	}
+}
+USA_campaign_push_8 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.08 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.08 }
+	}
+}
+USA_campaign_push_12 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+	}
+}
+USA_campaign_push_16 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.16 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.16 }
+	}
+}
+USA_campaign_push_20 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.20 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.20 }
+	}
+}
+USA_campaign_push_24 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.24 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.24 }
+	}
+}
+USA_campaign_pushback_4 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
+	}
+}
+USA_campaign_pushback_12 = {
+	if = {
+		limit = { check_variable = { USA_campaign_side < 0 } }
+		add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+	}
+	else = {
+		add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+	}
+}
+
+# Campaign stops (focuses) always push toward their own candidate, whoever the USA is backing.
+USA_campaign_for_roosevelt_8 = { add_power_balance_value = { id = USA_1936_election_bop value = -0.08 } }
+USA_campaign_for_landon_8 = { add_power_balance_value = { id = USA_1936_election_bop value = 0.08 } }
+USA_campaign_for_roosevelt_12 = { add_power_balance_value = { id = USA_1936_election_bop value = -0.12 } }
+USA_campaign_for_landon_12 = { add_power_balance_value = { id = USA_1936_election_bop value = 0.12 } }

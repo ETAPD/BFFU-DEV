@@ -29,6 +29,23 @@ on_actions = {
 		}
 
 		effect = {
+			# The 1936 campaign works itself: the election focus is not selectable, it completes by event on Election
+			# Day (3 November 1936, 307 days in), like the Soviet auto-completing focuses (SOV_auto_complete_focus).
+			USA = {
+				if = {
+					limit = {
+						date < 1936.11.1
+						NOT = { has_completed_focus = USA_the_1936_election }
+					}
+					set_country_flag = { flag = USA_1936_election_in_progress_flag days = 307 value = 1 }
+					set_variable = { USA_campaign_side = -1 }
+					set_variable = { USA_election_days_left = 307 }
+					country_event = { id = usa.230 days = 307 }
+				}
+			}
+		}
+
+		effect = {
 			# Activate the 1936 election polling bar on day 1 (1936 bookmark only).
 			USA = {
 				if = {
@@ -842,24 +859,6 @@ on_actions = {
 	# ROOT is capitulated country, FROM is winner
 	on_capitulation = {
 		effect = {
-			# Cash and Carry — on the Landon path the market opens once Poland capitulates.
-			if = {
-				limit = {
-					tag = POL
-					USA = {
-						OR = {
-							has_completed_focus = USA_landonsuproar
-							has_country_leader = { character = usa_alf_landon ruling_only = yes }
-							has_country_leader = { character = usa_wendell_willkie ruling_only = yes }
-						}
-						NOT = { has_country_flag = USA_cash_and_carry_active }
-					}
-				}
-				USA = {
-					set_country_flag = USA_cash_and_carry_active
-					country_event = { id = usa.9410 hours = 6 }
-				}
-			}
 			if = {
 				limit = {
 					tag = SOV
