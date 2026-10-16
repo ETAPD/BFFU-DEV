@@ -4,132 +4,371 @@
 
 add_namespace = bulgaria
 
-# Treaty of Craiova - Romania Accepts
+
 country_event = {
-	id = bulgaria.1
-	title = bulgaria.1.t
-	desc = bulgaria.1.d
-	picture = [GetHitlerHandshakeEventPicture]
+	id = bulgaria.999
+	title = bulgaria.999.t
+	desc = bulgaria.999.d
+	picture = GFX_report_event_PER_persepolis_party
+	fire_only_once = yes
 	
 	is_triggered_only = yes
 	
 	option = {
-		name = bulgaria.1.a
-		BUL = { 
-			transfer_state = 77
-			add_state_core = 77
-		}
-		if = {
-			limit = {
-				77 = { is_core_of = ROM }
-			}
-			ROM = {
-				remove_state_core = 77
-			}
-		}
+		name = bulgaria.999.a
+		ai_chance = { factor = 100 }
+
+		custom_effect_tooltip = BUL_inf_demand_tt
+				
 		hidden_effect = {
-			news_event = { days = 1 id = news.21 }
+			set_country_flag = BUL_demand_trigger
 		}
 	}
 }
 
-# Treaty of Craiova - Romania Refuses
+# Bulgaria wins against IMRO
 country_event = {
-	id = bulgaria.2
-	title = bulgaria.2.t
-	desc = bulgaria.2.d
-	picture = GFX_report_event_finnish_letter
+	id = bulgaria.998
+	title = bulgaria.998.t
+	desc = bulgaria.998.d
+	picture = GFX_report_event_generic_battle
+	fire_only_once = yes
 	
 	is_triggered_only = yes
 	
 	option = {
-		name = bulgaria.2.a
-		create_wargoal = {
-			type = take_state_focus
-			target = ROM
-			generator = { 77 }
+		name = bulgaria.998.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
 		}
-		#generate wargoal for romania
+
+		army_experience = 20
+		add_command_power = 10
+
+		add_doctrine_cost_reduction = {
+			name = bul_won_imro_border_war
+			category = land_doctrine
+			cost_reduction = 0.5
+			uses = 1
+		}
+	}
+
+	option = {
+		name = bulgaria.998.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = YUG
+		}
+
+		48 = {
+			damage_building = {
+				type = industrial_complex
+				damage = 1
+			}
+		}
 	}
 }
 
-# Bulgaria (First Ljubljana Award) from german focus
+# Bulgaria loses against IMRO
 country_event = {
-	id = bulgaria.3
-	title = bulgaria.3.t
-	desc = bulgaria.3.d
-	picture = GFX_report_event_vienna_award_negotiations
+	id = bulgaria.997
+	title = bulgaria.997.t
+	desc = bulgaria.997.d
+	picture = GFX_report_event_spr_civil_war_faction_defeated
+	fire_only_once = yes
 	
 	is_triggered_only = yes
 	
 	option = {
-		name = bulgaria.3.a
+		name = bulgaria.997.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		48 = {
+			damage_building = {
+				type = infrastructure
+				damage = 1
+			}
+		}
+	}
+
+	option = {
+		name = bulgaria.997.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = YUG
+		}
+
+		army_experience = 20
+		add_command_power = 10
+
+		add_doctrine_cost_reduction = {
+			name = yug_won_imro_border_war
+			category = land_doctrine
+			cost_reduction = 0.5
+			uses = 1
+		}
+	}
+}
+
+# Bulgaria wins against Greece
+country_event = {
+	id = bulgaria.996
+	title = bulgaria.996.t
+	desc = bulgaria.996.d
+	picture = GFX_report_event_DEN_celebration
+	fire_only_once = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = bulgaria.996.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		army_experience = 50
+		
+		184 = {
+			transfer_state_to = BUL
+		}
+	}
+
+	option = {
+		name = bulgaria.996.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = GRE
+		}
+	}
+}
+
+# Bulgaria loses state transfer border wars
+country_event = {
+	id = bulgaria.995
+	title = bulgaria.995.t
+	desc = bulgaria.995.d
+	picture = GFX_report_event_gre_winter_soldiers_celebrating
+	fire_only_once = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = bulgaria.995.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		add_political_power = -25
+	}
+
+	option = {
+		name = bulgaria.995.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = GRE
+			original_tag = SER
+			original_tag = ROM
+		}
+
 		if = {
 			limit = {
-				OR = {
-					106 = { is_owned_by = YUG }
-					106 = { is_owned_by = GER }
-					803 = { is_owned_by = YUG }
-					803 = { is_owned_by = GER }
-				}
+				original_tag = ROM
 			}
-			transfer_state = 106
-			transfer_state = 803
+			army_experience = 70
+			add_command_power = 35
 		}
 	}
 }
 
-# Treaty of Craiova - Hungary gets land. So should we
+# Bulgaria wins against Serbia
 country_event = {
-	id = bulgaria.4
-	title = bulgaria.4.t
-	desc = bulgaria.4.d
-	picture = GFX_report_event_vienna_award_negotiations
+	id = bulgaria.994
+	title = bulgaria.994.t
+	desc = bulgaria.994.d
+	picture = GFX_report_event_bul_ff_troops_yugoslavia
+	fire_only_once = yes
 	
-	trigger = {
-		tag = BUL
-		NOT = { has_country_flag = bulgaria.4_fired }
-		BUL = {
-			NOT = { is_in_faction_with = ROM }
+	is_triggered_only = yes
+	
+	option = {
+		name = bulgaria.994.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
 		}
-		BUL = {
-			NOT = { is_subject_of = ROM }
+
+		army_experience = 50
+		
+		106 = {
+			transfer_state_to = BUL
 		}
-		ROM = {
-			OR = { 
-				has_country_flag = second_vienna_accepted_north
-				has_country_flag = second_vienna_accepted_all
+		803 = {
+			transfer_state_to = BUL
+		}
+	}
+
+	option = {
+		name = bulgaria.994.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = SER
+		}
+	}
+}
+
+# Bulgaria wins against Romania
+country_event = {
+	id = bulgaria.993
+	title = bulgaria.993.t
+	desc = bulgaria.993.d
+	picture = GFX_report_event_romania_poland_visit
+	fire_only_once = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = bulgaria.993.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		army_experience = 50
+		
+		77 = {
+			transfer_state_to = BUL
+		}
+	}
+
+	option = {
+		name = bulgaria.993.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = ROM
+		}
+	}
+}
+
+# Bulgaria completes army demand
+country_event = {
+	id = bulgaria.992
+	title = bulgaria.992.t
+	desc = bulgaria.992.d
+	picture = GFX_report_event_tur_industry
+	fire_only_once = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = bulgaria.992.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		add_timed_idea = {
+			idea = BUL_demand_met
+			days = 30
+		}
+	}
+}
+
+country_event = {
+	id = bulgaria.991
+	title = bulgaria.991.t
+	desc = bulgaria.991.d
+	picture = GFX_report_event_journalists_speech
+	fire_only_once = yes
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = bulgaria.991.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		set_country_flag = BUL_communist_head_of_industry
+		activate_advisor = BUL_nikola_petkov
+
+		ROOT = {
+			BUL_bzns_medium_loyalty_increase_effect = yes
+			BUL_bs_low_loyalty_decrease_effect = yes
+			add_popularity = {
+				ideology = communism
+				popularity = 0.025
 			}
 		}
 	}
 
-	is_triggered_only = yes
-
-	immediate = { set_country_flag = bulgaria.4_fired	}
-
-	#make demands
 	option = {
-		ai_chance = { factor = 10 }
-		name = bulgaria.4.a
-		GER = { country_event = germany.106 }
-	}	
-	#dont make demands
-	option = {
-		ai_chance = { factor = 0 }
-		name = bulgaria.4.b
+		name = bulgaria.991.b
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		set_country_flag = BUL_fascist_head_of_industry
+		activate_advisor = BUL_kimon_georgiev
+
+		ROOT = {
+			BUL_bs_medium_loyalty_increase_effect = yes
+			BUL_bzns_low_loyalty_decrease_effect = yes
+			add_popularity = {
+				ideology = fascism
+				popularity = 0.025
+			}
+		}
 	}
 }
 
-# Treaty of Craiova - Germany will not back us
+# collapse
 country_event = {
-	id = bulgaria.5
-	title = bulgaria.5.t
-	desc = bulgaria.5.d
-	picture = GFX_report_event_vienna_award_negotiations
+	id = bulgaria.990
+	title = bulgaria.990.t
+	desc = bulgaria.990.d
+	picture = GFX_report_event_generic_riot
+	fire_only_once = yes
 	
 	is_triggered_only = yes
 	
 	option = {
-		name = bulgaria.5.a
+		name = bulgaria.990.a
+		ai_chance = { factor = 100 }
+
+		trigger = {
+			original_tag = BUL
+		}
+
+		ROOT = {
+			custom_effect_tooltip = BUL_modify_eco_tt
+			add_to_variable = { var = BUL_production_speed_arms_factory_factor_var value = 0.3 tooltip = production_speed_arms_factory_factor_tt }
+			add_to_variable = { var = BUL_production_speed_industrial_complex_factor_var value = -0.3 tooltip = production_speed_industrial_complex_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			complete_national_focus = BUL_minigame_path_u
+		}
 	}
 }
