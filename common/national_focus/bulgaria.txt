@@ -287,8 +287,8 @@ focus_tree = {
 			add_to_variable = { var = BUL_stability_factor_var value = 0.05 tooltip = stability_factor_tt }
 			add_to_variable = { var = BUL_fascism_drift_var value = 0.02 tooltip = fascism_drift_tt }
 			add_to_variable = { var = BUL_communism_drift_var value = 0.02 tooltip = communism_drift_tt }
-			add_to_variable = { var = BUL_neutrality_drift_var value = 0.01 tooltip = neutrality_drift_tt }
-
+			custom_effect_tooltip = generic_skip_one_line_tt
+			BUL_nsm_medium_popularity_increase_effect = yes
 		}
 	}
 
@@ -441,37 +441,70 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			custom_effect_tooltip = "If Agrarian loyalty is greater then UBNL +10% stability and +5% resource gain efficiency else +20% war support and +10% Military Faction construction speed"
-			custom_effect_tooltip = generic_skip_one_line_tt
 			if = {
 				limit = {
-					check_variable = {
-						var = BUL_bs_loyalty
-						value = BUL_bzns_loyalty
-						compare = less_than_or_equals
+					NOT = {
+						has_country_flag = BUL_bzns_integrated_flag
+						has_country_flag = BUL_bs_integrated_flag
+					}
+				}
+				custom_effect_tooltip = BUL_advisory_council_full_bonus_tt
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = BUL_advisory_council_agrarian_bonus_tt
+				custom_effect_tooltip = BUL_modify_pol_tt
+				add_to_variable = { var = BUL_stability_factor_var value = 0.1 tooltip = stability_factor_tt }
+				custom_effect_tooltip = BUL_modify_eco_tt
+				add_to_variable = { var = BUL_local_resources_factor_var value = 0.05 tooltip = local_resources_factor_tt }	
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = BUL_advisory_council_legion_bonus_tt
+				custom_effect_tooltip = BUL_modify_pol_tt
+				add_to_variable = { var = BUL_war_support_factor_var value = 0.2 tooltip = war_support_factor_tt }
+				custom_effect_tooltip = BUL_modify_eco_tt
+				add_to_variable = { var = BUL_production_speed_arms_factory_factor_var value = 0.1 tooltip = production_speed_arms_factory_factor_tt }
+				custom_effect_tooltip = generic_skip_one_line_tt
+			} 
+			custom_effect_tooltip = BUL_advisory_council_current_bonus_tt
+			if = {
+				limit = {
+					OR = {
+						AND = {
+							has_country_flag = BUL_bzns_integrated_flag
+							has_country_flag = BUL_bs_integrated_flag
+						}
+						check_variable = {
+							var = BUL_bs_loyalty
+							value = BUL_bzns_loyalty
+							compare = less_than_or_equals
+						}
 					}
 				}
 				custom_effect_tooltip = BUL_modify_pol_tt
 				add_to_variable = { var = BUL_stability_factor_var value = 0.1 tooltip = stability_factor_tt }
-				custom_effect_tooltip = generic_skip_one_line_tt
 				custom_effect_tooltip = BUL_modify_eco_tt
-				add_to_variable = { var = BUL_local_resources_factor_var value = 0.05 tooltip = local_resources_factor_tt }				
-			} else_if = {
+				add_to_variable = { var = BUL_local_resources_factor_var value = 0.05 tooltip = local_resources_factor_tt }	
+				custom_effect_tooltip = generic_skip_one_line_tt
+			}
+			if = {
 				limit = {
-					check_variable = {
-						var = BUL_bzns_loyalty
-						value = BUL_bs_loyalty
-						compare = less_than_or_equals
+					OR = {
+						AND = {
+							has_country_flag = BUL_bzns_integrated_flag
+							has_country_flag = BUL_bs_integrated_flag
+						}
+						check_variable = {
+							var = BUL_bzns_loyalty
+							value = BUL_bs_loyalty
+							compare = less_than_or_equals
+						}
 					}
 				}
 				custom_effect_tooltip = BUL_modify_pol_tt
 				add_to_variable = { var = BUL_war_support_factor_var value = 0.2 tooltip = war_support_factor_tt }
-				custom_effect_tooltip = generic_skip_one_line_tt
 				custom_effect_tooltip = BUL_modify_eco_tt
 				add_to_variable = { var = BUL_production_speed_arms_factory_factor_var value = 0.1 tooltip = production_speed_arms_factory_factor_tt }
-				
+				custom_effect_tooltip = generic_skip_one_line_tt
 			}
-			custom_effect_tooltip = generic_skip_one_line_tt
+
 			add_days_mission_timeout = {
 				mission = BUL_political_collapse
 				days = 84
@@ -714,6 +747,10 @@ focus_tree = {
 			focus = BUL_minigame_path_t
 		}
 
+		available = {
+			NOT = { has_country_flag = BUL_pol_collapsed }
+		}
+
 		completion_reward = {
 			custom_effect_tooltip = BUL_pol_success_tt
 			set_country_flag = BUL_saved_from_collapse
@@ -747,6 +784,10 @@ focus_tree = {
 			focus = BUL_minigame_path_s
 		}
 
+		available = {
+			NOT = { has_country_flag = BUL_pol_collapsed }
+		}
+
 		completion_reward = {
 			custom_effect_tooltip = BUL_pol_success_tt
 			set_country_flag = BUL_saved_from_collapse
@@ -778,6 +819,9 @@ focus_tree = {
 		}
 
 		completion_reward = {
+			custom_effect_tooltip = BUL_end_minigame_tt
+			clr_country_flag = BUL_factions_unlocked_flag
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_war_support = 0.2
 			custom_effect_tooltip = generic_skip_one_line_tt
 
@@ -786,7 +830,7 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 			
 			custom_effect_tooltip = BUL_modify_pol_tt
-			add_to_variable = { var = BUL_war_support_weekly_var value = 0.005 tooltip = war_support_weekly_tt }
+			add_to_variable = { var = BUL_war_support_weekly_var value = 0.0025 tooltip = war_support_weekly_tt }
 		}
 	}
 
@@ -2321,7 +2365,6 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = BUL_align_tt
 			effect_tooltip = {
-				custom_effect_tooltip = generic_skip_one_line_tt
 				108 = {
 					remove_building = {
 						type = arms_factory
@@ -2674,11 +2717,11 @@ focus_tree = {
 				add_war_support = -0.15
 				add_equipment_to_stockpile = {
 					type = infantry_equipment_0
-					amount = 5000
+					amount = 4000
 				}
 				add_equipment_to_stockpile = {
 					type = squad_equipment_0
-					amount = 500
+					amount = 800
 				}
 			}
 		}
