@@ -27,19 +27,26 @@ country_event = {
 			hidden_effect = {
 				if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value > 0.7 } }
-					set_country_flag = { flag = USA_we_mandate_lan_3 days = 730 value = 1 }
+					set_country_flag = USA_we_mandate_lan_3
+					add_to_variable = { USA_we_stab_factor = 0.08 }
+					add_to_variable = { USA_we_ws_factor = 0.03 }
+					add_to_variable = { USA_we_output = 0.06 }
 					add_political_power = 60
 				}
 				else_if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value > 0.4 } }
-					set_country_flag = { flag = USA_we_mandate_lan_2 days = 730 value = 1 }
+					set_country_flag = USA_we_mandate_lan_2
+					add_to_variable = { USA_we_stab_factor = 0.05 }
+					add_to_variable = { USA_we_output = 0.04 }
 					add_political_power = 30
 				}
 				else = {
-					set_country_flag = { flag = USA_we_mandate_lan_1 days = 730 value = 1 }
+					set_country_flag = USA_we_mandate_lan_1
+					add_to_variable = { USA_we_stab_factor = 0.03 }
+					add_to_variable = { USA_we_output = 0.02 }
 				}
-				USA_recalc_war_economy = yes
-				country_event = { id = usa.231 days = 731 }
+				force_update_dynamic_modifier = yes
+				country_event = { id = usa.231 days = 730 }
 			}
 			complete_national_focus = USA_landonsuproar
 		}
@@ -47,19 +54,26 @@ country_event = {
 			hidden_effect = {
 				if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value < -0.7 } }
-					set_country_flag = { flag = USA_we_mandate_fdr_3 days = 730 value = 1 }
+					set_country_flag = USA_we_mandate_fdr_3
+					add_to_variable = { USA_we_stab_factor = 0.08 }
+					add_to_variable = { USA_we_pp_gain = 0.15 }
+					add_to_variable = { USA_we_ws_factor = 0.03 }
 					add_political_power = 60
 				}
 				else_if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value < -0.4 } }
-					set_country_flag = { flag = USA_we_mandate_fdr_2 days = 730 value = 1 }
+					set_country_flag = USA_we_mandate_fdr_2
+					add_to_variable = { USA_we_stab_factor = 0.05 }
+					add_to_variable = { USA_we_pp_gain = 0.1 }
 					add_political_power = 30
 				}
 				else = {
-					set_country_flag = { flag = USA_we_mandate_fdr_1 days = 730 value = 1 }
+					set_country_flag = USA_we_mandate_fdr_1
+					add_to_variable = { USA_we_stab_factor = 0.03 }
+					add_to_variable = { USA_we_pp_gain = 0.05 }
 				}
-				USA_recalc_war_economy = yes
-				country_event = { id = usa.231 days = 731 }
+				force_update_dynamic_modifier = yes
+				country_event = { id = usa.231 days = 730 }
 			}
 			complete_national_focus = USA_on_the_shoulder_of_giants
 		}
@@ -361,22 +375,6 @@ country_event = {
 	}
 }
 
-# Event 204: The Fair Labour Standards Act
-country_event = {
-	id = usa.204
-	title = usa.204.t
-	desc = usa.204.d
-	picture = GFX_report_event_generic_handshake
-
-	is_triggered_only = yes
-
-	option = {
-		name = usa.204.a
-			custom_effect_tooltip = USA_modify_third_new_deal_tt
-			USA_third_new_deal_upgrade_to_flsa = yes
-	}
-}
-
 ###########################
 # Ohio River Flood (1937)
 ###########################
@@ -425,195 +423,6 @@ country_event = {
 	}
 }
 
-###########################
-# Court Packing Chain (1937)
-###########################
-
-# Event 209: The Judicial Procedures Reform Bill
-country_event = {
-	id = usa.209
-	title = usa.209.t
-	desc = usa.209.d
-	picture = GFX_report_event_usa_election_landon_roosevelt
-
-	is_triggered_only = yes
-
-	option = {
-		# Take to the airwaves (0 PP, +10%)
-		name = usa.209.a
-		add_to_variable = { var = USA_court_packing_chance value = 10 }
-		country_event = { id = usa.210 days = 21 }
-	}
-	option = {
-		# Secure Capitol Hill (50 PP, +20%)
-		name = usa.209.b
-		add_political_power = -50
-		add_to_variable = { var = USA_court_packing_pp value = 50 }
-		add_to_variable = { var = USA_court_packing_chance value = 20 }
-		country_event = { id = usa.210 days = 21 }
-	}
-}
-
-# Event 210: The Hughes Letter
-country_event = {
-	id = usa.210
-	title = usa.210.t
-	desc = usa.210.d
-	picture = GFX_report_event_generic_sign_treaty2
-
-	is_triggered_only = yes
-
-	option = {
-		# Dismiss it as partisan overreach (0 PP, +10%)
-		name = usa.210.a
-		add_to_variable = { var = USA_court_packing_chance value = 10 }
-		country_event = { id = usa.211 days = 21 }
-	}
-	option = {
-		# Commission a counter-report (50 PP, +20%)
-		name = usa.210.b
-		add_political_power = -50
-		add_to_variable = { var = USA_court_packing_pp value = 50 }
-		add_to_variable = { var = USA_court_packing_chance value = 20 }
-		country_event = { id = usa.211 days = 21 }
-	}
-}
-
-# Event 211: The Switch in Time
-country_event = {
-	id = usa.211
-	title = usa.211.t
-	desc = usa.211.d
-	picture = GFX_report_event_generic_handshake
-
-	is_triggered_only = yes
-
-	option = {
-		# Capitalise on the shift (0 PP, +10%)
-		name = usa.211.a
-		add_to_variable = { var = USA_court_packing_chance value = 10 }
-		country_event = { id = usa.212 days = 21 }
-	}
-	option = {
-		# Press the political advantage (50 PP, +20%)
-		name = usa.211.b
-		add_political_power = -50
-		add_to_variable = { var = USA_court_packing_pp value = 50 }
-		add_to_variable = { var = USA_court_packing_chance value = 20 }
-		country_event = { id = usa.212 days = 21 }
-	}
-}
-
-# Event 212: Van Devanter Retires
-country_event = {
-	id = usa.212
-	title = usa.212.t
-	desc = usa.212.d
-	picture = GFX_report_event_generic_sign_treaty1
-
-	is_triggered_only = yes
-
-	option = {
-		# Accept it as progress (0 PP, +10%)
-		name = usa.212.a
-		add_to_variable = { var = USA_court_packing_chance value = 10 }
-		country_event = { id = usa.213 days = 21 }
-	}
-	option = {
-		# Use the vacancy as leverage (50 PP, +20%)
-		name = usa.212.b
-		add_political_power = -50
-		add_to_variable = { var = USA_court_packing_pp value = 50 }
-		add_to_variable = { var = USA_court_packing_chance value = 20 }
-		country_event = { id = usa.213 days = 21 }
-	}
-}
-
-# Event 213: Robinson's Final Campaign
-country_event = {
-	id = usa.213
-	title = usa.213.t
-	desc = usa.213.d
-	picture = GFX_report_event_generic_rally2
-
-	is_triggered_only = yes
-
-	option = {
-		# Trust Robinson to close the deal (0 PP, +10%)
-		name = usa.213.a
-		add_to_variable = { var = USA_court_packing_chance value = 10 }
-		country_event = { id = usa.214 days = 21 }
-	}
-	option = {
-		# Flood the floor with resources (50 PP, +20%)
-		name = usa.213.b
-		add_political_power = -50
-		add_to_variable = { var = USA_court_packing_pp value = 50 }
-		add_to_variable = { var = USA_court_packing_chance value = 20 }
-		country_event = { id = usa.214 days = 21 }
-	}
-}
-
-country_event = {
-	id = usa.214
-	title = usa.214.t
-	desc = {
-		trigger = { has_country_flag = court_packing_success }
-		text = usa.214.d.success
-	}
-	desc = {
-		trigger = { NOT = { has_country_flag = court_packing_success } }
-		text = usa.214.d.failure
-	}
-	picture = GFX_report_event_usa_election_generic
-
-	is_triggered_only = yes
-
-	immediate = {
-		# Compute failure weight = 100 - chance (range: 0–50)
-		set_variable = { var = USA_court_packing_failure value = 100 }
-		subtract_from_variable = { var = USA_court_packing_failure value = USA_court_packing_chance }
-		random_list = {
-			USA_court_packing_chance = {
-				set_country_flag = court_packing_success
-			}
-			USA_court_packing_failure = {
-			}
-		}
-	}
-
-	option = {
-		name = usa.214.a
-		if = {
-			limit = { has_country_flag = court_packing_success }
-			add_ideas = USA_subdued_the_supreme_court
-			multiply_variable = { var = USA_court_packing_pp value = 0.50 }
-			round_variable = USA_court_packing_pp
-			add_political_power = USA_court_packing_pp
-			clr_country_flag = court_packing_success
-		}
-		else = {
-			add_stability = -0.15
-			multiply_variable = { var = USA_court_packing_pp value = 0.25 }
-			round_variable = USA_court_packing_pp
-			add_political_power = USA_court_packing_pp
-			if = {
-				# The Third New Deal has already been defunded/reprioritised — the
-				# rebuke lands on those funds rather than resurrecting the deal.
-				limit = { has_idea = USA_reprioritise_new_deal }
-				custom_effect_tooltip = usa_214_reprioritise_failure_tt
-			}
-			else_if = {
-					limit = { has_dynamic_modifier = { modifier = USA_third_new_deal } }
-					custom_effect_tooltip = USA_modify_third_new_deal_tt
-					USA_third_new_deal_court_failure = yes
-				}
-			}
-			clear_variable = USA_court_packing_pp
-		clear_variable = USA_court_packing_chance
-		clear_variable = USA_court_packing_failure
-	}
-}
 
 ###########################
 # The Quarantine Speech (1937)
@@ -805,7 +614,7 @@ country_event = {
 # Event 305 (auto-fires): Triggers when USA enters a war after completing the Rubber Reserve focus.
 # Spawns level 3 synthetic rubber refineries in Kentucky, Louisiana, and Texas,
 # adds base 600 rubber across the three states, plus an early-completion bonus,
-# then schedules the 90-day removal event (usa.306).
+# then schedules the 270-day removal event (usa.306).
 country_event = {
 	id = usa.305
 	title = usa.305.t
@@ -869,8 +678,8 @@ country_event = {
 			369 = { add_resource = { type = rubber amount = 100 } }  # +100 (1 year early)
 		}
 
-		# Schedule dismantlement after 90 days (3 months)
-		country_event = { id = usa.306 days = 90 }
+		# Schedule dismantlement after 270 days (9 months)
+		country_event = { id = usa.306 days = 270 }
 	}
 
 	option = {
@@ -878,7 +687,7 @@ country_event = {
 	}
 }
 
-# Event 306 (triggered): Fires 90 days after usa.305. Removes the temporary
+# Event 306 (triggered): Fires 270 days after usa.305. Removes the temporary
 # synthetic rubber refineries and resource deposits from all three states.
 country_event = {
 	id = usa.306
@@ -1537,13 +1346,51 @@ country_event = {
 	}
 }
 
-# Two years after the 1936 election the mandate flags have expired: refresh War Economy of the United States
+# Two years after the 1936 election the mandate ends: take its bonuses back out of War Economy of the United States
 country_event = {
 	id = usa.231
 	hidden = yes
 	is_triggered_only = yes
 
 	immediate = {
-		USA_recalc_war_economy = yes
+		# Take back exactly what usa.200 added for the mandate, then clear its flag
+		if = {
+			limit = { has_country_flag = USA_we_mandate_fdr_1 }
+			add_to_variable = { USA_we_stab_factor = -0.03 }
+			add_to_variable = { USA_we_pp_gain = -0.05 }
+			clr_country_flag = USA_we_mandate_fdr_1
+		}
+		if = {
+			limit = { has_country_flag = USA_we_mandate_fdr_2 }
+			add_to_variable = { USA_we_stab_factor = -0.05 }
+			add_to_variable = { USA_we_pp_gain = -0.1 }
+			clr_country_flag = USA_we_mandate_fdr_2
+		}
+		if = {
+			limit = { has_country_flag = USA_we_mandate_fdr_3 }
+			add_to_variable = { USA_we_stab_factor = -0.08 }
+			add_to_variable = { USA_we_pp_gain = -0.15 }
+			add_to_variable = { USA_we_ws_factor = -0.03 }
+			clr_country_flag = USA_we_mandate_fdr_3
+		}
+		if = {
+			limit = { has_country_flag = USA_we_mandate_lan_1 }
+			add_to_variable = { USA_we_stab_factor = -0.03 }
+			add_to_variable = { USA_we_output = -0.02 }
+			clr_country_flag = USA_we_mandate_lan_1
+		}
+		if = {
+			limit = { has_country_flag = USA_we_mandate_lan_2 }
+			add_to_variable = { USA_we_stab_factor = -0.05 }
+			add_to_variable = { USA_we_output = -0.04 }
+			clr_country_flag = USA_we_mandate_lan_2
+		}
+		if = {
+			limit = { has_country_flag = USA_we_mandate_lan_3 }
+			add_to_variable = { USA_we_stab_factor = -0.08 }
+			add_to_variable = { USA_we_ws_factor = -0.03 }
+			add_to_variable = { USA_we_output = -0.06 }
+			clr_country_flag = USA_we_mandate_lan_3
+		}
 	}
 }
