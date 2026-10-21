@@ -1980,6 +1980,47 @@ on_actions = {
 					set_country_flag = { flag = SOV_war_mobilisation_in_progress_flag days = 7 value = 1 }
 					country_event = { id = SOV_auto_complete_focus.02 days = 7 } 
 				}
+				# Mobilise the Reserves starts on its own 20 days after the Great Patriotic War begins
+				if = {
+					limit = {
+						NOT = { has_completed_focus = SOV_mobilise_nkvd_units }
+						has_country_flag = { flag = SOV_great_patriotic_war_start days > 19 }
+						NOT = { has_country_flag = started_nkvd_units }
+					}
+					set_country_flag = started_nkvd_units
+					activate_shine_on_focus = SOV_mobilise_nkvd_units
+					set_country_flag = { flag = SOV_spawn_nkvd_units_in_progress_flag days = 14 value = 1 }
+					country_event = { id = SOV_auto_complete_focus.21 days = 14 }
+				}
+				# Mobilising the Reserves mission: each of Kyiv, Gomel, Vitebsk, Bryansk and Dnipro lost takes 60 days off, once
+				if = {
+					limit = { has_active_mission = SOV_nkvd_reserve_mobilisation }
+					if = {
+						limit = { NOT = { controls_state = 202 } NOT = { has_country_flag = SOV_nkvd_reserve_lost_202 } }
+						set_country_flag = SOV_nkvd_reserve_lost_202
+						add_days_mission_timeout = { mission = SOV_nkvd_reserve_mobilisation days = -60 }
+					}
+					if = {
+						limit = { NOT = { controls_state = 241 } NOT = { has_country_flag = SOV_nkvd_reserve_lost_241 } }
+						set_country_flag = SOV_nkvd_reserve_lost_241
+						add_days_mission_timeout = { mission = SOV_nkvd_reserve_mobilisation days = -60 }
+					}
+					if = {
+						limit = { NOT = { controls_state = 207 } NOT = { has_country_flag = SOV_nkvd_reserve_lost_207 } }
+						set_country_flag = SOV_nkvd_reserve_lost_207
+						add_days_mission_timeout = { mission = SOV_nkvd_reserve_mobilisation days = -60 }
+					}
+					if = {
+						limit = { NOT = { controls_state = 224 } NOT = { has_country_flag = SOV_nkvd_reserve_lost_224 } }
+						set_country_flag = SOV_nkvd_reserve_lost_224
+						add_days_mission_timeout = { mission = SOV_nkvd_reserve_mobilisation days = -60 }
+					}
+					if = {
+						limit = { NOT = { controls_state = 226 } NOT = { has_country_flag = SOV_nkvd_reserve_lost_226 } }
+						set_country_flag = SOV_nkvd_reserve_lost_226
+						add_days_mission_timeout = { mission = SOV_nkvd_reserve_mobilisation days = -60 }
+					}
+				}
 				if = { 
 					limit = { NOT = { has_completed_focus = SOV_order_270 } has_completed_focus = SOV_war_mobilisation surrender_progress > 0.2 NOT = { has_country_flag = started_order_270 } }
 					set_country_flag = started_order_270
