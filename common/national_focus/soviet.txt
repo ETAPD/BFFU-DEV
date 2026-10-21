@@ -3018,6 +3018,10 @@ focus_tree = {
 
 		completion_reward = {
 			add_ideas = SOV_nkvd
+			custom_effect_tooltip = nkvd_tt
+			hidden_effect = {
+				set_technology = { nkvd_detachment_tech = 1 }
+			}
 		}
 	}
 
@@ -14628,62 +14632,119 @@ focus_tree = {
 	focus = {
 		id = SOV_guards
 		icon = GFX_goal_soviet_guards
-		prerequisite = { focus = SOV_reorganize_red_army }
-		x = -2
-		y = 1
+		prerequisite = { focus = SOV_standardize_tank_doctrine }
+		x = -3
+		y = 3
 		relative_position_id = SOV_reorganize_red_army
-		cost = 2
-
+		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_experience_loss_factor_-15_tt
-			add_to_variable = { SOV_red_army_experience_loss_factor_var = -0.15 }
+			custom_effect_tooltip = SOV_guards_tt
+			hidden_effect = {
+				division_template = {
+					name = "Red Guard Tank Division"
+					division_names_group = SOV_GTC_01
+					priority = 2
+					template_counter = 140
+					is_locked = yes
+					force_allow_recruiting = yes
+					division_cap = 12
+					regiments = {
+						guards_medium = { x = 0 y = 0 }
+						guards_medium = { x = 0 y = 1 }
+						guards_medium = { x = 0 y = 2 }
+						guards_medium = { x = 0 y = 3 }
+						guards_medium = { x = 1 y = 0 }
+						guards_medium = { x = 1 y = 1 }
+						guards_medium = { x = 1 y = 2 }
+						guards_medium = { x = 1 y = 3 }
+						guards_mech = { x = 2 y = 0 }
+						guards_mech = { x = 2 y = 1 }
+						guards_mech = { x = 2 y = 2 }
+						guards_mech = { x = 3 y = 0 }
+						guards_mech = { x = 3 y = 1 }
+						guards_mech = { x = 3 y = 2 }
+						guards_mech = { x = 3 y = 3 }
+					}
+					support = {
+						pioneer_support = { x = 0 y = 0 }
+						rangers_support = { x = 0 y = 1 }
+						armored_signal = { x = 0 y = 2 }
+						mot_anti_air_brigade = { x = 0 y = 3 }
+						logistics_company_mot = { x = 0 y = 4 }
+						armored_maintenance = { x = 0 y = 5 }
+					}
+				}
+				division_template = {
+					name = "Red Guard Heavy Tank Division"
+					division_names_group = SOV_GTC_01
+					priority = 2
+					template_counter = 141
+					is_locked = yes
+					force_allow_recruiting = yes
+					division_cap = 12
+					regiments = {
+						guards_heavy = { x = 0 y = 0 }
+						guards_heavy = { x = 0 y = 1 }
+						guards_heavy = { x = 0 y = 2 }
+						guards_heavy = { x = 0 y = 3 }
+						guards_heavy = { x = 1 y = 0 }
+						guards_heavy = { x = 1 y = 1 }
+						guards_heavy = { x = 1 y = 2 }
+						guards_heavy = { x = 1 y = 3 }
+						guards_mech = { x = 2 y = 0 }
+						guards_mech = { x = 2 y = 1 }
+						guards_mech = { x = 2 y = 2 }
+						guards_mech = { x = 3 y = 0 }
+						guards_mech = { x = 3 y = 1 }
+						guards_mech = { x = 3 y = 2 }
+						guards_mech = { x = 3 y = 3 }
+					}
+					support = {
+						pioneer_support = { x = 0 y = 0 }
+						rangers_support = { x = 0 y = 1 }
+						armored_signal = { x = 0 y = 2 }
+						mot_anti_air_brigade = { x = 0 y = 3 }
+						logistics_company_mot = { x = 0 y = 4 }
+						armored_maintenance = { x = 0 y = 5 }
+					}
+				}
+				if = {
+					limit = {
+						has_tech = sov_medium_tank_1
+						has_tech = sov_heavy_tank_2
+					}
+					SOV_spawn_red_guards_both = yes
+				}
+				else_if = {
+					limit = { has_tech = sov_heavy_tank_2 }
+					SOV_spawn_red_guards_heavy = yes
+				}
+				else = {
+					SOV_spawn_red_guards_medium = yes
+				}
+			}
 		}
 	}
 
 	focus = {
 		id = SOV_enforced_fanaticism
 		icon = GFX_SOV_rework128
-		prerequisite = { focus = SOV_reorganize_red_army }
-		x = -2
+		prerequisite = { focus = SOV_learn_from_losses_2 }
+		x = 3
 		y = 0
 		relative_position_id = SOV_guards
-		cost = 2
-		overlay = GFX_focus_fast_overlay_generic_clock
+		cost = 5
 
 		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_enforced_fanaticism_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_enforced_fanaticism_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "40% Surrender Progress"
-					}
-					always = no
-				}
-			}
+			date > 1943.1.1
 		}
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_army_core_defence_factor_075_tt
-			add_to_variable = { SOV_red_army_army_core_defence_factor_var = 0.075 }
+			every_army_leader = {
+				add_attack = 1
+				add_defense = 1
+			}
 		}
 	}
 
@@ -14691,163 +14752,65 @@ focus_tree = {
 		id = SOV_new_doctrine
 		icon = GFX_SOV_rework135
 		prerequisite = { focus = SOV_reorganize_red_army }
-		x = 2
+		x = -1
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
-		cost = 3
-		overlay = GFX_focus_fast_overlay_generic_clock
-
-		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_new_doctrine_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_new_doctrine_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "10% Surrender Progress"
-					}
-					always = no
-				}
-			}
-		}
+		cost = 5
+		mutually_exclusive = { focus = SOV_learn_from_our_losses }
 
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
 
-			# custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-10_tt
-			# add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.1 }
-			add_mastery_bonus = {
-				name = SOV_new_doctrine
-				bonus = 0.2
-				days = 360
-				folder = land
-			}
-			add_mastery = {
-				amount = 100
-				folder = land
-			}
+			custom_effect_tooltip = SOV_red_army_max_planning_10_pct_tt
+			add_to_variable = { SOV_red_army_max_planning_var = 0.1 }
+
+			custom_effect_tooltip = SOV_red_army_planning_speed_15_tt
+			add_to_variable = { SOV_red_army_planning_speed_var = 0.15 }
+
+			custom_effect_tooltip = SOV_red_army_army_morale_factor_5_tt
+			add_to_variable = { SOV_red_army_army_morale_factor_var = 0.05 }
 		}
 	}
 
 	focus = {
 		id = SOV_learn_from_our_losses
 		icon = GFX_SOV_rework78
-		prerequisite = { focus = SOV_new_doctrine }
-		x = 0
-		y = 1
+		prerequisite = { focus = SOV_reorganize_red_army }
+		x = 2
+		y = 0
 		relative_position_id = SOV_new_doctrine
-		cost = 3
-		overlay = GFX_focus_fast_overlay_generic_clock
-
-		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_learn_from_our_losses_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_learn_from_our_losses_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "20% Surrender Progress"
-					}
-					always = no
-				}
-			}
-		}
+		cost = 5
+		mutually_exclusive = { focus = SOV_new_doctrine }
 
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
 
-			custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-5_tt
-			add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.05 }
+			custom_effect_tooltip = SOV_red_army_army_strength_factor_10_tt
+			add_to_variable = { SOV_red_army_army_strength_factor_var = 0.1 }
 
-			add_mastery_bonus = {
-				name = SOV_learn_from_our_losses
-				bonus = 0.4
-				days = 360
-				folder = land
-			}
-			add_mastery = {
-				amount = 200
-				folder = land
-			}
+			custom_effect_tooltip = SOV_red_army_supply_consumption_factor_-10_tt
+			add_to_variable = { SOV_red_army_supply_consumption_factor_var = -0.1 }
+
+			custom_effect_tooltip = SOV_red_army_army_core_defence_factor_5_tt
+			add_to_variable = { SOV_red_army_army_core_defence_factor_var = 0.05 }
 		}
 	}
 
 	focus = {
 		id = SOV_learn_from_losses_2
 		icon = GFX_SOV_rework127
-		prerequisite = { focus = SOV_learn_from_our_losses }
-		x = 0
+		prerequisite = { focus = SOV_new_doctrine focus = SOV_learn_from_our_losses }
+		x = -1
 		y = 1
 		relative_position_id = SOV_learn_from_our_losses
-		cost = 3
-		overlay = GFX_focus_fast_overlay_generic_clock
-
-		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_learn_from_losses_2_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_learn_from_losses_2_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "40% Surrender Progress"
-					}
-					always = no
-				}
-			}
-		}
+		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			# custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-10_tt
-			# add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.1 }
-
-			add_mastery_bonus = {
-				name = SOV_learn_from_losses_2
-				bonus = 0.6
-				days = 360
-				folder = land
-			}
-			add_mastery = {
-				amount = 300
-				folder = land
-			}
+			unlock_tactic = tactic_breakthrough
+			unlock_tactic = tactic_planned_attack
+			show_unit_leaders_tooltip = SOV_yakov_kreizer
+			show_unit_leaders_tooltip = SOV_ivan_chernyakhovsky
+			show_unit_leaders_tooltip = SOV_dmitry_lelyushenko
 		}
 	}
 
@@ -14855,10 +14818,10 @@ focus_tree = {
 		id = SOV_new_leadership
 		icon = GFX_SOV_rework26
 		prerequisite = { focus = SOV_reorganize_red_army }
-		x = 0
+		x = -3
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
-		cost = 3
+		cost = 5
 
 
 		completion_reward = {
@@ -14892,7 +14855,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SOV_new_leadership
-		cost = 3
+		cost = 5
 		
 		available = {
 		}
@@ -15148,7 +15111,7 @@ focus_tree = {
 		id = SOV_fix_airforce
 		icon = GFX_SOV_rework232
 		prerequisite = { focus = SOV_reorganize_red_army }
-		x = 4
+		x = 3
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
 		cost = 5

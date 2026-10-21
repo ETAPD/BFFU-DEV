@@ -127,6 +127,22 @@ on_actions = {
 				}
 				subtract_from_variable = { USA_election_days_left = 1 }
 			}
+			# Louisiana Maneuvers safety net: if the event chain has not finished the army reforms 120 days after the focus, finish them
+			if = {
+				limit = {
+					has_completed_focus = USA_commence_the_louisiana_maneuvers
+					NOT = { has_country_flag = USA_louisiana_clock }
+				}
+				set_country_flag = USA_louisiana_clock
+			}
+			if = {
+				limit = {
+					has_country_flag = { flag = USA_louisiana_clock days > 120 }
+					NOT = { has_completed_focus = USA_finish_the_final_army_reforms }
+				}
+				set_country_flag = USA_final_reforms_unlocked
+				complete_national_focus = USA_finish_the_final_army_reforms
+			}
 		}
 	}
 
