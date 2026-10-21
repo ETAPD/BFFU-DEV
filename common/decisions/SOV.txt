@@ -9874,6 +9874,128 @@ SOV_industry_relocation = {
 
 SOV_great_patriotic_war = {
 
+	# Mobilising the Reserves: started by the focus SOV_mobilise_nkvd_units. 365 days, minus 60 for each of
+	# Kyiv/Gomel/Vitebsk/Bryansk/Dnipro lost (on_daily_SOV in 99_tfb_on_actions.txt), then 50 rifle divisions
+	SOV_nkvd_reserve_mobilisation = {
+		icon = generic_army_support
+		allowed = { original_tag = SOV }
+		is_good = yes
+		priority = 21
+
+		activation = {
+			has_completed_focus = SOV_mobilise_nkvd_units
+			NOT = { has_country_flag = SOV_nkvd_reserves_raised }
+		}
+
+		visible = {
+			has_completed_focus = SOV_mobilise_nkvd_units
+			NOT = { has_country_flag = SOV_nkvd_reserves_raised }
+		}
+
+		available = { always = no }
+
+		days_mission_timeout = 365
+		fire_only_once = yes
+
+		timeout_effect = {
+			set_country_flag = SOV_nkvd_reserves_raised
+			division_template = {
+				name = "Reserve Rifle Division"
+				division_names_group = SOV_INF_01
+				priority = 0
+				regiments = {
+					infantry = { x = 0 y = 0 }
+					infantry = { x = 0 y = 1 }
+					infantry = { x = 0 y = 2 }
+					infantry = { x = 0 y = 3 }
+					infantry = { x = 1 y = 0 }
+					infantry = { x = 1 y = 1 }
+					infantry = { x = 1 y = 2 }
+					infantry = { x = 1 y = 3 }
+					infantry = { x = 2 y = 0 }
+					infantry = { x = 2 y = 1 }
+					infantry = { x = 2 y = 2 }
+					artillery_brigade = { x = 3 y = 0 }
+					artillery_brigade = { x = 3 y = 1 }
+					artillery_brigade = { x = 3 y = 2 }
+					artillery_brigade = { x = 3 y = 3 }
+					artillery_brigade = { x = 4 y = 0 }
+					artillery_brigade = { x = 4 y = 1 }
+					anti_tank_brigade = { x = 4 y = 2 }
+					anti_tank_brigade = { x = 4 y = 3 }
+				}
+				support = {
+					engineer = { x = 0 y = 0 }
+					logistics_company = { x = 0 y = 1 }
+					anti_air = { x = 0 y = 2 }
+					field_hospital = { x = 0 y = 3 }
+					maintenance_company = { x = 0 y = 4 }
+					recon = { x = 0 y = 5 }
+				}
+			}
+			if = {
+				limit = { controls_state = 219 }
+				219 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 195 }
+				195 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 217 }
+				217 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 252 }
+				252 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 249 }
+				249 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else = {
+				capital_scope = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+		}
+	}
+
+	# Murmansk convoys: started by the focus SOV_northwest_passage, pays out every 120 days while Murmansk (213) is Soviet controlled
+	SOV_murmansk_convoys = {
+		icon = generic_naval
+		allowed = { original_tag = SOV }
+		is_good = yes
+		priority = 22
+
+		activation = {
+			has_completed_focus = SOV_northwest_passage
+			controls_state = 213
+		}
+
+		visible = {
+			has_completed_focus = SOV_northwest_passage
+			controls_state = 213
+		}
+
+		cancel_trigger = {
+			NOT = { controls_state = 213 }
+		}
+
+		available = { always = no }
+
+		days_mission_timeout = 120
+		fire_only_once = no
+
+		timeout_effect = {
+			add_equipment_to_stockpile = { type = artillery_equipment amount = 1500 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 17500 }
+			add_equipment_to_stockpile = { type = squad_equipment amount = 4000 }
+			add_equipment_to_stockpile = { type = radio_equipment amount = 1000 }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = 2000 }
+			add_equipment_to_stockpile = { type = support_equipment amount = 3000 }
+		}
+	}
+
+
 	SOV_raise_penal_units = {
 		priority = 21
 
