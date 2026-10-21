@@ -1980,11 +1980,18 @@ on_actions = {
 					set_country_flag = { flag = SOV_war_mobilisation_in_progress_flag days = 7 value = 1 }
 					country_event = { id = SOV_auto_complete_focus.02 days = 7 } 
 				}
-				# Mobilise the Reserves starts on its own 20 days after the Great Patriotic War begins
+				# Mobilise the Reserves starts on its own 20 days after Form the GKO completes
+				if = {
+					limit = {
+						has_completed_focus = SOV_found_state_defense_committee
+						NOT = { has_country_flag = SOV_nkvd_timer_started }
+					}
+					set_country_flag = SOV_nkvd_timer_started
+				}
 				if = {
 					limit = {
 						NOT = { has_completed_focus = SOV_mobilise_nkvd_units }
-						has_country_flag = { flag = SOV_great_patriotic_war_start days > 19 }
+						has_country_flag = { flag = SOV_nkvd_timer_started days > 19 }
 						NOT = { has_country_flag = started_nkvd_units }
 					}
 					set_country_flag = started_nkvd_units
