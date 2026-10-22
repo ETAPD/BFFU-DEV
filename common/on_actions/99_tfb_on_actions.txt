@@ -1815,6 +1815,51 @@ on_actions = {
 		}
 	}
 
+	# Paulus: if Germany or an Axis member takes Stalingrad (state 217) and later loses it, he is retired for good (germany.2103)
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = { state = 217 }
+					NOT = { has_global_flag = GER_paulus_lost_stalingrad }
+				}
+				if = {
+					limit = {
+						NOT = { has_global_flag = GER_axis_took_stalingrad }
+						ROOT = {
+							OR = {
+								tag = GER
+								is_in_faction_with = GER
+							}
+						}
+					}
+					set_global_flag = GER_axis_took_stalingrad
+				}
+				else_if = {
+					limit = {
+						has_global_flag = GER_axis_took_stalingrad
+						FROM = {
+							OR = {
+								tag = GER
+								is_in_faction_with = GER
+							}
+						}
+						NOT = {
+							ROOT = {
+								OR = {
+									tag = GER
+									is_in_faction_with = GER
+								}
+							}
+						}
+						GER = { exists = yes }
+					}
+					GER = { country_event = { id = germany.2103 } }
+				}
+			}
+		}
+	}
+
 	on_state_control_changed = {
 		effect = {
 			if = {
@@ -2186,8 +2231,10 @@ on_actions = {
 						NOT = { has_completed_focus = SOV_reorganize_red_army }
 						has_completed_focus = SOV_empower_stavka
 						OR = {
-							surrender_progress > 0.05
-							date > 1942.1.1
+							NOT = { controls_state = 226 }
+							NOT = { controls_state = 242 }
+							NOT = { controls_state = 241 }
+							date > 1942.3.1
 						}
 						NOT = { has_country_flag = started_reorganize } 
 					}
