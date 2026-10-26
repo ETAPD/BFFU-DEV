@@ -635,7 +635,7 @@ NDefines.NNavy.AIR_MISSION_SPOTTING_FACTORS = {								-- Multiplier for air-win
 		1.50, -- NAVAL_PATROL
 }
 NDefines.NNavy.MIN_SPOTTING_PROGRESS = 0.1								-- Minimum spotting progress (in percent) per hourly tick
-NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SURFACE = 0.4							-- task force surface spotting value is multiplied by this and added to spotting percentage every hour
+NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SURFACE = 0.6							-- task force surface spotting value is multiplied by this and added to spotting percentage every hour
 NDefines.NNavy.SPOTTING_ENEMY_SPOTTING_MULTIPLIER_FOR_RUNNING_AWAY = 0.5		-- enemy spotting is multiplied by this value to simulate running away
 NDefines.NNavy.NAVY_VISIBILITY_BONUS_ON_RETURN_FOR_REPAIR = 0.5				-- Multiplier for the surface/sub visiblity when the heavily damaged fleet is returning to the home base for reparation. 1.0 = no bonus. 0.0 = invisible
 NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SUB = 2.0
