@@ -473,7 +473,6 @@ NDefines.NAir.DETECT_EFFICIENCY_FROM_RADAR = 0.8					-- How much radars affect t
 NDefines.NAir.AIR_AGILITY_TO_NAVAL_STRIKE_AGILITY = 0.02         		-- conversion factor to bring agility in line with ship AA
 
 NDefines.NNavy.DETECTION_CHANCE_MULT_RADAR_BONUS = 0.1						-- detection chance bonus from radars. (Vanilla 0.1)
-NDefines.NNavy.COMBAT_DAMAGE_RANDOMNESS = 0.30								-- random factor in damage. So if max damage is fe. 10 and randomness is 30% then damage will be between 7-10.
 NDefines.NNavy.COMBAT_MAX_GROUPS = 4										-- Max amount of "Fire Exchange" groups (FEX).
 -- Convoys
 NDefines.NNavy.CONVOY_EFFICIENCY_LOSS_MODIFIER = 1.00							-- How much efficiency drops when losing convoys. If modifier is 0.5 then losing 100% of convoys in short period the efficiency will drop by 50%.
@@ -542,17 +541,17 @@ NDefines.NNavy.UNIT_TRANSFER_DETECTION_CHANCE_BASE = 4.12							-- unit transfer
 NDefines.NNavy.BASE_JOIN_COMBAT_HOURS						= 72				-- the taskforces that wants to join existing combats will wait for at least this amount
 NDefines.NNavy.MAX_POSITIONING_BONUS_FROM_SURFACE_DETECTION					= 0.1  -- will clamp the bonus that you get from detection
 NDefines.NNavy.HIGHER_SHIP_RATIO_POSITIONING_PENALTY_FACTOR					= 0.2 -- if one side has more ships than the other that side will get this penalty for each +100% ship ratio it has
-NDefines.NNavy.MAX_POSITIONING_PENALTY_FROM_HIGHER_SHIP_RATIO					= 1.2  -- maximum penalty to get from larger fleets
-NDefines.NNavy.MIN_SHIPS_FOR_HIGHER_SHIP_RATIO_PENALTY                         = 30   -- the minimum fleet size in ships that a fleet must be before having the large fleet penalty applied to them
+NDefines.NNavy.MAX_POSITIONING_PENALTY_FROM_HIGHER_SHIP_RATIO					= 1.6  -- maximum penalty to get from larger fleets
+NDefines.NNavy.MIN_SHIPS_FOR_HIGHER_SHIP_RATIO_PENALTY                         = 0   -- the minimum fleet size in ships that a fleet must be before having the large fleet penalty applied to them
 
 NDefines.NNavy.UNDERWAY_REPLENISHMENT_CONVOY_COST_PER_FUEL = 0.05	-- Cost in convoys for underway replenishment multiplied by max daily fuel consumption (rounded up)
 
-NDefines.NNavy.DAMAGE_PENALTY_ON_MINIMUM_POSITIONING 							= 0.75	-- damage penalty at 0% positioning
+NDefines.NNavy.DAMAGE_PENALTY_ON_MINIMUM_POSITIONING 							= 0.80	-- damage penalty at 0% positioning
 NDefines.NNavy.SCREENING_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING				= 0.45	-- screening efficiency (screen to capital ratio) at 0% positioning
 NDefines.NNavy.AA_EFFICIENCY_PENALTY_ON_MINIMUM_POSITIONING						= 0.00  -- AA penalty at 0% positioning
 
 NDefines.NNavy.POSITIONING_PENALTY_FOR_SHIPS_JOINED_COMBAT_AFTER_IT_STARTS		= 0.1 -- each ship that joins the combat will have this penalty to be added into positioning
-NDefines.NNavy.MAX_POSITIONING_PENALTY_FOR_NEWLY_JOINED_SHIPS 					= 1.2  -- the accumulated penalty from new ships will be clamped to this value
+NDefines.NNavy.MAX_POSITIONING_PENALTY_FOR_NEWLY_JOINED_SHIPS 					= 2  -- the accumulated penalty from new ships will be clamped to this value
 NDefines.NNavy.POSITIONING_PENALTY_HOURLY_DECAY_FOR_NEWLY_JOINED_SHIPS			= 0.002  -- the accumulated penalty from new ships will decay hourly by this value
 
 NDefines.NNavy.SCREEN_RATIO_FOR_FULL_SCREENING_FOR_CAPITALS 					= 3.0	-- this screen ratio to num capital/carriers is needed for full screening beyond screen line
@@ -560,13 +559,13 @@ NDefines.NNavy.LIGHT_GUN_ATTACK_TO_SHORE_BOMBARDMENT							= 0.02 -- light gun a
 
 NDefines.NNavy.GUN_HIT_PROFILES = { -- hit profiles for guns if target ih profile is lower the gun will have lower accuracy
 		65.0,	-- big guns
-		120.0,	-- torpedos
+		130.0,	-- torpedos
 		45.0	-- small guns
 }
 NDefines.NNavy.DEPTH_CHARGES_HIT_PROFILE 										= 80	-- hit profile for depth charges
 NDefines.NNavy.BASE_GUN_COOLDOWNS = { -- number of hours for a gun to be ready after shooting
 		3.75,	-- big guns
-		6.5,	-- torpedoes
+		7.5,	-- torpedoes
 		4.0,	-- small guns
 }
 
@@ -640,6 +639,8 @@ NDefines.NNavy.SPOTTING_ENEMY_SPOTTING_MULTIPLIER_FOR_RUNNING_AWAY = 0.5		-- ene
 NDefines.NNavy.NAVY_VISIBILITY_BONUS_ON_RETURN_FOR_REPAIR = 0.5				-- Multiplier for the surface/sub visiblity when the heavily damaged fleet is returning to the home base for reparation. 1.0 = no bonus. 0.0 = invisible
 NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SUB = 2.0
 
+NDefines.NNavy.COMBAT_DAMAGE_RANDOMNESS = 0.30								-- random factor in damage. So if max damage is fe. 10 and randomness is 30% then damage will be between 7-10.
+NDefines.NNavy.COMBAT_BASE_CRITICAL_CHANCE = 0.05
 NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor must be this value to deal damage fraction equal to the index in the array below [higher number = higher penetration]. If armor is 0, 1.00 will be returned.
 		9.00,
 		8.00,
@@ -659,7 +660,7 @@ NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor mu
 		1.00, --100%
 		0.90,
 		0.80,
-		0.70,
+		0.75,
 		0.65,
 		0.50,
 		0.25,
@@ -668,57 +669,57 @@ NDefines.NNavy.NAVY_PIERCING_THRESHOLDS = {					-- Our piercing / their armor mu
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_CRITICAL_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
-		9.00,
-		8.00,
-		7.00,
-		6.00,
-		5.00,
-		4.00,
-		3.00,
-		2.50,
-		2.00,
-		1.50,
-		1.00,
-		0.70,
-		0.30,
-		0.25,
-		0.20,
-		0.00, --100%
-		-0.10,
-		-0.25,
-		-0.50,
-		-0.70, -- For criticals, you could reduce crit chance unlike damage in army combat, but we do not for now.
-		-0.80,
-		-0.90,
-		-0.95,
-		-1.00
+		9.00,	-- >= 900% piercing
+		8.00,	-- >= 800% piercing
+		7.00,	-- >= 700% piercing
+		6.00,	-- >= 600% piercing
+		5.00,	-- >= 500% piercing
+		4.00,	-- >= 400% piercing
+		3.00,	-- >= 300% piercing
+		2.50,	-- >= 250% piercing
+		2.00,	-- >= 200% piercing
+		1.50,	-- >= 175% piercing
+		1.00,	-- >= 150% piercing
+		0.70,	-- >= 135% piercing
+		0.30,	-- >= 125% piercing
+		0.25,	-- >= 115% piercing
+		0.20,	-- >= 110% piercing
+		0.00,	-- >= 100% piercing
+		-0.10,	-- >= 90% piercing
+		-0.25,	-- >= 80% piercing
+		-0.50,	-- >= 75% piercing
+		-0.70,	-- >= 65% piercing - For criticals, you could reduce crit chance unlike damage in army combat, but we do not for now.
+		-0.80,	-- >= 50% piercing
+		-0.90,	-- >= 25% piercing
+		-0.95,	-- >= 15% piercing
+		-1.00	-- < 15% piercing
 }
 
 NDefines.NNavy.NAVY_PIERCING_THRESHOLD_DAMAGE_VALUES = {	-- 0 armor will always receive maximum damage (so add overmatching at your own peril). the system expects at least 2 values, with no upper limit.
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00,
-		1.00, --100%
-		0.85,
-		0.70,
-		0.55,
-		0.45,
-		0.25,
-		0.15,
-		0.10,
-		0.00 -- 
+		2.50,	-- >= 900% piercing
+		1.00,	-- >= 800% piercing
+		1.00,	-- >= 700% piercing
+		1.00,	-- >= 600% piercing
+		1.00,	-- >= 500% piercing
+		1.00,	-- >= 400% piercing
+		1.00,	-- >= 300% piercing
+		1.00,	-- >= 250% piercing
+		1.00,	-- >= 200% piercing
+		1.00,	-- >= 175% piercing
+		1.00,	-- >= 150% piercing
+		1.00,	-- >= 135% piercing
+		1.00,	-- >= 125% piercing
+		1.00,	-- >= 115% piercing
+		1.00,	-- >= 110% piercing
+		1.00,	-- >= 100% piercing
+		0.85,	-- >= 90% piercing
+		0.70,	-- >= 80% piercing
+		0.55,	-- >= 75% piercing
+		0.45,	-- >= 65% piercing
+		0.25,	-- >= 50% piercing
+		0.15,	-- >= 25% piercing
+		0.10,	-- >= 15% piercing
+		0.00	-- < 15% piercing
 }
 
 NDefines.NNavy.MISSION_DOMINANCE_RATIOS = { -- dominance multipliers for different mission types
