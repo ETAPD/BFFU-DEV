@@ -188,8 +188,8 @@ NDefines.NMilitary.MAX_DIVISION_BRIGADE_HEIGHT = 4		-- Max height of regiments i
 NDefines.NMilitary.MAX_DIVISION_BRIGADE_WIDTH = 5
 NDefines.NMilitary.MAX_DIVISION_SUPPORT_WIDTH = 1			-- Max width of support in division designer.
 NDefines.NMilitary.MAX_DIVISION_SUPPORT_HEIGHT = 6		-- Max height of support in division designer. 
-NDefines.NMilitary.MAX_HQ_BATTALION_WIDTH = 4			-- Army HQ designer: battalion grid columns (Oak-style layout)
-NDefines.NMilitary.MAX_HQ_BATTALION_HEIGHT = 4			-- Army HQ designer: battalion grid rows
+NDefines.NMilitary.MAX_HQ_BATTALION_WIDTH = 5			-- Army HQ designer: regiments = grid ROWS in our layout (5 rows x 4 = 20 battalions, room for 30 width with artillery)
+NDefines.NMilitary.MAX_HQ_BATTALION_HEIGHT = 4			-- Army HQ designer: battalions per regiment = grid COLUMNS in our layout (keep 4, a 5th column is not clickable)
 NDefines.NMilitary.MAX_HQ_SUPPORT_WIDTH = 1			-- Army HQ designer: support columns
 NDefines.NMilitary.MAX_HQ_SUPPORT_HEIGHT = 4			-- Army HQ designer: support slots
 NDefines.NMilitary.MAX_HQ_REGIMENTAL_SUPPORT_WIDTH = 0		-- Army HQ designer: no regimental support (Oak)
