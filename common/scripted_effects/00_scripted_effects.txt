@@ -2200,3 +2200,32 @@ add_random_stat_to_general = {
 		}
 	}
 }
+
+# Soft trade preference inside historic faction blocs (country scope). Sellers in the bloc serve bloc buyers before others;
+# automatic importing still falls back to anyone with the resource.
+TFB_join_trade_bloc = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = TFB_trade_bloc_joined }
+			OR = {
+				TFB_is_axis_trade_bloc = yes
+				TFB_is_allied_trade_bloc = yes
+				TFB_is_comintern_trade_bloc = yes
+			}
+		}
+		set_country_flag = TFB_trade_bloc_joined
+		every_country = {
+			limit = {
+				has_country_flag = TFB_trade_bloc_joined
+				NOT = { tag = PREV }
+				OR = {
+					AND = { TFB_is_axis_trade_bloc = yes PREV = { TFB_is_axis_trade_bloc = yes } }
+					AND = { TFB_is_allied_trade_bloc = yes PREV = { TFB_is_allied_trade_bloc = yes } }
+					AND = { TFB_is_comintern_trade_bloc = yes PREV = { TFB_is_comintern_trade_bloc = yes } }
+				}
+			}
+			add_opinion_modifier = { target = PREV modifier = TFB_trade_bloc_preference }
+			PREV = { add_opinion_modifier = { target = PREV modifier = TFB_trade_bloc_preference } }
+		}
+	}
+}
