@@ -468,9 +468,10 @@ print_variable_log_effect = {
 get_best_alliance_match_democratic_effect = { #arguably a trigger, but it does stuff so we keep it in here. If this is your first time seeing this, welcome to my personal hell.
 	if = {
 		limit = {
-			any_other_country = {
+			any_collection_element = {
+				collection = game:all_majors
+				NOT = { tag = PREV }
 				is_faction_leader = yes
-				is_major = yes
 				has_government = democratic
 				not = { has_war_with = ROOT }
 				set_temp_variable = { ROOT.best_leader = this }
@@ -521,9 +522,10 @@ get_best_alliance_match_democratic_effect = { #arguably a trigger, but it does s
 get_best_alliance_match_fascism_effect = { #arguably a trigger, but it does stuff so we keep it in here. If this is your first time seeing this, welcome to my personal hell.
 	if = {
 		limit = {
-			any_other_country = {
+			any_collection_element = {
+				collection = game:all_majors
+				NOT = { tag = PREV }
 				is_faction_leader = yes
-				is_major = yes
 				has_government = fascism
 				not = { has_war_with = ROOT }
 				set_temp_variable = { ROOT.best_leader = this }
@@ -576,9 +578,10 @@ get_best_alliance_match_fascism_effect = { #arguably a trigger, but it does stuf
 get_best_alliance_match_communism_effect = { #arguably a trigger, but it does stuff so we keep it in here. If this is your first time seeing this, welcome to my personal hell.
 	if = {
 		limit = {
-			any_other_country = {
+			any_collection_element = {
+				collection = game:all_majors
+				NOT = { tag = PREV }
 				is_faction_leader = yes
-				is_major = yes
 				has_government = communism
 				not = { has_war_with = ROOT }
 				set_temp_variable = { ROOT.best_leader = this }
@@ -2197,6 +2200,35 @@ add_random_stat_to_general = {
 			1 = { add_defense = 1 } 
 			1 = { add_planning = 1 } 
 			1 = { add_logistics = 1 }
+		}
+	}
+}
+
+# Soft trade preference inside historic faction blocs (country scope). Sellers in the bloc serve bloc buyers before others;
+# automatic importing still falls back to anyone with the resource.
+TFB_join_trade_bloc = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = TFB_trade_bloc_joined }
+			OR = {
+				TFB_is_axis_trade_bloc = yes
+				TFB_is_allied_trade_bloc = yes
+				TFB_is_comintern_trade_bloc = yes
+			}
+		}
+		set_country_flag = TFB_trade_bloc_joined
+		every_country = {
+			limit = {
+				has_country_flag = TFB_trade_bloc_joined
+				NOT = { tag = PREV }
+				OR = {
+					AND = { TFB_is_axis_trade_bloc = yes PREV = { TFB_is_axis_trade_bloc = yes } }
+					AND = { TFB_is_allied_trade_bloc = yes PREV = { TFB_is_allied_trade_bloc = yes } }
+					AND = { TFB_is_comintern_trade_bloc = yes PREV = { TFB_is_comintern_trade_bloc = yes } }
+				}
+			}
+			add_opinion_modifier = { target = PREV modifier = TFB_trade_bloc_preference }
+			PREV = { add_opinion_modifier = { target = PREV modifier = TFB_trade_bloc_preference } }
 		}
 	}
 }
