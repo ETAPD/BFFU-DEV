@@ -1,4 +1,30 @@
 on_actions = {
+	# Pacific war: taking control of a Pacific state hands over the whole state when no enemy has 2+ divisions left in it 
+	# ROOT is new controller, FROM is old controller, FROM.FROM is the state
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = { TFB_is_pacific_sweep_state = yes }
+					has_war_with = FROM
+					NOT = {
+						any_enemy_country = {
+							divisions_in_state = { size > 1 state = FROM.FROM }
+						}
+					}
+				}
+				FROM.FROM = { set_state_controller_to = ROOT }
+			}
+		}
+	}
+
+	# Bloc countries released mid-game (Slovakia, Croatia, ...) join the trade bloc preference
+	on_monthly = {
+		effect = {
+			TFB_join_trade_bloc = yes
+		}
+	}
+
 	on_weekly = {
 		# Update Stalin Air Weekly
 		effect = {
@@ -216,6 +242,9 @@ on_actions = {
     on_startup = {
 		effect = {
 			set_global_flag = game_has_started
+		}
+		effect = {
+			every_country = { TFB_join_trade_bloc = yes }
 		}
 		effect = {
 			add_power_balance_modifier = {
