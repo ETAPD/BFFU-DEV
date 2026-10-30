@@ -1672,12 +1672,13 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = unlock_propaganda_campaign_tt
 			unlock_decision_tooltip = ENG_wings_victory_prop
-			air_experience = 50
-			set_country_flag = ENG_airfocus
-			#custom_effect_tooltip = ENG_raf_tt1
-			custom_effect_tooltip = ENG_raf_tt2
-			custom_effect_tooltip = ENG_raf_tt3
-			custom_effect_tooltip = ENG_raf_tt4
+			air_experience = 75
+			add_doctrine_cost_reduction = {
+				name = air_doc_bonus
+				cost_reduction = 0.5
+				uses = 2
+				category = air_doctrine
+			}
 		}
 	}
 
@@ -1695,49 +1696,39 @@ focus_tree = {
 			factor = 5
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_1_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-    	
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
-				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_strategic_bombing_path_strong
-				
-				add_ideas = ENG_bomber_command_strong1
-				add_doctrine_cost_reduction = { name = strategic_bombing_doctrine cost_reduction = 0.75 uses = 2 category = strategic_destruction_tree }
-				# Below is for if this is the Secondary Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_bomber_command_weak1
-					add_doctrine_cost_reduction = { name = strategic_bombing_doctrine cost_reduction = 0.25 uses = 2 category = strategic_destruction_tree }
+			ENG_raf_strategic_bombing = yes
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
+				mio:ENG_avro_organization = {
+					add_mio_funds = 2000
 				}
 			}
-			else = {
-				add_ideas = ENG_bomber_command_weak1
-				add_doctrine_cost_reduction = { name = strategic_bombing_doctrine cost_reduction = 0.25 uses = 2 category = strategic_destruction_tree }
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_bomber_command_strong1
-					add_doctrine_cost_reduction = { name = strategic_bombing_doctrine cost_reduction = 0.75 uses = 2 category = strategic_destruction_tree }
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				mio:ENG_avro_organization = {
+					add_mio_funds_gain_factor = 0.15
+					add_mio_research_bonus = 0.1
+				}
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					mio:ENG_avro_organization = {
+						add_mio_funds = 2000
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					mio:ENG_avro_organization = {
+						add_mio_funds_gain_factor = 0.15
+						add_mio_research_bonus = 0.1
+					}
 				}
 			}
 		}
@@ -1757,67 +1748,54 @@ focus_tree = {
 			factor = 5
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_strategic_bombing_path_strong
-				}
-			
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = big_bomb_bonus
+					name = ENG_new_bombers
+					bonus = 1
+					uses = 2
+					category = cat_strategic_bomber
+				}
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				add_tech_bonus = {
+					name = ENG_new_bombers
 					bonus = 0.75
 					ahead_reduction = 0.5
 					uses = 2
 					category = cat_strategic_bomber
 				}
 				mio:ENG_avro_organization = {
-					add_mio_funds = 1500
-					add_mio_funds_gain_factor = 0.15
-					add_mio_research_bonus = 0.05
+					add_mio_funds = 1000
 				}
 			}
-			
-			else = {
-				add_tech_bonus = {
-					name = small_bomb_bonus
-					bonus = 0.75
-					uses = 2
-					category = cat_strategic_bomber
-				}
-				mio:ENG_avro_organization = {
-					add_mio_funds = 1000
-					add_mio_funds_gain_factor = 0.10
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
 					add_tech_bonus = {
-						name = big_bomb_bonus
+						name = ENG_new_bombers
+						bonus = 1
+						uses = 2
+						category = cat_strategic_bomber
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_tech_bonus = {
+						name = ENG_new_bombers
 						bonus = 0.75
 						ahead_reduction = 0.5
 						uses = 2
 						category = cat_strategic_bomber
 					}
 					mio:ENG_avro_organization = {
-						add_mio_funds = 1500
-						add_mio_funds_gain_factor = 0.15
-						add_mio_research_bonus = 0.05
+						add_mio_funds = 1000
 					}
 				}
 			}
@@ -1842,63 +1820,47 @@ focus_tree = {
 		bypass = {
 		}
 
+
 		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
+			has_war = yes
 		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_strategic_bombing_path_strong
-				}
-			
-				swap_ideas = {
-					add_idea = ENG_bomber_command_strong2
-					remove_idea = ENG_bomber_command_strong1
-				}
-				add_doctrine_cost_reduction = {
-					name = strategic_bombing_doctrine
-					cost_reduction = 0.75
-					uses = 2
-					category = strategic_destruction_tree
+			ENG_raf_perfect_doctrine = yes
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
+				add_equipment_to_stockpile = {
+					type = strat_bomber_equipment
+					amount = 100
 				}
 			}
-			
-			else = {
-				swap_ideas = {
-					add_idea = ENG_bomber_command_weak2
-					remove_idea = ENG_bomber_command_weak1
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				add_tech_bonus = {
+					name = ENG_perfect_doctrine
+					bonus = 1
+					uses = 1
+					category = radar_tech
 				}
-				add_doctrine_cost_reduction = {
-					name = strategic_bombing_doctrine
-					cost_reduction = 0.25
-					uses = 2
-					category = strategic_destruction_tree
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_bomber_command_strong2
-						remove_idea = ENG_bomber_command_strong1
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					add_equipment_to_stockpile = {
+						type = strat_bomber_equipment
+						amount = 100
 					}
-					add_doctrine_cost_reduction = {
-						name = strategic_bombing_doctrine
-						cost_reduction = 0.75
-						uses = 2
-						category = strategic_destruction_tree
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_tech_bonus = {
+						name = ENG_perfect_doctrine
+						bonus = 1
+						uses = 1
+						category = radar_tech
 					}
 				}
 			}
@@ -1922,69 +1884,39 @@ focus_tree = {
 
 		bypass = {
 		}
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_2_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
-				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_tactical_bombing_path_strong
-								
-				add_ideas = ENG_tactical_bomber_command_strong1
-				add_doctrine_cost_reduction = {
-					name = operational_integrity_doctrine
-					cost_reduction = 0.75
-					uses = 2
-					category = operational_integrity_tree
-				}
-				# Below is for if this is the Secondary Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_tactical_bomber_command_weak1
-					add_doctrine_cost_reduction = {
-						name = operational_integrity_doctrine
-						cost_reduction = 0.25
-						uses = 2
-						category = operational_integrity_tree
-					}
+			ENG_raf_tactical_bombing = yes
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
+				add_equipment_to_stockpile = {
+					type = tac_bomber_equipment
+					amount = 100
 				}
 			}
-			else = {
-				add_ideas = ENG_tactical_bomber_command_weak1
-				add_doctrine_cost_reduction = {
-					name = operational_integrity_doctrine
-					cost_reduction = 0.25
-					uses = 2
-					category = operational_integrity_tree
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				mio:ENG_de_havilland_organization = {
+					add_mio_funds = 2000
 				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_tactical_bomber_command_strong1
-					add_doctrine_cost_reduction = {
-						name = operational_integrity_doctrine
-						cost_reduction = 0.75
-						uses = 2
-						category = operational_integrity_tree
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					add_equipment_to_stockpile = {
+						type = tac_bomber_equipment
+						amount = 100
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					mio:ENG_de_havilland_organization = {
+						add_mio_funds = 2000
 					}
 				}
 			}
@@ -2009,67 +1941,56 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_tactical_bombing_path_strong
-				}
-				
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = big_bomb_bonus
+					name = ENG_increase_research
+					bonus = 1
+					uses = 2
+					category = tactical_bomber
+				}
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				add_tech_bonus = {
+					name = ENG_increase_research
 					bonus = 0.75
 					ahead_reduction = 0.5
 					uses = 2
 					category = tactical_bomber
 				}
 				mio:ENG_de_havilland_organization = {
-					add_mio_funds = 1500
-					add_mio_funds_gain_factor = 0.15
-					add_mio_research_bonus = 0.05
+					add_mio_funds = 1000
+					add_mio_research_bonus = 0.1
 				}
 			}
-			
-			else = {
-				add_tech_bonus = {
-					name = big_bomb_bonus
-					bonus = 0.75
-					uses = 2
-					category = tactical_bomber
-				}
-				mio:ENG_de_havilland_organization = {
-					add_mio_funds = 1000
-					add_mio_funds_gain_factor = 0.10
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
 					add_tech_bonus = {
-						name = big_bomb_bonus
+						name = ENG_increase_research
+						bonus = 1
+						uses = 2
+						category = tactical_bomber
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_tech_bonus = {
+						name = ENG_increase_research
 						bonus = 0.75
 						ahead_reduction = 0.5
 						uses = 2
 						category = tactical_bomber
 					}
 					mio:ENG_de_havilland_organization = {
-						add_mio_funds = 1500
-						add_mio_funds_gain_factor = 0.15
-						add_mio_research_bonus = 0.05
+						add_mio_funds = 1000
+						add_mio_research_bonus = 0.1
 					}
 				}
 			}
@@ -2094,66 +2015,13 @@ focus_tree = {
 		bypass = {
 		}
 
+
 		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
+			has_war = yes
 		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_tactical_bombing_path_strong
-				}
-			
-				swap_ideas = {
-					add_idea = ENG_tactical_bomber_command_strong2
-					remove_idea = ENG_tactical_bomber_command_strong1
-				}
-				add_doctrine_cost_reduction = {
-					name = operational_integrity_doctrine
-					cost_reduction = 0.75
-					uses = 2
-					category = operational_integrity_tree
-				}
-			}
-			
-			else = {
-				swap_ideas = {
-					add_idea = ENG_tactical_bomber_command_weak2
-					remove_idea = ENG_tactical_bomber_command_weak1
-				}
-				add_doctrine_cost_reduction = {
-					name = operational_integrity_doctrine
-					cost_reduction = 0.25
-					uses = 2
-					category = operational_integrity_tree
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_tactical_bomber_command_strong2
-						remove_idea = ENG_tactical_bomber_command_strong1
-					}
-					add_doctrine_cost_reduction = {
-						name = operational_integrity_doctrine
-						cost_reduction = 0.75
-						uses = 2
-						category = operational_integrity_tree
-					}
-				}
-			}
+			ENG_raf_learn_spain = yes
 		}
 	}
 
@@ -2174,50 +2042,44 @@ focus_tree = {
 
 		bypass = {
 		}
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_3_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
 
-			
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
-				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_production_path_strong
-			
-				add_ideas = ENG_fighter_production_strong1
-				# Below is for if this is the Secondary Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_fighter_production_weak1
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
+				mio:ENG_supermarine_organization = {
+					add_mio_funds = 3000
 				}
 			}
-			else = {
-				add_ideas = ENG_fighter_production_weak1
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_fighter_production_strong1
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				mio:ENG_supermarine_organization = {
+					add_mio_size_up_requirement_factor = -0.2
+					add_mio_research_bonus = 0.25
+					add_mio_funds_gain_factor = 0.15
 				}
 			}
-
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					mio:ENG_supermarine_organization = {
+						add_mio_funds = 3000
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					mio:ENG_supermarine_organization = {
+						add_mio_size_up_requirement_factor = -0.2
+						add_mio_research_bonus = 0.25
+						add_mio_funds_gain_factor = 0.15
+					}
+				}
+			}
 		}
 	}
 
@@ -2240,48 +2102,40 @@ focus_tree = {
 		}
 
 		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
+			GER = { has_completed_focus = GER_fate_of_czechoslovakia }
 		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_production_path_strong
-				}
-			
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
 				mio:ENG_supermarine_organization = {
-					add_mio_funds = 2500
-					add_mio_funds_gain_factor = 0.2
+					complete_mio_trait = ENG_mio_trait_containment_subsidies
 				}
 			}
-			
-			else = {
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
 				mio:ENG_supermarine_organization = {
-					add_mio_funds = 1000
-					add_mio_funds_gain_factor = 0.1
+					complete_mio_trait = ENG_mio_trait_appeasement_subsidies
 				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
 					mio:ENG_supermarine_organization = {
-						add_mio_funds = 2500
-						add_mio_funds_gain_factor = 0.2
+						complete_mio_trait = ENG_mio_trait_containment_subsidies
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					mio:ENG_supermarine_organization = {
+						complete_mio_trait = ENG_mio_trait_appeasement_subsidies
 					}
 				}
 			}
-		}	
+		}
 	}
 
 	focus = {
@@ -2302,46 +2156,31 @@ focus_tree = {
 		bypass = {
 		}
 
+
 		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
+			has_war = yes
 		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_production_path_strong
-				}
-			
-				swap_ideas = {
-					add_idea = ENG_fighter_production_strong2
-					remove_idea = ENG_fighter_production_strong1
-				}
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
+				ENG_raf_perfected_design_containment = yes
 			}
-			
-			else = {
-				swap_ideas = {
-					add_idea = ENG_fighter_production_weak2
-					remove_idea = ENG_fighter_production_weak1
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				ENG_raf_perfected_design_appeasement = yes
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					ENG_raf_perfected_design_containment = yes
 				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_fighter_production_strong2
-						remove_idea = ENG_fighter_production_strong1
-					}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					ENG_raf_perfected_design_appeasement = yes
 				}
 			}
 		}
@@ -2355,7 +2194,7 @@ focus_tree = {
 		y = 1
 		relative_position_id = ENG_raf
 		
-		cost = 2
+		cost = 5
 		ai_will_do = {
 			factor = 5
 		}
@@ -2365,78 +2204,51 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_4_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
 
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
-				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_research_path_strong
-				
-				set_country_flag = ENG_airbranch_4_strong
-	
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = fighter_bonus
+					name = ENG_develop_spitfire
 					bonus = 1
-					ahead_reduction = 0.5
 					uses = 1
-					category = light_fighter
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_tech_bonus = {
-						name = fighter_bonus
-						bonus = 0.4
-						uses = 1
-						category = light_fighter
-					}
+					technology = fighter2
 				}
 			}
-			else = {
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = fighter_bonus
-					bonus = 0.4
-					uses = 1
-					category = light_fighter
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_tech_bonus = {
-						name = fighter_bonus
-						bonus = 0.5
-						ahead_reduction = 0.25
-						uses = 1
-						category = light_fighter
-					}
+					name = ENG_develop_spitfire
+					bonus = 0.75
+					uses = 3
+					category = air_equipment
 				}
 			}
-
-			if = {
-				limit = {
-					has_country_flag = ENG_air_strong_path_locked
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					add_tech_bonus = {
+						name = ENG_develop_spitfire
+						bonus = 1
+						uses = 1
+						technology = fighter2
+					}
 				}
-
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_tech_bonus = {
+						name = ENG_develop_spitfire
+						bonus = 0.75
+						uses = 3
+						category = air_equipment
+					}
+				}
 			}
 		}
 	}
@@ -2459,51 +2271,10 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_research_path_strong
-				}
-				mio:ENG_supermarine_organization = {
-					add_mio_research_bonus = 0.15
-				}
-				#add_ideas = ENG_fighter_research_strong1
-				air_experience = 100
-			}
-			
-			else = {
-				add_ideas = ENG_fighter_research_weak1
-				air_experience = 50
-				mio:ENG_supermarine_organization = {
-					add_mio_research_bonus = 0.1
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					mio:ENG_supermarine_organization = {
-						add_mio_research_bonus = 0.15
-					}
-					#add_ideas = ENG_fighter_research_strong1
-					air_experience = 100
-				}
-
-			}
+			air_experience = 100
+			custom_effect_tooltip = ENG_mio_trait_mitchells_legacy_unlock_tt
 		}
 	}
 
@@ -2525,53 +2296,35 @@ focus_tree = {
 		bypass = {
 		}
 
+
 		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
+			has_tech = fighter3
 		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_research_path_strong
-				}
-			
+			ENG_raf_develop_supermarine = yes
+
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = fighter_bonus
+					name = ENG_develop_supermarine
 					bonus = 1
-					ahead_reduction = 0.5
+					ahead_reduction = 1
 					uses = 1
-					technology = fighter3
+					technology = fighter4
 				}
 			}
-			
-			else = {
-				add_tech_bonus = {
-					name = fighter_bonus
-					bonus = 0.75
-					uses = 1
-					technology = fighter3
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_appeasement }
 					add_tech_bonus = {
-						name = fighter_bonus
+						name = ENG_develop_supermarine
 						bonus = 1
-						ahead_reduction = 0.5
+						ahead_reduction = 1
 						uses = 1
-						technology = fighter3
+						technology = fighter4
 					}
 				}
 			}
@@ -2596,48 +2349,16 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_research_path_strong
-				}
-			
-				add_ideas = ENG_fighter_research_strong2
-
-				add_breakthrough_progress = {
-					specialization = specialization_air
-					value = 1
-				}
+			add_tech_bonus = {
+				name = ENG_experimental_research
+				bonus = 2
+				uses = 1
+				technology = jet_fighter1
 			}
-			
-			else = {
-				add_ideas = ENG_fighter_research_weak2
-
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_fighter_research_strong2
-					add_breakthrough_progress = {
-						specialization = specialization_air
-						value = 1
-					}
-				}
+			sp:sp_air_jet_engine = {
+				add_project_progress_ratio = 0.15
 			}
 		}
 	}
@@ -2660,50 +2381,11 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_5_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-
-
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
-				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_quality_path_strong
-				
-				add_ideas = ENG_fighter_design_strong1
-				# Below is for if this is the Secondary Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_fighter_design_weak1
-				}
-			}			
-			else = {
-				add_ideas = ENG_fighter_design_weak1
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_fighter_design_strong1
-				}
-
-			}
+			ENG_raf_new_modules = yes
 		}
 	}
 
@@ -2725,48 +2407,9 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-				if = {
-					limit = {
-						has_country_flag = ENG_quality_path_strong
-					}
-			
-				swap_ideas = {
-					add_idea = ENG_fighter_design_strong2
-					remove_idea = ENG_fighter_design_strong1
-				}
-			}
-				
-			else = {
-				swap_ideas = {
-					add_idea = ENG_fighter_design_weak2
-					remove_idea = ENG_fighter_design_weak1
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_fighter_design_strong2
-						remove_idea = ENG_fighter_design_strong1
-					}
-				}
-			}
+			ENG_raf_utilise_capabilities = yes
 		}
 	}
 
@@ -2789,48 +2432,9 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-				if = {
-					limit = {
-						has_country_flag = ENG_quality_path_strong
-					}
-			
-				swap_ideas = {
-					add_idea = ENG_fighter_design_strong3
-					remove_idea = ENG_fighter_design_strong2
-				}
-			}
-				
-			else = {
-				swap_ideas = {
-					add_idea = ENG_fighter_design_weak3
-					remove_idea = ENG_fighter_design_weak2
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_fighter_design_strong3
-						remove_idea = ENG_fighter_design_strong2
-					}
-				}
-			}
+			ENG_raf_best_fighter = yes
 		}
 	}
 	
@@ -2853,71 +2457,27 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_6_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			# TODO(uk-rework): removed stray Soviet copy-paste (SOV_mikhail_tukhachevsky
-			# promote/unexile) — ENG has no such character. Add intended ENG effect here.
+			ENG_raf_air_support = yes
 
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				add_equipment_to_stockpile = {
+					type = CAS_equipment
+					amount = 150
 				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_cas_path_strong
-				
-				add_ideas = ENG_cas_command_strong1
-				add_doctrine_cost_reduction = {
-					name = battlefield_support_doctrine
-					cost_reduction = 0.75
-					uses = 2
-					category = battlefield_support_tree
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_cas_command_weak1
-					add_doctrine_cost_reduction = {
-						name = battlefield_support_doctrine
-						cost_reduction = 0.25
-						uses = 2
-						category = battlefield_support_tree
-					}
-				}
-			}			
-			else = {
-				add_ideas = ENG_cas_command_weak1
-				add_doctrine_cost_reduction = {
-					name = battlefield_support_doctrine
-					cost_reduction = 0.25
-					uses = 2
-					category = battlefield_support_tree
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_cas_command_strong1
-					add_doctrine_cost_reduction = {
-						name = battlefield_support_doctrine
-						cost_reduction = 0.75
-						uses = 2
-						category = battlefield_support_tree
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_equipment_to_stockpile = {
+						type = CAS_equipment
+						amount = 150
 					}
 				}
 			}
@@ -2942,74 +2502,54 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_cas_path_strong
-				}
-				
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = cas_bonus_big
-					bonus = 0.75
-					ahead_reduction = 0.5
-					uses = 2
+					name = ENG_new_designs
+					bonus = 1
+					uses = 1
 					category = cas_bomber
 				}
-				mio:ENG_hawker_organization = {
-					add_mio_funds = 1500
-					add_mio_funds_gain_factor = 0.15
-					add_mio_research_bonus = 0.05
-				}
 			}
-			
-			else = {
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = cas_bonus_small
+					name = ENG_new_designs
 					bonus = 0.75
-					uses = 2
+					ahead_reduction = 0.5
+					uses = 1
 					category = cas_bomber
 				}
 				mio:ENG_hawker_organization = {
 					add_mio_funds = 1000
-					add_mio_funds_gain_factor = 0.10
 				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
 					add_tech_bonus = {
-						name = cas_bonus_big
+						name = ENG_new_designs
+						bonus = 1
+						uses = 1
+						category = cas_bomber
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_tech_bonus = {
+						name = ENG_new_designs
 						bonus = 0.75
 						ahead_reduction = 0.5
-						uses = 2
+						uses = 1
 						category = cas_bomber
 					}
 					mio:ENG_hawker_organization = {
-						add_mio_funds = 1500
-						add_mio_funds_gain_factor = 0.15
-						add_mio_research_bonus = 0.05
+						add_mio_funds = 1000
 					}
 				}
 			}
@@ -3034,66 +2574,9 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
-			if = {
-				limit = {
-					has_country_flag = ENG_cas_path_strong
-				}
-			
-				swap_ideas = {
-					add_idea = ENG_cas_command_strong2
-					remove_idea = ENG_cas_command_strong1
-				}
-				add_doctrine_cost_reduction = {
-					name = battlefield_support_doctrine
-					cost_reduction = 0.75
-					uses = 2
-					category = battlefield_support_tree
-				}
-			}
-			
-			else = {
-				swap_ideas = {
-					add_idea = ENG_cas_command_weak2
-					remove_idea = ENG_cas_command_weak1
-				}
-				add_doctrine_cost_reduction = {
-					name = battlefield_support_doctrine
-					cost_reduction = 0.25
-					uses = 2
-					category = battlefield_support_tree
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_cas_command_strong2
-						remove_idea = ENG_cas_command_strong1
-					}
-					add_doctrine_cost_reduction = {
-						name = battlefield_support_doctrine
-						cost_reduction = 0.75
-						uses = 2
-						category = battlefield_support_tree
-					}
-				}
-			}
+			ENG_raf_destroy_from_above = yes
 		}
 	}
 
@@ -3115,46 +2598,41 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		
 		completion_reward = {
 			custom_effect_tooltip = ENG_airbranch_7_tt
-			set_country_flag = ENG_air_cooldown_flag
-			set_country_flag = ENG_airfocus
+			ENG_raf_establish_FAA = yes
 
-			if = {
-				limit = {
-					NOT = { has_country_flag = ENG_air_strong_path_locked }
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
+				add_equipment_to_stockpile = {
+					type = cv_nav_bomber_equipment
+					amount = 150
 				}
-				set_country_flag = ENG_air_strong_path_locked        
-				set_country_flag = ENG_faa_path_strong
-				
-				add_ideas = ENG_naval_aviation_strong1
-				# Below is for if this is the Secondary Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_secondary_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_naval_aviation_weak1
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				mio:ENG_fairey_aviation_organization = {
+					add_mio_funds = 2000
 				}
-			}			
-			else = {
-				add_ideas = ENG_naval_aviation_weak1
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					add_ideas = ENG_naval_aviation_strong1
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
+					add_equipment_to_stockpile = {
+						type = cv_nav_bomber_equipment
+						amount = 150
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					mio:ENG_fairey_aviation_organization = {
+						add_mio_funds = 2000
+					}
 				}
 			}
 		}
@@ -3178,53 +2656,60 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_airfocus
-			set_country_flag = ENG_air_cooldown_flag
-			if = {
-				limit = {
-					has_country_flag = ENG_faa_path_strong
-				}
-			
+			custom_effect_tooltip = ENG_raf_divider_containment_tt
+			custom_effect_tooltip = ENG_raf_if_containment_tt
+			effect_tooltip = {
 				add_tech_bonus = {
-					name = nav_bonus_big
+					name = ENG_cutting_edge_designs
+					bonus = 1
+					uses = 2
+					category = naval_bomber
+				}
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				add_tech_bonus = {
+					name = ENG_cutting_edge_designs
 					bonus = 1
 					ahead_reduction = 0.5
 					uses = 2
 					category = naval_bomber
 				}
-			}
-			
-			else = {
 				add_tech_bonus = {
-					name = nav_bonus_small
+					name = ENG_cutting_edge_designs
 					bonus = 1
-					uses = 2
-					category = naval_bomber
+					uses = 1
+					category = cat_torpedoes
 				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_containment }
 					add_tech_bonus = {
-						name = nav_bonus_big
+						name = ENG_cutting_edge_designs
+						bonus = 1
+						uses = 2
+						category = naval_bomber
+					}
+				}
+				else_if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					add_tech_bonus = {
+						name = ENG_cutting_edge_designs
 						bonus = 1
 						ahead_reduction = 0.5
 						uses = 2
 						category = naval_bomber
+					}
+					add_tech_bonus = {
+						name = ENG_cutting_edge_designs
+						bonus = 1
+						uses = 1
+						category = cat_torpedoes
 					}
 				}
 			}
@@ -3249,48 +2734,9 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-			has_country_flag = {
-				flag = ENG_airfocus
-				days > 105
-			}
-			custom_trigger_tooltip = {
-				tooltip = ENG_last_air_focus_tt
-				has_country_flag = {
-					flag = ENG_airfocus
-					days > 105
-				}
-			}
-		}
 
 		completion_reward = {
-			set_country_flag = ENG_airfocus
-			set_country_flag = ENG_air_cooldown_flag
-			if = {
-				limit = {
-					has_country_flag = ENG_faa_path_strong
-				}
-			
-				swap_ideas = {
-					add_idea = ENG_naval_aviation_strong2
-					remove_idea = ENG_naval_aviation_strong1
-				}
-			}
-			
-			else = {
-				swap_ideas = {
-					add_idea = ENG_naval_aviation_weak2
-					remove_idea = ENG_naval_aviation_weak1
-				}
-				# Below is for if this is the Main Branch of the Air Focus Tree
-				custom_effect_tooltip = if_picked_as_main_branch_tt
-				effect_tooltip = { 
-					swap_ideas = {
-						add_idea = ENG_naval_aviation_strong2
-						remove_idea = ENG_naval_aviation_strong1
-					}
-				}
-			}
+			ENG_raf_adopt_changing_world = yes
 		}
 	}
 	
