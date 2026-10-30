@@ -2040,6 +2040,73 @@ on_actions = {
 				SOV = { activate_mission = SOV_besserabia_war }
 				ROM = { activate_mission = ROM_bessarabia_war_timer }
 			}
+			# Spain attacks Portugal: Portugal joins the Allies and hands its empire to South Africa (Britain if South Africa is gone)
+			if = {
+				limit = {
+					ROOT = { original_tag = SPR }
+					FROM = { tag = POR }
+					country_exists = ENG
+					ENG = {
+						is_in_faction = yes
+						NOT = { is_in_faction_with = ROOT }
+					}
+					NOT = { has_global_flag = POR_joined_allies_vs_spain }
+				}
+				set_global_flag = POR_joined_allies_vs_spain
+				POR = { remove_ideas = POR_neutrality_idea }
+				ENG = {
+					if = {
+						limit = { is_faction_leader = yes }
+						add_to_faction = POR
+					}
+					else = {
+						every_country = {
+							limit = {
+								is_faction_leader = yes
+								is_in_faction_with = ENG
+							}
+							add_to_faction = POR
+						}
+					}
+				}
+				POR = {
+					every_owned_state = {
+						limit = {
+							OR = {
+								state = 296
+								state = 540
+								state = 544
+								state = 705
+								state = 796
+								state = 891
+								state = 892
+								state = 896
+								state = 897
+							}
+						}
+						if = {
+							limit = { country_exists = SAF }
+							SAF = { transfer_state = PREV }
+						}
+						else = {
+							ENG = { transfer_state = PREV }
+						}
+					}
+					every_owned_state = {
+						limit = {
+							OR = {
+								state = 321
+								state = 697
+								state = 698
+								state = 702
+								state = 721
+								state = 729
+							}
+						}
+						ENG = { transfer_state = PREV }
+					}
+				}
+			}
 		}
 	}
 

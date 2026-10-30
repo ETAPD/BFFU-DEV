@@ -2441,6 +2441,85 @@ focus_tree = {
 
 		completion_reward = {
 			ENG_raf_best_fighter = yes
+
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			custom_effect_tooltip = ENG_raf_if_appeasement_tt
+			effect_tooltip = {
+				126 = {
+					add_building_construction = {
+						type = radar_station
+						level = 2
+						instant_build = yes
+					}
+				}
+				129 = {
+					add_building_construction = {
+						type = radar_station
+						level = 2
+						instant_build = yes
+					}
+				}
+				338 = {
+					add_building_construction = {
+						type = radar_station
+						level = 2
+						instant_build = yes
+					}
+				}
+				131 = {
+					add_building_construction = {
+						type = radar_station
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			custom_effect_tooltip = ENG_raf_divider_appeasement_tt
+			hidden_effect = {
+				if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					126 = {
+						if = {
+							limit = { is_controlled_by = ROOT }
+							add_building_construction = {
+								type = radar_station
+								level = 2
+								instant_build = yes
+							}
+						}
+					}
+					129 = {
+						if = {
+							limit = { is_controlled_by = ROOT }
+							add_building_construction = {
+								type = radar_station
+								level = 2
+								instant_build = yes
+							}
+						}
+					}
+					338 = {
+						if = {
+							limit = { is_controlled_by = ROOT }
+							add_building_construction = {
+								type = radar_station
+								level = 2
+								instant_build = yes
+							}
+						}
+					}
+					131 = {
+						if = {
+							limit = { is_controlled_by = ROOT }
+							add_building_construction = {
+								type = radar_station
+								level = 2
+								instant_build = yes
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -7838,7 +7917,67 @@ focus_tree = {
 		}
 		
 		completion_reward = {
-			custom_effect_tooltip = Battle_of_britain
+			unlock_decision_tooltip = ENG_Blud_Toil_Sweat
+			127 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			125 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			338 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			128 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			129 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			130 = {
+				if = {
+					limit = { is_controlled_by = ROOT }
+					add_building_construction = {
+						type = anti_air_building
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
 		}
 	}
 	focus = {
@@ -7927,7 +8066,7 @@ focus_tree = {
 	focus = {
 		id = ENG_operation_countenance
 		icon = GFX_operation_countenance
-		prerequisite = { focus = ENG_Churchill_war_cabinet }
+		prerequisite = { focus = ENG_seize_atlantic_islands }
 		
 		available = {
 			date > 1941.6.1
@@ -7983,7 +8122,7 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		x = -2
-		y = 1
+		y = 2
 		relative_position_id = ENG_Churchill_war_cabinet
 		cost = 5
 		ai_will_do = {
@@ -8004,6 +8143,95 @@ focus_tree = {
 				}
 			}
 			
+		}
+	}
+
+	focus = {
+		id = ENG_seize_atlantic_islands
+		icon = GFX_focus_ENG_seize_atlantic_islands
+		prerequisite = { focus = ENG_operation_countenance }
+
+		available = {
+			has_war = yes
+			country_exists = POR
+			POR = {
+				is_in_faction = no
+				NOT = { has_war_with = ROOT }
+			}
+		}
+
+		bypass = {
+			OR = {
+				NOT = { country_exists = POR }
+				POR = { is_in_faction_with = ROOT }
+			}
+		}
+
+		x = -2
+		y = 1
+		relative_position_id = ENG_Churchill_war_cabinet
+		cost = 2
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			transfer_state = 698
+			transfer_state = 697
+			transfer_state = 702
+			transfer_state = 721
+			698 = {
+				set_building_level = {
+					type = air_base
+					level = 10
+					instant_build = yes
+				}
+				set_building_level = {
+					type = naval_base
+					level = 6
+					instant_build = yes
+					province = 1751
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = ENG_iceland_base
+		icon = GFX_focus_ENG_iceland_base
+		prerequisite = { focus = ENG_Battle_of_britain }
+
+		available = {
+			100 = { is_owned_by = ROOT }
+		}
+
+		x = 0
+		y = 1
+		relative_position_id = ENG_Battle_of_britain
+		cost = 5
+		ai_will_do = {
+			factor = 1
+		}
+
+		completion_reward = {
+			100 = {
+				set_building_level = {
+					type = naval_base
+					level = 10
+					instant_build = yes
+					province = 12674
+				}
+				set_building_level = {
+					type = radar_station
+					level = 2
+					instant_build = yes
+				}
+				set_building_level = {
+					type = air_base
+					level = 5
+					instant_build = yes
+				}
+			}
 		}
 	}
 }
