@@ -176,3 +176,90 @@ SPR_calculate_appeasement_ticking = {
 
     SPR = { set_variable = { SPR_power_balance_daily = spanish_tick } }
 }
+
+# Mainland Spanish airfields stay shut from the end of the civil war until Barbarossa
+SPR_close_mainland_airfields = {
+	set_global_flag = SPR_airfields_closed
+	every_state = {
+		limit = {
+			OR = {
+				state = 41
+				state = 165
+				state = 166
+				state = 167
+				state = 168
+				state = 169
+				state = 170
+				state = 171
+				state = 172
+				state = 173
+				state = 174
+				state = 175
+				state = 176
+				state = 788
+				state = 789
+				state = 790
+				state = 791
+				state = 792
+				state = 793
+				state = 794
+			}
+		}
+		set_variable = { SPR_stored_air_base = building_level@air_base }
+		if = {
+			limit = { air_base > 0 }
+			remove_building = { type = air_base level = 20 }
+		}
+		add_dynamic_modifier = { modifier = SPR_closed_airfields }
+	}
+}
+
+SPR_reopen_mainland_airfields = {
+	clr_global_flag = SPR_airfields_closed
+	set_global_flag = SPR_airfields_reopened
+	every_state = {
+		limit = { has_dynamic_modifier = { modifier = SPR_closed_airfields } }
+		remove_dynamic_modifier = { modifier = SPR_closed_airfields }
+		if = {
+			limit = { check_variable = { SPR_stored_air_base > 9 } }
+			set_building_level = { type = air_base level = 10 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 8 } }
+			set_building_level = { type = air_base level = 9 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 7 } }
+			set_building_level = { type = air_base level = 8 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 6 } }
+			set_building_level = { type = air_base level = 7 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 5 } }
+			set_building_level = { type = air_base level = 6 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 4 } }
+			set_building_level = { type = air_base level = 5 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 3 } }
+			set_building_level = { type = air_base level = 4 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 2 } }
+			set_building_level = { type = air_base level = 3 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 1 } }
+			set_building_level = { type = air_base level = 2 instant_build = yes }
+		}
+		else_if = {
+			limit = { check_variable = { SPR_stored_air_base > 0 } }
+			set_building_level = { type = air_base level = 1 instant_build = yes }
+		}
+		clear_variable = SPR_stored_air_base
+	}
+}
