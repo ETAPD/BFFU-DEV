@@ -1,0 +1,64 @@
+diff --git a/blender_import_export.py b/blender_import_export.py
+index 12083f3..31a88fc 100644
+--- a/blender_import_export.py
++++ b/blender_import_export.py
+@@ -365,6 +365,7 @@ def get_mesh_info(blender_obj, mat_id, split_criteria=None, split_all=False, sor
+     # collect all unique verts in the order that we process them
+     export_verts = []
+     unique_verts = set()
++    vert_normals = {}
+ 
+     # store data for each loop triangle
+     for tri in mesh.loop_triangles:
+@@ -411,7 +412,21 @@ def get_mesh_info(blender_obj, mat_id, split_criteria=None, split_all=False, sor
+                 _tangent = tuple(swap_coord_space(_tangent))
+ 
+             # check if this tri-verts vertex data is new and unique, or can if we can just use an existing vertex
+-            vdata = {"id": vert_id, "p": _position, "n": _normal, "uv": _uv_coords}
++            # BFFU patch: Blender 5.x custom normals drift per-loop by float noise (up to ~5e-3), which otherwise
++            # makes every tri-corner "unique" and unwelds the whole mesh on export, snap to a normal already seen
++            seen_normals = vert_normals.setdefault(vert_id, [])
++            for seen in seen_normals:
++                if (Vector(seen) - Vector(_normal)).length < 0.01:
++                    _normal = seen
++                    break
++            else:
++                seen_normals.append(_normal)
++            vdata = {
++                "id": vert_id,
++                "p": _position,
++                "n": _normal,
++                "uv": tuple(tuple(round(c, 6) for c in uv) for uv in _uv_coords),
++            }
+             new_vert = UniqueVertex(*[vdata.get(x) for x in split_criteria])
+ 
+             # test if we have already stored this vertex in the unique set
+@@ -1880,16 +1895,26 @@ def export_meshfile(meshpath, exp_mesh=True, exp_skel=True, exp_locs=True, exp_s
+                 IO_PDX_LOG.info("writing mesh - {0}".format(mat_idx))
+                 meshnode_xml = Xml.SubElement(objnode_xml, "mesh")
+ 
++                # BFFU patch: collision meshes are position-only in vanilla files, so don't split them on normals/uvs
++                is_collision = get_material_shader(blender_mat) == "Collision"
++
+                 # get all necessary info about this set of faces and determine which unique verts they include
+                 mesh_info_dict, vert_ids = get_mesh_info(
+-                    obj, mat_idx, split_criteria=split_by, split_all=split_verts, sort_vertices=sort_verts
++                    obj,
++                    mat_idx,
++                    split_criteria=["id", "p"] if is_collision else split_by,
++                    split_all=split_verts,
++                    sort_vertices=sort_verts,
+                 )
+                 # skip material slots that are used on no faces
+                 if not (mesh_info_dict and vert_ids):
+                     continue
+ 
+                 # populate mesh attributes
+-                for key in ["p", "n", "ta", "u0", "u1", "u2", "u3", "tri", "boundingsphere"]:
++                mesh_keys = ["p", "n", "ta", "u0", "u1", "u2", "u3", "tri", "boundingsphere"]
++                if is_collision:
++                    mesh_keys = ["p", "tri", "boundingsphere"]
++                for key in mesh_keys:
+                     if key in mesh_info_dict and mesh_info_dict[key]:
+                         meshnode_xml.set(key, mesh_info_dict[key])
+ 
