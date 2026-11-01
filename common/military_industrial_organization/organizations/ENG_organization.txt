@@ -45,7 +45,6 @@ ENG_vickers_armstrong_eng_organization = {
 		IF = {
 			limit = { 
 				OR = { 
-					FROM = { original_tag = BUL }
 					FROM = { original_tag = ETH }
 				}  
 			}
@@ -54,17 +53,6 @@ ENG_vickers_armstrong_eng_organization = {
 				FROM = {
 					has_country_flag = has_invited_vickers_mio_flag 
 				}
-			}
-		}
-		IF = {
-			limit = { FROM = { original_tag = BUL } } 
-			FROM = {
-				OR = {
-					is_subject = no
-					is_subject_of = ENG
-				}
-				#is_in_faction_with = ENG
-				#NOT = { has_completed_focus = BUL_nationalization }
 			}
 		}
 	}
@@ -169,8 +157,7 @@ ENG_vauxhall_organization = {
 
 		IF = {
 			limit = { 
-				OR = { 
-					FROM = { original_tag = BUL }
+				OR = {
 					FROM = { original_tag = ETH }
 				}  
 			}
@@ -179,17 +166,6 @@ ENG_vauxhall_organization = {
 				FROM = {
 					has_country_flag = has_invited_vauxhall_mio_flag 
 				}
-			}
-		}
-		IF = {
-			limit = { FROM = { original_tag = BUL } } 
-			FROM = {
-				OR = {
-					is_subject = no
-					is_subject_of = ENG
-				}
-				#is_in_faction_with = ENG
-				#NOT = { has_completed_focus = BUL_nationalization }
 			}
 		}
 		IF = {
@@ -246,7 +222,7 @@ ENG_harland_wolff_organization = {
 		position = { x=1 y=0 }
 		relative_position_id = generic_mio_trait_underway_replenishment_equipment
 
-		any_parent = { generic_mio_trait_splinter_protection }
+		any_parent = { generic_mio_trait_long_range_cruising }
 
 		equipment_bonus = {
 			naval_weather_penalty_factor = -0.1
@@ -345,7 +321,7 @@ ENG_cammell_laird_organization = {
 
 		any_parent = { generic_mio_trait_super_heavy_shells generic_mio_trait_semi_armor_piercing_shells generic_mio_trait_high_velocity_guns }
 
-		limit_to_equipment_type = { capital_ship }
+		limit_to_equipment_type = { mio_cat_eq_all_battleship mio_cat_eq_all_cruiser }
 
 		equipment_bonus = {
 			hg_armor_piercing = 0.05
@@ -371,24 +347,6 @@ ENG_yarrow_shipbuilders_organization = {
 				FROM = { NOT = { original_tag = ENG } }
 			}
 #			FROM = { NOT = { has_war_with = ENG } }
-		}
-
-		IF = {
-			limit = { FROM = { original_tag = BUL } }
-			custom_trigger_tooltip = {
-				tooltip = has_invited_mio_tt
-				FROM = {
-					has_country_flag = has_invited_yarrow_mio_flag 
-				}
-			}
-			FROM = {
-				OR = {
-					is_subject = no
-					is_subject_of = ENG
-				}
-				#is_in_faction_with = ENG
-				#NOT = { has_completed_focus = BUL_nationalization }
-			}
 		}
 	}
 }
@@ -542,15 +500,73 @@ ENG_supermarine_organization = {
 		}
 	}
 
+	# Supermarine Production Subsidies (UK RAF tree): Containment path
+	add_trait = {
+		token = ENG_mio_trait_containment_subsidies
+		name = ENG_mio_trait_containment_subsidies
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		special_trait_background = yes
 
-	# 	position = { x=0 y=1 }
-	# 	relative_position_id = ENG_mio_trait_seaplane_origins
-		
+		position = { x=0 y=1 }
+		relative_position_id = ENG_mio_trait_seaplane_origins
 
-	# 	position = { x=0 y=2 }
-	# 	relative_position_id = ENG_mio_trait_seaplane_origins
-		
+		available = {
+			FROM = {
+				has_completed_focus = ENG_subsidies_supermarine
+				has_completed_focus = ENG_containment
+			}
+		}
 
+		production_bonus = {
+			production_capacity_factor = 0.05
+		}
+	}
+
+	# Supermarine Production Subsidies (UK RAF tree): Appeasement path
+	add_trait = {
+		token = ENG_mio_trait_appeasement_subsidies
+		name = ENG_mio_trait_appeasement_subsidies
+		icon = GFX_generic_mio_trait_icon_efficiency_cap
+		special_trait_background = yes
+
+		position = { x=0 y=2 }
+		relative_position_id = ENG_mio_trait_seaplane_origins
+
+		available = {
+			FROM = {
+				has_completed_focus = ENG_subsidies_supermarine
+				has_completed_focus = ENG_appeasement
+			}
+		}
+
+		production_bonus = {
+			production_efficiency_cap_factor = 0.05
+		}
+	}
+
+	# Joseph Smith's Design Team (UK RAF tree)
+	add_trait = {
+		token = ENG_mio_trait_mitchells_legacy
+		name = ENG_mio_trait_mitchells_legacy
+		icon = GFX_generic_mio_trait_icon_air_attack
+		special_trait_background = yes
+
+		position = { x=0 y=3 }
+		relative_position_id = ENG_mio_trait_seaplane_origins
+
+		available = {
+			FROM = { has_completed_focus = ENG_research_funding }
+		}
+
+		limit_to_equipment_type = { mio_cat_eq_only_light_fighter }
+
+		equipment_bonus = {
+			air_attack = 0.05
+			air_defence = 0.05
+			maximum_speed = 0.1
+			build_cost_ic = 0.03
+		}
+	}
 }
 
 ENG_hawker_organization = {
@@ -604,24 +620,6 @@ ENG_fairey_aviation_organization = {
 				FROM = { NOT = { original_tag = ENG } }
 			}
 #			FROM = { NOT = { has_war_with = ENG } }
-		}
-
-		IF = {
-			limit = { FROM = { original_tag = BUL } }
-			custom_trigger_tooltip = {
-				tooltip = has_invited_mio_tt
-				FROM = {
-					has_country_flag = has_invited_fairey_aviation_mio_flag 
-				}
-			}
-			FROM = {
-				OR = {
-					is_subject = no
-					is_subject_of = ENG
-				}
-				#is_in_faction_with = ENG
-				#NOT = { has_completed_focus = BUL_nationalization }
-			}
 		}
 	}
 }
@@ -774,7 +772,6 @@ ENG_vauxhall_automotive_organization = {
 		IF = {
 			limit = {
 				OR = { 
-					FROM = { original_tag = BUL }
 					FROM = { original_tag = ETH }
 				}  
 			}
@@ -783,17 +780,6 @@ ENG_vauxhall_automotive_organization = {
 				FROM = {
 					has_country_flag = has_invited_vauxhall_mio_flag 
 				}
-			}
-		}
-		IF = {
-			limit = { FROM = { original_tag = BUL } }
-			FROM = {
-				OR = {
-					is_subject = no
-					is_subject_of = ENG
-				}
-				#is_in_faction_with = ENG
-				#NOT = { has_completed_focus = BUL_nationalization }
 			}
 		}
 		IF = {

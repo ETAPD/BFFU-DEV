@@ -12,8 +12,70 @@ on_actions = {
 					has_war = yes
 					ENG = { has_capitulated = yes }
 					NOT = { has_idea = USA_reclaim_democracy }
+					NOT = {
+						ENG = {
+							controls_state = 120
+							controls_state = 121
+							controls_state = 122
+							controls_state = 123
+							controls_state = 125
+							controls_state = 126
+							controls_state = 127
+							controls_state = 128
+							controls_state = 129
+							controls_state = 130
+							controls_state = 131
+							controls_state = 132
+							controls_state = 133
+							controls_state = 136
+							controls_state = 338
+							controls_state = 931
+						}
+					}
 				}
 				add_ideas = USA_reclaim_democracy
+				# the attack bonus is army_claim_attack_factor, so claims limit it to the British mainland
+				120 = { add_claim_by = ROOT }
+				121 = { add_claim_by = ROOT }
+				122 = { add_claim_by = ROOT }
+				123 = { add_claim_by = ROOT }
+				125 = { add_claim_by = ROOT }
+				126 = { add_claim_by = ROOT }
+				127 = { add_claim_by = ROOT }
+				128 = { add_claim_by = ROOT }
+				129 = { add_claim_by = ROOT }
+				130 = { add_claim_by = ROOT }
+				131 = { add_claim_by = ROOT }
+				132 = { add_claim_by = ROOT }
+				133 = { add_claim_by = ROOT }
+				136 = { add_claim_by = ROOT }
+				338 = { add_claim_by = ROOT }
+				931 = { add_claim_by = ROOT }
+				set_country_flag = USA_reclaim_democracy_claims
+			}
+			# idea cancelled (Britain liberated): drop the temporary claims
+			if = {
+				limit = {
+					has_country_flag = USA_reclaim_democracy_claims
+					NOT = { has_idea = USA_reclaim_democracy }
+				}
+				120 = { remove_claim_by = ROOT }
+				121 = { remove_claim_by = ROOT }
+				122 = { remove_claim_by = ROOT }
+				123 = { remove_claim_by = ROOT }
+				125 = { remove_claim_by = ROOT }
+				126 = { remove_claim_by = ROOT }
+				127 = { remove_claim_by = ROOT }
+				128 = { remove_claim_by = ROOT }
+				129 = { remove_claim_by = ROOT }
+				130 = { remove_claim_by = ROOT }
+				131 = { remove_claim_by = ROOT }
+				132 = { remove_claim_by = ROOT }
+				133 = { remove_claim_by = ROOT }
+				136 = { remove_claim_by = ROOT }
+				338 = { remove_claim_by = ROOT }
+				931 = { remove_claim_by = ROOT }
+				clr_country_flag = USA_reclaim_democracy_claims
 			}
 
 			# Kaiser Industries trust — always Friendly if Henry J. Kaiser is advisor
@@ -25,29 +87,49 @@ on_actions = {
 				set_variable = { var = USA_kaiser_trust value = 3 }
 			}
 
-			# Big Gas wartime rubber — fires once when USA enters a war after completing the focus
-			if = {
-				limit = {
-					has_country_flag = USA_big_gas_rubber_pending
-					has_war = yes
-				}
-				modify_building_resources = {
-					building = synthetic_rubber_refinery
-					resource = rubber
-					amount = 10
-				}
-				clr_country_flag = USA_big_gas_rubber_pending
-			}
+			
 
-			# War entry — UK loses London
-			# If Britain no longer controls London, USA is forced into the war
+			# War entry when the UK loses London: see on_weekly_USA below.
+
+			# War entry — Jan 1st 1942 and USA still at peace
+			# Historical backstop: if Pearl Harbor never happened, USA joins anyway
 			if = {
 				limit = {
 					NOT = { is_in_faction = yes }
 					ENG = { is_faction_leader = yes }
-					NOT = { 126 = { is_controlled_by = ENG } }
+					date > 1941.12.31
+					NOT = { has_war = yes }
 				}
+				remove_ideas = USA_neutrality_no_war_call
 				ENG = { add_to_faction = ROOT }
+				country_event = { id = usa.1006 }
+			}
+		}
+	}
+	# War entry — UK loses London (not held by Britain or an ally).
+	# Lifts the non-intervention block and forces the USA into every war Britain is in,
+	# whether or not the USA is already in the Allies. Runs once.
+	on_weekly_USA = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = USA_london_war_entry_done }
+					126 = { NOT = { CONTROLLER = { OR = { tag = ENG is_in_faction_with = ENG } } } }
+					ENG = { has_war = yes }
+				}
+				set_country_flag = USA_london_war_entry_done
+				remove_ideas = USA_neutrality_no_war_call
+				set_rule = { can_join_factions = yes }
+				if = {
+					limit = { NOT = { is_in_faction = yes } }
+					random_country = {
+						limit = {
+							is_faction_leader = yes
+							OR = { tag = ENG is_in_faction_with = ENG }
+						}
+						add_to_faction = ROOT
+					}
+				}
 				if = {
 					limit = { controls_state = 100 } # Iceland
 					100 = {
@@ -68,18 +150,23 @@ on_actions = {
 				}
 				country_event = { id = usa.1006 }
 			}
+		}
+	}
 
-			# War entry — Jan 1st 1942 and USA still at peace
-			# Historical backstop: if Pearl Harbor never happened, USA joins anyway
+	on_war = {
+		effect = {
+			# Big Gas wartime rubber — fires once when USA enters a war after completing the focus
 			if = {
 				limit = {
-					NOT = { is_in_faction = yes }
-					ENG = { is_faction_leader = yes }
-					date > 1941.12.31
-					NOT = { has_war = yes }
+					has_country_flag = USA_big_gas_rubber_pending
+					has_war = yes
 				}
-				ENG = { add_to_faction = ROOT }
-				country_event = { id = usa.1006 }
+				modify_building_resources = {
+					building = synthetic_rubber_refinery
+					resource = rubber
+					amount = 10
+				}
+				clr_country_flag = USA_big_gas_rubber_pending
 			}
 		}
 	}

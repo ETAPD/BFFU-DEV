@@ -507,12 +507,49 @@ on_actions = {
 				}
 			}
 		}
+
+		### State of Africa ###
+		# Soviet cities counter (Leningrad/Moscow/Stalingrad)
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						OR = { state = 195 state = 219 state = 217 }
+					}
+				}
+				AFRICA_count_sov_cities = yes
+			}
+		}
+		# Swap the modifier on a europe state that changed hands
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = capitulation_state_reversal }
+					GER = { has_war_with = SOV }
+					FROM.FROM = {
+						is_on_continent = europe
+						is_in_array = { global.africa_modifier_states_europe = THIS }
+					}
+				}
+				FROM.FROM = { AFRICA_state_swap_single = yes }
+			}
+		}
+		# Africa
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						OR = {
+							has_state_flag = AFRICA_ALLIES_controls
+							has_state_flag = NOT_AFRICA_ALLIES_controls
+						}
+					}
+				}
+				AFRICA_recount_bases = yes
+			}
+		}
 	}
 
-	# Weekly consistency sweep of the Pacific/Commonwealth europe-state modifiers.
-	# The hot path (state control changes) only updates the flipped state, so this
-	# catches the rare cases a state's modifier goes stale without a control change
-	# (e.g. its controller joins or leaves a faction).
 	on_weekly_USA = {
 		effect = {
 			if = {
@@ -520,6 +557,19 @@ on_actions = {
 					GER = { has_war_with = SOV }
 				}
 				PACIFIC_state_swap = yes
+				AFRICA_state_swap = yes
+			}
+		}
+	}
+
+
+	on_monthly_USA = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_game_rule = { rule = state_of_africa option = DISABLED } }
+				}
+				AFRICA_sov_cities_tick = yes
 			}
 		}
 	}

@@ -478,7 +478,13 @@ focus_tree = {
 			}
 
 			every_army_leader = {
-				add_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+				if = {
+					limit = { PREV = { has_country_flag = SOV_purge_effects_halved } }
+					add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
+				}
+				else = {
+					add_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+				}
 			}
 
 		}
@@ -839,7 +845,7 @@ focus_tree = {
 				}
 				add_equipment_to_stockpile = {
 					type = fighter_equipment_0
-					amount = 250
+					amount = 300
 					producer = SOV
 				}
 			}
@@ -907,7 +913,7 @@ focus_tree = {
 				}
 				add_equipment_to_stockpile = {
 					type = fighter_equipment_0
-					amount = 150
+					amount = 200
 					producer = SOV
 				}
 			}
@@ -939,7 +945,7 @@ focus_tree = {
 		available_if_capitulated = yes
 		
 		available = {
-			date > 1937.5.1
+			date > 1937.6.1
 			NOT = {has_global_flag = scw_over}
 		}
 
@@ -1017,56 +1023,13 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			custom_effect_tooltip = generic_skip_one_line_tt
-			CHI = {
-				add_equipment_to_stockpile = {
-					type = infantry_equipment_0
-					amount = 5000
-					producer = SOV
-				}
-				add_equipment_to_stockpile = {
-					type = squad_equipment_0
-					amount = 1000
-					producer = SOV
-				}
-				add_equipment_to_stockpile = {
-					type = artillery_equipment_1
-					amount = 200
-					producer = SOV
-				}
-				add_equipment_to_stockpile = {
-					type = sov_light_tank_chassis_t26
-					amount = 150
-					producer = SOV
-				}
-				add_equipment_to_stockpile = {
-					type = motorized_equipment
-					amount = 300
-					producer = SOV
-				}
-				add_equipment_to_stockpile = {
-					type = train_equipment_1
-					amount = 30
-					producer = SOV
-				}
-				add_equipment_to_stockpile = {
-					type = fighter_equipment_0
-					amount = 100
-					producer = SOV
-				}
-			}
-			605 = {
-				add_building_construction = {
-					type = air_base
-					level = 4
-					instant_build = yes
-				}
-			}
+			army_experience = 250
+			air_experience = 200
 			add_timed_idea = {
 				idea = SOV_minor_industrial_effort
 				days = 60
 			}
-			add_ideas = SOV_volunteers_in_china_small
+			#add_ideas = SOV_volunteers_in_china_small
 			hidden_effect = {
 				set_technology = {
 					nkvd_tech_2 = 1
@@ -1152,20 +1115,33 @@ focus_tree = {
 				days = 90
 			}
 			if = {
-				limit = {
-					MON = {
-						is_ai = yes
-					}
+				limit = { has_global_flag = USA_china_volunteers_first }
+				if = {
+					limit = { MON = { is_ai = yes } }
+					add_ideas = SOV_volunteers_in_china_limited
 				}
-				add_ideas = SOV_volunteers_in_china_big
+				if = {
+					limit = { MON = { is_ai = no } }
+					add_ideas = SOV_volunteers_in_china_limited_human_mon
+				}
 			}
-			if = {
-				limit = {
-					MON = {
-						is_ai = no
+			else = {
+				if = {
+					limit = {
+						MON = {
+							is_ai = yes
+						}
 					}
+					add_ideas = SOV_volunteers_in_china_big
 				}
-				add_ideas = SOV_volunteers_in_china_big_human_mon
+				if = {
+					limit = {
+						MON = {
+							is_ai = no
+						}
+					}
+					add_ideas = SOV_volunteers_in_china_big_human_mon
+				}
 			}
 			
 			hidden_effect = {
@@ -2110,6 +2086,7 @@ focus_tree = {
 				limit = {
 					NOT = { is_core_of = SOV }
 					NOT = { is_core_of = MON }
+					has_resistance = yes # add_compliance errors on states without resistance
 				}
 				add_compliance = 20
 			}
@@ -2118,6 +2095,7 @@ focus_tree = {
 				every_controlled_state = {
 					limit = {
 						is_core_of = POL
+						has_resistance = yes # Danzig, Gdynia, Olsa are German cores
 					}
 					add_compliance = 10
 				}
@@ -2317,11 +2295,10 @@ focus_tree = {
 						}
 					}
 				}
-				any_country = {
+				any_enemy_country = {
 					owns_state = 78
 					owns_state = 80
 					owns_state = 766
-					has_war_with = ROOT
 				}
 			}
 		}
@@ -2580,6 +2557,10 @@ focus_tree = {
 				}
 				add_extra_state_shared_building_slots = 8
 			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_volga_level_tt
+			SOV_upgrade_region_volga = yes
 		}
 	}
 
@@ -2776,6 +2757,9 @@ focus_tree = {
 		}
 
 		completion_reward = {
+			news_event = {
+				id = news.154
+			}
 			# Barb start flag
 			mark_focus_tree_layout_dirty = yes
 			set_country_flag = SOV_great_patriotic_war_start
@@ -3052,6 +3036,10 @@ focus_tree = {
 
 		completion_reward = {
 			add_ideas = SOV_nkvd
+			custom_effect_tooltip = nkvd_tt
+			hidden_effect = {
+				set_technology = { nkvd_detachment_tech = 1 }
+			}
 		}
 	}
 
@@ -4297,15 +4285,23 @@ focus_tree = {
 			hidden_effect = {
 				every_army_leader = {
 					limit = {
-						has_trait = trait_SOV_cowed_by_stalin_army
+						OR = {
+							has_trait = trait_SOV_cowed_by_stalin_army
+							has_trait = trait_SOV_cowed_by_stalin_army_halved
+						}
 					}
 					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 				}
 				every_navy_leader = {
 					limit = {
-						has_trait = trait_SOV_cowed_by_stalin_navy
+						OR = {
+							has_trait = trait_SOV_cowed_by_stalin_navy
+							has_trait = trait_SOV_cowed_by_stalin_navy_halved
+						}
 					}
 					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_navy
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_navy_halved
 				}
 			}
 		}
@@ -5023,6 +5019,7 @@ focus_tree = {
 				}
 				every_army_leader = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_weaker
 				}
 			}
@@ -5114,6 +5111,7 @@ focus_tree = {
 			ELSE = {
 				SOV_semyon_budyonny = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_skill_level = 1
 					add_defense = 2
 					add_logistics = 1
@@ -5182,6 +5180,7 @@ focus_tree = {
 			ELSE = {
 				SOV_grigory_kulik = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_attack = 2
 					add_defense = 1
 					add_planning = 1
@@ -5242,6 +5241,7 @@ focus_tree = {
 			#Kuznetsov, ADVISOR
 			SOV_vasily_kuznetsov = {
 				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
@@ -5302,6 +5302,7 @@ focus_tree = {
 			ELSE = {
 				SOV_aleksandr_yegorov = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_defense = 2
 					add_logistics = 1
 					add_planning = 2
@@ -5381,7 +5382,7 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		available = {
-			has_completed_focus = SOV_pol_purge12
+			#has_completed_focus = SOV_pol_purge12
 			#has_completed_focus = SOV_mil25
 		}
 
@@ -5414,6 +5415,7 @@ focus_tree = {
 			ELSE = {
 				SOV_nikolay_vatutin = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					#add_attack = -2
 					add_logistics = 2
 					add_unit_leader_trait = trait_genius_staffer
@@ -5478,6 +5480,7 @@ focus_tree = {
 			ELSE = {
 				SOV_kliment_voroshilov = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_attack = 2
 					add_logistics = 2
 					add_planning = 2
@@ -5536,6 +5539,7 @@ focus_tree = {
 			ELSE = {
 				SOV_boris_shaposhnikov = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					promote_leader = yes 
 				}
 			}
@@ -5563,11 +5567,8 @@ focus_tree = {
 
 		search_filters = {FOCUS_FILTER_MILITARY_CHARACTER }
 
-		available_if_capitulated = yes
-
 		available = {
 			#has_completed_focus = SOV_army_mid3
-			has_completed_focus = SOV_pol_purge12
 		}
 
 		available_if_capitulated = yes
@@ -5578,6 +5579,7 @@ focus_tree = {
 			custom_effect_tooltip = SOV_army_grind_tt
 			SOV_markian_popov = {
 				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+				remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 				add_attack = 1
 				add_logistics = 1
 				add_unit_leader_trait = trait_frontline_commander
@@ -5666,6 +5668,7 @@ focus_tree = {
 			ELSE = {
 				SOV_semyon_timoshenko = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_attack = 1
 					add_logistics = 1
 					#add_unit_leader_trait = trait_head_red_army
@@ -5727,6 +5730,7 @@ focus_tree = {
 			ELSE = {
 				SOV_konstantin_rokossovsky = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_skill_level = 1
 					hidden_effect = {
 						remove_unit_leader_trait = panzer_leader
@@ -5835,6 +5839,7 @@ focus_tree = {
 			ELSE = {
 				SOV_mikhail_tukhachevsky = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_attack = 1
 					add_logistics = 1
 					add_planning = 1
@@ -5884,6 +5889,7 @@ focus_tree = {
 			ELSE = {
 				SOV_aleksandr_vasilevsky = {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					add_defense = 1
 					add_logistics = 1
 					add_planning = 2
@@ -5927,6 +5933,7 @@ focus_tree = {
 			ELSE = {
 				SOV_vasily_blyukher= {
 					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 				}
 				custom_effect_tooltip = generic_skip_one_line_tt
 				custom_effect_tooltip = SOV_generic_modify_red_army_tt
@@ -10040,7 +10047,7 @@ focus_tree = {
 					fixed_ship_radar_slot = empty
 					fixed_ship_engine_slot = cruiser_ship_engine_2
 					fixed_ship_secondaries_slot = ship_secondaries_2
-					fixed_ship_armor_slot = ship_armor_cruiser_1
+					fixed_ship_armor_slot = ship_armor_cruiser_heavy_1
 					front_1_custom_slot = ship_anti_air_2
 					mid_1_custom_slot = ship_torpedo_2
 					mid_2_custom_slot = ship_torpedo_2
@@ -10872,7 +10879,7 @@ focus_tree = {
 		completion_reward = {
 			add_timed_idea = {
 				idea = SOV_arty_temp
-				days = 180
+				days = 120
 			}
 			add_tech_bonus = {
 				name = art_bonus
@@ -11289,9 +11296,8 @@ focus_tree = {
 
 
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = SOV_kulik_arty1
-				add_idea = SOV_kulik_arty3
+			mio:SOV_grabin_design_bureau_organization = {
+				complete_mio_trait = grabin_trait_kulik_heavy_guns
 			}
 		}
 	}
@@ -11393,10 +11399,20 @@ focus_tree = {
 
 
 		completion_reward = {
-			add_ideas = SOV_inf1
+			add_equipment_to_stockpile = {
+				type = infantry_equipment_1
+				amount = 20000
+				producer = SOV
+			}
+			add_equipment_to_stockpile = {
+				type = squad_equipment_0
+				amount = 4000
+				producer = SOV
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_timed_idea = {
 				idea = SOV_inf_temp
-				days = 180
+				days = 120
 			}
 		}
 	}
@@ -11411,7 +11427,7 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
 
 		relative_position_id = SOV_mil19
-		cost = 4
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -11429,7 +11445,7 @@ focus_tree = {
 					uses = 2
 					category = infantry_weapons
 				}
-				
+				add_ideas = SOV_inf1
 		}
 	}
 
@@ -11443,7 +11459,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH }
 
 		relative_position_id = SOV_mil19
-		cost = 4
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -11452,6 +11468,17 @@ focus_tree = {
 
 
 		completion_reward = {
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = 1000
+				producer = SOV
+			}
+			add_equipment_to_stockpile = {
+				type = radio_equipment_1
+				amount = 1000
+				producer = SOV
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_tech_bonus = {
 					name = doc_bonus
 					bonus = 0.5
@@ -11486,7 +11513,7 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_INDUSTRY}
 
 		relative_position_id = SOV_mil21
-		cost = 4
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -11511,7 +11538,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SOV_mil20
-		cost = 4
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -11536,7 +11563,7 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_INDUSTRY}
 
 		relative_position_id = SOV_mil23
-		cost = 4
+		cost = 3
 		ai_will_do = {
 			factor = 5
 		}
@@ -11671,7 +11698,7 @@ focus_tree = {
 		completion_reward = {
 			add_tech_bonus = {
 					name = fighter_bonus
-					bonus = 0.4
+					bonus = 0.75
 					uses = 2
 					category = cat_medium_armor
 				}
@@ -11761,7 +11788,7 @@ focus_tree = {
 		completion_reward = {
 			add_tech_bonus = {
 				name = GER_mech
-				bonus = 0.4
+				bonus = 1.0
 				uses = 2
 				technology = mot_radio1
 				technology = mot_radio2
@@ -12144,13 +12171,6 @@ focus_tree = {
 						state = 233 #Sochi
 					}
 				}
-				random_select_amount = 3
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = synthetic_rubber_refinery
-					level = 2
-					instant_build = yes
-				}
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -12279,13 +12299,7 @@ focus_tree = {
 						state = 233 #Sochi
 					}
 				}
-				random_select_amount = 3
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = synthetic_rubber_refinery
-					level = 2
-					instant_build = yes
-				}
+
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 
@@ -12643,11 +12657,11 @@ focus_tree = {
 						state = 233 #Sochi
 					}
 				}
-				random_select_amount = 5
-				add_extra_state_shared_building_slots = 1
+				random_select_amount = 4
+				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = synthetic_rubber_refinery
-					level = 1
+					level = 2
 					instant_build = yes
 				}
 			}
@@ -12753,13 +12767,6 @@ focus_tree = {
 						state = 233 #Sochi
 					}
 				}
-				random_select_amount = 3
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = synthetic_rubber_refinery
-					level = 2
-					instant_build = yes
-				}
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			mio:SOV_tupolev_design_bureau_organization = {
@@ -12832,8 +12839,6 @@ focus_tree = {
 			add_to_variable = { SOV_command_economy_stability_gain_factor_var = 0.002 }
 			custom_effect_tooltip = SOV_expected_consumer_goods_-5_tt
 			add_to_variable = { SOV_command_economy_consumer_goods_expected_value_var = -0.05 }
-			custom_effect_tooltip = SOV_construction_speed_mil_20_tt
-			add_to_variable = { SOV_command_economy_production_speed_arms_factory_factor_var = 0.2 }
 
 			hidden_effect = {
 				SOV_check_equipment_stockpile = yes
@@ -13080,6 +13085,8 @@ focus_tree = {
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_volga_level_tt
+			SOV_upgrade_region_volga = yes
 			custom_effect_tooltip = SOV_generic_modify_urals_level_tt
 			SOV_upgrade_region_urals = yes
 			custom_effect_tooltip = SOV_generic_modify_siberia_level_tt
@@ -13191,12 +13198,37 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SOV_emergency_rubber_production
-		icon = GFX_focus_generic_rubber
+		id = SOV_expand_baku
+		icon = GFX_SOV_rework255
 		prerequisite = { focus = SOV_found_state_defense_committee }
-		x = -1
+		x = -3
 		y = 1
 		relative_position_id = SOV_found_state_defense_committee
+		cost = 5
+
+
+		completion_reward = {
+ 			add_resource = {
+				type = oil
+				amount = 200
+				state = 229
+			}
+	 		add_resource = {
+				type = rubber
+				amount = 200
+				state = 229
+			}
+
+		}
+	}
+
+	focus = {
+		id = SOV_emergency_rubber_production
+		icon = GFX_focus_generic_rubber
+		prerequisite = { focus = SOV_expand_baku }
+		x = 0
+		y = 2
+		relative_position_id = SOV_expand_baku
 		cost = 2
 		
 		available = {
@@ -13334,10 +13366,10 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
 
-			custom_effect_tooltip = SOV_efficiency_growth_10_tt
-			add_to_variable = { SOV_command_economy_production_factory_efficiency_gain_factor_var = 0.1 }
+			custom_effect_tooltip = SOV_efficiency_growth_15_tt
+			add_to_variable = { SOV_command_economy_production_factory_efficiency_gain_factor_var = 0.15 }
 			add_to_variable = { 
-           	 	SOV_command_economy_production_factory_max_efficiency_factor_var = 0.1
+           	 	SOV_command_economy_production_factory_max_efficiency_factor_var = 0.075
             	tooltip = production_factory_max_efficiency_factor_tt
             }
 		}
@@ -13533,92 +13565,11 @@ focus_tree = {
 		}
 		
 		completion_reward = {
-			custom_effect_tooltip = SOV_lend_lease_port_mechanic_tt
-			custom_effect_tooltip = generic_skip_one_line_tt
-			if = {
-				limit = {
-					214 = {
-						naval_base < 2
-					}
-				}
-				add_equipment_to_stockpile = { type = mechanized_equipment amount = 100 producer = ENG }
-				add_equipment_to_stockpile = { type = motorized_equipment amount = 200 producer = ENG }
-				add_equipment_to_stockpile = { type = support_equipment amount = 200 producer = ENG }
-				add_equipment_to_stockpile = { type = radio_equipment amount = 200 producer = ENG }
-				add_equipment_to_stockpile = { type = anti_tank_equipment amount = 200 producer = ENG }
-			} else_if = {
-				limit = {
-					214 = {
-						naval_base < 4
-					}
-				}
-				add_equipment_to_stockpile = { type = mechanized_equipment amount = 200 producer = ENG }
-				add_equipment_to_stockpile = { type = motorized_equipment amount = 275 producer = ENG }
-				add_equipment_to_stockpile = { type = support_equipment amount = 275 producer = ENG }
-				add_equipment_to_stockpile = { type = radio_equipment amount = 275 producer = ENG }
-				add_equipment_to_stockpile = { type = anti_tank_equipment amount = 275 producer = ENG }
-			} else_if = {
-				limit = {
-					214 = {
-						naval_base < 6
-					}
-				}
-				add_equipment_to_stockpile = { type = mechanized_equipment amount = 300 producer = ENG }
-				add_equipment_to_stockpile = { type = motorized_equipment amount = 350 producer = ENG }
-				add_equipment_to_stockpile = { type = support_equipment amount = 350 producer = ENG }
-				add_equipment_to_stockpile = { type = radio_equipment amount = 350 producer = ENG }
-				add_equipment_to_stockpile = { type = anti_tank_equipment amount = 350 producer = ENG }
-			} else_if = {
-				limit = {
-					214 = {
-						naval_base < 8
-					}
-				}
-				add_equipment_to_stockpile = { type = mechanized_equipment amount = 400 producer = ENG }
-				add_equipment_to_stockpile = { type = motorized_equipment amount = 425 producer = ENG }
-				add_equipment_to_stockpile = { type = support_equipment amount = 425 producer = ENG }
-				add_equipment_to_stockpile = { type = radio_equipment amount = 425 producer = ENG }
-				add_equipment_to_stockpile = { type = anti_tank_equipment amount = 425 producer = ENG }
-			} else_if = {
-				limit = {
-					214 = {
-						naval_base > 8
-					}
-				}
-				add_equipment_to_stockpile = { type = mechanized_equipment amount = 500 producer = ENG }
-				add_equipment_to_stockpile = { type = motorized_equipment amount = 500 producer = ENG }
-				add_equipment_to_stockpile = { type = support_equipment amount = 500 producer = ENG }
-				add_equipment_to_stockpile = { type = radio_equipment amount = 500 producer = ENG }
-				add_equipment_to_stockpile = { type = anti_tank_equipment amount = 500 producer = ENG }
-			}
+			custom_effect_tooltip = SOV_murmansk_convoys_tt
 		}
 	}
 
 
-	focus = {
-		id = SOV_expand_baku
-		icon = GFX_SOV_rework255
-		prerequisite = { focus = SOV_found_state_defense_committee }
-		x = -3
-		y = 1
-		relative_position_id = SOV_found_state_defense_committee
-		cost = 5
-
-
-		completion_reward = {
- 			add_resource = {
-				type = oil
-				amount = 200
-				state = 229
-			}
-	 		add_resource = {
-				type = rubber
-				amount = 200
-				state = 229
-			}
-
-		}
-	}
 	
 	focus = {
 		id = SOV_caucasus_mines
@@ -13687,7 +13638,7 @@ focus_tree = {
 			custom_effect_tooltip = unlock_propaganda_campaign_tt
 			unlock_decision_tooltip = SOV_propaganda_glory_to_partisans
 			unlock_decision_tooltip = SOV_propaganda_death_to_invaders
-			unlock_decision_tooltip = SOV_propaganda_sweep_scum_out
+			#unlock_decision_tooltip = SOV_propaganda_sweep_scum_out
 			custom_effect_tooltip = propaganda_campaign_requirement_tt
 
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -13710,13 +13661,18 @@ focus_tree = {
 			hidden_effect = {
 				every_army_leader = {
 					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_army
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
 					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_army_weaker
 				}
 				every_navy_leader = {
 					limit = {
-						has_trait = trait_SOV_cowed_by_stalin_navy
+						OR = {
+							has_trait = trait_SOV_cowed_by_stalin_navy
+							has_trait = trait_SOV_cowed_by_stalin_navy_halved
+						}
 					}
 					remove_unit_leader_trait =  trait_SOV_cowed_by_stalin_navy
+					remove_unit_leader_trait = trait_SOV_cowed_by_stalin_navy_halved
 				}
 				SOV = { country_event = soviet.2223 }
 			}
@@ -13770,7 +13726,8 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			add_timed_idea = { idea = SOV_coordinate_industry_idea days = 270 }
+			add_ideas = SOV_coordinate_industry_idea
+			custom_effect_tooltip = generic_skip_one_line_tt
 			add_offsite_building = { type = industrial_complex level = 10 }
 			add_offsite_building = { type = arms_factory level = 15 }
 		}
@@ -13805,7 +13762,7 @@ focus_tree = {
 				custom_override_tooltip = {
 					tooltip = {
 						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "30% Surrender Progress"
+						PROGRESS = "35% Surrender Progress"
 					}
 					always = no
 				}
@@ -13852,7 +13809,7 @@ focus_tree = {
 				custom_override_tooltip = {
 					tooltip = {
 						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "35% Surrender Progress"
+						PROGRESS = "50% Surrender Progress"
 					}
 					always = no
 				}
@@ -14040,6 +13997,75 @@ focus_tree = {
 			}
 
 			custom_effect_tooltip = SOV_defend_moscow_tt
+		}
+	}
+
+	focus = {
+		id = SOV_relocate_government
+		icon = GFX_focus_generic_railroad
+		prerequisite = { focus = SOV_defend_moscow }
+		x = 0
+		y = 1
+		relative_position_id = SOV_defend_moscow
+		cost = 0
+
+		available = {
+			219 = {
+				NOT = { is_controlled_by = SOV }
+			}
+		}
+
+		bypass = {
+			219 = {
+				NOT = { is_controlled_by = SOV }
+			}
+		}
+
+		bypass_effect = {
+			IF = {
+				limit = {
+					249 = {	
+						is_controlled_by = SOV
+					}
+				}
+				set_capital =  { state = 249 }
+			}
+			build_railway = {
+				level = 5
+				path = { 6338 11387 9305 9402 11255 9050 3103 }
+			}
+			build_railway = {
+				level = 5
+				path = { 3103 6089 9214 6124 }
+			}
+			build_railway = {
+				level = 5
+				path = { 6338 11243 11356 9373 6253 6374 3352 11277 11344 }
+			}
+			build_railway = {
+				level = 5
+				path = { 11344 3303 11375 }
+			}
+			build_railway = {
+				level = 5
+				path = { 6338 11243 11356 9373 9307 9244 392 }
+			}
+			build_railway = {
+				level = 5
+				path = { 392 9338 6302 3276 286 3317 11269 9286 9258 }
+			}
+			build_railway = {
+				level = 5
+				path = { 392 9338 6302 6226 9365 6339 6502 }
+			}
+			build_railway = {
+				level = 5
+				path = { 392 9338 6302 6226 6275 9243 11225 }
+			}
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = SOV_relocate_government_tt
 		}
 	}
 	
@@ -14238,6 +14264,46 @@ focus_tree = {
 		}
 	}
 	
+	focus = {
+		id = SOV_mobilise_nkvd_units
+		icon = GFX_SOV_nkvd_primacy_ccp_2d_sov_compatibility
+		prerequisite = { focus = SOV_found_state_defense_committee }
+		x = -1
+		y = 1
+		overlay = GFX_focus_fast_overlay_generic_clock
+
+
+		relative_position_id = SOV_found_state_defense_committee
+		cost = 2
+
+		available = {
+			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
+				limit = {
+					has_country_flag = SOV_spawn_nkvd_units_in_progress_flag
+				}
+				set_temp_variable = { temp_focus_days = 2 } #For tooltip purposes
+				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
+				custom_override_tooltip = {
+					tooltip = {
+						localization_key = SOV_focus_in_progress_tt
+						FLAG_DAYS = [?SOV_spawn_nkvd_units_in_progress_flag:days]
+					}
+					always = no
+				}
+			}
+			else = { #Starts on its own 20 days after SOV_found_state_defense_committee completes (on_daily_SOV in 99_tfb_on_actions.txt)
+				custom_trigger_tooltip = {
+					tooltip = SOV_nkvd_units_auto_start_tt
+					always = no
+				}
+			}
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = SOV_nkvd_reserve_mobilisation_tt
+		}
+	}
+
 	focus = {
 		id = SOV_defend_leningrad
 		icon = GFX_goal_generic_fortify_city
@@ -14505,9 +14571,8 @@ focus_tree = {
 			else = { #NOT BEEN WORKED ON (Just Explain)
 				custom_override_tooltip = {
 					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_or_date_tt
-						PROGRESS = "5% Surrender Progress"
-						DATE = "1:00, 1 Jan, 1942"
+						localization_key = SOV_focus_will_auto_start_at_cities_or_date_tt
+						DATE = "1:00, 1 Mar, 1942"
 					}
 					always = no
 				}
@@ -14527,7 +14592,7 @@ focus_tree = {
 			add_to_variable = { SOV_red_army_experience_gain_army_factor_var = 0.1 }
 
 			custom_effect_tooltip = SOV_red_army_experience_loss_factor_-5_tt
-			add_to_variable = { SOV_red_army_experience_loss_factor_var = 0.05 }
+			add_to_variable = { SOV_red_army_experience_loss_factor_var = -0.05 }
 		}
 	}
 
@@ -14566,7 +14631,7 @@ focus_tree = {
 
 		relative_position_id = SOV_slacken_training_standarts
 		available = {
-			surrender_progress > 0.35
+			surrender_progress > 0.45
 		}
 		completion_reward = {
 			
@@ -14610,62 +14675,119 @@ focus_tree = {
 	focus = {
 		id = SOV_guards
 		icon = GFX_goal_soviet_guards
-		prerequisite = { focus = SOV_reorganize_red_army }
-		x = -2
-		y = 1
+		prerequisite = { focus = SOV_standardize_tank_doctrine }
+		x = -3
+		y = 3
 		relative_position_id = SOV_reorganize_red_army
-		cost = 2
-
+		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_experience_loss_factor_-15_tt
-			add_to_variable = { SOV_red_army_experience_loss_factor_var = -0.15 }
+			custom_effect_tooltip = SOV_guards_tt
+			hidden_effect = {
+				division_template = {
+					name = "Red Guard Tank Division"
+					division_names_group = SOV_GTC_01
+					priority = 2
+					template_counter = 140
+					is_locked = yes
+					force_allow_recruiting = yes
+					division_cap = 12
+					regiments = {
+						guards_medium = { x = 0 y = 0 }
+						guards_medium = { x = 0 y = 1 }
+						guards_medium = { x = 0 y = 2 }
+						guards_medium = { x = 0 y = 3 }
+						guards_medium = { x = 1 y = 0 }
+						guards_medium = { x = 1 y = 1 }
+						guards_medium = { x = 1 y = 2 }
+						guards_medium = { x = 1 y = 3 }
+						guards_mech = { x = 2 y = 0 }
+						guards_mech = { x = 2 y = 1 }
+						guards_mech = { x = 2 y = 2 }
+						guards_mech = { x = 3 y = 0 }
+						guards_mech = { x = 3 y = 1 }
+						guards_mech = { x = 3 y = 2 }
+						guards_mech = { x = 3 y = 3 }
+					}
+					support = {
+						pioneer_support = { x = 0 y = 0 }
+						rangers_support = { x = 0 y = 1 }
+						armored_signal = { x = 0 y = 2 }
+						mot_anti_air_brigade = { x = 0 y = 3 }
+						logistics_company_mot = { x = 0 y = 4 }
+						armored_maintenance = { x = 0 y = 5 }
+					}
+				}
+				division_template = {
+					name = "Red Guard Heavy Tank Division"
+					division_names_group = SOV_GTC_01
+					priority = 2
+					template_counter = 141
+					is_locked = yes
+					force_allow_recruiting = yes
+					division_cap = 12
+					regiments = {
+						guards_heavy = { x = 0 y = 0 }
+						guards_heavy = { x = 0 y = 1 }
+						guards_heavy = { x = 0 y = 2 }
+						guards_heavy = { x = 0 y = 3 }
+						guards_heavy = { x = 1 y = 0 }
+						guards_heavy = { x = 1 y = 1 }
+						guards_heavy = { x = 1 y = 2 }
+						guards_heavy = { x = 1 y = 3 }
+						guards_mech = { x = 2 y = 0 }
+						guards_mech = { x = 2 y = 1 }
+						guards_mech = { x = 2 y = 2 }
+						guards_mech = { x = 3 y = 0 }
+						guards_mech = { x = 3 y = 1 }
+						guards_mech = { x = 3 y = 2 }
+						guards_mech = { x = 3 y = 3 }
+					}
+					support = {
+						pioneer_support = { x = 0 y = 0 }
+						rangers_support = { x = 0 y = 1 }
+						armored_signal = { x = 0 y = 2 }
+						mot_anti_air_brigade = { x = 0 y = 3 }
+						logistics_company_mot = { x = 0 y = 4 }
+						armored_maintenance = { x = 0 y = 5 }
+					}
+				}
+				if = {
+					limit = {
+						has_tech = sov_medium_tank_1
+						has_tech = sov_heavy_tank_2
+					}
+					SOV_spawn_red_guards_both = yes
+				}
+				else_if = {
+					limit = { has_tech = sov_heavy_tank_2 }
+					SOV_spawn_red_guards_heavy = yes
+				}
+				else = {
+					SOV_spawn_red_guards_medium = yes
+				}
+			}
 		}
 	}
 
 	focus = {
 		id = SOV_enforced_fanaticism
 		icon = GFX_SOV_rework128
-		prerequisite = { focus = SOV_reorganize_red_army }
-		x = -2
+		prerequisite = { focus = SOV_learn_from_losses_2 }
+		x = 3
 		y = 0
 		relative_position_id = SOV_guards
-		cost = 2
-		overlay = GFX_focus_fast_overlay_generic_clock
+		cost = 5
 
 		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_enforced_fanaticism_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_enforced_fanaticism_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "40% Surrender Progress"
-					}
-					always = no
-				}
-			}
+			date > 1943.1.1
 		}
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			custom_effect_tooltip = SOV_red_army_army_core_defence_factor_075_tt
-			add_to_variable = { SOV_red_army_army_core_defence_factor_var = 0.075 }
+			every_army_leader = {
+				add_attack = 1
+				add_defense = 1
+			}
 		}
 	}
 
@@ -14673,163 +14795,65 @@ focus_tree = {
 		id = SOV_new_doctrine
 		icon = GFX_SOV_rework135
 		prerequisite = { focus = SOV_reorganize_red_army }
-		x = 2
+		x = -1
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
-		cost = 3
-		overlay = GFX_focus_fast_overlay_generic_clock
-
-		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_new_doctrine_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_new_doctrine_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "10% Surrender Progress"
-					}
-					always = no
-				}
-			}
-		}
+		cost = 5
+		mutually_exclusive = { focus = SOV_learn_from_our_losses }
 
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
 
-			# custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-10_tt
-			# add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.1 }
-			add_mastery_bonus = {
-				name = SOV_new_doctrine
-				bonus = 0.2
-				days = 360
-				folder = land
-			}
-			add_mastery = {
-				amount = 100
-				folder = land
-			}
+			custom_effect_tooltip = SOV_red_army_max_planning_10_pct_tt
+			add_to_variable = { SOV_red_army_max_planning_var = 0.1 }
+
+			custom_effect_tooltip = SOV_red_army_planning_speed_15_tt
+			add_to_variable = { SOV_red_army_planning_speed_var = 0.15 }
+
+			custom_effect_tooltip = SOV_red_army_army_morale_factor_5_tt
+			add_to_variable = { SOV_red_army_army_morale_factor_var = 0.05 }
 		}
 	}
 
 	focus = {
 		id = SOV_learn_from_our_losses
 		icon = GFX_SOV_rework78
-		prerequisite = { focus = SOV_new_doctrine }
-		x = 0
-		y = 1
+		prerequisite = { focus = SOV_reorganize_red_army }
+		x = 2
+		y = 0
 		relative_position_id = SOV_new_doctrine
-		cost = 3
-		overlay = GFX_focus_fast_overlay_generic_clock
-
-		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_learn_from_our_losses_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_learn_from_our_losses_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "20% Surrender Progress"
-					}
-					always = no
-				}
-			}
-		}
+		cost = 5
+		mutually_exclusive = { focus = SOV_new_doctrine }
 
 		completion_reward = {
 			custom_effect_tooltip = SOV_generic_modify_red_army_tt
 
-			custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-5_tt
-			add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.05 }
+			custom_effect_tooltip = SOV_red_army_army_strength_factor_10_tt
+			add_to_variable = { SOV_red_army_army_strength_factor_var = 0.1 }
 
-			add_mastery_bonus = {
-				name = SOV_learn_from_our_losses
-				bonus = 0.4
-				days = 360
-				folder = land
-			}
-			add_mastery = {
-				amount = 200
-				folder = land
-			}
+			custom_effect_tooltip = SOV_red_army_supply_consumption_factor_-10_tt
+			add_to_variable = { SOV_red_army_supply_consumption_factor_var = -0.1 }
+
+			custom_effect_tooltip = SOV_red_army_army_core_defence_factor_5_tt
+			add_to_variable = { SOV_red_army_army_core_defence_factor_var = 0.05 }
 		}
 	}
 
 	focus = {
 		id = SOV_learn_from_losses_2
 		icon = GFX_SOV_rework127
-		prerequisite = { focus = SOV_learn_from_our_losses }
-		x = 0
+		prerequisite = { focus = SOV_new_doctrine focus = SOV_learn_from_our_losses }
+		x = -1
 		y = 1
 		relative_position_id = SOV_learn_from_our_losses
-		cost = 3
-		overlay = GFX_focus_fast_overlay_generic_clock
-
-		available = {
-			if = { #ADVISOR WORKING ON THE FOCUS (Show progress)
-				limit = {
-					has_country_flag = SOV_learn_from_losses_2_in_progress_flag
-				}
-				set_temp_variable = { temp_focus_days = 3 } #For tooltip purposes
-				multiply_temp_variable = { temp_focus_days = 7 } #The constant uses focus cost which is in weeks, so convert to days
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_in_progress_tt
-						FLAG_DAYS = [?SOV_learn_from_losses_2_in_progress_flag:days]
-					}
-					always = no 
-				}
-			}
-			else = { #NOT BEEN WORKED ON (Just Explain)
-				custom_override_tooltip = {
-					tooltip = {
-						localization_key = SOV_focus_will_auto_start_at_surrender_level_tt
-						PROGRESS = "40% Surrender Progress"
-					}
-					always = no
-				}
-			}
-		}
+		cost = 5
 
 		completion_reward = {
-			custom_effect_tooltip = SOV_generic_modify_red_army_tt
-
-			# custom_effect_tooltip = SOV_red_army_land_doctrine_cost_factor_-10_tt
-			# add_to_variable = { SOV_red_army_land_doctrine_cost_factor_var = -0.1 }
-
-			add_mastery_bonus = {
-				name = SOV_learn_from_losses_2
-				bonus = 0.6
-				days = 360
-				folder = land
-			}
-			add_mastery = {
-				amount = 300
-				folder = land
-			}
+			unlock_tactic = tactic_breakthrough
+			unlock_tactic = tactic_planned_attack
+			show_unit_leaders_tooltip = SOV_yakov_kreizer
+			show_unit_leaders_tooltip = SOV_ivan_chernyakhovsky
+			show_unit_leaders_tooltip = SOV_dmitry_lelyushenko
 		}
 	}
 
@@ -14837,10 +14861,10 @@ focus_tree = {
 		id = SOV_new_leadership
 		icon = GFX_SOV_rework26
 		prerequisite = { focus = SOV_reorganize_red_army }
-		x = 0
+		x = -3
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
-		cost = 3
+		cost = 5
 
 
 		completion_reward = {
@@ -14874,7 +14898,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SOV_new_leadership
-		cost = 3
+		cost = 5
 		
 		available = {
 		}
@@ -14901,7 +14925,7 @@ focus_tree = {
 
 
 		available = {
-			surrender_progress > 0.3
+			surrender_progress > 0.33
 		}
 
 		completion_reward = {
@@ -15019,7 +15043,7 @@ focus_tree = {
 
 
 		available = {
-			surrender_progress > 0.5
+			surrender_progress > 0.55
 		}
 
 		completion_reward = {
@@ -15130,7 +15154,7 @@ focus_tree = {
 		id = SOV_fix_airforce
 		icon = GFX_SOV_rework232
 		prerequisite = { focus = SOV_reorganize_red_army }
-		x = 4
+		x = 3
 		y = 1
 		relative_position_id = SOV_reorganize_red_army
 		cost = 5
