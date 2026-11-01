@@ -495,18 +495,6 @@ country_event = {
 			}
 		}
 
-		#Make sure reluctant submission is triggered via this event
-		if = {
-			limit = {
-				has_dlc = "Thunder at Our Gates"
-				NOT = { 
-					has_global_flag = neutralized_focus_SIA_standing_our_ground 
-					has_global_flag = neutralized_focus_SIA_reluctant_submission
-				}
-			} 
-			complete_national_focus = SIA_reluctant_submission
-		}
-
 	}
 
 	# That would go against our principals of neutrality!
@@ -8165,8 +8153,8 @@ country_event = {
 		hidden_effect = {
 			IF = {
 				limit = {
-					any_country = {
-						original_tag = JAP
+					any_country_with_original_tag = {
+						original_tag_to_check = JAP
 						has_government = fascism
 						num_divisions < 20
 					}
@@ -8704,8 +8692,8 @@ country_event = {
 
 			IF = {
 				limit = {
-					any_country = {
-						original_tag = JAP
+					any_country_with_original_tag = {
+						original_tag_to_check = JAP
 						has_government = fascism
 						num_divisions < 20
 					}
@@ -11628,6 +11616,7 @@ country_event = {
 
 	trigger = {
 		original_tag = JAP
+		date > 1943.4.17 # Operation Vengeance - never before its historical date
 		has_character = JAP_isoroku_yamamoto
 		NOT = {
 			has_completed_focus = JAP_yamamotos_premiership
@@ -11648,30 +11637,7 @@ country_event = {
 	is_triggered_only = yes
 
 	immediate = {
-		random_list = {
-			10 = { # Yamamoto dies - Historical
-				modifier = {
-					factor = 10
-					is_historical_focus_on = yes
-				}
-				modifier = {
-					factor = 0.5
-					has_completed_focus = JAP_escort_efficiency
-				}
-				modifier = {
-					factor = 0
-					has_completed_focus = JAP_sea_sturdy_aircraft
-				}
-				country_event = { id = SEA_japan_air_accidents_events.01 hours = 16 random_hours = 8 }
-			}
-			10 = { # No one dies
-				modifier = {
-					factor = 2.5
-					has_completed_focus = JAP_escort_efficiency
-				}
-				country_event = { id = SEA_japan_air_accidents_events.02 hours = 16 random_hours = 8 }
-			}
-		}
+		country_event = { id = SEA_japan_air_accidents_events.01 hours = 7 } # Yamamoto dies - historical, always
 	}
 }
 

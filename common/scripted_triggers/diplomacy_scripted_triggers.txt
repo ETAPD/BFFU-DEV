@@ -945,53 +945,94 @@ DIPLOMACY_KICK_FROM_FACTION_ENABLE_TRIGGER = {
 DIPLOMACY_SEND_VOLUNTEERS_ENABLE_TRIGGER = {
 	if = {
 		limit = {
-			has_game_rule = {
-				rule = allow_volunteers
-				option = LIMITED
+			is_ai = yes
+		}
+		always = no
+	}
+	else = {
+		if = {
+			limit = {
+				has_idea = ENG_volunteers_idea
+			}
+			custom_trigger_tooltip = {
+				tooltip = ENG_VOLUNTEERS_SCW_ONLY_TT
+				NOT = { has_global_flag = scw_over }
+				FROM = {
+					OR = {
+						original_tag = SPR
+						tag = SPA tag = SPB tag = SPC tag = SPD
+					}
+				}
 			}
 		}
 		if = {
 			limit = {
-				tag = SOV
-				FROM = {tag = CHI}
-				NOT = { SOV = { has_completed_focus = SOV_china_big } }
-				NOT = { SOV = { has_completed_focus = SOV_china_small } }
+				has_idea = USA_china_volunteers_idea
 			}
 			custom_trigger_tooltip = {
-				tooltip = SOV_VOLUNTEERS_BLOCKED_TT
+				tooltip = USA_VOLUNTEERS_CHINA_ONLY_TT
+				FROM = { tag = CHI }
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = {
+					rule = allow_volunteers
+					option = LIMITED
+				}
+			}
+			if = {
+				limit = {
+					tag = SOV
+					FROM = {tag = CHI}
+					NOT = { SOV = { has_completed_focus = SOV_china_big } }
+					NOT = { SOV = { has_completed_focus = SOV_china_small } }
+				}
+				custom_trigger_tooltip = {
+					tooltip = SOV_VOLUNTEERS_BLOCKED_TT
+					always = no
+				}
+			}
+			else = {
+				always = yes
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = {
+					rule = allow_volunteers
+					option = SAME_IDEOLOGY
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = RULE_VOLUNTEERS_SAME_IDEOLOGY_TT
+				has_government = FROM
+			}
+		}
+		if = {
+			limit = {
+				has_game_rule = {
+					rule = allow_volunteers
+					option = BLOCKED
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = RULE_VOLUNTEERS_BLOCKED_TT
 				always = no
 			}
 		}
-		else = {
-			always = yes
-		}
 	}
-	if = {
-		limit = {
-			has_game_rule = {
-				rule = allow_volunteers
-				option = SAME_IDEOLOGY
-			}
-		}
-		custom_trigger_tooltip = {
-			tooltip = RULE_VOLUNTEERS_SAME_IDEOLOGY_TT
-			has_government = FROM
-		}
-	}
-	if = {
-		limit = {
-			has_game_rule = {
-				rule = allow_volunteers
-				option = BLOCKED
-			}
-		}
-		custom_trigger_tooltip = {
-			tooltip = RULE_VOLUNTEERS_BLOCKED_TT
-			always = no
-		}
-	}
+	
 }
 DIPLOMACY_SEND_EXP_FORCE_ENABLE_TRIGGER = {
+	if = {
+		limit = {
+			tag = ITA
+			has_completed_focus = ITA_total_mob
+			NOT = { has_completed_focus = ITA_help_barb }
+		}
+		always = no
+	}
 	if = {
 		limit = {
 			AND = {
@@ -1323,5 +1364,22 @@ DIPLOMACY_OFFER_JOIN_FACTION_ENABLE_TRIGGER = {
 	if = {
 		limit = { is_ai = yes }
 		always = no
+	}
+}
+
+# Added from vanilla 1.19.4 (used by the built-in Recall Volunteers diplomatic action)
+DIPLOMACY_RECALL_VOLUNTEERS_ENABLE_TRIGGER = {
+	if = {
+		limit = {
+			has_game_rule = {
+				rule = allow_volunteers
+				option = ALWAYS_FREE
+			}
+		}
+		if = {
+			limit = {
+				has_volunteers = from
+			}
+		}
 	}
 }
