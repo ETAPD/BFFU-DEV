@@ -46,6 +46,8 @@ DEFAULTS = dict(
     CUPOLA=("cast", 4.01, 0.31), BULGE=False,
     EXHAUST="cooled", SMOKE=False, HULL_MG="ball", DRIVER_VISOR=False, AA_RING=True,
     SCHUERZEN=False,
+    # Panther II: overlapped (not interleaved) all-steel wheels, headlight on the left front mudguard, Schmalturm
+    WHEEL_LAYOUT="interleaved", WHEEL_STEEL=False, HEADLIGHT=(1.12, None, 1.70), TURRET_TYPE="panther",
 )
 
 
@@ -69,9 +71,9 @@ N_WHEEL_BONES = 17
 
 
 def wheel_info(S, scale):
-    """Vanilla 24-bone rig: wheel_01 sprocket, wheel_02 idler, wheel_03..10 the eight road-wheel axles front to rear
-    (each bone carries every disc on that axle, both sides). wheel_11..17 exist so the rig keeps the vanilla bone
-    set; they carry no geometry and turn with the road wheels."""
+    """Vanilla 24-bone rig: wheel_01 sprocket, wheel_02 idler, wheel_03.. the road-wheel axles front to rear (eight on
+    the Panther, seven on the Panther II; each bone carries every disc on that axle, both sides). The remaining bones
+    up to wheel_17 exist so the rig keeps the vanilla bone set; they carry no geometry and turn with the road wheels."""
     info = {"wheel_01": (S.SPROCKET[2] * scale, 2 * math.pi / S.SPROCKET_TEETH),
             "wheel_02": (S.IDLER[2] * scale, 2 * math.pi / 90)}
     for i in range(3, N_WHEEL_BONES + 1):
@@ -81,8 +83,10 @@ def wheel_info(S, scale):
 
 def rig(v, S):
     c.rig(v, S)
-    for i, u in enumerate(S.WHEELS_U[:7]):  # spare vanilla wheel bones on the axles of the first seven wheels
-        v.bone(f"wheel_{11 + i:02d}", (0, S.Y(u), S.WHEEL_Z), "wheel_suspention")
+    n = len(S.WHEELS_U)
+    for i in range(N_WHEEL_BONES - 2 - n):  # spare vanilla wheel bones, on the road-wheel axles in turn
+        u = S.WHEELS_U[i % n]
+        v.bone(f"wheel_{3 + n + i:02d}", (0, S.Y(u), S.WHEEL_Z), "wheel_suspention")
 
 
 # ---- hull ------------------------------------------------------------------------------------------------------
@@ -104,29 +108,35 @@ def sponson_z(S, u):
 
 
 def hull(v, S):
-    """Lower hull between the tracks (belly, lower nose, glacis, rear plate) and the upper hull: sponsons over the
-    tracks with the side plates sloping in to the roof, cut by the glacis in front and the rear plate behind. The
-    glacis and the upper side plates meet at the front corner, where the sponson floor starts (top view)."""
+    """Lower hull between the tracks (belly, lower nose, rear plate) and the upper hull: sponsons over the tracks with
+    the side plates sloping in to the roof, closed behind by the rear plate. The glacis is ONE flat plate from the
+    nose to the roof edge (photos: Fort Benning, Saumur): its lower edge runs across the nose between the tracks, its
+    sides flare out to the sponson's front lower corners (top view u 0.8) and then follow the side plates up to the
+    roof edge, so seen from the front it is one straight slope, not a narrow nose plate under a wide sponson front.
+    The lower hull's front sits just behind it."""
     import bmesh
 
     nu, nz = S.NOSE
     zf = sponson_z(S, 0.8)
-    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (nu, nz), (glacis_u(S, zf - 0.08), zf - 0.08),
+    inset = 0.05  # lower hull's front face set back behind the glacis plate
+    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (nu + inset, nz), (glacis_u(S, zf - 0.08) + inset, zf - 0.08),
              (rear_u(S, zf - 0.08), zf - 0.08), S.REAR_LOW, (S.REAR_LOW[0] - 0.30, S.BELLY_Z)]
     v.add("hull_lower", geo.prism_x(P(S, lower), -S.LOWER_X, S.LOWER_X), chamfer=0.025)
 
-    # upper hull: rows of (sponson floor edge, roof edge) cross-sections from the glacis to the rear plate
-    us = [None, 1.6, 3.0, 4.5, 5.6, None]
+    # upper hull: front ring = the glacis plate outline (nose corners, sponson corners, roof corners), all on the
+    # glacis plane; then (sponson floor edge, roof edge) cross-sections back to the rear plate
     bm = bmesh.new()
     rows = []
-    for k, u in enumerate(us):
-        if u is None:  # front: on the glacis; rear: on the rear plate
-            zb = sponson_z(S, 0.8 if k == 0 else 6.3)
-            ub, ut = (glacis_u(S, zb), S.GLACIS_TOP_U) if k == 0 else (rear_u(S, zb), S.DECK_END_U)
+    wb, wt = S.SPONSON_X, S.DECK_X
+    g = lambda x, z: bm.verts.new((x, S.Y(glacis_u(S, z)), z))
+    rows.append([g(-S.LOWER_X, nz), g(-wb, zf), g(-wt, S.DECK_Z), g(wt, S.DECK_Z), g(wb, zf), g(S.LOWER_X, nz)])
+    for k, u in enumerate([1.6, 3.0, 4.5, 5.6, None]):
+        if u is None:  # rear: on the rear plate
+            zb = sponson_z(S, 6.3)
+            ub, ut = rear_u(S, zb), S.DECK_END_U
         else:
             zb = sponson_z(S, u)
             ub = ut = u
-        wb, wt = S.SPONSON_X, S.DECK_X
         rows.append([bm.verts.new((-S.LOWER_X + 0.02, S.Y(ub), zb)), bm.verts.new((-wb, S.Y(ub), zb)),
                      bm.verts.new((-wt, S.Y(ut), S.DECK_Z)), bm.verts.new((wt, S.Y(ut), S.DECK_Z)),
                      bm.verts.new((wb, S.Y(ub), zb)), bm.verts.new((S.LOWER_X - 0.02, S.Y(ub), zb))])
@@ -137,6 +147,8 @@ def hull(v, S):
             bm.faces.new((r0[i], r0[j], r1[j], r1[i]))
     bm.faces.new(rows[0])
     bm.faces.new(list(reversed(rows[-1])))
+    # the sponson's underside behind the flared glacis corner is a twisted quad: split it so it shades flat
+    bmesh.ops.triangulate(bm, faces=[f for f in bm.faces if len(f.verts) == 4 and not _planar(f)])
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     v.add("hull_upper", bm, chamfer=0.028)
     if S.SIDE_STEP:  # D/A: the lower rear corner of the upper side plate is cut away; fill plate inside it
@@ -145,6 +157,13 @@ def hull(v, S):
             x = side * (S.SPONSON_X - 0.03)
             v.add(f"side_step_{side}", geo.box(x, S.Y((u0 + u1) / 2), (z1 + sponson_z(S, u0)) / 2, 0.02,
                                                u1 - u0, z1 - sponson_z(S, u0)), kind="paint")
+
+
+def _planar(f, tol=0.004):
+    """True when a face's corners lie within tol of its plane (non-planar quads get triangulated)."""
+    f.normal_update()
+    c = f.calc_center_median()
+    return all(abs((v.co - c).dot(f.normal)) < tol for v in f.verts)
 
 
 def deck(v, S):
@@ -203,7 +222,9 @@ def front(v, S):
         v.add("driver_visor_glass", geo.move(glass, x=0.55, y=S.Y(du - 0.07), z=dz + 0.02), kind="glass")
     # headlight on the left of the glacis (front view), tow brackets as extensions of the side plates
     lamp = geo.merge(parts.headlight(0.085, 0.12), geo.cylinder(0.02, 0.10, 6, axis="Z", center=(0, 0.06, -0.06)))
-    v.add("headlight", geo.move(lamp, x=1.12, y=S.Y(glacis_u(S, 1.64) - 0.08), z=1.70), kind="paint_cast")
+    hx, hu, hz = S.HEADLIGHT  # on the glacis corner (Panther), or on the left front mudguard (Panther II)
+    hu = glacis_u(S, hz - 0.06) - 0.08 if hu is None else hu
+    v.add("headlight", geo.move(lamp, x=hx, y=S.Y(hu), z=hz), kind="paint_cast")
     for side in (1, -1):
         prof = [(-0.02, 0.70), (0.25, 0.70), (0.50, 1.05), (0.30, 1.15), (-0.02, 0.95)]
         v.add(f"tow_bracket_{side}", geo.prism_x(P(S, prof), side * S.LOWER_X - 0.04, side * S.LOWER_X + 0.04),
@@ -211,8 +232,9 @@ def front(v, S):
         v.add(f"tow_pin_{side}", geo.cylinder(0.035, 0.16, 8, axis="X", center=(side * S.LOWER_X, S.Y(0.08), 0.82)),
               kind="steel")
         # front mudguard over the track (front view: plate at the sponson floor, sloping down to the bow)
-        mg = [(0.10, sponson_z(S, 0.8) - 0.18), (0.80, sponson_z(S, 0.8) - 0.01), (0.80, sponson_z(S, 0.8) + 0.01),
-              (0.10, sponson_z(S, 0.8) - 0.16)]
+        zf = sponson_z(S, 0.8)
+        ue = glacis_u(S, zf) - 0.005  # back edge meets the glacis at the sponson corner, clear of the plate in front
+        mg = [(0.10, zf - 0.18), (ue, zf - 0.01), (ue, zf + 0.01), (0.10, zf - 0.16)]
         x0, x1 = (0.97, 1.64) if side > 0 else (-1.64, -0.97)
         v.add(f"mudguard_{side}", geo.prism_x(P(S, mg), x0, x1), kind="paint")
 
@@ -295,10 +317,11 @@ def schuerzen(v, S):
 
 
 # ---- running gear ----------------------------------------------------------------------------------------------
-def disc(radius, width, outer_face, segments):
-    """One steel road wheel with its rubber tyre (Panther 860 mm, rubber-tyred): returns (steel, rubber)."""
+def disc(radius, width, outer_face, segments, steel=False):
+    """One road wheel: steel disc with a rubber tyre (Panther 860 mm), or the all-steel, internally sprung wheel
+    (Panther II / Tiger II 800 mm) with a thick steel rim and no tyre: returns (disc, rim)."""
     w = width / 2
-    rim = radius - 0.045
+    rim = radius - (0.07 if steel else 0.045)
     tyre = geo.lathe([(rim, w), (radius - 0.01, w), (radius, w - 0.015), (radius, -w + 0.015),
                       (radius - 0.01, -w), (rim, -w)], segments)
     s = 1 if outer_face else -1
@@ -338,17 +361,21 @@ def running_gear(v, S):
             v.add(f"{label}_hub_{side}", stub, kind="paint", chamfer=0.01)
 
     outer = set(S.OUTER_U)
+    overlapped = S.WHEEL_LAYOUT == "overlapped"
     for i, u in enumerate(S.WHEELS_U):
         bname = f"wheel_{3 + i:02d}"
         v.bone(bname, (0, S.Y(u), S.WHEEL_Z), "wheel_suspention")
         for side in (1, -1):
-            if u in outer:  # outer row: visible outer disc and the innermost disc
+            if overlapped:  # Panther II: outer-row pairs outboard, inner-row pairs inboard; they overlap only
+                spots = ((0.20, True, 18), (0.08, False, 10)) if u in outer else ((-0.06, True, 16), (-0.18, False, 10))
+            elif u in outer:  # outer row: visible outer disc and the innermost disc
                 spots = ((0.235, True, 18), (-0.235, False, 10))
             else:  # inner row: a pair of discs either side of the guide teeth, between the outer-row discs
                 spots = ((0.075, True, 14), (-0.075, False, 10))
+            rim_kind = "wheel_plain" if S.WHEEL_STEEL else "rubber"
             for k, (dx, face_out, seg) in enumerate(spots):
-                face, tyre = disc(S.WHEEL_R, 0.10, face_out, seg)
-                for label, bm, kind in (("disc", face, "rubber_wheel"), ("tyre", tyre, "rubber")):
+                face, tyre = disc(S.WHEEL_R, 0.10, face_out, seg, S.WHEEL_STEEL)
+                for label, bm, kind in (("disc", face, "rubber_wheel"), ("tyre", tyre, rim_kind)):
                     if side < 0:
                         geo.rotate(bm, math.pi, "Z")
                     v.add(f"roadwheel_{label}_{i}_{k}_{side}",
@@ -525,10 +552,40 @@ def turret_fittings(v, S):
         v.add(f"lift_hook_{k}", hook, kind="paint", bone="turret", chamfer=0.008)
 
 
+def schmalturm(v, S):
+    """Schmalturm (planned for the Panther II and the Panther Ausf. F): narrow front plate leaning back 20 deg, the
+    conical 'Saukopf' mantlet round the gun, the stereo rangefinder's armoured 'ears' either side of the roof front,
+    and the 7.5 cm L/70 with its long recuperator sleeve, no muzzle brake drawn (side/front views)."""
+    st = S.TURRET_STATIONS
+    gz = S.GUN_Z
+    (ub, wb, ut, wt, zt) = st[0]
+    face = ub + (ut - ub) * (gz - S.DECK_Z) / (zt - S.DECK_Z)  # front plate at gun height
+    c0, c1, cr0, cr1 = S.SAUKOPF  # cone from the plate (u, radius) forward to its nose
+    cone = geo.lathe([(0.0, 0.0), (cr0, 0.0), (cr0 * 0.92, -(face - c0) * 0.25), (cr1, -(face - c1)),
+                      (0.0, -(face - c1))], 24, axis="Y")
+    v.add("mantlet", geo.move(cone, x=S.TURRET_X, y=S.Y(face + 0.02), z=gz), kind="paint_cast", bone="turret",
+          smooth_angle=60)
+    for side in (1, -1):  # rangefinder ears (front view: bumps at the roof front corners)
+        p = turret_point(S, S.EARS[0], S.EARS[1], side, 0.0)
+        ear = geo.lathe([(0.0, 0.0), (0.11, 0.0), (0.11, 0.10), (0.07, 0.15), (0.0, 0.15)], 14, axis="X")
+        if side < 0:
+            geo.rotate(ear, math.pi, "Z")
+        v.add(f"rangefinder_ear_{side}", geo.move(ear, *p), kind="paint_cast", bone="turret", smooth_angle=50)
+    v.add("coax_port", geo.move(geo.cylinder(0.03, 0.05, 10, axis="Y"), x=S.TURRET_X + S.COAX_X,
+                                y=S.Y(face - 0.01), z=gz - 0.05), kind="glass", bone="turret")
+    v.add("sight_0", geo.move(geo.cylinder(0.03, 0.05, 10, axis="Y"), x=S.TURRET_X + S.SIGHT[1],
+                              y=S.Y(face - 0.01), z=gz + 0.10), kind="glass", bone="turret")
+    sections = S.GUN_SECTIONS
+    c.gun(v, S, S.TURRET_X, gz, c1, sections, S.MUZZLE_U, None, segments=16, base_u=S.TRUNNION_U)
+
+
 def turret(v, S):
     turret_shell(v, S)
-    mantlet(v, S)
-    gun(v, S)
+    if S.TURRET_TYPE == "schmalturm":
+        schmalturm(v, S)
+    else:
+        mantlet(v, S)
+        gun(v, S)
     cupola(v, S)
     turret_fittings(v, S)
     v.bone("turret", (S.TURRET_X, S.Y(S.TURRET_U), S.DECK_Z), "chassie")

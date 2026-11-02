@@ -28,8 +28,10 @@ def glacis(v, S):
     # interlocking joint with the lower nose plate and the weld along the roof edge
     v.detail("glacis_nose_weld", dt.weld_bead(gl, [(-S.LOWER_X, 0.02), (S.LOWER_X, 0.02)]))
     v.detail("glacis_roof_weld", dt.weld_bead(gl, [(-S.DECK_X, length - 0.02), (S.DECK_X, length - 0.02)]))
-    for side in (1, -1):  # side-plate joints
+    bf = (pc.sponson_z(S, 0.8) - nz) / math.sin(math.atan2(S.DECK_Z - nz, gu - nu))  # sponson corner up the plate
+    for side in (1, -1):  # side-plate joints: nose corner, flaring out to the sponson corner, up to the roof corner
         v.detail(f"glacis_side_weld_{side}", dt.weld_bead(gl, [(side * (S.LOWER_X - 0.02), 0.03),
+                                                               (side * (S.SPONSON_X - 0.03), bf),
                                                                (side * (S.DECK_X - 0.02), length - 0.03)]))
     v.detail("glacis_lifting", dt.lifting_hook(gl, 0.0, length - 0.25))
     v.detail("glacis_spare_bolts", dt.bolts(gl, dt.line(-0.9, length * 0.5, 0.9, length * 0.5, 7), 0.016))
@@ -89,7 +91,10 @@ def rear(v, S):
 def wheels(v, S):
     for u in S.WHEELS_U:
         outer = u in S.OUTER_U
-        dx = 0.235 if outer else 0.075
+        if getattr(S, "WHEEL_LAYOUT", "interleaved") == "overlapped":  # Panther II (panther_common.running_gear)
+            dx = 0.20 if outer else -0.06
+        else:
+            dx = 0.235 if outer else 0.075
         for side in (1, -1):
             x = side * (S.TRACK_X + dx + 0.09)
             v.detail(f"hub_bolts_{u}_{side}", dt.wheel_hub_bolts((x, S.Y(u), S.WHEEL_Z), side, 0.09, 8),
