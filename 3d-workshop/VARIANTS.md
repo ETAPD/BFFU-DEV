@@ -111,6 +111,69 @@ What tells them apart:
   Pz III L/M picture and the Pz IV lessons) added the long lower turret cheeks with their apex at mid-height, the
   roller behind the 5 cm / 7.5 cm mantlets and 3 cm turret chamfers; a full photo pass per variant is still open.
 
+## Panther
+
+No free-licence drawing of any Panther exists: Wikimedia Commons has only a single side profile
+(`Panzer_V_panther.svg`, itself traced from the-blueprints.com), small turret strips and armour schemes, and MasterJVN
+has drawn no Panther. As for the Panzer III, the Panther is traced from the-blueprints.com drawings (all by Dr Dan
+Saranga, one consistent series) **as private tracing reference only**, from the public 500 px previews (the full-size
+sheets need a login): sheets, crops and drawing overlays stay in the git-ignored `reference/blueprints_nonfree/<spec>/`;
+the repository gets the geometry, the model's own outline renders (`reference/blueprints/<spec>/outline_*.png`), a
+README naming the sheet and the free-licence photos checked (`photos/` with `CREDITS.md`). The previews are ~54 px/m
+(about 1.9 cm per sheet pixel) and their views differ slightly in scale, so every view was calibrated on its own
+against the documented hull length 6.87 m, 8.66 m with the gun, 3.27 m over the tracks and 2.99 m height (and the
+860 mm road wheels), and resampled to 175 px/m.
+
+| Spec | Variant | Years | Gun | Paint (`CAMO`, Zimmerit) | Drawing used (the-blueprints.com) | Tris | Track speed / `texture_anim_speed` |
+|---|---|---|---|---|---|---|---|
+| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 18,180 | 1.729 / 1.407 |
+| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 18,860 | 1.729 / 1.407 |
+| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 18,368 | 1.729 / 1.407 |
+| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 18,420 | 1.729 / 1.407 |
+
+Built from `specs/panther_common.py` (lower hull and sponsons cut by the glacis and rear plate, eight-axle
+interleaved running gear, turret shell, curved mantlet with optional chin, gun, drum and cast cupolas, rear fittings,
+Schürzen) on the `pz4_common` helpers (`station_shell`, `drum_profile`, `bar`, `gun`). The G sheet is the calibrated
+core; the D and A sheets lie on its hull, turret and running-gear lines, so each spec only sets its differences.
+All four share the documented 860 mm road wheels, so the track speed is the same: 1.729 game units/s,
+`texture_anim_speed` = 1.729 / 1.28 / 0.48 / 2 = 1.407.
+
+Rig: the vanilla 24 bones. `wheel_01` sprocket, `wheel_02` idler, `wheel_03`-`wheel_10` the eight road-wheel axles
+front to rear (each bone carries every disc on its axle, both sides: outer-row axles an outer and an innermost disc,
+inner-row axles a disc pair either side of the guide teeth), `wheel_11`-`wheel_17` kept on the first seven axles
+without geometry so the rig has the vanilla bone set. No return rollers (the top run lies on the wheels).
+
+What tells the variants apart:
+
+- **Cupola:** tall drum with six vision slits and a turret-side bulge under it (D); low cast cupola with seven
+  periscope hoods, no bulge (A, G), with the AA-MG ring on the G.
+- **Glacis:** letterbox MG flap and driver's visor (D); Kugelblende and driver's visor (A); Kugelblende, no visor (G).
+- **Mantlet:** binocular sight holes (D), monocular (A, G); rounded lower half (D, A, G), chin (late G).
+- **Hull side:** upper side plates at 40 deg, roof edge 1.28 m out (D, A); one-piece 29 deg plates, roof edge 1.33 m
+  out (G).
+- **Turret:** three smoke dischargers a side (D only).
+- **Rear:** plain exhausts (D); exhausts with cooling pipes (A, G); flame dampers (late G).
+- **Schürzen:** fitted on the A (drawn on its sheet); the D and G sheets show none.
+
+### Unresolved (Panther)
+
+- **Licence:** the source drawings are commercial; only geometry derived from them is in the repo (as the Pz III).
+- **Resolution:** traced from 500 px previews at ~1.9 cm per sheet pixel, so small fittings (hinges, periscopes,
+  tools) are placed from photos and documented sizes within that tolerance.
+- **Chin mantlet:** the 500 px G sheet does not resolve the mantlet type. Its drawn lower contour runs straight down
+  to a flat bottom, which is used as the late G's chin; the G uses the rounded profile the Saumur photos show. A
+  side photo of a chin-mantlet G would settle the chin's exact depth.
+- **D running gear:** the D sheet draws the road wheels 1.0 m across (documented 0.86 m) and the wheel set 0.13 m
+  further back; the D uses the G sheet's running gear, which matches the documented wheels and the photos.
+- **Kursk Schürzen:** many Ausf. D at Kursk carried Schürzen; the D sheet shows none, so none are modelled.
+- **Photos:** Commons has free photos of the Saumur A and G, Munster A, Kubinka G, Bovington late G, Overloon G and
+  the Breda D, plus Bundesarchiv wartime photos; none of the Munster G, Kubinka D or Fort Benning Panthers turned up,
+  so those were not checked. The D's drum cupola and smoke dischargers rest on its drawing.
+- **D/A hull side:** the D/A upper side plate is modelled with its 40 deg slope; any difference in its lower rear
+  edge from the G's one-piece plate is below the sheets' resolution and is not modelled.
+- **Turret offset:** the G top view draws the turret and gun 6 cm right of the hull centreline; the model keeps them
+  on the centreline.
+
 ## Wiring the variants into the mod (on the PC)
 
 For each spec, after the bake (`build_tank.py <spec> <out> <work>` without `--skip-bake`, then the DDS conversion as
@@ -152,6 +215,12 @@ for the H):
    `GER_medium_armor_pz3a/b/c/d/f/g_entity` (Ausf. A-H) and `ger_medium_tank_chassis_p3_g` gets
    `GER_medium_armor_pz3j/j1/l/m/n_entity` (Ausf. J-N). Pz III `texture_anim_speed` values are in the table above
    (speed / 1.28 m / 0.48 m tile / 2).
+
+   The Panther entities go the same way into the Panther chassis pool: `GER_medium_armor_panther_d_entity`,
+   `GER_medium_armor_panther_a_entity`, `GER_medium_armor_panther_g_entity` and `GER_medium_armor_panther_g_late_entity`
+   (mesh `GER_panther_<x>_mesh`) go into the models pool of `ger_medium_tank_chassis_p5`, **replacing**
+   `GER_medium_armor_2_alt_0_entity` there. Their `texture_anim_speed` is 1.407 (track speed 1.729 / 1.28 m /
+   0.48 m tile / 2).
 
 Entity names map to spec names: `ger_pz4g_late` → `GER_pz4g_late` mesh → `GER_medium_armor_pz4g_late_entity`. Each
 spec's paint scheme (`CAMO`, `ZIMMERIT`, `CROSS_KINDS`) is applied by the bake automatically.

@@ -92,4 +92,9 @@ owner's agreement as private tracing reference only. They are kept in the git-ig
 `reference/blueprints_nonfree/` and never committed or shipped; each `reference/blueprints/ger_pz3*/README.md` names
 its source sheet. See VARIANTS.md.
 
+Non-free reference (Panther): the Panther specs are traced from the-blueprints.com drawings by Dr Dan Saranga (Ausf. D
+ID 72504, Ausf. A IDs 72501 and 72503, Ausf. G ID 72512, public 500 px previews), under the same policy: kept in the
+git-ignored `reference/blueprints_nonfree/`, never committed or shipped; each `reference/blueprints/ger_panther_*/README.md`
+names its source sheet, and the free-licence photos checked are credited in `photos/CREDITS.md` next to it.
+
 Cloud (Linux) sessions: see CLOUD.md.
