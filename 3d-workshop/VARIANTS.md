@@ -15,9 +15,9 @@ Triangle counts are the build log's `tris` (all parts, before the build culls hi
 | `ger_pz4f1` | Ausf. F (F1) | 1941-42 | KwK 37 L/24 | `panzergrau`, no | `PzIV-011-EFG.jpg`, F panel | 17,784 |
 | `ger_pz4f2` | Ausf. F2 | 1942 | 7.5 cm KwK 40 L/43, ball brake | `afrika_1942`, no | `PzIV-012-G-Variantes.jpg` (basic G; F2 = early G) | 18,236 |
 | `ger_pz4g` | Ausf. G, early | 1942 | KwK 40 L/43, ball brake | `panzergrau`, no | `PzIV-012-G-Variantes.jpg`, left vehicle (175 px/m) | 18,236 |
-| `ger_pz4g_late` | Ausf. G, late | 1943 | KwK 40 L/48, double brake; Schürzen | `dunkelgelb_1943`, no | `PzIV-012-G-Variantes.jpg`, right vehicle | 18,268 |
+| `ger_pz4g_late` | Ausf. G, late | 1943 | KwK 40 L/48, double brake; Schürzen | `winter_1943` (whitewash), no | `PzIV-012-G-Variantes.jpg`, right vehicle | 18,268 |
 | `ger_pz4h` | Ausf. H (approved) | 1943 | KwK 40 L/48; Schürzen | `dunkelgelb_1943`, yes | `PzIV-012-H-Variantes.jpg` (175 px/m) | 18,208 |
-| `ger_pz4j` | Ausf. J, spring 1944 | 1944 | KwK 40 L/48; Schürzen | `dunkelgelb_1943`, yes | `PzIV-011-HJ.jpg`, J panel (~58 px/m) | 18,164 |
+| `ger_pz4j` | Ausf. J, spring 1944 | 1944 | KwK 40 L/48; Schürzen | `ambush_1944`, yes | `PzIV-011-HJ.jpg`, J panel (~58 px/m) | 18,164 |
 
 All drawings are by MasterJVN, Wikimedia Commons, CC BY 4.0 (credits in README). The comparison sheets (B/C/D, E/F/G,
 H/J) are the same author's drawings at lower resolution, resampled to 175 px/m; their G and H panels lie on the G/H
@@ -69,17 +69,17 @@ calibrated against documented dimensions (length, width, height, the 0.572 m roa
 
 | Spec | Variant | Years | Gun | Paint (`CAMO`) | Drawing used (the-blueprints.com) | Tris | Track speed / `texture_anim_speed` |
 |---|---|---|---|---|---|---|---|
-| `ger_pz3a` | Ausf. A | 1937 | 3.7 cm KwK 36, internal mantlet | `grau_braun_1937` | A side view (side only) | 17,540 | 1.347 / 1.096 |
-| `ger_pz3b` | Ausf. B | 1937-38 | 3.7 cm KwK 36 | `grau_braun_1937` | B side view (side only) | 16,216 | 0.804 / 0.654 |
-| `ger_pz3c` | Ausf. C | 1938 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view (side only) | 16,744 | 0.736 / 0.599 |
-| `ger_pz3d` | Ausf. D | 1939-40 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view + A-C/D turret comparison | 16,680 | 0.736 / 0.599 |
-| `ger_pz3f` | Ausf. E/F | 1938-40 | 3.7 cm KwK 36 | `grau_braun_1937` | F four-view (shows the 5 cm; 3.7 cm from the C) | 16,580 | 1.046 / 0.851 |
-| `ger_pz3g` | Ausf. G/H | 1940-41 | 5 cm KwK 38 L/42 | `afrika_1941` | G four-view (differences) | 17,832 | 1.046 / 0.851 |
-| `ger_pz3j` | Ausf. J | 1941-42 | 5 cm KwK 38 L/42 | `panzergrau` | J side view | 17,604 | 1.046 / 0.851 |
-| `ger_pz3j1` | Ausf. J (J1) | 1941-42 | 5 cm KwK 39 L/60 | `panzergrau` | J four-view (differences) | 17,480 | 1.046 / 0.851 |
-| `ger_pz3l` | Ausf. L | 1942 | 5 cm KwK 39 L/60, spaced armour | `panzergrau` | L four-view (main calibration) | 17,520 | 1.046 / 0.851 |
-| `ger_pz3m` | Ausf. M | 1942-43 | 5 cm KwK 39 L/60, Schürzen | `dunkelgelb_1943` | M side view (Schürzen) + L four-view | 19,080 | 1.046 / 0.851 |
-| `ger_pz3n` | Ausf. N | 1942-43 | 7.5 cm KwK 37 L/24 | `dunkelgelb_1943` | N four-view | 17,552 | 1.046 / 0.851 |
+| `ger_pz3a` | Ausf. A | 1937 | 3.7 cm KwK 36, internal mantlet | `grau_braun_1937` | A side view (side only) | 17,556 | 1.347 / 1.096 |
+| `ger_pz3b` | Ausf. B | 1937-38 | 3.7 cm KwK 36 | `grau_braun_1937` | B side view (side only) | 16,232 | 0.804 / 0.654 |
+| `ger_pz3c` | Ausf. C | 1938 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view (side only) | 16,760 | 0.736 / 0.599 |
+| `ger_pz3d` | Ausf. D | 1939-40 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view + A-C/D turret comparison | 16,696 | 0.736 / 0.599 |
+| `ger_pz3f` | Ausf. E/F | 1938-40 | 3.7 cm KwK 36 | `grau_braun_1937` | F four-view (shows the 5 cm; 3.7 cm from the C) | 16,604 | 1.046 / 0.851 |
+| `ger_pz3g` | Ausf. G/H | 1940-41 | 5 cm KwK 38 L/42 | `afrika_1941` | G four-view (differences) | 18,076 | 1.046 / 0.851 |
+| `ger_pz3j` | Ausf. J | 1941-42 | 5 cm KwK 38 L/42 | `panzergrau` | J side view | 17,848 | 1.046 / 0.851 |
+| `ger_pz3j1` | Ausf. J (J1) | 1941-42 | 5 cm KwK 39 L/60 | `panzergrau` | J four-view (differences) | 17,716 | 1.046 / 0.851 |
+| `ger_pz3l` | Ausf. L | 1942 | 5 cm KwK 39 L/60, spaced armour | `panzergrau` | L four-view (main calibration) | 17,748 | 1.046 / 0.851 |
+| `ger_pz3m` | Ausf. M | 1942-43 | 5 cm KwK 39 L/60, Schürzen | `dunkelgelb_1943` | M side view (Schürzen) + L four-view | 19,308 | 1.046 / 0.851 |
+| `ger_pz3n` | Ausf. N | 1942-43 | 7.5 cm KwK 37 L/24 | `dunkelgelb_1943` | N four-view | 17,788 | 1.046 / 0.851 |
 
 Built from `specs/pz3_common.py` (hull from side profiles, torsion bars, leaf springs, coil springs, 3.7 cm internal
 mantlet, mantlets, deep-wading muffler, spare wheels) and the shared Pz IV helpers. The L is the calibrated core:
@@ -107,7 +107,9 @@ What tells them apart:
 - **E vs F, G vs H:** one spec each (differences below drawing resolution or not drawn); the H's 40 cm tracks and
   new sprocket/idler are not separated from the G.
 - **M Schürzen plan position** (no top view of the M) follows the H-style rail just outside the guards.
-- Photo checks (PROCESS.md step 5) were not done for the Pz III.
+- Photo checks (PROCESS.md step 5) were not done for the Pz III by the cloud session. Review on the PC (from a
+  Pz III L/M picture and the Pz IV lessons) added the long lower turret cheeks with their apex at mid-height, the
+  roller behind the 5 cm / 7.5 cm mantlets and 3 cm turret chamfers; a full photo pass per variant is still open.
 
 ## Wiring the variants into the mod (on the PC)
 

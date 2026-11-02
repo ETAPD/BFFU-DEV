@@ -159,9 +159,9 @@ def track_guards(v, S):
                                                        S.LOWER_X, outer), kind="paint")
 
 
-def tow_shackles(v, S, front_z, rear_z, x=0.62):
+def tow_shackles(v, S, front_z, rear_z, x=0.62, front_u=0.03):
     for side in (1, -1):
-        v.add(f"tow_front_{side}", geo.move(parts.tow_shackle(), x=side * x, y=S.Y(0.03), z=front_z), kind="steel")
+        v.add(f"tow_front_{side}", geo.move(parts.tow_shackle(), x=side * x, y=S.Y(front_u), z=front_z), kind="steel")
         v.add(f"tow_rear_{side}", geo.move(parts.tow_shackle(), x=side * x, y=S.Y(S.REAR_U + 0.03), z=rear_z),
               kind="steel")
 
@@ -424,11 +424,47 @@ def turret_stations(S):
             (4.00, 0.70, 4.00, 0.50, S.TURRET_TOP)]
 
 
+CHEEK_BASE_W = 0.615  # front plate half-width at the turret ring (G front view: cheek line meets the base at 0.615)
+CHEEK_Z = 2.0  # cheek apex on the side edge (G side view: cheek line from u 2.155 / z 1.99 to u 2.594 / z 1.70)
+
+
 def turret_shell(v, S):
-    """Turret shell (top view: roof 1.38 m wide, sides 25 deg): front plate leaning back 10 deg, cheeks to the
-    full-width sides, angled rear corners."""
-    shell = geo.move(station_shell(S, turret_stations(S), S.TURRET_Z), x=S.TURRET_X)
-    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.02)
+    """Turret shell (top view: roof 1.38 m wide, sides 25 deg): front plate leaning back 10 deg, angled rear corners.
+    The front plate's lower corners are cut away by triangular cheek plates (front view: the front plate narrows
+    from the side edge at z 2.0 to 0.615 m half-width at the ring; side view: the cheek runs back to the full-width
+    side at u 2.60), which is the Pz IV turret's tapered front, not a box."""
+    import bmesh
+
+    st = turret_stations(S)
+    z0 = S.TURRET_Z
+    (ub, wb, ut, wt, zt), rest = st[0], st[1:]
+    u_side, w_side = rest[0][0], rest[0][1]
+    plate_u = lambda z: turret_plate_u(S, z)
+    w_mid = w_side - (w_side - wt) * (CHEEK_Z - z0) / (zt - z0)  # side edge half-width at the cheek apex
+
+    bm = bmesh.new()
+    fv = lambda x, u, z: bm.verts.new((x, S.Y(u), z))
+    front = {}
+    for s in (1, -1):
+        front[s] = (fv(s * CHEEK_BASE_W, ub, z0), fv(s * w_mid, plate_u(CHEEK_Z), CHEEK_Z), fv(s * wt, ut, zt))
+    rows = [[bm.verts.new((-w0, S.Y(u0), z0)), bm.verts.new((w0, S.Y(u0), z0)), bm.verts.new((w1, S.Y(u1), z1)),
+             bm.verts.new((-w1, S.Y(u1), z1))] for u0, w0, u1, w1, z1 in rest]
+    (bl, ml, tl), (br, mr, tr) = front[1], front[-1]
+    r0 = rows[0]
+    bm.faces.new((tl, ml, bl, br, mr, tr))  # front plate
+    bm.faces.new((bl, r0[1], ml))  # cheeks
+    bm.faces.new((br, mr, r0[0]))
+    bm.faces.new((ml, r0[1], r0[2], tl))  # side plates ahead of the first station
+    bm.faces.new((mr, tr, r0[3], r0[0]))
+    bm.faces.new((bl, br, r0[0], r0[1]))  # floor
+    bm.faces.new((tl, r0[2], r0[3], tr))  # roof
+    for a, b in zip(rows, rows[1:]):
+        for k in range(4):
+            k2 = (k + 1) % 4
+            bm.faces.new((a[k], a[k2], b[k2], b[k]))
+    bm.faces.new(list(reversed(rows[-1])))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    v.add("turret", geo.move(bm, x=S.TURRET_X), kind="paint", bone="turret", chamfer=0.02)
 
 
 def rotor_u(z):
@@ -503,7 +539,10 @@ def turret_side_point(S, u, z, side, out=0.0):
                 return w0 + (w1 - w0) * max(0.0, (u - u0)) / (u1 - u0)
         return pairs[-1][1]
 
-    wb = interp([(r[0], r[1]) for r in st])
+    base = [(r[0], r[1]) for r in st]
+    if getattr(S, "TURRET_CHEEK_Z", None):  # Panzer III: the side wall runs at full width up to the front plate
+        base[0] = (st[0][0], st[1][1])
+    wb = interp(base)
     wt = interp([(r[2], r[3]) for r in st])
     zr = interp([(r[2], r[4]) for r in st])
     k = (wb - wt) / (zr - S.TURRET_Z)

@@ -18,8 +18,8 @@ from . import pz4_common as c
 
 
 def hull(v, S):
-    v.add("hull_lower", geo.prism_x(c.P(S, S.LOWER_PROFILE), -S.HULL_X, S.HULL_X), chamfer=0.02)
-    v.add("superstructure", geo.prism_x(c.P(S, S.SUPER_PROFILE), -S.HULL_X, S.HULL_X), chamfer=0.02)
+    v.add("hull_lower", geo.prism_x(c.P(S, S.LOWER_PROFILE), -S.HULL_X, S.HULL_X), chamfer=0.025)
+    v.add("superstructure", geo.prism_x(c.P(S, S.SUPER_PROFILE), -S.HULL_X, S.HULL_X), chamfer=0.025)
     outer = S.TRACK_X + S.TRACK_W / 2 + 0.02
     v.mirror_x("guard", lambda: geo.prism_x(c.P(S, S.GUARD_PROFILE), S.HULL_X - 0.01, outer), kind="paint")
     v.mirror_x("guard_lip", lambda: geo.prism_x(c.P(S, S.GUARD_LIP), outer - 0.012, outer), kind="paint")
@@ -54,24 +54,71 @@ def turret_side_point(S, u, z, side, out=0.0):
     return c.turret_side_point(S, u, z, side, out)
 
 
+def cheek_shell(S, stations, z0, cheek_z):
+    """Panzer III turret shell, built like the Pz IV's (pz4_common.turret_shell): stations[0] is the front plate,
+    narrow at the turret ring (half-width stations[0][1]) and reaching the full width of the sloping side walls at
+    cheek_z, so it is a hexagon in the front view. Below that, a triangular cheek plate on each side runs from the
+    plate's lower corner back to the side wall's lower front corner (stations[1] at the ring) and up to the apex on
+    the plate's side edge at cheek_z. The side wall above the cheek is planar back to stations[1]."""
+    import bmesh
+
+    (ub, wb, ut, wt, zt), rest = stations[0], stations[1:]
+    w1b, w1t, z1t = rest[0][1], rest[0][3], rest[0][4]
+    w_mid = w1b - (w1b - w1t) * (cheek_z - z0) / (z1t - z0)  # on the side wall plane
+    u_mid = ub + (ut - ub) * (cheek_z - z0) / (zt - z0)  # on the leaning front plate
+    bm = bmesh.new()
+    front = {s: (bm.verts.new((s * wb, S.Y(ub), z0)), bm.verts.new((s * w_mid, S.Y(u_mid), cheek_z)),
+                 bm.verts.new((s * wt, S.Y(ut), zt))) for s in (1, -1)}
+    rows = [[bm.verts.new((-w0, S.Y(u0), z0)), bm.verts.new((w0, S.Y(u0), z0)), bm.verts.new((w1, S.Y(u1), z1)),
+             bm.verts.new((-w1, S.Y(u1), z1))] for u0, w0, u1, w1, z1 in rest]
+    (bl, ml, tl), (br, mr, tr) = front[1], front[-1]
+    r0 = rows[0]
+    bm.faces.new((tl, ml, bl, br, mr, tr))  # front plate
+    bm.faces.new((bl, r0[1], ml)); bm.faces.new((br, mr, r0[0]))  # cheeks
+    bm.faces.new((ml, r0[1], r0[2], tl)); bm.faces.new((mr, tr, r0[3], r0[0]))  # side walls
+    bm.faces.new((bl, br, r0[0], r0[1])); bm.faces.new((tl, r0[2], r0[3], tr))  # floor, roof
+    for a, b in zip(rows, rows[1:]):
+        for k in range(4):
+            k2 = (k + 1) % 4
+            bm.faces.new((a[k], a[k2], b[k2], b[k]))
+    bm.faces.new(list(reversed(rows[-1])))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+
 def turret(v, S):
     """Turret shell from the stations on the turret ring, the rear overhang above the engine deck, roof vent."""
-    shell = geo.move(c.station_shell(S, S.TURRET_STATIONS, S.TURRET_Z), x=S.TURRET_X)
-    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.018)
+    if getattr(S, "TURRET_CHEEK_Z", None):
+        shell = geo.move(cheek_shell(S, S.TURRET_STATIONS, S.TURRET_Z, S.TURRET_CHEEK_Z), x=S.TURRET_X)
+    else:
+        shell = geo.move(c.station_shell(S, S.TURRET_STATIONS, S.TURRET_Z), x=S.TURRET_X)
+    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.03)
     if getattr(S, "TURRET_BIN", None):  # stowage bin on the turret rear (Ausf. L on, often retrofitted)
         rear = geo.move(c.station_shell(S, S.TURRET_BIN, S.TURRET_BIN_Z), x=S.TURRET_X)
-        v.add("turret_bin", rear, kind="paint", bone="turret", chamfer=0.018)
+        v.add("turret_bin", rear, kind="paint", bone="turret", chamfer=0.03)
     v.bone("turret", (S.TURRET_X, S.Y(S.TURRET_U), S.TURRET_Z), "chassie")
 
 
-def mantlet_box(v, S, u_front, u_back, x0, x1, z0, z1, round_front=0.06, name="mantlet"):
+def mantlet_box(v, S, u_front, u_back, x0, x1, z0, z1, round_front=0.06, name="mantlet", taper=0.03):
     """External mantlet (Walzenblende) seen in the side view as a block with a rounded front: octagonal section
-    lofted from the turret front to its face."""
-    r = round_front
-    octo = [(x0, z0 + r), (x0 + r, z0), (x1 - r, z0), (x1, z0 + r), (x1, z1 - r), (x1 - r, z1), (x0 + r, z1),
-            (x0, z1 - r)]
-    body = geo.loft([(x, S.Y(u_back), z) for x, z in octo], [(x, S.Y(u_front), z) for x, z in octo])
-    v.add(name, body, kind="paint_cast", bone="turret", chamfer=0.012)
+    lofted from the turret front to its face, narrowing by `taper` all round towards the face so its sides and top
+    are angled faces. Behind it the roller (Walze) the gun is mounted in: one smooth drum face about the trunnion
+    axis at the bore, 0.07 m wider than the block each side, coming out of the turret front plate above and below
+    the block and showing beside it, as the Pz IV rotor mantlet."""
+    r = round_front + 0.02
+
+    def octo(t):
+        a0, a1, b0, b1 = x0 + t, x1 - t, z0 + t, z1 - t
+        return [(a0, b0 + r), (a0 + r, b0), (a1 - r, b0), (a1, b0 + r), (a1, b1 - r), (a1 - r, b1), (a0 + r, b1),
+                (a0, b1 - r)]
+
+    body = geo.loft([(x, S.Y(u_back), z) for x, z in octo(0.0)], [(x, S.Y(u_front), z) for x, z in octo(taper)])
+    v.add(name, body, kind="paint_cast", bone="turret", chamfer=0.02)
+    rr, gz = 0.26, S.GUN_Z
+    h = min(max(gz - z0, z1 - gz) + 0.03, 0.24)
+    prof = c.drum_profile(S, u_back + 0.12, gz, rr, gz - h, gz + h, rr, 0.10, 12)
+    v.add(f"{name}_roller", geo.prism_x(prof, x0 - 0.07, x1 + 0.07), kind="paint_cast",
+          bone="turret", chamfer=0.015)
 
 
 def gun(v, S, sections, muzzle_u, face_u, brake=None):

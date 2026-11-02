@@ -68,7 +68,9 @@ TURRET_X = 0.0
 TURRET_U = 2.70
 TURRET_Z = ROOF_Z
 TURRET_TOP = 2.12
-TURRET_STATIONS = [(1.80, 0.74, 1.925, 0.60, 1.99), (2.62, 0.82, 2.62, 0.63, 2.094), (3.30, 0.82, 3.30, 0.63, TURRET_TOP),
+# front plate narrow at the ring with a cheek plate cutting each lower front corner, as the later turret (ger_pz3l)
+TURRET_CHEEK_Z = 1.71
+TURRET_STATIONS = [(1.80, 0.60, 1.925, 0.663, 1.99), (2.62, 0.82, 2.62, 0.63, 2.094), (3.30, 0.82, 3.30, 0.63, TURRET_TOP),
                    (3.616, 0.50, 3.50, 0.40, TURRET_TOP)]
 BORE_X = 0.0
 GUN_Z = p3.C_BORE_Z
@@ -126,7 +128,7 @@ def fittings(v, S):
                     bone="chassie")
     p3.deck(v, S, [(3.95, 4.55, -0.80, -0.10), (3.95, 4.55, 0.10, 0.80)])
     c.headlights(v, S, ((1, 1.20, 1.25), (-1, -1.20, 1.25)), u=0.55)
-    c.tow_shackles(v, S, 0.60, 0.60, x=0.55)
+    c.tow_shackles(v, S, 0.60, 0.60, x=0.55, front_u=0.21)  # lower nose plate is at u 0.25 at this height
     c.rear_mufflers(v, S, main=(0.0, 0.12, 0.95, 0.13, 1.0), aux=None)
     v.locator("left_tracks", (TRACK_X, Y(5.10), 0.0), "tank_base")
     v.locator("right_tracks", (-TRACK_X, Y(5.10), 0.0), "tank_base")

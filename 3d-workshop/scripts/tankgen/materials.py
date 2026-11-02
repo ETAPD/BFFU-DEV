@@ -14,22 +14,25 @@ import bpy
 DUNKELGELB = (0.50, 0.40, 0.21)
 OLIVGRUN = (0.105, 0.125, 0.065)
 ROTBRAUN = (0.12, 0.055, 0.035)
-DUNKELGRAU = (0.076, 0.087, 0.093)  # RAL 7021 as worn in service (lighter than the modern chip)
+DUNKELGRAU = (0.16, 0.175, 0.185)  # RAL 7021 as worn and dusty in service; the chip value reads black in game
 DUNKELBRAUN = (0.076, 0.044, 0.031)  # RAL 7017
 GELBBRAUN = (0.262, 0.162, 0.069)  # RAL 8000 (Afrika 1941)
 GRAUGRUN = (0.144, 0.122, 0.064)  # RAL 7008
 BRAUN_8020 = (0.352, 0.223, 0.102)  # RAL 8020 (Afrika 1942)
 GRAU_7027 = (0.155, 0.155, 0.127)  # RAL 7027
+WHITEWASH = (0.66, 0.66, 0.62)  # soluble winter distemper, brushed on in the field
 PRIMER = (0.20, 0.07, 0.04)  # red oxide primer under chips
 
 # Factory/field paint schemes. A spec picks one with CAMO = "<key>" (default "dunkelgelb_1943").
-#   base, darker tint the base fades towards, worn-edge highlight, [(band colour, ramp a, ramp b), ...]
-# Bands are ~1 m hand-sprayed patches with soft over-spray edges (noise thresholds just off-centre).
+#   base, darker tint the base fades towards, worn-edge highlight, [(band colour, ramp a, ramp b), ...], extras
+# Bands are ~1 m hand-sprayed patches with soft over-spray edges (noise thresholds just off-centre); the closer
+# ramp a and b, the harder the edge. Extras (optional dict): "dots" = (dots per metre, radius in cells, dot colour
+# on the base, dot colour on the bands) for the 1944 ambush pattern.
 CAMO_SCHEMES = {
     # July 1937 - July 1940: Dunkelgrau with one third Dunkelbraun patches (Poland, France)
-    "grau_braun_1937": (DUNKELGRAU, (0.064, 0.073, 0.078), (0.30, 0.31, 0.31), [(DUNKELBRAUN, 0.55, 0.575)]),
+    "grau_braun_1937": (DUNKELGRAU, (0.13, 0.143, 0.152), (0.38, 0.39, 0.39), [(DUNKELBRAUN, 0.55, 0.575)]),
     # July 1940 - February 1943: plain Dunkelgrau (Barbarossa, 1942 summer offensive)
-    "panzergrau": (DUNKELGRAU, (0.064, 0.073, 0.078), (0.30, 0.31, 0.31), []),
+    "panzergrau": (DUNKELGRAU, (0.13, 0.143, 0.152), (0.38, 0.39, 0.39), []),
     # March 1941 - March 1942, Afrika Korps: Gelbbraun with one third Graugrün
     "afrika_1941": (GELBBRAUN, (0.22, 0.135, 0.058), (0.55, 0.45, 0.30), [(GRAUGRUN, 0.55, 0.575)]),
     # March 1942 - 1943, Afrika Korps: Braun 8020 with one third Grau 7027
@@ -37,6 +40,14 @@ CAMO_SCHEMES = {
     # February 1943 on: Dunkelgelb base, Olivgrün and Rotbraun sprayed by the units
     "dunkelgelb_1943": (DUNKELGELB, (0.42, 0.32, 0.16), (0.72, 0.64, 0.50),
                         [(OLIVGRUN, 0.565, 0.59), (ROTBRAUN, 0.425, 0.40)]),
+    # winter 1943/44, Eastern Front: whitewash brushed over the Dunkelgelb, worn through in patches
+    "winter_1943": (WHITEWASH, (0.55, 0.55, 0.52), (0.80, 0.80, 0.76),
+                    [(DUNKELGELB, 0.585, 0.62), ((0.36, 0.30, 0.17), 0.40, 0.37)]),
+    # August 1944 on (Hinterhalt): factory-applied hard-edged Olivgrün and Rotbraun over Dunkelgelb, with
+    # Dunkelgelb dots on the dark colours and green dots on the yellow
+    "ambush_1944": (DUNKELGELB, (0.42, 0.32, 0.16), (0.72, 0.64, 0.50),
+                    [(OLIVGRUN, 0.545, 0.555), (ROTBRAUN, 0.44, 0.43)],
+                    {"dots": (4.0, 0.2, OLIVGRUN, DUNKELGELB)}),
 }
 DUST = (0.42, 0.36, 0.26)
 MUD = (0.16, 0.12, 0.08)
@@ -274,7 +285,8 @@ def build(mat, kind, mode, ctx):
     # ---- colour ---------------------------------------------------------------------------------------------
     if kind in PAINTED:
         camo_on = kind not in ("wheel_plain",)
-        col, fade_col, edge_col, bands = CAMO_SCHEMES[ctx.get("camo", "dunkelgelb_1943")]
+        col, fade_col, edge_col, bands, *extras = CAMO_SCHEMES[ctx.get("camo", "dunkelgelb_1943")]
+        extras = extras[0] if extras else {}
         base = g.n("ShaderNodeRGB")
         base.outputs[0].default_value = (*col, 1.0)
         tint = g.noise(co, 0.8 / s, 2.0, 0.5)
@@ -282,9 +294,18 @@ def build(mat, kind, mode, ctx):
         if camo_on:
             # hand-sprayed bands with soft over-spray edges
             # ~1 m wide sprayed bands; noise Fac clusters around 0.5, so thresholds sit just off-centre
+            on_band = None
             for (band_col, ra, rb), (scale, dist) in zip(bands, ((0.85, 0.8), (1.05, 1.1))):
                 band = g.noise(co, scale / s, 2.0, 0.5, dist=dist)
-                paint = g.mix(g.ramp(band.outputs["Fac"], ra, rb), paint, band_col)
+                mask = g.ramp(band.outputs["Fac"], ra, rb)
+                paint = g.mix(mask, paint, band_col)
+                on_band = mask if on_band is None else g.math("MAXIMUM", on_band, mask)
+            if "dots" in extras and on_band is not None:
+                per_m, radius, on_base_col, on_band_col = extras["dots"]
+                cells = g.n("ShaderNodeTexVoronoi", voronoi_dimensions="3D", in_Scale=per_m / s, in_Randomness=0.8)
+                g.nt.links.new(co, cells.inputs["Vector"])
+                dot = g.ramp(cells.outputs["Distance"], radius, radius - 0.03)
+                paint = g.mix(dot, paint, g.mix(on_band, on_base_col, on_band_col))
         if ctx.get("crosses") and kind in ctx.get("cross_kinds", ("skirt",)):
             black, white = _balkenkreuz(g, co, ctx["crosses"], ctx["cross_size"])
             paint = g.mix(white, paint, (0.62, 0.60, 0.55))

@@ -21,9 +21,9 @@ from . import pz4_common as c
 from .ger_pz4h import *  # noqa: F401,F403  (dimensions)
 
 NAME = "GER_pz4j"
-# paint: spring/summer 1944 Dunkelgelb with Olivgrün and Rotbraun, factory Zimmerit (applied until September 1944),
-# Balkenkreuze on the Schürzen
-CAMO = "dunkelgelb_1943"
+# paint: late summer 1944 factory ambush (Hinterhalt) pattern, hard-edged Olivgrün and Rotbraun over Dunkelgelb with
+# contrasting dots, factory Zimmerit (applied until September 1944), Balkenkreuze on the Schürzen
+CAMO = "ambush_1944"
 ZIMMERIT = True
 CROSS_KINDS = ("skirt",)
 AUX_MUFFLER = None

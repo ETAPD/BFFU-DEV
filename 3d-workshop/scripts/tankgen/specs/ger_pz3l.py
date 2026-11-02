@@ -73,8 +73,11 @@ TURRET_Z = 1.62
 TURRET_TOP = 2.17
 # turret (side/top/front views): front plate leaning back, sides 0.82 m at the ring and 0.63 m at the roof, roof
 # rising from 2.09 m at the front plate to 2.17 m; behind the side hatches the sides converge to the narrow rear
-# plate under the overhanging cupola (top view)
-TURRET_STATIONS = [(1.70, 0.74, 1.77, 0.60, 2.09), (2.40, 0.82, 2.40, 0.63, 2.165), (3.05, 0.82, 3.05, 0.63, TURRET_TOP),
+# plate under the overhanging cupola (top view). The front plate is 1.20 m wide at the ring and widens to the side
+# walls at 1.83 m; below that a long triangular cheek plate cuts each lower front corner back to the side wall at
+# u 2.40 (photos of the L/M: the cut under the turret number), as on the Pz IV turret
+TURRET_CHEEK_Z = 1.83
+TURRET_STATIONS = [(1.70, 0.60, 1.77, 0.656, 2.09), (2.40, 0.82, 2.40, 0.63, 2.165), (3.05, 0.82, 3.05, 0.63, TURRET_TOP),
                    (3.45, 0.50, 3.45, 0.40, TURRET_TOP)]
 # stowage bin on the turret rear (side view u 3.36-4.02, bottom 1.73 m; top view rounded, 1.0 m wide)
 TURRET_BIN_Z = 1.73
@@ -162,7 +165,7 @@ def hull_fittings(v, S):
     if getattr(S, "SPARE_WHEELS", True):  # two pairs lying on the left guard (top view u 1.75 / 4.72)
         p3.spare_wheels(v, S)
     c.headlights(v, S, ((1, 1.32, 1.36), (-1, -1.32, 1.36)), u=0.45)
-    c.tow_shackles(v, S, 0.70, 0.62, x=0.55)
+    c.tow_shackles(v, S, 0.70, 0.62, x=0.55, front_u=0.16)  # lower nose plate is at u 0.20 at this height
     if getattr(S, "DEEP_WADING_MUFFLER", False):
         p3.deep_wading_muffler(v, S)
     else:
