@@ -84,5 +84,7 @@ All Blender scripts run headless: `blender.exe -b --python <script> -- <args>`
   "PzIV-011-EFG.jpg" by MasterJVN, Wikimedia Commons, CC BY 4.0 — https://commons.wikimedia.org/wiki/File:PzIV-011-EFG.jpg
 - Pz IV Ausf. B/C and D four-view drawings (`reference/blueprints/ger_pz4b/`, `ger_pz4d/`, resampled to 175 px/m):
   "PzIV-011-BCD.jpg" by MasterJVN, Wikimedia Commons, CC BY 4.0 — https://commons.wikimedia.org/wiki/File:PzIV-011-BCD.jpg
+- Pz IV Ausf. J four-view drawings (`reference/blueprints/ger_pz4j/`, resampled to 175 px/m): "PzIV-011-HJ.jpg" by
+  MasterJVN, Wikimedia Commons, CC BY 4.0 — https://commons.wikimedia.org/wiki/File:PzIV-011-HJ.jpg
 
 Cloud (Linux) sessions: see CLOUD.md.

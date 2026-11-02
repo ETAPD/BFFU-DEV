@@ -193,7 +193,7 @@ def fittings(v, S):
     c.deck_hatches(v, S)
     # rear: main muffler across the rear plate, offset to the right (rear view x -0.80..+0.31, z 0.95-1.27; top
     # view u 5.45-5.71), short tail pipe on top angled to the left, auxiliary (generator) muffler under its left end
-    c.rear_mufflers(v, S)
+    c.rear_mufflers(v, S, aux=getattr(S, "AUX_MUFFLER", (0.495, 0.12, 1.02)))
     # tools: shovel and jack on the guards, tow cables, antenna base
     c.tools_and_locators(v, S)
 
