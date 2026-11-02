@@ -96,6 +96,10 @@ def disc(radius, width, face_sign, segments, steel=False, plain=False):
     s = face_sign
     if plain:
         face = geo.lathe([(0.0, s * (w + 0.01)), (rim, s * w), (rim, -s * w), (0.0, -s * (w - 0.01))], segments)
+    elif steel:  # internally sprung steel wheel: flat face with the hub standing out, inside the thick rim
+        face = geo.lathe([(0.0, s * (w + 0.055)), (0.07, s * (w + 0.05)), (0.09, s * (w + 0.015)),
+                          (0.15, s * (w + 0.008)), (rim - 0.02, s * (w + 0.008)), (rim, s * (w - 0.004)),
+                          (rim, -s * w), (0.0, -s * w)], segments)  # closed
     else:
         face = geo.lathe([(0.0, s * (w + 0.045)), (0.065, s * (w + 0.04)), (0.10, s * (w + 0.012)),
                           (0.14, s * (w - 0.004)), (radius * 0.70, s * (w - 0.016)), (rim, s * w),
