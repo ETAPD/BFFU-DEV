@@ -341,7 +341,8 @@ def running_gear(v, S):
     circles = [(S.Y(S.SPROCKET[0]), S.SPROCKET[1], S.SPROCKET[2] + 0.02), (S.Y(S.IDLER[0]), S.IDLER[1], S.IDLER[2])]
     circles += [(S.Y(u), S.WHEEL_Z, S.WHEEL_R) for u in S.WHEELS_U]
     for side, suffix in ((1, "l"), (-1, "r")):
-        v.add(f"track_{suffix}", parts.track_belt(circles, side * S.TRACK_X, S.TRACK_W, S.TRACK_T, 0.15, 0.48),
+        v.add(f"track_{suffix}", parts.track_belt(circles, side * S.TRACK_X, S.TRACK_W, S.TRACK_T, 0.15, 0.48,
+                                                    drape=True),
               kind="track", bone="tank_base", smooth_angle=60)
 
     def sprocket():

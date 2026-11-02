@@ -78,8 +78,53 @@ def return_roller(radius, width, segments=12):
     return geo.lathe(prof, segments)
 
 
-def track_belt(circles, x_center, width, thickness, spacing, tile_length, sag=None):
-    """Closed track belt around wheel circles [(y, z, r), ...] (side view).
+def _circle_pts(circles):
+    pts = []
+    for y, z, r in circles:
+        for k in range(48):
+            a = 2 * math.pi * k / 48
+            pts.append((y + r * math.cos(a), z + r * math.sin(a)))
+    return pts
+
+
+def _upper_z(hull, y):
+    """Highest z of a closed convex polygon at y (None outside it)."""
+    best = None
+    for i in range(len(hull)):
+        (y0, z0), (y1, z1) = hull[i - 1], hull[i]
+        if min(y0, y1) <= y <= max(y0, y1) and y0 != y1:
+            z = z0 + (z1 - z0) * (y - y0) / (y1 - y0)
+            best = z if best is None else max(best, z)
+    return best
+
+
+def _drape(loop, circles):
+    """Lower the top run onto the road wheels (no return rollers): circles[0] and [1] are the sprocket and idler,
+    circles[2:] the road wheels. The belt runs straight from each end wheel down to the nearest road wheel, then
+    across the road-wheel tops, sagging a little between them."""
+    ends, wheels = circles[:2], circles[2:]
+    wz = max(z for _, z, _ in wheels)
+    ramps = [geo.convex_hull_2d(_circle_pts([e, min(wheels, key=lambda w: abs(w[0] - e[0]))])) for e in ends]
+    across = geo.convex_hull_2d(_circle_pts(wheels))
+    y_lo, y_hi = sorted((ends[0][0], ends[1][0]))
+    out = []
+    for y, z in loop:
+        if z > wz and y_lo < y < y_hi:
+            tops = [zz for zz in (_upper_z(h, y) for h in ramps) if zz is not None]
+            flat = _upper_z(across, y)
+            if flat is not None:
+                env = max((cz + math.sqrt(r * r - (y - cy) ** 2) for cy, cz, r in wheels if abs(y - cy) < r),
+                          default=flat)
+                tops.append(flat - 0.3 * (flat - env))
+            if tops:
+                z = min(z, max(tops))
+        out.append((y, z))
+    return out
+
+
+def track_belt(circles, x_center, width, thickness, spacing, tile_length, sag=None, drape=False):
+    """Closed track belt around wheel circles [(y, z, r), ...] (side view). drape: the top run rests on the road
+    wheels (circles[2:]) instead of running straight from the sprocket (circles[0]) to the idler (circles[1]).
 
     UVs: outer face uses u 0..0.75 across the track width, inner/side faces share the 0.75..1 strip;
     v runs along the belt in tiles of `tile_length` metres so PdxMeshAdvancedAnim can scroll it.
@@ -87,12 +132,9 @@ def track_belt(circles, x_center, width, thickness, spacing, tile_length, sag=No
     import bmesh
     from mathutils import Vector
 
-    pts = []
-    for y, z, r in circles:
-        for k in range(48):
-            a = 2 * math.pi * k / 48
-            pts.append((y + r * math.cos(a), z + r * math.sin(a)))
-    hull = geo.convex_hull_2d(pts)
+    hull = geo.convex_hull_2d(_circle_pts(circles))
+    if drape:
+        hull = _drape(geo.resample_loop(hull, spacing / 4)[0], circles)
     loop, arcs, total = geo.resample_loop(hull, spacing)
     # snap the loop length to whole texture tiles so the scroll seam is invisible
     tiles = max(1, round(total / tile_length))
