@@ -7,8 +7,8 @@ import math
 from .. import details as dt
 from .. import geo
 from ..details import Frame
-from .ger_pz4h import (FENDER_Z, FRONT_U, GLACIS, GUN_Z, IDLER, REAR_U, ROOF_Z, SPROCKET, SUPER_X, TRACK_W, TRACK_X,
-                       TURRET_TOP, TURRET_U, TURRET_X, WHEEL_Z, WHEELS_U, Y)
+from .ger_pz4h import (FENDER_Z, FRONT_U, GLACIS, GUN_Z, IDLER, REAR_U, ROOF_FRONT_Z, ROOF_Z, SPROCKET, SUPER_X,
+                       TRACK_X, TURRET_TOP, TURRET_X, WHEEL_Z, WHEELS_U, Y)
 
 X, Z = (1, 0, 0), (0, 0, 1)
 
@@ -76,8 +76,8 @@ def rear(v):
     v.add("rear_light", geo.box(-0.80, Y(REAR_U + 0.02), 1.22, 0.10, 0.05, 0.07), kind="paint_cast", chamfer=0.01)
     v.add("tow_pintle", geo.box(0.0, Y(REAR_U + 0.05), 0.70, 0.16, 0.12, 0.12), kind="steel", chamfer=0.015)
     for k in (-1, 1):
-        strap = geo.lathe([(0.157, -0.02), (0.167, -0.015), (0.167, 0.015), (0.157, 0.02)], 16, close_axis=False)
-        v.detail(f"muffler_strap_{k}", geo.move(strap, x=0.24 + k * 0.32, y=Y(REAR_U + 0.16), z=1.20), "steel")
+        strap = geo.lathe([(0.157, -0.02), (0.169, -0.015), (0.169, 0.015), (0.157, 0.02)], 16, close_axis=False)
+        v.detail(f"muffler_strap_{k}", geo.move(strap, x=-0.365 + k * 0.345, y=Y(REAR_U + 0.16), z=1.106), "steel")
 
 
 def wheels(v):
@@ -93,33 +93,40 @@ def wheels(v):
 
 def turret(v):
     tx = TURRET_X
-    roof = Frame((tx, Y(TURRET_U), TURRET_TOP), X, (0, 1, 0), Z)
-    cup = 3.56 - TURRET_U
-    v.detail("cupola_ring_bolts", dt.bolts(roof, dt.circle(0, cup, 0.40, 18), 0.012))
-    for a, b in ((0.42, -0.30), (-0.42, -0.30), (0.0, 0.85)):
-        v.detail(f"turret_hook_{a}_{b}", dt.lifting_hook(roof, a, b))
-    v.detail("turret_roof_bolts", dt.bolts(roof, dt.line(-0.55, -0.10, 0.55, -0.10, 10), 0.010))
-    for k in range(5):
-        ang = 2 * math.pi * (k + 0.5) / 5
+    cup_u, cup_x = 3.574, tx + 0.005  # matches ger_pz4h.turret
+    ring = Frame((cup_x, Y(cup_u), 2.364), X, (0, 1, 0), Z)
+    v.detail("cupola_ring_bolts", dt.bolts(ring, dt.circle(0, 0, 0.445, 18), 0.012))
+    # sloping front roof plate (u 2.17 -> 3.02): lifting hooks at its front corners (top view), seam bolts at u 3.02
+    slope = math.atan2(TURRET_TOP - ROOF_FRONT_Z, 3.02 - 2.17)
+    front_roof = Frame((tx, Y(2.17), ROOF_FRONT_Z), X, (0, math.cos(slope), math.sin(slope)), (0, -math.sin(slope), math.cos(slope)))
+    for a in (0.68, -0.68):
+        v.detail(f"turret_hook_{a}", dt.lifting_hook(front_roof, a, 0.10))
+    roof = Frame((tx, Y(3.02), TURRET_TOP), X, (0, 1, 0), Z)
+    v.detail("turret_roof_bolts", dt.bolts(roof, dt.line(-0.60, 0.0, 0.60, 0.0, 11), 0.010))
+    for k in range(6):  # glass under each of the drum's vision-block covers
+        ang = 2 * math.pi * (k + 0.5) / 6 + math.pi / 2
         c, s = math.cos(ang), math.sin(ang)
-        f = Frame((tx + 0.372 * c, Y(3.56) + 0.372 * s, TURRET_TOP + 0.13), (-s, c, 0), Z, (c, s, 0))
-        v.detail(f"cupola_glass_{k}", dt.vision_block(f, 0, 0, 0.12, 0.04, 0.02), "glass")
-    mf = Frame((tx, Y(1.82), GUN_Z), X, Z, (0, -1, 0))
-    v.detail("mantlet_bolts", dt.bolts(mf, [(-0.26, 0.11), (0.26, 0.11), (-0.26, -0.11), (0.26, -0.11)], 0.02, 0.014), "paint_cast")
-    for side in (1, -1):
-        sf = Frame((tx + side * 1.214, Y(3.05), 1.70), (0, side, 0), Z, (side, 0, 0))
-        for b in (0.10, 0.32, 0.52):
-            v.detail(f"tskirt_hinge_{side}_{b}", dt.hinge(sf, -0.27, b, 0.08, 0.016, along_u=False), "skirt")
-        v.detail(f"tskirt_handle_{side}", dt.handle(sf, 0.20, 0.30, 0.10, 0.03, rot=math.pi / 2), "skirt")
+        f = Frame((cup_x + 0.43 * c, Y(cup_u) + 0.43 * s, 2.44), (-s, c, 0), Z, (c, s, 0))
+        v.detail(f"cupola_glass_{k}", dt.vision_block(f, 0, 0, 0.12, 0.035, 0.015), "glass")
+    gx = 0.056
+    mf = Frame((gx, Y(1.627), GUN_Z), X, Z, (0, -1, 0))
+    v.detail("mantlet_bolts", dt.bolts(mf, [(-0.22, 0.068), (0.22, 0.068), (-0.22, -0.068), (0.22, -0.068)], 0.02, 0.014),
+             "paint_cast")
+    for side in (1, -1):  # door hinges and handle on the turret Schürzen (side view u 3.13 / 3.83, z 1.84 / 2.15)
+        sf = Frame((tx + side * 1.229, Y(3.05), 1.70), (0, side, 0), Z, (side, 0, 0))
+        for a in (0.08, 0.78):
+            for b in (0.14, 0.45):
+                v.detail(f"tskirt_hinge_{side}_{a}_{b}", dt.hinge(sf, side * a, b, 0.08, 0.016, along_u=False), "skirt")
+        v.detail(f"tskirt_handle_{side}", dt.handle(sf, side * 0.36, 0.30, 0.10, 0.03, rot=math.pi / 2), "skirt")
 
 
 def skirts_and_guards(v):
     for side in (1, -1):
-        x = side * (TRACK_X + TRACK_W / 2 + 0.07 + 0.012)
-        hf = Frame((x, 0, 0.62), (0, side, 0), Z, (side, 0, 0))
-        for i in range(5):
+        for i in range(5):  # stiffening lip along the top of each hull Schürzen plate (plates as in ger_pz4h.schuerzen)
             u0 = 0.62 + i * 0.97
-            a0, a1 = side * Y(u0), side * Y(u0 + 1.02)
-            lo, hi = min(a0, a1), max(a0, a1)
-            v.detail(f"skirt_lip_{side}_{i}", dt.plate(hf, lo + 0.02, 0.95, hi - 0.02, 0.985, 0.008), "skirt")
-        v.detail(f"guard_lip_{side}", geo.box(side * (TRACK_X + TRACK_W / 2 + 0.02), Y(3.0), FENDER_Z + 0.012, 0.012, 5.0, 0.02))
+            u_a, u_b = (1.10, u0 + 1.0) if i == 0 else (u0 + 0.02, 5.03) if i == 4 else (u0 + 0.02, u0 + 1.0)
+            x = side * (1.631 + 0.008 * (i % 2))
+            hf = Frame((x, 0, 0.62), (0, side, 0), Z, (side, 0, 0))
+            a0, a1 = side * Y(u_a), side * Y(u_b)
+            v.detail(f"skirt_lip_{side}_{i}", dt.plate(hf, min(a0, a1), 0.92, max(a0, a1), 0.95, 0.008), "skirt")
+        v.detail(f"guard_lip_{side}", geo.box(side * 1.46, Y(2.975), FENDER_Z + 0.012, 0.012, 4.95, 0.02))

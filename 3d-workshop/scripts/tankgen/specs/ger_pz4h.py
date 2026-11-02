@@ -2,7 +2,7 @@
 
 Traced from MasterJVN's four-view drawing "PzIV-012-H-Variantes.jpg" (Wikimedia Commons, CC BY 4.0), calibrated at
 175 px/m (checked against the 7.02 m length with gun, the 3 m scale bar and the 2.88 m track width). The drawing omits
-the hull Schürzen; those follow the Ausf. H standard (5 mm plates on a rail, 8 mm turret skirts).
+the hull Schürzen plates (it does show their rail and brackets); the plates follow the Ausf. H standard (5 mm).
 
 Coordinates: u = metres back from the bow tip, z = metres above ground, x = metres to the vehicle's left.
 """
@@ -39,7 +39,7 @@ ROLLER_Z, ROLLER_R = 0.90, 0.13
 LOWER_X = 0.93  # lower hull between the tracks
 SUPER_X = 1.20  # superstructure incl. panniers (front view: 2.40 m)
 DECK_X = 1.16  # engine compartment
-FENDER_Z = 1.26
+FENDER_Z = 1.25
 ROOF_Z = 1.68
 GLACIS = ((0.06, 0.97), (1.05, 1.23))  # 15 deg glacis from the upper nose plate to the superstructure front
 FRONT_U = (1.05, 1.10)  # superstructure front plate, bottom and top
@@ -50,9 +50,9 @@ DECK_END_U = 5.30  # engine deck ends, rear plate slopes down
 TURRET_U = 3.03  # turret ring centre
 TURRET_X = 0.05  # offset to the vehicle's left (gun bore is 5 cm left of the centreline in the front view)
 TURRET_Z = 1.70
-TURRET_TOP = 2.31
-ROOF_FRONT_Z = 2.25
-GUN_Z = 1.97
+TURRET_TOP = 2.305  # flat rear roof (side view)
+ROOF_FRONT_Z = 2.21  # top of the front plate; the roof plate slopes up to TURRET_TOP at u 3.02
+GUN_Z = 1.98  # bore axis (side view)
 
 # Balkenkreuz on the middle hull Schürzen plate, both sides: (side, y, z) in metres
 CROSSES = [(1, Y(2.95), 1.10), (-1, Y(2.95), 1.10)]
@@ -96,18 +96,24 @@ def hull(v):
     v.add("hull_lower", geo.prism_x(P(lower), -LOWER_X, LOWER_X), chamfer=0.025)
 
     # superstructure + engine compartment: one shell at roof height, front plate slightly raked, rear deck sloping
-    sup = [(FRONT_U[0], FENDER_Z), (FRONT_U[0], gz1), (FRONT_U[1], ROOF_Z), (3.95, ROOF_Z), (3.95, FENDER_Z)]
+    sup = [(FRONT_U[0], gz1), (FRONT_U[1], ROOF_Z), (3.95, ROOF_Z), (3.95, FENDER_Z), (FRONT_U[0] + 0.01, FENDER_Z)]
     v.add("superstructure", geo.prism_x(P(sup), -SUPER_X, SUPER_X), chamfer=0.025)
     deck = [(3.95, FENDER_Z), (3.95, ROOF_Z), (DECK_END_U, ROOF_Z), (REAR_U, 1.45), (REAR_U, FENDER_Z)]
     v.add("engine_deck", geo.prism_x(P(deck), -DECK_X, DECK_X), chamfer=0.025)
 
-    # track guards: plate at 1.26 m, front mudguard sloping down to the bow and boxed in (front view), rear guard
-    # sloping down behind the idler
-    guard = [(0.0, 0.90), (0.17, 1.17), (0.50, FENDER_Z - 0.012), (5.55, FENDER_Z - 0.012), (5.95, 1.12),
-             (5.95, 1.135), (5.55, FENDER_Z), (0.50, FENDER_Z), (0.17, 1.185), (0.0, 0.915)]
+    # track guards: plate at 1.25 m with a 7 cm outer lip (side view line at 1.18 m), front mudguard sloping down to
+    # the bow and boxed in (front view), rear mudguard sloping down from u 5.45 to 0.99 m at the tail (side view)
+    guard = [(0.0, 0.90), (0.17, 1.165), (0.50, FENDER_Z - 0.012), (5.45, FENDER_Z - 0.012), (5.95, 0.948),
+             (5.95, 0.993), (5.45, FENDER_Z), (0.50, FENDER_Z), (0.17, 1.18), (0.0, 0.915)]
     outer = TRACK_X + TRACK_W / 2 + 0.02
     v.mirror_x("guard", lambda: geo.prism_x(P(guard), SUPER_X - 0.02, outer), kind="paint")
     box = [(0.0, 0.88), (0.0, 0.915), (0.17, 1.185), (0.50, FENDER_Z), (0.50, 0.88)]
+    # ahead of the superstructure the guard runs in to the lower hull side (top view: inner edge 0.92 m to u 1.05)
+    inner = [(0.0, 0.90), (0.17, 1.165), (0.50, FENDER_Z - 0.012), (FRONT_U[0], FENDER_Z - 0.012),
+             (FRONT_U[0], FENDER_Z), (0.50, FENDER_Z), (0.17, 1.18), (0.0, 0.915)]
+    v.mirror_x("guard_inner", lambda: geo.prism_x(P(inner), LOWER_X, SUPER_X - 0.02), kind="paint")
+    v.mirror_x("guard_lip", lambda: geo.prism_x(P([(0.50, 1.18), (5.45, 1.18), (5.45, FENDER_Z), (0.50, FENDER_Z)]),
+                                                 outer - 0.012, outer), kind="paint")
     v.mirror_x("guard_box_side", lambda: geo.prism_x(P(box), outer - 0.012, outer), kind="paint")
     v.mirror_x("guard_box_front", lambda: geo.prism_x(P([(0.0, 0.88), (0.012, 0.88), (0.012, 0.915), (0.0, 0.915)]),
                                                        LOWER_X, outer), kind="paint")
@@ -176,90 +182,200 @@ def running_gear(v):
             v.add(f"bogie_{b}_{side}", geo.merge(bracket, spring, arms), kind="paint")
 
 
+def station_shell(stations, z0):
+    """Armour shell from fore-aft stations [(u_base, half_w_base, u_top, half_w_top, z_top), ...] about x = 0:
+    planar-ish side walls between stations, a roof that can bend at any station, flat floor at z0."""
+    import bmesh
+
+    bm = bmesh.new()
+    rows = []
+    for ub, wb, ut, wt, zt in stations:
+        rows.append([bm.verts.new((-wb, Y(ub), z0)), bm.verts.new((wb, Y(ub), z0)),
+                     bm.verts.new((wt, Y(ut), zt)), bm.verts.new((-wt, Y(ut), zt))])
+    for r0, r1 in zip(rows, rows[1:]):
+        for k in range(4):
+            k2 = (k + 1) % 4
+            bm.faces.new((r0[k], r0[k2], r1[k2], r1[k]))
+    bm.faces.new(rows[0])
+    bm.faces.new(list(reversed(rows[-1])))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+
 def turret(v):
     tx, ty = TURRET_X, Y(TURRET_U)
-    # turret shell (side/top/front views): narrow front plate, cheeks angled back to the 25-deg sides, angled rear
-    # corners, roof sloping down to the front plate
-    base = [(-0.56, -1.00), (0.56, -1.00), (0.92, -0.55), (0.92, 0.72), (0.70, 0.97), (-0.70, 0.97), (-0.92, 0.72),
-            (-0.92, -0.55)]
-    top = [(-0.48, -0.95, ROOF_FRONT_Z), (0.48, -0.95, ROOF_FRONT_Z), (0.64, -0.45, TURRET_TOP), (0.62, 0.70, TURRET_TOP),
-           (0.52, 0.92, TURRET_TOP), (-0.52, 0.92, TURRET_TOP), (-0.62, 0.70, TURRET_TOP), (-0.64, -0.45, TURRET_TOP)]
-    shell = geo.loft([(x + tx, y + ty, TURRET_Z) for x, y in base], [(x + tx, y + ty, z) for x, y, z in top])
-    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.025)
 
-    # rear stowage bin inside the skirt wrap
-    v.add("turret_bin", geo.box(tx, ty + 1.20, 2.03, 1.10, 0.46, 0.36), kind="paint", bone="turret", chamfer=0.03)
-    # cupola (drum 0.74 m, top at 2.63 m) on the rear of the roof, ventilator and signal port ahead of it
-    v.add("cupola", geo.move(parts.cupola(0.37, 0.30, 5), x=tx, y=Y(3.56), z=TURRET_TOP - 0.01), kind="paint_cast",
-          bone="turret")
-    v.add("vent", geo.move(geo.lathe([(0.0, 0.07), (0.12, 0.06), (0.15, 0.0)], 12, axis="Z"),
-                           x=tx - 0.05, y=Y(2.95), z=TURRET_TOP), kind="paint", bone="turret")
-    v.add("signal_port", geo.move(geo.cylinder(0.06, 0.05, 10, axis="Z"), x=tx + 0.35, y=Y(2.85),
-                                  z=TURRET_TOP + 0.02), kind="paint", bone="turret")
+    def roof_z(u):  # roof: front plate top at u 2.17 / 2.21 m, sloping up to the flat rear roof at u 3.02
+        return ROOF_FRONT_Z + (TURRET_TOP - ROOF_FRONT_Z) * min(1.0, max(0.0, (u - 2.17) / (3.02 - 2.17)))
 
-    # external mantlet (0.79 x 0.43 m, front view) tapering forward, recoil sleeve 0.30 m across, L/48 barrel,
-    # double-baffle brake; muzzle 1.07 m ahead of the bow
-    back = [(-0.40, -0.215), (0.40, -0.215), (0.40, 0.215), (-0.40, 0.215)]
-    front = [(-0.33, -0.17), (0.33, -0.17), (0.33, 0.17), (-0.33, 0.17)]
-    mantlet = geo.loft([(tx + x, Y(2.03), GUN_Z + z) for x, z in back], [(tx + x, Y(1.82), GUN_Z + z) for x, z in front])
-    v.add("mantlet", mantlet, kind="paint_cast", bone="turret", chamfer=0.03)
-    v.add("coax_port", geo.move(geo.cylinder(0.03, 0.05, 8, axis="Y"), x=tx - 0.22, y=Y(1.81), z=GUN_Z + 0.02),
+    # turret shell (hidden behind the Schürzen in the side view; top view: roof 1.38 m wide, sides 25 deg)
+    # front plate leaning back 10 deg, cheeks to the full-width sides, angled rear corners
+    stations = [(2.10, 0.80, 2.17, 0.69, roof_z(2.17)), (2.60, 0.97, 2.60, 0.69, roof_z(2.60)),
+                (3.02, 0.97, 3.02, 0.69, TURRET_TOP), (3.75, 0.97, 3.80, 0.69, TURRET_TOP),
+                (4.00, 0.70, 4.00, 0.50, TURRET_TOP)]
+    shell = geo.move(station_shell(stations, TURRET_Z), x=tx)
+    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.02)
+
+    # rear stowage bin inside the skirt wrap: D-shaped in plan (top view u 3.83-4.81, 1.13 m wide), lid flat behind
+    # the roof, then sloping down to 2.26 m at the back (side view)
+    plan = [(-0.566, 3.834), (0.566, 3.834), (0.566, 4.28)]
+    plan += [(0.566 * math.cos(a), 4.28 + 0.526 * math.sin(a))
+             for a in (math.radians(d) for d in range(20, 161, 20))]
+    plan += [(-0.566, 4.28)]
+    lid = lambda u: TURRET_TOP - 0.01 - 0.037 * max(0.0, u - 4.0) / (4.806 - 4.0)
+    v.add("turret_bin", geo.loft([(tx + x, Y(u), 1.86) for x, u in plan], [(tx + x, Y(u), lid(u)) for x, u in plan]),
+          kind="paint", bone="turret", chamfer=0.02)
+
+    # commander's cupola (side/front view): base ring 0.95 m, armoured drum flaring 0.83 -> 0.88 m with the
+    # vision-block covers, chamfered top and the hatch, top at 2.62 m
+    cz = TURRET_TOP
+    cup_u, cup_x = 3.574, tx + 0.005
+    prof = [(0.0, cz), (0.472, cz), (0.472, 2.364), (0.416, 2.364), (0.438, 2.459), (0.444, 2.462),
+            (0.444, 2.47), (0.438, 2.47), (0.438, 2.524), (0.38, 2.554), (0.0, 2.554)]
+    v.add("cupola", geo.move(geo.lathe([(r, z - cz) for r, z in prof], 24, axis="Z"), x=cup_x, y=Y(cup_u), z=cz),
+          kind="paint_cast", bone="turret", smooth_angle=50)
+    hatch = geo.lathe([(0.0, 2.554), (0.388, 2.554), (0.388, 2.605), (0.372, 2.619), (0.0, 2.619)], 24, axis="Z")
+    v.add("cupola_hatch", geo.move(hatch, x=cup_x, y=Y(cup_u)), kind="paint_cast", bone="turret", smooth_angle=50)
+    for k in range(6):  # vision-block covers, one per segment of the drum
+        a = 2 * math.pi * (k + 0.5) / 6 + math.pi / 2
+        cover = geo.box(0, 0, 0, 0.016, 0.22, 0.05)
+        geo.move(cover, x=0.44, z=2.497)
+        geo.rotate(cover, a, "Z")
+        v.add(f"cupola_block_{k}", geo.move(cover, x=cup_x, y=Y(cup_u)), kind="paint_cast", bone="turret",
+              chamfer=0.006)
+
+    # fan ventilator cover on the sloping roof plate, right of the gun (top view u 2.61-2.86, 0.26 m right of the
+    # centreline; side view top 2.35 m)
+    slope = math.atan2(TURRET_TOP - ROOF_FRONT_Z, 3.02 - 2.17)
+    vent = geo.lathe([(0.0, -0.02), (0.125, -0.02), (0.125, 0.055), (0.11, 0.075), (0.0, 0.075)], 16, axis="Z")
+    geo.rotate(vent, slope, "X")
+    v.add("vent", geo.move(vent, x=-0.257, y=Y(2.737), z=roof_z(2.737)), kind="paint", bone="turret",
+          smooth_angle=50)
+
+    # gun (side/top/front views): mantlet plate 0.79 x 0.44 m on the turret front (leaning back with the front
+    # plate, so its top edge stays behind the skirt front panels), mantlet body 0.51 x 0.29 m with chamfered edges
+    # and a round front collar, barrel jacket 0.23 m from u 1.58 to 1.03, L/48 barrel, double-baffle brake;
+    # muzzle 1.07 m ahead of the bow
+    mp = [(1.99, 1.73), (2.067, 2.165), (2.19, 2.165), (2.11, 1.73)]
+    v.add("mantlet_plate", geo.prism_x(P(mp), -0.40, 0.39), kind="paint_cast", bone="turret", chamfer=0.015)
+    x0, x1, z0, z1 = -0.20, 0.31, GUN_Z - 0.143, GUN_Z + 0.143
+    octo = [(x0, z0 + 0.06), (x0 + 0.10, z0), (x1 - 0.09, z0), (x1, z0 + 0.06), (x1, z1 - 0.06), (x1 - 0.09, z1),
+            (x0 + 0.10, z1), (x0, z1 - 0.06)]
+    body = geo.loft([(x, Y(2.04), z) for x, z in octo], [(x, Y(1.627), z) for x, z in octo])
+    v.add("mantlet", body, kind="paint_cast", bone="turret", chamfer=0.01)
+    gx = 0.056  # bore: 5.6 cm left of the centreline (front view)
+    v.add("mantlet_collar", geo.move(geo.cylinder(0.143, 0.06, 20, axis="Y"), x=gx, y=Y(1.605), z=GUN_Z),
+          kind="paint_cast", bone="turret", chamfer=0.008)
+    v.add("coax_port", geo.move(geo.cylinder(0.03, 0.05, 8, axis="Y"), x=-0.15, y=Y(1.61), z=GUN_Z - 0.01),
           kind="steel", bone="turret")
-    v.add("sight_port", geo.move(geo.cylinder(0.035, 0.05, 8, axis="Y"), x=tx + 0.24, y=Y(1.81), z=GUN_Z + 0.05),
+    v.add("sight_port", geo.move(geo.cylinder(0.025, 0.04, 8, axis="Y"), x=0.27, y=Y(1.975), z=GUN_Z + 0.07),
           kind="steel", bone="turret")
-    face = Y(1.82)
-    muzzle = Y(-1.07)
-    length = face - muzzle
-    barrel = parts.gun_barrel([(0.15, 0.0), (0.15, 0.21), (0.12, 0.23), (0.070, 0.30), (0.062, length - 0.27),
-                               (0.062, length - 0.25)], 16)
-    geo.move(barrel, x=tx, y=face, z=GUN_Z)
-    brake = geo.move(parts.muzzle_brake_double(0.10, 0.27, 16), x=tx, y=muzzle + 0.27, z=GUN_Z)
+    face_u = 1.60
+    muzzle_u = -1.074
+    brake_l = 0.278
+    d = lambda u: face_u - u  # distance forward of the face
+    barrel = parts.gun_barrel([(0.1145, 0.0), (0.1145, d(1.069)), (0.118, d(1.069)), (0.118, d(1.028)),
+                               (0.0655, d(1.028)), (0.0655, d(0.10)), (0.061, d(0.10)), (0.061, d(-0.65)),
+                               (0.072, d(-0.65)), (0.072, d(-0.73)), (0.061, d(-0.73)),
+                               (0.061, d(muzzle_u + brake_l))], 16)
+    geo.move(barrel, x=gx, y=Y(face_u), z=GUN_Z)
+    brake = geo.move(parts.muzzle_brake_double(0.112, brake_l, 16), x=gx, y=Y(muzzle_u + brake_l), z=GUN_Z)
     v.add("gun", geo.merge(barrel, brake), kind="steel_paint", bone="barrel_base")
-    v.locator("barrel", (tx, muzzle, GUN_Z), "barrel_tip")
-    v.bone("barrel_base", (tx, Y(2.0), GUN_Z), "turret")
-    v.bone("barrel_tip", (tx, muzzle, GUN_Z), "barrel_base")
+    v.locator("barrel", (gx, Y(muzzle_u), GUN_Z), "barrel_tip")
+    v.bone("barrel_base", (gx, Y(2.0), GUN_Z), "turret")
+    v.bone("barrel_tip", (gx, Y(muzzle_u), GUN_Z), "barrel_base")
     v.bone("turret", (tx, ty, TURRET_Z), "chassie")
 
-    # turret Schürzen (8 mm): side panels at 1.20 m, rear wrap round the bin to u = 4.82, and front panels that are
-    # tilted planes from the side panel's top-front corner down-inwards to the turret cheek (the front-view "X")
-    zb, zt = 1.70, TURRET_TOP
-    side_top = [(1.05, 2.36), (1.20, 2.62), (1.20, 4.20), (0.98, 4.60), (0.55, 4.79), (0.0, 4.82)]
-    side_bot = [(1.20, 2.75), (1.20, 2.80), (1.20, 4.20), (0.98, 4.60), (0.55, 4.79), (0.0, 4.82)]
+    # turret Schürzen (8 mm), centred on the turret: side panels from u 2.07 (flaring out to 1.21 m by u 2.8),
+    # top edge 2.23 m, falling to 2.15 m over the front metre (side view), bottom at 1.73 m; rear wrap curving in
+    # from u 3.9 round the bin to u 4.85 (top view); bent front panels between the side panel and the mantlet
+    # (the front-view "X" is the fold from the outer top corner to the inner bottom corner)
+    zb = 1.73
+    skirt_top = lambda u: 2.152 + 0.08 * min(1.0, (u - 2.07) / 0.98)
+    plan = [(1.02, 2.07), (1.06, 2.32), (1.19, 2.68), (1.21, 2.80), (1.207, 3.90), (1.08, 4.24), (0.885, 4.49),
+            (0.67, 4.67), (0.386, 4.79), (0.0, 4.845)]
     for side in (1, -1):
-        top = [(side * x + tx - TURRET_X, Y(u)) for x, u in side_top]
-        bot = [(side * x + tx - TURRET_X, Y(u)) for x, u in side_bot]
-        v.add(f"turret_skirt_{side}", geo.wall_loft(bot, top, zb, zt, -0.014 * side), kind="skirt", bone="turret",
+        pts = [(tx + side * x, u) for x, u in plan]
+        v.add(f"turret_skirt_{side}", skirt_wall(pts, zb, skirt_top, 0.014, (tx, 3.4)), kind="skirt", bone="turret",
               smooth_angle=20, chamfer=0.004)
-        # tilted front panel
-        quad = [(side * 1.20 + tx - TURRET_X, Y(2.75), zb), (side * 1.05 + tx - TURRET_X, Y(2.36), zt),
-                (side * 0.66 + tx - TURRET_X, Y(2.06), zt), (side * 0.58 + tx - TURRET_X, Y(2.12), zb)]
-        v.add(f"turret_skirt_front_{side}", panel(quad, 0.014), kind="skirt", bone="turret", chamfer=0.004)
-        # mounting arms from the turret sides out to the skirt
-        for u in (2.80, 3.55):
-            v.add(f"skirt_mount_{side}_{u}", geo.box(tx + side * 1.06, Y(u), zt - 0.06, 0.30, 0.05, 0.04), kind="paint",
-                  bone="turret", chamfer=0.008)
-        # two-piece doors over the turret side hatches
-        v.add(f"skirt_door_{side}", geo.box(tx + side * 1.215, Y(3.05), 2.00, 0.012, 0.55, 0.42), kind="skirt",
-              bone="turret", chamfer=0.004)
+        front = [(1.02, 2.075, skirt_top(2.07)), (0.69, 2.095, 2.20), (0.66, 1.985, 2.03), (0.64, 1.982, zb),
+                 (1.02, 2.07, zb)]
+        v.add(f"turret_skirt_front_{side}", plate([(tx + side * x, Y(u), z) for x, u, z in front], (0, 0.014, 0)),
+              kind="skirt", bone="turret", chamfer=0.003)
+        # mounting arms from the turret roof edge out to the top of the skirt (top view)
+        for u0, u1 in ((2.47, 2.33), (3.02, 2.78), (3.86, 4.05)):
+            a = (tx + side * 0.69, Y(u0), roof_z(u0) - 0.03)
+            b = (tx + side * 1.20, Y(u1), skirt_top(u1) - 0.03)
+            v.add(f"skirt_mount_{side}_{u0}", bar(a, b, 0.05, 0.03), kind="paint", bone="turret", chamfer=0.006)
+        # two-leaf door over the turret side hatch (side view u 3.13-3.83, full skirt height)
+        for k, (u0, u1) in enumerate(((3.13, 3.475), (3.485, 3.83))):
+            zt = skirt_top((u0 + u1) / 2) - 0.012
+            v.add(f"skirt_door_{side}_{k}", geo.box(tx + side * 1.223, Y((u0 + u1) / 2), (zb + zt) / 2 + 0.006,
+                                                    0.012, u1 - u0, zt - zb - 0.012),
+                  kind="skirt", bone="turret", chamfer=0.003)
 
 
-def panel(quad, thickness):
-    """Thin plate from a 3D quad (front panels of the turret Schürzen)."""
+def skirt_wall(plan, z0, ztop, thickness, centre):
+    """Thin wall along a plan polyline [(x, u), ...] with its top edge at z = ztop(u); the thickness grows away
+    from the plan point centre (x, u) (the turret)."""
     import bmesh
     from mathutils import Vector
 
-    pts = [Vector(p) for p in quad]
-    n = (pts[1] - pts[0]).cross(pts[3] - pts[0]).normalized()
+    pts = [Vector((x, Y(u))) for x, u in plan]
+    c = Vector((centre[0], Y(centre[1])))
+    n = len(pts)
     bm = bmesh.new()
-    a = [bm.verts.new(p) for p in pts]
-    b = [bm.verts.new(p + n * thickness) for p in pts]
-    bm.faces.new(a)
-    bm.faces.new(list(reversed(b)))
-    for i in range(4):
-        j = (i + 1) % 4
+    rows = []
+    for i, p in enumerate(pts):
+        d0 = (pts[i] - pts[i - 1]) if i > 0 else (pts[1] - pts[0])
+        d1 = (pts[i + 1] - pts[i]) if i < n - 1 else d0
+        d = (d0.normalized() + d1.normalized()).normalized()
+        nrm = Vector((d.y, -d.x))
+        if nrm.dot(p - c) < 0:
+            nrm = -nrm
+        o = p + nrm * thickness
+        zt = ztop(plan[i][1])
+        rows.append([bm.verts.new((p.x, p.y, z0)), bm.verts.new((p.x, p.y, zt)), bm.verts.new((o.x, o.y, zt)),
+                     bm.verts.new((o.x, o.y, z0))])
+    for r0, r1 in zip(rows, rows[1:]):
+        for k in range(4):
+            k2 = (k + 1) % 4
+            bm.faces.new((r0[k], r1[k], r1[k2], r0[k2]))
+    bm.faces.new(rows[0])
+    bm.faces.new(list(reversed(rows[-1])))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+
+def plate(points, offset):
+    """Thin plate from a 3D polygon (fan-triangulated from its first vertex, so it may be bent) pushed by offset."""
+    import bmesh
+    from mathutils import Vector
+
+    off = Vector(offset)
+    bm = bmesh.new()
+    a = [bm.verts.new(Vector(p)) for p in points]
+    b = [bm.verts.new(Vector(p) + off) for p in points]
+    n = len(points)
+    for i in range(1, n - 1):
+        bm.faces.new((a[0], a[i], a[i + 1]))
+        bm.faces.new((b[0], b[i + 1], b[i]))
+    for i in range(n):
+        j = (i + 1) % n
         bm.faces.new((a[i], b[i], b[j], a[j]))
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     return bm
+
+
+def bar(a, b, width, height):
+    """Rectangular bar from point a to point b (mounting arms)."""
+    from mathutils import Vector
+
+    a, b = Vector(a), Vector(b)
+    d = b - a
+    bm = geo.box(0, 0, 0, width, d.length, height)
+    geo.transform(bm, d.to_track_quat("Y", "Z").to_matrix().to_4x4())
+    return geo.move(bm, *((a + b) / 2))
 
 
 def fittings(v):
@@ -289,17 +405,12 @@ def fittings(v):
         v.add(f"crew_hatch_{side}", geo.box(side * 0.69, Y(1.645), ROOF_Z + 0.02, 0.52, 0.50, 0.04), kind="paint",
               chamfer=0.012)
 
-    # spare track links across the upper nose plate
-    for col in range(4):
-        link = geo.chamfer(geo.box(0, 0, 0, 0.38, 0.03, 0.115), 0.008)
-        geo.rotate(link, -math.atan2(0.06, 0.24), "X")
-        geo.move(link, x=-0.63 + col * 0.42, y=Y(0.03) - 0.025, z=0.85)
-        v.add(f"spare_link_{col}", link, kind="track_steel")
-
-    # headlights on the front guards
-    for side in (1, -1):
-        v.add(f"headlight_{side}", geo.move(parts.headlight(0.075), x=side * 1.30, y=Y(0.25), z=FENDER_Z + 0.06),
-              kind="paint_cast")
+    # headlights on the front guards, behind the mudguards (front view: left one 1.06 m out at 1.40 m, right one
+    # 1.35 m out at 1.37 m; top view u 0.46-0.62), each on a short post
+    for side, x, z in ((1, 1.06, 1.40), (-1, -1.35, 1.37)):
+        lamp = geo.merge(parts.headlight(0.085, 0.12), geo.cylinder(0.018, z - FENDER_Z, 6, axis="Z",
+                                                                     center=(0, 0.07, -(z - FENDER_Z) / 2)))
+        v.add(f"headlight_{side}", geo.move(lamp, x=x, y=Y(0.60), z=z), kind="paint_cast")
 
     # engine deck: two access hatches, cooling louvres either side (top view u 4.33-4.79, 0.46-0.86 m out)
     for side in (1, -1):
@@ -308,13 +419,15 @@ def fittings(v):
         v.add(f"louvre_{side}", geo.box(side * 0.66, Y(4.56), ROOF_Z + 0.015, 0.40, 0.46, 0.03), kind="paint",
               chamfer=0.008)
 
-    # rear: main muffler across the rear plate (top view u 5.42-5.73), tail pipe, auxiliary muffler
-    v.add("muffler", geo.move(parts.muffler(0.155, 1.06), x=0.24, y=Y(REAR_U + 0.16), z=1.20), kind="exhaust")
-    v.add("tailpipe", geo.move(geo.cylinder(0.045, 0.22, 8, axis="Z"), x=-0.22, y=Y(REAR_U + 0.16), z=1.42),
-          kind="exhaust")
-    v.add("aux_muffler", geo.move(parts.muffler(0.07, 0.34), x=-0.70, y=Y(REAR_U + 0.10), z=1.10), kind="exhaust")
-    v.locator("right_exhaust", (-0.22, Y(REAR_U + 0.16), 1.55), "chassie")
-    v.locator("left_exhaust", (0.60, Y(REAR_U + 0.16), 1.25), "chassie")
+    # rear: main muffler across the rear plate, offset to the right (rear view x -0.80..+0.31, z 0.95-1.27; top
+    # view u 5.45-5.71), short tail pipe on top angled to the left, auxiliary (generator) muffler under its left end
+    v.add("muffler", geo.move(parts.muffler(0.159, 1.07), x=-0.243, y=Y(REAR_U + 0.16), z=1.106), kind="exhaust")
+    tail = geo.cylinder(0.04, 0.14, 8, axis="Z")
+    geo.rotate(tail, math.radians(-35), "Y")
+    v.add("tailpipe", geo.move(tail, x=-0.13, y=Y(REAR_U + 0.16), z=1.30), kind="exhaust")
+    v.add("aux_muffler", geo.chamfer(geo.box(0.495, Y(REAR_U + 0.12), 1.02, 0.30, 0.18, 0.29), 0.06), kind="exhaust")
+    v.locator("right_exhaust", (-0.10, Y(REAR_U + 0.16), 1.40), "chassie")
+    v.locator("left_exhaust", (0.495, Y(REAR_U + 0.12), 1.20), "chassie")
 
     # tools: shovel and jack on the guards, tow cables, antenna base
     v.add("shovel", geo.move(parts.shovel(1.05), x=1.32, y=Y(1.6), z=FENDER_Z + 0.03), kind="wood")
@@ -328,22 +441,28 @@ def fittings(v):
 
 
 def schuerzen(v):
-    """Hull Schürzen (5 mm, not in the drawing): rail on brackets along the superstructure, 5 plates per side."""
+    """Hull Schürzen (5 mm). The drawing shows the hanger rail and its brackets but not the plates: rail 1.59 m out
+    (top view, u 0.58-5.50), 1.54-1.57 m high, sloping down at both ends (side view); 5 plates per side hang on it."""
+    rail_top = [(0.58, 1.525), (1.08, 1.571), (5.05, 1.571), (5.50, 1.505)]
+    rail = rail_top + [(u, z - 0.034) for u, z in reversed(rail_top)]
     for side in (1, -1):
-        x = side * (TRACK_X + TRACK_W / 2 + 0.07)
-        v.add(f"skirt_rail_{side}", geo.box(x - side * 0.02, Y(3.0), 1.56, 0.03, 4.6, 0.035), kind="paint")
-        for b, u in enumerate((1.2, 2.2, 3.2, 4.2, 5.1)):
-            v.add(f"skirt_bracket_{side}_{b}", geo.box(side * (SUPER_X + 0.15), Y(u), 1.54, 0.30, 0.05, 0.04),
-                  kind="paint")
+        xr = side * 1.59
+        v.add(f"skirt_rail_{side}", geo.prism_x(P(rail), xr - 0.02, xr + 0.02), kind="paint", chamfer=0.004)
+        # brackets from the superstructure side out to the rail (top view u 1.35, 2.44, 3.76, 4.91)
+        for b, u in enumerate((1.35, 2.44, 3.76, 4.91)):
+            v.add(f"skirt_bracket_{side}_{b}", geo.box(side * (SUPER_X + 1.59) / 2, Y(u), 1.52, 1.59 - SUPER_X, 0.05,
+                                                       0.04), kind="paint", chamfer=0.006)
+        x = side * 1.625  # plates hang just outside the rail
+        top = 1.575
         for i in range(5):
             u0 = 0.62 + i * 0.97
-            plate = [(Y(u0), 1.62), (Y(u0), 0.62), (Y(u0 + 1.02), 0.62), (Y(u0 + 1.02), 1.62)]
-            if i == 0:  # leading plate: long diagonal from the top (over the sprocket) back to the bottom
-                plate = [(Y(u0 - 0.10), 1.62), (Y(u0 - 0.10), 1.48), (Y(u0 + 0.42), 0.62), (Y(u0 + 1.02), 0.62),
-                         (Y(u0 + 1.02), 1.62)]
-            elif i == 4:  # trailing plate: rear corner cut down towards the idler
-                plate = [(Y(u0), 1.62), (Y(u0), 0.62), (Y(u0 + 0.86), 0.62), (Y(u0 + 0.98), 0.78),
-                         (Y(u0 + 0.98), 1.38), (Y(u0 + 0.80), 1.62)]
+            plate = [(Y(u0), top), (Y(u0), 0.62), (Y(u0 + 1.02), 0.62), (Y(u0 + 1.02), top)]
+            if i == 0:  # leading plate: top edge follows the rail down to its front end, long diagonal to the bottom
+                plate = [(Y(0.58), 1.53), (Y(0.58), 1.40), (Y(1.04), 0.62), (Y(u0 + 1.02), 0.62),
+                         (Y(u0 + 1.02), top), (Y(1.08), top)]
+            elif i == 4:  # trailing plate: top edge follows the rail down, rear corner cut towards the idler
+                plate = [(Y(u0), top), (Y(u0), 0.62), (Y(u0 + 0.86), 0.62), (Y(u0 + 0.98), 0.78),
+                         (Y(u0 + 0.98), 1.505), (Y(5.05), top)]
             off = 0.008 * (i % 2)
             v.add(f"skirt_{side}_{i}", geo.prism_x(plate, x - 0.006 + side * off, x + 0.006 + side * off),
                   kind="skirt", smooth_angle=30, chamfer=0.005)
