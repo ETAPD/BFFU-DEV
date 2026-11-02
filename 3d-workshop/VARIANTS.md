@@ -196,6 +196,92 @@ What tells the variants apart:
 - **Turret offset:** the G top view draws the turret and gun 6 cm right of the hull centreline; the model keeps them
   on the centreline.
 
+## Tiger
+
+**Tiger I:** a public-domain line drawing exists. The British School of Tank Technology (Military College of
+Science) measured Tiger 131 and drew a four-view for its January 1944 report, with dimension lines; Commons hosts it
+as "Tiger Side/Top/Front/Rear View.png" (credits in README). Every view was calibrated against its own dimension lines
+(27 ft 9 in overall, 11 ft 10 1/8 in ground contact, 2 ft 4.5 in tracks, 12 ft 3 in width, 8 ft 6.5 in turret roof),
+which agree within 0.5 %, and resampled to 175 px/m. Tiger 131 is an early Tiger, so the early spec is the drawing
+as drawn. The mid and late specs reuse it for the hull, wheel stations, turret, mantlet and gun, which their photos
+show unchanged, and set their production changes from the photos.
+
+**Tiger II:** no free drawing exists. Commons has only a small single side profile (`Panzer_VI_B.svg`, 500 x 200 px)
+and "King Tiger Blueprint.jpg", which is labelled CC BY 4.0 but is a scan of a copyrighted magazine page
+(Bronekollektsiya 2/2001, via drawingdatabase.com), so it was not used. The Tiger II is traced from the-blueprints.com
+sheets by Dr Dan Saranga (the Panther's series) **as private tracing reference only**, from the public 500 px previews:
+Henschel turret ID 63811 (~47 px/m), Porsche turret ID 14674 (~38-40 px/m). Each view was calibrated on its own
+against the documented 7.38 m hull, 10.286 m with the gun, 3.755 m width and 3.09 m height. Sheets, crops and
+drawing overlays stay in the git-ignored `reference/blueprints_nonfree/<spec>/`; the repository gets the geometry,
+the model's own outline renders (`outline_*.png`) and a README.
+
+| Spec | Variant | Years | Gun | Paint (`CAMO`, Zimmerit) | Drawing used | Tris | Track speed / `texture_anim_speed` |
+|---|---|---|---|---|---|---|---|
+| `ger_tiger1_early` | Tiger I, early (Tiger 131) | 1942-43 | 8.8 cm KwK 36 L/56, binocular sight | `afrika_1942` (Tunisia), no | STT Tiger 131 four-view (public domain), 175 px/m | 21,752 | 1.608 / 1.309 |
+| `ger_tiger1_mid` | Tiger I, mid | 1943-44 | KwK 36 L/56, binocular sight | `dunkelgelb_1943`, yes | the same drawing (shared parts) + photos | 20,780 | 1.608 / 1.309 |
+| `ger_tiger1_winter` | Tiger I, mid, winter | 1943-44 | KwK 36 L/56, binocular sight | `winter_1943` (whitewash), yes | as `ger_tiger1_mid` | 20,780 | 1.608 / 1.309 |
+| `ger_tiger1_late` | Tiger I, late | 1944 | KwK 36 L/56, monocular sight | `ambush_1944`, yes | the same drawing (shared parts) + photos | 20,272 | 1.608 / 1.309 |
+| `ger_tiger2_porsche` | Tiger II, Porsche turret | 1944 | 8.8 cm KwK 43 L/71, bell mantlet | `dunkelgelb_1943`, yes | the-blueprints.com 14674 (turret) + 63811 (hull) | 21,012 | 1.608 / 1.309 |
+| `ger_tiger2_henschel` | Tiger II, Henschel turret | 1944-45 | KwK 43 L/71, Saukopf mantlet | `olivgrun_1945`, no | the-blueprints.com 63811 four-view | 21,328 | 1.608 / 1.309 |
+| `ger_tiger2_winter` | Tiger II, Henschel turret, winter | 1944-45 | KwK 43 L/71, Saukopf mantlet | `winter_1945` (new, whitewash), no | as `ger_tiger2_henschel` | 21,328 | 1.608 / 1.309 |
+
+Built from `specs/tiger_common.py`: the Tiger I box hull of interlocked plates with its fender strips; the horseshoe
+turret (one bent side and rear plate, flat front plate) with the mantlet rolling back over its top and bottom edges;
+the Tiger II hull (one flat glacis, sloped sides, rear horns); the Henschel turret (`station_shell`) and the Porsche
+turret (a ring stack with the rounded nose). Shared helpers come from `pz4_common` (`station_shell`, `plate`, `bar`,
+`gun`) and `panther_common` (rig and `wheel_info`). All five use 800 mm road wheels (sprocket and idler
+symmetry-stepped), so the track speed is the same everywhere: 1.608 game units/s, `texture_anim_speed` = 1.608 /
+1.28 / 0.48 / 2 = 1.309.
+
+Rig: the vanilla 24 bones. `wheel_01` sprocket, `wheel_02` idler, `wheel_03`-`wheel_10` the eight Tiger I axles
+(Tiger II: `wheel_03`-`wheel_11`, nine axles) front to rear. Each bone carries every disc on its axle, both sides; the
+remaining bones up to `wheel_17` sit on the road-wheel axles without geometry (`panther_common.rig`). No return
+rollers: the top run lies on the wheels (`track_belt(..., drape=True)`).
+
+What tells the variants apart:
+
+- **Cupola:** tall drum with five vision slits under brows (early Tiger I); low cast cupola with seven periscopes
+  and the AA ring (mid and late Tiger I, both Tiger IIs). On the Porsche turret it sits on a bulge in the left side
+  plate.
+- **Road wheels:** rubber-tyred discs in three layers (early, mid); steel-rimmed, internally sprung wheels with flat
+  faces in two layers (late Tiger I); steel wheels overlapping in two rows on nine axles (Tiger II).
+- **Rear:** Feifel air filters with their cans and ducts (early only); plain exhaust guards (mid, late); the Tiger II's
+  low exhausts in cast guards and its rear horns.
+- **Turret fittings:** NbK 39 smoke dischargers and S-mine dischargers (early; the S-mine dischargers stay on mid
+  and late); escape hatch in the right rear (all Tiger Is, from December 1942); loader's periscope and Pilze crane
+  sockets (late Tiger I, Henschel Tiger II).
+- **Sight:** two binocular apertures in the mantlet (early, mid), one monocular (late Tiger I and the Tiger IIs).
+- **Tiger II turret:** curved nose rolling round the gun, steep sides, bell mantlet, cupola bulge (Porsche); flat
+  sloped front plate with the Saukopf cone, wider sides, spare track links (Henschel).
+
+PC review (owner): both Tiger II turrets were wrong and the glacis showed a line across its middle. The line was
+the joint of two hull pieces at the sponson floor; the Tiger II hull is now built as the Panther's, with ONE flat
+glacis from the nose edge to the roof. The Porsche turret read as a dome: its nose now curves only in the side view
+and runs straight across in plan with rounded corners, the side plates, roof and rear plate are flat, the cupola
+bulge stands out past the roof edge, and the bell mantlet sits straight in the nose. The Henschel Saukopf was a
+shallow cap; it is now the 0.46 m deep cast bell of the Bovington and Saumur tanks, on a taller front plate.
+The winter specs reuse the mid Tiger I and the Henschel Tiger II with whitewash (`winter_1943`, `winter_1945`).
+
+### Unresolved (Tiger)
+
+- **Tiger II licence:** the source drawings are commercial; only geometry derived from them is in the repo (as the
+  Pz III and Panther). The Tiger I is clean: public-domain drawing.
+- **Tiger II resolution:** traced from 500 px previews (2.1 cm per pixel on 63811, 2.5 cm on 14674). Small fittings
+  (periscopes, exhaust guards, rear boxes) come from photos within that tolerance. The Porsche sheet's top view is
+  soft, so the turret plan widths come from its front view.
+- **No drawing of the mid or late Tiger I:** their changes come from photos (Kubinka '100', Saumur '221', Munster,
+  Vimoutiers) and the documented production changes. The cast cupola's exact profile was read off photos, not a
+  drawing.
+- **Late Tiger I details not modelled:** the reduced-size front mudguards and the late rear exhaust guards differ
+  between factories and dates; the drawing's (early) ones are kept. The Vimoutiers tank has lost its fenders, so no
+  photo settles the late fender strip.
+- **Porsche turret paint:** no free wartime photo of a Porsche-turret Tiger II turned up. The three-colour scheme over
+  Zimmerit follows the documented s.Pz.Abt. 503 finish in Normandy; the Bovington turret is in primer.
+- **Tiger I combat vs transport tracks:** modelled on the 725 mm combat tracks with the full outer wheel row, as
+  drawn. The 520 mm transport tracks are not modelled.
+- **Stowed track links** on Tiger 131's nose and turret are field fits and are not modelled. The Tiger II's turret
+  links are, as on the Bovington '104'.
+
 ## Wiring the variants into the mod (on the PC)
 
 For each spec, after the bake (`build_tank.py <spec> <out> <work>` without `--skip-bake`, then the DDS conversion as
@@ -244,6 +330,13 @@ for the H):
    `GER_medium_armor_2_alt_0_entity` there. Their `texture_anim_speed` is 1.407 (track speed 1.729 / 1.28 m /
    0.48 m tile / 2). The two Panther II specs (`GER_medium_armor_panther2_entity`,
    `GER_medium_armor_panther2_schmalturm_entity`) can join the same pool; their `texture_anim_speed` is 1.309.
+
+   The Tiger entities replace the vanilla heavy-tank models: `GER_heavy_armor_tiger1_early_entity`,
+   `GER_heavy_armor_tiger1_mid_entity` and `GER_heavy_armor_tiger1_late_entity` (meshes `GER_tiger1_<x>_mesh`) go
+   into the models pool of `ger_heavy_tank_chassis_p6` in `00_tank_icons.txt`, **replacing** `GER_heavy_armor_entity`;
+   `GER_heavy_armor_tiger2_porsche_entity` and `GER_heavy_armor_tiger2_henschel_entity` (meshes `GER_tiger2_<x>_mesh`)
+   go into `ger_heavy_tank_chassis_p6_b`, **replacing** `GER_heavy_armor_2_entity`. All five use
+   `texture_anim_speed` 1.309 (track speed 1.608 / 1.28 m / 0.48 m tile / 2) and `scale = 0.8` like the others.
 
 Entity names map to spec names: `ger_pz4g_late` → `GER_pz4g_late` mesh → `GER_medium_armor_pz4g_late_entity`. Each
 spec's paint scheme (`CAMO`, `ZIMMERIT`, `CROSS_KINDS`) is applied by the bake automatically.

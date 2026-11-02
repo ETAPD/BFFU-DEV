@@ -86,6 +86,11 @@ All Blender scripts run headless: `blender.exe -b --python <script> -- <args>`
   "PzIV-011-BCD.jpg" by MasterJVN, Wikimedia Commons, CC BY 4.0 — https://commons.wikimedia.org/wiki/File:PzIV-011-BCD.jpg
 - Pz IV Ausf. J four-view drawings (`reference/blueprints/ger_pz4j/`, resampled to 175 px/m): "PzIV-011-HJ.jpg" by
   MasterJVN, Wikimedia Commons, CC BY 4.0 — https://commons.wikimedia.org/wiki/File:PzIV-011-HJ.jpg
+- Tiger I four-view (`reference/blueprints/ger_tiger1_early/`, also the base of `ger_tiger1_mid` and
+  `ger_tiger1_late`): the drawings of Tiger 131 in the Military College of Science, School of Tank Technology report
+  of January 1944, public domain, Wikimedia Commons: "Tiger Side View Left.png", "Tiger Top View.png",
+  "Tiger Front View.png", "Tiger Rear View.png" — https://commons.wikimedia.org/wiki/File:Tiger_Side_View_Left.png
+  (and the matching File: pages).
 
 Non-free reference (Panzer III): the Pz III specs are traced from the-blueprints.com drawings, used with the project
 owner's agreement as private tracing reference only. They are kept in the git-ignored
@@ -97,5 +102,11 @@ ID 72504, Ausf. A IDs 72501 and 72503, Ausf. G ID 72512, public 500 px previews)
 git-ignored `reference/blueprints_nonfree/`, never committed or shipped; each `reference/blueprints/ger_panther_*/README.md`
 names its source sheet, and the free-licence photos checked are credited in `photos/CREDITS.md` next to it. The
 Panther II specs use the same author's Panther II colour profiles (IDs 31013, 31012, 15894), by the owner's agreement.
+
+Non-free reference (Tiger II): the Tiger II specs are traced from the-blueprints.com drawings by Dr Dan Saranga
+(Henschel turret ID 63811, Porsche turret ID 14674, public 500 px previews), under the same policy as the Pz III and
+Panther: kept in the git-ignored `reference/blueprints_nonfree/`, never committed or shipped; each
+`reference/blueprints/ger_tiger2_*/README.md` names its source sheet, and the free-licence photos checked are
+credited in `photos/CREDITS.md` next to it (as for every Tiger spec).
 
 Cloud (Linux) sessions: see CLOUD.md.
