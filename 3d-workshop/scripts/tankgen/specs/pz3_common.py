@@ -8,7 +8,7 @@ SPROCKET, IDLER, ROLLERS_U, ROLLER_*, LOWER_X):
   LOWER_PROFILE    side profile [(u, z), ...] of the lower hull (nose, glacis, belly, rear)
   SUPER_PROFILE    side profile of the superstructure + engine deck (front plate, roof, deck, rear slope)
   GUARD_PROFILE    side profile of the track guards (front and rear mudguards, guard plate)
-  TURRET_STATIONS  station list for pz4_common.station_shell (turret ring part), TURRET_REAR for the overhang
+  TURRET_STATIONS  station list for pz4_common.station_shell; TURRET_BIN (+ TURRET_BIN_Z) for the rear stowage bin
 """
 
 import math
@@ -58,9 +58,9 @@ def turret(v, S):
     """Turret shell from the stations on the turret ring, the rear overhang above the engine deck, roof vent."""
     shell = geo.move(c.station_shell(S, S.TURRET_STATIONS, S.TURRET_Z), x=S.TURRET_X)
     v.add("turret", shell, kind="paint", bone="turret", chamfer=0.018)
-    if getattr(S, "TURRET_REAR", None):
-        rear = geo.move(c.station_shell(S, S.TURRET_REAR, S.TURRET_REAR_Z), x=S.TURRET_X)
-        v.add("turret_rear", rear, kind="paint", bone="turret", chamfer=0.018)
+    if getattr(S, "TURRET_BIN", None):  # stowage bin on the turret rear (Ausf. L on, often retrofitted)
+        rear = geo.move(c.station_shell(S, S.TURRET_BIN, S.TURRET_BIN_Z), x=S.TURRET_X)
+        v.add("turret_bin", rear, kind="paint", bone="turret", chamfer=0.018)
     v.bone("turret", (S.TURRET_X, S.Y(S.TURRET_U), S.TURRET_Z), "chassie")
 
 

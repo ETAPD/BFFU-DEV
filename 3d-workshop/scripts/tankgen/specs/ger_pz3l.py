@@ -71,9 +71,14 @@ TURRET_X = 0.0
 TURRET_U = 2.75
 TURRET_Z = 1.62
 TURRET_TOP = 2.17
-TURRET_STATIONS = [(1.70, 0.74, 1.77, 0.60, 2.09), (2.40, 0.82, 2.40, 0.63, 2.165), (3.40, 0.82, 3.40, 0.63, TURRET_TOP)]
-TURRET_REAR_Z = 1.73
-TURRET_REAR = [(3.36, 0.58, 3.36, 0.50, TURRET_TOP), (3.90, 0.52, 3.90, 0.45, 2.165), (4.02, 0.30, 4.0, 0.25, 2.15)]
+# turret (side/top/front views): front plate leaning back, sides 0.82 m at the ring and 0.63 m at the roof, roof
+# rising from 2.09 m at the front plate to 2.17 m; behind the side hatches the sides converge to the narrow rear
+# plate under the overhanging cupola (top view)
+TURRET_STATIONS = [(1.70, 0.74, 1.77, 0.60, 2.09), (2.40, 0.82, 2.40, 0.63, 2.165), (3.05, 0.82, 3.05, 0.63, TURRET_TOP),
+                   (3.45, 0.50, 3.45, 0.40, TURRET_TOP)]
+# stowage bin on the turret rear (side view u 3.36-4.02, bottom 1.73 m; top view rounded, 1.0 m wide)
+TURRET_BIN_Z = 1.73
+TURRET_BIN = [(3.30, 0.52, 3.30, 0.50, 2.15), (3.90, 0.50, 3.90, 0.48, 2.15), (4.02, 0.32, 4.0, 0.30, 2.14)]
 BORE_X = 0.017
 GUN_Z = 1.88
 CUP_U, CUP_X = 3.10, 0.0
@@ -104,16 +109,24 @@ def turret(v, S):
             (0.386, 2.432), (0.372, 2.432), (0.372, 2.518), (0.36, 2.529), (0.0, 2.529)]
     c.cupola_early(v, S, CUP_X, CUP_U, TURRET_TOP, [(r, z + dz) for r, z in prof], (0.329, 2.529 + dz, 2.60 + dz),
                    slit_z=2.385 + dz)
-    c.turret_side_fittings(v, S, visor=None, hatch=(2.57, 2.88, 2.89, 3.20, 1.74, 2.13),
+    c.turret_side_fittings(v, S, visor=getattr(S, "TURRET_SIDE_VISOR", None), hatch=(2.57, 2.88, 2.89, 3.20, 1.74, 2.13),
                            hatch_visor=[(2.66, 2.80, 1.88, 2.00), (2.97, 3.10, 1.88, 2.00)], pistol=None,
                            rear_port=None, hinge_z=(1.85, 1.95, 2.05))
     # mantlet with its 20 mm spaced plate (side view u 1.35-1.72, z 1.64-2.08; front view x -0.20..+0.23)
-    p3.mantlet_box(v, S, 1.35, 1.75, -0.20, 0.23, 1.64, 2.08)
-    face = 1.35
+    face = getattr(S, "MANTLET_FACE_U", 1.35)
+    p3.mantlet_box(v, S, face, 1.75, -0.20, 0.23, 1.64, 2.08)
     p3.gun(v, S, [(0.08, face), (0.08, 0.94), (0.05, 0.94), (0.05, 0.40), (0.042, 0.40), (0.040, -0.95)], -0.95, face)
 
 
 def fittings(v, S):
+    if getattr(S, "VORPANZER", True):
+        vorpanzer(v, S)
+    else:
+        p3.front_plate_fittings(v, S, FRONT_U, 0.48, -0.64, 1.41)
+    hull_fittings(v, S)
+
+
+def vorpanzer(v, S):
     # spaced armour plate in front of the superstructure front (side view u 1.03-1.06, z 1.18-1.63; front view
     # x +-0.94), with the driver's visor and the hull MG ball mount coming through it
     plate = [(VORPANZER_U - 0.012, 1.18), (VORPANZER_U + 0.012, 1.18), (VORPANZER_U + 0.012, 1.63),
@@ -124,6 +137,9 @@ def fittings(v, S):
             v.add(f"vorpanzer_spacer_{side}_{z}", geo.box(side * 0.80, Y((VORPANZER_U + FRONT_U) / 2), z, 0.05,
                                                           FRONT_U - VORPANZER_U, 0.05), kind="paint")
     p3.front_plate_fittings(v, S, VORPANZER_U - 0.012, 0.48, -0.64, 1.41)
+
+
+def hull_fittings(v, S):
     # glacis: two brake access hatches
     for side in (1, -1):
         v.add(f"brake_hatch_{side}", geo.box(side * 0.48, Y(0.70), 1.17, 0.50, 0.55, 0.03), kind="paint",
