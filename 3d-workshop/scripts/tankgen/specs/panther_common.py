@@ -108,46 +108,47 @@ def sponson_z(S, u):
 
 
 def hull(v, S):
-    """Lower hull between the tracks (belly, lower nose, rear plate) and the upper hull: sponsons over the tracks with
-    the side plates sloping in to the roof, closed behind by the rear plate. The glacis is ONE flat plate from the
-    nose to the roof edge (photos: Fort Benning, Saumur): its lower edge runs across the nose between the tracks, its
-    sides flare out to the sponson's front lower corners (top view u 0.8) and then follow the side plates up to the
-    roof edge, so seen from the front it is one straight slope, not a narrow nose plate under a wide sponson front.
-    The lower hull's front sits just behind it."""
+    """The hull front is two plates meeting at one straight nose edge (photos: Fort Benning, Saumur): the lower nose
+    plate from the belly up to the nose, and the upper glacis, ONE flat face from the nose to the roof edge, as wide as
+    the lower hull up to the sponson floor and the full width of the sponsons above it. The sponson floors are flat
+    back from the glacis (no sloped underside), and the upper side plates slope in to the roof; the rear plate
+    closes it behind.
+      hull_lower: belly, lower nose plate and the lower rear, up to the nose height
+      hull_upper: everything above the nose height, from the glacis back to the rear plate (8-point sections:
+                  lower-hull sides, sponson floors, side plates, roof)"""
     import bmesh
 
     nu, nz = S.NOSE
-    zf = sponson_z(S, 0.8)
-    inset = 0.05  # lower hull's front face set back behind the glacis plate
-    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (nu + inset, nz), (glacis_u(S, zf - 0.08) + inset, zf - 0.08),
-             (rear_u(S, zf - 0.08), zf - 0.08), S.REAR_LOW, (S.REAR_LOW[0] - 0.30, S.BELLY_Z)]
+    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (nu, nz), (rear_u(S, nz), nz), S.REAR_LOW,
+             (S.REAR_LOW[0] - 0.30, S.BELLY_Z)]
     v.add("hull_lower", geo.prism_x(P(S, lower), -S.LOWER_X, S.LOWER_X), chamfer=0.025)
 
-    # upper hull: front ring = the glacis plate outline (nose corners, sponson corners, roof corners), all on the
-    # glacis plane; then (sponson floor edge, roof edge) cross-sections back to the rear plate
     bm = bmesh.new()
     rows = []
-    wb, wt = S.SPONSON_X, S.DECK_X
-    g = lambda x, z: bm.verts.new((x, S.Y(glacis_u(S, z)), z))
-    rows.append([g(-S.LOWER_X, nz), g(-wb, zf), g(-wt, S.DECK_Z), g(wt, S.DECK_Z), g(wb, zf), g(S.LOWER_X, nz)])
-    for k, u in enumerate([1.6, 3.0, 4.5, 5.6, None]):
-        if u is None:  # rear: on the rear plate
-            zb = sponson_z(S, 6.3)
-            ub, ut = rear_u(S, zb), S.DECK_END_U
-        else:
-            zb = sponson_z(S, u)
-            ub = ut = u
-        rows.append([bm.verts.new((-S.LOWER_X + 0.02, S.Y(ub), zb)), bm.verts.new((-wb, S.Y(ub), zb)),
-                     bm.verts.new((-wt, S.Y(ut), S.DECK_Z)), bm.verts.new((wt, S.Y(ut), S.DECK_Z)),
-                     bm.verts.new((wb, S.Y(ub), zb)), bm.verts.new((S.LOWER_X - 0.02, S.Y(ub), zb))])
+    lx, wb, wt = S.LOWER_X, S.SPONSON_X, S.DECK_X
+
+    def ring(u_of_z, zb, u_top):
+        """[(x, z)] round the section, with u for each point from u_of_z (glacis / rear plate / station)."""
+        pts = [(-lx, nz), (-lx, zb), (-wb, zb), (-wt, S.DECK_Z), (wt, S.DECK_Z), (wb, zb), (lx, zb), (lx, nz)]
+        return [bm.verts.new((x, S.Y(u_top if z == S.DECK_Z else u_of_z(z)), z)) for x, z in pts]
+
+    zf = sponson_z(S, glacis_u(S, sponson_z(S, 0.8)))
+    rows.append(ring(lambda z: glacis_u(S, z), zf, S.GLACIS_TOP_U))  # the glacis: all on its plane
+    for u in (1.6, 3.0, 4.5, 5.6):
+        rows.append(ring(lambda z, u=u: u, sponson_z(S, u), u))
+    zr = sponson_z(S, rear_u(S, sponson_z(S, 6.3)))
+    rows.append(ring(lambda z: rear_u(S, z), zr, S.DECK_END_U))  # the rear plate
     n = len(rows[0])
     for r0, r1 in zip(rows, rows[1:]):
         for i in range(n):
             j = (i + 1) % n
             bm.faces.new((r0[i], r0[j], r1[j], r1[i]))
-    bm.faces.new(rows[0])
-    bm.faces.new(list(reversed(rows[-1])))
-    # the sponson's underside behind the flared glacis corner is a twisted quad: split it so it shades flat
+    # caps (glacis in front, rear plate behind) are T-shaped, so not convex: build each from two convex pieces on
+    # its plane (lower-hull part + sponson-width part), or the triangulation folds at the inner corners
+    for ring_, flip in ((rows[0], False), (rows[-1], True)):
+        for idx in ((0, 1, 6, 7), (1, 2, 3, 4, 5, 6)):
+            vs = [ring_[i] for i in idx]
+            bm.faces.new(list(reversed(vs)) if flip else vs)
     bmesh.ops.triangulate(bm, faces=[f for f in bm.faces if len(f.verts) == 4 and not _planar(f)])
     bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     v.add("hull_upper", bm, chamfer=0.028)
@@ -194,17 +195,19 @@ def front(v, S):
     gz = 1.62
     gu = glacis_u(S, gz)
     slope = math.atan2(S.DECK_Z - S.NOSE[1], S.GLACIS_TOP_U - S.NOSE[0])
-    if S.HULL_MG == "ball":  # Kugelblende 100 in a cast mount (Ausf. A late, G)
-        mount = geo.lathe([(0.0, 0.0), (0.20, 0.0), (0.21, -0.03), (0.17, -0.07), (0.0, -0.08)], 16, axis="Z")
+    if S.HULL_MG == "ball":  # Kugelblende 100 (Ausf. A late, G): the ball sits in the plate behind a thin, nearly
+        # flush armour ring (photos), no raised boss: the glacis stays one slope
+        ring = geo.lathe([(0.12, -0.01), (0.20, -0.01), (0.20, 0.008), (0.17, 0.015), (0.12, 0.012)], 18, axis="Z",
+                         close_axis=False)
         from mathutils import Matrix
 
-        geo.transform(mount, Matrix.Scale(1.25, 4, (1, 0, 0)))
-        geo.rotate(mount, -(math.pi / 2 - slope), "X")
-        v.add("mg_mount", geo.move(mount, x=-0.52, y=S.Y(gu), z=gz), kind="paint_cast", smooth_angle=50)
-        ball = geo.move(geo.lathe([(0.0, -0.10), (0.08, -0.08), (0.10, 0.0), (0.0, 0.02)], 12, axis="Y"),
-                        x=-0.52, y=S.Y(gu - 0.08), z=gz)
+        geo.transform(ring, Matrix.Scale(1.15, 4, (1, 0, 0)))
+        geo.rotate(ring, slope, "X")  # ring axis along the glacis' outward normal
+        v.add("mg_mount", geo.move(ring, x=-0.52, y=S.Y(gu), z=gz), kind="paint_cast", smooth_angle=50)
+        ball = geo.move(geo.lathe([(0.0, -0.075), (0.07, -0.05), (0.10, 0.0), (0.0, 0.03)], 12, axis="Y"),
+                        x=-0.52, y=S.Y(gu - 0.01), z=gz)
         v.add("mg_ball", ball, kind="paint_cast")
-        v.add("hull_mg", geo.move(parts.mg_barrel(0.30), x=-0.52, y=S.Y(gu - 0.16), z=gz), kind="steel")
+        v.add("hull_mg", geo.move(parts.mg_barrel(0.30), x=-0.52, y=S.Y(gu - 0.07), z=gz), kind="steel")
     else:  # letterbox flap (Ausf. D, early A): MG port with an armoured flap on the glacis
         flap = geo.box(0, 0, 0, 0.12, 0.30, 0.04)
         geo.rotate(flap, slope, "X")
@@ -232,7 +235,7 @@ def front(v, S):
         v.add(f"tow_pin_{side}", geo.cylinder(0.035, 0.16, 8, axis="X", center=(side * S.LOWER_X, S.Y(0.08), 0.82)),
               kind="steel")
         # front mudguard over the track (front view: plate at the sponson floor, sloping down to the bow)
-        zf = sponson_z(S, 0.8)
+        zf = sponson_z(S, glacis_u(S, sponson_z(S, 0.8)))
         ue = glacis_u(S, zf) - 0.005  # back edge meets the glacis at the sponson corner, clear of the plate in front
         mg = [(0.10, zf - 0.18), (ue, zf - 0.01), (ue, zf + 0.01), (0.10, zf - 0.16)]
         x0, x1 = (0.97, 1.64) if side > 0 else (-1.64, -0.97)

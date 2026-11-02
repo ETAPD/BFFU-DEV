@@ -126,15 +126,15 @@ against the documented hull length 6.87 m, 8.66 m with the gun, 3.27 m over the 
 
 | Spec | Variant | Years | Gun | Paint (`CAMO`, Zimmerit) | Drawing used (the-blueprints.com) | Tris | Track speed / `texture_anim_speed` |
 |---|---|---|---|---|---|---|---|
-| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 18,184 | 1.729 / 1.407 |
-| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 18,864 | 1.729 / 1.407 |
-| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 18,372 | 1.729 / 1.407 |
-| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 18,424 | 1.729 / 1.407 |
+| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 18,248 | 1.729 / 1.407 |
+| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 18,976 | 1.729 / 1.407 |
+| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 18,484 | 1.729 / 1.407 |
+| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 18,536 | 1.729 / 1.407 |
 
-| `ger_panther2` | Panther II prototype (G turret) | 1945 | KwK 42 L/70, rounded mantlet | `primer_1945` (new), no | Panther II sheets 31013 (side), 31012 (front, rear), 15894 (top); turret from the G | 17,480 | 1.608 / 1.309 |
-| `ger_panther2_schmalturm` | Panther II as planned (Schmalturm) | 1945 (project) | 7.5 cm L/70 (KwK 44/1), Saukopf mantlet | `olivgrun_1945`, no | the same Panther II sheets | 17,164 | 1.608 / 1.309 |
+| `ger_panther2` | Panther II prototype (G turret) | 1945 | KwK 42 L/70, rounded mantlet | `primer_1945` (new), no | Panther II sheets 31013 (side), 31012 (front, rear), 15894 (top); turret from the G | 17,596 | 1.608 / 1.309 |
+| `ger_panther2_schmalturm` | Panther II as planned (Schmalturm) | 1945 (project) | 7.5 cm L/70 (KwK 44/1), Saukopf mantlet | `olivgrun_1945`, no | the same Panther II sheets | 17,280 | 1.608 / 1.309 |
 
-Built from `specs/panther_common.py` (lower hull and sponsons behind one flat glacis plate, eight-axle
+Built from `specs/panther_common.py` (lower nose plate and one flat glacis, sponsons with flat floors, eight-axle
 interleaved running gear, turret shell, curved mantlet with optional chin, gun, drum and cast cupolas, rear fittings,
 Schürzen) on the `pz4_common` helpers (`station_shell`, `drum_profile`, `bar`, `gun`). The G sheet is the calibrated
 core; the D and A sheets lie on its hull, turret and running-gear lines, so each spec only sets its differences.
@@ -142,9 +142,10 @@ The D, A, G and late G share the documented 860 mm road wheels, so their track s
 units/s, `texture_anim_speed` = 1.729 / 1.28 / 0.48 / 2 = 1.407. The Panther II's 800 mm steel wheels give 1.608 /
 1.309.
 
-The glacis is one flat plate from the nose to the roof edge on every Panther: its lower edge spans the nose between
-the tracks, its sides flare out to the sponsons' front lower corners and then follow the side plates to the roof
-edge (the front mudguards cover the flared corners).
+The hull front is two plates meeting at one straight nose edge on every Panther: the lower nose plate from the belly
+up to the nose, and the glacis, one flat face from the nose to the roof edge (as wide as the lower hull up to the
+sponson floor, the full sponson width above it). The sponson floors are flat back from the glacis, the front
+mudguards end on it, and the hull MG ball sits in a flush ring in the plate (no raised mount).
 
 **Panther II:** no line drawing exists. The only drawings, the-blueprints.com sheets 31013, 31012 and 15894 (same
 Dr Dan Saranga series), are shaded colour profiles of the planned Panther II with the Schmalturm; the project owner

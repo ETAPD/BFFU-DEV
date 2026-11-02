@@ -28,10 +28,12 @@ def glacis(v, S):
     # interlocking joint with the lower nose plate and the weld along the roof edge
     v.detail("glacis_nose_weld", dt.weld_bead(gl, [(-S.LOWER_X, 0.02), (S.LOWER_X, 0.02)]))
     v.detail("glacis_roof_weld", dt.weld_bead(gl, [(-S.DECK_X, length - 0.02), (S.DECK_X, length - 0.02)]))
-    bf = (pc.sponson_z(S, 0.8) - nz) / math.sin(math.atan2(S.DECK_Z - nz, gu - nu))  # sponson corner up the plate
-    for side in (1, -1):  # side-plate joints: nose corner, flaring out to the sponson corner, up to the roof corner
+    zf = pc.sponson_z(S, pc.glacis_u(S, pc.sponson_z(S, 0.8)))
+    bf = (zf - nz) / math.sin(math.atan2(S.DECK_Z - nz, gu - nu))  # sponson floor's height, measured up the plate
+    for side in (1, -1):  # side-plate joints: up the lower hull side, out along the sponson floor, up to the roof
         v.detail(f"glacis_side_weld_{side}", dt.weld_bead(gl, [(side * (S.LOWER_X - 0.02), 0.03),
-                                                               (side * (S.SPONSON_X - 0.03), bf),
+                                                               (side * (S.LOWER_X - 0.02), bf - 0.02),
+                                                               (side * (S.SPONSON_X - 0.03), bf - 0.02),
                                                                (side * (S.DECK_X - 0.02), length - 0.03)]))
     v.detail("glacis_lifting", dt.lifting_hook(gl, 0.0, length - 0.25))
     v.detail("glacis_spare_bolts", dt.bolts(gl, dt.line(-0.9, length * 0.5, 0.9, length * 0.5, 7), 0.016))
