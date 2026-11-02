@@ -121,3 +121,70 @@ def spare_wheels(v, S, stations=(1.75, 4.72), x=1.25, count=2, z0=1.43):
                 v.add(f"spare_wheel_{label}_{k}_{n}", geo.move(bm, x=x, y=S.Y(u), z=z), kind=kind)
         v.add(f"spare_wheel_rack_{k}", geo.cylinder(0.03, z0 - S.FENDER_Z, 8, axis="Z",
                                                     center=(x, S.Y(u), (z0 + S.FENDER_Z) / 2)), kind="paint")
+
+
+# ---- early Panzer III (Ausf. A-F): 3.7 cm KwK 36 in the internal mantlet, leaf / coil spring running gear --------
+# The 3.7 cm turret front as traced on the Ausf. C side view (turret front plate base at u 1.80, z 1.49): curved
+# internal mantlet shield centred on the bore, twin-MG cap and recoil sleeve, L/46.5 barrel to u 0.68.
+C_FRONT_U, C_BASE_Z, C_BORE_Z = 1.80, 1.489, 1.774
+
+
+def gun_37(v, S, du=0.0, dz=None):
+    """3.7 cm KwK 36 L/46.5 in the internal mantlet (Innenblende). du shifts the C's numbers fore-aft, dz up (default
+    keeps the bore at the same height above the turret base as on the C)."""
+    if dz is None:
+        dz = S.TURRET_Z - C_BASE_Z
+    gz = C_BORE_Z + dz
+    # curved shield: an arc of radius 0.21 m about (u 1.91, bore), from 1.61 to 1.96 m on the C, 0.46 m wide
+    prof = c.drum_profile(S, 1.91 + du, gz, 0.21, gz - 0.16, gz + 0.19, 0.21, 0.06, 10)
+    v.add("mantlet_inner", geo.prism_x(prof, S.BORE_X - 0.23, S.BORE_X + 0.23), kind="paint_cast", bone="turret",
+          chamfer=0.01)
+    face = 1.60 + du
+    secs = [(0.10, face), (0.10, 1.51 + du), (0.069, 1.51 + du), (0.069, 1.28 + du), (0.041, 1.22 + du),
+            (0.041, 0.99 + du), (0.027, 0.99 + du), (0.027, 0.68 + du)]
+    c.gun(v, S, S.BORE_X, gz, face, secs, 0.68 + du, None)
+    for k, x in enumerate((0.12, 0.22)):  # twin coaxial MGs beside the gun (right of it, front view)
+        v.add(f"coax_{k}", geo.move(parts.mg_barrel(0.12), x=S.BORE_X - x, y=S.Y(1.62 + du), z=gz - 0.02),
+              kind="steel", bone="turret")
+
+
+def leaf_springs(v, S, springs, bogies):
+    """Leaf-spring running gear (Ausf. B-D): springs [(u0, u1, z), ...] lying along the hull side, bogie beams
+    [(u_a, u_b), ...] linking each wheel pair, hangers from the bogie up to the spring ends."""
+    for side in (1, -1):
+        x = side * (S.HULL_X + 0.06)
+        for k, (u0, u1, z) in enumerate(springs):
+            um = (u0 + u1) / 2
+            leaves = [((u0 + u1) / 2, u1 - u0, 0.02)]
+            for n in range(1, 5):  # leaf stack, shorter downwards
+                leaves.append((um, (u1 - u0) * (1 - 0.17 * n), 0.02))
+            bm = None
+            for n, (u, length, t) in enumerate(leaves):
+                b = geo.box(x, S.Y(u), z - n * 0.022, 0.09, length, t)
+                bm = b if bm is None else geo.merge(bm, b)
+            v.add(f"leaf_spring_{k}_{side}", bm, kind="paint", chamfer=0.004)
+            v.add(f"spring_clamp_{k}_{side}", geo.box(x, S.Y(um), z - 0.05, 0.11, 0.08, 0.14), kind="paint",
+                  chamfer=0.008)
+        for k, (ua, ub) in enumerate(bogies):
+            um = (ua + ub) / 2
+            beam = geo.box(x + side * 0.02, S.Y(um), S.WHEEL_Z + 0.04, 0.07, ub - ua, 0.07)
+            post = geo.box(x, S.Y(um), (S.WHEEL_Z + 0.04 + springs[0][2]) / 2, 0.08, 0.08,
+                           springs[0][2] - S.WHEEL_Z - 0.04)
+            v.add(f"bogie_{k}_{side}", geo.merge(beam, post), kind="paint", chamfer=0.008)
+
+
+def coil_springs(v, S, top_z=0.78, r=0.07):
+    """Ausf. A: each large road wheel on its own arm with a vertical coil spring above the hub."""
+    for i, u in enumerate(S.WHEELS_U):
+        for side in (1, -1):
+            x = side * (S.HULL_X + 0.07)
+            prof = []
+            n = 7
+            z0 = S.WHEEL_Z + S.WHEEL_R * 0.55
+            for k in range(n + 1):
+                z = z0 + (top_z - z0) * k / n
+                prof += [(r, z - 0.012), (r + 0.015, z), (r, z + 0.012)]
+            spring = geo.lathe([(0.0, z0)] + prof + [(0.0, top_z + 0.012)], 10, axis="Z")
+            v.add(f"coil_{i}_{side}", geo.move(spring, x=x, y=S.Y(u)), kind="paint", smooth_angle=60)
+            v.add(f"coil_arm_{i}_{side}", c.bar((x, S.Y(u), S.WHEEL_Z), (x, S.Y(u - 0.30), S.WHEEL_Z + 0.20), 0.07,
+                                                0.07), kind="paint", chamfer=0.008)
