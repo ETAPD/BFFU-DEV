@@ -14,6 +14,12 @@ right first time. Commands are in `CLOUD.md` (cloud sessions) and `README.md` (P
   from photos alone. A variant may reuse a sister variant's drawing for the parts they share **only** where
   photos confirm the parts are the same, and the spec docstring must say which parts came from where.
 - Download the original, keep it in `reference/blueprints/<vehicle>/`, credit it in README "Drawing credits".
+- If no free drawing exists and the project owner agrees to a commercial one (as for the Panzer III), it is private
+  tracing reference only: keep the sheet, crops and drawing overlays in the git-ignored
+  `reference/blueprints_nonfree/<vehicle>/`, commit only the spec, the model's own outline renders
+  (`reference/blueprints/<vehicle>/outline_*.png`) and a README naming the source.
+- Commercial sheets usually have no scale bar and differ in scale between views: calibrate every view on its own
+  against documented dimensions (and the road wheel pitch for the side view), never assume one scale for a sheet.
 
 ## 2. Crop and calibrate
 

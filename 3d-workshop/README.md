@@ -87,4 +87,9 @@ All Blender scripts run headless: `blender.exe -b --python <script> -- <args>`
 - Pz IV Ausf. J four-view drawings (`reference/blueprints/ger_pz4j/`, resampled to 175 px/m): "PzIV-011-HJ.jpg" by
   MasterJVN, Wikimedia Commons, CC BY 4.0 — https://commons.wikimedia.org/wiki/File:PzIV-011-HJ.jpg
 
+Non-free reference (Panzer III): the Pz III specs are traced from the-blueprints.com drawings, used with the project
+owner's agreement as private tracing reference only. They are kept in the git-ignored
+`reference/blueprints_nonfree/` and never committed or shipped; each `reference/blueprints/ger_pz3*/README.md` names
+its source sheet. See VARIANTS.md.
+
 Cloud (Linux) sessions: see CLOUD.md.
