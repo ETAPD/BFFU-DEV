@@ -56,9 +56,11 @@ def apply_modifiers(obj):
 CULL_KINDS = {"paint", "skirt", "paint_cast", "steel", "exhaust", "track_steel", "wood"}
 
 
-def cull_hidden(v, below_z=-0.5):
+def cull_hidden(v, below_z=-0.97):
     """Drop downward-facing faces of plate-like parts: the HOI4 camera never looks up at them, and every one
-    removed frees texture space for surfaces that are seen. Round parts (wheels, gun) keep their undersides."""
+    removed frees texture space for surfaces that are seen. Round parts (wheels, gun) keep their undersides.
+    Only near-flat undersides go: the designer camera sits low, so a face tilted 30 deg down (turret cheeks,
+    cupola ring undersides, mantlet bottoms, guard ends) is seen, and deleting it left a hole."""
     removed = 0
     for p in v.parts:
         if p.kind not in CULL_KINDS or p.name.startswith(("gun", "muffler", "tailpipe", "aux_muffler")):

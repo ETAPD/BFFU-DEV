@@ -9,15 +9,15 @@ Triangle counts are the build log's `tris` (all parts, before the build culls hi
 
 | Spec | Variant | Years | Gun | Paint (`CAMO`, Zimmerit) | Drawing used | Tris |
 |---|---|---|---|---|---|---|
-| `ger_pz4b` | Ausf. B / C | 1938-39 | 7.5 cm KwK 37 L/24, internal mantlet | `grau_braun_1937`, no | MasterJVN `PzIV-011-BCD.jpg`, C panel (~61 px/m) | 17,080 |
-| `ger_pz4d` | Ausf. D | 1939-40 | KwK 37 L/24, external mantlet | `grau_braun_1937`, no | `PzIV-011-BCD.jpg`, D panel | 17,364 |
-| `ger_pz4e` | Ausf. E | 1940-41 | KwK 37 L/24 | `afrika_1941`, no | `PzIV-011-EFG.jpg`, E panel (~67 px/m) | 17,556 |
-| `ger_pz4f1` | Ausf. F (F1) | 1941-42 | KwK 37 L/24 | `panzergrau`, no | `PzIV-011-EFG.jpg`, F panel | 17,784 |
-| `ger_pz4f2` | Ausf. F2 | 1942 | 7.5 cm KwK 40 L/43, ball brake | `afrika_1942`, no | `PzIV-012-G-Variantes.jpg` (basic G; F2 = early G) | 18,236 |
-| `ger_pz4g` | Ausf. G, early | 1942 | KwK 40 L/43, ball brake | `panzergrau`, no | `PzIV-012-G-Variantes.jpg`, left vehicle (175 px/m) | 18,236 |
-| `ger_pz4g_late` | Ausf. G, late | 1943 | KwK 40 L/48, double brake; Schürzen | `winter_1943` (whitewash), no | `PzIV-012-G-Variantes.jpg`, right vehicle | 18,268 |
-| `ger_pz4h` | Ausf. H (approved) | 1943 | KwK 40 L/48; Schürzen | `dunkelgelb_1943`, yes | `PzIV-012-H-Variantes.jpg` (175 px/m) | 18,208 |
-| `ger_pz4j` | Ausf. J, spring 1944 | 1944 | KwK 40 L/48; Schürzen | `ambush_1944`, yes | `PzIV-011-HJ.jpg`, J panel (~58 px/m) | 18,164 |
+| `ger_pz4b` | Ausf. B / C | 1938-39 | 7.5 cm KwK 37 L/24, internal mantlet | `grau_braun_1937`, no | MasterJVN `PzIV-011-BCD.jpg`, C panel (~61 px/m) | 19,592 |
+| `ger_pz4d` | Ausf. D | 1939-40 | KwK 37 L/24, external mantlet | `grau_braun_1937`, no | `PzIV-011-BCD.jpg`, D panel | 19,876 |
+| `ger_pz4e` | Ausf. E | 1940-41 | KwK 37 L/24 | `afrika_1941`, no | `PzIV-011-EFG.jpg`, E panel (~67 px/m) | 20,068 |
+| `ger_pz4f1` | Ausf. F (F1) | 1941-42 | KwK 37 L/24 | `panzergrau`, no | `PzIV-011-EFG.jpg`, F panel | 20,296 |
+| `ger_pz4f2` | Ausf. F2 | 1942 | 7.5 cm KwK 40 L/43, ball brake | `afrika_1942`, no | `PzIV-012-G-Variantes.jpg` (basic G; F2 = early G) | 20,748 |
+| `ger_pz4g` | Ausf. G, early | 1942 | KwK 40 L/43, ball brake | `panzergrau`, no | `PzIV-012-G-Variantes.jpg`, left vehicle (175 px/m) | 20,748 |
+| `ger_pz4g_late` | Ausf. G, late | 1943 | KwK 40 L/48, double brake; Schürzen | `winter_1943` (whitewash), no | `PzIV-012-G-Variantes.jpg`, right vehicle | 20,780 |
+| `ger_pz4h` | Ausf. H (approved) | 1943 | KwK 40 L/48; Schürzen | `dunkelgelb_1943`, yes | `PzIV-012-H-Variantes.jpg` (175 px/m) | 20,720 |
+| `ger_pz4j` | Ausf. J, spring 1944 | 1944 | KwK 40 L/48; Schürzen | `ambush_1944`, yes | `PzIV-011-HJ.jpg`, J panel (~58 px/m) | 20,676 |
 
 All drawings are by MasterJVN, Wikimedia Commons, CC BY 4.0 (credits in README). The comparison sheets (B/C/D, E/F/G,
 H/J) are the same author's drawings at lower resolution, resampled to 175 px/m; their G and H panels lie on the G/H
@@ -69,17 +69,17 @@ calibrated against documented dimensions (length, width, height, the 0.572 m roa
 
 | Spec | Variant | Years | Gun | Paint (`CAMO`) | Drawing used (the-blueprints.com) | Tris | Track speed / `texture_anim_speed` |
 |---|---|---|---|---|---|---|---|
-| `ger_pz3a` | Ausf. A | 1937 | 3.7 cm KwK 36, internal mantlet | `grau_braun_1937` | A side view (side only) | 17,556 | 1.347 / 1.096 |
-| `ger_pz3b` | Ausf. B | 1937-38 | 3.7 cm KwK 36 | `grau_braun_1937` | B side view (side only) | 16,232 | 0.804 / 0.654 |
-| `ger_pz3c` | Ausf. C | 1938 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view (side only) | 16,760 | 0.736 / 0.599 |
-| `ger_pz3d` | Ausf. D | 1939-40 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view + A-C/D turret comparison | 16,696 | 0.736 / 0.599 |
-| `ger_pz3f` | Ausf. E/F | 1938-40 | 3.7 cm KwK 36 | `grau_braun_1937` | F four-view (shows the 5 cm; 3.7 cm from the C) | 16,604 | 1.046 / 0.851 |
-| `ger_pz3g` | Ausf. G/H | 1940-41 | 5 cm KwK 38 L/42 | `afrika_1941` | G four-view (differences) | 18,076 | 1.046 / 0.851 |
-| `ger_pz3j` | Ausf. J | 1941-42 | 5 cm KwK 38 L/42 | `panzergrau` | J side view | 17,848 | 1.046 / 0.851 |
-| `ger_pz3j1` | Ausf. J (J1) | 1941-42 | 5 cm KwK 39 L/60 | `panzergrau` | J four-view (differences) | 17,716 | 1.046 / 0.851 |
-| `ger_pz3l` | Ausf. L | 1942 | 5 cm KwK 39 L/60, spaced armour | `panzergrau` | L four-view (main calibration) | 17,748 | 1.046 / 0.851 |
-| `ger_pz3m` | Ausf. M | 1942-43 | 5 cm KwK 39 L/60, Schürzen | `dunkelgelb_1943` | M side view (Schürzen) + L four-view | 19,308 | 1.046 / 0.851 |
-| `ger_pz3n` | Ausf. N | 1942-43 | 7.5 cm KwK 37 L/24 | `dunkelgelb_1943` | N four-view | 17,788 | 1.046 / 0.851 |
+| `ger_pz3a` | Ausf. A | 1937 | 3.7 cm KwK 36, internal mantlet | `grau_braun_1937` | A side view (side only) | 19,316 | 1.347 / 1.096 |
+| `ger_pz3b` | Ausf. B | 1937-38 | 3.7 cm KwK 36 | `grau_braun_1937` | B side view (side only) | 18,760 | 0.804 / 0.654 |
+| `ger_pz3c` | Ausf. C | 1938 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view (side only) | 19,288 | 0.736 / 0.599 |
+| `ger_pz3d` | Ausf. D | 1939-40 | 3.7 cm KwK 36 | `grau_braun_1937` | C side view + A-C/D turret comparison | 19,224 | 0.736 / 0.599 |
+| `ger_pz3f` | Ausf. E/F | 1938-40 | 3.7 cm KwK 36 | `grau_braun_1937` | F four-view (shows the 5 cm; 3.7 cm from the C) | 18,620 | 1.046 / 0.851 |
+| `ger_pz3g` | Ausf. G/H | 1940-41 | 5 cm KwK 38 L/42 | `afrika_1941` | G four-view (differences) | 20,156 | 1.046 / 0.851 |
+| `ger_pz3j` | Ausf. J | 1941-42 | 5 cm KwK 38 L/42 | `panzergrau` | J side view | 19,928 | 1.046 / 0.851 |
+| `ger_pz3j1` | Ausf. J (J1) | 1941-42 | 5 cm KwK 39 L/60 | `panzergrau` | J four-view (differences) | 19,796 | 1.046 / 0.851 |
+| `ger_pz3l` | Ausf. L | 1942 | 5 cm KwK 39 L/60, spaced armour | `panzergrau` | L four-view (main calibration) | 19,828 | 1.046 / 0.851 |
+| `ger_pz3m` | Ausf. M | 1942-43 | 5 cm KwK 39 L/60, Schürzen | `dunkelgelb_1943` | M side view (Schürzen) + L four-view | 21,388 | 1.046 / 0.851 |
+| `ger_pz3n` | Ausf. N | 1942-43 | 7.5 cm KwK 37 L/24 | `dunkelgelb_1943` | N four-view | 19,868 | 1.046 / 0.851 |
 
 Built from `specs/pz3_common.py` (hull from side profiles, torsion bars, leaf springs, coil springs, 3.7 cm internal
 mantlet, mantlets, deep-wading muffler, spare wheels) and the shared Pz IV helpers. The L is the calibrated core:
@@ -126,13 +126,13 @@ against the documented hull length 6.87 m, 8.66 m with the gun, 3.27 m over the 
 
 | Spec | Variant | Years | Gun | Paint (`CAMO`, Zimmerit) | Drawing used (the-blueprints.com) | Tris | Track speed / `texture_anim_speed` |
 |---|---|---|---|---|---|---|---|
-| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 18,248 | 1.729 / 1.407 |
-| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 18,976 | 1.729 / 1.407 |
-| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 18,484 | 1.729 / 1.407 |
-| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 18,536 | 1.729 / 1.407 |
+| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 19,532 | 1.729 / 1.407 |
+| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 20,296 | 1.729 / 1.407 |
+| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 19,852 | 1.729 / 1.407 |
+| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 19,904 | 1.729 / 1.407 |
 
-| `ger_panther2` | Panther II prototype (G turret) | 1945 | KwK 42 L/70, rounded mantlet | `primer_1945` (new), no | Panther II sheets 31013 (side), 31012 (front, rear), 15894 (top); turret from the G | 17,596 | 1.608 / 1.309 |
-| `ger_panther2_schmalturm` | Panther II as planned (Schmalturm) | 1945 (project) | 7.5 cm L/70 (KwK 44/1), Saukopf mantlet | `olivgrun_1945`, no | the same Panther II sheets | 17,280 | 1.608 / 1.309 |
+| `ger_panther2` | Panther II prototype (G turret) | 1945 | KwK 42 L/70, rounded mantlet | `primer_1945` (new), no | Panther II sheets 31013 (side), 31012 (front, rear), 15894 (top); turret from the G | 18,908 | 1.608 / 1.309 |
+| `ger_panther2_schmalturm` | Panther II as planned (Schmalturm) | 1945 (project) | 7.5 cm L/70 (KwK 44/1), Saukopf mantlet | `olivgrun_1945`, no | the same Panther II sheets | 18,592 | 1.608 / 1.309 |
 
 Built from `specs/panther_common.py` (lower nose plate and one flat glacis, sponsons with flat floors, eight-axle
 interleaved running gear, turret shell, curved mantlet with optional chin, gun, drum and cast cupolas, rear fittings,
