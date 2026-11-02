@@ -282,10 +282,13 @@ def schuerzen(v, S):
     plates = getattr(S, "SKIRT_PLATES", [])
     for side in (1, -1):
         x = side * (S.SPONSON_X + 0.035)
-        v.add(f"skirt_rail_{side}", geo.box(x, S.Y(3.6), sponson_z(S, 3.6) + 0.01, 0.04, 5.6, 0.04), kind="paint",
+        top = getattr(S, "SKIRT_TOP", None)
+        u_a, u_b = plates[0][0], plates[-1][1]
+        rail_z = top + 0.02 if top else sponson_z(S, 3.6) + 0.01
+        v.add(f"skirt_rail_{side}", geo.box(x, S.Y((u_a + u_b) / 2), rail_z, 0.04, u_b - u_a, 0.04), kind="paint",
               chamfer=0.005)
         for i, (u0, u1, zb) in enumerate(plates):
-            zt = sponson_z(S, (u0 + u1) / 2) + 0.02
+            zt = top if top else sponson_z(S, (u0 + u1) / 2) + 0.02
             off = 0.008 * (i % 2)
             v.add(f"skirt_{side}_{i}", geo.box(x + side * (0.015 + off), S.Y((u0 + u1) / 2), (zt + zb) / 2, 0.008,
                                                u1 - u0, zt - zb), kind="skirt", smooth_angle=30, chamfer=0.003)
