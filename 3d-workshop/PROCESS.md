@@ -75,6 +75,15 @@ free-licence museum photos (Commons) into `reference/blueprints/<vehicle>/photos
 vision ports and visors, hatches, exhaust, tools, appliqué. Restored museum vehicles carry later modifications;
 trust the drawing for dimensions.
 
+## 5b. Check for holes (required, every vehicle)
+
+HOI4 culls back faces and Blender's renders do not, so an inside-out face, an open surface (a ring lathe without its
+inner wall, a loose wheel with one steel face) or a face the bake deleted shows as a hole only in game. The owner
+found such holes on the Pz III turret cheeks, cupola rings and spare wheels in the designer. After the build run
+`blender -b --python check_backfaces.py -- <out_dir> <file.mesh>`: it renders the exported mesh from six
+designer-style angles with back faces in red. Every view must be near 0 red (gun bores and slit edges excepted);
+look at the `<name>_<view>.png` renders for anything else and fix the geometry, not the check.
+
 ## 6. Done, per vehicle
 
 - spec + `_detail` file, `DETAIL = True`;
@@ -113,4 +122,6 @@ Go through this before calling a vehicle done.
       not.
 - [ ] **Bow track guards and Schürzen rail slope** down at their ends as drawn, not flat boxes.
 - [ ] Hidden parts checked with `OVERLAY_HIDE` (Schürzen, bins).
+- [ ] **No holes** (step 5b): `check_backfaces.py` near 0 red in every view. Ring-shaped lathes (tyres, rims, rings)
+  get a closed section; loose wheels a steel face on both sides.
 - [ ] Overlays saved, build clean, triangle count noted.

@@ -626,7 +626,8 @@ def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107,
             p0, p1 = Vector(pt(ru, rz, side, 0.0)), Vector(pt(ru, rz, side, 0.1))
             q = Vector(pt(ru + 0.05, rz, side, 0.0)) - p0
             nrm = (p1 - p0).normalized()
-            up = nrm.cross(q).normalized() * side
+            # right-handed on both sides: a mirrored frame turned one plug inside out
+            up = nrm.cross(q).normalized()
             rot = Matrix((q.normalized(), up, nrm)).transposed().to_4x4()
             geo.transform(plug, rot)
             v.add(f"turret_pistol_port_{side}", geo.move(plug, *(p0 + nrm * 0.012)), kind="paint_cast",

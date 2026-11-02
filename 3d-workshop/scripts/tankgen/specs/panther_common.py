@@ -197,8 +197,8 @@ def front(v, S):
     slope = math.atan2(S.DECK_Z - S.NOSE[1], S.GLACIS_TOP_U - S.NOSE[0])
     if S.HULL_MG == "ball":  # Kugelblende 100 (Ausf. A late, G): the ball sits in the plate behind a thin, nearly
         # flush armour ring (photos), no raised boss: the glacis stays one slope
-        ring = geo.lathe([(0.12, -0.01), (0.20, -0.01), (0.20, 0.008), (0.17, 0.015), (0.12, 0.012)], 18, axis="Z",
-                         close_axis=False)
+        ring = geo.lathe([(0.12, -0.01), (0.20, -0.01), (0.20, 0.008), (0.17, 0.015), (0.12, 0.012), (0.12, -0.01)],
+                         18, axis="Z", close_axis=False)
         from mathutils import Matrix
 
         geo.transform(ring, Matrix.Scale(1.15, 4, (1, 0, 0)))
@@ -326,7 +326,7 @@ def disc(radius, width, outer_face, segments, steel=False):
     w = width / 2
     rim = radius - (0.07 if steel else 0.045)
     tyre = geo.lathe([(rim, w), (radius - 0.01, w), (radius, w - 0.015), (radius, -w + 0.015),
-                      (radius - 0.01, -w), (rim, -w)], segments)
+                      (radius - 0.01, -w), (rim, -w), (rim, w)], segments)  # closed ring: no open inside to see
     s = 1 if outer_face else -1
     face = geo.lathe([(0.0, s * (w + 0.04)), (0.07, s * (w + 0.035)), (0.11, s * (w + 0.01)), (0.13, s * (w - 0.005)),
                       (radius * 0.72, s * (w - 0.02)), (rim, s * w)], segments)
@@ -508,7 +508,7 @@ def cupola(v, S):
         geo.rotate(glass, a, "Z")
         v.add(f"cupola_glass_{k}", geo.move(glass, x=x, y=y, z=z + 0.10), kind="glass", bone="turret")
     if S.AA_RING:  # Fliegerbeschussgerät: ring rail over the cupola
-        ring = geo.lathe([(0.39, 0.0), (0.42, 0.0), (0.42, 0.025), (0.39, 0.025)], 24, axis="Z")
+        ring = geo.lathe([(0.39, 0.0), (0.42, 0.0), (0.42, 0.025), (0.39, 0.025), (0.39, 0.0)], 24, axis="Z")
         v.add("aa_ring", geo.move(ring, x=x, y=y, z=z + 0.24), kind="steel_paint", bone="turret")
         for k in range(3):
             a = 2 * math.pi * k / 3 + 0.4
@@ -526,7 +526,8 @@ def turret_fittings(v, S):
     f = (zc - S.DECK_Z) / (zt - S.DECK_Z)
     u_r = ub + (ut - ub) * f
     slope = math.atan2(ub - ut, zt - S.DECK_Z)
-    hatch = geo.lathe([(0.0, 0.05), (0.24, 0.05), (0.27, 0.0)], 20, axis="Y")
+    # closed (back face included): the open disc showed its inside above the leaning rear plate
+    hatch = geo.lathe([(0.0, 0.05), (0.24, 0.05), (0.27, 0.0), (0.0, 0.0)], 20, axis="Y")
     geo.rotate(hatch, -slope, "X")
     v.add("turret_rear_hatch", geo.move(hatch, x=S.TURRET_X - 0.21, y=S.Y(u_r - 0.02), z=zc), kind="paint_cast",
           bone="turret", smooth_angle=50)

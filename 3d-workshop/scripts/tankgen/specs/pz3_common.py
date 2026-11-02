@@ -161,7 +161,7 @@ def spare_wheels(v, S, stations=(1.75, 4.72), x=1.25, count=2, z0=1.43):
     at z 1.41-1.58), with the rack post down to the guard."""
     for k, u in enumerate(stations):
         for n in range(count):
-            for label, bm, kind in zip(("disc", "tyre"), parts.double_road_wheel(S.WHEEL_R, 0.075, 0.0, 0.07, 16),
+            for label, bm, kind in zip(("disc", "tyre"), parts.flat_road_wheel(S.WHEEL_R, 0.085, 0.07, 16),
                                        ("rubber_wheel", "rubber")):
                 geo.rotate(bm, math.pi / 2, "Y")
                 z = z0 + n * 0.085

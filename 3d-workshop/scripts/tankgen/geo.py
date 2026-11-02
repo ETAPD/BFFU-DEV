@@ -197,12 +197,14 @@ def lathe(profile, segments, axis="X", angle=2 * math.pi, close_axis=True):
                 except ValueError:
                     pass
     bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-6)
-    # lathe surfaces are often open (wheel faces, tyres), where recalc_face_normals guesses; the pivot is the
-    # axis, so outward simply means pointing away from the origin
+    # one consistent winding for the whole surface (flipping faces one by one turned tyre walls, cupola caps and
+    # ring undersides inside out, which the game culls into holes); closed lathes are then outward by construction,
+    # open ones (wheel faces, tyres) take the side most of their area faces: away from the origin, the pivot
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
     bm.normal_update()
-    flip = [f for f in bm.faces if f.normal.dot(f.calc_center_median()) < 0]
-    if flip:
-        bmesh.ops.reverse_faces(bm, faces=flip)
+    if not all(e.is_manifold for e in bm.edges):
+        if sum(f.calc_area() * f.normal.dot(f.calc_center_median()) for f in bm.faces) < 0:
+            bmesh.ops.reverse_faces(bm, faces=bm.faces)
     return bm
 
 

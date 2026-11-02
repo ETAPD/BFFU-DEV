@@ -2,6 +2,9 @@
 
 import math
 
+import bmesh
+from mathutils import Matrix
+
 from . import geo
 
 
@@ -10,12 +13,23 @@ def road_wheel_disc(radius, width, hub_r, segments, outer=True):
     the inner disc of a pair has no visible steel face, so its steel part is None."""
     w = width / 2
     rim = radius - 0.03
+    # closed ring (inner wall at the rim included): an open tyre showed its inside, which the game culls to a hole
     tyre = geo.lathe([(rim, w + 0.004), (radius - 0.008, w), (radius, w - 0.012), (radius, -w + 0.012),
-                      (radius - 0.008, -w)], segments)
+                      (radius - 0.008, -w), (rim, -w), (rim, w + 0.004)], segments)
     if not outer:
         return None, tyre
     face = geo.lathe([(0.0, w + 0.03), (hub_r, w + 0.018), (radius * 0.78, w - 0.006), (rim, w + 0.004)], segments)
     return face, tyre
+
+
+def flat_road_wheel(radius, width, hub_r, segments):
+    """Road wheel lying loose (spare wheel racks): steel face on both sides, so a stack is closed top and bottom.
+    Returns (steel, tyre)."""
+    face, tyre = road_wheel_disc(radius, width, hub_r, segments, outer=True)
+    back = face.copy()
+    geo.transform(back, Matrix.Scale(-1, 4, (1, 0, 0)))
+    bmesh.ops.reverse_faces(back, faces=back.faces)
+    return geo.merge(face, back), tyre
 
 
 def double_road_wheel(radius, disc_width, gap, hub_r, segments):
@@ -36,8 +50,8 @@ def sprocket(radius, teeth, ring_width, gap, hub_r, segments=None):
     parts = []
     for side in (1, -1):
         prof = [(radius * 0.86, ring_width / 2), (radius * 0.92, ring_width / 2),
-                (radius * 0.92, -ring_width / 2), (radius * 0.86, -ring_width / 2)]
-        ring = geo.lathe(prof, seg)
+                (radius * 0.92, -ring_width / 2), (radius * 0.86, -ring_width / 2), (radius * 0.86, ring_width / 2)]
+        ring = geo.lathe(prof, seg)  # closed ring section: an open ring shows its culled inside
         geo.move(ring, x=side * off)
         parts.append(ring)
         for t in range(teeth):
@@ -62,7 +76,7 @@ def idler(radius, width, gap, segments=18, spokes=0):
     parts = []
     for side in (1, -1):
         rim = geo.lathe([(radius * 0.82, width / 2), (radius, width / 2 - 0.005), (radius, -width / 2 + 0.005),
-                         (radius * 0.82, -width / 2)], segments)
+                         (radius * 0.82, -width / 2), (radius * 0.82, width / 2)], segments)  # closed ring section
         geo.move(rim, x=side * off)
         parts.append(rim)
     disc = geo.lathe([(0.0, off + 0.08), (radius * 0.18, off + 0.075), (radius * 0.25, off + 0.04),
