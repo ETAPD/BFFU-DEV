@@ -56,7 +56,7 @@ def build(v):
     if DETAIL:
         from . import ger_pz4g_detail
 
-        ger_pz4g_detail.build(v)
+        ger_pz4g_detail.build(v, S)
     c.rig(v, S)
 
 
@@ -80,11 +80,13 @@ def turret(v, S):
     cz = TURRET_TOP
     prof = [(0.0, cz), (0.40, cz), (0.40, 2.314), (0.378, 2.316), (0.392, 2.335), (0.395, 2.355), (0.395, 2.418),
             (0.386, 2.432), (0.372, 2.432), (0.372, 2.518), (0.36, 2.529), (0.0, 2.529)]
-    c.cupola_early(v, S, CUP_X, CUP_U, cz, prof, (0.329, 2.529, 2.60))
+    cup = getattr(S, "CUPOLA", None) or {"prof": prof, "hatch_top": (0.329, 2.529, 2.60)}
+    c.cupola_early(v, S, S.CUP_X, S.CUP_U, cz, **cup)
 
     # fan ventilator cover on the sloping roof plate (front/top view, as on the H)
     slope = math.atan2(TURRET_TOP - ROOF_FRONT_Z, 3.02 - 2.17)
-    c.roof_vent(v, S, -0.257, 2.737, c.roof_z(S, 2.737), slope)
+    if getattr(S, "ROOF_VENT", True):  # the turret fan came with the Ausf. E
+        c.roof_vent(v, S, -0.257, 2.737, c.roof_z(S, 2.737), slope)
     # signal port lid in the flat roof, left of the cupola (top view u 3.16, 0.49 m left)
     lid = geo.lathe([(0.0, 0.0), (0.075, 0.0), (0.075, 0.022), (0.065, 0.032), (0.0, 0.032)], 14, axis="Z")
     v.add("signal_port", geo.move(lid, x=0.49, y=Y(3.164), z=TURRET_TOP), kind="paint_cast", bone="turret",

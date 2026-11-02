@@ -12,21 +12,25 @@ from .ger_pz4g import CUP_U, CUP_X, FENDER_Z, ROOF_FRONT_Z, TURRET_TOP, TURRET_X
 X, Z = (1, 0, 0), (0, 0, 1)
 
 
-def build(v):
+def build(v, S=None):
+    """S: the variant's spec module (cupola position and hatch height); defaults to the early G."""
     hd.front_and_glacis(v)
     hd.roof_and_deck(v)
     hd.rear(v)
     hd.wheels(v)
-    turret(v)
+    turret(v, S)
     for side in (1, -1):
         v.detail(f"guard_lip_{side}", hd.geo.box(side * 1.46, Y(2.975), FENDER_Z + 0.012, 0.012, 4.95, 0.02))
 
 
-def turret(v):
+def turret(v, S=None):
     tx = TURRET_X
-    ring = Frame((CUP_X, Y(CUP_U), TURRET_TOP), X, (0, 1, 0), Z)
+    cup_u, cup_x = (S.CUP_U, S.CUP_X) if S is not None else (CUP_U, CUP_X)
+    cup = getattr(S, "CUPOLA", None)
+    hatch_z = cup["hatch_top"][2] if cup else 2.60
+    ring = Frame((cup_x, Y(cup_u), TURRET_TOP), X, (0, 1, 0), Z)
     v.detail("cupola_ring_bolts", dt.bolts(ring, dt.circle(0, 0, 0.385, 16), 0.011))
-    lid = Frame((CUP_X, Y(CUP_U), 2.60), X, (0, 1, 0), Z)
+    lid = Frame((cup_x, Y(cup_u), hatch_z), X, (0, 1, 0), Z)
     for s in (1, -1):
         v.detail(f"cupola_hatch_handle_{s}", dt.handle(lid, 0.0, s * 0.12, 0.14, 0.03))
     slope = math.atan2(TURRET_TOP - ROOF_FRONT_Z, 3.02 - 2.17)

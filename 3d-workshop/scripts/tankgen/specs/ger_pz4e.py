@@ -70,5 +70,5 @@ def build(v):
     if DETAIL:
         from . import ger_pz4g_detail
 
-        ger_pz4g_detail.build(v)
+        ger_pz4g_detail.build(v, S)
     c.rig(v, S)
