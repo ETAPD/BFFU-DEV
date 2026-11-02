@@ -107,3 +107,17 @@ def deep_wading_muffler(v, S, z=1.42, r=0.12, length=1.0, du=0.12):
                                                 center=(x, S.Y(S.REAR_U + 0.07), (z + 0.85) / 2)), kind="exhaust")
     v.locator("right_exhaust", (-0.40, S.Y(S.REAR_U + du), z + 0.1), "chassie")
     v.locator("left_exhaust", (0.40, S.Y(S.REAR_U + du), z + 0.1), "chassie")
+
+
+def spare_wheels(v, S, stations=(1.75, 4.72), x=1.25, count=2, z0=1.43):
+    """Spare road wheels carried lying flat in racks above the left track guard (top view circles, side view stacks
+    at z 1.41-1.58), with the rack post down to the guard."""
+    for k, u in enumerate(stations):
+        for n in range(count):
+            for label, bm, kind in zip(("disc", "tyre"), parts.double_road_wheel(S.WHEEL_R, 0.075, 0.0, 0.07, 16),
+                                       ("rubber_wheel", "rubber")):
+                geo.rotate(bm, math.pi / 2, "Y")
+                z = z0 + n * 0.085
+                v.add(f"spare_wheel_{label}_{k}_{n}", geo.move(bm, x=x, y=S.Y(u), z=z), kind=kind)
+        v.add(f"spare_wheel_rack_{k}", geo.cylinder(0.03, z0 - S.FENDER_Z, 8, axis="Z",
+                                                    center=(x, S.Y(u), (z0 + S.FENDER_Z) / 2)), kind="paint")

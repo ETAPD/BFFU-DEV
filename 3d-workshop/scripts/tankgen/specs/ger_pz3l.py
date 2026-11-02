@@ -113,6 +113,9 @@ def turret(v, S):
                            hatch_visor=[(2.66, 2.80, 1.88, 2.00), (2.97, 3.10, 1.88, 2.00)], pistol=None,
                            rear_port=None, hinge_z=(1.85, 1.95, 2.05))
     # mantlet with its 20 mm spaced plate (side view u 1.35-1.72, z 1.64-2.08; front view x -0.20..+0.23)
+    for k, x in enumerate(getattr(S, "TURRET_FRONT_VISORS", ())):  # vision ports flanking the mantlet (E-H)
+        plate_u = lambda z: 1.70 + 0.07 * (z - TURRET_Z) / (2.09 - TURRET_Z)
+        c.faceted_port(v, S, f"turret_front_visor_{k}", x, 1.97, plate_u, 0.07, 0.08, 0.06, 0.06, face_k=0.6)
     S.gun(v, S)
 
 
@@ -128,7 +131,10 @@ def fittings(v, S):
     if getattr(S, "VORPANZER", True):
         vorpanzer(v, S)
     else:
-        p3.front_plate_fittings(v, S, FRONT_U, 0.48, -0.64, 1.41)
+        p3.front_plate_fittings(v, S, FRONT_U, 0.48, -0.64, 1.41, mg_ball_r=getattr(S, "MG_BALL_R", 0.15))
+        if getattr(S, "MG_PLATE", None):  # square armour plate round the Kugelblende 30 (Ausf. E-H)
+            w, h = S.MG_PLATE
+            v.add("mg_plate", geo.box(-0.64, Y(FRONT_U) - 0.012, 1.41, w, 0.024, h), kind="paint_cast", chamfer=0.006)
     hull_fittings(v, S)
 
 
@@ -153,6 +159,8 @@ def hull_fittings(v, S):
     # engine deck (top view): two pairs of access hatches
     p3.deck(v, S, [(3.63, 4.32, -0.85, -0.15), (3.63, 4.32, 0.15, 0.85), (4.66, 5.23, -0.92, -0.21),
                    (4.66, 5.23, 0.17, 0.91)])
+    if getattr(S, "SPARE_WHEELS", True):  # two pairs lying on the left guard (top view u 1.75 / 4.72)
+        p3.spare_wheels(v, S)
     c.headlights(v, S, ((1, 1.32, 1.36), (-1, -1.32, 1.36)), u=0.45)
     c.tow_shackles(v, S, 0.70, 0.62, x=0.55)
     if getattr(S, "DEEP_WADING_MUFFLER", False):
