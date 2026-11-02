@@ -25,8 +25,7 @@ def build(v):
 def front_and_glacis(v):
     (gu0, gz0), (gu1, gz1) = GLACIS
     front = Frame.from_points((0, Y(FRONT_U[0]), gz1), (1, Y(FRONT_U[0]), gz1), (0, Y(FRONT_U[1]), ROOF_Z), (0, -1, 0))
-    v.detail("visor_glass", dt.vision_block(front, 0.36, 0.20, 0.20, 0.03, 0.10), "glass")
-    v.detail("visor_bolts", dt.bolts(front, [(0.12, 0.05), (0.60, 0.05), (0.12, 0.30), (0.60, 0.30)], 0.014, 0.06))
+    v.detail("visor_bolts", dt.bolts(front, [(0.12, 0.07), (0.60, 0.07), (0.12, 0.24), (0.60, 0.24)], 0.014, 0.06))
     v.detail("ball_bolts", dt.bolts(front, dt.circle(-0.61, 0.18, 0.19, 10), 0.013))
     edge = dt.line(-1.14, 0.42, 1.14, 0.42, 17) + dt.line(-1.14, 0.04, -1.14, 0.38, 4) + dt.line(1.14, 0.04, 1.14, 0.38, 4)
     v.detail("front_edge_bolts", dt.bolts(front, edge, 0.012))

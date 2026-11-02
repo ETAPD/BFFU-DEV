@@ -252,12 +252,49 @@ def turret(v):
     v.add("vent", geo.move(vent, x=-0.257, y=Y(2.737), z=roof_z(2.737)), kind="paint", bone="turret",
           smooth_angle=50)
 
-    # gun (side/top/front views): mantlet plate 0.79 x 0.44 m on the turret front (leaning back with the front
-    # plate, so its top edge stays behind the skirt front panels), mantlet body 0.51 x 0.29 m with chamfered edges
-    # and a round front collar, barrel jacket 0.23 m from u 1.58 to 1.03, L/48 barrel, double-baffle brake;
-    # muzzle 1.07 m ahead of the bow
-    mp = [(1.99, 1.73), (2.067, 2.165), (2.19, 2.165), (2.11, 1.73)]
-    v.add("mantlet_plate", geo.prism_x(P(mp), -0.40, 0.39), kind="paint_cast", bone="turret", chamfer=0.015)
+    # gun (side/top/front views): curved inner (rotor) mantlet in the turret front, mantlet body 0.51 x 0.29 m with
+    # chamfered edges and a round front collar, barrel jacket 0.23 m from u 1.58 to 1.03, L/48 barrel, double-baffle
+    # brake; muzzle 1.07 m ahead of the bow
+    # rotor: one smooth drum face, 0.78 m wide, 0.76 m radius, running from 2.165 m at u 2.08 down to 1.73 m at u 1.99
+    # (front/side views) and leaning back with the turret front; its ends show as the arcs either side of it in the
+    # front view (out to 0.445 m, z 1.85-2.09)
+    rc_u, rc_z, rr = 2.741, 1.80, 0.758
+
+    def rotor_u(z):  # front face of the rotor at height z
+        return rc_u - math.sqrt(rr * rr - (z - rc_z) ** 2)
+
+    def drum(z0, z1, r_front, depth, steps):
+        t0, t1 = math.asin((z0 - rc_z) / rr), math.asin((z1 - rc_z) / rr)
+        ts = [t1 + (t0 - t1) * k / steps for k in range(steps + 1)]
+        front = [(rc_u - r_front * math.cos(t), rc_z + rr * math.sin(t)) for t in ts]
+        back = [(rc_u - (r_front - depth) * math.cos(t), rc_z + rr * math.sin(t)) for t in reversed(ts)]
+        return P(front + back)
+
+    v.add("mantlet_rotor", geo.prism_x(drum(1.73, 2.165, rr, 0.12, 12), -0.39, 0.39), kind="paint_cast",
+          bone="turret", chamfer=0.012)
+    for side in (1, -1):
+        end = geo.prism_x(drum(1.85, 2.09, rr - 0.006, 0.10, 6), 0.0, 0.06)
+        v.add(f"mantlet_rotor_end_{side}", geo.move(end, x=side * 0.385 - (0.06 if side < 0 else 0.0)),
+              kind="paint_cast", bone="turret", chamfer=0.02)
+
+    def plate_u(z):  # turret front plate face, leaning back from u 2.10 at the turret ring to u 2.17 at the roof
+        return 2.10 + 0.07 * (z - TURRET_Z) / (ROOF_FRONT_Z - TURRET_Z)
+
+    # gunner's vision port, left of the mantlet (front view: faceted octagon centred 0.61 m left at 2.00 m; side view:
+    # sticks out to u ~2.03), and the sight aperture between it and the mantlet (dark ellipse at 0.47 m, 1.99 m)
+    octa = [(-1.0, -0.45), (-0.62, -1.0), (0.62, -1.0), (1.0, -0.45), (1.0, 0.45), (0.62, 1.0), (-0.62, 1.0),
+            (-1.0, 0.45)]
+    base = [(0.61 + 0.08 * a, plate_u(2.0 + 0.09 * b) + 0.01, 2.0 + 0.09 * b) for a, b in octa]
+    face = [(0.61 + 0.05 * a, plate_u(2.0 + 0.055 * b) - 0.10, 2.0 + 0.055 * b) for a, b in octa]
+    v.add("gunner_visor", geo.loft([(x, Y(u), z) for x, u, z in base], [(x, Y(u), z) for x, u, z in face]),
+          kind="paint_cast", bone="turret", chamfer=0.006)
+    v.add("gunner_visor_slit", geo.box(0.61, Y(plate_u(2.0) - 0.105), 2.0, 0.07, 0.012, 0.014), kind="glass",
+          bone="turret")
+    from mathutils import Matrix
+
+    sight = geo.cylinder(0.026, 0.05, 12, axis="Y")
+    geo.transform(sight, Matrix.Scale(1.4, 4, (0, 0, 1)))
+    v.add("sight_port", geo.move(sight, x=0.471, y=Y(plate_u(1.99) - 0.012), z=1.99), kind="glass", bone="turret")
     x0, x1, z0, z1 = -0.20, 0.31, GUN_Z - 0.143, GUN_Z + 0.143
     octo = [(x0, z0 + 0.06), (x0 + 0.10, z0), (x1 - 0.09, z0), (x1, z0 + 0.06), (x1, z1 - 0.06), (x1 - 0.09, z1),
             (x0 + 0.10, z1), (x0, z1 - 0.06)]
@@ -266,10 +303,11 @@ def turret(v):
     gx = 0.056  # bore: 5.6 cm left of the centreline (front view)
     v.add("mantlet_collar", geo.move(geo.cylinder(0.143, 0.06, 20, axis="Y"), x=gx, y=Y(1.605), z=GUN_Z),
           kind="paint_cast", bone="turret", chamfer=0.008)
-    v.add("coax_port", geo.move(geo.cylinder(0.03, 0.05, 8, axis="Y"), x=-0.15, y=Y(1.61), z=GUN_Z - 0.01),
-          kind="steel", bone="turret")
-    v.add("sight_port", geo.move(geo.cylinder(0.025, 0.04, 8, axis="Y"), x=0.27, y=Y(1.975), z=GUN_Z + 0.07),
-          kind="steel", bone="turret")
+    # coaxial MG port in the rotor, right of the gun (front view: dark round at 0.27 m right, 1.97 m)
+    v.add("coax_collar", geo.move(geo.cylinder(0.05, 0.04, 12, axis="Y"), x=-0.27, y=Y(rotor_u(1.97) - 0.01),
+                                  z=1.97), kind="paint_cast", bone="turret", chamfer=0.006)
+    v.add("coax_port", geo.move(geo.cylinder(0.028, 0.035, 10, axis="Y"), x=-0.27, y=Y(rotor_u(1.97) - 0.03),
+                                z=1.97), kind="steel", bone="turret")
     face_u = 1.60
     muzzle_u = -1.074
     brake_l = 0.278
@@ -381,7 +419,13 @@ def bar(a, b, width, height):
 def fittings(v):
     front = Y(FRONT_U[0])
     # driver's visor (Fahrersehklappe 80) on the left, MG ball mount on the right (front view)
-    v.add("driver_visor", geo.box(0.36, front - 0.03, 1.36, 0.54, 0.07, 0.22), kind="paint_cast", chamfer=0.02)
+    # visor (front view): base plate 0.54 x 0.22 m, then an armoured hood over a 3.6 cm vision slit and a lower lip,
+    # both 0.42 m wide and standing 10 cm proud; the hood's front face slopes back (side view)
+    v.add("driver_visor", geo.box(0.36, front - 0.015, 1.38, 0.54, 0.03, 0.22), kind="paint_cast", chamfer=0.02)
+    hood = [(0.95, 1.389), (FRONT_U[0], 1.389), (FRONT_U[0], 1.475), (1.00, 1.475)]
+    v.add("driver_visor_hood", geo.prism_x(P(hood), 0.15, 0.57), kind="paint_cast", chamfer=0.01)
+    v.add("driver_visor_lip", geo.box(0.36, Y(1.0), 1.319, 0.42, 0.10, 0.068), kind="paint_cast", chamfer=0.01)
+    v.add("driver_visor_glass", geo.box(0.36, Y(1.015), 1.371, 0.37, 0.01, 0.036), kind="glass")
     v.add("ball_mount", geo.move(parts.ball_mount(0.16), x=-0.61, y=front - 0.01, z=1.41), kind="paint_cast")
     v.add("hull_mg", geo.move(parts.mg_barrel(0.36), x=-0.61, y=front - 0.12, z=1.41), kind="steel")
 
