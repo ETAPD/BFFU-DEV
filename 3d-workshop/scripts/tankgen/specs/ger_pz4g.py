@@ -72,7 +72,8 @@ def turret(v, S):
     tx = TURRET_X
     c.turret_shell(v, S)
     # rear stowage bin (side view u 3.90-4.77, top view D-shaped as on the H; rear view bottom 1.77 m)
-    c.turret_bin(v, S, tx, 3.834, 4.28, 4.806, 0.566, 1.79, TURRET_TOP - 0.01, TURRET_TOP - 0.01 - 0.037, 4.0)
+    if getattr(S, "TURRET_BIN", True):
+        c.turret_bin(v, S, tx, 3.834, 4.28, 4.806, 0.566, 1.77, TURRET_TOP - 0.01, TURRET_TOP - 0.01 - 0.037, 4.0)
 
     # early cupola (side view u 3.226-4.009, front view): base flange, lower drum 0.79 m with a rounded foot and the
     # vision slits (2.31-2.43 m), upper ring 0.74 m (to 2.52 m), two-leaf hatch 0.66 m, top 2.60 m
@@ -91,10 +92,15 @@ def turret(v, S):
 
     # front: rotor and mantlet as the H; gunner's port 0.61 m left and loader's port 0.54 m right of the centreline
     # (front view octagons at 2.00 m), sight aperture
-    c.turret_front(v, S, ports=(("gunner_visor", 0.61), ("loader_visor", -0.537)))
+    c.turret_front(v, S, ports=(("gunner_visor", 0.61), ("loader_visor", -0.537)), **getattr(S, "MANTLET", {}))
     # side vision ports, two-leaf side hatches, pistol ports (side view)
     c.turret_side_fittings(v, S)
 
+    S.gun(v, S)
+    v.bone("turret", (tx, Y(TURRET_U), TURRET_Z), "chassie")
+
+
+def gun(v, S):
     # 7.5 cm KwK 40 L/43 (side/top views): jacket 0.19 m from the mantlet collar to u 1.05 with clamp rings at
     # u 1.43-1.47 and 1.095-1.13, barrel 0.12 m, ball brake u -0.296 to the muzzle at u -0.606
     gx = c.BORE_X
@@ -109,7 +115,6 @@ def turret(v, S):
     # antenna deflector rod along the lower left of the barrel, from the jacket's front ring (u 1.0, z 1.94) sloping
     # down to its tip at u -0.05, z 1.885 (side view); 0.14 m left of the centreline (top view)
     c.antenna_deflector(v, S, (gx + 0.075, 1.0, 1.935), (gx + 0.085, -0.054, 1.886))
-    v.bone("turret", (tx, Y(TURRET_U), TURRET_Z), "chassie")
 
 
 def hull_side_point(u, z, side, out=0.0):
