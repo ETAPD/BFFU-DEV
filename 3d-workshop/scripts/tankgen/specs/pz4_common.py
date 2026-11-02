@@ -254,7 +254,7 @@ def tools_and_locators(v, S, shovel_u=1.6, jack_u=5.10, antenna=(-1.08, 4.05)):
 
 
 # ---- running gear ---------------------------------------------------------------------------------------------
-def running_gear(v, S, sprocket_maker=None, idler_maker=None):
+def running_gear(v, S, sprocket_maker=None, idler_maker=None, bogies=True):
     circles = [(S.Y(S.SPROCKET[0]), S.SPROCKET[1], S.SPROCKET[2]), (S.Y(S.IDLER[0]), S.IDLER[1], S.IDLER[2])]
     circles += [(S.Y(u), S.WHEEL_Z, S.WHEEL_R) for u in S.WHEELS_U]
     circles += [(S.Y(u), S.ROLLER_Z, S.ROLLER_R) for u in S.ROLLERS_U]
@@ -303,7 +303,7 @@ def running_gear(v, S, sprocket_maker=None, idler_maker=None):
         bone_i += 1
 
     # leaf-spring bogies: bracket, quarter-elliptic spring housing and the two wheel arms (side view)
-    for b in range(4):
+    for b in range(4 if bogies else 0):
         u0, u1 = S.WHEELS_U[b * 2], S.WHEELS_U[b * 2 + 1]
         um = (u0 + u1) / 2
         for side in (1, -1):
@@ -415,7 +415,10 @@ def turret_plate_u(S, z):
 
 
 def turret_stations(S):
-    """(u_base, half_w_base, u_top, half_w_top, z_top) along the turret, for station_shell."""
+    """(u_base, half_w_base, u_top, half_w_top, z_top) along the turret, for station_shell. A spec can give its
+    own as TURRET_STATIONS (e.g. the Panzer III)."""
+    if getattr(S, "TURRET_STATIONS", None):
+        return S.TURRET_STATIONS
     return [(2.10, 0.80, 2.17, 0.69, roof_z(S, 2.17)), (2.60, 0.97, 2.60, 0.69, roof_z(S, 2.60)),
             (3.02, 0.97, 3.02, 0.69, S.TURRET_TOP), (3.75, 0.97, 3.80, 0.69, S.TURRET_TOP),
             (4.00, 0.70, 4.00, 0.50, S.TURRET_TOP)]
@@ -535,14 +538,15 @@ def side_plate(v, S, name, side, outline, thick, point, kind="paint", bone="turr
 
 def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107, 3.418, 3.428, 3.726, 1.822, 2.254),
                          hatch_visor=(3.231, 3.384, 1.962, 2.102), pistol=(3.47, 3.55, 1.98, 2.10),
-                         rear_port=(3.88, 2.046), two_leaf=True):
+                         rear_port=(3.88, 2.046), two_leaf=True, hinge_z=(1.95, 2.065, 2.175)):
     """Turret side, both sides (side view, Ausf. G drawing): faceted vision port ahead of the hatch; two-leaf side
     hatch with rounded top corners, three hinges per leaf on the outer edges, a vision port in the front leaf and a
     pistol port in the rear leaf, rain gutter over the top; round pistol port plug behind the hatch."""
     pt = lambda u, z, side, out=0.0: turret_side_point(S, u, z, side, out)
     for side in (1, -1):
-        u0, u1, z0, z1 = visor
-        side_port(v, S, f"turret_side_visor_{side}", side, u0, u1, z0, z1, (0.10, 0.018), 0.05, pt)
+        if visor:
+            u0, u1, z0, z1 = visor
+            side_port(v, S, f"turret_side_visor_{side}", side, u0, u1, z0, z1, (0.10, 0.018), 0.05, pt)
         f0, f1, r0, r1, hz0, hz1 = hatch
         leaves = ((f0, f1), (r0, r1)) if two_leaf else ((f0, r1),)
         for k, (a, b) in enumerate(leaves):
@@ -555,13 +559,16 @@ def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107,
                 outline = [(a, hz0), (b, hz0), (b, hz1 - rc), (b - rc, hz1), (a, hz1)]
             side_plate(v, S, f"turret_hatch_{side}_{k}", side, outline, 0.018, pt)
             edge = a if k == 0 else b
-            for hz in (1.95, 2.065, 2.175):  # hinge blocks on the leaf's outer edge
+            for hz in hinge_z:  # hinge blocks on the leaf's outer edge
                 hb = geo.box(0, 0, 0, 0.02, 0.07, 0.045)
                 p = pt(edge + (0.02 if k == 0 else -0.02), hz, side, 0.03)
                 v.add(f"turret_hatch_hinge_{side}_{k}_{hz}", geo.move(hb, *p), kind="paint_cast", bone="turret",
                       chamfer=0.005)
-        u0, u1, z0, z1 = hatch_visor
-        side_port(v, S, f"turret_hatch_visor_{side}", side, u0, u1, z0, z1, (0.05, 0.016), 0.06, pt)
+        for k, hv in enumerate(hatch_visor if hatch_visor and isinstance(hatch_visor[0], tuple) else [hatch_visor]):
+            if hv:
+                u0, u1, z0, z1 = hv
+                side_port(v, S, f"turret_hatch_visor_{side}" + (f"_{k}" if k else ""), side, u0, u1, z0, z1,
+                          (0.05, 0.016), 0.06, pt)
         u0, u1, z0, z1 = pistol or (0, 0, 0, 0)
         if pistol:
             side_port(v, S, f"turret_hatch_pistol_{side}", side, u0, u1, z0, z1, (0.025, 0.04), 0.035, pt, slit=False)
