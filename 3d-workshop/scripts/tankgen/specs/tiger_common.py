@@ -113,6 +113,11 @@ def wheel_spots(S, i):
         if i % 2 == 0:
             return ((0.27, True, 18, False), (0.065, True, 10, True), (-0.165, False, 8, True))
         return ((0.165, True, 14, False), (-0.065, False, 8, True), (-0.27, False, 8, True))
+    if S.WHEEL_LAYERS == "overlap":  # Tiger II: a disc pair per axle, overlapping (not interleaved): the outer-row
+        # pairs run on the outer half of the track, the inner-row pairs on the inner half, the guide horns between
+        if i % 2 == 0:
+            return ((0.27, True, 20, False), (0.15, False, 10, True))
+        return ((-0.15, True, 16, False), (-0.27, False, 10, True))
     if i % 2 == 0:  # two layers (steel wheels): outer-row axles carry the outer and the innermost disc pair
         return ((0.225, True, 20, False), (-0.225, False, 10, True))
     return ((0.07, True, 16, False), (-0.07, False, 10, True))
@@ -573,4 +578,362 @@ def build_tiger1(v, S):
     t1_rear(v, S)
     running_gear(v, S)
     t1_turret(v, S)
+    rig(v, S)
+
+
+# ---- Tiger II ---------------------------------------------------------------------------------------------------
+# Defaults from the Henschel-turret sheet (the-blueprints.com ID 63811, private tracing reference; see
+# ger_tiger2_henschel.py for the calibration). Documented (Jentz/Doyle, Panzer Tracts 6-3): hull 7.38 m, 10.286 m with
+# the gun forward, 3.755 m wide on the 800 mm combat tracks, 3.09 m high; 800 mm steel-rimmed road wheels on nine
+# torsion-bar axles a side, overlapping in two rows.
+TIGER2 = dict(
+    HULL_L=7.38,
+    TRACK_W=0.80, TRACK_X=1.395, TRACK_T=0.10, TRACK_PITCH=0.15,  # 2.79 m track centres (front view)
+    WHEEL_R=0.40, WHEEL_Z=0.50,
+    WHEELS_U=[1.229, 1.770, 2.257, 2.800, 3.310, 3.830, 4.343, 4.886, 5.430],
+    SPROCKET=(0.651, 0.871, 0.40), SPROCKET_TEETH=18, IDLER=(6.27, 0.69, 0.33),
+    WHEEL_LAYERS="overlap", WHEEL_STEEL=True,
+    LOWER_X=0.93, SPONSON_X=1.49, DECK_X=1.34, FENDER_X=1.87,
+    DECK_Z=1.93, SPONSON_Z=1.50, BELLY_Z=0.50,
+    NOSE=(0.0, 1.0), NOSE_BELLY_U=0.62, GLACIS_TOP_U=1.15,  # glacis 150 mm at 50 deg, lower nose 100 mm at 50 deg
+    DECK_END_U=7.00, REAR_BEAK=(7.28, 1.45), REAR_BELLY_U=6.93,  # upper rear plate 30 deg, lower rear plate
+    MG=(-0.60, 1.69), HEADLIGHT=(0.0, 1.78),
+    TURRET_TYPE="henschel", TURRET_U=3.65, TURRET_BASE_Z=2.00,
+    # Henschel turret (side/top/front views): (u_base, half_w_base, u_top, half_w_top, z_top); flat front plate
+    T2_STATIONS=[(2.06, 0.86, 2.20, 0.60, 2.63), (2.55, 1.02, 2.55, 0.70, 2.82), (3.46, 1.32, 3.46, 0.93, 2.85),
+                 (4.94, 1.31, 4.94, 0.92, 2.80), (5.77, 0.70, 5.49, 0.52, 2.72)],
+    GUN_Z=2.30, SAUKOPF=(2.08, 0.42, 1.83, 0.22), SLEEVE=(1.83, 1.29, 0.18),
+    MUZZLE_U=7.38 - 10.286,
+    CUPOLA=("cast", 3.83, 0.43), CUPOLA_Z=2.85,
+    SIGHT=("mono", 0.36), PILZE=True,
+)
+
+
+def init2(S):
+    init(S, TIGER2)
+
+
+def t2_glacis_u(S, z):
+    (u0, z0), u1 = S.NOSE, S.GLACIS_TOP_U
+    return u0 + (u1 - u0) * (z - z0) / (S.DECK_Z - z0)
+
+
+def t2_rear_u(S, z):
+    """Upper rear plate, leaning forward at the top, from the deck edge down to the beak."""
+    (ub, zb) = S.REAR_BEAK
+    return S.DECK_END_U + (ub - S.DECK_END_U) * (S.DECK_Z - z) / (S.DECK_Z - zb)
+
+
+def t2_hull(v, S):
+    """Tiger II hull (side/front/top views; Bovington 104 photos): lower hull between the tracks (lower nose plate,
+    belly, lower rear plate up to the beak); upper hull: ONE flat glacis from the nose to the roof across the full
+    width, sponson floors, the side plates sloping in 25 deg to the deck, the upper rear plate leaning forward at the
+    top; the side plates run past the rear plate as the rear tow horns (interlocked joints)."""
+    nu, nz = S.NOSE
+    zs, zd = S.SPONSON_Z, S.DECK_Z
+    ub, zb = S.REAR_BEAK
+    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (S.REAR_BELLY_U, S.BELLY_Z), (ub, zb), (t2_rear_u(S, zs), zs),
+             (t2_glacis_u(S, zs), zs), (nu, nz)]
+    v.add("hull_lower", geo.prism_x(P(S, lower), -S.LOWER_X, S.LOWER_X), chamfer=0.03)
+    ring = [(-S.SPONSON_X, zs), (S.SPONSON_X, zs), (S.DECK_X, zd), (-S.DECK_X, zd)]
+    front = [(x, S.Y(t2_glacis_u(S, z)), z) for x, z in ring]
+    rear = [(x, S.Y(t2_rear_u(S, z)), z) for x, z in ring]
+    v.add("hull_upper", geo.loft(front, rear), chamfer=0.03)
+    for side in (1, -1):  # rear horns: the side plates' ends past the rear plate, with the tow eyes
+        x0 = side * (S.SPONSON_X + S.DECK_X) / 2
+        horn = [(t2_rear_u(S, zd) - 0.05, zd - 0.02), (t2_rear_u(S, zd) + 0.30, zd - 0.12),
+                (t2_rear_u(S, zs) + 0.22, zs + 0.02), (t2_rear_u(S, zs) - 0.05, zs + 0.02)]
+        bm = geo.prism_x(P(S, horn), x0 - 0.04, x0 + 0.04)
+        v.add(f"rear_horn_{side}", bm, kind="paint", chamfer=0.012)
+        eye = geo.lathe([(0.03, -0.045), (0.06, -0.045), (0.06, 0.045), (0.03, 0.045), (0.03, -0.045)], 10, axis="X")
+        v.add(f"rear_eye_{side}", geo.move(eye, x=x0, y=S.Y(t2_rear_u(S, zs) + 0.12), z=zs + 0.14), kind="paint")
+
+
+def t2_fenders(v, S):
+    """Side fenders along the sponson floor edge out over the track (front view out to 1.87 m), curved front
+    mudguards from the nose up to the fender (side view), rear mudguard flaps over the idlers."""
+    zs = S.SPONSON_Z
+    u0, u1 = t2_glacis_u(S, zs) + 0.05, S.DECK_END_U + 0.05
+    for side in (1, -1):
+        xi, xo = side * (S.SPONSON_X - 0.01), side * S.FENDER_X
+        pts = [(xi, S.Y(u0), zs + 0.02), (xi, S.Y(u1), zs + 0.02), (xo, S.Y(u1), zs - 0.03),
+               (xo, S.Y(u0), zs - 0.03)]
+        v.add(f"fender_{side}", c.plate(pts, (0, 0, -0.012)), kind="paint", chamfer=0.004)
+        # front mudguard: curved plate from the nose up and back to the fender (side view arc)
+        arc = [(0.02, 1.00), (0.05, 1.18), (0.13, 1.33), (0.27, 1.45), (0.45, zs - 0.01), (u0 + 0.02, zs - 0.02)]
+        prof = arc + [(u + 0.012, z - 0.012) for u, z in reversed(arc)]
+        x0, x1 = (S.LOWER_X + 0.01, S.FENDER_X) if side > 0 else (-S.FENDER_X, -S.LOWER_X - 0.01)
+        v.add(f"mudguard_{side}", geo.prism_x(P(S, prof), x0, x1), kind="paint", chamfer=0.004)
+        # rear mudguard flap over the idler
+        flap = [(u1 - 0.02, zs - 0.03), (u1 + 0.30, zs - 0.30), (u1 + 0.31, zs - 0.285), (u1 - 0.005, zs - 0.015)]
+        rx0, rx1 = (S.TRACK_X - S.TRACK_W / 2, S.FENDER_X) if side > 0 else (-S.FENDER_X,
+                                                                              -S.TRACK_X + S.TRACK_W / 2)
+        v.add(f"rear_mudguard_{side}", geo.prism_x(P(S, flap), rx0, rx1), kind="paint", chamfer=0.004)
+
+
+def t2_front(v, S):
+    """Glacis fittings (front/top views): Kugelblende (x -0.60, z 1.69), headlight on the centreline, driver's and
+    radio operator's periscopes at the top of the glacis, tow shackles on the lower nose."""
+    slope = math.atan2(S.DECK_Z - S.NOSE[1], S.GLACIS_TOP_U - S.NOSE[0])
+    mx, mz = S.MG
+    mu = t2_glacis_u(S, mz)
+    ring = geo.lathe([(0.0, -0.01), (0.20, -0.01), (0.20, 0.02), (0.15, 0.045), (0.0, 0.045)], 18, axis="Z")
+    geo.transform(ring, Matrix.Scale(1.2, 4, (1, 0, 0)))
+    geo.rotate(ring, slope - math.pi / 2, "X")  # ring axis along the glacis' outward normal (forward and up)
+    v.add("mg_mount", geo.move(ring, x=mx, y=S.Y(mu), z=mz), kind="paint_cast", smooth_angle=50)
+    ball = geo.lathe([(0.0, -0.10), (0.06, -0.09), (0.09, -0.04), (0.09, 0.0)], 12, axis="Y")
+    v.add("mg_ball", geo.move(ball, x=mx, y=S.Y(mu - 0.02), z=mz + 0.02), kind="paint_cast")
+    v.add("hull_mg", geo.move(parts.mg_barrel(0.28), x=mx, y=S.Y(mu - 0.12), z=mz + 0.02), kind="steel")
+    hx, hz = S.HEADLIGHT
+    lamp = geo.merge(parts.headlight(0.085, 0.12), geo.cylinder(0.02, 0.10, 6, axis="Z", center=(0, 0.06, -0.07)))
+    v.add("headlight", geo.move(lamp, x=hx, y=S.Y(t2_glacis_u(S, hz) - 0.07), z=hz + 0.08), kind="paint_cast")
+    for side in (1, -1):
+        v.add(f"driver_periscope_{side}", geo.box(side * 0.62, S.Y(S.GLACIS_TOP_U + 0.18), S.DECK_Z + 0.04, 0.22,
+                                                  0.14, 0.08), kind="paint_cast", chamfer=0.015)
+        sh = parts.tow_shackle()
+        geo.transform(sh, Matrix.Scale(1.4, 4))
+        v.add(f"tow_front_{side}", geo.move(sh, x=side * 0.91, y=S.Y(0.12), z=0.92), kind="steel")
+        eye = geo.lathe([(0.035, -0.05), (0.07, -0.05), (0.07, 0.05), (0.035, 0.05), (0.035, -0.05)], 10, axis="X")
+        v.add(f"tow_eye_{side}", geo.move(eye, x=side * (S.LOWER_X - 0.02), y=S.Y(0.22), z=1.00), kind="paint")
+
+
+def t2_deck(v, S):
+    """Deck (top view): driver's and radio operator's hatches (u 1.43-1.91, x 0.29-0.86), engine deck with the
+    two fan covers (u 5.97, x 0.91), the radiator gratings either side and the central engine hatch; tow cables and
+    tools on the hull sides (Bovington 104 photos)."""
+    z = S.DECK_Z
+    for side in (1, -1):
+        v.add(f"crew_hatch_{side}", geo.box(side * 0.575, S.Y(1.67), z + 0.025, 0.55, 0.46, 0.05), kind="paint",
+              chamfer=0.03)
+        for k, (u, du) in enumerate(((5.28, 0.55), (6.69, 0.40))):
+            v.add(f"grating_{side}_{k}", geo.box(side * 1.10, S.Y(u), z + 0.025, 0.36, du, 0.05), kind="steel",
+                  chamfer=0.008)
+        fan = geo.lathe([(0.0, 0.07), (0.27, 0.07), (0.32, 0.03), (0.32, 0.0), (0.0, 0.0)], 18, axis="Z")
+        v.add(f"fan_{side}", geo.move(fan, x=side * 0.91, y=S.Y(5.97), z=z), kind="paint", smooth_angle=50)
+        # tow cable looped along the side plate (photos), cleaning rods
+        sx = side * ((S.SPONSON_X + S.DECK_X) / 2 + 0.03)
+        v.add(f"tow_cable_{side}", geo.cylinder(0.025, 4.2, 6, axis="Y", center=(sx, S.Y(3.9), 1.74)), kind="steel")
+        v.add(f"rods_{side}", geo.cylinder(0.04, 2.0, 8, axis="Y", center=(sx + side * 0.01, S.Y(4.6), 1.62)),
+              kind="paint")
+    v.add("engine_hatch", geo.box(0.0, S.Y(6.23), z + 0.02, 1.10, 1.50, 0.04), kind="paint", chamfer=0.012)
+    for k, u in enumerate((5.9, 6.5)):
+        v.add(f"filler_{k}", geo.move(geo.cylinder(0.11, 0.05, 12, axis="Z"), x=0.0, y=S.Y(u), z=z + 0.06),
+              kind="paint")
+    v.add("antenna_base", geo.move(geo.cylinder(0.045, 0.10, 8, axis="Z"), x=-0.95, y=S.Y(6.35), z=z + 0.05),
+          kind="paint")
+    v.locator("left_tracks", (S.TRACK_X, S.Y(6.5), 0.0), "tank_base")
+    v.locator("right_tracks", (-S.TRACK_X, S.Y(6.5), 0.0), "tank_base")
+
+
+def t2_rear(v, S):
+    """Rear plate (rear view; Bovington 104 photos): two exhausts low on the upper rear plate in cast guards, curving
+    down and back; the round access hatch and the two engine-starter / fan covers on the lower plate; tow shackles,
+    jack and stowage boxes over the tracks."""
+    for side in (1, -1):
+        x = side * 0.38
+        zc = 1.30
+        u = t2_rear_u(S, min(zc, S.REAR_BEAK[1]))
+        uc = S.REAR_BEAK[0] - (S.REAR_BEAK[1] - zc) * 0.3
+        guard = geo.box(x, S.Y(uc + 0.10), zc, 0.30, 0.22, 0.34)
+        v.add(f"exhaust_guard_{side}", guard, kind="paint_cast", chamfer=0.04)
+        pipe = geo.lathe([(0.0, 0.0), (0.085, 0.0), (0.085, 0.40), (0.075, 0.42), (0.0, 0.42)], 12, axis="Y")
+        geo.rotate(pipe, math.radians(-35), "X")
+        v.add(f"exhaust_{side}", geo.move(pipe, x=x, y=S.Y(uc + 0.12), z=zc + 0.06), kind="exhaust")
+        v.locator("left_exhaust" if side > 0 else "right_exhaust", (x, S.Y(uc + 0.45), zc - 0.10), "chassie")
+        sh = parts.tow_shackle()
+        geo.transform(sh, Matrix.Scale(1.3, 4))
+        v.add(f"tow_rear_{side}", geo.move(sh, x=side * 0.90, y=S.Y(S.REAR_BELLY_U + 0.12), z=0.80), kind="steel")
+        cov = geo.lathe([(0.0, 0.04), (0.12, 0.04), (0.14, 0.0), (0.0, 0.0)], 12, axis="Y")
+        v.add(f"rear_cover_{side}", geo.move(cov, x=side * 0.62, y=S.Y(S.REAR_BELLY_U + 0.20), z=0.88), kind="paint")
+        box = geo.box(side * 1.45, S.Y(S.DECK_END_U + 0.12), 1.05, 0.40, 0.24, 0.36)
+        v.add(f"rear_box_{side}", box, kind="paint", chamfer=0.02)
+    hatch = geo.lathe([(0.0, 0.05), (0.17, 0.05), (0.19, 0.0), (0.0, 0.0)], 16, axis="Y")
+    v.add("rear_hatch", geo.move(hatch, x=0.0, y=S.Y(S.REAR_BELLY_U + 0.17), z=0.88), kind="paint")
+    v.add("jack", geo.box(0.0, S.Y(S.REAR_BEAK[0] - 0.02), 1.52, 0.50, 0.14, 0.16), kind="paint", chamfer=0.015)
+
+
+def ring_stack(rings, cap=True):
+    """Bridge rings of 3D points (same count, stacked bottom to top) into one closed shell (turrets whose plan
+    changes with height, e.g. the Porsche turret's rounded nose). Caps are fans round each end ring's centre."""
+    import bmesh
+
+    bm = bmesh.new()
+    vs = [[bm.verts.new(p) for p in r] for r in rings]
+    n = len(rings[0])
+    for a, b in zip(vs, vs[1:]):
+        for i in range(n):
+            j = (i + 1) % n
+            bm.faces.new((a[i], a[j], b[j], b[i]))
+    if cap:
+        for ring in (vs[0], vs[-1]):
+            ctr = bm.verts.new(sum((v.co for v in ring), Vector()) / n)
+            for i in range(n):
+                bm.faces.new((ring[i], ring[(i + 1) % n], ctr))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    return bm
+
+
+def t2_turret_henschel(v, S):
+    """Henschel (production) turret: flat front plate leaning back 9 deg, narrow at the roof; side plates sloping in
+    21 deg and widening to the middle, rear corners angled in to the rear plate (which leans forward at the top);
+    roof sloping down to the front plate. The Saukopf ('pig's head') mantlet: a cast cone round the gun."""
+    shell = c.station_shell(S, S.T2_STATIONS, S.TURRET_BASE_Z)
+    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.03)
+    (ub, wb, ut, wt, zt) = S.T2_STATIONS[0]
+    gz = S.GUN_Z
+    face = ub + (ut - ub) * (gz - S.TURRET_BASE_Z) / (zt - S.TURRET_BASE_Z)
+    c0, r0, c1, r1 = S.SAUKOPF
+    cone = geo.lathe([(0.0, 0.0), (r0, 0.0), (r0 * 0.97, -0.06), (r0 * 0.80, -(c0 - c1) * 0.45),
+                      (r1 * 1.10, -(c0 - c1) * 0.85), (r1, -(c0 - c1)), (0.0, -(c0 - c1))], 24, axis="Y")
+    v.add("mantlet", geo.move(cone, x=0.0, y=S.Y(face + 0.03), z=gz), kind="paint_cast", bone="turret",
+          smooth_angle=60)
+    # coaxial MG port right of the gun, monocular sight aperture left (front view), both in the front plate
+    fu = lambda z: ub + (ut - ub) * (z - S.TURRET_BASE_Z) / (zt - S.TURRET_BASE_Z)
+    v.add("coax_port", geo.move(geo.cylinder(0.035, 0.06, 10, axis="Y"), x=-0.40, y=S.Y(fu(2.30) - 0.01), z=2.30),
+          kind="glass", bone="turret")
+    v.add("sight_0", geo.move(geo.cylinder(0.03, 0.06, 10, axis="Y"), x=S.SIGHT[1], y=S.Y(fu(2.40) - 0.01), z=2.40),
+          kind="glass", bone="turret")
+    return c1
+
+
+def t2_porsche_rings(S, n_side=4):
+    """Porsche turret plan rings by height: rounded nose (side view curve), sides sloping in 31 deg, rear plate
+    leaning forward at the top. Each ring: nose arc from the left side round to the right, then down the right side,
+    across the rear, up the left side."""
+    zs = S.P_RINGS  # [(z, nose_u, half_w, rear_u)]
+    rings = []
+    for z, fu, w, ru in zs:
+        pts = []
+        depth = min(0.75, 0.85 * w)  # how far back the rounded nose reaches round to the sides
+        for k in range(9):  # nose arc: ellipse quadrant pair from the left side round the front to the right
+            a = math.pi / 2 - math.pi * k / 8
+            pts.append((w * math.sin(a) * 1.0, fu + depth * (1 - math.cos(a))))
+        pts = [(x, u) for x, u in pts]
+        rc = ru - 0.45 * (w / 1.2)
+        pts += [(-w, rc), (-0.70 * w, ru), (0.70 * w, ru), (w, rc)]
+        rings.append([(x, S.Y(u), z) for x, u in pts])
+    return rings
+
+
+def t2_turret_porsche(v, S):
+    """Porsche (early) turret, as on the first 50 Tiger IIs: rounded nose (side view: the front curves from the roof
+    down round the gun to the base; top view: rounded front corners), steep side plates, the bulge in the left side
+    plate for the cupola, small bell-shaped mantlet."""
+    v.add("turret", ring_stack(t2_porsche_rings(S)), kind="paint", bone="turret", chamfer=0.025, smooth_angle=35)
+    cu, cx = S.CUPOLA[1], S.CUPOLA[2]
+    # bulge: from the side plate at mid-height up and in to a platform under the cupola's outer half (photos)
+    z0, z1 = S.TURRET_BASE_Z + 0.30, S.CUPOLA_Z - 0.005
+    ring = [(math.cos(a), math.sin(a)) for a in (math.radians(d) for d in range(-90, 91, 30))]
+    bot = [(0.95 + px * 0.10, S.Y(cu + py * 0.36), z0) for px, py in ring]
+    top = [(cx + 0.05 + px * 0.40, S.Y(cu + py * 0.44), z1) for px, py in ring]
+    v.add("turret_bulge", geo.loft(bot, top), kind="paint_cast", bone="turret", chamfer=0.02)
+    gz = S.GUN_Z
+    fu = S.P_RINGS[2][1]  # nose at the gun height
+    bell = geo.lathe([(0.0, 0.0), (0.27, 0.0), (0.27, -0.04), (0.24, -0.08), (0.18, -0.15), (0.16, -0.20),
+                      (0.0, -0.20)], 22, axis="Y")
+    v.add("mantlet", geo.move(bell, x=0.0, y=S.Y(fu + 0.04), z=gz), kind="paint_cast", bone="turret",
+          smooth_angle=60)
+    plate = geo.box(0.0, S.Y(fu + 0.04), gz + 0.03, 0.52, 0.06, 0.56)
+    v.add("mantlet_plate", plate, kind="paint_cast", bone="turret", chamfer=0.03)
+    v.add("coax_port", geo.move(geo.cylinder(0.03, 0.05, 10, axis="Y"), x=-0.20, y=S.Y(fu - 0.0), z=gz + 0.10),
+          kind="glass", bone="turret")
+    v.add("sight_0", geo.move(geo.cylinder(0.03, 0.05, 10, axis="Y"), x=S.SIGHT[1], y=S.Y(fu + 0.02), z=gz + 0.12),
+          kind="glass", bone="turret")
+    return fu - 0.16
+
+
+def t2_gun(v, S, face_u):
+    """8.8 cm KwK 43 L/71 (side view): recoil sleeve r 0.18 from the mantlet forward, the two-part barrel (joint
+    band at u 0.31-0.37), tapering to the double-baffle brake 0.50 m long; muzzle at the documented 10.286 m."""
+    su0, su1, sr = S.SLEEVE
+    brake_l = 0.50
+    m0 = S.MUZZLE_U + brake_l
+    start = min(face_u, su0)
+    sections = [(sr, start + 0.02), (sr, su1 + 0.06), (sr - 0.03, su1), (0.12, su1 - 0.02), (0.115, 0.37),
+                (0.125, 0.36), (0.125, 0.31), (0.105, 0.30), (0.088, m0 + 0.08), (0.092, m0 + 0.04), (0.092, m0)]
+
+    def brake():
+        bm = parts.muzzle_brake_double(0.145, brake_l, 18)
+        geo.transform(bm, Matrix.Scale(0.80, 4, (1, 0, 0)))
+        return bm
+
+    c.gun(v, S, 0.0, S.GUN_Z, start + 0.02, sections, S.MUZZLE_U, (brake, brake_l), segments=18,
+          base_u=S.TURRET_U - 1.2)
+
+
+def t2_turret_fittings(v, S):
+    """Roof and rear fittings: cast cupola with periscopes and AA ring (left), loader's hatch (right), ventilator,
+    loader's periscope, three Pilze; the rear escape hatch in the rear plate; spare track links on the turret sides
+    (Bovington 104 photos)."""
+    S.TURRET_Z = (S.TURRET_BASE_Z, S.CUPOLA_Z, S.CUPOLA_Z, 0.0)
+    t1_cupola(v, S)
+    roof = S.CUPOLA_Z
+    lu = S.CUPOLA[1] + 0.20
+    v.add("loader_hatch", geo.box(-0.52, S.Y(lu), roof + 0.025, 0.50, 0.55, 0.05), kind="paint", bone="turret",
+          chamfer=0.02)
+    vent = geo.lathe([(0.0, 0.08), (0.12, 0.07), (0.15, 0.0), (0.0, 0.0)], 14, axis="Z")
+    v.add("vent", geo.move(vent, x=0.0, y=S.Y(S.CUPOLA[1] + 0.55), z=roof - 0.02), kind="paint_cast", bone="turret")
+    v.add("loader_periscope", geo.box(-0.40, S.Y(S.CUPOLA[1] - 0.45), roof + 0.04, 0.14, 0.20, 0.10),
+          kind="paint_cast", bone="turret", chamfer=0.015)
+    for k, (px, pu) in enumerate(((0.65, S.CUPOLA[1] - 0.6), (-0.65, S.CUPOLA[1] - 0.6), (0.0, S.CUPOLA[1] + 1.1))
+                                 if S.PILZE else ()):
+        pil = geo.lathe([(0.0, 0.06), (0.06, 0.06), (0.07, 0.04), (0.035, 0.03), (0.035, 0.0), (0.0, 0.0)], 10,
+                        axis="Z")
+        v.add(f"pilz_{k}", geo.move(pil, x=px, y=S.Y(pu), z=roof - 0.04), kind="paint", bone="turret")
+
+
+def t2_rear_hatch(v, S, u_bottom, u_top, z_bottom, z_top, half_w):
+    """Escape / gun-removal hatch in the rear plate (rear view)."""
+    zc = (z_bottom + z_top) / 2
+    uc = u_bottom + (u_top - u_bottom) * 0.5 + 0.02
+    slope = math.atan2(u_bottom - u_top, z_top - z_bottom)
+    h = geo.box(0, 0, 0, half_w * 2, 0.05, (z_top - z_bottom) * 0.8)
+    geo.rotate(h, slope, "X")
+    v.add("turret_rear_hatch", geo.move(h, x=0.0, y=S.Y(uc), z=zc), kind="paint", bone="turret", chamfer=0.02)
+
+
+def t2_track_links(v, S, point_fn):
+    """Spare track links hung on the turret side plates (Bovington 104)."""
+    for side in (1, -1):
+        for k in range(4):
+            p, n = point_fn(3.25 + k * 0.30, 2.30, side)
+            link = parts.track_link_spare(0.22, 0.28, 0.05)
+            geo.rotate(link, math.pi / 2, "Y")
+            geo.rotate(link, side * math.radians(21), "Y")
+            v.add(f"turret_link_{side}_{k}", geo.move(link, *p), kind="track_steel", bone="turret")
+
+
+def build_tiger2(v, S):
+    init2(S)
+    t2_hull(v, S)
+    t2_fenders(v, S)
+    t2_front(v, S)
+    t2_deck(v, S)
+    t2_rear(v, S)
+    running_gear(v, S)
+    if S.TURRET_TYPE == "porsche":
+        face = t2_turret_porsche(v, S)
+    else:
+        face = t2_turret_henschel(v, S)
+        st = S.T2_STATIONS[-1]
+        t2_rear_hatch(v, S, st[0], st[2], S.TURRET_BASE_Z + 0.15, st[4] - 0.08, 0.30)
+
+        def side_pt(u, z, side):
+            sts = S.T2_STATIONS
+            for a, b in zip(sts, sts[1:]):
+                if a[0] <= u <= b[0]:
+                    f = (u - a[0]) / (b[0] - a[0])
+                    wb = a[1] + (b[1] - a[1]) * f
+                    wt = a[3] + (b[3] - a[3]) * f
+                    zt = a[4] + (b[4] - a[4]) * f
+                    x = wb - (wb - wt) * (z - S.TURRET_BASE_Z) / (zt - S.TURRET_BASE_Z)
+                    return (side * (x + 0.04), S.Y(u), z), None
+            return (side * 1.0, S.Y(u), z), None
+
+        t2_track_links(v, S, side_pt)
+    t2_gun(v, S, face)
+    t2_turret_fittings(v, S)
+    if S.TURRET_TYPE == "porsche":
+        t2_rear_hatch(v, S, S.P_RINGS[0][3], S.P_RINGS[-2][3], S.TURRET_BASE_Z + 0.15, S.P_RINGS[-2][0] - 0.05, 0.28)
+    v.bone("turret", (0, S.Y(S.TURRET_U), S.DECK_Z), "chassie")
     rig(v, S)
