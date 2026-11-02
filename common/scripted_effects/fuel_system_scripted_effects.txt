@@ -336,6 +336,59 @@ on_daily_fuel = {
         }
     }
 
+    # Faction fuel forecast (feeds the "FACTION FUEL: X DAYS" alert, common/scripted_guis/fuel_system.txt).
+    # Per manager: total fuel of the manager and every member it is not at war with, the daily change of
+    # that total smoothed over roughly a week (fuel moved between members cancels out), and the days left
+    # at that rate. Every member gets a copy of fuel_faction_days; 0 means the faction is not running dry.
+    for_each_scope_loop = {
+        array = GLOBAL.fuel_system_manager
+
+        set_temp_variable = { fuel_faction_now = fuel_k }
+        for_each_scope_loop = {
+            array = THIS.faction_members_array
+            if = {
+                limit = { NOT = { has_war_with = PREV } }
+                add_to_temp_variable = { fuel_faction_now = fuel_k }
+            }
+        }
+
+        if = {
+            limit = { has_variable = fuel_faction_total }
+            set_temp_variable = { fuel_faction_change = fuel_faction_now }
+            subtract_from_temp_variable = { fuel_faction_change = fuel_faction_total }
+            multiply_temp_variable = { fuel_faction_change = 0.25 }
+            multiply_variable = { fuel_faction_avg_change = 0.75 }
+            add_to_variable = { fuel_faction_avg_change = fuel_faction_change }
+        }
+        set_variable = { fuel_faction_total = fuel_faction_now }
+
+        set_variable = { fuel_faction_days = 0 }
+        if = {
+            limit = { check_variable = { fuel_faction_avg_change < -0.05 } }   # losing more than 50 fuel a day
+            set_variable = { fuel_faction_days = fuel_faction_total }
+            divide_variable = { fuel_faction_days = fuel_faction_avg_change }
+            multiply_variable = { fuel_faction_days = -1 }
+            round_variable = fuel_faction_days
+            if = {
+                limit = { check_variable = { fuel_faction_days < 1 } }
+                set_variable = { fuel_faction_days = 1 }
+            }
+        }
+
+        for_each_scope_loop = {
+            array = THIS.faction_members_array
+            if = {
+                limit = { NOT = { has_war_with = PREV } }
+                set_variable = { fuel_faction_days = PREV.fuel_faction_days }
+                set_variable = { fuel_faction_avg_change = PREV.fuel_faction_avg_change }
+                set_variable = { fuel_faction_total = PREV.fuel_faction_total }
+            }
+            else = {
+                set_variable = { fuel_faction_days = 0 }
+            }
+        }
+    }
+
     # Update fuel bar display for all countries.
     for_each_scope_loop = {
         array = GLOBAL.fuel_countries

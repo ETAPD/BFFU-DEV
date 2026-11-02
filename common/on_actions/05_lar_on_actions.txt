@@ -334,12 +334,13 @@ on_actions = {
 					}
 					SPR_scw_in_progress = yes
 					NOT = {
-						any_other_country = {
+						any_country_with_original_tag = {
+							original_tag_to_check = SPR
+							NOT = { tag = PREV }
 							NOT = {
 								tag = ROOT
 								tag = FROM
 							}
-							original_tag = SPR
 							exists = yes
 						}
 					}
@@ -363,12 +364,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPB
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -381,12 +383,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPA
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -399,12 +402,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPA
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -417,12 +421,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPC
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -435,12 +440,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPC
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -453,12 +459,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPD
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -471,12 +478,13 @@ on_actions = {
 					}
 					original_tag = SPR
 					SPR_scw_in_progress = yes
-					any_other_country = {
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						NOT = { tag = PREV }
 						NOT = {
 							tag = ROOT
 							tag = SPD
 						}
-						original_tag = SPR
 						exists = yes
 					}
 				}
@@ -577,6 +585,52 @@ on_actions = {
 	on_weekly_SPR = {
 		effect = {
 			SPR_calculate_appeasement_ticking = yes
+		}
+	}
+
+	# Mainland airfields close once no other Spanish side is left and stay at zero until Barbarossa
+	on_weekly_SPR = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = spanish_civil_war
+					NOT = {
+						any_country_with_original_tag = {
+							original_tag_to_check = SPR
+							NOT = { tag = ROOT }
+							exists = yes
+						}
+					}
+					NOT = { has_global_flag = SPR_airfields_closed }
+					NOT = { has_global_flag = SPR_airfields_reopened }
+					NOT = { GER = { has_war_with = SOV } }
+				}
+				SPR_close_mainland_airfields = yes
+			}
+			# A country at war with Spain holding any mainland state lifts the lock early
+			else_if = {
+				limit = {
+					has_global_flag = SPR_airfields_closed
+					any_state = {
+						has_dynamic_modifier = { modifier = SPR_closed_airfields }
+						OR = {
+							OWNER = { has_war_with = ROOT }
+							CONTROLLER = { has_war_with = ROOT }
+						}
+					}
+				}
+				SPR_reopen_mainland_airfields = yes
+			}
+			else_if = {
+				limit = { has_global_flag = SPR_airfields_closed }
+				every_state = {
+					limit = {
+						has_dynamic_modifier = { modifier = SPR_closed_airfields }
+						air_base > 0
+					}
+					remove_building = { type = air_base level = 20 }
+				}
+			}
 		}
 	}
 	
