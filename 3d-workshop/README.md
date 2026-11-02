@@ -70,6 +70,8 @@ All Blender scripts run headless: `blender.exe -b --python <script> -- <args>`
    hierarchy alone or the animations need redoing.
 5. Load the vanilla `*_moving.anim`, re-key (I) where bones moved, export idle/moving/attack/death anims.
 6. Export `.mesh`, check it in JoroDox, add the `entity` in `gfx/models/entities/*.asset`, test in game.
+7. Entity `scale = 0.8` for tankgen models: meshes are real size at 1.28 units/m (vanilla length), and 0.8 draws
+   them at the on-map size GEO uses (~7 units long); vanilla's 0.5 looks too small next to map buildings.
 
 ## Drawing credits
 
