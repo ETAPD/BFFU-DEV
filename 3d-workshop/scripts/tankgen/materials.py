@@ -14,7 +14,30 @@ import bpy
 DUNKELGELB = (0.50, 0.40, 0.21)
 OLIVGRUN = (0.105, 0.125, 0.065)
 ROTBRAUN = (0.12, 0.055, 0.035)
+DUNKELGRAU = (0.076, 0.087, 0.093)  # RAL 7021 as worn in service (lighter than the modern chip)
+DUNKELBRAUN = (0.076, 0.044, 0.031)  # RAL 7017
+GELBBRAUN = (0.262, 0.162, 0.069)  # RAL 8000 (Afrika 1941)
+GRAUGRUN = (0.144, 0.122, 0.064)  # RAL 7008
+BRAUN_8020 = (0.352, 0.223, 0.102)  # RAL 8020 (Afrika 1942)
+GRAU_7027 = (0.155, 0.155, 0.127)  # RAL 7027
 PRIMER = (0.20, 0.07, 0.04)  # red oxide primer under chips
+
+# Factory/field paint schemes. A spec picks one with CAMO = "<key>" (default "dunkelgelb_1943").
+#   base, darker tint the base fades towards, worn-edge highlight, [(band colour, ramp a, ramp b), ...]
+# Bands are ~1 m hand-sprayed patches with soft over-spray edges (noise thresholds just off-centre).
+CAMO_SCHEMES = {
+    # July 1937 - July 1940: Dunkelgrau with one third Dunkelbraun patches (Poland, France)
+    "grau_braun_1937": (DUNKELGRAU, (0.064, 0.073, 0.078), (0.30, 0.31, 0.31), [(DUNKELBRAUN, 0.55, 0.575)]),
+    # July 1940 - February 1943: plain Dunkelgrau (Barbarossa, 1942 summer offensive)
+    "panzergrau": (DUNKELGRAU, (0.064, 0.073, 0.078), (0.30, 0.31, 0.31), []),
+    # March 1941 - March 1942, Afrika Korps: Gelbbraun with one third Graugrün
+    "afrika_1941": (GELBBRAUN, (0.22, 0.135, 0.058), (0.55, 0.45, 0.30), [(GRAUGRUN, 0.55, 0.575)]),
+    # March 1942 - 1943, Afrika Korps: Braun 8020 with one third Grau 7027
+    "afrika_1942": (BRAUN_8020, (0.30, 0.19, 0.086), (0.62, 0.50, 0.34), [(GRAU_7027, 0.55, 0.575)]),
+    # February 1943 on: Dunkelgelb base, Olivgrün and Rotbraun sprayed by the units
+    "dunkelgelb_1943": (DUNKELGELB, (0.42, 0.32, 0.16), (0.72, 0.64, 0.50),
+                        [(OLIVGRUN, 0.565, 0.59), (ROTBRAUN, 0.425, 0.40)]),
+}
 DUST = (0.42, 0.36, 0.26)
 MUD = (0.16, 0.12, 0.08)
 
@@ -170,7 +193,9 @@ def _balkenkreuz(g, co, centres, size):
 
 
 def build(mat, kind, mode, ctx):
-    """ctx: dict with 'scale' (game units per metre), 'crosses' [(sx, y, z)], 'cross_size'."""
+    """ctx: dict with 'scale' (game units per metre), 'crosses' [(sx, y, z)], 'cross_size', and optionally 'camo'
+    (a CAMO_SCHEMES key), 'zimmerit' (bool: ribbed paste on vertical hull/turret armour, Sept 1943 - Sept 1944
+    only) and 'cross_kinds' (material kinds the Balkenkreuze are painted on)."""
     g = Graph(mat)
     out = g.n("ShaderNodeOutputMaterial")
     s = ctx["scale"]
@@ -180,7 +205,7 @@ def build(mat, kind, mode, ctx):
         bsdf = g.n("ShaderNodeBsdfPrincipled")
         g.nt.links.new(bsdf.outputs[0], out.inputs["Surface"])
         height = None
-        if kind in ("paint",):
+        if kind in ("paint",) and ctx.get("zimmerit", True):
             # Zimmerit: ribbed anti-magnetic paste on vertical hull/turret armour, ~5 cm ribs in 15 cm bands
             nz = _true_normal_z(g)
             vertical = g.ramp(g.math("ABSOLUTE", nz.outputs["Z"]), 0.55, 0.25)
@@ -249,27 +274,24 @@ def build(mat, kind, mode, ctx):
     # ---- colour ---------------------------------------------------------------------------------------------
     if kind in PAINTED:
         camo_on = kind not in ("wheel_plain",)
-        col = DUNKELGELB
+        col, fade_col, edge_col, bands = CAMO_SCHEMES[ctx.get("camo", "dunkelgelb_1943")]
         base = g.n("ShaderNodeRGB")
         base.outputs[0].default_value = (*col, 1.0)
         tint = g.noise(co, 0.8 / s, 2.0, 0.5)
-        paint = g.mix(g.math("MULTIPLY", g.math("SUBTRACT", tint.outputs["Fac"], 0.5), 0.35), base, (0.42, 0.32, 0.16))
+        paint = g.mix(g.math("MULTIPLY", g.math("SUBTRACT", tint.outputs["Fac"], 0.5), 0.35), base, fade_col)
         if camo_on:
-            # hand-sprayed Olivgrün and Rotbraun bands with soft over-spray edges
+            # hand-sprayed bands with soft over-spray edges
             # ~1 m wide sprayed bands; noise Fac clusters around 0.5, so thresholds sit just off-centre
-            band1 = g.noise(co, 0.85 / s, 2.0, 0.5, dist=0.8)
-            band2 = g.noise(co, 1.05 / s, 2.0, 0.5, dist=1.1)
-            m1 = g.ramp(band1.outputs["Fac"], 0.565, 0.59)
-            m2 = g.ramp(band2.outputs["Fac"], 0.425, 0.40)
-            paint = g.mix(m1, paint, OLIVGRUN)
-            paint = g.mix(m2, paint, ROTBRAUN)
-        if ctx.get("crosses") and kind == "skirt":
+            for (band_col, ra, rb), (scale, dist) in zip(bands, ((0.85, 0.8), (1.05, 1.1))):
+                band = g.noise(co, scale / s, 2.0, 0.5, dist=dist)
+                paint = g.mix(g.ramp(band.outputs["Fac"], ra, rb), paint, band_col)
+        if ctx.get("crosses") and kind in ctx.get("cross_kinds", ("skirt",)):
             black, white = _balkenkreuz(g, co, ctx["crosses"], ctx["cross_size"])
             paint = g.mix(white, paint, (0.62, 0.60, 0.55))
             paint = g.mix(black, paint, (0.015, 0.015, 0.015))
         # weathering: chipped edges to primer/steel, streaks, dust, mud
         paint = g.mix(g.math("MULTIPLY", chips, 0.9), paint, PRIMER)
-        paint = g.mix(g.math("MULTIPLY", edge, 0.6), paint, (0.72, 0.64, 0.50))
+        paint = g.mix(g.math("MULTIPLY", edge, 0.6), paint, edge_col)
         dust_amt = g.math("MAXIMUM", g.math("MULTIPLY", up, 0.45),
                           g.math("MULTIPLY", low, g.math("ADD", 0.55, g.math("MULTIPLY", dirt_noise.outputs["Fac"], 0.8))),
                           clamp=True)

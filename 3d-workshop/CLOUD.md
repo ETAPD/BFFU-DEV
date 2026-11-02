@@ -16,6 +16,12 @@ cp -r 3d-workshop/vendor/io_pdx_mesh ~/.config/blender/5.2/scripts/addons/
 ~/blender/blender -b --python 3d-workshop/scripts/enable_pdx_addon.py
 ```
 
+Workbench renders need EGL even with the downloaded build: `apt-get install -y libegl1 libegl-mesa0 libgl1-mesa-dri
+libgbm1` if a render stops at `Couldn't open libEGL.so.1`.
+
+Wikimedia's upload server rate-limits (HTTP 429) downloads from cloud sessions. A `web-fetch` subagent can fetch a
+`https://commons.wikimedia.org/wiki/Special:FilePath/<file>` URL instead; it saves the image to its tool-results folder.
+
 If that exact Blender build isn't on the mirror, use the newest `blender-5.2.*-linux-x64.tar.xz` listed at
 https://download.blender.org/release/Blender5.2/ . Headless rendering uses Workbench, so no GPU is needed.
 

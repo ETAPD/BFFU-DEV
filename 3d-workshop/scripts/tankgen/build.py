@@ -546,7 +546,9 @@ def run(spec, out_dir, work_dir, skip_bake=False):
     if not skip_bake:
         crosses = [(sx, y * SCALE, z * SCALE) for sx, y, z in getattr(spec, "CROSSES", [])]
         bake_body(body_mats, body, high, work_dir, out_dir, tex,
-                  {"crosses": crosses, "cross_size": getattr(spec, "CROSS_SIZE", 0.5) * SCALE})
+                  {"crosses": crosses, "cross_size": getattr(spec, "CROSS_SIZE", 0.5) * SCALE,
+                   "camo": getattr(spec, "CAMO", "dunkelgelb_1943"), "zimmerit": getattr(spec, "ZIMMERIT", True),
+                   "cross_kinds": getattr(spec, "CROSS_KINDS", ("skirt",))})
         track_textures(work_dir, out_dir, tex + "_track", spec.TRACK_W, 0.48, spec.TRACK_PITCH)
         bpy.data.objects.remove(high)
 
