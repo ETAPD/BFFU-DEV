@@ -600,9 +600,10 @@ TIGER2 = dict(
     MG=(-0.60, 1.69), HEADLIGHT=(0.0, 1.78),
     TURRET_TYPE="henschel", TURRET_U=3.65, TURRET_BASE_Z=2.00,
     # Henschel turret (side/top/front views): (u_base, half_w_base, u_top, half_w_top, z_top); flat front plate
-    T2_STATIONS=[(2.06, 0.86, 2.20, 0.60, 2.63), (2.55, 1.02, 2.55, 0.70, 2.82), (3.46, 1.32, 3.46, 0.93, 2.85),
+    T2_STATIONS=[(2.06, 0.86, 2.20, 0.68, 2.70), (2.55, 1.02, 2.55, 0.72, 2.82), (3.46, 1.32, 3.46, 0.93, 2.85),
                  (4.94, 1.31, 4.94, 0.92, 2.80), (5.77, 0.70, 5.49, 0.52, 2.72)],
-    GUN_Z=2.30, SAUKOPF=(2.08, 0.42, 1.83, 0.22), SLEEVE=(1.83, 1.29, 0.18),
+    # Saukopf: cast bell 0.80 m across at the front plate, standing out 0.46 m to its 0.40 m nose (photos)
+    GUN_Z=2.30, SAUKOPF=(2.08, 0.40, 1.62, 0.20), SLEEVE=(1.62, 1.29, 0.18),
     MUZZLE_U=7.38 - 10.286,
     CUPOLA=("cast", 3.83, 0.43), CUPOLA_Z=2.85,
     SIGHT=("mono", 0.36), PILZE=True,
@@ -624,21 +625,53 @@ def t2_rear_u(S, z):
     return S.DECK_END_U + (ub - S.DECK_END_U) * (S.DECK_Z - z) / (S.DECK_Z - zb)
 
 
+def t2_lower_rear_u(S, z):
+    """Lower rear plate, from the belly up to the beak under the upper rear plate."""
+    (ub, zb) = S.REAR_BEAK
+    return S.REAR_BELLY_U + (ub - S.REAR_BELLY_U) * (z - S.BELLY_Z) / (zb - S.BELLY_Z)
+
+
 def t2_hull(v, S):
-    """Tiger II hull (side/front/top views; Bovington 104 photos): lower hull between the tracks (lower nose plate,
-    belly, lower rear plate up to the beak); upper hull: ONE flat glacis from the nose to the roof across the full
-    width, sponson floors, the side plates sloping in 25 deg to the deck, the upper rear plate leaning forward at the
-    top; the side plates run past the rear plate as the rear tow horns (interlocked joints)."""
+    """Tiger II hull (side/front/top views; Bovington 104 photos): the lower hull between the tracks (lower nose
+    plate, belly, lower rear plate) up to the nose edge; above it the upper hull, whose front is ONE flat glacis from
+    the nose edge to the roof (photos: no joint across it), as wide as the lower hull below the sponson floors and the
+    full sponson width above them, as on the Panther; flat sponson floors, the side plates sloping in 25 deg to the
+    deck, the upper rear plate leaning forward at the top; the side plates run past the rear plate as the rear tow
+    horns (interlocked joints).
+      hull_lower: belly, lower nose plate and the lower rear plate, up to the nose height
+      hull_upper: everything above the nose height (8-point sections: lower-hull sides, sponson floors, side plates,
+                  roof)"""
+    import bmesh
+
     nu, nz = S.NOSE
     zs, zd = S.SPONSON_Z, S.DECK_Z
-    ub, zb = S.REAR_BEAK
-    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (S.REAR_BELLY_U, S.BELLY_Z), (ub, zb), (t2_rear_u(S, zs), zs),
-             (t2_glacis_u(S, zs), zs), (nu, nz)]
+    lower = [(S.NOSE_BELLY_U, S.BELLY_Z), (nu, nz), (t2_lower_rear_u(S, nz), nz), (S.REAR_BELLY_U, S.BELLY_Z)]
     v.add("hull_lower", geo.prism_x(P(S, lower), -S.LOWER_X, S.LOWER_X), chamfer=0.03)
-    ring = [(-S.SPONSON_X, zs), (S.SPONSON_X, zs), (S.DECK_X, zd), (-S.DECK_X, zd)]
-    front = [(x, S.Y(t2_glacis_u(S, z)), z) for x, z in ring]
-    rear = [(x, S.Y(t2_rear_u(S, z)), z) for x, z in ring]
-    v.add("hull_upper", geo.loft(front, rear), chamfer=0.03)
+
+    bm = bmesh.new()
+    lx, wb, wt = S.LOWER_X, S.SPONSON_X, S.DECK_X
+    sect = [(-lx, nz), (-lx, zs), (-wb, zs), (-wt, zd), (wt, zd), (wb, zs), (lx, zs), (lx, nz)]
+
+    def row(u_of):
+        return [bm.verts.new((x, S.Y(u_of(z)), z)) for x, z in sect]
+
+    rows = [row(lambda z: t2_glacis_u(S, z))]  # the glacis: every point on its plane
+    for u in (1.6, 3.0, 4.5, 6.0):
+        rows.append(row(lambda z, u=u: u))
+    # the rear: the upper rear plate above the beak, the lower rear plate below it
+    rows.append(row(lambda z: t2_rear_u(S, z) if z >= S.REAR_BEAK[1] else t2_lower_rear_u(S, z)))
+    n = len(sect)
+    for r0, r1 in zip(rows, rows[1:]):
+        for i in range(n):
+            j = (i + 1) % n
+            bm.faces.new((r0[i], r0[j], r1[j], r1[i]))
+    # T-shaped caps as two convex pieces each (lower-hull part + sponson-width part), as panther_common.hull
+    for ring_, flip in ((rows[0], False), (rows[-1], True)):
+        for idx in ((0, 1, 6, 7), (1, 2, 3, 4, 5, 6)):
+            vs = [ring_[i] for i in idx]
+            bm.faces.new(list(reversed(vs)) if flip else vs)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+    v.add("hull_upper", bm, chamfer=0.03)
     for side in (1, -1):  # rear horns: the side plates' ends past the rear plate, with the tow eyes
         x0 = side * (S.SPONSON_X + S.DECK_X) / 2
         horn = [(t2_rear_u(S, zd) - 0.05, zd - 0.02), (t2_rear_u(S, zd) + 0.30, zd - 0.12),
@@ -783,8 +816,9 @@ def t2_turret_henschel(v, S):
     gz = S.GUN_Z
     face = ub + (ut - ub) * (gz - S.TURRET_BASE_Z) / (zt - S.TURRET_BASE_Z)
     c0, r0, c1, r1 = S.SAUKOPF
-    cone = geo.lathe([(0.0, 0.0), (r0, 0.0), (r0 * 0.97, -0.06), (r0 * 0.80, -(c0 - c1) * 0.45),
-                      (r1 * 1.10, -(c0 - c1) * 0.85), (r1, -(c0 - c1)), (0.0, -(c0 - c1))], 24, axis="Y")
+    ln = c0 - c1  # a cast bell bulging a little, not a straight cone
+    cone = geo.lathe([(0.0, 0.0), (r0, 0.0), (r0 * 0.98, -0.05), (r0 * 0.88, -ln * 0.30), (r0 * 0.72, -ln * 0.60),
+                      (r1 * 1.20, -ln * 0.88), (r1, -ln), (0.0, -ln)], 24, axis="Y")
     v.add("mantlet", geo.move(cone, x=0.0, y=S.Y(face + 0.03), z=gz), kind="paint_cast", bone="turret",
           smooth_angle=60)
     # coaxial MG port right of the gun, monocular sight aperture left (front view), both in the front plate
@@ -797,18 +831,21 @@ def t2_turret_henschel(v, S):
 
 
 def t2_porsche_rings(S, n_side=4):
-    """Porsche turret plan rings by height: rounded nose (side view curve), sides sloping in 31 deg, rear plate
-    leaning forward at the top. Each ring: nose arc from the left side round to the right, then down the right side,
-    across the rear, up the left side."""
+    """Porsche turret plan rings by height: the nose curves in the side view (rolling from the roof down round the
+    gun to the base) but runs straight across in plan with rounded corners into the side plates (photos); sides
+    sloping in 30 deg, rear plate leaning forward at the top. Each ring: left front corner, across the nose, right
+    front corner, then down the right side, across the rear, up the left side."""
     zs = S.P_RINGS  # [(z, nose_u, half_w, rear_u)]
     rings = []
     for z, fu, w, ru in zs:
         pts = []
-        depth = min(0.75, 0.85 * w)  # how far back the rounded nose reaches round to the sides
-        for k in range(9):  # nose arc: ellipse quadrant pair from the left side round the front to the right
-            a = math.pi / 2 - math.pi * k / 8
-            pts.append((w * math.sin(a) * 1.0, fu + depth * (1 - math.cos(a))))
-        pts = [(x, u) for x, u in pts]
+        rc = min(S.P_NOSE_CORNER, 0.8 * w)  # plan radius of the nose corners
+        for k in range(5):  # left corner: from the left side plate round to the nose
+            a = (math.pi / 2) * k / 4
+            pts.append((w - rc + rc * math.cos(a), fu + rc - rc * math.sin(a)))
+        for k in range(5):  # right corner: from the nose round to the right side plate
+            a = (math.pi / 2) * k / 4
+            pts.append((-(w - rc) - rc * math.sin(a), fu + rc - rc * math.cos(a)))
         rc = ru - 0.45 * (w / 1.2)
         pts += [(-w, rc), (-0.70 * w, ru), (0.70 * w, ru), (w, rc)]
         rings.append([(x, S.Y(u), z) for x, u in pts])
@@ -816,30 +853,36 @@ def t2_porsche_rings(S, n_side=4):
 
 
 def t2_turret_porsche(v, S):
-    """Porsche (early) turret, as on the first 50 Tiger IIs: rounded nose (side view: the front curves from the roof
-    down round the gun to the base; top view: rounded front corners), steep side plates, the bulge in the left side
-    plate for the cupola, small bell-shaped mantlet."""
+    """Porsche (early) turret, as on the first 50 Tiger IIs: the nose curves in the side view (from the roof down round
+    the gun to the base) and runs straight across in plan with rounded corners; steep flat side plates, flat roof,
+    flat rear plate; the big bulge in the left side plate that carries the cupola; the bell mantlet (Topfblende) set
+    straight into the curved nose."""
     v.add("turret", ring_stack(t2_porsche_rings(S)), kind="paint", bone="turret", chamfer=0.025, smooth_angle=35)
     cu, cx = S.CUPOLA[1], S.CUPOLA[2]
-    # bulge: from the side plate at mid-height up and in to a platform under the cupola's outer half (photos)
-    z0, z1 = S.TURRET_BASE_Z + 0.30, S.CUPOLA_Z - 0.005
-    ring = [(math.cos(a), math.sin(a)) for a in (math.radians(d) for d in range(-90, 91, 30))]
-    bot = [(0.95 + px * 0.10, S.Y(cu + py * 0.36), z0) for px, py in ring]
-    top = [(cx + 0.05 + px * 0.40, S.Y(cu + py * 0.44), z1) for px, py in ring]
+    # bulge (photos): one flat sloping face from the left side plate at gun height up and out to a roof-level
+    # shoulder round the cupola's outer half, standing out past the roof edge; its inner edge is buried in the turret
+    z0, z1 = S.GUN_Z - 0.03, S.CUPOLA_Z - 0.005
+    (za, _, wa, _), (zb, _, wb, _) = S.P_RINGS[0], S.P_RINGS[-1]
+    w0 = wa + (wb - wa) * (z0 - za) / (zb - za)  # side plate half-width at z0
+    arc = [(math.cos(a), math.sin(a)) for a in (math.radians(d) for d in range(-90, 91, 30))]
+    bot = [(w0 - 0.05 + px * 0.06, S.Y(cu + py * 0.48), z0) for px, py in arc]
+    bot += [(w0 - 0.30, S.Y(cu + 0.48), z0), (w0 - 0.30, S.Y(cu - 0.48), z0)]
+    top = [(cx + px * 0.47, S.Y(cu + py * 0.56), z1) for px, py in arc]
+    top += [(cx - 0.25, S.Y(cu + 0.56), z1), (cx - 0.25, S.Y(cu - 0.56), z1)]
     v.add("turret_bulge", geo.loft(bot, top), kind="paint_cast", bone="turret", chamfer=0.02)
     gz = S.GUN_Z
     fu = S.P_RINGS[2][1]  # nose at the gun height
-    bell = geo.lathe([(0.0, 0.0), (0.27, 0.0), (0.27, -0.04), (0.24, -0.08), (0.18, -0.15), (0.16, -0.20),
-                      (0.0, -0.20)], 22, axis="Y")
-    v.add("mantlet", geo.move(bell, x=0.0, y=S.Y(fu + 0.04), z=gz), kind="paint_cast", bone="turret",
+    # bell mantlet (photos: ~0.62 m across, standing 0.26 m out of the nose, rounded round the gun sleeve); its base
+    # is buried 0.10 m in the nose so it meets the curved front all round
+    bell = geo.lathe([(0.0, 0.0), (0.31, 0.0), (0.31, -0.10), (0.30, -0.16), (0.26, -0.26), (0.20, -0.33),
+                      (0.17, -0.36), (0.0, -0.36)], 24, axis="Y")
+    v.add("mantlet", geo.move(bell, x=0.0, y=S.Y(fu + 0.10), z=gz), kind="paint_cast", bone="turret",
           smooth_angle=60)
-    plate = geo.box(0.0, S.Y(fu + 0.04), gz + 0.03, 0.52, 0.06, 0.56)
-    v.add("mantlet_plate", plate, kind="paint_cast", bone="turret", chamfer=0.03)
     v.add("coax_port", geo.move(geo.cylinder(0.03, 0.05, 10, axis="Y"), x=-0.20, y=S.Y(fu - 0.0), z=gz + 0.10),
           kind="glass", bone="turret")
     v.add("sight_0", geo.move(geo.cylinder(0.03, 0.05, 10, axis="Y"), x=S.SIGHT[1], y=S.Y(fu + 0.02), z=gz + 0.12),
           kind="glass", bone="turret")
-    return fu - 0.16
+    return fu - 0.26
 
 
 def t2_gun(v, S, face_u):

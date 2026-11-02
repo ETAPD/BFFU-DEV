@@ -40,6 +40,11 @@ Photos checked (reference/blueprints/ger_tiger2_henschel/photos/, CREDITS.md the
   - Bundesarchiv Bild 101I-721-0398-21A, France, June 1944: a Henschel-turret Tiger II being sprayed; the Saukopf
     mantlet from the side, the sloping turret side with track-link hooks, the overlapping wheels, Zimmerit (1944
     vehicles; this spec stands for the 1945 production without it).
+  On the PC review the owner found the turret wrong and a line across the middle of the glacis. The line was the
+  joint between the lower and upper hull parts at the sponson floor height, chamfered on both: the hull is now built
+  as the Panther's, the glacis ONE flat plate from the nose edge to the roof. Against the Bovington and Saumur photos
+  the Saukopf as first traced was a flat lid 0.25 m deep; the real cast bell stands out about 0.46 m to its nose, and
+  the front plate reaches 2.70 m with a gentler roof slope behind it (T2_STATIONS, SAUKOPF in tiger_common).
 
 Coordinates: u = metres back from the bow, z = metres above ground, x = metres to the vehicle's left.
 """

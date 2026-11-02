@@ -17,7 +17,7 @@ Its hull lines lie on the Henschel sheet's within a sheet pixel (overlays), whic
 Porsche turret, read off sheet 14674 (side/top/front views): the front is ONE curved surface, rolling round from the
 roof (u 2.75 at z 2.82) down past the gun (u 2.27 at z 2.35) and back to the turret base (u 2.42 at z 1.99); in plan
 the nose is rounded into the side plates; the side plates slope in steeply to a narrow roof (1.36 m), flat on top
-(z 2.95) from u 3.4 to 4.6, then falling to the rear plate (u 5.44 at z 2.82, 5.75 at the base); the bulge in the left
+(z 2.95) back to the rear plate (u 5.40 at the roof, 5.75 at the base); the bulge in the left
 side plate under the cupola (u 3.85, x 0.55); the small bell-shaped mantlet (Topfblende) on a flat plate round the
 gun (z 2.33).
 
@@ -27,6 +27,12 @@ Photos checked (reference/blueprints/ger_tiger2_porsche/photos/, CREDITS.md ther
     bulge in the left side plate; the steep sides and narrow roof; the hull, wheels and rear as the production tank
     -> t2_turret_porsche (ring stack with the rounded nose, bulge, bell mantlet), hull shared with the Henschel.
   - The same tank (Toshonenov, 2017), front left: confirms the curved nose and the roof line.
+  On the PC review the first build read as a rounded dome: the sheet's front view gave side half-widths curving in
+  near the roof and a roof falling to the rear from u 4.6, and the nose was a half-round in plan. The Bovington
+  photos and the owner's museum photo (front view) show flat side plates sloping straight in to a hard roof edge, a
+  flat roof running back to a flat rear plate that leans in, a nose that curves only in the side view and runs
+  straight across with rounded corners, the big flat-faced bulge carrying the cupola out past the left roof edge,
+  and the bell mantlet set straight into the nose with no plate round it. Those are modelled now.
   No free wartime photo of a Porsche-turret Tiger II turned up; the paint (Dunkelgelb three-colour over Zimmerit) is
   the documented finish of s.Pz.Abt. 503's Porsche-turret tanks in Normandy, July 1944 (the Bovington turret is
   unpainted primer with no Zimmerit, as a pre-production vehicle).
@@ -53,8 +59,11 @@ CROSS_SIZE = 0.36
 
 TURRET_TYPE = "porsche"
 # (z, nose u at the centreline, half-width, rear plate u)
-P_RINGS = [(1.99, 2.42, 1.22, 5.75), (2.15, 2.31, 1.17, 5.70), (2.35, 2.27, 1.10, 5.63), (2.55, 2.31, 1.02, 5.55),
-           (2.70, 2.42, 0.88, 5.48), (2.82, 2.75, 0.72, 5.44), (2.95, 3.40, 0.68, 4.60)]
+# side plates flat and straight from 1.22 m at the base to the 0.68 m roof, rear plate straight, flat roof; the nose
+# rounds strongly under the gun and slopes back above it to the roof edge (photos)
+P_RINGS = [(1.99, 2.50, 1.22, 5.75), (2.15, 2.33, 1.13, 5.69), (2.35, 2.27, 1.02, 5.62), (2.55, 2.36, 0.90, 5.55),
+           (2.70, 2.53, 0.82, 5.49), (2.82, 2.70, 0.75, 5.45), (2.95, 2.90, 0.68, 5.40)]
+P_NOSE_CORNER = 0.35  # plan radius of the nose's corners into the side plates
 GUN_Z = 2.33
 SLEEVE = (2.0, 1.45, 0.15)
 CUPOLA = ("cast", 3.85, 0.55)

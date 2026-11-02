@@ -52,6 +52,10 @@ CAMO_SCHEMES = {
     # Dunkelgelb and Rotbraun patches, often over red-oxide primer on the interior-facing faces (spring 1945)
     "olivgrun_1945": (OLIVGRUN, (0.085, 0.10, 0.052), (0.42, 0.44, 0.36),
                       [(DUNKELGELB, 0.55, 0.56), (ROTBRAUN, 0.44, 0.43)]),
+    # winter 1944/45 (Ardennes, Hungary): whitewash brushed over the ambush or Olivgrün factory paint, worn through to
+    # the green and brown patches underneath
+    "winter_1945": (WHITEWASH, (0.55, 0.55, 0.52), (0.80, 0.80, 0.76),
+                    [(OLIVGRUN, 0.60, 0.635), (ROTBRAUN, 0.40, 0.37)]),
     # 1945 prototypes and factory-fresh hulls: red-oxide primer (RAL 8012-like) overall, no camouflage
     "primer_1945": ((0.17, 0.065, 0.04), (0.13, 0.05, 0.03), (0.40, 0.30, 0.26), []),
 }

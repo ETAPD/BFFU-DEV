@@ -219,9 +219,11 @@ the model's own outline renders (`outline_*.png`) and a README.
 |---|---|---|---|---|---|---|---|
 | `ger_tiger1_early` | Tiger I, early (Tiger 131) | 1942-43 | 8.8 cm KwK 36 L/56, binocular sight | `afrika_1942` (Tunisia), no | STT Tiger 131 four-view (public domain), 175 px/m | 21,752 | 1.608 / 1.309 |
 | `ger_tiger1_mid` | Tiger I, mid | 1943-44 | KwK 36 L/56, binocular sight | `dunkelgelb_1943`, yes | the same drawing (shared parts) + photos | 20,780 | 1.608 / 1.309 |
+| `ger_tiger1_winter` | Tiger I, mid, winter | 1943-44 | KwK 36 L/56, binocular sight | `winter_1943` (whitewash), yes | as `ger_tiger1_mid` | 20,780 | 1.608 / 1.309 |
 | `ger_tiger1_late` | Tiger I, late | 1944 | KwK 36 L/56, monocular sight | `ambush_1944`, yes | the same drawing (shared parts) + photos | 20,272 | 1.608 / 1.309 |
-| `ger_tiger2_porsche` | Tiger II, Porsche turret | 1944 | 8.8 cm KwK 43 L/71, bell mantlet | `dunkelgelb_1943`, yes | the-blueprints.com 14674 (turret) + 63811 (hull) | 20,824 | 1.608 / 1.309 |
-| `ger_tiger2_henschel` | Tiger II, Henschel turret | 1944-45 | KwK 43 L/71, Saukopf mantlet | `olivgrun_1945`, no | the-blueprints.com 63811 four-view | 21,128 | 1.608 / 1.309 |
+| `ger_tiger2_porsche` | Tiger II, Porsche turret | 1944 | 8.8 cm KwK 43 L/71, bell mantlet | `dunkelgelb_1943`, yes | the-blueprints.com 14674 (turret) + 63811 (hull) | 21,012 | 1.608 / 1.309 |
+| `ger_tiger2_henschel` | Tiger II, Henschel turret | 1944-45 | KwK 43 L/71, Saukopf mantlet | `olivgrun_1945`, no | the-blueprints.com 63811 four-view | 21,328 | 1.608 / 1.309 |
+| `ger_tiger2_winter` | Tiger II, Henschel turret, winter | 1944-45 | KwK 43 L/71, Saukopf mantlet | `winter_1945` (new, whitewash), no | as `ger_tiger2_henschel` | 21,328 | 1.608 / 1.309 |
 
 Built from `specs/tiger_common.py`: the Tiger I box hull of interlocked plates with its fender strips; the horseshoe
 turret (one bent side and rear plate, flat front plate) with the mantlet rolling back over its top and bottom edges;
@@ -251,6 +253,14 @@ What tells the variants apart:
 - **Sight:** two binocular apertures in the mantlet (early, mid), one monocular (late Tiger I and the Tiger IIs).
 - **Tiger II turret:** curved nose rolling round the gun, steep sides, bell mantlet, cupola bulge (Porsche); flat
   sloped front plate with the Saukopf cone, wider sides, spare track links (Henschel).
+
+PC review (owner): both Tiger II turrets were wrong and the glacis showed a line across its middle. The line was
+the joint of two hull pieces at the sponson floor; the Tiger II hull is now built as the Panther's, with ONE flat
+glacis from the nose edge to the roof. The Porsche turret read as a dome: its nose now curves only in the side view
+and runs straight across in plan with rounded corners, the side plates, roof and rear plate are flat, the cupola
+bulge stands out past the roof edge, and the bell mantlet sits straight in the nose. The Henschel Saukopf was a
+shallow cap; it is now the 0.46 m deep cast bell of the Bovington and Saumur tanks, on a taller front plate.
+The winter specs reuse the mid Tiger I and the Henschel Tiger II with whitewash (`winter_1943`, `winter_1945`).
 
 ### Unresolved (Tiger)
 
