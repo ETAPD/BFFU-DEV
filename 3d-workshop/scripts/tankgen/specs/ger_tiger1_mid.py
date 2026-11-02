@@ -18,8 +18,9 @@ Photos checked (reference/blueprints/ger_tiger1_mid/photos/, CREDITS.md there):
     turret front corners; the rear plate with the two tall exhaust guards and no Feifel housings; the three-layer
     rubber-tyred wheels; the side fender strip and turret visor/pistol port as on Tiger 131 -> CUPOLA "cast",
     FEIFEL False, SMOKE False, wheels and hull as the early drawing.
-  - Tiger I '221 black', Musée des Blindés Saumur (2022), front left: Zimmerit over the hull front, sides and turret;
-    the cast cupola; the front plate with visor and Kugelblende as on Tiger 131 -> ZIMMERIT.
+  - Tiger I '221 black', Musée des Blindés Saumur (2022), front left: a late Tiger (steel wheels, see
+    ger_tiger1_late), used here only for what the mid shares with it: Zimmerit over the hull front, sides and turret,
+    the cast cupola, the front plate with visor and Kugelblende as on Tiger 131 -> ZIMMERIT.
   - Panzermuseum Munster Tiger I (2022): Zimmerit and rubber-tyred wheels (overall shape only).
   - Bundesarchiv Bild 101I-299-1804-04, northern France, 21 March 1944 (Tiger '131' of the LSSAH): a period
     mid-production Tiger with the rubber-tyred wheels and Zimmerit, no Feifel filters.
