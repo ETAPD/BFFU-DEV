@@ -434,7 +434,7 @@ def rotor_u(z):
     return rc_u - math.sqrt(rr * rr - (z - rc_z) ** 2)
 
 
-def turret_front(v, S, ports=(("gunner_visor", 0.61),), sight=True, collar=(0.143, 1.605, 0.06)):
+def turret_front(v, S, ports=(("gunner_visor", 0.61),), sight=True, collar=(0.143, 1.605, 0.06), body=True):
     """External mantlet (Ausf. D on): curved inner (rotor) mantlet in the turret front, mantlet body 0.51 x 0.29 m
     with chamfered edges and a round front collar, coaxial MG port; faceted vision ports [(name, x), ...] beside it.
     rotor: one smooth drum face, 0.78 m wide, 0.76 m radius, running from 2.165 m at u 2.08 down to 1.73 m at u 1.99
@@ -466,8 +466,9 @@ def turret_front(v, S, ports=(("gunner_visor", 0.61),), sight=True, collar=(0.14
     x0, x1, z0, z1 = -0.20, 0.31, S.GUN_Z - 0.143, S.GUN_Z + 0.143
     octo = [(x0, z0 + 0.06), (x0 + 0.10, z0), (x1 - 0.09, z0), (x1, z0 + 0.06), (x1, z1 - 0.06), (x1 - 0.09, z1),
             (x0 + 0.10, z1), (x0, z1 - 0.06)]
-    body = geo.loft([(x, Y(2.04), z) for x, z in octo], [(x, Y(1.627), z) for x, z in octo])
-    v.add("mantlet", body, kind="paint_cast", bone="turret", chamfer=0.01)
+    if body:  # external mantlet (Ausf. D on); the B/C internal mantlet only has the gun sleeve (collar)
+        mb = geo.loft([(x, Y(2.04), z) for x, z in octo], [(x, Y(1.627), z) for x, z in octo])
+        v.add("mantlet", mb, kind="paint_cast", bone="turret", chamfer=0.01)
     cr, cu, cl = collar
     v.add("mantlet_collar", geo.move(geo.cylinder(cr, cl, 20, axis="Y"), x=BORE_X, y=Y(cu), z=S.GUN_Z),
           kind="paint_cast", bone="turret", chamfer=0.008)

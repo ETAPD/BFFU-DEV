@@ -125,7 +125,10 @@ def hull_side_point(u, z, side, out=0.0):
 
 def fittings(v, S):
     c.driver_visor(v, S, 0.36, 1.38, FRONT_U[0])
-    c.hull_mg(v, S, -0.61, 1.41, FRONT_U[0] + getattr(S, "MG_PLATE_SETBACK", 0.0), **getattr(S, "HULL_MG", {}))
+    if getattr(S, "HULL_MG", {}) is not None:  # Ausf. B/C had no hull MG
+        c.hull_mg(v, S, -0.61, 1.41, FRONT_U[0] + getattr(S, "MG_PLATE_SETBACK", 0.0), **getattr(S, "HULL_MG", {}))
+    if getattr(S, "extra_fittings", None):
+        S.extra_fittings(v, S)
     c.glacis_hatches(v, S, (("inspection", 0.0, 0.70, 0.27, 0.96), ("brake_l", 0.67, 0.34, 0.25, 0.87),
                             ("brake_r", -0.67, 0.34, 0.25, 0.87)))
     # headlights (front view: 1.05 m left and 1.07 m right, both at 1.40 m)
