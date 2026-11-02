@@ -382,37 +382,43 @@ def t1_turret_shell(v, S):
 
 
 def t1_mantlet(v, S):
-    """Gun mantlet (side/front views, Tiger 131 photos): a thick plate as wide as the turret front, curved about the
-    trunnion axis (one smooth face, side view: front at u 1.66 at the gun, 1.70 at the top and bottom edges), its
-    ends turned back; the bolted collar of the gun sleeve; coaxial MG port right, sight apertures left."""
+    """Gun mantlet (side/front views, Tiger 131 photos): a thick plate as wide as the turret front, its front face
+    flat across the width (the sight apertures sit in it) but rounded hard over at the top and bottom (side view:
+    front at u 1.66, the edges rolling back over a 0.11 m radius to u 1.73), flat ends; a cast boss flaring from the
+    face into the bolted collar of the gun sleeve; coaxial MG port right, sight apertures left of the gun."""
     m = S.MANTLET
-    (rc_u, rc_z), rr = m["rc"], m["r"]
-    prof = c.drum_profile(S, rc_u, rc_z, rr, m["z0"], m["z1"], rr, m["depth"], 14)
-    hw = m["half_w"]
-    v.add("mantlet", geo.prism_x(prof, -hw + 0.07, hw - 0.07), kind="paint_cast", bone="turret", chamfer=0.02,
-          smooth_angle=55)
-    for side in (1, -1):  # ends turned back towards the front plate (front view: framed bands at the ends)
-        prof_e = c.drum_profile(S, rc_u + 0.04, rc_z, rr - 0.01, m["z0"] + 0.02, m["z1"] - 0.02, rr - 0.01,
-                                m["depth"] - 0.03, 10)
-        x0, x1 = (hw - 0.08, hw) if side > 0 else (-hw, -hw + 0.08)
-        v.add(f"mantlet_end_{side}", geo.prism_x(prof_e, x0, x1), kind="paint_cast", bone="turret", chamfer=0.025,
-              smooth_angle=55)
-    face_u = lambda z: rc_u - math.sqrt(max(rr * rr - (z - rc_z) ** 2, 0.0))
-    # gun sleeve: big boss on the mantlet with the bolted collar (side view: r 0.20 at u 1.51-1.63)
-    fu = face_u(S.GUN_Z)
-    boss = geo.lathe([(0.0, 0.0), (0.31, 0.0), (0.29, -0.03), (0.21, -0.05), (0.0, -0.05)], 24, axis="Y")
-    v.add("mantlet_boss", geo.move(boss, x=0.0, y=S.Y(fu + 0.02), z=S.GUN_Z), kind="paint_cast", bone="turret",
+    uf, depth, z0, z1, hw = m["rc"][0] - m["r"], m["depth"], m["z0"], m["z1"], m["half_w"]
+    rr = 0.11
+    prof = []
+    for k in range(7):  # top front corner, rolling back
+        a = math.pi / 2 * k / 6
+        prof.append((uf + rr - rr * math.sin(a), z1 - rr + rr * math.cos(a)))
+    for k in range(7):  # bottom front corner
+        a = math.pi / 2 * k / 6
+        prof.append((uf + rr - rr * math.cos(a), z0 + rr - rr * math.sin(a)))
+    prof += [(uf + depth, z0), (uf + depth, z1)]
+    v.add("mantlet", geo.prism_x(P(S, prof), -hw + 0.07, hw - 0.07), kind="paint_cast", bone="turret",
+          chamfer=0.02, smooth_angle=55)
+    for side in (1, -1):  # the turret front plate's armoured ends either side of the mantlet (front view bands)
+        x0, x1 = (hw - 0.07, hw) if side > 0 else (-hw, -hw + 0.07)
+        end = [(uf + 0.05, z0 + 0.03), (uf + depth, z0 + 0.03), (uf + depth, z1 - 0.03), (uf + 0.05, z1 - 0.03)]
+        v.add(f"mantlet_end_{side}", geo.prism_x(P(S, end), x0, x1), kind="paint_cast", bone="turret",
+              chamfer=0.025)
+    # cast boss flaring from the face into the sleeve collar (photos), then the bolted collar (side view r 0.20)
+    boss = geo.lathe([(0.0, 0.0), (0.33, 0.0), (0.31, -0.03), (0.26, -0.07), (0.22, -0.10), (0.0, -0.10)], 24,
+                     axis="Y")
+    v.add("mantlet_boss", geo.move(boss, x=0.0, y=S.Y(uf + 0.02), z=S.GUN_Z), kind="paint_cast", bone="turret",
           smooth_angle=50)
-    collar = geo.lathe([(0.0, 0.0), (0.20, 0.0), (0.20, -0.12), (0.185, -0.14), (0.0, -0.14)], 20, axis="Y")
-    v.add("gun_collar", geo.move(collar, x=0.0, y=S.Y(fu - 0.02), z=S.GUN_Z), kind="paint_cast", bone="turret")
+    collar = geo.lathe([(0.0, 0.0), (0.205, 0.0), (0.205, -0.12), (0.19, -0.14), (0.0, -0.14)], 20, axis="Y")
+    v.add("gun_collar", geo.move(collar, x=0.0, y=S.Y(uf - 0.07), z=S.GUN_Z), kind="paint_cast", bone="turret")
     cx, cz = S.COAX
-    v.add("coax_port", geo.move(geo.cylinder(0.035, 0.05, 10, axis="Y"), x=cx, y=S.Y(face_u(cz) - 0.015), z=cz),
+    v.add("coax_port", geo.move(geo.cylinder(0.035, 0.05, 10, axis="Y"), x=cx, y=S.Y(uf - 0.015), z=cz),
           kind="glass", bone="turret")
     kind_, sx = S.SIGHT
     holes = (sx - 0.045, sx + 0.045) if kind_ == "bino" else (sx,)
     for k, x in enumerate(holes):
-        v.add(f"sight_{k}", geo.move(geo.cylinder(0.028, 0.05, 10, axis="Y"), x=x, y=S.Y(face_u(2.24) - 0.015),
-                                     z=2.24), kind="glass", bone="turret")
+        v.add(f"sight_{k}", geo.move(geo.cylinder(0.028, 0.05, 10, axis="Y"), x=x, y=S.Y(uf - 0.015), z=2.24),
+              kind="glass", bone="turret")
 
 
 def t1_gun(v, S):
@@ -428,7 +434,7 @@ def t1_gun(v, S):
         geo.transform(bm, Matrix.Scale(0.80, 4, (1, 0, 0)))  # flattened sides (front view)
         return bm
 
-    c.gun(v, S, 0.0, S.GUN_Z, 1.51, sections, S.MUZZLE_U, (brake, brake_l), segments=18, base_u=2.05)
+    c.gun(v, S, 0.0, S.GUN_Z, 1.52, sections, S.MUZZLE_U, (brake, brake_l), segments=18, base_u=2.05)
 
 
 def t1_cupola(v, S):
