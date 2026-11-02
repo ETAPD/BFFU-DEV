@@ -126,17 +126,33 @@ against the documented hull length 6.87 m, 8.66 m with the gun, 3.27 m over the 
 
 | Spec | Variant | Years | Gun | Paint (`CAMO`, Zimmerit) | Drawing used (the-blueprints.com) | Tris | Track speed / `texture_anim_speed` |
 |---|---|---|---|---|---|---|---|
-| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 18,180 | 1.729 / 1.407 |
-| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 18,860 | 1.729 / 1.407 |
-| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 18,368 | 1.729 / 1.407 |
-| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 18,420 | 1.729 / 1.407 |
+| `ger_panther_d` | Ausf. D (Kursk) | 1943 | 7.5 cm KwK 42 L/70, binocular sight | `dunkelgelb_1943`, no | Ausf. D four-view, ID 72504 (running gear from the G sheet) | 18,184 | 1.729 / 1.407 |
+| `ger_panther_a` | Ausf. A | 1943-44 | KwK 42 L/70, monocular sight | `winter_1943` (whitewash), yes | Ausf. A sheet 72501 (side, front, rear) + 72503 (top) | 18,864 | 1.729 / 1.407 |
+| `ger_panther_g` | Ausf. G | 1944 | KwK 42 L/70, rounded mantlet | `ambush_1944`, no | Ausf. G four-view, ID 72512 | 18,372 | 1.729 / 1.407 |
+| `ger_panther_g_late` | Ausf. G, late | 1944-45 | KwK 42 L/70, chin mantlet | `olivgrun_1945` (new), no | Ausf. G four-view, ID 72512 | 18,424 | 1.729 / 1.407 |
 
-Built from `specs/panther_common.py` (lower hull and sponsons cut by the glacis and rear plate, eight-axle
+| `ger_panther2` | Panther II prototype (G turret) | 1945 | KwK 42 L/70, rounded mantlet | `primer_1945` (new), no | Panther II sheets 31013 (side), 31012 (front, rear), 15894 (top); turret from the G | 17,480 | 1.608 / 1.309 |
+| `ger_panther2_schmalturm` | Panther II as planned (Schmalturm) | 1945 (project) | 7.5 cm L/70 (KwK 44/1), Saukopf mantlet | `olivgrun_1945`, no | the same Panther II sheets | 17,164 | 1.608 / 1.309 |
+
+Built from `specs/panther_common.py` (lower hull and sponsons behind one flat glacis plate, eight-axle
 interleaved running gear, turret shell, curved mantlet with optional chin, gun, drum and cast cupolas, rear fittings,
 Schürzen) on the `pz4_common` helpers (`station_shell`, `drum_profile`, `bar`, `gun`). The G sheet is the calibrated
 core; the D and A sheets lie on its hull, turret and running-gear lines, so each spec only sets its differences.
-All four share the documented 860 mm road wheels, so the track speed is the same: 1.729 game units/s,
-`texture_anim_speed` = 1.729 / 1.28 / 0.48 / 2 = 1.407.
+The D, A, G and late G share the documented 860 mm road wheels, so their track speed is the same: 1.729 game
+units/s, `texture_anim_speed` = 1.729 / 1.28 / 0.48 / 2 = 1.407. The Panther II's 800 mm steel wheels give 1.608 /
+1.309.
+
+The glacis is one flat plate from the nose to the roof edge on every Panther: its lower edge spans the nose between
+the tracks, its sides flare out to the sponsons' front lower corners and then follow the side plates to the roof
+edge (the front mudguards cover the flared corners).
+
+**Panther II:** no line drawing exists. The only drawings, the-blueprints.com sheets 31013, 31012 and 15894 (same
+Dr Dan Saranga series), are shaded colour profiles of the planned Panther II with the Schmalturm; the project owner
+agreed to trace them anyway (side ~51 px/m, front/rear ~52 px/m, top only ~37 px/m). Two specs: `ger_panther2` is
+the one real vehicle, the prototype hull with the Ausf. G turret it carries today (checked against its photos at
+Fort Benning and Fort Knox), and `ger_panther2_schmalturm` the paper design as drawn. Hull as the Panther G's, roof
+3 cm higher; seven axles per side of overlapping (not interleaved) all-steel 800 mm wheels, four outer and three
+inner, on a 0.66 m pitch; headlight on the left front mudguard; Kugelblende, no driver's visor.
 
 Rig: the vanilla 24 bones. `wheel_01` sprocket, `wheel_02` idler, `wheel_03`-`wheel_10` the eight road-wheel axles
 front to rear (each bone carries every disc on its axle, both sides: outer-row axles an outer and an innermost disc,
@@ -171,6 +187,11 @@ What tells the variants apart:
   so those were not checked. The D's drum cupola and smoke dischargers rest on its drawing.
 - **D/A hull side:** the D/A upper side plate is modelled with its 40 deg slope; any difference in its lower rear
   edge from the G's one-piece plate is below the sheets' resolution and is not modelled.
+- **Panther II:** traced from colour profiles (the camouflage hides internal lines) and a small top view; overall
+  size taken as the Panther's (6.87 m hull, 3.27 m over 660 mm tracks), which the sources describe as very close but
+  do not give. The engine deck follows the G (the Panther II's revised deck is not resolved on the top view). Its
+  paint is an assumption: red-oxide primer for the 1945 prototype, Olivgrün for the never-built Schmalturm version.
+  The Schmalturm gun is drawn without a muzzle brake and is modelled so.
 - **Turret offset:** the G top view draws the turret and gun 6 cm right of the hull centreline; the model keeps them
   on the centreline.
 
@@ -220,7 +241,8 @@ for the H):
    `GER_medium_armor_panther_a_entity`, `GER_medium_armor_panther_g_entity` and `GER_medium_armor_panther_g_late_entity`
    (mesh `GER_panther_<x>_mesh`) go into the models pool of `ger_medium_tank_chassis_p5`, **replacing**
    `GER_medium_armor_2_alt_0_entity` there. Their `texture_anim_speed` is 1.407 (track speed 1.729 / 1.28 m /
-   0.48 m tile / 2).
+   0.48 m tile / 2). The two Panther II specs (`GER_medium_armor_panther2_entity`,
+   `GER_medium_armor_panther2_schmalturm_entity`) can join the same pool; their `texture_anim_speed` is 1.309.
 
 Entity names map to spec names: `ger_pz4g_late` → `GER_pz4g_late` mesh → `GER_medium_armor_pz4g_late_entity`. Each
 spec's paint scheme (`CAMO`, `ZIMMERIT`, `CROSS_KINDS`) is applied by the bake automatically.
