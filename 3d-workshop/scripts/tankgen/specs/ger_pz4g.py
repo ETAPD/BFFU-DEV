@@ -62,7 +62,7 @@ def build(v):
 
 def hull(v, S):
     c.lower_hull(v, S)
-    c.superstructure(v, S)
+    getattr(S, "superstructure", c.superstructure)(v, S)
     c.engine_deck(v, S)
     c.track_guards(v, S)
     c.tow_shackles(v, S, 0.80, 0.68)
@@ -94,7 +94,7 @@ def turret(v, S):
     # (front view octagons at 2.00 m), sight aperture
     c.turret_front(v, S, ports=(("gunner_visor", 0.61), ("loader_visor", -0.537)), **getattr(S, "MANTLET", {}))
     # side vision ports, two-leaf side hatches, pistol ports (side view)
-    c.turret_side_fittings(v, S)
+    c.turret_side_fittings(v, S, **getattr(S, "TURRET_SIDE", {}))
 
     S.gun(v, S)
     v.bone("turret", (tx, Y(TURRET_U), TURRET_Z), "chassie")
@@ -123,7 +123,7 @@ def hull_side_point(u, z, side, out=0.0):
 
 def fittings(v, S):
     c.driver_visor(v, S, 0.36, 1.38, FRONT_U[0])
-    c.hull_mg(v, S, -0.61, 1.41, FRONT_U[0])
+    c.hull_mg(v, S, -0.61, 1.41, FRONT_U[0] + getattr(S, "MG_PLATE_SETBACK", 0.0), **getattr(S, "HULL_MG", {}))
     c.glacis_hatches(v, S, (("inspection", 0.0, 0.70, 0.27, 0.96), ("brake_l", 0.67, 0.34, 0.25, 0.87),
                             ("brake_r", -0.67, 0.34, 0.25, 0.87)))
     # headlights (front view: 1.05 m left and 1.07 m right, both at 1.40 m)

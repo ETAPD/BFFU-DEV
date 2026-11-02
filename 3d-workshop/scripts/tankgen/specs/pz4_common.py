@@ -534,7 +534,7 @@ def side_plate(v, S, name, side, outline, thick, point, kind="paint", bone="turr
 
 def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107, 3.418, 3.428, 3.726, 1.822, 2.254),
                          hatch_visor=(3.231, 3.384, 1.962, 2.102), pistol=(3.47, 3.55, 1.98, 2.10),
-                         rear_port=(3.88, 2.046)):
+                         rear_port=(3.88, 2.046), two_leaf=True):
     """Turret side, both sides (side view, Ausf. G drawing): faceted vision port ahead of the hatch; two-leaf side
     hatch with rounded top corners, three hinges per leaf on the outer edges, a vision port in the front leaf and a
     pistol port in the rear leaf, rain gutter over the top; round pistol port plug behind the hatch."""
@@ -543,9 +543,12 @@ def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107,
         u0, u1, z0, z1 = visor
         side_port(v, S, f"turret_side_visor_{side}", side, u0, u1, z0, z1, (0.10, 0.018), 0.05, pt)
         f0, f1, r0, r1, hz0, hz1 = hatch
-        for k, (a, b) in enumerate(((f0, f1), (r0, r1))):
+        leaves = ((f0, f1), (r0, r1)) if two_leaf else ((f0, r1),)
+        for k, (a, b) in enumerate(leaves):
             rc = 0.05  # rounded top corner (outer side of each leaf)
-            if k == 0:
+            if not two_leaf:  # one-piece hatch (Ausf. E and earlier): both top corners rounded, hinged in front
+                outline = [(a, hz0), (b, hz0), (b, hz1 - rc), (b - rc, hz1), (a + rc, hz1), (a, hz1 - rc)]
+            elif k == 0:
                 outline = [(a, hz0), (b, hz0), (b, hz1), (a + rc, hz1), (a, hz1 - rc)]
             else:
                 outline = [(a, hz0), (b, hz0), (b, hz1 - rc), (b - rc, hz1), (a, hz1)]
@@ -558,8 +561,9 @@ def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107,
                       chamfer=0.005)
         u0, u1, z0, z1 = hatch_visor
         side_port(v, S, f"turret_hatch_visor_{side}", side, u0, u1, z0, z1, (0.05, 0.016), 0.06, pt)
-        u0, u1, z0, z1 = pistol
-        side_port(v, S, f"turret_hatch_pistol_{side}", side, u0, u1, z0, z1, (0.025, 0.04), 0.035, pt, slit=False)
+        u0, u1, z0, z1 = pistol or (0, 0, 0, 0)
+        if pistol:
+            side_port(v, S, f"turret_hatch_pistol_{side}", side, u0, u1, z0, z1, (0.025, 0.04), 0.035, pt, slit=False)
         # rain gutter over the hatch
         from mathutils import Vector
 
