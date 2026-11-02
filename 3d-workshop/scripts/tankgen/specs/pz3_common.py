@@ -96,3 +96,14 @@ def deck(v, S, hatches, louvres=()):
 
 def rig(v, S):
     c.rig(v, S)
+
+
+def deep_wading_muffler(v, S, z=1.42, r=0.12, length=1.0, du=0.12):
+    """Ausf. M/N exhaust for deep wading (side/rear views): the muffler mounted high across the rear plate, two
+    pipes from the engine coming up to it."""
+    v.add("muffler", geo.move(parts.muffler(r, length), y=S.Y(S.REAR_U + du), z=z), kind="exhaust")
+    for k, x in enumerate((-0.12, 0.12)):
+        v.add(f"exhaust_pipe_{k}", geo.cylinder(0.045, z - 0.85, 8, axis="Z",
+                                                center=(x, S.Y(S.REAR_U + 0.07), (z + 0.85) / 2)), kind="exhaust")
+    v.locator("right_exhaust", (-0.40, S.Y(S.REAR_U + du), z + 0.1), "chassie")
+    v.locator("left_exhaust", (0.40, S.Y(S.REAR_U + du), z + 0.1), "chassie")

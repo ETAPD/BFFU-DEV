@@ -113,6 +113,12 @@ def turret(v, S):
                            hatch_visor=[(2.66, 2.80, 1.88, 2.00), (2.97, 3.10, 1.88, 2.00)], pistol=None,
                            rear_port=None, hinge_z=(1.85, 1.95, 2.05))
     # mantlet with its 20 mm spaced plate (side view u 1.35-1.72, z 1.64-2.08; front view x -0.20..+0.23)
+    S.gun(v, S)
+
+
+def gun(v, S):
+    """5 cm KwK 39 L/60 (side view): mantlet u 1.35-1.75 (z 1.64-2.08, front view x -0.20..+0.23), sleeve r 0.08 m
+    to u 0.94, barrel to the muzzle at u -0.95."""
     face = getattr(S, "MANTLET_FACE_U", 1.35)
     p3.mantlet_box(v, S, face, 1.75, -0.20, 0.23, 1.64, 2.08)
     p3.gun(v, S, [(0.08, face), (0.08, 0.94), (0.05, 0.94), (0.05, 0.40), (0.042, 0.40), (0.040, -0.95)], -0.95, face)
@@ -149,6 +155,9 @@ def hull_fittings(v, S):
                    (4.66, 5.23, 0.17, 0.91)])
     c.headlights(v, S, ((1, 1.32, 1.36), (-1, -1.32, 1.36)), u=0.45)
     c.tow_shackles(v, S, 0.70, 0.62, x=0.55)
-    c.rear_mufflers(v, S, main=(0.0, 0.14, 0.82, 0.16, 1.10), aux=None)
+    if getattr(S, "DEEP_WADING_MUFFLER", False):
+        p3.deep_wading_muffler(v, S)
+    else:
+        c.rear_mufflers(v, S, main=(0.0, 0.14, 0.82, 0.16, 1.10), aux=None)
     v.locator("left_tracks", (TRACK_X, Y(5.10), 0.0), "tank_base")
     v.locator("right_tracks", (-TRACK_X, Y(5.10), 0.0), "tank_base")
