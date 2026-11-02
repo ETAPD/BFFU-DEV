@@ -14,6 +14,12 @@ right first time. Commands are in `CLOUD.md` (cloud sessions) and `README.md` (P
   from photos alone. A variant may reuse a sister variant's drawing for the parts they share **only** where
   photos confirm the parts are the same, and the spec docstring must say which parts came from where.
 - Download the original, keep it in `reference/blueprints/<vehicle>/`, credit it in README "Drawing credits".
+- If no free drawing exists and the project owner agrees to a commercial one (as for the Panzer III), it is private
+  tracing reference only: keep the sheet, crops and drawing overlays in the git-ignored
+  `reference/blueprints_nonfree/<vehicle>/`, commit only the spec, the model's own outline renders
+  (`reference/blueprints/<vehicle>/outline_*.png`) and a README naming the source.
+- Commercial sheets usually have no scale bar and differ in scale between views: calibrate every view on its own
+  against documented dimensions (and the road wheel pitch for the side view), never assume one scale for a sheet.
 
 ## 2. Crop and calibrate
 
@@ -57,9 +63,13 @@ blueprint.py overlay <view>.png <out>/<view>_render.png <out>/<view>_overlay.png
   behind them, and overlaid again with them shown.
 - Save the final `overlay_{side,top,front,rear}.png` next to the drawing.
 
-## 5. Check against photos
+## 5. Check against photos (required, every vehicle)
 
-The drawing is the dimensional reference, but it flattens curved parts and hides fittings. Download a handful of
+**Never skip this step and never show previews before it is done.** The owner caught the same errors on the Pz IV
+and again on the Pz III because the drawings were followed without photos: boxy turrets, the wrong cheek shape,
+missing curved mantlets. Study museum and period photos of that exact variant alongside the drawing, and in the
+spec docstring name the photos checked and what they changed. The drawing is the dimensional reference, but it
+flattens curved parts and hides fittings. Download a handful of
 free-licence museum photos (Commons) into `reference/blueprints/<vehicle>/photos/` with a `CREDITS.md`
 (file, vehicle, author, licence, source) and check: curved and cast parts (mantlet, cupola, sprocket, idler),
 vision ports and visors, hatches, exhaust, tools, appliqué. Restored museum vehicles carry later modifications;
@@ -88,7 +98,13 @@ Go through this before calling a vehicle done.
 - [ ] **Turret front not flat**: front plate leans back, cheeks angle out, roof front slopes; the overlay of the
       side and top views shows it.
 - [ ] **Curved mantlets curve**: the Pz IV inner (rotor) mantlet is ONE smooth curved face (`drum()`), not a flat
-      plate with a bend.
+      plate with a bend. The Pz III 5 cm / 7.5 cm guns sit in a roller (Walzenblende) that shows beside and around
+      the mantlet block (`pz3_common.mantlet_box`).
+- [ ] **Turret cheeks as on the photos**: Pz IV and Pz III turrets have a front plate narrow at the ring that widens
+      to the side walls at a mid-height apex, with long triangular cheeks cutting the lower front corners back
+      under the side hatch (`pz4_common.turret_shell`, `pz3_common.cheek_shell`). A short cheek up to the roof, or a
+      tapered trapezoid front, is wrong.
+- [ ] **Photos checked** (step 5) and named in the spec docstring.
 - [ ] **Vision ports and visors have a visible glass slit**: a `kind="glass"` box recessed between a hood and a lip,
       or set into a faceted (`geo.loft`) port.
 - [ ] **Cupola profile stepped** (base ring, drum, vision-block covers, chamfer, hatch) as a `geo.lathe` traced from

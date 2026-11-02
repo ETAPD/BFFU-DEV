@@ -48,6 +48,12 @@ CAMO_SCHEMES = {
     "ambush_1944": (DUNKELGELB, (0.42, 0.32, 0.16), (0.72, 0.64, 0.50),
                     [(OLIVGRUN, 0.545, 0.555), (ROTBRAUN, 0.44, 0.43)],
                     {"dots": (4.0, 0.2, OLIVGRUN, DUNKELGELB)}),
+    # from the end of 1944 (orders of October-December 1944): factory paint with an Olivgrün base and hard-edged
+    # Dunkelgelb and Rotbraun patches, often over red-oxide primer on the interior-facing faces (spring 1945)
+    "olivgrun_1945": (OLIVGRUN, (0.085, 0.10, 0.052), (0.42, 0.44, 0.36),
+                      [(DUNKELGELB, 0.55, 0.56), (ROTBRAUN, 0.44, 0.43)]),
+    # 1945 prototypes and factory-fresh hulls: red-oxide primer (RAL 8012-like) overall, no camouflage
+    "primer_1945": ((0.17, 0.065, 0.04), (0.13, 0.05, 0.03), (0.40, 0.30, 0.26), []),
 }
 DUST = (0.42, 0.36, 0.26)
 MUD = (0.16, 0.12, 0.08)

@@ -459,7 +459,8 @@ def animations(v, rig, wheel_info, out_dir, prefix):
     scn = bpy.context.scene
     scn.render.fps = FPS
     scn.render.fps_base = 1.0
-    road_r = min(r for r, step in wheel_info.values() if step is None and r > 0.2 * SCALE) if wheel_info else 0.3
+    road = [r for r, step in wheel_info.values() if step is None]  # road wheels: the only ones without a step
+    road_r = min(road) if road else 0.3
     move_frames = 30
     travel = 2 * math.pi * road_r  # road wheels make exactly one turn per loop
 
