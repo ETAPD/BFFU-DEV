@@ -149,6 +149,14 @@ focus_tree = {
 		search_filters = {FOCUS_FILTER_POLITICAL FOCUS_FILTER_SPA_CIVIL_WAR}
 		completion_reward = {
 			custom_effect_tooltip = SPA_con_paquito_tt
+			# Franco (1108) must carry the sympathies trait or the civil war split leaves him with the Republicans,
+			# and SPA_caudillo_of_spain then finds no Franco and the game generates a random leader
+			random_unit_leader = {
+				limit = {
+					has_id = 1108
+				}
+				add_unit_leader_trait = trait_SPA_nationalist_sympathies
+			}
 		}
 	}
 
@@ -992,24 +1000,37 @@ focus_tree = {
 			hidden_effect = {
 				kill_country_leader = yes
 				kill_ideology_leader = fascism
-			}
-			add_country_leader_role = {
-				character = "SPA_francisco_franco"
-				country_leader = {
-				  ideology=despotism
-				  traits = { caudillo_1 }
-				  expire="1965.1.1"
+				# Franco ended up on the other side (e.g. the civil war started before Con Paquito): bring him over
+				if = {
+					limit = { NOT = { has_character = SPA_francisco_franco } }
+					every_other_country = {
+						every_unit_leader = {
+							limit = { has_id = 1108 }
+							set_nationality = ROOT
+						}
+					}
 				}
-				promote_leader = yes
 			}
-			add_country_leader_role = {
-				character = "SPA_francisco_franco"
-				country_leader = {
-				  ideology=fascism_ideology
-				  traits = { caudillo_1 }
-				  expire="1965.1.1"
+			if = {
+				limit = { has_character = SPA_francisco_franco }
+				add_country_leader_role = {
+					character = "SPA_francisco_franco"
+					country_leader = {
+					  ideology=despotism
+					  traits = { caudillo_1 }
+					  expire="1965.1.1"
+					}
+					promote_leader = yes
 				}
-				promote_leader = yes
+				add_country_leader_role = {
+					character = "SPA_francisco_franco"
+					country_leader = {
+					  ideology=fascism_ideology
+					  traits = { caudillo_1 }
+					  expire="1965.1.1"
+					}
+					promote_leader = yes
+				}
 			}
 		}
 	}
@@ -1716,6 +1737,7 @@ focus_tree = {
 				if = {
 					limit = {
 						has_government = neutrality
+						has_character = SPA_francisco_franco
 					}
 					remove_trait = {
 						character = SPA_francisco_franco
@@ -1731,6 +1753,7 @@ focus_tree = {
 				if = {
 					limit = {
 						has_government = fascism
+						has_character = SPA_francisco_franco
 					}
 					remove_trait = {
 						character = SPA_francisco_franco
@@ -1809,11 +1832,14 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		completion_reward = {
-			add_trait = {
+			if = {
+				limit = { has_character = SPA_francisco_franco }
+				add_trait = {
 					character = SPA_francisco_franco
 					ideology = fascism_ideology
 					trait = man_of_the_nation
 				}
+			}
 		}
 	}
 
@@ -2224,7 +2250,6 @@ focus_tree = {
 		available_if_capitulated = yes
 
 		completion_reward = {
-			add_stability = 0.05
 			add_mastery_bonus = {
 				name = SPA_plan_imperial
 				bonus = 0.2
@@ -3971,6 +3996,61 @@ focus_tree = {
 	}
 
 	focus = {
+		id = SPA_demand_french_north_africa
+		available = {
+			any_country = {
+				has_focus_tree = vichy_french_focus
+				controls_state = 461
+				controls_state = 462
+			}
+		}
+		bypass = {
+			SPR = {
+				controls_state = 461
+				controls_state = 462
+			}
+		
+		}
+		prerequisite = { focus = SPA_most_catholic_monarch }
+
+		ai_will_do = {
+			factor = 1
+			modifier = {
+				factor = 0
+				is_historical_focus_on = yes
+			}
+		}
+		
+		icon = GFX_goal_generic_territory_or_war
+		x = 0
+		y = 1
+		relative_position_id = SPA_most_catholic_monarch
+		cost = 6
+
+		available_if_capitulated = yes
+
+		completion_reward = {
+
+			random_other_country = {
+				limit = {
+					original_tag = VIC
+					controls_state = 461
+					controls_state = 462
+				}
+				country_event = { id = lar_spain.39 hours = 1 random_hours = 2 }
+			}
+			custom_effect_tooltip = SPA_demand_morocco_tt
+			effect_tooltip = {
+				add_power_balance_value = {
+					id = SPR_spain_appeasement_struggle
+					value = 0.25
+				}
+			}
+
+		}
+	}
+
+	focus = {
 		id = SPA_unite_the_crowns_once_more
 		available = {
 			NOT = { has_any_power_balance = yes }
@@ -3978,12 +4058,12 @@ focus_tree = {
 				has_war_with = GER
 			}
 		}
-		prerequisite = { focus = SPA_most_catholic_monarch }
+		prerequisite = { focus = SPA_demand_french_north_africa }
 		
 		icon = GFX_focus_generic_attack_portugal
 		x = 0
 		y = 1
-		relative_position_id = SPA_most_catholic_monarch
+		relative_position_id = SPA_demand_french_north_africa
 		cost = 6
 
 		available_if_capitulated = yes
@@ -4009,61 +4089,6 @@ focus_tree = {
 				add_dynamic_modifier = { modifier = autonomous_state }
 			}
 			add_timed_idea = {idea = SPR_subjugate_por days = 720}
-		}
-	}
-
-	focus = {
-		id = SPA_demand_french_north_africa
-		available = {
-			any_country = {
-				has_focus_tree = vichy_french_focus
-				controls_state = 461
-				controls_state = 462
-			}
-		}
-		bypass = {
-			SPR = {
-				controls_state = 461
-				controls_state = 462
-			}
-		
-		}
-		prerequisite = { focus = SPA_unite_the_crowns_once_more }
-
-		ai_will_do = {
-			factor = 1
-			modifier = {
-				factor = 0
-				is_historical_focus_on = yes
-			}
-		}
-		
-		icon = GFX_goal_generic_territory_or_war
-		x = 0
-		y = 1
-		relative_position_id = SPA_unite_the_crowns_once_more
-		cost = 6
-
-		available_if_capitulated = yes
-
-		completion_reward = {
-
-			random_other_country = {
-				limit = {
-					original_tag = VIC
-					controls_state = 461
-					controls_state = 462
-				}
-				country_event = { id = lar_spain.39 hours = 1 random_hours = 2 }
-			}
-			custom_effect_tooltip = SPA_demand_morocco_tt
-			effect_tooltip = {
-				add_power_balance_value = {
-					id = SPR_spain_appeasement_struggle
-					value = 0.25
-				}
-			}
-
 		}
 	}
 
@@ -4454,7 +4479,7 @@ focus_tree = {
 
 	focus = {
 		id = SPA_espana_en_guerra
-		prerequisite = { focus = SPA_demand_french_north_africa focus = SPA_enact_defense_of_spain }
+		prerequisite = { focus = SPA_unite_the_crowns_once_more focus = SPA_enact_defense_of_spain }
 
 		available = {
 			has_war = yes
@@ -4463,7 +4488,7 @@ focus_tree = {
 		icon = GFX_focus_spr_no_pasaran
 		x = 4
 		y = 1
-		relative_position_id = SPA_demand_french_north_africa
+		relative_position_id = SPA_unite_the_crowns_once_more
 		cost = 2
 
 		available_if_capitulated = yes
@@ -7637,11 +7662,11 @@ focus_tree = {
 			}
 			else_if = {
 				limit = {
-					any_country = {
+					any_collection_element = {
+						collection = game:all_majors
 						has_government = democratic
 						is_faction_leader = yes
 						NOT = { has_war_with = ROOT }
-						is_major = yes
 					}
 				}
 				random_country = {

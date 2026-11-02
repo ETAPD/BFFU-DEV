@@ -758,7 +758,13 @@ unit_leader_event = {
 					has_character_flag = SOV_purge_accused_flag
 				}
 			}
-			add_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+			if = {
+				limit = { PREV = { has_country_flag = SOV_purge_effects_halved } }
+				add_unit_leader_trait = trait_SOV_cowed_by_stalin_army_halved
+			}
+			else = {
+				add_unit_leader_trait = trait_SOV_cowed_by_stalin_army
+			}
 		}
 
 		#PARANOIA INCREASES
@@ -2155,8 +2161,8 @@ country_event = {
 			base = 10
 			modifier = {
 				factor = 2
-				any_country = {
-					is_major = yes
+				any_collection_element = {
+					collection = game:all_majors
 					has_guaranteed = ROOT
 				}
 			}
@@ -4713,8 +4719,8 @@ country_event = {
 			}
 			modifier = {
 				factor = 4
-				any_country = {
-					is_major = yes
+				any_collection_element = {
+					collection = game:all_majors
 					has_guaranteed = POL
 				}
 			}
@@ -6880,5 +6886,22 @@ country_event = {
 		}
 		deactivate_shine_on_focus = SOV_enforced_fanaticism
 		clr_country_flag = SOV_enforced_fanaticism_in_progress_flag
+	}
+}
+
+country_event = {
+	id = SOV_auto_complete_focus.21
+
+	hidden = yes
+
+	is_triggered_only = yes
+
+	immediate = {
+		complete_national_focus = {
+			focus = SOV_mobilise_nkvd_units
+			use_side_message = yes
+		}
+		deactivate_shine_on_focus = SOV_mobilise_nkvd_units
+		clr_country_flag = SOV_spawn_nkvd_units_in_progress_flag
 	}
 }
