@@ -102,10 +102,7 @@ def build(v):
 
 def hull(v, S):
     c.lower_hull(v, S)
-    # superstructure + engine compartment: one shell at roof height, front plate slightly raked, rear deck sloping
-    gz1 = GLACIS[1][1]
-    sup = [(FRONT_U[0], gz1), (FRONT_U[1], ROOF_Z), (3.95, ROOF_Z), (3.95, FENDER_Z), (FRONT_U[0] + 0.01, FENDER_Z)]
-    v.add("superstructure", geo.prism_x(c.P(S, sup), -SUPER_X, SUPER_X), chamfer=0.025)
+    c.superstructure(v, S)
     c.engine_deck(v, S)
     c.track_guards(v, S)
     c.tow_shackles(v, S, 0.80, 0.68)
@@ -114,16 +111,10 @@ def hull(v, S):
 def turret(v, S):
     tx, ty = TURRET_X, Y(TURRET_U)
 
-    def roof_z(u):  # roof: front plate top at u 2.17 / 2.21 m, sloping up to the flat rear roof at u 3.02
-        return ROOF_FRONT_Z + (TURRET_TOP - ROOF_FRONT_Z) * min(1.0, max(0.0, (u - 2.17) / (3.02 - 2.17)))
+    def roof_z(u):
+        return c.roof_z(S, u)
 
-    # turret shell (hidden behind the Schürzen in the side view; top view: roof 1.38 m wide, sides 25 deg)
-    # front plate leaning back 10 deg, cheeks to the full-width sides, angled rear corners
-    stations = [(2.10, 0.80, 2.17, 0.69, roof_z(2.17)), (2.60, 0.97, 2.60, 0.69, roof_z(2.60)),
-                (3.02, 0.97, 3.02, 0.69, TURRET_TOP), (3.75, 0.97, 3.80, 0.69, TURRET_TOP),
-                (4.00, 0.70, 4.00, 0.50, TURRET_TOP)]
-    shell = geo.move(c.station_shell(S, stations, TURRET_Z), x=tx)
-    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.02)
+    c.turret_shell(v, S)
 
     # rear stowage bin inside the skirt wrap: D-shaped in plan (top view u 3.83-4.81, 1.13 m wide), lid flat behind
     # the roof, then sloping down to 2.26 m at the back (side view)
@@ -143,51 +134,10 @@ def turret(v, S):
     slope = math.atan2(TURRET_TOP - ROOF_FRONT_Z, 3.02 - 2.17)
     c.roof_vent(v, S, -0.257, 2.737, roof_z(2.737), slope)
 
-    # gun (side/top/front views): curved inner (rotor) mantlet in the turret front, mantlet body 0.51 x 0.29 m with
-    # chamfered edges and a round front collar, barrel jacket 0.23 m from u 1.58 to 1.03, L/48 barrel, double-baffle
-    # brake; muzzle 1.07 m ahead of the bow
-    # rotor: one smooth drum face, 0.78 m wide, 0.76 m radius, running from 2.165 m at u 2.08 down to 1.73 m at u 1.99
-    # (front/side views) and leaning back with the turret front; its ends show as the arcs either side of it in the
-    # front view (out to 0.445 m, z 1.85-2.09)
-    rc_u, rc_z, rr = 2.741, 1.80, 0.758
-
-    def rotor_u(z):  # front face of the rotor at height z
-        return rc_u - math.sqrt(rr * rr - (z - rc_z) ** 2)
-
-    def drum(z0, z1, r_front, depth, steps):
-        return c.drum_profile(S, rc_u, rc_z, rr, z0, z1, r_front, depth, steps)
-
-    v.add("mantlet_rotor", geo.prism_x(drum(1.73, 2.165, rr, 0.12, 12), -0.39, 0.39), kind="paint_cast",
-          bone="turret", chamfer=0.012)
-    for side in (1, -1):
-        end = geo.prism_x(drum(1.85, 2.09, rr - 0.006, 0.10, 6), 0.0, 0.06)
-        v.add(f"mantlet_rotor_end_{side}", geo.move(end, x=side * 0.385 - (0.06 if side < 0 else 0.0)),
-              kind="paint_cast", bone="turret", chamfer=0.02)
-
-    def plate_u(z):  # turret front plate face, leaning back from u 2.10 at the turret ring to u 2.17 at the roof
-        return 2.10 + 0.07 * (z - TURRET_Z) / (ROOF_FRONT_Z - TURRET_Z)
-
-    # gunner's vision port, left of the mantlet (front view: faceted octagon centred 0.61 m left at 2.00 m; side view:
-    # sticks out to u ~2.03), and the sight aperture between it and the mantlet (dark ellipse at 0.47 m, 1.99 m)
-    c.faceted_port(v, S, "gunner_visor", 0.61, 2.0, plate_u, 0.08, 0.09, 0.10, 0.07, face_k=0.055 / 0.09)
-    from mathutils import Matrix
-
-    sight = geo.cylinder(0.026, 0.05, 12, axis="Y")
-    geo.transform(sight, Matrix.Scale(1.4, 4, (0, 0, 1)))
-    v.add("sight_port", geo.move(sight, x=0.471, y=Y(plate_u(1.99) - 0.012), z=1.99), kind="glass", bone="turret")
-    x0, x1, z0, z1 = -0.20, 0.31, GUN_Z - 0.143, GUN_Z + 0.143
-    octo = [(x0, z0 + 0.06), (x0 + 0.10, z0), (x1 - 0.09, z0), (x1, z0 + 0.06), (x1, z1 - 0.06), (x1 - 0.09, z1),
-            (x0 + 0.10, z1), (x0, z1 - 0.06)]
-    body = geo.loft([(x, Y(2.04), z) for x, z in octo], [(x, Y(1.627), z) for x, z in octo])
-    v.add("mantlet", body, kind="paint_cast", bone="turret", chamfer=0.01)
-    gx = 0.056  # bore: 5.6 cm left of the centreline (front view)
-    v.add("mantlet_collar", geo.move(geo.cylinder(0.143, 0.06, 20, axis="Y"), x=gx, y=Y(1.605), z=GUN_Z),
-          kind="paint_cast", bone="turret", chamfer=0.008)
-    # coaxial MG port in the rotor, right of the gun (front view: dark round at 0.27 m right, 1.97 m)
-    v.add("coax_collar", geo.move(geo.cylinder(0.05, 0.04, 12, axis="Y"), x=-0.27, y=Y(rotor_u(1.97) - 0.01),
-                                  z=1.97), kind="paint_cast", bone="turret", chamfer=0.006)
-    v.add("coax_port", geo.move(geo.cylinder(0.028, 0.035, 10, axis="Y"), x=-0.27, y=Y(rotor_u(1.97) - 0.03),
-                                z=1.97), kind="steel", bone="turret")
+    # gun (side/top/front views): rotor and mantlet as pz4_common.turret_front, L/48 barrel, double-baffle brake;
+    # muzzle 1.07 m ahead of the bow. Gunner's vision port left of the mantlet.
+    gx = c.BORE_X
+    c.turret_front(v, S, ports=(("gunner_visor", 0.61),))
     face_u = 1.60
     muzzle_u = -1.074
     brake_l = 0.278

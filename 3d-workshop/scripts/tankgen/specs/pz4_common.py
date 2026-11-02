@@ -396,3 +396,226 @@ def hull_schuerzen(v, S, rail_top, brackets_u, plates, x_rail=1.59, x_plate=1.62
             off = 0.008 * (i % 2)
             v.add(f"skirt_{side}_{i}", geo.prism_x(P(S, pl), x - 0.006 + side * off, x + 0.006 + side * off),
                   kind="skirt", smooth_angle=30, chamfer=0.005)
+
+
+# ---- turret shell and front (traced on the Ausf. H drawing at 175 px/m; the Ausf. G drawing at the same scale
+# lies on the same lines, so these are shared F2-J geometry) ----------------------------------------------------
+BORE_X = 0.056  # bore: 5.6 cm left of the centreline (front view)
+ROTOR = (2.741, 1.80, 0.758)  # inner (rotor) mantlet: centre u, centre z, radius of its curved face
+
+
+def roof_z(S, u):
+    """Turret roof: front plate top at u 2.17, the roof plate slopes up to the flat rear roof at u 3.02."""
+    return S.ROOF_FRONT_Z + (S.TURRET_TOP - S.ROOF_FRONT_Z) * min(1.0, max(0.0, (u - 2.17) / (3.02 - 2.17)))
+
+
+def turret_plate_u(S, z):
+    """Turret front plate face, leaning back from u 2.10 at the turret ring to u 2.17 at the roof."""
+    return 2.10 + 0.07 * (z - S.TURRET_Z) / (S.ROOF_FRONT_Z - S.TURRET_Z)
+
+
+def turret_stations(S):
+    """(u_base, half_w_base, u_top, half_w_top, z_top) along the turret, for station_shell."""
+    return [(2.10, 0.80, 2.17, 0.69, roof_z(S, 2.17)), (2.60, 0.97, 2.60, 0.69, roof_z(S, 2.60)),
+            (3.02, 0.97, 3.02, 0.69, S.TURRET_TOP), (3.75, 0.97, 3.80, 0.69, S.TURRET_TOP),
+            (4.00, 0.70, 4.00, 0.50, S.TURRET_TOP)]
+
+
+def turret_shell(v, S):
+    """Turret shell (top view: roof 1.38 m wide, sides 25 deg): front plate leaning back 10 deg, cheeks to the
+    full-width sides, angled rear corners."""
+    shell = geo.move(station_shell(S, turret_stations(S), S.TURRET_Z), x=S.TURRET_X)
+    v.add("turret", shell, kind="paint", bone="turret", chamfer=0.02)
+
+
+def rotor_u(z):
+    """Front face of the rotor at height z."""
+    rc_u, rc_z, rr = ROTOR
+    return rc_u - math.sqrt(rr * rr - (z - rc_z) ** 2)
+
+
+def turret_front(v, S, ports=(("gunner_visor", 0.61),), sight=True):
+    """External mantlet (Ausf. D on): curved inner (rotor) mantlet in the turret front, mantlet body 0.51 x 0.29 m
+    with chamfered edges and a round front collar, coaxial MG port; faceted vision ports [(name, x), ...] beside it.
+    rotor: one smooth drum face, 0.78 m wide, 0.76 m radius, running from 2.165 m at u 2.08 down to 1.73 m at u 1.99
+    (front/side views) and leaning back with the turret front; its ends show as the arcs either side of it in the
+    front view (out to 0.445 m, z 1.85-2.09)"""
+    rc_u, rc_z, rr = ROTOR
+    Y = S.Y
+
+    def drum(z0, z1, r_front, depth, steps):
+        return drum_profile(S, rc_u, rc_z, rr, z0, z1, r_front, depth, steps)
+
+    v.add("mantlet_rotor", geo.prism_x(drum(1.73, 2.165, rr, 0.12, 12), -0.39, 0.39), kind="paint_cast",
+          bone="turret", chamfer=0.012)
+    for side in (1, -1):
+        end = geo.prism_x(drum(1.85, 2.09, rr - 0.006, 0.10, 6), 0.0, 0.06)
+        v.add(f"mantlet_rotor_end_{side}", geo.move(end, x=side * 0.385 - (0.06 if side < 0 else 0.0)),
+              kind="paint_cast", bone="turret", chamfer=0.02)
+
+    plate_u = lambda z: turret_plate_u(S, z)
+    # vision ports (front view: faceted octagons at 2.00 m; side view: stick out to u ~2.03)
+    for name, x in ports:
+        faceted_port(v, S, name, x, 2.0, plate_u, 0.08, 0.09, 0.10, 0.07, face_k=0.055 / 0.09)
+    if sight:  # sight aperture between the gunner's port and the mantlet (dark ellipse at 0.47 m, 1.99 m)
+        from mathutils import Matrix
+
+        sp = geo.cylinder(0.026, 0.05, 12, axis="Y")
+        geo.transform(sp, Matrix.Scale(1.4, 4, (0, 0, 1)))
+        v.add("sight_port", geo.move(sp, x=0.471, y=Y(plate_u(1.99) - 0.012), z=1.99), kind="glass", bone="turret")
+    x0, x1, z0, z1 = -0.20, 0.31, S.GUN_Z - 0.143, S.GUN_Z + 0.143
+    octo = [(x0, z0 + 0.06), (x0 + 0.10, z0), (x1 - 0.09, z0), (x1, z0 + 0.06), (x1, z1 - 0.06), (x1 - 0.09, z1),
+            (x0 + 0.10, z1), (x0, z1 - 0.06)]
+    body = geo.loft([(x, Y(2.04), z) for x, z in octo], [(x, Y(1.627), z) for x, z in octo])
+    v.add("mantlet", body, kind="paint_cast", bone="turret", chamfer=0.01)
+    v.add("mantlet_collar", geo.move(geo.cylinder(0.143, 0.06, 20, axis="Y"), x=BORE_X, y=Y(1.605), z=S.GUN_Z),
+          kind="paint_cast", bone="turret", chamfer=0.008)
+    # coaxial MG port in the rotor, right of the gun (front view: dark round at 0.27 m right, 1.97 m)
+    v.add("coax_collar", geo.move(geo.cylinder(0.05, 0.04, 12, axis="Y"), x=-0.27, y=Y(rotor_u(1.97) - 0.01),
+                                  z=1.97), kind="paint_cast", bone="turret", chamfer=0.006)
+    v.add("coax_port", geo.move(geo.cylinder(0.028, 0.035, 10, axis="Y"), x=-0.27, y=Y(rotor_u(1.97) - 0.03),
+                                z=1.97), kind="steel", bone="turret")
+
+
+def superstructure(v, S):
+    """Superstructure + fighting compartment: one shell at roof height from the front plate (FRONT_U bottom/top,
+    slightly raked) back to u 3.95, where the engine deck starts."""
+    gz1 = S.GLACIS[1][1]
+    sup = [(S.FRONT_U[0], gz1), (S.FRONT_U[1], S.ROOF_Z), (3.95, S.ROOF_Z), (3.95, S.FENDER_Z),
+           (S.FRONT_U[0] + 0.01, S.FENDER_Z)]
+    v.add("superstructure", geo.prism_x(P(S, sup), -S.SUPER_X, S.SUPER_X), chamfer=0.025)
+
+
+# ---- turret side fittings (no turret Schürzen: Ausf. E to early G) ---------------------------------------------
+def turret_side_point(S, u, z, side, out=0.0):
+    """Point on the sloping turret side plate (base half-width 0.97 m at the turret ring, roof edge 0.69 m), pushed
+    `out` metres along the plate normal. Returns (x, y, z) in model space."""
+    st = turret_stations(S)
+
+    def interp(pairs):
+        for (u0, w0), (u1, w1) in zip(pairs, pairs[1:]):
+            if u <= u1:
+                return w0 + (w1 - w0) * max(0.0, (u - u0)) / (u1 - u0)
+        return pairs[-1][1]
+
+    wb = interp([(r[0], r[1]) for r in st])
+    wt = interp([(r[2], r[3]) for r in st])
+    zr = interp([(r[2], r[4]) for r in st])
+    k = (wb - wt) / (zr - S.TURRET_Z)
+    x = wb - k * (z - S.TURRET_Z)
+    n = 1.0 / math.sqrt(1.0 + k * k)
+    return (S.TURRET_X + side * (x + out * n), S.Y(u), z + out * k * n)
+
+
+def side_port(v, S, name, side, u0, u1, z0, z1, face, depth, point, slit=True, kind="paint_cast", bone="turret"):
+    """Faceted vision port on a side plate: base rectangle u0-u1 x z0-z1, face (fu, fz) half-sizes, standing `depth`
+    proud, with a glass slit across the face. point(u, z, side, out) -> xyz on the plate."""
+    um, zm = (u0 + u1) / 2, (z0 + z1) / 2
+    fu, fz = face
+    base = [point(u, z, side, 0.004) for u, z in ((u0, z0), (u1, z0), (u1, z1), (u0, z1))]
+    top = [point(u, z, side, depth) for u, z in ((um - fu, zm - fz), (um + fu, zm - fz), (um + fu, zm + fz),
+                                                 (um - fu, zm + fz))]
+    v.add(name, geo.loft(base, top), kind=kind, bone=bone, chamfer=0.005)
+    if slit:
+        from mathutils import Vector
+
+        a, b = Vector(point(um - fu * 0.8, zm, side, depth + 0.004)), Vector(point(um + fu * 0.8, zm, side, depth + 0.004))
+        glass = bar(a, b, 0.012, max(0.012, fz * 0.5))
+        v.add(name + "_slit", glass, kind="glass", bone=bone)
+
+
+def side_plate(v, S, name, side, outline, thick, point, kind="paint", bone="turret", chamfer=0.004):
+    """Thin plate (hatch leaf, door) lying on a side plate: outline [(u, z), ...]."""
+    pts = [point(u, z, side, 0.003) for u, z in outline]
+    a, b = point(outline[0][0], outline[0][1], side, 0.003), point(outline[0][0], outline[0][1], side, 0.003 + thick)
+    v.add(name, plate(pts, tuple(bb - aa for aa, bb in zip(a, b))), kind=kind, bone=bone, chamfer=chamfer)
+
+
+def turret_side_fittings(v, S, visor=(2.585, 2.886, 1.908, 2.079), hatch=(3.107, 3.418, 3.428, 3.726, 1.822, 2.254),
+                         hatch_visor=(3.231, 3.384, 1.962, 2.102), pistol=(3.47, 3.55, 1.98, 2.10),
+                         rear_port=(3.88, 2.046)):
+    """Turret side, both sides (side view, Ausf. G drawing): faceted vision port ahead of the hatch; two-leaf side
+    hatch with rounded top corners, three hinges per leaf on the outer edges, a vision port in the front leaf and a
+    pistol port in the rear leaf, rain gutter over the top; round pistol port plug behind the hatch."""
+    pt = lambda u, z, side, out=0.0: turret_side_point(S, u, z, side, out)
+    for side in (1, -1):
+        u0, u1, z0, z1 = visor
+        side_port(v, S, f"turret_side_visor_{side}", side, u0, u1, z0, z1, (0.10, 0.018), 0.05, pt)
+        f0, f1, r0, r1, hz0, hz1 = hatch
+        for k, (a, b) in enumerate(((f0, f1), (r0, r1))):
+            rc = 0.05  # rounded top corner (outer side of each leaf)
+            if k == 0:
+                outline = [(a, hz0), (b, hz0), (b, hz1), (a + rc, hz1), (a, hz1 - rc)]
+            else:
+                outline = [(a, hz0), (b, hz0), (b, hz1 - rc), (b - rc, hz1), (a, hz1)]
+            side_plate(v, S, f"turret_hatch_{side}_{k}", side, outline, 0.018, pt)
+            edge = a if k == 0 else b
+            for hz in (1.95, 2.065, 2.175):  # hinge blocks on the leaf's outer edge
+                hb = geo.box(0, 0, 0, 0.02, 0.07, 0.045)
+                p = pt(edge + (0.02 if k == 0 else -0.02), hz, side, 0.03)
+                v.add(f"turret_hatch_hinge_{side}_{k}_{hz}", geo.move(hb, *p), kind="paint_cast", bone="turret",
+                      chamfer=0.005)
+        u0, u1, z0, z1 = hatch_visor
+        side_port(v, S, f"turret_hatch_visor_{side}", side, u0, u1, z0, z1, (0.05, 0.016), 0.06, pt)
+        u0, u1, z0, z1 = pistol
+        side_port(v, S, f"turret_hatch_pistol_{side}", side, u0, u1, z0, z1, (0.025, 0.04), 0.035, pt, slit=False)
+        # rain gutter over the hatch
+        from mathutils import Vector
+
+        a, b = Vector(pt(f0 + 0.02, hz1 + 0.012, side, 0.02)), Vector(pt(r1 - 0.02, hz1 + 0.012, side, 0.02))
+        v.add(f"turret_gutter_{side}", bar(a, b, 0.035, 0.02), kind="paint", bone="turret", chamfer=0.006)
+        if rear_port:
+            ru, rz = rear_port
+            # upright oval plug on the angled rear corner, square to the plate
+            from mathutils import Matrix, Vector
+
+            plug = geo.cylinder(0.042, 0.03, 12, axis="Z")
+            geo.transform(plug, Matrix.Scale(1.7, 4, (0, 1, 0)))
+            p0, p1 = Vector(pt(ru, rz, side, 0.0)), Vector(pt(ru, rz, side, 0.1))
+            q = Vector(pt(ru + 0.05, rz, side, 0.0)) - p0
+            nrm = (p1 - p0).normalized()
+            up = nrm.cross(q).normalized() * side
+            rot = Matrix((q.normalized(), up, nrm)).transposed().to_4x4()
+            geo.transform(plug, rot)
+            v.add(f"turret_pistol_port_{side}", geo.move(plug, *(p0 + nrm * 0.012)), kind="paint_cast",
+                  bone="turret", chamfer=0.006)
+
+
+def cupola_early(v, S, cup_x, cup_u, cz, prof, hatch_top, slits=5, slit_z=2.385, slit_r=0.392):
+    """Commander's cupola of the Ausf. E/F/early G: cast drum with a rounded foot [(r, z), ...] traced from the side
+    and front views, vision slits (armoured shutters open) round the lower drum and a two-leaf hatch."""
+    v.add("cupola", geo.move(geo.lathe([(r, z - cz) for r, z in prof], 24, axis="Z"), x=cup_x, y=S.Y(cup_u), z=cz),
+          kind="paint_cast", bone="turret", smooth_angle=50)
+    hr, hz0, hz1 = hatch_top
+    for k, sgn in enumerate((1, -1)):  # two leaves split fore-aft, a few mm apart
+        leaf = geo.lathe([(0.0, hz0), (hr, hz0), (hr, hz1 - 0.008), (hr - 0.01, hz1), (0.0, hz1)], 24, axis="Z",
+                         angle=math.pi)
+        geo.rotate(leaf, -math.pi / 2 if sgn > 0 else math.pi / 2, "Z")
+        v.add(f"cupola_hatch_{k}", geo.move(leaf, x=cup_x + sgn * 0.004, y=S.Y(cup_u)), kind="paint_cast",
+              bone="turret", smooth_angle=50)
+    for k in range(slits):
+        a = math.pi + 2 * math.pi * k / slits  # first slit straight ahead
+        g = geo.box(slit_r, 0, 0, 0.014, 0.13, 0.026)
+        geo.rotate(g, a, "Z")
+        v.add(f"cupola_slit_{k}", geo.move(g, x=cup_x, y=S.Y(cup_u), z=slit_z), kind="glass", bone="turret")
+        brow = geo.box(slit_r + 0.006, 0, 0.026, 0.02, 0.17, 0.02)
+        geo.rotate(brow, a, "Z")
+        v.add(f"cupola_brow_{k}", geo.move(brow, x=cup_x, y=S.Y(cup_u), z=slit_z), kind="paint_cast",
+              bone="turret", chamfer=0.005)
+
+
+def ball_brake(length=0.31, radius=0.115, segments=16):
+    """Single-baffle ball muzzle brake of the early 7.5 cm KwK 40 L/43 (Ausf. F2 / early G): neck, ball, flat front
+    face with the bore opening. Pivot at its rear end, pointing -Y."""
+    L = length
+    prof = [(0.0, 0.0), (0.068, 0.0), (0.068, -0.125), (0.085, -0.135), (radius * 0.97, -0.165), (radius, -0.20),
+            (radius * 0.97, -0.24), (radius * 0.80, -0.285), (0.072, -L), (0.040, -L), (0.040, -L + 0.02),
+            (0.0, -L + 0.02)]
+    return geo.lathe(prof, segments, axis="Y")
+
+
+def antenna_deflector(v, S, a, b):
+    """Antennenabweiser (F2/G): rod under the barrel from the mantlet forward, so the barrel pushes the hull antenna
+    aside when the turret traverses. a, b = (x, u, z) ends."""
+    pa, pb = (a[0], S.Y(a[1]), a[2]), (b[0], S.Y(b[1]), b[2])
+    v.add("antenna_deflector", bar(pa, pb, 0.02, 0.02), kind="steel_paint", bone="barrel_base", chamfer=0.004)
