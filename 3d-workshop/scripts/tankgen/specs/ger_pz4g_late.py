@@ -24,9 +24,10 @@ from .ger_pz4h import (CROSS_SIZE, DECK_END_U, DECK_PROFILE, DECK_X, FENDER_Z, F
                        WHEEL_Z, WHEELS_U, Y)
 
 NAME = "GER_pz4g_late"
-# paint: Dunkelgelb factory base from February 1943 with Olivgrün and Rotbraun sprayed in the field; no Zimmerit
-# (late G production ended June 1943, Zimmerit came in September); Balkenkreuze on the middle hull Schürzen plate
-CAMO = "dunkelgelb_1943"
+# paint: winter 1943/44 on the Eastern Front, whitewash brushed over the Dunkelgelb factory base and worn through;
+# no Zimmerit (late G production ended June 1943, Zimmerit came in September); Balkenkreuze on the middle hull
+# Schürzen plate
+CAMO = "winter_1943"
 ZIMMERIT = False
 CROSS_KINDS = ("skirt",)
 CROSSES = [(1, Y(3.18), 1.12), (-1, Y(3.18), 1.12)]

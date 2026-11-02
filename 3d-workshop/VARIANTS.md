@@ -15,9 +15,9 @@ Triangle counts are the build log's `tris` (all parts, before the build culls hi
 | `ger_pz4f1` | Ausf. F (F1) | 1941-42 | KwK 37 L/24 | `panzergrau`, no | `PzIV-011-EFG.jpg`, F panel | 17,784 |
 | `ger_pz4f2` | Ausf. F2 | 1942 | 7.5 cm KwK 40 L/43, ball brake | `afrika_1942`, no | `PzIV-012-G-Variantes.jpg` (basic G; F2 = early G) | 18,236 |
 | `ger_pz4g` | Ausf. G, early | 1942 | KwK 40 L/43, ball brake | `panzergrau`, no | `PzIV-012-G-Variantes.jpg`, left vehicle (175 px/m) | 18,236 |
-| `ger_pz4g_late` | Ausf. G, late | 1943 | KwK 40 L/48, double brake; Schürzen | `dunkelgelb_1943`, no | `PzIV-012-G-Variantes.jpg`, right vehicle | 18,268 |
+| `ger_pz4g_late` | Ausf. G, late | 1943 | KwK 40 L/48, double brake; Schürzen | `winter_1943` (whitewash), no | `PzIV-012-G-Variantes.jpg`, right vehicle | 18,268 |
 | `ger_pz4h` | Ausf. H (approved) | 1943 | KwK 40 L/48; Schürzen | `dunkelgelb_1943`, yes | `PzIV-012-H-Variantes.jpg` (175 px/m) | 18,208 |
-| `ger_pz4j` | Ausf. J, spring 1944 | 1944 | KwK 40 L/48; Schürzen | `dunkelgelb_1943`, yes | `PzIV-011-HJ.jpg`, J panel (~58 px/m) | 18,164 |
+| `ger_pz4j` | Ausf. J, spring 1944 | 1944 | KwK 40 L/48; Schürzen | `ambush_1944`, yes | `PzIV-011-HJ.jpg`, J panel (~58 px/m) | 18,164 |
 
 All drawings are by MasterJVN, Wikimedia Commons, CC BY 4.0 (credits in README). The comparison sheets (B/C/D, E/F/G,
 H/J) are the same author's drawings at lower resolution, resampled to 175 px/m; their G and H panels lie on the G/H
