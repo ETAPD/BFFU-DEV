@@ -1,54 +1,31 @@
-# Fuel distribution system
-# Managers (GER/JAP/ENG) redistribute fuel to their faction members toward each
-# member's min_fuel target, and pull members' surplus (above their own target) back
-# when the manager itself drops below its target. Countries at war with the manager
-# are skipped both ways. Wired up in common/on_actions/fuel_system_on_actions.txt.
-
 fuel_system_refresh_list = {
-    clear_array = ROOT.faction_members_array
-
-    every_country = {
-            limit = {
-                NOT = { tag = ROOT }
-                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }   # a manager is never another manager's member
-                OR = {
-                    is_in_faction_with = ROOT
-                    AND = { ROOT = { tag = ENG } tag = HOL }
-                    AND = { ROOT = { tag = ENG } tag = POL }
-                    AND = { ROOT = { tag = ENG } tag = NOR }
-                    AND = { ROOT = { tag = ENG } tag = GRE }
-                    AND = { ROOT = { tag = ENG } tag = BEL }
-                    AND = { ROOT = { tag = GER } tag = FIN }
-                    AND = { ROOT = { tag = GER } tag = DEN }
-                    AND = { ROOT = { tag = GER } tag = ITA }
-                    AND = { ROOT = { tag = GER } tag = HUN }
-                    AND = { ROOT = { tag = GER } tag = ROM }
-                    AND = { ROOT = { tag = GER } tag = BUL }
-                    AND = { ROOT = { tag = GER } tag = CZE }
-                    AND = { ROOT = { tag = GER } tag = YUG }
-                    AND = { ROOT = { tag = GER } tag = SPR }
-                    AND = { ROOT = { tag = GER } tag = VIC }
-                    AND = { ROOT = { tag = ENG } tag = FRA }
-                    AND = { ROOT = { tag = ENG } tag = CAN }
-                    AND = { ROOT = { tag = ENG } tag = AST }
-                    AND = { ROOT = { tag = ENG } tag = NZL }
-                    AND = { ROOT = { tag = ENG } tag = SAF }
-                    AND = { ROOT = { tag = ENG } tag = RAJ }
-                    AND = { ROOT = { tag = JAP } tag = MAN }
-                    AND = { ROOT = { tag = JAP } tag = SIA }
-                }
-                NOT = { is_in_array = { ROOT.faction_members_array = THIS.id } }
-            }
-            add_to_array = { ROOT.faction_members_array = THIS.id }
-        }
-
     if = {
         limit = {
-            any_of_scopes = { array = ROOT.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+            OR = {
+                any_country = {
+                    fuel_system_is_member_of_prev = yes
+                    NOT = { is_in_array = { PREV.faction_members_array = THIS.id } }
+                }
+                any_of_scopes = {
+                    array = THIS.faction_members_array
+                    OR = {
+                        exists = no
+                        NOT = { fuel_system_is_member_of_prev = yes }
+                    }
+                }
+            }
         }
+        clear_array = THIS.faction_members_array
+
+        every_country = {
+            limit = { fuel_system_is_member_of_prev = yes }
+            add_to_array = { PREV.faction_members_array = THIS.id }
+        }
+        
         for_each_scope_loop = {
-            array = ROOT.faction_members_array
-            if = { limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
+            array = THIS.faction_members_array
+            if = {
+                limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
                 add_to_array = { GLOBAL.fuel_countries = THIS.id }
             }
         }
@@ -94,95 +71,14 @@ fuel_startup_effect = {
         set_variable = { var = min_fuel value = 0.80 }
     }
 
-    GER = {
-        every_country = {
-            limit = {
-                NOT = { tag = GER }
-                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
-                # Hardcoded so expected Axis members are in the list from day 1,
-                # before they formally join Germany's faction. Keep identical to fuel_system_refresh_list.
-                OR = { is_in_faction_with = GER tag = ITA tag = HUN tag = ROM tag = BUL tag = FIN tag = DEN tag = CZE tag = YUG tag = SPR tag = VIC }
-                NOT = { is_in_array = { GER.faction_members_array = THIS.id } }
-            }
-            add_to_array = { GER.faction_members_array = THIS.id }
-        }
-
-        if = {
-            limit = { any_of_scopes = { array = GER.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } } }
-            for_each_scope_loop = {
-                array = GER.faction_members_array
-                if = {
-                    limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
-                    add_to_array = { GLOBAL.fuel_countries = THIS.id }
-                }
-            }
-        }
-    }
-
-    ENG = {
-        every_country = {
-            limit = {
-                OR = {
-                    AND = {
-                        NOT = { tag = ENG }
-                        NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
-                        OR = { is_in_faction_with = ENG tag = FRA tag = CAN tag = AST tag = NZL tag = SAF tag = RAJ tag = POL tag = HOL tag = NOR tag = GRE tag = BEL }
-                        NOT = { is_in_array = { ENG.faction_members_array = THIS.id } }
-                    }
-                }
-            }
-            add_to_array = { ENG.faction_members_array = THIS.id }
-        }
-
-        if = {
-            limit = { any_of_scopes = { array = ENG.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } } }
-            for_each_scope_loop = {
-                array = ENG.faction_members_array
-                if = {
-                    limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
-                    add_to_array = { GLOBAL.fuel_countries = THIS.id }
-                }
-            }
-        }
-    }
-
-    # JAP (GECAPS) - not built by Horst at startup; added here so Manchukuo and
-    # Siam receive fuel from Japan without needing a manual panel refresh.
-    JAP = {
-        every_country = {
-            limit = {
-                NOT = { tag = JAP }
-                NOT = { is_in_array = { GLOBAL.fuel_system_manager = THIS.id } }
-                OR = { is_in_faction_with = JAP tag = MAN tag = SIA }
-                NOT = { is_in_array = { JAP.faction_members_array = THIS.id } }
-            }
-            add_to_array = { JAP.faction_members_array = THIS.id }
-        }
-
-        if = {
-            limit = { any_of_scopes = { array = JAP.faction_members_array NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } } }
-            for_each_scope_loop = {
-                array = JAP.faction_members_array
-                if = {
-                    limit = { NOT = { is_in_array = { GLOBAL.fuel_countries = THIS.id } } }
-                    add_to_array = { GLOBAL.fuel_countries = THIS.id }
-                }
-            }
-        }
+    # Build each manager's member list (faction members + the hardcoded day-1 members in
+    # fuel_system_is_member_of_prev) and register them in GLOBAL.fuel_countries.
+    for_each_scope_loop = {
+        array = GLOBAL.fuel_system_manager
+        fuel_system_refresh_list = yes
     }
 }
 
-# Once-per-day entry point, called from the on_actions (see fuel_system_on_actions.txt).
-fuel_system_daily_tick = {
-    if = {
-        limit = { NOT = { has_global_flag = fuel_manager_reserve_fixed } }
-        if = { limit = { country_exists = GER } GER = { set_variable = { var = min_fuel value = 0.05 } } }
-        if = { limit = { country_exists = ENG } ENG = { set_variable = { var = min_fuel value = 0.05 } } }
-        if = { limit = { country_exists = JAP } JAP = { set_variable = { var = min_fuel value = 0.05 } } }
-        set_global_flag = fuel_manager_reserve_fixed
-    }
-    on_daily_fuel = yes
-}
 
 on_daily_fuel = {
     for_each_scope_loop = {
