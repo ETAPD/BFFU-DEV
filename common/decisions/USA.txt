@@ -2926,22 +2926,16 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_overview = {
 		icon = GFX_decision_generic_political_discourse
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
-		available = {
-			custom_override_tooltip = {
-				tooltip = USA_campaign_overview_hint_tt
-				always = no
-			}
-		}
-		cost = 0
-		fire_only_once = no
+
+		activation = { always = no }
+		available = { always = no }
+		is_good = yes
+
+		days_mission_timeout = 307
 	}
 
 	USA_campaign_back_roosevelt = {
 		icon = GFX_decision_generic_political_rally
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_campaign_not_backing_roosevelt_tt
@@ -2958,8 +2952,6 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_back_landon = {
 		icon = GFX_decision_generic_political_rally
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_campaign_not_backing_landon_tt
@@ -2976,15 +2968,18 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_whistle_stop = {
 		icon = GFX_decision_generic_political_rally
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		cost = 25
 		days_re_enable = 45
 		fire_only_once = no
 
 		complete_effect = {
-			custom_effect_tooltip = USA_camp_push_20_tt
-			hidden_effect = { USA_campaign_push_20 = yes }
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.20 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.20 }
+			}
 			add_timed_idea = { idea = USA_camp_road_weary days = 40 }
 		}
 
@@ -2993,15 +2988,18 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_radio_address = {
 		icon = GFX_decision_generic_political_address
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		cost = 15
 		days_re_enable = 30
 		fire_only_once = no
 
 		complete_effect = {
-			custom_effect_tooltip = USA_camp_push_8_tt
-			hidden_effect = { USA_campaign_push_8 = yes }
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.08 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.08 }
+			}
 			add_timed_idea = { idea = USA_camp_on_air days = 30 }
 		}
 
@@ -3010,15 +3008,18 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_party_machine = {
 		icon = GFX_decision_generic_political_discourse
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		cost = 35
 		days_re_enable = 60
 		fire_only_once = no
 
 		complete_effect = {
-			custom_effect_tooltip = USA_camp_push_24_tt
-			hidden_effect = { USA_campaign_push_24 = yes }
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.24 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.24 }
+			}
 			add_timed_idea = { idea = USA_camp_machine_debts days = 60 }
 		}
 
@@ -3027,15 +3028,19 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_press_conference = {
 		icon = GFX_decision_generic_speech
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		cost = 10
 		days_re_enable = 20
 		fire_only_once = no
 
 		complete_effect = {
-			custom_effect_tooltip = USA_camp_push_4_tt
-			hidden_effect = { USA_campaign_push_4 = yes }
+			
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
+			}
 		}
 
 		ai_will_do = { factor = 0 }
@@ -3043,21 +3048,30 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_dirty_tricks = {
 		icon = GFX_decision_generic_police_action
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		cost = 15
 		days_re_enable = 40
 		fire_only_once = no
 
 		complete_effect = {
-			custom_effect_tooltip = USA_camp_dirty_tricks_tt
-			hidden_effect = {
-				random_list = {
-					65 = { USA_campaign_push_16 = yes }
-					35 = {
-						USA_campaign_pushback_12 = yes
-						add_timed_idea = { idea = USA_camp_scandal days = 60 }
+			random_list = {
+				65 = {
+					if = {
+						limit = { check_variable = { USA_campaign_side < 0 } }
+						add_power_balance_value = { id = USA_1936_election_bop value = -0.16 }
 					}
+					else = {
+						add_power_balance_value = { id = USA_1936_election_bop value = 0.16 }
+					}
+				}
+				35 = {
+					if = {
+						limit = { check_variable = { USA_campaign_side < 0 } }
+						add_power_balance_value = { id = USA_1936_election_bop value = 0.12 }
+					}
+					else = {
+						add_power_balance_value = { id = USA_1936_election_bop value = -0.12 }
+					}
+					add_timed_idea = { idea = USA_camp_scandal days = 60 }
 				}
 			}
 		}
@@ -3067,16 +3081,19 @@ USA_campaign_trail_cat = {
 
 	USA_campaign_donor_dinner = {
 		icon = GFX_decision_generic_fundraising
-		allowed = { original_tag = USA }
-		visible = { has_country_flag = USA_1936_election_in_progress_flag }
 		cost = 0
 		days_re_enable = 60
 		fire_only_once = no
 
 		complete_effect = {
 			add_political_power = 30
-			custom_effect_tooltip = USA_camp_pushback_4_tt
-			hidden_effect = { USA_campaign_pushback_4 = yes }
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.04 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.04 }
+			}
 		}
 
 		ai_will_do = { factor = 0 }
