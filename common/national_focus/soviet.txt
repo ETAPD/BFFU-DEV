@@ -938,6 +938,10 @@ focus_tree = {
 		cost = 1
 		ai_will_do = {
 			factor = 5
+			modifier = {
+				factor = 0
+				NOT = { check_variable = { SOV_spanish_gold_periods > 1 } }	# wait for the 2nd payout (PP starts there)
+			}
 		}
 		
 		continue_if_invalid = yes
@@ -945,17 +949,30 @@ focus_tree = {
 		available_if_capitulated = yes
 		
 		available = {
-			date > 1937.6.1
-			NOT = {has_global_flag = scw_over}
+			custom_trigger_tooltip = {
+				tooltip = SOV_spanish_gold_scw_ongoing_tt
+				has_global_flag = spanish_civil_war
+				NOT = { has_global_flag = scw_over }
+			}
 		}
 
 		bypass = {
 		}
 
+		# Cashes in the SOV_spanish_gold_mission (decisions, Foreign Policy): stops it and pays out its current period
 		completion_reward = {
-			add_timed_idea = {
-				days = 365
-				idea = SOV_spanish_gold
+			set_country_flag = SOV_spanish_gold_claimed
+			custom_effect_tooltip = SOV_spanish_gold_claim_tt
+			if = {
+				limit = { check_variable = { SOV_spanish_gold_cg < 0 } }
+				add_dynamic_modifier = { modifier = SOV_spanish_gold days = 365 }
+			}
+			else = {
+				custom_effect_tooltip = SOV_spanish_gold_nothing_tt
+			}
+			if = {
+				limit = { check_variable = { SOV_spanish_gold_pp > 0 } }
+				add_political_power = SOV_spanish_gold_pp
 			}
 		}
 	}
