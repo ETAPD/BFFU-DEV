@@ -2240,93 +2240,6 @@ operations = {
 
 }
 
-GER_case_anton_category = {
-
-	GER_case_anton = {
-		icon = generic_operation
-		available = {
-			original_tag = GER
-			has_war = yes
-			has_government = fascism
-			any_country_with_original_tag = {
-				original_tag_to_check = FRA
-				NOT = { tag = PREV }
-				has_government = fascism
-				NOT = { has_war_with = GER }
-				NOT = { has_country_flag = case_anton }
-			}
-			divisions_in_state = { state = 31 size < 1 }
-			divisions_in_state = { state = 25 size < 1 }
-			divisions_in_state = { state = 22 size < 1 }
-			divisions_in_state = { state = 21 size < 1 }
-			divisions_in_state = { state = 32 size < 1 }
-			divisions_in_state = { state = 22 size < 1 }
-			divisions_in_state = { state = 26 size < 1 }
-			divisions_in_state = { state = 33 size < 1 }
-			divisions_in_state = { state = 20 size < 1 }
-			OR = {
-				ITA = { owns_state = 735 }
-				divisions_in_state = { state = 735 size < 1 }
-			}
-			OR = {
-				any_country_with_original_tag = {
-					original_tag_to_check = FRA
-					NOT = { tag = PREV }
-					has_government = fascism
-					has_war_with = ENG
-				}
-				14 = { CONTROLLER = { has_war_with = ROOT } }
-				15 = { CONTROLLER = { has_war_with = ROOT } }
-				16 = { CONTROLLER = { has_war_with = ROOT } }
-				19 = { CONTROLLER = { has_war_with = ROOT } }
-				23 = { CONTROLLER = { has_war_with = ROOT } }
-				30 = { CONTROLLER = { has_war_with = ROOT } }
-				29 = { CONTROLLER = { has_war_with = ROOT } }
-				785 = { CONTROLLER = { has_war_with = ROOT } }
-				18 = { CONTROLLER = { has_war_with = ROOT } }
-				24 = { CONTROLLER = { has_war_with = ROOT } }
-				27 = { CONTROLLER = { has_war_with = ROOT } }
-			}
-		}
-		cost = 50
-		fire_only_once = yes
-		visible = {
-			original_tag = GER
-			has_government = fascism
-			any_country_with_original_tag = {
-				original_tag_to_check = FRA
-				NOT = { tag = PREV }
-				has_government = fascism
-				NOT = { has_war_with = GER }
-			}
-		}
-		ai_will_do = {
-			factor = 25
-			modifier = {
-				factor = 0
-				VIC = { is_ai = no }
-			}
-		}
-		complete_effect = {
-			custom_effect_tooltip = GER_case_anton_tt
-			hidden_effect = {
-				random_other_country = {
-					limit = {
-						original_tag = FRA
-						has_government = fascism
-						OR = {
-							is_subject_of = GER
-							has_focus_tree = vichy_french_focus
-						}
-					}
-					set_country_flag = case_anton
-					activate_mission = FRA_case_anton_mission
-				}
-			}
-		}
-	}
-}
-
 # REICHSKOMMISARIATS 
 GER_reichskommissariats = {
 
@@ -6767,106 +6680,6 @@ GER_wehrmacht_cat = {
 
 		ai_will_do = { base = 1 }
 	}
-	GER_raise_heavy_abteilung = { # Heer heavy tank battalions 501-503
-		icon = generic_tank
-
-		allowed = { original_tag = GER }
-
-		visible = {
-			has_completed_focus = GER_Schwere_Panzertruppen
-			check_variable = { GER_heavy_abteilungen < 6 }
-		}
-
-		available = {
-			has_completed_focus = GER_Tiger_developments
-			command_power > 14
-		}
-
-		cost = 50
-		days_re_enable = 60
-
-		complete_effect = {
-			add_command_power = -15
-			custom_effect_tooltip = GER_raise_heavy_abteilung_tt
-			hidden_effect = {
-				if = {
-					limit = { NOT = { has_variable = GER_heavy_abteilungen } }
-					set_variable = { GER_heavy_abteilungen = 0 }
-					division_template = {
-						name = "schwere Panzer-Abteilung"
-						is_locked = yes
-						division_cap = 6
-						regiments = {
-							heavy_armor = { x = 0 y = 0 }
-							heavy_armor = { x = 0 y = 1 }
-							heavy_armor = { x = 0 y = 2 }
-						}
-						support = {
-							recon = { x = 0 y = 0 }
-							maintenance_company = { x = 0 y = 1 }
-						}
-					}
-				}
-				if = {
-					limit = { check_variable = { GER_heavy_abteilungen = 0 } }
-					capital_scope = {
-						create_unit = {
-							division = "name = \"schwere Panzer-Abteilung 501\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 1 start_equipment_factor = 1"
-							owner = ROOT
-						}
-					}
-				}
-				if = {
-					limit = { check_variable = { GER_heavy_abteilungen = 1 } }
-					capital_scope = {
-						create_unit = {
-							division = "name = \"schwere Panzer-Abteilung 502\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 1 start_equipment_factor = 1"
-							owner = ROOT
-						}
-					}
-				}
-				if = {
-					limit = { check_variable = { GER_heavy_abteilungen = 2 } }
-					capital_scope = {
-						create_unit = {
-							division = "name = \"schwere Panzer-Abteilung 503\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 1 start_equipment_factor = 1"
-							owner = ROOT
-						}
-					}
-				}
-				if = {
-					limit = { check_variable = { GER_heavy_abteilungen = 3 } }
-					capital_scope = {
-						create_unit = {
-							division = "name = \"schwere Panzer-Abteilung 504\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 1 start_equipment_factor = 1"
-							owner = ROOT
-						}
-					}
-				}
-				if = {
-					limit = { check_variable = { GER_heavy_abteilungen = 4 } }
-					capital_scope = {
-						create_unit = {
-							division = "name = \"schwere Panzer-Abteilung 505\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 1 start_equipment_factor = 1"
-							owner = ROOT
-						}
-					}
-				}
-				if = {
-					limit = { check_variable = { GER_heavy_abteilungen = 5 } }
-					capital_scope = {
-						create_unit = {
-							division = "name = \"schwere Panzer-Abteilung 506\" division_template = \"schwere Panzer-Abteilung\" start_experience_factor = 1 start_equipment_factor = 1"
-							owner = ROOT
-						}
-					}
-				}
-				add_to_variable = { GER_heavy_abteilungen = 1 }
-			}
-		}
-
-		ai_will_do = { base = 1 }
-	}
 	GER_westwall_pionierprogramm = { # Westwall 1: army pioneers fortify the Rhine border
 		icon = generic_construction
 
@@ -8731,6 +8544,91 @@ GER_foreign_policy_category = {
 				}
 			}
 
+		}
+	}
+
+	GER_case_anton = {
+		icon = generic_operation
+
+		allowed = {
+			original_tag = GER
+		}
+
+		available = {
+			has_completed_focus = GER_war_with_the_ussr
+			country_exists = VIC
+			VIC = {
+				is_ai = yes
+				NOT = { has_country_flag = case_anton }
+			}
+		}
+
+		cost = 0
+		fire_only_once = yes
+
+		complete_effect = {
+			# Everything except mainland Vichy France and North Africa goes to Free France
+			random_country = {
+				limit = {
+					original_tag = FRA
+					NOT = { tag = VIC }
+					has_war_with = GER
+				}
+				set_variable = { GER.transfer_target = THIS }
+				VIC = {
+					every_owned_state = {
+						limit = {
+							NOT = { is_on_continent = europe }
+							NOT = {
+								OR = {
+									state = 458
+									state = 459
+									state = 460
+									state = 461
+									state = 462
+									state = 513
+									state = 665
+								}
+							}
+						}
+						transfer_state_to = GER.transfer_target
+					}
+				}
+			}
+			VIC = {
+				set_country_flag = case_anton
+				set_country_flag = scuttled_fleet
+				every_owned_state = {
+					limit = { is_controlled_by = PREV }
+					set_state_flag = VIC_dont_loot
+				}
+				destroy_ships = {
+					type = ship_hull_light
+					count = all
+				}
+				destroy_ships = {
+					type = ship_hull_cruiser
+					count = all
+				}
+				destroy_ships = {
+					type = ship_hull_heavy
+					count = all
+				}
+				destroy_ships = {
+					type = ship_hull_carrier
+					count = all
+				}
+				destroy_ships = {
+					type = ship_hull_submarine
+					count = all
+				}
+			}
+			annex_country = { target = VIC transfer_troops = yes }
+			news_event = { id = wtt_news.24 hours = 6 }
+		}
+
+		ai_will_do = {
+			factor = 25
 		}
 	}
 }
