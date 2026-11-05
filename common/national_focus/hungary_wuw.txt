@@ -5634,7 +5634,7 @@ focus_tree = {
 		id = wuw_HUN_repulo_muszaki_intezet
 		icon = GFX_goal_generic_air_doctrine
 		prerequisite = { focus = wuw_HUN_make_the_magyar_legiero_known }
-		mutually_exclusive = { focus = wuw_HUN_joint_air_development }
+		mutually_exclusive = { focus = wuw_HUN_allied_manufacturing_programs }
 		x = 1
 		y = 2
 		relative_position_id = wuw_HUN_make_the_magyar_legiero_known
@@ -5732,24 +5732,25 @@ focus_tree = {
 	#}
 
 	focus = {
-		id = wuw_HUN_joint_air_development
-		icon = GFX_goal_generic_air_production
+		id = wuw_HUN_allied_manufacturing_programs
+		icon = GFX_goal_generic_construct_mil_factory
 		prerequisite = { focus = wuw_HUN_make_the_magyar_legiero_known }
 		mutually_exclusive = { focus = wuw_HUN_repulo_muszaki_intezet }
 		x = 4
 		y = 2
 		relative_position_id = wuw_HUN_make_the_magyar_legiero_known
 
-		search_filters = { FOCUS_FILTER_RESEARCH }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 		cost = 5
 
 		ai_will_do = {
-			factor = 15
+			factor = 20
 		}
 
 		available = {
 			is_in_faction = yes
+			is_faction_leader = no
 		}
 
 		bypass = {
@@ -5762,24 +5763,43 @@ focus_tree = {
 
 		completion_reward = {
 
-			add_to_tech_sharing_group = HUN_joint_air_development_group
-			every_other_country = {
+			IF = {
 				limit = {
-					is_in_faction_with = HUN
+					is_in_faction = no
 				}
-				add_to_tech_sharing_group = HUN_joint_air_development_group
+				custom_effect_tooltip = wuw_HUN_allied_manufacturing_programs_tt
+			}
+
+			random_country = {
+				limit = {
+					is_in_faction_with = ROOT
+					is_faction_leader = yes
+					NOT = {
+						tag = ROOT
+					}
+				}
+				country_event = {
+					id = WW_hungary.1
+					days = 3
+					random_days = 4
+				}
 			}
 
 			custom_effect_tooltip = generic_skip_one_line_tt
 
-			IF = {
+			random_owned_controlled_state = {
 				limit = {
-					has_dlc = "Arms Against Tyranny"
+					free_building_slots = {
+						building = arms_factory
+						size > 3
+						include_locked = yes
+					}
 				}
-				add_equipment_subsidy = {
-					cic = 1000
-					equipment_type = small_plane_airframe
-					seller_trigger = is_allied_seller_trigger
+				add_extra_state_shared_building_slots = 4
+				add_building_construction = {
+					type = arms_factory
+					level = 4
+					instant_build = yes
 				}
 			}
 
@@ -5789,11 +5809,11 @@ focus_tree = {
 	focus = {
 		id = wuw_HUN_the_arado_ar_96
 		icon = GFX_focus_generic_cryptologic_bomb
-		prerequisite = { focus = wuw_HUN_joint_air_development }
+		prerequisite = { focus = wuw_HUN_allied_manufacturing_programs }
 		#mutually_exclusive = { focus = wuw_HUN_repulö_muszaki_intezet }
 		x = -1
 		y = 1
-		relative_position_id = wuw_HUN_joint_air_development
+		relative_position_id = wuw_HUN_allied_manufacturing_programs
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 
@@ -5834,11 +5854,11 @@ focus_tree = {
 	focus = {
 		id = wuw_HUN_extensive_licensing_programs
 		icon = GFX_focus_generic_license_production
-		prerequisite = { focus = wuw_HUN_joint_air_development }
+		prerequisite = { focus = wuw_HUN_allied_manufacturing_programs }
 		#mutually_exclusive = { focus = wuw_HUN_repulö_muszaki_intezet }
 		x = 1
 		y = 1
-		relative_position_id = wuw_HUN_joint_air_development
+		relative_position_id = wuw_HUN_allied_manufacturing_programs
 
 		cost = 5
 
@@ -5930,81 +5950,6 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 
 			country_event = DOD_hungary.150
-
-		}
-	}
-
-	focus = {
-		id = wuw_HUN_allied_manufacturing_programs
-		icon = GFX_goal_generic_construct_mil_factory
-		prerequisite = { focus = wuw_HUN_joint_air_development }
-		#mutually_exclusive = { focus = wuw_HUN_repulö_muszaki_intezet }
-		x = 0
-		y = 2
-		relative_position_id = wuw_HUN_joint_air_development
-
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-
-		cost = 5
-
-		ai_will_do = {
-			factor = 20
-		}
-
-		available = {
-			is_in_faction = yes
-			is_faction_leader = no
-		}
-
-		bypass = {
-
-		}
-
-		cancel_if_invalid = no
-		continue_if_invalid = yes
-		available_if_capitulated = no
-
-		completion_reward = {
-
-			IF = {
-				limit = {
-					is_in_faction = no
-				}
-				custom_effect_tooltip = wuw_HUN_allied_manufacturing_programs_tt
-			}
-
-			random_country = {
-				limit = {
-					is_in_faction_with = ROOT
-					is_faction_leader = yes
-					NOT = {
-						tag = ROOT
-					}
-				}
-				country_event = {
-					id = WW_hungary.1
-					days = 3
-					random_days = 4
-				}
-			}
-
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			random_owned_controlled_state = {
-				limit = {
-					free_building_slots = {
-						building = arms_factory
-						size > 3
-						include_locked = yes
-					}
-				}
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = arms_factory
-					level = 4
-					instant_build = yes
-				}
-			}
 
 		}
 	}
@@ -6604,12 +6549,12 @@ focus_tree = {
 								infantry = { x = 0 y = 1 }
 								infantry = { x = 0 y = 2 }
 								infantry = { x = 0 y = 3 }
-								
+
 		    	   		 		infantry = { x = 1 y = 0 }
 								infantry = { x = 1 y = 1 }
 								infantry = { x = 1 y = 2 }
 								infantry = { x = 1 y = 4 }
-								
+
 								infantry = { x = 2 y = 0 }
 								infantry = { x = 2 y = 1 }
 							}
