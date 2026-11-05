@@ -4990,6 +4990,58 @@ foreign_politics = {
 			}
 		}
 	}
+
+	# Spanish gold: every 120 days of the Spanish Civil War
+	SOV_spanish_gold_mission = {
+		icon = GFX_decision_USA_cnc_money
+
+		allowed = {
+			original_tag = SOV
+		}
+
+		available = {
+			hidden_trigger = { always = no }
+		}
+
+		activation = {
+			has_global_flag = spanish_civil_war
+			NOT = { has_global_flag = scw_over }
+			NOT = { has_country_flag = SOV_spanish_gold_claimed }
+		}
+
+		visible = {
+			hidden_trigger = {
+				has_global_flag = spanish_civil_war
+				NOT = { has_global_flag = scw_over }
+				NOT = { has_country_flag = SOV_spanish_gold_claimed }
+			}
+		}
+		cancel_if_not_visible = yes
+
+		cancel_trigger = {
+			OR = {
+				has_global_flag = scw_over
+				has_country_flag = SOV_spanish_gold_claimed
+			}
+		}
+
+		is_good = yes
+		fire_only_once = no
+		selectable_mission = no
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			custom_effect_tooltip = SOV_spanish_gold_mission_timeout_tt
+			hidden_effect = {
+				add_to_variable = { SOV_spanish_gold_periods = 1 }
+				add_to_variable = { SOV_spanish_gold_cg = -0.01 }
+				if = {
+					limit = { check_variable = { SOV_spanish_gold_periods > 1 } }
+					add_to_variable = { SOV_spanish_gold_pp = 50 }
+				}
+			}
+		}
+	}
 }
 
 ########     ###    ########     ###    ##    ##  #######  ####    ###    
