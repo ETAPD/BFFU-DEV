@@ -415,15 +415,14 @@ focus_tree = {
 			add_political_power = 75
 			custom_effect_tooltip = generic_skip_one_line_tt
 			212 = {
+				add_extra_state_shared_building_slots = 2
 				remove_building = {
 					type = arms_factory
-					level = 3
+					level = 2
 				}
-			}
-			212 = {
 				add_building_construction = {
 					type = industrial_complex
-					level = 3
+					level = 4
 				}
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
@@ -548,10 +547,167 @@ focus_tree = {
 	}
 
 	focus = {
+		id = BUL_minigame_path_extra_a
+		icon = GFX_focus_generic_farmland
+		x = -1
+		y = 1
+		relative_position_id = BUL_minigame_path_k
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_minigame_path_k
+		}
+
+		available = {
+			48 = {
+				industrial_complex > 7
+			}
+			212 = {
+				industrial_complex > 2
+			}
+			801 = {
+				industrial_complex > 3
+			}
+			211 = {
+				industrial_complex > 2
+			}
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = BUL_modify_pol_tt
+			add_to_variable = { var = BUL_political_power_factor_var value = 0.1 tooltip = political_power_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_offsite_building = {
+				type = industrial_complex
+				level = 18
+			}
+			48 = {
+				remove_building = {
+					type = industrial_complex
+					level = 8
+				}
+			}
+			212 = {
+				remove_building = {
+					type = industrial_complex
+					level = 3
+				}
+			}
+			801 = {
+				remove_building = {
+					type = industrial_complex
+					level = 4
+				}
+			}
+			211 = {
+				remove_building = {
+					type = industrial_complex
+					level = 3
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_minigame_path_extra_b
+		icon = GFX_focus_AUS_raid_military_storages
+		x = -1
+		y = 1
+		relative_position_id = BUL_minigame_path_l
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_minigame_path_k focus = BUL_minigame_path_l
+		}
+
+		available = {
+			OR = {
+				has_idea = BUL_nikola_petkov
+				has_idea = BUL_kimon_georgiev
+			}
+			has_political_power > 99
+		}
+
+		continue_if_invalid = yes
+
+		completion_reward = {
+			add_political_power = -100
+			add_stability = -0.05
+			custom_effect_tooltip = generic_skip_one_line_tt
+			if = {
+				limit = {
+					NOT = { has_idea = BUL_nikola_petkov }
+					NOT = { has_idea = BUL_kimon_georgiev }
+				}
+				custom_effect_tooltip = BUL_agrarian_chosen
+				custom_effect_tooltip = BUL_modify_eco_tt
+				add_to_variable = { var = BUL_production_factory_efficiency_gain_factor_var value = 0.12 tooltip = production_factory_efficiency_gain_factor_tt }
+				add_to_variable = { var = BUL_production_factory_max_efficiency_factor_var value = 0.03 tooltip = production_factory_max_efficiency_factor_tt }
+				custom_effect_tooltip = generic_skip_one_line_tt
+
+				custom_effect_tooltip = BUL_ubnl_chosen
+				custom_effect_tooltip = BUL_modify_eco_tt
+				add_to_variable = { var = BUL_industrial_capacity_factory_var value = 0.05 tooltip = industrial_capacity_factory_tt }
+				add_to_variable = { var = BUL_production_factory_start_efficiency_factor_var value = 0.025 tooltip = production_factory_start_efficiency_factor_tt }
+				add_to_variable = { var = BUL_line_change_production_efficiency_factor_var value = 0.025 tooltip = line_change_production_efficiency_factor_tt }
+			}
+			if = {
+				limit = {
+					has_idea = BUL_nikola_petkov
+				}
+				custom_effect_tooltip = BUL_modify_eco_tt
+				add_to_variable = { var = BUL_production_factory_efficiency_gain_factor_var value = 0.12 tooltip = production_factory_efficiency_gain_factor_tt }
+				add_to_variable = { var = BUL_production_factory_max_efficiency_factor_var value = 0.03 tooltip = production_factory_max_efficiency_factor_tt }
+			}
+			else_if = {
+				limit = {
+					has_idea = BUL_kimon_georgiev
+				}
+				custom_effect_tooltip = BUL_modify_eco_tt
+				add_to_variable = { var = BUL_industrial_capacity_factory_var value = 0.05 tooltip = industrial_capacity_factory_tt }
+				add_to_variable = { var = BUL_production_factory_start_efficiency_factor_var value = 0.025 tooltip = production_factory_start_efficiency_factor_tt }
+				add_to_variable = { var = BUL_line_change_production_efficiency_factor_var value = 0.025 tooltip = line_change_production_efficiency_factor_tt }
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_minigame_path_extra_c
+		icon = GFX_goal_generic_military_deal
+		x = -1
+		y = 1
+		relative_position_id = BUL_minigame_path_m
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_minigame_path_l focus = BUL_minigame_path_m
+		}
+
+		completion_reward = {
+			BUL_zveno_medium_popularity_decrease_effect = yes
+			BUL_bs_medium_popularity_decrease_effect = yes
+			BUL_bzns_medium_popularity_decrease_effect = yes
+			BUL_nsm_medium_popularity_decrease_effect = yes
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			BUL_georgi_popov = {
+				add_skill_level = 1
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = BUL_modify_pol_tt
+			add_to_variable = { var = BUL_political_power_factor_var value = -0.1 tooltip = political_power_factor_tt }
+			add_to_variable = { var = BUL_stability_weekly_var value = -0.001 tooltip = stability_weekly_tt }
+		}
+	}
+
+	focus = {
 		id = BUL_minigame_path_n
 		icon = GFX_focus_INS_economic_integration
 		x = 0
-		y = 4
+		y = 5
 		relative_position_id = BUL_minigame_path_e
 
 		cost = 7
@@ -644,8 +800,8 @@ focus_tree = {
 
 		completion_reward = {
 			custom_effect_tooltip = BUL_modify_pol_tt
-			add_to_variable = { var = BUL_stability_factor_var value = 0.2 tooltip = stability_factor_tt }
-			add_to_variable = { var = BUL_stability_weekly_var value = 0.002 tooltip = stability_weekly_tt }
+			add_to_variable = { var = BUL_stability_factor_var value = 0.1 tooltip = stability_factor_tt }
+			add_to_variable = { var = BUL_stability_weekly_var value = 0.001 tooltip = stability_weekly_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = BUL_aleksandar_tsankov
@@ -1064,12 +1220,12 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 
 			custom_effect_tooltip = BUL_modify_eco_tt
-			add_to_variable = { var = BUL_consumer_goods_var value = 0.025 tooltip = consumer_goods_expected_value_tt }
-			add_to_variable = { var = BUL_production_speed_industrial_complex_factor_var value = -0.1 tooltip = production_speed_industrial_complex_factor_tt }
+			add_to_variable = { var = BUL_consumer_goods_var value = 0.05 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { var = BUL_production_speed_arms_factory_factor_var value = 0.05 tooltip = production_speed_arms_factory_factor_tt }
 			custom_effect_tooltip = generic_skip_one_line_tt
 
 			custom_effect_tooltip = BUL_modify_army_tt
-			#add_to_variable = { var = BUL_experience_gain_army_var value = -0.2 tooltip = experience_gain_army_tt }
+			add_to_variable = { var = BUL_promote_cost_factor_var value = -0.5 tooltip = promote_cost_factor_tt }
 			add_to_variable = { var = BUL_conscription_var value = 0.01 tooltip = conscription_tt }
 			add_to_variable = { var = BUL_experience_gain_factor_var value = 0.3 tooltip = experience_gain_factor_tt }
 			add_to_variable = { var = BUL_land_mastery_gain_factor_var value = -0.5 tooltip = land_mastery_gain_factor_tt }
@@ -1361,7 +1517,7 @@ focus_tree = {
 			custom_effect_tooltip = BUL_modify_pol_tt
 			add_to_variable = { var = BUL_stability_factor_var value = 0.1 tooltip = stability_factor_tt }
 			add_to_variable = { var = BUL_neutrality_drift_var value = 0.02 tooltip = neutrality_drift_tt }
-			add_to_variable = { var = BUL_neutrality_drift_var value = -0.01 tooltip = communism_drift_tt }
+			add_to_variable = { var = BUL_communism_drift_var value = -0.01 tooltip = communism_drift_tt }
 		}
 	}
 
@@ -1447,10 +1603,6 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			add_popularity = {
-				ideology = fascism
-				popularity = 0.05
-			}
 			add_research_slot = 1
 			custom_effect_tooltip = generic_skip_one_line_tt
 
@@ -1477,14 +1629,10 @@ focus_tree = {
 			focus = BUL_ratniks_rally
 		}
 
-		available = {
-			has_political_power > 50
-		}
-
 		continue_if_invalid = yes
 
 		completion_reward = {
-			add_political_power = -50
+			add_war_support = 0.05
 			add_stability = -0.05
 			add_popularity = {
 				ideology = fascism
@@ -1496,7 +1644,92 @@ focus_tree = {
 					damage = 2
 				}
 			}
-			
+		}
+	}
+
+	focus = {
+		id = BUL_micro_path_extra_one
+		icon = GFX_focus_PER_communist_afghanistan_intervention
+		x = 1
+		y = 1
+		relative_position_id = BUL_crush_the_communists
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_crush_the_communists focus = BUL_boris_to_simeon
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = BUL_modify_army_tt
+			add_to_variable = { var = BUL_army_infantry_attack_factor_var value = -0.06 tooltip = army_infantry_attack_factor_tt }
+			add_to_variable = { var = BUL_army_infantry_defence_factor_var value = 0.04 tooltip = army_infantry_defence_factor_tt }
+			add_to_variable = { var = BUL_army_org_factor_var value = 0.02 tooltip = army_org_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_equipment_to_stockpile = {
+				type = infantry_equipment_0
+				amount = 2000
+			}
+			add_equipment_to_stockpile = {
+				type = squad_equipment_0
+				amount = 400
+			}
+		}
+	}
+
+	focus = {
+		id = BUL_micro_path_extra_two
+		icon = GFX_focus_generic_catholic_dominion
+		x = 1
+		y = 1
+		relative_position_id = BUL_boris_to_simeon
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_boris_to_simeon focus = BUL_suppress_the_press
+		}
+
+		completion_reward = {
+			add_stability = 0.1
+			add_popularity = {
+				ideology = fascism
+				popularity = 0.05
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = BUL_modify_eco_tt
+			add_to_variable = { var = BUL_consumer_goods_var value = -0.025 tooltip = consumer_goods_expected_value_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			custom_effect_tooltip = BUL_modify_pol_tt
+			add_to_variable = { var = BUL_political_power_factor_var value = -0.15 tooltip = political_power_factor_tt }
+			add_to_variable = { var = BUL_neutrality_drift_var value = 0.03 tooltip = neutrality_drift_tt }
+		}
+	}
+
+	focus = {
+		id = BUL_micro_path_extra_three
+		icon = GFX_focus_FIN_parmis_devils
+		x = 1
+		y = 1
+		relative_position_id = BUL_suppress_the_press
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_suppress_the_press
+		}
+
+		completion_reward = {
+			211 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+				}
+			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = BUL_modify_pol_tt
 			add_to_variable = { var = BUL_political_power_factor_var value = 0.05 tooltip = political_power_factor_tt }
@@ -1509,7 +1742,7 @@ focus_tree = {
 		id = BUL_lift_army_restrictions
 		icon = GFX_focus_BRA_repeale_national_security_law
 		x = 0
-		y = 4
+		y = 5
 		relative_position_id = BUL_exploit_imro
 
 		cost = 7
@@ -2395,6 +2628,7 @@ focus_tree = {
 		cost = 7
 
 		available = {
+			NOT = { YUG = { is_ai = yes } }
 			NOT = { YUG = { has_completed_focus = YUG_incorporate_the_administrative_zone } }
 			GER = { has_completed_focus = GER_demand_sudetenland }
 		}
@@ -2405,6 +2639,8 @@ focus_tree = {
 			custom_effect_tooltip = BUL_align_tt
 			effect_tooltip = {
 				108 = {
+					add_core_of = BUL
+					transfer_state_to = BUL
 					remove_building = {
 						type = arms_factory
 						level = 2
@@ -2415,6 +2651,8 @@ focus_tree = {
 					}
 				}
 				107 = {
+					add_core_of = BUL
+					transfer_state_to = BUL
 					remove_building = {
 						type = arms_factory
 						level = 2
@@ -2423,6 +2661,10 @@ focus_tree = {
 						type = industrial_complex
 						level = 3
 					}
+				}
+				802 = {
+					add_core_of = BUL
+					transfer_state_to = BUL
 				}
 				GER = {
 					add_offsite_building = {
@@ -2433,12 +2675,6 @@ focus_tree = {
 						type = arms_factory
 						level = 4
 					}
-				}
-				custom_effect_tooltip = generic_skip_one_line_tt
-				BUL = { 
-					transfer_state = 108
-					transfer_state = 107
-					transfer_state = 802
 				}
 			}
 		}
@@ -2612,6 +2848,7 @@ focus_tree = {
 
 		completion_reward = {
 			731 = {
+				add_core_of = BUL
 				transfer_state_to = BUL
 				remove_building = {
 					type = arms_factory
@@ -2682,7 +2919,7 @@ focus_tree = {
 		id = BUL_greater_bulgaria
 		icon = GFX_focus_generic_strike_at_democracy2
 		x = 0
-		y = 10
+		y = 11
 		relative_position_id = BUL_collect_pre_war_weaponry
 		prerequisite = { focus = BUL_align_with_germany focus = BUL_align_with_italy }
 		prerequisite = { focus = BUL_micro_eight focus = BUL_minigame_path_v }
@@ -2991,6 +3228,24 @@ focus_tree = {
 	}
 
 	focus = {
+		id = BUL_inf_extra
+		icon = GFX_focus_RAJ_war_taxes
+		relative_position_id = BUL_develop_at
+		x = 1
+		y = 1
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_develop_at focus = BUL_scavenge
+		}
+
+		completion_reward = {
+			add_ideas = BUL_inf_extra
+		}
+	}
+
+	focus = {
 		id = BUL_patriotic_spirit
 		icon = GFX_focus_generic_little_entente
 		relative_position_id = BUL_mass_mob
@@ -3047,6 +3302,26 @@ focus_tree = {
 		completion_reward = {
 			custom_effect_tooltip = BUL_modify_army_tt
 			add_to_variable = { var = BUL_max_planning_var value = 0.05 tooltip = max_planning_tt }
+		}
+	}
+
+	focus = {
+		id = BUL_inf_sf_shared_extra
+		icon = GFX_focus_GER_appease_the_wehrmacht
+		relative_position_id = BUL_methodical_approach
+		x = 0
+		y = 1
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_methodical_approach
+		}
+
+		completion_reward = {
+			mio:BUL_dvf_organization = {
+				complete_mio_trait = BUL_inf_sf_shared_extra
+			}
 		}
 	}
 
@@ -3359,6 +3634,29 @@ focus_tree = {
 	}
 
 	focus = {
+		id = BUL_sf_extra
+		icon = GFX_focus_CHI_connections_with_shanghai_elites
+		relative_position_id = BUL_desert_commandos
+		x = 1
+		y = 1
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_desert_commandos
+			focus = BUL_arctic_warriors
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = BUL_modify_army_tt
+			add_to_variable = { var = BUL_army_infantry_attack_factor_var value = -0.06 tooltip = army_infantry_attack_factor_tt }
+			add_to_variable = { var = BUL_army_infantry_defence_factor_var value = -0.06 tooltip = army_infantry_defence_factor_tt }
+			add_to_variable = { var = BUL_special_forces_attack_factor_var value = 0.1 tooltip = special_forces_attack_factor_tt }
+			add_to_variable = { var = BUL_special_forces_defence_factor_var value = 0.1 tooltip = special_forces_defence_factor_tt }
+		}
+	}
+
+	focus = {
 		id = BUL_none_behind
 		icon = GFX_focus_generic_field_hostpital
 		relative_position_id = BUL_quality_inf
@@ -3416,6 +3714,26 @@ focus_tree = {
 			custom_effect_tooltip = BUL_modify_army_tt
 			add_to_variable = { var = BUL_recon_factor_var value = 0.4 tooltip = recon_factor_tt }
 			add_to_variable = { var = BUL_planning_speed_var value = 0.2 tooltip = planning_speed_tt }
+		}
+	}
+
+	focus = {
+		id = BUL_sf_mobile_shared_extra
+		icon = GFX_goal_generic_axis_build_infantry
+		relative_position_id = BUL_adaptive_tactics
+		x = 0
+		y = 1
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_adaptive_tactics
+		}
+
+		completion_reward = {
+			mio:BUL_motorized_mio = {
+				complete_mio_trait = BUL_sf_mobile_shared_extra
+			}
 		}
 	}
 
@@ -3550,7 +3868,10 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			add_ideas = BUL_synthetic_investments
+			add_timed_idea = {
+				idea = BUL_synthetic_investments
+				days = 180
+			}
 			add_resource = {
 				type = rubber
 				amount = 200
@@ -3672,6 +3993,35 @@ focus_tree = {
 			custom_effect_tooltip = BUL_modify_army_tt
 			add_to_variable = { var = BUL_supply_node_range_var value = 0.2 tooltip = supply_node_range_tt }
 			add_to_variable = { var = BUL_supply_consumption_factor_var value = -0.1 tooltip = supply_consumption_factor_tt }
+		}
+	}
+
+	focus = {
+		id = BUL_mobile_extra
+		icon = GFX_focus_research2
+		relative_position_id = BUL_rocketry_innovations
+		x = 1
+		y = 1
+
+		cost = 7
+
+		prerequisite = {
+			focus = BUL_rocketry_innovations
+			focus = BUL_modernise_logistics
+		}
+
+		completion_reward = {
+			custom_effect_tooltip = BUL_modify_eco_tt
+			add_to_variable = { var = BUL_consumer_goods_var value = 0.025 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { var = BUL_research_speed_factor_var value = 0.25 tooltip = research_speed_factor_tt }
+			add_to_variable = { var = BUL_production_factory_efficiency_gain_factor_var value = 0.15 tooltip = production_factory_efficiency_gain_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			mio:BUL_motorized_mio = {
+				add_mio_size = 2
+			}
+			mio:ITA_fiat_organization = {
+				add_mio_size = 2
+			}
 		}
 	}
 
