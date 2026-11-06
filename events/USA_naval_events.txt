@@ -36,28 +36,30 @@ country_event = {
 }
 
 # ── USA_naval.2 ─────────────────────────────────────────────────────────────
-# Hidden trigger: USA enters a war while holding USA_fy40_funding.
-# Swaps the spirit to USA_naval_funds_running_low.
+# Fiscal 40 comes to a close: checked monthly. From April 1940 the Fiscal Year 40 Funding
+# spirit ends and the funds are reprioritised into War Economy of the United States.
 country_event = {
 	id = USA_naval.2
-	hidden = yes
+	title = USA_naval.2.t
+	desc = USA_naval.2.d
+	picture = GFX_report_event_naval_treaty
 	fire_only_once = yes
 
 	trigger = {
 		tag = USA
 		has_idea = USA_fy40_funding
-		has_war = yes
+		date > 1940.3.31
 	}
 
 	is_triggered_only = yes
 
-	immediate = {
-		remove_ideas = USA_fy40_funding
-		add_ideas = USA_naval_funds_running_low
-	}
-
 	option = {
 		name = USA_naval.2.a
+		remove_ideas = USA_fy40_funding
+		custom_effect_tooltip = USA_modify_war_economy_tt
+		add_to_variable = { USA_we_output = 0.05 tooltip = industrial_capacity_factory_tt }
+		add_to_variable = { USA_we_research = 0.15 tooltip = research_speed_factor_tt }
+		hidden_effect = { force_update_dynamic_modifier = yes }
 	}
 }
 

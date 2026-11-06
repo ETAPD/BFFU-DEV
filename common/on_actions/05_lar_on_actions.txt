@@ -634,4 +634,26 @@ on_actions = {
 		}
 	}
 	
+	# Spanish Civil War safety net: if the Nationalists are about to fall (or already have), the Republic yields to them instead
+	on_daily_SPR = {
+		effect = {
+			if = {
+				limit = {
+					has_global_flag = spanish_civil_war
+					NOT = { has_global_flag = scw_over }
+					SPR_scw_in_progress = yes
+					any_country_with_original_tag = {
+						original_tag_to_check = SPR
+						has_country_flag = SPA_scw_nationalist_side
+						OR = {
+							has_capitulated = yes
+							surrender_progress > 0.8
+						}
+					}
+				}
+				SPR_scw_republic_yields_to_nationalists = yes
+			}
+		}
+	}
+
 }
