@@ -263,3 +263,44 @@ SPR_reopen_mainland_airfields = {
 		clear_variable = SPR_stored_air_base
 	}
 }
+
+# Allied backing for the Spanish Civil War ending: Soviet and French rewards
+SPR_scw_allied_victory_rewards = {
+	SOV = {
+		add_offsite_building = { type = arms_factory level = 10 }
+		army_experience = 50
+	}
+	FRA = {
+		add_offsite_building = { type = arms_factory level = 5 }
+		army_experience = 25
+	}
+	every_country = {
+		limit = {
+			OR = {
+				tag = SOV
+				tag = FRA
+			}
+		}
+		army_experience = 100
+		air_experience = 100
+	}
+}
+
+# Nationalists about to fall (or fallen): the Republic yields to them instead, the civil war ends and the Allied victory focus fires
+SPR_scw_republic_yields_to_nationalists = {
+	hidden_effect = {
+		SPR = {
+			delete_unit_template_and_units = { division_template = "Brigada Legionario" }
+		}
+	}
+	random_country_with_original_tag = {
+		original_tag_to_check = SPR
+		limit = { has_country_flag = SPA_scw_nationalist_side }
+		every_other_country = {
+			limit = { original_tag = SPR }
+			PREV = { annex_country = { target = PREV transfer_troops = no } }
+		}
+		complete_national_focus = SPA_Allies_Victory
+	}
+	SPR_scw_allied_victory_rewards = yes
+}
