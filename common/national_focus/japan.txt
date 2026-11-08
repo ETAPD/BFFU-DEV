@@ -30,8 +30,8 @@ focus_tree = {
 	focus = {
 		id = JAP_begin_nanshin_ron
 		icon = GFX_JAP_begin_nanshin_ron
-		x = 12
-		y = 7
+		x = 38
+		y = 18
 		cost = 5
 		available = {
 			OR = {
@@ -48,8 +48,8 @@ focus_tree = {
 	focus = {
 		id = JAP_Demand_indochina
 		icon = GFX_focus_usa_focus_on_asia
-		x = 12
-		y = 8
+		x = 38
+		y = 19
 		cost = 5
 		completion_reward = {
 			custom_effect_tooltip = JAP_demand_indochina_focus_tt
@@ -63,8 +63,8 @@ focus_tree = {
 	focus = {
 		id = JAP_Srike_The_West
 		icon = GFX_focus_JAP_a_red_dawn_over_asia
-		x = 12
-		y = 10
+		x = 38
+		y = 21
 		cost = 0
 		available = { always = no } # auto-completed by the Strike South decision
 		completion_reward = {
@@ -78,22 +78,22 @@ focus_tree = {
 	focus = {
 		id = JAP_Guerilla_Operation
 		icon = GFX_focus_RAJ_bathe_in_hellfire
-		x = 14
-		y = 11
+		x = 58
+		y = 23
 		cost = 5
 		completion_reward = {
 			country_event = { id = jap_guerrilla.1 }
 		}
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		prerequisite = { focus = JAP_Srike_The_West }
+		prerequisite = { focus = JAP_war_tide_turns }
 	}
 
 	#Strike Darwin
 	focus = {
 		id = JAP_Strike_Darwin
 		icon = GFX_focus_JAP_operation_take_australia
-		x = 10
-		y = 11
+		x = 26
+		y = 23
 		cost = 5
 		available = {
 			has_country_flag = JAP_pacific_war_active
@@ -104,15 +104,15 @@ focus_tree = {
 			add_ideas = JAP_operation_an
 		}
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		prerequisite = { focus = JAP_Srike_The_West }
+		prerequisite = { focus = JAP_war_initiative }
 	}
 
 	#Secured Autarky
 	focus = {
 		id = JAP_Secured_Autarky
 		icon = GFX_focus_JAP_resource_security
-		x = 12
-		y = 11
+		x = 14
+		y = 23
 		cost = 5
 		available = {
 			335 = { is_controlled_by = JAP } # Java
@@ -126,7 +126,7 @@ focus_tree = {
 			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.075 tooltip = JAP_autarky_output_tt }
 		}
 		search_filters = { FOCUS_FILTER_POLITICAL }
-		prerequisite = { focus = JAP_Srike_The_West }
+		prerequisite = { focus = JAP_war_initiative }
 	}
 
 	#Commision a Study in Germany
@@ -1153,8 +1153,8 @@ focus_tree = {
 	focus = {
 		id = JAP_ally_siam
 		icon = GFX_JAP_ally_siam-905102
-		x = 11
-		y = 9
+		x = 36
+		y = 20
 		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
@@ -1183,8 +1183,8 @@ focus_tree = {
 	focus = {
 		id = JAP_subjugate_siam
 		icon = GFX_JAP_subjegate_siam-905103
-		x = 13
-		y = 9
+		x = 40
+		y = 20
 		cost = 5
 		search_filters = {
 			FOCUS_FILTER_ANNEXATION
@@ -3255,6 +3255,579 @@ focus_tree = {
 			add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.075 tooltip = industrial_capacity_factory_tt }
 			add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.075 tooltip = industrial_capacity_dockyard_tt }
 			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	# ===================== WAR TREE (China theatre + Pacific theatre) =====================
+	focus = {
+		id = JAP_war_china_incident
+		icon = GFX_goal_generic_major_war
+		x = 6
+		y = 18
+		cost = 0
+		available = {
+			always = no # completes automatically when the China war begins
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 10
+			add_war_support = 0.05
+			custom_effect_tooltip = JAP_china_regime_unlocked_tt
+			hidden_effect = { JAP_cn_regime_init = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_beijing
+		icon = GFX_goal_generic_demand_territory
+		x = 6
+		y = 19
+		cost = 0
+		prerequisite = { focus = JAP_war_china_incident }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_political_power = 25
+			army_experience = 5
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_shanghai
+		icon = GFX_goal_generic_amphibious_assault
+		x = 6
+		y = 20
+		cost = 0
+		prerequisite = { focus = JAP_war_fall_of_beijing }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_political_power = 25
+			army_experience = 5
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_nanjing
+		icon = GFX_goal_generic_army_doctrines
+		x = 6
+		y = 21
+		cost = 0
+		prerequisite = { focus = JAP_war_fall_of_shanghai }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_war_support = 0.03
+			army_experience = 5
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_guangzhou
+		icon = GFX_goal_generic_amphibious_assault
+		x = 6
+		y = 22
+		cost = 0
+		prerequisite = { focus = JAP_war_fall_of_nanjing }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_manpower = 10000
+			army_experience = 5
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_wuhan
+		icon = GFX_goal_generic_army_artillery
+		x = 6
+		y = 23
+		cost = 0
+		prerequisite = { focus = JAP_war_fall_of_guangzhou }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 20
+			add_political_power = 25
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_chongqing
+		icon = GFX_goal_generic_air_bomber
+		x = 6
+		y = 24
+		cost = 0
+		prerequisite = { focus = JAP_war_fall_of_wuhan }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_stability = 0.05
+			army_experience = 10
+		}
+	}
+
+	focus = {
+		id = JAP_war_north_china_army
+		icon = GFX_goal_generic_allies_build_infantry
+		x = 2
+		y = 20
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_beijing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 15
+			add_manpower = 15000
+		}
+	}
+
+	focus = {
+		id = JAP_war_central_army
+		icon = GFX_goal_generic_army_doctrines
+		x = 2
+		y = 21
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_shanghai }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 15
+			add_command_power = 25
+		}
+	}
+
+	focus = {
+		id = JAP_war_pacification
+		icon = GFX_goal_generic_special_forces
+		x = 2
+		y = 22
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_nanjing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_resistance_target value = -0.1 tooltip = resistance_target_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_southern_command
+		icon = GFX_goal_generic_cavalry
+		x = 2
+		y = 23
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_guangzhou }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 10
+			add_manpower = 10000
+		}
+	}
+
+	focus = {
+		id = JAP_war_yangtze_flotilla
+		icon = GFX_goal_generic_navy_cruiser
+		x = 2
+		y = 24
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_wuhan }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			navy_experience = 20
+			army_experience = 5
+		}
+	}
+
+	focus = {
+		id = JAP_war_hold_the_line
+		icon = GFX_goal_generic_defence
+		x = 2
+		y = 25
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_chongqing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_stability = 0.02
+			army_experience = 15
+		}
+	}
+
+	focus = {
+		id = JAP_war_beijing_regime
+		icon = GFX_goal_generic_political_pressure
+		x = 10
+		y = 20
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_beijing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_political_power_gain value = 0.15 tooltip = political_power_gain_tt }
+			add_to_variable = { var = JAP_cn_stability_factor value = 0.02 tooltip = stability_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_customs_control
+		icon = GFX_goal_generic_trade
+		x = 10
+		y = 21
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_shanghai }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_political_power_gain value = 0.1 tooltip = political_power_gain_tt }
+			add_to_variable = { var = JAP_cn_consumer_goods_factor value = -0.02 tooltip = consumer_goods_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_reformed_nanjing
+		icon = GFX_goal_generic_forceful_treaty
+		x = 10
+		y = 22
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_nanjing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_recruitable_population_factor value = 0.02 tooltip = recruitable_population_factor_tt }
+			add_to_variable = { var = JAP_cn_stability_factor value = 0.03 tooltip = stability_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_port_development
+		icon = GFX_goal_generic_construct_infrastructure
+		x = 10
+		y = 23
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_guangzhou }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_production_speed_buildings_factor value = 0.05 tooltip = production_speed_buildings_factor_tt }
+			add_to_variable = { var = JAP_cn_local_resources_factor value = 0.03 tooltip = local_resources_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_seize_industry
+		icon = GFX_goal_generic_production
+		x = 10
+		y = 24
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_wuhan }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_industrial_capacity_factory value = 0.04 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { var = JAP_cn_local_resources_factor value = 0.06 tooltip = local_resources_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_settlement_talks
+		icon = GFX_goal_generic_dangerous_deal
+		x = 10
+		y = 25
+		cost = 4
+		prerequisite = { focus = JAP_war_fall_of_chongqing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_resistance_target value = -0.05 tooltip = resistance_target_tt }
+			add_to_variable = { var = JAP_cn_political_power_gain value = 0.15 tooltip = political_power_gain_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+
+	focus = {
+		id = JAP_war_direct_rule
+		icon = GFX_goal_JAP_army_expansion
+		x = 4
+		y = 27
+		cost = 5
+		prerequisite = { focus = JAP_war_settlement_talks }
+		mutually_exclusive = { focus = JAP_war_wang_regime }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_local_resources_factor value = 0.1 tooltip = local_resources_factor_tt }
+			add_to_variable = { var = JAP_cn_industrial_capacity_factory value = 0.03 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { var = JAP_cn_resistance_target value = 0.08 tooltip = resistance_target_tt }
+			add_to_variable = { var = JAP_cn_stability_factor value = -0.03 tooltip = stability_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			set_country_flag = JAP_china_direct_rule
+			complete_national_focus = JAP_war_china_settled
+		}
+	}
+
+	focus = {
+		id = JAP_war_wang_regime
+		icon = GFX_goal_generic_propaganda
+		x = 8
+		y = 27
+		cost = 5
+		prerequisite = { focus = JAP_war_settlement_talks }
+		mutually_exclusive = { focus = JAP_war_direct_rule }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			custom_effect_tooltip = JAP_china_regime_changed_tt
+			add_to_variable = { var = JAP_cn_political_power_gain value = 0.3 tooltip = political_power_gain_tt }
+			add_to_variable = { var = JAP_cn_recruitable_population_factor value = 0.03 tooltip = recruitable_population_factor_tt }
+			add_to_variable = { var = JAP_cn_stability_factor value = 0.04 tooltip = stability_factor_tt }
+			add_to_variable = { var = JAP_cn_local_resources_factor value = -0.02 tooltip = local_resources_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			set_country_flag = JAP_wang_jingwei_regime
+			complete_national_focus = JAP_war_china_settled
+		}
+	}
+
+	focus = {
+		id = JAP_war_china_settled
+		icon = GFX_goal_japanese_imperialism
+		x = 6
+		y = 29
+		cost = 0
+		prerequisite = { focus = JAP_war_direct_rule focus = JAP_war_wang_regime }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 25
+			add_manpower = 25000
+			set_country_flag = JAP_china_settled
+		}
+	}
+
+	focus = {
+		id = JAP_war_initiative
+		icon = GFX_focus_JAP_a_red_dawn_over_asia
+		x = 26
+		y = 22
+		cost = 0
+		prerequisite = { focus = JAP_Srike_The_West }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_war_support = 0.05
+			custom_effect_tooltip = JAP_war_initiative_tt
+		}
+	}
+
+	focus = {
+		id = JAP_war_tide_turns
+		icon = GFX_goal_generic_defence
+		x = 50
+		y = 22
+		cost = 0
+		prerequisite = { focus = JAP_Srike_The_West }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_war_support = 0.03
+			custom_effect_tooltip = JAP_war_tide_turns_tt
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_singapore
+		icon = GFX_goal_generic_navy_battleship
+		x = 18
+		y = 23
+		cost = 0
+		prerequisite = { focus = JAP_war_initiative }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_political_power = 50
+			army_experience = 20
+			add_war_support = 0.03
+		}
+	}
+
+	focus = {
+		id = JAP_war_hawaii_campaign
+		icon = GFX_goal_generic_navy_carrier
+		x = 22
+		y = 23
+		cost = 8
+		prerequisite = { focus = JAP_war_initiative }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 20
+			navy_experience = 30
+			air_experience = 30
+		}
+	}
+
+	focus = {
+		id = JAP_war_raj_offensive
+		icon = GFX_focus_usa_focus_on_asia
+		x = 30
+		y = 23
+		cost = 8
+		prerequisite = { focus = JAP_war_initiative }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			army_experience = 30
+			add_manpower = 25000
+		}
+	}
+
+	focus = {
+		id = JAP_war_fall_of_philippines
+		icon = GFX_goal_generic_air_naval_bomber
+		x = 34
+		y = 23
+		cost = 0
+		prerequisite = { focus = JAP_war_initiative }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			navy_experience = 20
+			air_experience = 20
+			add_war_support = 0.02
+		}
+	}
+
+	focus = {
+		id = JAP_war_strike_north
+		icon = GFX_goal_generic_major_war
+		x = 26
+		y = 25
+		cost = 8
+		prerequisite = { focus = JAP_war_hawaii_campaign }
+		prerequisite = { focus = JAP_Strike_Darwin }
+		prerequisite = { focus = JAP_war_raj_offensive }
+		available = {
+			has_war = yes
+			has_country_flag = JAP_nap_with_SOV
+			custom_trigger_tooltip = {
+				tooltip = JAP_break_nap_sov_states_tt
+				629 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
+				285 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
+				439 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
+			}
+		}
+		will_lead_to_war_with = SOV
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			JAP_break_nap_with_SOV = yes
+			declare_war_on = { target = SOV type = annex_everything }
+			if = { limit = { is_in_faction_with = MAN } MAN = { declare_war_on = { target = SOV type = annex_everything } } }
+		}
+	}
+
+	focus = {
+		id = JAP_war_defence_in_depth
+		icon = GFX_goal_generic_defence
+		x = 38
+		y = 23
+		cost = 5
+		prerequisite = { focus = JAP_war_tide_turns }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_ideas = JAP_defence_in_depth
+		}
+	}
+
+	focus = {
+		id = JAP_war_island_fortresses
+		icon = GFX_goal_generic_special_forces
+		x = 42
+		y = 23
+		cost = 5
+		prerequisite = { focus = JAP_war_tide_turns }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_manpower = 30000
+			army_experience = 10
+		}
+	}
+
+	focus = {
+		id = JAP_war_mobilise_homeland
+		icon = GFX_goal_generic_production
+		x = 46
+		y = 23
+		cost = 6
+		prerequisite = { focus = JAP_war_tide_turns }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_ideas = JAP_homeland_mobilisation
+		}
+	}
+
+	focus = {
+		id = JAP_war_special_attack_corps
+		icon = GFX_goal_generic_air_bomber
+		x = 50
+		y = 23
+		cost = 6
+		prerequisite = { focus = JAP_war_tide_turns }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_ideas = JAP_special_attack_corps
+		}
+	}
+
+	focus = {
+		id = JAP_war_ketsu_go
+		icon = GFX_goal_generic_major_war
+		x = 54
+		y = 23
+		cost = 0
+		prerequisite = { focus = JAP_war_tide_turns }
+		available = {
+			always = no # completes automatically, see JAP_war_autocomplete_check
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			add_ideas = JAP_ketsu_go_idea
+		}
+	}
+
+	focus = {
+		id = JAP_war_negotiated_peace
+		icon = GFX_goal_generic_dangerous_deal
+		x = 62
+		y = 23
+		cost = 8
+		prerequisite = { focus = JAP_war_tide_turns }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		completion_reward = {
+			if = { limit = { has_war_with = USA } white_peace = USA }
+			if = { limit = { has_war_with = ENG } white_peace = ENG }
+			add_stability = 0.05
 		}
 	}
 

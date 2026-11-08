@@ -129,3 +129,113 @@ USA_allies_pacific_war_level_down = {
 	else_if = { limit = { has_idea = ALLIES_pacific_war_2 } swap_ideas = { remove_idea = ALLIES_pacific_war_2 add_idea = ALLIES_pacific_war_1 } }
 	else_if = { limit = { has_idea = ALLIES_pacific_war_1 } remove_ideas = ALLIES_pacific_war_1 }
 }
+
+# War tree: completes the automatic focuses once their condition is met. Called from the
+# on_state_control_changed hook (Japan as new controller) and from on_weekly_JAP (tide, homeland).
+JAP_war_autocomplete_check = {
+	if = {
+		limit = {
+			has_completed_focus = JAP_war_china_incident
+			NOT = { has_completed_focus = JAP_war_fall_of_beijing }
+			controls_state = 608
+		}
+		complete_national_focus = JAP_war_fall_of_beijing
+	}
+	if = {
+		limit = {
+			has_completed_focus = JAP_war_china_incident
+			NOT = { has_completed_focus = JAP_war_fall_of_shanghai }
+			controls_state = 613
+		}
+		complete_national_focus = JAP_war_fall_of_shanghai
+	}
+	if = {
+		limit = {
+			has_completed_focus = JAP_war_china_incident
+			NOT = { has_completed_focus = JAP_war_fall_of_nanjing }
+			controls_state = 1035
+		}
+		complete_national_focus = JAP_war_fall_of_nanjing
+	}
+	if = {
+		limit = {
+			has_completed_focus = JAP_war_china_incident
+			NOT = { has_completed_focus = JAP_war_fall_of_guangzhou }
+			controls_state = 592
+		}
+		complete_national_focus = JAP_war_fall_of_guangzhou
+	}
+	if = {
+		limit = {
+			has_completed_focus = JAP_war_china_incident
+			NOT = { has_completed_focus = JAP_war_fall_of_wuhan }
+			controls_state = 1036
+		}
+		complete_national_focus = JAP_war_fall_of_wuhan
+	}
+	if = {
+		limit = {
+			has_completed_focus = JAP_war_china_incident
+			NOT = { has_completed_focus = JAP_war_fall_of_chongqing }
+			controls_state = 1037
+		}
+		complete_national_focus = JAP_war_fall_of_chongqing
+	}
+	if = {
+		limit = {
+			has_country_flag = JAP_pacific_war_active
+			NOT = { has_completed_focus = JAP_war_initiative }
+			JAP_pacific_tide_winning = yes
+		}
+		complete_national_focus = JAP_war_initiative
+	}
+	if = {
+		limit = {
+			has_country_flag = JAP_pacific_war_active
+			NOT = { has_completed_focus = JAP_war_tide_turns }
+			JAP_pacific_tide_losing = yes
+		}
+		complete_national_focus = JAP_war_tide_turns
+	}
+	if = {
+		limit = {
+			has_country_flag = JAP_pacific_war_active
+			NOT = { has_completed_focus = JAP_war_fall_of_singapore }
+			controls_state = 1021
+		}
+		complete_national_focus = JAP_war_fall_of_singapore
+	}
+	if = {
+		limit = {
+			has_country_flag = JAP_pacific_war_active
+			NOT = { has_completed_focus = JAP_war_fall_of_philippines }
+			controls_state = 623
+			controls_state = 327
+		}
+		complete_national_focus = JAP_war_fall_of_philippines
+	}
+	if = {
+		limit = {
+			has_country_flag = JAP_pacific_war_active
+			NOT = { has_completed_focus = JAP_war_ketsu_go }
+			OR = { NOT = { controls_state = 282 } NOT = { controls_state = 531 } NOT = { controls_state = 532 } }
+		}
+		complete_national_focus = JAP_war_ketsu_go
+	}
+}
+
+# China Occupation Regime: variables must exist before the dynamic modifier is added.
+JAP_cn_regime_init = {
+	if = {
+		limit = { NOT = { has_dynamic_modifier = { modifier = JAP_china_regime } } }
+		set_variable = { JAP_cn_political_power_gain = 0 }
+		set_variable = { JAP_cn_stability_factor = 0 }
+		set_variable = { JAP_cn_recruitable_population_factor = 0 }
+		set_variable = { JAP_cn_local_resources_factor = 0 }
+		set_variable = { JAP_cn_industrial_capacity_factory = 0 }
+		set_variable = { JAP_cn_production_speed_buildings_factor = 0 }
+		set_variable = { JAP_cn_consumer_goods_factor = 0 }
+		set_variable = { JAP_cn_resistance_target = 0 }
+		add_dynamic_modifier = { modifier = JAP_china_regime }
+	}
+}
