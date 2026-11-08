@@ -8242,19 +8242,7 @@ GER_foreign_policy_category = {
 		}
 
 		available = {
-			has_completed_focus = GER_operation_weserubung
-			if = {
-				limit = {
-					NOT = {
-						HOL = { OR = { exists = no has_war_with = GER } }
-						BEL = { OR = { exists = no has_war_with = GER } }
-					}
-				}
-				custom_trigger_tooltip = {
-					tooltip = GER_weser_start_tt
-					has_country_flag = { flag = GER_weser_start days > 15 }
-				}
-			}
+			has_completed_focus = GER_danzig_or_war
 		}
 
 		cost = 0
@@ -8381,6 +8369,172 @@ GER_foreign_policy_category = {
 				}
 			}
 
+		}
+	}
+
+	GER_fp_unternehmen_marita = {
+		icon = generic_military
+
+		allowed = { original_tag = GER }
+
+		visible = {
+			NOT = { has_country_flag = GER_marita_done }
+		}
+
+		available = {
+			has_completed_focus = GER_danzig_or_war
+			if = {
+				limit = {
+					country_exists = GRE
+					NOT = { has_war_with = GRE }
+					NOT = { GRE = { is_in_faction_with = ROOT } }
+				}
+				custom_trigger_tooltip = {
+					tooltip = GER_fp_marita_date_tt
+					date > 1940.12.12
+				}
+			}
+		}
+
+		cost = 0
+		fire_only_once = yes
+
+		complete_effect = {
+			set_country_flag = GER_marita_done
+			if = {
+				limit = {
+					OR = {
+						NOT = { country_exists = GRE }
+						has_war_with = GRE
+						GRE = { is_in_faction_with = ROOT }
+					}
+				}
+				custom_effect_tooltip = GER_fp_resolved_tt
+			}
+			else = {
+				custom_effect_tooltip = GER_marita_tt
+				if = {
+					limit = {
+						country_exists = ITA
+						NOT = { ITA = { is_in_faction_with = GER } }
+					}
+					set_country_flag = GER_marita_italy_absent
+					custom_effect_tooltip = GER_marita_italy_share_tt
+				}
+				add_named_threat = { threat = 3 name = GER_fp_unternehmen_marita }
+				declare_war_on = {
+					target = GRE
+					type = annex_everything
+				}
+
+				# Axis allies join in staggered steps, not all on this tick
+				hidden_effect = {
+					if = {
+						limit = { ITA = { is_in_faction_with = GER } }
+						ITA = { country_event = { id = germany.909 hours = 2 } }
+					}
+					if = {
+						limit = { BUL = { is_in_faction_with = GER } }
+						BUL = { country_event = { id = germany.909 hours = 4 } }
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
+		}
+	}
+
+	GER_fp_directive_25 = {
+		icon = generic_military
+
+		allowed = { original_tag = GER }
+
+		visible = {
+			NOT = { has_country_flag = GER_directive_25_done }
+		}
+
+		available = {
+			has_completed_focus = GER_danzig_or_war
+			if = {
+				limit = {
+					country_exists = YUG
+					NOT = { has_war_with = YUG }
+					NOT = { YUG = { is_in_faction_with = ROOT } }
+				}
+				custom_trigger_tooltip = {
+					tooltip = GER_fp_directive_25_date_tt
+					date > 1941.3.26
+				}
+				custom_trigger_tooltip = {
+					tooltip = GER_fp_directive_25_ai_tt
+					YUG = { is_ai = yes }
+				}
+			}
+		}
+
+		cost = 0
+		fire_only_once = yes
+
+		complete_effect = {
+			set_country_flag = GER_directive_25_done
+			if = {
+				limit = {
+					OR = {
+						NOT = { country_exists = YUG }
+						has_war_with = YUG
+						YUG = { is_in_faction_with = ROOT }
+					}
+				}
+				custom_effect_tooltip = GER_fp_resolved_tt
+			}
+			else = {
+				custom_effect_tooltip = GER_directive_25_tt
+				add_named_threat = { threat = 3 name = GER_fp_directive_25 }
+				declare_war_on = {
+					target = YUG
+					type = annex_everything
+				}
+
+				# Axis allies join in staggered steps, not all on this tick
+				hidden_effect = {
+					if = {
+						limit = { ITA = { is_in_faction_with = GER } }
+						ITA = { country_event = { id = germany.910 hours = 2 } }
+					}
+					if = {
+						limit = { HUN = { is_in_faction_with = GER } }
+						HUN = { country_event = { id = germany.910 hours = 4 } }
+					}
+					if = {
+						limit = { BUL = { is_in_faction_with = GER } }
+						BUL = { country_event = { id = germany.910 hours = 6 } }
+					}
+					if = {
+						limit = { ROM = { is_in_faction_with = GER } }
+						ROM = { country_event = { id = germany.910 hours = 8 } }
+					}
+				}
+			}
+		}
+
+		ai_will_do = {
+			factor = 10
+			modifier = {
+				factor = 0
+				OR = {
+					has_government = democratic
+					has_government = communism
+				}
+			}
 		}
 	}
 
