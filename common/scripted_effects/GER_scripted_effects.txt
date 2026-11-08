@@ -601,42 +601,6 @@ MR_pact_transfer_faction_state_effect = {
 	}
 }
 
-GER_anschluss_modify_mefo_bills_or_economy_of_conquest = {
-	if = {
-		limit = { 
-			OR = {
-				has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-				has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-			}
-		}
-		custom_effect_tooltip = anschluss_mefo_bills_tt
-	}
-}
-
-GER_czechoslovakia_modify_mefo_bills_or_economy_of_conquest = {
-	if = {
-		limit = { 
-			OR = {
-				has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-				has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-			}
-		}
-		custom_effect_tooltip = end_of_czechoslovakia_mefo_bills_tt
-	}
-}
-
-GER_yugoslavia_modify_mefo_bills_or_economy_of_conquest = {
-	if = {
-		limit = { 
-			OR = {
-				has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-				has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-			}
-		}
-		custom_effect_tooltip = yugoslavia_mefo_bills_tt
-	}
-}
-
 GER_lithuania_modify_mefo_bills_or_economy_of_conquest = {
 	if = {
 		limit = { 
@@ -773,6 +737,17 @@ GER_stop_rearmament = {
 	}
 }
 
+#Consumer goods factor floor: stacked reductions (focuses, decisions) stop at -50%
+GER_clamp_consumer_goods_factor = {
+	if = {
+		limit = { has_variable = GER_industrial_consumer_goods_factor }
+		clamp_variable = {
+			var = GER_industrial_consumer_goods_factor
+			min = -0.5
+		}
+	}
+}
+
 GER_add_mefo_bills_penalty = {
 	clamp_variable = {
 		var = GER.GER_industrial_consumer_goods_factor
@@ -801,84 +776,18 @@ GER_reduce_mefo_bills_penalty = {
 		add_to_variable = { GER_industrial_industrial_capacity_factory = GER_factory_output_penalty }
 		add_to_variable = { GER_industrial_industrial_capacity_dockyard = GER_dockyard_output_penalty }
 	}
+	GER_clamp_consumer_goods_factor = yes #Economy of Conquest reductions run this right after lowering CG
 }
 
-GER_autarky_achieved_effects = {
-	if = {
-		limit = {
-			has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-		}
-		hidden_effect = {
-			remove_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-			add_dynamic_modifier = { modifier = GER_wirtschaftswunder_modifier }
-		}
-		custom_effect_tooltip = GER_replace_mefo_bills_with_wirtschaftswunder_tt
-		add_to_variable = {
-			GER_mefo_bills_civilian_intel_to_others = 25
-			tooltip = civilian_intel_to_others_tt
-		}
-		add_to_variable = {
-			GER_mefo_bills_army_intel_to_others = 25
-			tooltip = army_intel_to_others_tt
-		}
-		add_to_variable = {
-			GER_mefo_bills_navy_intel_to_others = 25
-			tooltip = navy_intel_to_others_tt
-		}
-		add_to_variable = {
-			GER_mefo_bills_airforce_intel_to_others = 25
-			tooltip = airforce_intel_to_others_tt
-		}
-	}
-	else_if = {
-		limit = {
-			has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-		}
-		hidden_effect = {
-			remove_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-			add_dynamic_modifier = { modifier = GER_wirtschaftswunder_modifier }
-		}
-		if = {
-			limit = { 
-				check_variable = { var = GER_industrial_consumer_goods_factor value = 1 compare = greater_than_or_equals }
-			}
-			clr_country_flag = GER_mefo_bills_penalty_flag #This flag is always set when reaching 100% CGFF
-			subtract_from_variable = { GER_industrial_consumer_goods_expected_value = GER_expected_consumer_goods_penalty }
-			add_to_variable = { GER_industrial_industrial_capacity_factory = GER_factory_output_penalty }
-			add_to_variable = { GER_industrial_industrial_capacity_dockyard = GER_dockyard_output_penalty }
-		}
-		custom_effect_tooltip = GER_replace_economy_of_conquest_with_wirtschaftswunder_tt
-	}
-	else_if = {
-		limit = {
-			has_dynamic_modifier = { modifier = GER_recovering_economy_modifier }
-		}
-		hidden_effect = {
-			remove_dynamic_modifier = { modifier = GER_recovering_economy_modifier }
-			add_dynamic_modifier = { modifier = GER_wirtschaftswunder_modifier }
-		}
-		custom_effect_tooltip = GER_replace_recovering_economy_with_wirtschaftswunder_tt
-	}
-	#custom_effect_tooltip = GER_modify_wirtschaftswunder_modifier_tt
+GER_autarky_achieved_effects = { #Autarky adds to the current economy modifier (MEFO Bills / Economy of Conquest / ...) instead of replacing it
+	custom_effect_tooltip = GER_modify_industrial_modifier_current_tt
 	add_to_variable = {
-		GER_industrial_production_speed_arms_factory_factor = 0.05
-		tooltip = production_speed_arms_factory_factor_tt
-	}
-	add_to_variable = {
-		GER_industrial_production_speed_dockyard_factor = 0.05
-		tooltip = production_speed_dockyard_factor_tt
-	}
-	add_to_variable = {
-		GER_industrial_industrial_capacity_factory = 0.05
+		GER_industrial_industrial_capacity_factory = 0.10
 		tooltip = industrial_capacity_factory_tt
 	}
 	add_to_variable = {
-		GER_industrial_industrial_capacity_dockyard = 0.05
-		tooltip = industrial_capacity_dockyard_tt
-	}
-	set_variable = {
-		GER_industrial_consumer_goods_factor = 0
-		tooltip = consumer_goods_factor_tt
+		GER_industrial_production_speed_arms_factory_factor = 0.10
+		tooltip = production_speed_arms_factory_factor_tt
 	}
 }
 
@@ -961,6 +870,9 @@ GER_modify_industrial_modifier = {
 			has_dynamic_modifier = { modifier = GER_wirtschaftswunder_modifier }
 		}
 		custom_effect_tooltip = GER_modify_wirtschaftswunder_modifier_tt
+	}
+	else = {
+		custom_effect_tooltip = GER_modify_industrial_modifier_current_tt
 	}
 }
 
@@ -1190,73 +1102,6 @@ GER_pay_back_mefo_bills = { #TODO_Danne see if this can be simplified!
 		}
 		add_political_power = -380
 		add_timed_idea = { idea = GER_mefo_bills_ended days = 420 }
-	}
-}
-
-#Should only be used with Anschluss and similar situations!!
-GER_seize_gold_reserves_in_europe_peacefully = { #This will only work when ROOT is Germany, like in Events and targeted Decisions 
-	if = {
-		limit = { 
-			OR = {
-				has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-				has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-			}
-		}
-		if = {
-			limit = {
-				FROM = {
-					any_core_state = {
-						is_on_continent = europe
-						is_controlled_by = ROOT
-						NOT = { has_state_flag = GER_seize_gold_reserves_state_flag }
-					}
-				}
-			}
-			
-			ROOT = { set_temp_variable = { occupied_state_num_factory = 0 } } #This will show how many factories in total Germany controls from FROM's cores
-			#add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_military_factories_in_cores@GER }
-			add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_civilian_factories_in_cores@GER }
-			add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_naval_factories_in_cores@GER }
-			add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_civilian_factories_in_cores@SLO }
-			add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_naval_factories_in_cores@SLO }
-			add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_civilian_factories_in_cores@HUN }
-			add_to_temp_variable = { GER.occupied_state_num_factory = FROM.num_of_naval_factories_in_cores@HUN }
-
-			FROM = {
-				every_core_state = {
-					limit = {
-						is_on_continent = europe
-						is_fully_controlled_by = ROOT
-						NOT = { has_state_flag = GER_seize_gold_reserves_state_flag }
-					}
-					set_state_flag = GER_seize_gold_reserves_state_flag
-				}
-			}
-
-			ROOT = {			
-				divide_temp_variable = { occupied_state_num_factory = 200 } #This is necessary since a single factory will increase the occupied_state_num_factory number to 1, which in turn translates to -100% when subtracting from the Consumer Goods. Dividing it by 100 here will give you 1% instead, which is more like what we want.
-				multiply_temp_variable = { occupied_state_num_factory = -1 }
-				
-				if = {
-					limit = {
-						has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
-					}
-					custom_effect_tooltip = GER_modify_mefo_bills_modifier_tt
-				}
-				else_if = {
-					limit = {
-						has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
-					}
-					custom_effect_tooltip = GER_modify_economy_of_conquest_modifier_tt
-				}
-
-				add_to_variable = {
-					GER_industrial_consumer_goods_factor = occupied_state_num_factory
-					tooltip = consumer_goods_factor_tt
-				}
-				GER_reduce_mefo_bills_penalty = yes
-			}
-		}
 	}
 }
 
@@ -3455,4 +3300,21 @@ GER_check_oil = {
 	subtract_from_variable = { GER.num_ger_oil = num_iberian_oil }
 
 	add_to_variable = {	GER.num_faction_total_oil = GER.num_ger_oil }
+}
+
+# Bilateral Clearing Agreements: resource rights are lost when the state changes owner
+GER_restore_clearing_rights = {
+	if = {
+		limit = {
+			has_country_flag = GER_clearing_izmir
+			339 = {
+				NOT = { is_owned_by = GER }
+				NOT = { has_resources_rights = { receiver = GER resources = { chromium } } }
+				OWNER = { NOT = { has_war_with = GER } }
+			}
+		}
+		339 = {
+			OWNER = { give_resource_rights = { receiver = GER state = 339 resources = { chromium } } }
+		}
+	}
 }

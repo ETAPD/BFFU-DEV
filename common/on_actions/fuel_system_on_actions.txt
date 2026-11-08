@@ -1,18 +1,11 @@
 on_actions = {
-
-	# Build the fuel-manager list (GER/JAP/ENG), each manager's faction_members_array
-	# and the GLOBAL.fuel_countries array, and apply the miss-nothing min_fuel default.
 	on_startup = {
 		effect = {
-			SWE = { fuel_startup_effect = yes }
+			OBG = { fuel_startup_effect = yes }
 		}
 	}
 
-	# Run the fuel redistribution once per day. on_daily_SOV fires only in SOV scope
-	# (a permanent major), so on_daily_fuel runs exactly once per day rather than once
-	# per country. The effect operates on the GLOBAL fuel arrays, so the scope only
-	# needs to be a country that exists. (Mirrors Horst's on_daily_SOV wiring.)
-	on_daily_SOV = {
+	on_daily_OBG = {
 		effect = {
 			if = {
 				limit = { NOT = { has_global_flag = fuel_manager_reserve_fixed } }
@@ -22,6 +15,17 @@ on_actions = {
 				set_global_flag = fuel_manager_reserve_fixed
 			}
 			on_daily_fuel = yes
+		}
+	}
+
+	on_monthly_OBG = {
+		effect = {
+			# Keep every manager's member list up to date (AI and players alike). The refresh only
+			# rebuilds when the membership changed, so a player's priority order survives otherwise.
+			for_each_scope_loop = {
+				array = GLOBAL.fuel_system_manager    # GER, ENG, JAP - THIS = that manager
+				fuel_system_refresh_list = yes
+			}
 		}
 	}
 }

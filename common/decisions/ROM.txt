@@ -7,6 +7,7 @@ operations = {
 		}
 
 		visible = {
+			NOT = { has_completed_focus = ROM_codreanu_rises }
 			NOT = {has_country_flag = ROM_innovation_1}
 		}
 
@@ -41,6 +42,7 @@ operations = {
 		}
 
 		visible = {
+			NOT = { has_completed_focus = ROM_codreanu_rises }
 			NOT = {has_country_flag = ROM_innovation_1}
 		}
 
@@ -77,6 +79,7 @@ operations = {
 		}
 
 		visible = {
+			NOT = { has_completed_focus = ROM_codreanu_rises }
 			NOT = {has_country_flag = ROM_innovation_2}
 		}
 
@@ -139,6 +142,7 @@ operations = {
 		}
 
 		visible = {
+			NOT = { has_completed_focus = ROM_codreanu_rises }
 			NOT = {has_country_flag = ROM_innovation_2}
 		}
 
@@ -201,6 +205,7 @@ operations = {
 		}
 
 		visible = {
+			NOT = { has_completed_focus = ROM_codreanu_rises }
 			NOT = {has_country_flag = ROM_innovation_3}
 		}
 
@@ -277,6 +282,7 @@ operations = {
 		}
 
 		visible = {
+			NOT = { has_completed_focus = ROM_codreanu_rises }
 			NOT = {has_country_flag = ROM_innovation_3}
 		}
 
@@ -531,12 +537,13 @@ operations = {
 		state_target = yes
 		on_map_mode = map_and_decisions_view
 		targets = {
-			192 834
+			192
     	}
 		highlight_states = { 
 			highlight_state_targets = {
 				state = 192
 				state = 834
+				state = 198
 			}
 		}
 
@@ -557,6 +564,14 @@ operations = {
 						}
 					}
 					834 = {
+						CONTROLLER = {
+							OR = {
+								tag = ROM
+								is_subject_of = ROM
+							}
+						}
+					}
+					198 = {
 						CONTROLLER = {
 							OR = {
 								tag = ROM
@@ -624,6 +639,106 @@ operations = {
 
 		complete_effect = {
 			custom_effect_tooltip = ROM_surrender_soviets
+		}
+	}
+
+	ROM_evacuation_of_bessarabia = {
+		icon = GFX_decision_generic_construction
+
+		allowed = {
+			tag = ROM
+		}
+
+		activation = {
+			NOT = {
+				OR = {
+					has_country_flag = ROM_lost_bessarabia
+					has_country_flag = ROM_won_bessarabia
+        		}
+    		}
+			has_completed_focus = ROM_carol_rises
+			has_war_with = SOV
+		}
+
+		visible = {
+			has_war_with = SOV
+			has_completed_focus = ROM_carol_rises
+			NOT = {
+				OR = {
+					has_country_flag = ROM_lost_bessarabia
+					has_country_flag = ROM_won_bessarabia
+				}
+        	}	
+			78 = {
+				CONTROLLER = {
+					tag = ROM
+				}
+			}
+		}
+		
+		
+
+		available = {
+			always = no
+		}
+
+		days_mission_timeout = 30
+
+		is_good = yes
+
+		cancel_trigger = {
+			OR = {
+				NOT = {
+					78 = {
+						CONTROLLER = {
+							tag = ROM
+						}
+					}
+				}
+				has_completed_focus = ROM_antonescu_takes_control
+				has_completed_focus = ROM_carols_triumph
+			}
+		}
+
+		cancel_effect = {
+			
+		}
+
+		complete_effect = {
+			
+		}
+
+		timeout_effect = {
+			if = {
+				limit = {
+					78 = {
+						industrial_complex > 0
+					}
+				}
+				78 = {
+					remove_building = {
+						type = industrial_complex
+						level = 1
+					}
+				}
+			}
+			if = {
+				limit = {
+					78 = {
+						arms_factory  > 0
+					}
+				}
+				78 = {
+					remove_building = {
+						type = arms_factory
+						level = 1
+					}
+				}
+			}
+			hidden_effect = {
+				activate_mission = ROM_evacuation_of_bessarabia
+			}
+			#custom_effect_tooltip = ROM_evacuation_of_bessarabia_desc
 		}
 	}
 

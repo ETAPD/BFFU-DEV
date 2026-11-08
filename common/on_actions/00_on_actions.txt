@@ -23,6 +23,23 @@ on_actions = {
 		}
 
 		effect = {
+			# The 1936 campaign works itself: the election focus is not selectable, it completes by event on Election
+			# Day (3 November 1936, 307 days in), like the Soviet auto-completing focuses (SOV_auto_complete_focus).
+			USA = {
+				if = {
+					limit = {
+						date < 1936.11.1
+						NOT = { has_completed_focus = USA_the_1936_election }
+					}
+					set_country_flag = { flag = USA_1936_election_in_progress_flag days = 307 value = 1 }
+					set_variable = { USA_campaign_side = -1 }
+					country_event = { id = usa.230 days = 307 }
+					activate_mission = USA_campaign_overview
+				}
+			}
+		}
+
+		effect = {
 			# Activate the 1936 election polling bar on day 1 (1936 bookmark only).
 			USA = {
 				if = {
@@ -1521,6 +1538,13 @@ on_actions = {
 				}
 				if = {
 					limit = {
+						date > 1937.5.31
+						date < 1938.1.1
+					}
+					set_global_flag = scw_pyrrhic_victory
+				}
+				if = {
+					limit = {
 						is_historical_focus_on = no
 					}
 					add_ideas = SPA_recovering_from_civil_war
@@ -1660,20 +1684,6 @@ on_actions = {
 			}
 			if = {
 				limit = {
-					original_tag = BUL
-					has_focus_tree = generic_focus
-				}
-				if = {
-					limit = { has_idea = BUL_second_national_catastrophe }
-					remove_ideas = BUL_second_national_catastrophe
-				}
-				if = {
-					limit = { has_idea = BUL_second_national_catastrophe_02 }
-					remove_ideas = BUL_second_national_catastrophe_02
-				}
-			}
-			if = {
-				limit = {
 					has_dlc = "Graveyard of Empires"
 					original_tag = PER
 					has_cosmetic_tag = PER_loyalist_iran
@@ -1772,6 +1782,21 @@ on_actions = {
 					is_puppet = no
 				}
 				abandon_colony_tag = yes
+			}
+		}
+	}
+
+	#Anti-Comintern Pact on its historical date: 25 November 1936 is 329 days after the 1936 start
+	on_startup = {
+		effect = {
+			GER = {
+				if = {
+					limit = { date < 1936.11.25 }
+					country_event = { id = germany.2102 days = 329 }
+				}
+				else = {
+					set_global_flag = GER_anti_comintern_signed
+				}
 			}
 		}
 	}
@@ -4934,6 +4959,22 @@ on_actions = {
 			}
 			if = {
 				limit = {
+					has_global_flag = SPR_airfields_closed
+					OR = {
+						AND = {
+							ROOT = { original_tag = GER }
+							FROM = { original_tag = SOV }
+						}
+						AND = {
+							ROOT = { original_tag = SOV }
+							FROM = { original_tag = GER }
+						}
+					}
+				}
+				SPR_reopen_mainland_airfields = yes
+			}
+			if = {
+				limit = {
 					ROOT = { original_tag = GER }
 					ROOT = { GER_has_mefo_bills = yes }
 					NOT = { FROM = { original_tag = GER } }
@@ -5143,8 +5184,9 @@ on_actions = {
 				limit = {
 					tag = GER
 					64 = { is_controlled_by = GER }
-					any_other_country = {
-						original_tag = GER
+					any_country_with_original_tag = {
+						original_tag_to_check = GER
+						NOT = { tag = PREV }
 						has_government = fascism
 						has_civil_war = yes
 						owns_state = 64
@@ -5826,20 +5868,13 @@ on_actions = {
 					add_to_variable = { GER_narvik_civs = 1 }
 				}
 			}
-			#MEFO BILLS and ECONOMY OF CONQUEST increasing CG
+			#MEFO BILLS and ECONOMY OF CONQUEST: the monthly CG creep was replaced by a flat +8% expected consumer goods at game start
 			if = {
 				limit = {
 					OR = {
 						has_dynamic_modifier = { modifier = GER_mefo_bills_modifier }
 						has_dynamic_modifier = { modifier = GER_economy_of_conquest_modifier }
 					}
-				}
-				if = {
-					limit = {
-						check_variable = { GER_industrial_consumer_goods_factor < 1 }
-					}
-					add_to_variable = { GER_industrial_consumer_goods_factor = GER_monthly_consumer_goods_increase }
-					GER_add_mefo_bills_penalty = yes #Clamps CGFF too 100% and adds penalties
 				}
 				GER_reduce_mefo_bills_penalty = yes #This is a fail-safe, in case it wasn't lowered elsewhere but should have been
 			}

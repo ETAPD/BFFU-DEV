@@ -1,0 +1,238 @@
+# USA on_actions (merged from gmfu_usa_startup.txt and usa_corporate_on_actions.txt)
+
+on_actions = {
+	# ── USA joins the Allied faction when ENG first goes to war with GER (Danzig or War) ──────
+	# ROOT = country that entered the war
+	on_war = {
+		effect = {
+			if = {
+				limit = {
+					original_tag = ENG
+					has_war_with = GER
+					is_faction_leader = yes
+					NOT = { has_global_flag = usa_joined_allies }
+					USA = {
+						NOT = { is_in_faction = yes }
+						NOT = { has_war = yes }
+					}
+				}
+				add_to_faction = USA
+				set_global_flag = usa_joined_allies
+			}
+
+			# Big Gas wartime rubber — fires once when USA enters a war after completing the focus
+			if = {
+				limit = {
+					has_country_flag = USA_big_gas_rubber_pending
+					has_war = yes
+				}
+				modify_building_resources = {
+					building = synthetic_rubber_refinery
+					resource = rubber
+					amount = 10
+				}
+				clr_country_flag = USA_big_gas_rubber_pending
+			}
+		}
+	}
+
+	# MacArthur's Return — re-fire the upgrade event whenever the USA (re)takes the
+	# Philippines after completing the focus, until it has successfully fired once.
+	# ROOT is new controller, FROM is old controller, FROM.FROM is the state ID.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					tag = USA
+					has_completed_focus = USA_control_the_phillippines
+					NOT = { has_country_flag = USA_macarthur_returned }
+					controls_state = 327  # Philippines
+					controls_state = 623  # Luzon
+				}
+				country_event = { id = usa.1005 hours = 6 }
+			}
+		}
+	}
+
+	on_monthly_USA = {
+		effect = {
+			# Bradley theorist mastery gain - if Bradley is hired as theorist
+			if = {
+				limit = {
+					any_character = {
+						is_character = usa_omar_bradley
+						is_hired_as_advisor = yes
+						has_advisor_role = theorist
+					}
+				}
+				add_mastery = { amount = 9 track = infantry }
+				add_mastery = { amount = 9 track = armor }
+				add_mastery = { amount = 9 track = combat_support }
+				add_mastery = { amount = 9 track = operations }
+			}
+
+			# Reclaim Democracy — fervour to liberate a fallen Britain. Granted once the
+			# UK has capitulated and the USA is at war; auto-removed when Britain is retaken.
+			if = {
+				limit = {
+					has_war = yes
+					ENG = { has_capitulated = yes }
+					NOT = { has_idea = USA_reclaim_democracy }
+					NOT = {
+						ENG = {
+							controls_state = 120
+							controls_state = 121
+							controls_state = 122
+							controls_state = 123
+							controls_state = 125
+							controls_state = 126
+							controls_state = 127
+							controls_state = 128
+							controls_state = 129
+							controls_state = 130
+							controls_state = 131
+							controls_state = 132
+							controls_state = 133
+							controls_state = 136
+							controls_state = 338
+							controls_state = 931
+						}
+					}
+				}
+				add_ideas = USA_reclaim_democracy
+				# the attack bonus is army_claim_attack_factor, so claims limit it to the British mainland
+				120 = { add_claim_by = ROOT }
+				121 = { add_claim_by = ROOT }
+				122 = { add_claim_by = ROOT }
+				123 = { add_claim_by = ROOT }
+				125 = { add_claim_by = ROOT }
+				126 = { add_claim_by = ROOT }
+				127 = { add_claim_by = ROOT }
+				128 = { add_claim_by = ROOT }
+				129 = { add_claim_by = ROOT }
+				130 = { add_claim_by = ROOT }
+				131 = { add_claim_by = ROOT }
+				132 = { add_claim_by = ROOT }
+				133 = { add_claim_by = ROOT }
+				136 = { add_claim_by = ROOT }
+				338 = { add_claim_by = ROOT }
+				931 = { add_claim_by = ROOT }
+				set_country_flag = USA_reclaim_democracy_claims
+			}
+			# idea cancelled (Britain liberated): drop the temporary claims
+			if = {
+				limit = {
+					has_country_flag = USA_reclaim_democracy_claims
+					NOT = { has_idea = USA_reclaim_democracy }
+				}
+				120 = { remove_claim_by = ROOT }
+				121 = { remove_claim_by = ROOT }
+				122 = { remove_claim_by = ROOT }
+				123 = { remove_claim_by = ROOT }
+				125 = { remove_claim_by = ROOT }
+				126 = { remove_claim_by = ROOT }
+				127 = { remove_claim_by = ROOT }
+				128 = { remove_claim_by = ROOT }
+				129 = { remove_claim_by = ROOT }
+				130 = { remove_claim_by = ROOT }
+				131 = { remove_claim_by = ROOT }
+				132 = { remove_claim_by = ROOT }
+				133 = { remove_claim_by = ROOT }
+				136 = { remove_claim_by = ROOT }
+				338 = { remove_claim_by = ROOT }
+				931 = { remove_claim_by = ROOT }
+				clr_country_flag = USA_reclaim_democracy_claims
+			}
+
+			# Kaiser Industries trust — always Friendly if Henry J. Kaiser is advisor
+			if = {
+				limit = {
+					has_completed_focus = USA_reconcile_with_domestic_corporations
+					has_idea = usa_henry_j_kaiser
+				}
+				set_variable = { var = USA_kaiser_trust value = 3 }
+			}
+
+			# War entry when the UK loses London: see on_weekly_USA below.
+
+			# War entry — Jan 1st 1942 and USA still at peace
+			# Historical backstop: if Pearl Harbor never happened, USA joins anyway
+			if = {
+				limit = {
+					NOT = { is_in_faction = yes }
+					ENG = { is_faction_leader = yes }
+					date > 1941.12.31
+					NOT = { has_war = yes }
+				}
+				remove_ideas = USA_neutrality_no_war_call
+				ENG = { add_to_faction = ROOT }
+				country_event = { id = usa.1006 }
+			}
+		}
+	}
+
+	# War entry — UK loses London (not held by Britain or an ally).
+	# Lifts the non-intervention block and forces the USA into every war Britain is in,
+	# whether or not the USA is already in the Allies. Runs once.
+	on_weekly_USA = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_country_flag = USA_london_war_entry_done }
+					126 = { NOT = { CONTROLLER = { OR = { tag = ENG is_in_faction_with = ENG } } } }
+					ENG = { has_war = yes }
+				}
+				set_country_flag = USA_london_war_entry_done
+				remove_ideas = USA_neutrality_no_war_call
+				set_rule = { can_join_factions = yes }
+				if = {
+					limit = { NOT = { is_in_faction = yes } }
+					random_country = {
+						limit = {
+							is_faction_leader = yes
+							OR = { tag = ENG is_in_faction_with = ENG }
+						}
+						add_to_faction = ROOT
+					}
+				}
+				if = {
+					limit = { controls_state = 100 } # Iceland
+					100 = {
+						add_extra_state_shared_building_slots = 15
+						set_building_level = { type = air_base level = 10 instant_build = yes }
+						set_building_level = { type = radar_station level = 3 instant_build = yes }
+						set_building_level = { type = naval_base level = 10 province = 12674 instant_build = yes }
+					}
+				}
+				if = {
+					limit = { controls_state = 101 } # Greenland
+					101 = {
+						add_extra_state_shared_building_slots = 15
+						set_building_level = { type = air_base level = 10 instant_build = yes }
+						set_building_level = { type = radar_station level = 3 instant_build = yes }
+						set_building_level = { type = naval_base level = 10 province = 12512 instant_build = yes }
+					}
+				}
+				country_event = { id = usa.1006 }
+			}
+		}
+	}
+
+	on_monthly_BUL = {
+		effect = {
+			if = {
+				limit = {
+					any_character = {
+						is_character = BUL_theodosi_daskalov
+						is_hired_as_advisor = yes
+						has_advisor_role = theorist
+					}
+				}
+				add_mastery = { amount = 4 track = infantry }
+				add_mastery = { amount = 4 track = armor }
+				add_mastery = { amount = 4 track = combat_support }
+				add_mastery = { amount = 4 track = operations }
+			}
+		}
+	}
+}

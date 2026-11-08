@@ -1,64 +1,81 @@
 on_actions = {
-    on_startup = {
-        effect = {
-        every_country = {
-            country_event = { id = speech.1 days = 1 }
-        }
+	on_startup = {
+		effect = {
+			every_country = {
+				country_event = { id = speech.1 days = 1 }
+			}
+			if = {
+				limit = {
+					has_game_rule = {
+						rule = disable_4tile_alamein
+						option = ENABLED
+					}
+				}
+			OBG = {
+            transfer_state = 1094
+            }
+			}
 		}
-    }
-    on_weekly = {
-    effect = {
-        if = {
-            limit = {
-			NOT = { has_global_flag = i_saw_this_event_nigga }
-            FRA = { has_capitulated = yes }
-            ITA = {
-            controls_state = 448 
-            controls_state = 450
-            controls_state = 451			
-            }
-            ENG = {
-            controls_state = 1047
-            }
-            }
-            news_event = { id = speech.12 }
-			set_global_flag = i_saw_this_event_nigga
-        }
-        if = {
-            limit = {
-                ENG = {
-                    has_idea = ENG_Operation_Compass
-                    NOT = { controls_state = 452 }
-                    NOT = { has_global_flag = i_saw_this_event_nigga_2 }
-                }
-            }
-            news_event = { id = speech.16 }
-            set_global_flag = i_saw_this_event_nigga_2
-        }
-        if = {
-            limit = {
-                ITA = {
-                has_war_with = ENG
-                NOT = { has_global_flag = i_saw_this_event_nigga_3 }
-                }
-            }
-            news_event = { id = speech.17 }
-            set_global_flag = i_saw_this_event_nigga_3
-            every_country = {
-                if = { limit = { is_ai = no } }
-                play_song = "ITA_join_war_MMCT"
-            }
-        }
-    }
-    }
-    on_declare_war = {
-        effect = {
-            if = {
-                limit = {
-                    ROOT = { tag = JAP }
-                    FROM = { tag = CHI }
-                }
-			        country_event = { id = speech.10 }
+	}
+	
+	on_weekly_ENG = {
+		effect = {
+			if = {
+				limit = {
+					NOT = { has_global_flag = med_collapse_event_seen }
+					FRA = { has_capitulated = yes }
+					ITA = {
+						controls_state = 448
+						controls_state = 450
+						controls_state = 451
+					}
+					controls_state = 1047
+				}
+				news_event = { id = speech.12 }
+				set_global_flag = med_collapse_event_seen
+			}
+			if = {
+				limit = {
+					has_idea = ENG_Operation_Compass
+					NOT = { controls_state = 452 }
+					NOT = { has_global_flag = compass_event_seen }
+				}
+				news_event = { id = speech.16 }
+				set_global_flag = compass_event_seen
+			}
+			if = {
+				limit = {
+					has_country_flag = ENG_libyan_gambit_active
+					NOT = { has_country_flag = ENG_compass_launched }
+					has_war_with = ITA
+				}
+				ENG_operation_compass_effect = yes
+			}
+			if = {
+				limit = { has_war_with = ITA }
+				ENG_med_gambit_start_effect = yes
+			}
+			if = {
+				limit = {
+					ITA = {
+						has_war_with = ENG
+						NOT = { has_global_flag = ita_war_event_seen }
+					}
+				}
+				news_event = { id = speech.17 }
+				set_global_flag = ita_war_event_seen
+			}
+		}
+	}
+
+	on_declare_war = {
+		effect = {
+			if = {
+				limit = {
+					ROOT = { tag = JAP }
+					FROM = { tag = CHI }
+				}
+				country_event = { id = speech.10 }
 				ROOT = {
 					if = {
 						limit = { has_country_flag = JAP_behead_dragon_prepared }
@@ -101,64 +118,79 @@ on_actions = {
 						}
 					}
 				}
-                every_country = {
-                if = { 
-				limit = { is_ai = no }
-			    play_song = "marcopolo_MMCT" 
+			}
+			if = {
+				limit = {
+					ROOT = { tag = GER }
+					FROM = { tag = POL }
 				}
-                }
-            }
-            if = {
-                limit = {
-                    ROOT = { tag = GER }
-                    FROM = { tag = POL }
-                }
 				country_event = { id = speech.8 }
-                every_country = {
-                if = { 
-				limit = { is_ai = no }
-			    play_song = "DanzigOrWar_MMCT" 
+				every_country = {
+					if = {
+						limit = {
+							is_ai = no
+							NOT = { has_country_flag = ENG_danzig_song_played }
+						}
+
+						set_country_flag = ENG_danzig_song_played
+					}
 				}
-                }
-            }
-            if = {
-                limit = {
-                    ROOT = { tag = JAP }
-                    FROM = { tag = USA }
-                }
-			        country_event = { id = speech.11 }
-                every_country = {
-                if = { 
-				limit = { is_ai = no }
-			    play_song = "Tora_Tora_Tora_MMCT" 
+				if = {
+					limit = {
+						ENG = { has_completed_focus = ENG_study_german_war_plans }
+					}
+					ENG = {
+						add_timed_idea = { idea = ENG_Decyphered_German_War_Plans days = 90 }
+					}
 				}
-            }
-            }
-            if = {
-                limit = {
-                    ROOT = { tag = GER }
-                    FROM = { tag = SOV }
-                }
-			    country_event = { id = speech.9 }
-                every_country = {
-                if = { 
-				limit = { is_ai = no }
-			    play_song = "barb_MMCT" 
+			}
+			if = {
+				limit = {
+					ROOT = { tag = JAP }
+					FROM = { tag = USA }
 				}
-                }
-            }
-            if = {
-                limit = {
-                    ROOT = { tag = GER }
-                    FROM = { tag = BEL }
-                }
-                every_country = {
-                if = { 
-				limit = { is_ai = no }
-			    play_song = "gelb_MMCT" 
+				country_event = { id = speech.11 }
+			}
+			if = {
+				limit = {
+					ROOT = { tag = GER }
+					FROM = { tag = SOV }
 				}
-                }
-            }
+				country_event = { id = speech.9 }
+			}
+			if = {
+				limit = {
+					OR = {
+						AND = { ROOT = { tag = ITA } FROM = { tag = ENG } }
+						AND = { ROOT = { tag = ENG } FROM = { tag = ITA } }
+					}
+				}
+				ENG = {
+					if = {
+						limit = {
+							has_country_flag = ENG_libyan_gambit_active
+							NOT = { has_country_flag = ENG_compass_launched }
+						}
+						ENG_operation_compass_effect = yes
+					}
+					ENG_med_gambit_start_effect = yes
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						ROOT = { tag = ENG }
+						FROM = { tag = ENG }
+					}
+				}
+				ENG = {
+					if = {
+						limit = { has_country_flag = ENG_boost_mil_prod_cap_active }
+						add_to_variable = { ENG_production_factory_max_efficiency_factor_var = -0.10 }
+						clr_country_flag = ENG_boost_mil_prod_cap_active
+					}
+				}
+			}
 		}
-    }   
+	}
 }

@@ -4358,7 +4358,6 @@ foreign_politics = {
 		available = {
 			GER = {
 				OR = {
-					has_completed_focus = GER_occupation_poland
 					has_completed_focus = GER_occupation_poland2
 					}
 				}
@@ -4377,6 +4376,20 @@ foreign_politics = {
 		fire_only_once = yes
 		complete_effect = {
 			annex_country = { target = POL transfer_troops = yes }
+			hidden_effect = {
+				GER = {
+					transfer_state = 98
+					transfer_state = 807
+					transfer_state = 87
+					transfer_state = 86
+					transfer_state = 10
+					transfer_state = 92
+					transfer_state = 762
+					transfer_state = 88
+					transfer_state = 90
+					transfer_state = 85
+				}
+			}
 		}
 	}
 
@@ -4973,6 +4986,58 @@ foreign_politics = {
 					attacker = 408
 					defender = 1028
 					defender_win = yes
+				}
+			}
+		}
+	}
+
+	# Spanish gold: every 120 days of the Spanish Civil War
+	SOV_spanish_gold_mission = {
+		icon = GFX_decision_USA_cnc_money
+
+		allowed = {
+			original_tag = SOV
+		}
+
+		available = {
+			hidden_trigger = { always = no }
+		}
+
+		activation = {
+			has_global_flag = spanish_civil_war
+			NOT = { has_global_flag = scw_over }
+			NOT = { has_country_flag = SOV_spanish_gold_claimed }
+		}
+
+		visible = {
+			hidden_trigger = {
+				has_global_flag = spanish_civil_war
+				NOT = { has_global_flag = scw_over }
+				NOT = { has_country_flag = SOV_spanish_gold_claimed }
+			}
+		}
+		cancel_if_not_visible = yes
+
+		cancel_trigger = {
+			OR = {
+				has_global_flag = scw_over
+				has_country_flag = SOV_spanish_gold_claimed
+			}
+		}
+
+		is_good = yes
+		fire_only_once = no
+		selectable_mission = no
+		days_mission_timeout = 120
+
+		timeout_effect = {
+			custom_effect_tooltip = SOV_spanish_gold_mission_timeout_tt
+			hidden_effect = {
+				add_to_variable = { SOV_spanish_gold_periods = 1 }
+				add_to_variable = { SOV_spanish_gold_cg = -0.01 }
+				if = {
+					limit = { check_variable = { SOV_spanish_gold_periods > 1 } }
+					add_to_variable = { SOV_spanish_gold_pp = 50 }
 				}
 			}
 		}
@@ -7729,16 +7794,9 @@ SOV_propaganda_campaigns = {
 		available = {
 			SOV_propaganda_poster_slot_available = yes
 
-			any_country = {
+			any_country_with_original_tag_of = {
+				target = { ENG FRA GER ITA USA JAP }
 				has_government = fascism
-				OR = {
-					tag = ENG
-					tag = FRA
-					tag = GER
-					tag = ITA
-					tag = USA
-					tag = JAP
-				}
 			}
 		}
 
@@ -8114,89 +8172,89 @@ SOV_propaganda_campaigns = {
 		}
 	}
 
-	SOV_propaganda_sweep_scum_out = { # ID = 18
-		priority = 17
+	# SOV_propaganda_sweep_scum_out = { # ID = 18
+	# 	priority = 17
 
-		icon = generic_prepare_civil_war
+	# 	icon = generic_prepare_civil_war
 
-		ai_will_do = {
-			base = 0.5
-			modifier = {
-				add = 100
-				has_country_flag = { flag = SOV_great_patriotic_war_flag days > 365 }
-			}
-			modifier = {
-				factor = 0.1
-				surrender_progress > 0.75
-			}
-			modifier = {
-				factor = 0.1
-				check_variable = { SOV_propaganda_sweep_scum_out_cost > 30 } #Less likely to do it a third time
-			}
-			modifier = {
-				factor = 0.1
-				check_variable = { SOV_propaganda_sweep_scum_out_cost > 45 } #Even less likely to do it a fourth time
-			}
-			modifier = {
-				factor = 0
-				check_variable = { SOV_propaganda_sweep_scum_out_cost > 90 } #Shouldn't even considered doing it a fifth time
-			}
-		}
+	# 	ai_will_do = {
+	# 		base = 0.5
+	# 		modifier = {
+	# 			add = 100
+	# 			has_country_flag = { flag = SOV_great_patriotic_war_flag days > 365 }
+	# 		}
+	# 		modifier = {
+	# 			factor = 0.1
+	# 			surrender_progress > 0.75
+	# 		}
+	# 		modifier = {
+	# 			factor = 0.1
+	# 			check_variable = { SOV_propaganda_sweep_scum_out_cost > 30 } #Less likely to do it a third time
+	# 		}
+	# 		modifier = {
+	# 			factor = 0.1
+	# 			check_variable = { SOV_propaganda_sweep_scum_out_cost > 45 } #Even less likely to do it a fourth time
+	# 		}
+	# 		modifier = {
+	# 			factor = 0
+	# 			check_variable = { SOV_propaganda_sweep_scum_out_cost > 90 } #Shouldn't even considered doing it a fifth time
+	# 		}
+	# 	}
 
-		allowed = {
-			original_tag = SOV
-		}
+	# 	allowed = {
+	# 		original_tag = SOV
+	# 	}
 
-		available = {
-			SOV_propaganda_poster_slot_available = yes
+	# 	available = {
+	# 		SOV_propaganda_poster_slot_available = yes
 
-			has_war = yes
-			any_enemy_country = {
-				any_controlled_state = {
-					is_core_of = ROOT
-				}
-			}
-		}
+	# 		has_war = yes
+	# 		any_enemy_country = {
+	# 			any_controlled_state = {
+	# 				is_core_of = ROOT
+	# 			}
+	# 		}
+	# 	}
 
-		visible = {
-			OR = {
-				has_completed_focus = SOV_share10
-				#has_completed_focus = SOV_light_broad_research_efforts
-				has_completed_focus = SOV_military_research
-				has_country_flag = SOV_debug_unlock_propaganda_campaigns_flag #debug
-			}
-		}
+	# 	visible = {
+	# 		OR = {
+	# 			has_completed_focus = SOV_share10
+	# 			#has_completed_focus = SOV_light_broad_research_efforts
+	# 			has_completed_focus = SOV_military_research
+	# 			has_country_flag = SOV_debug_unlock_propaganda_campaigns_flag #debug
+	# 		}
+	# 	}
 
-		days_remove = SOV_default_propaganda_campaign_duration
+	# 	days_remove = SOV_default_propaganda_campaign_duration
 
-		days_re_enable = SOV_default_propaganda_campaign_cooldown
+	# 	days_re_enable = SOV_default_propaganda_campaign_cooldown
 
-		cost = SOV_propaganda_sweep_scum_out_cost
+	# 	cost = SOV_propaganda_sweep_scum_out_cost
 
-		modifier = {
-			army_core_attack_factor = 0.05
-			army_core_defence_factor = 0.05
-		}
+	# 	modifier = {
+	# 		army_core_attack_factor = 0.05
+	# 		army_core_defence_factor = 0.05
+	# 	}
 
-		complete_effect = {
-			set_variable = { SOV_new_propaganda_campaign = 18 }
-			SOV_pick_propaganda_campaign_slot_effect = yes
-			SOV_achievement_propaganda_counter_effect = yes
-		}
+	# 	complete_effect = {
+	# 		set_variable = { SOV_new_propaganda_campaign = 18 }
+	# 		SOV_pick_propaganda_campaign_slot_effect = yes
+	# 		SOV_achievement_propaganda_counter_effect = yes
+	# 	}
 
-		remove_effect = {
-			set_variable = { SOV_propaganda_campaign_to_remove = 18 }
-			SOV_reset_propaganda_campaign_slot_effect = yes
+	# 	remove_effect = {
+	# 		set_variable = { SOV_propaganda_campaign_to_remove = 18 }
+	# 		SOV_reset_propaganda_campaign_slot_effect = yes
 
-			set_variable = { SOV_propaganda_cost = SOV_propaganda_sweep_scum_out_cost }
-			SOV_increase_propaganda_campaign_cost_effect = yes
-			set_variable = { SOV_propaganda_sweep_scum_out_cost = SOV_propaganda_cost }
-			clear_variable = SOV_propaganda_cost
+	# 		set_variable = { SOV_propaganda_cost = SOV_propaganda_sweep_scum_out_cost }
+	# 		SOV_increase_propaganda_campaign_cost_effect = yes
+	# 		set_variable = { SOV_propaganda_sweep_scum_out_cost = SOV_propaganda_cost }
+	# 		clear_variable = SOV_propaganda_cost
 
-			custom_effect_tooltip = SOV_propaganda_campaign_cooldown_tt
-			hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
-		}
-	}
+	# 		custom_effect_tooltip = SOV_propaganda_campaign_cooldown_tt
+	# 		hidden_effect = { FROM = { country_event = { id = generic.26 hours = 1} } }
+	# 	}
+	# }
 
 	SOV_propaganda_knowledge = { # ID = 19
 		priority = 18
@@ -9861,6 +9919,128 @@ SOV_industry_relocation = {
 
 SOV_great_patriotic_war = {
 
+	# Mobilising the Reserves: started by the focus SOV_mobilise_nkvd_units. 365 days, minus 60 for each of
+	# Kyiv/Gomel/Vitebsk/Bryansk/Dnipro lost (on_daily_SOV in 99_tfb_on_actions.txt), then 50 rifle divisions
+	SOV_nkvd_reserve_mobilisation = {
+		icon = generic_army_support
+		allowed = { original_tag = SOV }
+		is_good = yes
+		priority = 21
+
+		activation = {
+			has_completed_focus = SOV_mobilise_nkvd_units
+			NOT = { has_country_flag = SOV_nkvd_reserves_raised }
+		}
+
+		visible = {
+			has_completed_focus = SOV_mobilise_nkvd_units
+			NOT = { has_country_flag = SOV_nkvd_reserves_raised }
+		}
+
+		available = { hidden_trigger = { always = no } } #a mission fails when this is true, so it never fails
+
+		days_mission_timeout = 365
+		fire_only_once = no
+
+		timeout_effect = {
+			set_country_flag = SOV_nkvd_reserves_raised
+			division_template = {
+				name = "Reserve Rifle Division"
+				division_names_group = SOV_INF_01
+				priority = 0
+				regiments = {
+					infantry = { x = 0 y = 0 }
+					infantry = { x = 0 y = 1 }
+					infantry = { x = 0 y = 2 }
+					infantry = { x = 0 y = 3 }
+					infantry = { x = 1 y = 0 }
+					infantry = { x = 1 y = 1 }
+					infantry = { x = 1 y = 2 }
+					infantry = { x = 1 y = 3 }
+					infantry = { x = 2 y = 0 }
+					infantry = { x = 2 y = 1 }
+					infantry = { x = 2 y = 2 }
+					artillery_brigade = { x = 3 y = 0 }
+					artillery_brigade = { x = 3 y = 1 }
+					artillery_brigade = { x = 3 y = 2 }
+					artillery_brigade = { x = 3 y = 3 }
+					artillery_brigade = { x = 4 y = 0 }
+					artillery_brigade = { x = 4 y = 1 }
+					anti_tank_brigade = { x = 4 y = 2 }
+					anti_tank_brigade = { x = 4 y = 3 }
+				}
+				support = {
+					engineer = { x = 0 y = 0 }
+					logistics_company = { x = 0 y = 1 }
+					anti_air = { x = 0 y = 2 }
+					field_hospital = { x = 0 y = 3 }
+					maintenance_company = { x = 0 y = 4 }
+					recon = { x = 0 y = 5 }
+				}
+			}
+			if = {
+				limit = { controls_state = 219 }
+				219 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 195 }
+				195 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 217 }
+				217 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 252 }
+				252 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else_if = {
+				limit = { controls_state = 249 }
+				249 = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+			else = {
+				capital_scope = { SOV_spawn_nkvd_reserve_divisions = yes }
+			}
+		}
+	}
+
+	# Murmansk convoys: started by the focus SOV_northwest_passage, pays out every 180 days while Murmansk (213) is Soviet controlled
+	SOV_murmansk_convoys = {
+		icon = generic_naval
+		allowed = { original_tag = SOV }
+		is_good = yes
+		priority = 22
+
+		activation = {
+			has_completed_focus = SOV_northwest_passage
+			controls_state = 213
+		}
+
+		visible = {
+			has_completed_focus = SOV_northwest_passage
+			controls_state = 213
+		}
+
+		cancel_trigger = {
+			NOT = { controls_state = 213 }
+		}
+
+		available = { hidden_trigger = { always = no } } #a mission fails when this is true, so it never fails
+
+		days_mission_timeout = 180
+		fire_only_once = no
+
+		timeout_effect = {
+			add_equipment_to_stockpile = { type = artillery_equipment amount = 1500 }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 17500 }
+			add_equipment_to_stockpile = { type = squad_equipment amount = 4000 }
+			add_equipment_to_stockpile = { type = radio_equipment amount = 1000 }
+			add_equipment_to_stockpile = { type = motorized_equipment amount = 2000 }
+			add_equipment_to_stockpile = { type = support_equipment amount = 3000 }
+		}
+	}
+
+
 	SOV_raise_penal_units = {
 		priority = 21
 
@@ -10676,6 +10856,37 @@ operations = {
 		}
 	}
 
+	SOV_learning_from_bessarabia = {
+		icon = generic_operation
+
+		allowed = {
+			original_tag = SOV
+		}
+
+		activation = {
+			has_active_mission = SOV_besserabia_war
+		}
+
+		visible = {
+			has_active_mission = SOV_besserabia_war
+		}
+
+		available = {
+			always = no
+		}
+
+		days_mission_timeout = 90
+
+		is_good = yes
+
+		timeout_effect = {
+			set_country_flag = SOV_unlock_learn_losses_rom
+		}
+
+		complete_effect = {
+		}
+	}
+
 	SOV_bessarabia_lessons = {
 		icon = generic_operation
 
@@ -10689,17 +10900,33 @@ operations = {
 
 		available = {
 			has_war_with = ROM
-			casualties > 125000
+			has_country_flag = SOV_unlock_learn_losses_rom
 		}
 
 		fire_only_once = yes
 
-		days_remove = 7
+		days_remove = 1
 
 		remove_effect = {
 			add_timed_idea = {
 				idea = SOV_bessarabia_adapt
 				days = 90
+			}
+			set_technology = {
+				tech_engineers2 = 1
+				popup = no
+			}
+			set_technology = {
+				tech_engineers_pontoon = 1
+				popup = no
+			}
+			set_technology = {
+				mtg_landing_craft = 1
+				popup = no
+			}
+			set_technology = {
+				mtg_tank_landing_craft = 1
+				popup = no
 			}
 		}
 
