@@ -958,7 +958,13 @@ NDefines.NProject.AMOUNT_OF_SUPPORTIVE_SCIENTISTS = 4 -- The amount of supportiv
 NDefines.NProject.DAYS_TO_REMOVE_SCIENTIST = 1 -- Amount of days needed for a scientist to be unassigned.
 
 NDefines.NRaids.RAID_MEDIUM_RISK_SETTING_DISASTER_MODIFIER = 0.15  -- How much the disaster risk is modified when the dial is set to "medium"
-NDefines.NRaids.RAID_HIGH_RISK_SETTING_DISASTER_MODIFIER = 0.5
+NDefines.NRaids.RAID_HIGH_RISK_SETTING_DISASTER_MODIFIER = 0.35
+NDefines.NRaids.RAID_OUTCOME_REPORT_DAYS_TO_LIVE = 365 -- -- How many days after a raid has ended will the raid outcome report be visible on the map before being automatically dismissed
+
+NDefines.NRaids.RAID_LOW_RISK_SETTING_SUCCESS_MODIFIER = 0.1
+NDefines.NRaids.RAID_MEDIUM_RISK_SETTING_SUCCESS_MODIFIER = 0.25
+NDefines.NRaids.RAID_HIGH_RISK_SETTING_SUCCESS_MODIFIER = 0.4
+
 
 NDefines_Graphics.NInterface.MINIMAP_TOGGLE_SHIFT = 405				-- horizontal shift for minimap to close it
 
