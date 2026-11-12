@@ -179,6 +179,39 @@ on_actions = {
 		}
 	}
 
+	# ROOT joins the faction led by FROM. German trade influence with its faction members (was Autarky Efforts, now from day 1)
+	on_join_faction = {
+		effect = {
+			if = {
+				limit = {
+					FROM = {
+						original_tag = GER
+						is_faction_leader = yes
+					}
+				}
+				if = { #fail safe so trade relations are not stacked
+					limit = { ROOT = { NOT = { has_opinion_modifier = GER_german_trade_opinion } } }
+					FROM = { add_opinion_modifier = { target = ROOT modifier = GER_german_trade_opinion } }
+				}
+				if = {
+					limit = { FROM = { NOT = { has_opinion_modifier = GER_autarky_trade_opinion } } }
+					ROOT = { add_opinion_modifier = { target = FROM modifier = GER_autarky_trade_opinion } }
+				}
+			}
+			else_if = {
+				limit = { ROOT = { original_tag = GER } }
+				if = {
+					limit = { FROM = { NOT = { has_opinion_modifier = GER_german_trade_opinion } } }
+					ROOT = { add_opinion_modifier = { target = FROM modifier = GER_german_trade_opinion } }
+				}
+				if = {
+					limit = { ROOT = { NOT = { has_opinion_modifier = GER_autarky_trade_opinion } } }
+					FROM = { add_opinion_modifier = { target = ROOT modifier = GER_autarky_trade_opinion } }
+				}
+			}
+		}
+	}
+
 	# ROOT is the nation being puppeted, FROM is the overlord. 	OBS: Trigger the following commands whenever a country is puppeted in a peace conference only.
 	on_puppet = {
 
@@ -672,6 +705,55 @@ on_actions = {
 	
 	on_capitulation = { # ROOT is capitulated country, FROM is winner
 
+		# Unternehmen Marita: the moment Greece capitulates to the German-led war, the Greek partition is applied,
+		# so it can no longer be skipped by another country occupying or annexing Greece first.
+		# Historical triple occupation: Germany takes Athens, Central Macedonia (incl. the Evros strip), Crete (minus Lasithi), the North Aegean
+		# (Lesbos, Lemnos) and Chios; Italy (if already in the German faction) takes Epirus, Thessaly/Central Greece (1065),
+		# the Peloponnese, Lasithi and the Aegean Islands (Samos, Ikaria, Cyclades). Thrace + Serres go to Bulgaria through on_weekly_BUL.
+		effect = {
+			if = {
+				limit = {
+					original_tag = GRE
+					GER = {
+						has_country_flag = GER_marita_done
+						has_war_with = GRE
+					}
+				}
+				every_state = {
+					limit = {
+						is_owned_by = ROOT
+						OR = {
+							state = 47
+							state = 731
+							state = 182
+							state = 1073
+							state = 1074
+						}
+					}
+					transfer_state_to = GER
+				}
+				if = {
+					limit = {
+						country_exists = ITA
+						ITA = { is_in_faction_with = GER }
+					}
+					every_state = {
+						limit = {
+							is_owned_by = ROOT
+							OR = {
+								state = 185
+								state = 186
+								state = 187
+								state = 1065
+								state = 1072
+							}
+						}
+						transfer_state_to = ITA
+					}
+				}
+			}
+		}
+
 		effect = { #recall the volunteers for ITA from ETH as war can go on and troops are needed
 			IF = { 
 				limit = {
@@ -810,6 +892,14 @@ on_actions = {
 	
 	on_war = {
 		effect = {
+			if = { #MEFO Bills peacetime factory output (+10%, set in GER history) is lost once Germany is at war
+				limit = {
+					original_tag = GER
+					has_country_flag = GER_mefo_peacetime_output_flag
+				}
+				clr_country_flag = GER_mefo_peacetime_output_flag
+				add_to_variable = { GER_industrial_industrial_capacity_factory = -0.10 tooltip = industrial_capacity_factory_tt }
+			}
 			if = { #If Germany has completed one of the necessary focuses, give them a timed National Spirit when the next war breaks out
 				limit = {
 					original_tag = GER
@@ -1070,7 +1160,7 @@ on_actions = {
 			GER = {
 				country_event = { id = GER_luftwaffe.1 days = 2135 } # 1936.1.1 -> 1941.11.7
 
-				#MEFO Bills rearmament debt: political power cost +0.125 on 1936.3.1, then every six months, reaching 1.0 on 1939.9.1 (shown on the MEFO / Economy of Conquest spirit)
+				#MEFO Bills rearmament debt: political power cost +0.10625 on 1936.3.1, then every six months, reaching 0.85 on 1939.9.1 (shown on the MEFO / Economy of Conquest spirit)
 				country_event = { id = germany_mefo_bills.20 days = 60 } # 1936.3.1
 				country_event = { id = germany_mefo_bills.20 days = 244 } # 1936.9.1
 				country_event = { id = germany_mefo_bills.20 days = 425 } # 1937.3.1
@@ -1085,6 +1175,12 @@ on_actions = {
 
 				#Ludwig Beck resigns
 				country_event = { id = GER_army.1 days = 960 } # 1938.8.18
+
+				# Berlin becomes a 2,000-aircraft air hub (level-20 air base cap)
+				64 = {
+					set_state_category = ger_berlin_airport
+					set_building_level = { type = air_base level = 20 instant_build = yes }
+				}
 			}
 		}
 
@@ -1829,22 +1925,52 @@ on_actions = {
 		}
 	}
 
-	# Unternehmen Marita: if Italy was not in the German faction when Greece was attacked, it receives its
-	# historic share (Epirus, Peloponnese, Aegean Islands) once it joins and Greece has fallen.
-	# Germany keeps Athens, Macedonia and Crete. Bulgaria receives Thrace (below).
+	# Unternehmen Marita: once Greece has fallen, Italy receives its historic occupation zone (Epirus, Thessaly,
+	# Peloponnese, Lasithi, Aegean Islands) if it is in the German faction or fascist and not at war with Germany,
+	# whether or not it was in the faction when Greece was attacked. Germany keeps Athens, Central Macedonia,
+	# Crete and the North Aegean. Bulgaria receives Thrace (below).
 	on_weekly_ITA = {
 		effect = {
+			# Duke of Aosta (ITA_prince_amedeo): if Eritrea is lost he surrenders and is taken prisoner (italy.506)
+			if = {
+				limit = {
+					original_tag = ITA
+					has_character = ITA_prince_amedeo
+					NOT = { controls_state = 550 }
+					NOT = { has_country_flag = ITA_aosta_surrendered }
+				}
+				set_country_flag = ITA_aosta_surrendered
+				country_event = { id = italy.506 }
+			}
 			if = {
 				limit = {
 					tag = ITA
 					GER = {
-						has_country_flag = GER_marita_italy_absent
+						has_country_flag = GER_marita_done
 						NOT = { has_country_flag = GER_marita_italy_share_done }
 					}
-					is_in_faction_with = GER
+					NOT = { has_war_with = GER }
+					OR = {
+						is_in_faction_with = GER
+						has_government = fascism
+					}
 					OR = {
 						NOT = { country_exists = GRE }
 						GRE = { has_capitulated = yes }
+					}
+					any_state = {
+						OR = {
+							state = 185
+							state = 186
+							state = 187
+							state = 1065
+							state = 1072
+						}
+						NOT = { is_owned_by = ITA }
+						OR = {
+							is_controlled_by = GER
+							is_controlled_by = ITA
+						}
 					}
 				}
 				GER = {
@@ -1857,9 +1983,14 @@ on_actions = {
 							state = 185
 							state = 186
 							state = 187
+							state = 1065
+							state = 1072
 						}
-						is_controlled_by = GER
 						NOT = { is_owned_by = ITA }
+						OR = {
+							is_controlled_by = GER
+							is_controlled_by = ITA
+						}
 					}
 					transfer_state_to = ROOT
 				}
@@ -1868,7 +1999,7 @@ on_actions = {
 		}
 	}
 
-	# Unternehmen Marita: once Greece has fallen, Bulgaria receives Thrace if it is in the German faction.
+	# Unternehmen Marita: once Greece has fallen, Bulgaria receives Thrace (incl. Serres) if it is in the German faction.
 	on_weekly_BUL = {
 		effect = {
 			if = {

@@ -1134,25 +1134,36 @@ focus_tree = {
 
 		available = {
 			has_country_flag = BUL_demand_completed
-			184 = {
-				is_controlled_by = ITA
+			custom_trigger_tooltip = { # after Marita Thrace is held by whichever Axis power occupied it (it no longer goes to Italy)
+				tooltip = BUL_thrace_held_by_axis_tt
+				184 = {
+					CONTROLLER = {
+						OR = {
+							tag = GER
+							tag = ITA
+						}
+						NOT = { has_war_with = BUL }
+					}
+				}
 			}
 		}
 
 		completion_reward = {
 			184 = {
-				transfer_state_to = BUL
+				CONTROLLER = { # compensation for the occupying power that hands Thrace over
+					add_offsite_building = {
+						type = industrial_complex
+						level = 2
+					}
+					add_offsite_building = {
+						type = arms_factory
+						level = 2
+					}
+				}
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
-			ITA = {
-				add_offsite_building = {
-					type = industrial_complex
-					level = 2
-				}
-				add_offsite_building = {
-					type = arms_factory
-					level = 2
-				}
+			184 = {
+				transfer_state_to = BUL
 			}
 		}
 	}
@@ -1668,11 +1679,11 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 
 			add_equipment_to_stockpile = {
-				type = infantry_equipment_0
+				type = infantry_equipment
 				amount = 2000
 			}
 			add_equipment_to_stockpile = {
-				type = squad_equipment_0
+				type = squad_equipment
 				amount = 400
 			}
 		}
@@ -2487,7 +2498,7 @@ focus_tree = {
 
 		available = {
 			OR = {
-				NOT = { 1082 = { is_controlled_by = ENG } }
+				NOT = { 1068 = { is_controlled_by = ENG } }
 				date > 1941.1.1
 			}
 		}
@@ -2499,7 +2510,7 @@ focus_tree = {
 				limit = {
 					NOT = {
 						OR = {
-							NOT = { 1082 = { is_controlled_by = ENG } }
+							NOT = { 1068 = { is_controlled_by = ENG } }
 							date > 1941.6.1
 						}
 					}
