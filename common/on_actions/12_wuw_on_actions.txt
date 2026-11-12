@@ -674,8 +674,9 @@ on_actions = {
 
 		# Unternehmen Marita: the moment Greece capitulates to the German-led war, the Greek partition is applied,
 		# so it can no longer be skipped by another country occupying or annexing Greece first.
-		# Germany takes Athens, Attica, Central Macedonia and Crete; Italy (if already in the German faction)
-		# takes Epirus, the Peloponnese and the Aegean Islands. Thrace goes to Bulgaria through on_weekly_BUL.
+		# Historical triple occupation: Germany takes Athens, Central Macedonia, Crete (minus Lasithi) and the North Aegean
+		# (Lesbos, Lemnos); Italy (if already in the German faction) takes Epirus, Thessaly/Central Greece (1065), the
+		# Peloponnese, Lasithi and the Aegean Islands (Samos, Chios, Cyclades). Thrace + Serres go to Bulgaria through on_weekly_BUL.
 		effect = {
 			if = {
 				limit = {
@@ -690,9 +691,9 @@ on_actions = {
 						is_owned_by = ROOT
 						OR = {
 							state = 47
-							state = 1096
 							state = 731
 							state = 182
+							state = 1073
 						}
 					}
 					transfer_state_to = GER
@@ -709,6 +710,8 @@ on_actions = {
 								state = 185
 								state = 186
 								state = 187
+								state = 1065
+								state = 1072
 							}
 						}
 						transfer_state_to = ITA
@@ -855,6 +858,14 @@ on_actions = {
 	
 	on_war = {
 		effect = {
+			if = { #MEFO Bills peacetime factory output (+10%, set in GER history) is lost once Germany is at war
+				limit = {
+					original_tag = GER
+					has_country_flag = GER_mefo_peacetime_output_flag
+				}
+				clr_country_flag = GER_mefo_peacetime_output_flag
+				add_to_variable = { GER_industrial_industrial_capacity_factory = -0.10 tooltip = industrial_capacity_factory_tt }
+			}
 			if = { #If Germany has completed one of the necessary focuses, give them a timed National Spirit when the next war breaks out
 				limit = {
 					original_tag = GER
@@ -1908,6 +1919,8 @@ on_actions = {
 							state = 185
 							state = 186
 							state = 187
+							state = 1065
+							state = 1072
 						}
 						is_controlled_by = GER
 						NOT = { is_owned_by = ITA }
@@ -1919,7 +1932,7 @@ on_actions = {
 		}
 	}
 
-	# Unternehmen Marita: once Greece has fallen, Bulgaria receives Thrace if it is in the German faction.
+	# Unternehmen Marita: once Greece has fallen, Bulgaria receives Thrace (incl. Serres) if it is in the German faction.
 	on_weekly_BUL = {
 		effect = {
 			if = {
