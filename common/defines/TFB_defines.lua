@@ -385,7 +385,7 @@ NDefines.NAir.ANTI_AIR_PLANE_DAMAGE_FACTOR = 0.3					-- Anti Air Gun Damage fact
 NDefines.NAir.ANTI_AIR_PLANE_DAMAGE_CHANCE = 0.08					-- Anti Air Gun hit chance
 NDefines.NAir.ANTI_AIR_MAXIMUM_DAMAGE_REDUCTION_FACTOR = 0.8	-- Maximum damage reduction factor applied to incoming air attacks against units with AA.
 NDefines.NAir.ANTI_AIR_ATTACK_TO_DAMAGE_REDUCTION_FACTOR = 0.5	-- Balancing value to convert equipment stat anti_air_attack to the damage reduction modifier apply to incoming air attacks against units with AA.
-NDefines.NAir.EFFICIENCY_REGION_CHANGE_DAILY_GAIN_STRATEGIC_BOMBER = 0.1	-- How much efficiency to regain per day. Gain applied hourly.						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
+NDefines.NAir.EFFICIENCY_REGION_CHANGE_DAILY_GAIN_STRATEGIC_BOMBER = 0.036	-- How much efficiency to regain per day. Gain applied hourly.						-- multiplier on disruption damage to scale its effects on carrier vs carrier planes
 NDefines.NAir.FUEL_COST_MULT = 0.7 -- fuel multiplier for all air missions
 
 -- NDefines.NAir.BOMBING_TARGETING_RANDOM_FACTOR = 0.35							-- % of picking the wrong target
