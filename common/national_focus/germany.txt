@@ -255,7 +255,6 @@ focus_tree = {
 		}
 	}
 
-
 	focus = {
 		id = GER_brandenburgers
 		icon = GFX_ger_kampfgruppen
@@ -315,7 +314,6 @@ focus_tree = {
 			show_ideas_tooltip = ferdinand_schorner
 		}
 	}
-
 
 	focus = {
 		id = GER_lessons_of_the_great_war
@@ -809,7 +807,6 @@ focus_tree = {
 			}
 		}
 	}
-
 
 	focus = {
 		id = GER_heer_primacy
@@ -1627,23 +1624,41 @@ focus_tree = {
 			factor = 1
 		}
 
-		bypass = {
-			has_war = yes
-		}
-
 		available_if_capitulated = yes
 
 		completion_reward = {
-			GER_modify_industrial_modifier = yes
-			if = {
-				limit = { date < 1937.1.1 }
-				add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = 0.25 tooltip = production_speed_industrial_complex_factor_tt }
-				custom_effect_tooltip = generic_skip_one_line_tt
-				custom_effect_tooltip = GER_four_year_plan_office_expiry_tt
-				hidden_effect = { country_event = { id = germany_mefo_bills.23 days = 7 } }
+			if = { # replaces the old war bypass: at war the Office's construction modifiers are skipped
+				limit = { has_war = no }
+				GER_modify_industrial_modifier = yes
+				if = {
+					limit = { date < 1937.1.1 }
+					add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = 0.25 tooltip = production_speed_industrial_complex_factor_tt }
+					custom_effect_tooltip = generic_skip_one_line_tt
+					custom_effect_tooltip = GER_four_year_plan_office_expiry_tt
+					hidden_effect = { country_event = { id = germany_mefo_bills.23 days = 7 } }
+				}
+				else = {
+					add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.50 tooltip = production_speed_industrial_complex_factor_tt }
+				}
 			}
-			else = {
-				add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.50 tooltip = production_speed_industrial_complex_factor_tt }
+			custom_effect_tooltip = generic_skip_one_line_tt
+			random_owned_controlled_state = {
+				prioritize = { 54 }
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
+			}
+			random_owned_controlled_state = {
+				prioritize = { 57 }
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = {
+					type = industrial_complex
+					level = 3
+					instant_build = yes
+				}
 			}
 		}
 	}
@@ -1652,7 +1667,7 @@ focus_tree = {
 		id = GER_nationalize_armaments_companies
 		prerequisite = { focus = GER_nationalized_industrial_development }
 
-		x = 2
+		x = 3
 		y = 2
 		relative_position_id = GER_goring_plan
 		icon = GFX_GER_curtail_the_steel_barons2
@@ -1782,7 +1797,7 @@ focus_tree = {
 		x = 6
 		y = 2
 		relative_position_id = GER_goring_plan
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -1809,7 +1824,7 @@ focus_tree = {
 		x = 8
 		y = 2
 		relative_position_id = GER_goring_plan
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -1832,7 +1847,7 @@ focus_tree = {
 		x = 6
 		y = 4
 		relative_position_id = GER_goring_plan
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -1855,7 +1870,7 @@ focus_tree = {
 		x = 8
 		y = 4
 		relative_position_id = GER_goring_plan
-		cost = 4
+		cost = 4.4
 		available = {
 			has_full_control_of_state = 17
 		}
@@ -2033,43 +2048,6 @@ focus_tree = {
 	}
 
 	focus = {
-		id = GER_planned_economic_flexibility
-		prerequisite = { focus = GER_nationalized_industrial_development }
-
-		x = 4
-		y = 2
-		relative_position_id = GER_goring_plan
-		icon = GFX_GER_establish_the_reichswerke
-		cost = 4
-		ai_will_do = {
-			factor = 1
-		}
-
-		available_if_capitulated = yes
-
-		completion_reward = {
-			random_owned_controlled_state = {
-				prioritize = { 54 }
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = industrial_complex
-					level = 3
-					instant_build = yes
-				}
-			}
-			random_owned_controlled_state = {
-				prioritize = { 57 }
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = industrial_complex
-					level = 3
-					instant_build = yes
-				}
-			}
-		}
-	}
-
-	focus = {
 		id = GER_integrate_the_austrian_armaments_industry
 		prerequisite = { focus = GER_absorb_rheinmetall_borsig }
 
@@ -2077,7 +2055,7 @@ focus_tree = {
 		y = 3
 		relative_position_id = GER_goring_plan
 		icon = GFX_GER_anschluss
-		cost = 4
+		cost = 4.4
 		ai_will_do = {
 			factor = 1
 		}
@@ -2189,7 +2167,6 @@ focus_tree = {
 	focus = {
 		id = GER_empower_siemens
 		prerequisite = { focus = GER_nationalize_armaments_companies }
-		prerequisite = { focus = GER_planned_economic_flexibility }
 		mutually_exclusive = { focus = GER_slime_siemens }
 
 		x = 2
@@ -2236,7 +2213,6 @@ focus_tree = {
 	focus = {
 		id = GER_slime_siemens
 		prerequisite = { focus = GER_nationalize_armaments_companies }
-		prerequisite = { focus = GER_planned_economic_flexibility }
 		mutually_exclusive = { focus = GER_empower_siemens }
 
 		x = 4
@@ -2284,6 +2260,21 @@ focus_tree = {
 			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = GER_Speer_Path2
+			if = { # civilian first: arms factories are slowed from here until Ministry for Armaments and Munitions (GER_mobilize_the_industry)
+				limit = { has_war = no }
+				set_country_flag = GER_speer_arms_factory_penalty
+				custom_effect_tooltip = generic_skip_one_line_tt
+				custom_effect_tooltip = GER_work_and_bread_phase_tt
+				GER_modify_industrial_modifier = yes
+				add_to_variable = { GER_industrial_production_speed_arms_factory_factor = -0.75 tooltip = production_speed_arms_factory_factor_tt }
+			}
+			if = { # Work and Bread's civilian phase ends on 12 March 1938
+				limit = { date < 1938.3.12 }
+				hidden_effect = { country_event = { id = germany_mefo_bills.21 days = 7 } }
+			}
+			else = {
+				hidden_effect = { set_country_flag = GER_work_and_bread_swapped }
+			}
 			#custom_effect_tooltip = generic_skip_one_line_tt
 			#custom_effect_tooltip = GER_Manage_Autarky
 			#custom_effect_tooltip = generic_skip_one_line_tt
@@ -2307,46 +2298,19 @@ focus_tree = {
 
 		available_if_capitulated = yes
 
-		bypass = {
-			has_war = yes
-		}
-
 		completion_reward = {
 			add_stability = 0.05
-			custom_effect_tooltip = generic_skip_one_line_tt
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
-			add_to_variable = { GER_industrial_production_speed_arms_factory_factor = -0.75 tooltip = production_speed_arms_factory_factor_tt }
-			add_to_variable = { GER_industrial_consumer_goods_expected_value = 0.05 tooltip = consumer_goods_expected_value_tt }
-			add_to_variable = { GER_industrial_industrial_capacity_factory = -0.05 tooltip = industrial_capacity_factory_tt }
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = GER_1st_speer_plan_tt
-			effect_tooltip = {
-				add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.75 tooltip = production_speed_arms_factory_factor_tt }
-				add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = -0.72 tooltip = production_speed_industrial_complex_factor_tt }
-				add_to_variable = { GER_industrial_consumer_goods_expected_value = -0.05 tooltip = consumer_goods_expected_value_tt }
-				add_to_variable = { GER_industrial_industrial_capacity_factory = 0.05 tooltip = industrial_capacity_factory_tt }
+			if = { # civilian phase of Work and Bread; the arms factory part already runs from Follow Speer's Plan
+				limit = {
+					NOT = { has_country_flag = GER_work_and_bread_swapped }
+					has_war = no
+				}
+				set_country_flag = GER_work_and_bread_civilian_phase
+				custom_effect_tooltip = generic_skip_one_line_tt
+				GER_modify_industrial_modifier = yes
+				add_to_variable = { GER_industrial_production_speed_industrial_complex_factor = 0.05 tooltip = production_speed_industrial_complex_factor_tt }
 			}
-			hidden_effect = { country_event = { id = germany_mefo_bills.21 days = 7 } }
-		}
-	}
-
-	focus = {
-		id = GER_krupp_factory_expansion
-		prerequisite = { focus = GER_national_recovery }
-
-		x = 0
-		y = 2
-		relative_position_id = GER_follow_speers_plan
-		icon = GFX_GER_curtail_the_steel_barons
-		cost = 4.3
-		ai_will_do = {
-			factor = 1
-		}
-
-		available_if_capitulated = yes
-
-		completion_reward = {
+			custom_effect_tooltip = generic_skip_one_line_tt
 			random_owned_controlled_state = {
 				limit = {
 					free_building_slots = {
@@ -2460,10 +2424,6 @@ focus_tree = {
 
 		available_if_capitulated = yes
 
-		bypass = {
-			has_war = yes
-		}
-
 		available = {
 			date > 1938.3.1
 		}
@@ -2471,6 +2431,24 @@ focus_tree = {
 		completion_reward = {
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { GER_industrial_production_factory_start_efficiency_factor = 0.05 tooltip = production_factory_start_efficiency_factor_tt }
+			if = { # lifts the arms factory penalty of Follow Speer's Plan (shown unless Speer's Plan was taken at war without the penalty)
+				limit = {
+					OR = {
+						has_country_flag = GER_speer_arms_factory_penalty
+						NOT = { has_completed_focus = GER_follow_speers_plan }
+					}
+				}
+				effect_tooltip = {
+					add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.75 tooltip = production_speed_arms_factory_factor_tt }
+				}
+			}
+			hidden_effect = {
+				if = {
+					limit = { has_country_flag = GER_speer_arms_factory_penalty }
+					clr_country_flag = GER_speer_arms_factory_penalty
+					add_to_variable = { GER_industrial_production_speed_arms_factory_factor = 0.75 }
+				}
+			}
         custom_effect_tooltip = generic_skip_one_line_tt
 			random_core_state = {
 				prioritize = { 57 }
@@ -2487,10 +2465,10 @@ focus_tree = {
 
 	focus = {
 		id = GER_urban_development
-		prerequisite = { focus = GER_krupp_factory_expansion }
+		prerequisite = { focus = GER_national_recovery }
 
 		x = 0
-		y = 3
+		y = 2
 		relative_position_id = GER_follow_speers_plan
 		icon = GFX_GER_disperse_industry5
 		cost = 4.3
@@ -2577,7 +2555,6 @@ focus_tree = {
 		}
 	}
 
-
 	focus = {
 		id = GER_krupp_assembly_lines
 		prerequisite = { focus = GER_mobilize_the_industry }
@@ -2624,7 +2601,6 @@ focus_tree = {
 			add_to_variable = { GER_industrial_industry_air_damage_factor = -0.10 tooltip = industry_air_damage_factor_tt }
 		}
 	}
-
 
 	focus = {
 		id = GER_deutsch_military_complexes
@@ -2764,6 +2740,9 @@ focus_tree = {
 		completion_reward = {
 			GER_modify_industrial_modifier = yes
 			add_to_variable = { GER_industrial_consumer_goods_expected_value = -0.02 tooltip = consumer_goods_expected_value_tt }
+			add_to_variable = { GER_industrial_consumer_goods_factor = -0.05 tooltip = consumer_goods_factor_tt }
+			GER_clamp_consumer_goods_factor = yes
+			add_to_variable = { GER_industrial_resource_trade_cost_bonus_per_factory = 20 tooltip = resource_trade_cost_bonus_per_factory_tt }
 		}
 	}
 
@@ -2772,7 +2751,7 @@ focus_tree = {
 		icon = GFX_GER_swedish_trade
 		prerequisite = { focus = GER_currency_reforms }
 
-		x = -2
+		x = -3
 		y = 2
 		relative_position_id = GER_follow_speers_plan
 		cost = 3.6
@@ -2831,7 +2810,6 @@ focus_tree = {
 	focus = {
 		id = GER_redeem_the_mefo_bills
 		icon = GFX_GER_form_organization_todt
-		prerequisite = { focus = GER_increased_trade }
 		prerequisite = { focus = GER_bilateral_clearing }
 		mutually_exclusive = { focus = GER_roll_over_the_mefo_bills }
 
@@ -2853,7 +2831,6 @@ focus_tree = {
 	focus = {
 		id = GER_roll_over_the_mefo_bills
 		icon = GFX_GER_extra_research
-		prerequisite = { focus = GER_increased_trade }
 		prerequisite = { focus = GER_bilateral_clearing }
 		mutually_exclusive = { focus = GER_redeem_the_mefo_bills }
 
@@ -2958,44 +2935,6 @@ focus_tree = {
 
 
 
-	focus = {
-		id = GER_Expand_The_Autobahn
-		icon = GFX_GER_autobahn
-		prerequisite = { focus = GER_follow_speers_plan focus = GER_goring_plan }
-
-		x = 8
-		y = 1
-		relative_position_id = GER_follow_speers_plan
-		cost = 3
-		available = {
-
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			if = {
-				limit = { 58 = { is_controlled_by = ROOT } }
-				58 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Hamburg
-			}
-			if = {
-				limit = { 56 = { is_controlled_by = ROOT } }
-				56 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Bremen
-			}
-			if = {
-				limit = { 57 = { is_controlled_by = ROOT } }
-				57 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Ruhr
-			}
-			if = {
-				limit = { 55 = { is_controlled_by = ROOT } }
-				55 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Frankfurt
-			}
-			if = {
-				limit = { 978 = { is_controlled_by = ROOT } }
-				978 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #towards Basel
-			}
-		}
-	}
 
 	focus = {
 		id = GER_siemens
@@ -3042,12 +2981,11 @@ focus_tree = {
 		}
 	}
 
-
 	focus = {
 		id = GER_for_a_greater_germany
-		prerequisite = { focus = GER_deals_with_industry }
+		prerequisite = { focus = GER_urban_development }
 
-		x = 4
+		x = 0
 		y = 3
 		relative_position_id = GER_follow_speers_plan
 		icon = GFX_rearm_slow
@@ -4665,36 +4603,6 @@ completion_reward = {
 	}
 }
 
-	focus = {
-		id = GER_increased_trade
-		prerequisite = { focus = GER_currency_reforms }
-
-		x = -4
-		y = 2
-		relative_position_id = GER_follow_speers_plan
-		icon = GFX_focus_generic_german_trade
-
-		cost = 3.6
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY FOCUS_FILTER_STABILITY }
-
-		completion_reward = {
-			custom_effect_tooltip = generic_skip_one_line_tt
-
-			GER_modify_industrial_modifier = yes
-			add_to_variable = { 
-				GER_industrial_consumer_goods_factor = -0.05
-				tooltip = consumer_goods_factor_tt
-			}
-			GER_clamp_consumer_goods_factor = yes 
-			add_to_variable = {
-				GER_industrial_resource_trade_cost_bonus_per_factory = 20
-				tooltip = resource_trade_cost_bonus_per_factory_tt
-			}
-		}
-	}
 
 	focus = {
 		id = GER_autarky_efforts
@@ -4704,9 +4612,9 @@ completion_reward = {
 
 		
 
-		x = 13
-		y = 5
-		cost = 4
+		x = 16
+		y = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -4750,22 +4658,6 @@ completion_reward = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 			add_resource = { type = tungsten amount = 60 state = 65 } #Erzgebirge wolfram mines
 			custom_effect_tooltip = expand_german_coal_mines_tt
-			custom_effect_tooltip = GER_improve_trade_relations_tt
-			every_other_country = {
-				limit = {
-					is_in_faction_with = PREV
-				}	
-				add_opinion_modifier = {
-					target = GER
-					modifier = GER_autarky_trade_opinion
-				}
-				GER = {
-					add_opinion_modifier = {
-						target = PREV
-						modifier = GER_german_trade_opinion
-					}
-				}
-			}
 		}
 	}
 
@@ -4773,11 +4665,11 @@ completion_reward = {
 	focus = {
 		id = GER_institute_price_controls
 		icon = GFX_GER_price_controls
-		prerequisite = { focus = GER_construct_the_reichsautobahn focus = GER_Expand_The_Autobahn}
+		prerequisite = { focus = GER_construct_the_reichsautobahn }
 
 		x = 17
 		y = 3
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -4942,7 +4834,7 @@ completion_reward = {
 		x = -2
 		y = 1
 		relative_position_id = GER_coal_liquefaction
-		cost = 4
+		cost = 4.4
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = GER_industrial_consumer_goods_factor_limit_tt
@@ -5091,7 +4983,7 @@ completion_reward = {
 		x = 2
 		y = 1
 		relative_position_id = GER_coal_liquefaction
-		cost = 4
+		cost = 4.4
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = GER_industrial_consumer_goods_factor_limit_tt
@@ -5180,7 +5072,7 @@ completion_reward = {
 		x = 8
 		y = 3
 		relative_position_id = GER_goring_plan
-		cost = 4
+		cost = 4.4
 		available = {
 		or = {
 			if = {
@@ -5255,8 +5147,8 @@ completion_reward = {
 		icon = GFX_GER_autarky2 #GFX_GER_autarky_achieved
 
 
-		x = 2
-		y = 7
+		x = -1
+		y = 8
 		relative_position_id = GER_autarky_efforts
 		cost = 5
 		available = {
@@ -5522,14 +5414,33 @@ completion_reward = {
 	
 	
 	focus = {
+		id = GER_develop_heraeus_facilities
+		icon = GFX_GER_werner_heisenberg
+		prerequisite = { focus = GER_goring_plan focus = GER_follow_speers_plan }
+
+		x = 4
+		y = 1
+		relative_position_id = GER_follow_speers_plan
+		cost = 4.4
+		available = {
+		}
+
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
+
+		completion_reward = {
+			add_research_slot = 1
+		}
+	}
+
+	focus = {
 		id = GER_construct_the_reichsautobahn
 		icon = GFX_focus_generic_road_investment
 		prerequisite = { focus = GER_follow_speers_plan focus = GER_goring_plan }
 
-		x = 6
+		x = 7
 		y = 1
 		relative_position_id = GER_follow_speers_plan
-		cost = 3
+		cost = 4.4
 		available = {
 			OR = {
 				has_full_control_of_state = 64 #Brandenburg
@@ -5593,18 +5504,38 @@ completion_reward = {
 					}
 				}
 			}		
+			custom_effect_tooltip = generic_skip_one_line_tt
+			if = {
+				limit = { 58 = { is_controlled_by = ROOT } }
+				58 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Hamburg
+			}
+			if = {
+				limit = { 56 = { is_controlled_by = ROOT } }
+				56 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Bremen
+			}
+			if = {
+				limit = { 57 = { is_controlled_by = ROOT } }
+				57 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Ruhr
+			}
+			if = {
+				limit = { 55 = { is_controlled_by = ROOT } }
+				55 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #Frankfurt
+			}
+			if = {
+				limit = { 978 = { is_controlled_by = ROOT } }
+				978 = { add_building_construction = { type = infrastructure level = 2 instant_build = yes } } #towards Basel
+			}
 		}
 	}
 	focus = {
 		id = GER_kdf_wagen_factories
 		icon = GFX_focus_GER_kdf_wagen
 		prerequisite = { focus = GER_construct_the_reichsautobahn }
-		prerequisite = { focus = GER_Expand_The_Autobahn }
 
-		x = 1
+		x = 0
 		y = 1
 		relative_position_id = GER_construct_the_reichsautobahn
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -5700,32 +5631,13 @@ completion_reward = {
 		}
 	}
 	focus = {
-		id = GER_develop_heraeus_facilities
-		icon = GFX_GER_werner_heisenberg
-		prerequisite = { focus = GER_kdf_wagen_factories }
-
-		x = 2
-		y = 2
-		relative_position_id = GER_kdf_wagen_factories
-		cost = 4
-		available = {
-		}
-
-		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY FOCUS_FILTER_HISTORICAL }
-
-		completion_reward = {
-			add_research_slot = 1
-		}
-	}
-	focus = {
 		id = GER_zentrale_planung
 		icon = GFX_GER_factory_mobilisation
 		prerequisite = { focus = GER_mobilise_the_reich }
 
-		x = -2
-		y = 4
-		
-		relative_position_id = GER_develop_heraeus_facilities
+		x = 0
+		y = 3
+		relative_position_id = GER_coal_liquefaction
 
 		cost = 5
 		available = {
@@ -5763,7 +5675,7 @@ completion_reward = {
 		relative_position_id = GER_goring_plan
 		icon = GFX_ger_prevent_deal
 
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -5868,9 +5780,9 @@ completion_reward = {
 		prerequisite = { focus = GER_the_national_war_economy focus = GER_deutsch_military_complexes}
 		prerequisite = { focus = GER_coal_liquefaction }
 
-		x = -2
-		y = 3
-		relative_position_id = GER_develop_heraeus_facilities
+		x = 0
+		y = 2
+		relative_position_id = GER_coal_liquefaction
 		cost = 2
 		available = {
 			has_completed_focus = GER_fate_of_czechoslovakia
@@ -5928,12 +5840,12 @@ completion_reward = {
 	focus = {
 		id = GER_build_the_rur_dam
 		icon = GFX_focus_generic_hydroelectric_energy
-		prerequisite = { focus = GER_construct_the_reichsautobahn focus = GER_Expand_The_Autobahn}
+		prerequisite = { focus = GER_construct_the_reichsautobahn }
 
-		x = -1
+		x = -2
 		y = 1
 		relative_position_id = GER_construct_the_reichsautobahn
-		cost = 3
+		cost = 2.9
 		available = {
 			51 = { 
 				is_fully_controlled_by = ROOT
@@ -6027,286 +5939,23 @@ completion_reward = {
 	}
 	
 	focus = {
-		id = GER_expand_the_reichsautobahn_south
+		id = GER_expand_the_reichsautobahn
 		icon = GFX_goal_generic_construct_infrastructure
 		prerequisite = { focus = GER_kdf_wagen_factories }
 
 		x = -1
 		y = 1
 		relative_position_id = GER_kdf_wagen_factories
-		cost = 3
-		available = {
-			OR = {
-				53 = { #Niederbayern
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				52 = { #Oberbayern
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				50 = { #Wurttemberg
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				152 = { #Upper Austria
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				4 = { #Lower Austria
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-			}
-		}
-		bypass = {
-		}
+		cost = 4.4
 
 		search_filters = { FOCUS_FILTER_INDUSTRY }
 
 		completion_reward = {
-			custom_effect_tooltip = GER_expand_the_reichsautobahn_south_tt
-			custom_effect_tooltip = generic_skip_one_line_tt
-			if = {
-				limit = {
-					53 = { #Niederbayern
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				53 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					52 = { #Oberbayern
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				52 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					50 = { #Wurttemberg
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				50 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					152 = { #Upper Austria
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				152 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					4 = { #Lower Austria
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				4 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-
-			if = {
-				limit = {
-					52 = { #Oberbayern
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					152 = { #Upper Austria
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					4 = { #Lower Austria
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				#Regensburg - Wien
-				build_railway = {
-					path = { 9515 9681 3703 9665 11651 704 11666 }
-				}
-			}
+			custom_effect_tooltip = GER_expand_the_reichsautobahn_tt
+			hidden_effect = { country_event = { id = germany_mefo_bills.25 } }
 		}
 	}
 	
-	focus = {
-		id = GER_expand_the_reichsautobahn_east
-		icon = GFX_goal_generic_construct_infrastructure
-		prerequisite = { focus = GER_kdf_wagen_factories }
-
-		x = 1
-		y = 1
-		relative_position_id = GER_kdf_wagen_factories
-		cost = 3
-		available = {
-			OR = {
-				68 = { #Ostmark
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				63 = { #Hinterpommern
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				62 = { #Vorpommern
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				807 = { #Gdynia
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				85 = { #Danzig
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-				86 = { #Ponzan
-					state_is_fully_controlled_by_ROOT_or_subject = yes
-				}
-			}
-		}
-		bypass = {
-		}
-
-		search_filters = { FOCUS_FILTER_INDUSTRY }
-
-		completion_reward = {
-			custom_effect_tooltip = GER_expand_the_reichsautobahn_east_tt
-			custom_effect_tooltip = generic_skip_one_line_tt
-			if = {
-				limit = {
-					68 = { #Ostmark
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				68 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					63 = { #Hinterpommern
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				63 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					62 = { #Vorpommern
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				62 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					807 = { #Gdynia
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				807 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					85 = { #Danzig
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				85 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-			if = {
-				limit = {
-					86 = { #Ponzan
-						infrastructure < 10
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				86 = { 
-					add_building_construction = {
-						type = infrastructure
-						level = 2
-						instant_build = yes
-					}
-				}
-			}
-
-			if = {
-				limit = {
-					63 = { #Hinterpommern
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					807 = { #Gdynia
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-					85 = { #Danzig
-						state_is_fully_controlled_by_ROOT_or_subject = yes
-					}
-				}
-				#Köslin - Danzig
-				build_railway = {
-					path = { 11372 11343 9263 362 }
-				}
-			}
-		}
-	}
 
 	focus = {
 		id = GER_adopt_new_panzer_doctrine
@@ -7136,7 +6785,7 @@ completion_reward = {
 		x = 4
 		y = 2
 		relative_position_id = GER_develop_modern_maneuver_warfare
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -7419,7 +7068,7 @@ completion_reward = {
 		x = -4
 		y = 1
 		relative_position_id = GER_expanding_the_luftwaffe
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -7572,7 +7221,7 @@ completion_reward = {
 		y = 1
 		relative_position_id = GER_expanding_the_luftwaffe
 
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -9569,7 +9218,7 @@ completion_reward = {
 		y = 1
 		relative_position_id = GER_atlantic_naval_dominance
 
-		cost = 4
+		cost = 4.4
 		available = {
 		}
 
@@ -10291,7 +9940,6 @@ completion_reward = {
 		}
 	}
 
-
 	focus = {
 		id = GER_italian_social_republic
 		icon = GFX_focus_ITA_the_social_republic_prevails
@@ -10683,7 +10331,7 @@ completion_reward = {
 		x = 1
 		y = 1
 		relative_position_id = GER_trade_deal_with_sweden
-		cost = 4
+		cost = 4.4
 		available = {
 			is_subject = no
 			144 = { state_is_fully_controlled_by_ROOT_or_subject = yes }
@@ -11792,7 +11440,7 @@ completion_reward = {
 		x = -1
 		y = 1
 		relative_position_id = GER_occupation_france2
-		cost = 4
+		cost = 4.4
 
 		
 
@@ -11827,7 +11475,7 @@ completion_reward = {
 		x = 0
 		y = 2
 		relative_position_id = GER_occupation_france2
-		cost = 4
+		cost = 4.4
 
 		
 
@@ -11866,7 +11514,7 @@ completion_reward = {
 		x = 1
 		y = 1
 		relative_position_id = GER_occupation_france2
-		cost = 4
+		cost = 4.4
 
 		available = {
 			has_completed_focus = GER_reorganize_secret_services
@@ -12068,7 +11716,6 @@ completion_reward = {
 			}
 		}
 	}
-
 
 	focus = {
 		id = GER_italy_friend
@@ -13172,7 +12819,7 @@ completion_reward = {
 		x = 4
 		y = 1
 		relative_position_id = GER_coal_liquefaction
-		cost = 4
+		cost = 4.4
 		ai_will_do = {
 			factor = 1
 		}
@@ -13203,7 +12850,6 @@ completion_reward = {
 			}
 		}
 	}
-
 
 	focus = {
 		id = GER_volksturm
