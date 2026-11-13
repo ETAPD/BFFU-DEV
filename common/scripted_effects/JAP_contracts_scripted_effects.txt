@@ -1,0 +1,1233 @@
+# Imperial Contracts Board effects (generated). Capital is earned weekly from civilian industry and spent
+# on queued corporate contracts; each contract raises its zaibatsu's influence (perks at 50, political power drain).
+
+JAP_cb_init = {
+	if = {
+		limit = { NOT = { has_country_flag = JAP_cb_active } }
+		set_country_flag = JAP_cb_active
+		set_variable = { JAP_cb_capital = 50 }
+		set_variable = { JAP_cb_income = 0 }
+		set_variable = { JAP_cb_inflation = 0 }
+		set_variable = { JAP_cb_qcounter = 0 }
+		set_variable = { JAP_cb_last = 0 }
+		set_variable = { JAP_cb_eta_mitsubishi_charter = 0 }
+		set_variable = { JAP_cb_eta_nagasaki_shipyards = 0 }
+		set_variable = { JAP_cb_eta_mitsubishi_aircraft = 0 }
+		set_variable = { JAP_cb_eta_mitsui_trading = 0 }
+		set_variable = { JAP_cb_eta_miike_coal = 0 }
+		set_variable = { JAP_cb_eta_sumitomo_charter = 0 }
+		set_variable = { JAP_cb_eta_sumitomo_metal = 0 }
+		set_variable = { JAP_cb_eta_besshi_copper = 0 }
+		set_variable = { JAP_cb_eta_yasuda_finance = 0 }
+		set_variable = { JAP_cb_eta_dowa_automobile = 0 }
+		set_variable = { JAP_cb_eta_manchurian_motors = 0 }
+		set_variable = { JAP_cb_eta_showa_steel = 0 }
+		set_variable = { JAP_cb_eta_korean_hydro = 0 }
+		set_variable = { JAP_cb_eta_hainan_iron = 0 }
+		set_variable = { JAP_cb_q_mitsubishi_charter = 0 }
+		set_variable = { JAP_cb_rank_mitsubishi_charter = 0 }
+		set_variable = { JAP_cb_q_nagasaki_shipyards = 0 }
+		set_variable = { JAP_cb_rank_nagasaki_shipyards = 0 }
+		set_variable = { JAP_cb_q_mitsubishi_aircraft = 0 }
+		set_variable = { JAP_cb_rank_mitsubishi_aircraft = 0 }
+		set_variable = { JAP_cb_q_mitsui_trading = 0 }
+		set_variable = { JAP_cb_rank_mitsui_trading = 0 }
+		set_variable = { JAP_cb_q_miike_coal = 0 }
+		set_variable = { JAP_cb_rank_miike_coal = 0 }
+		set_variable = { JAP_cb_q_sumitomo_charter = 0 }
+		set_variable = { JAP_cb_rank_sumitomo_charter = 0 }
+		set_variable = { JAP_cb_q_sumitomo_metal = 0 }
+		set_variable = { JAP_cb_rank_sumitomo_metal = 0 }
+		set_variable = { JAP_cb_q_besshi_copper = 0 }
+		set_variable = { JAP_cb_rank_besshi_copper = 0 }
+		set_variable = { JAP_cb_q_yasuda_finance = 0 }
+		set_variable = { JAP_cb_rank_yasuda_finance = 0 }
+		set_variable = { JAP_cb_q_dowa_automobile = 0 }
+		set_variable = { JAP_cb_rank_dowa_automobile = 0 }
+		set_variable = { JAP_cb_q_manchurian_motors = 0 }
+		set_variable = { JAP_cb_rank_manchurian_motors = 0 }
+		set_variable = { JAP_cb_q_showa_steel = 0 }
+		set_variable = { JAP_cb_rank_showa_steel = 0 }
+		set_variable = { JAP_cb_q_korean_hydro = 0 }
+		set_variable = { JAP_cb_rank_korean_hydro = 0 }
+		set_variable = { JAP_cb_q_hainan_iron = 0 }
+		set_variable = { JAP_cb_rank_hainan_iron = 0 }
+		set_variable = { JAP_cb_inf_mitsui = 0 }
+		set_variable = { JAP_cb_inf_mitsubishi = 0 }
+		set_variable = { JAP_cb_inf_sumitomo = 0 }
+		set_variable = { JAP_cb_inf_yasuda = 0 }
+		set_variable = { JAP_cb_inf_nissan = 0 }
+		set_variable = { JAP_zb_industrial_capacity_dockyard = 0 }
+		set_variable = { JAP_zb_local_resources_factor = 0 }
+		set_variable = { JAP_zb_production_factory_max_efficiency_factor = 0 }
+		set_variable = { JAP_zb_production_speed_arms_factory_factor = 0 }
+		set_variable = { JAP_zb_political_power_gain = 0 }
+		add_dynamic_modifier = { modifier = JAP_zaibatsu_influence_dm }
+		JAP_cb_update_costs = yes
+		JAP_cb_update_income = yes
+		JAP_cb_update_eta = yes
+	}
+}
+
+JAP_cb_update_costs = {
+	set_variable = { JAP_cb_cost_mitsubishi_charter = 90 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_mitsubishi_charter = 0.8 } }
+	set_variable = { JAP_cb_cost_nagasaki_shipyards = 140 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_nagasaki_shipyards = 0.8 } }
+	set_variable = { JAP_cb_cost_mitsubishi_aircraft = 130 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_mitsubishi_aircraft = 0.8 } }
+	set_variable = { JAP_cb_cost_mitsui_trading = 100 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_mitsui_trading = 0.8 } }
+	set_variable = { JAP_cb_cost_miike_coal = 80 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_miike_coal = 0.8 } }
+	set_variable = { JAP_cb_cost_sumitomo_charter = 80 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_sumitomo_charter = 0.8 } }
+	set_variable = { JAP_cb_cost_sumitomo_metal = 120 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_sumitomo_metal = 0.8 } }
+	set_variable = { JAP_cb_cost_besshi_copper = 90 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_besshi_copper = 0.8 } }
+	set_variable = { JAP_cb_cost_yasuda_finance = 100 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_yasuda_finance = 0.8 } }
+	set_variable = { JAP_cb_cost_dowa_automobile = 110 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } multiply_variable = { JAP_cb_cost_dowa_automobile = 0.8 } }
+	set_variable = { JAP_cb_cost_manchurian_motors = 120 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } multiply_variable = { JAP_cb_cost_manchurian_motors = 0.8 } }
+	set_variable = { JAP_cb_cost_showa_steel = 120 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } multiply_variable = { JAP_cb_cost_showa_steel = 0.8 } }
+	set_variable = { JAP_cb_cost_korean_hydro = 150 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } multiply_variable = { JAP_cb_cost_korean_hydro = 0.8 } }
+	set_variable = { JAP_cb_cost_hainan_iron = 120 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } multiply_variable = { JAP_cb_cost_hainan_iron = 0.8 } }
+}
+
+JAP_cb_update_income = {
+	set_variable = { JAP_cb_income = num_of_civilian_factories }
+	multiply_variable = { JAP_cb_income = 0.4 }
+	if = { limit = { check_variable = { JAP_cb_inf_yasuda > 49 } } multiply_variable = { JAP_cb_income = 1.25 } }
+	set_temp_variable = { cb_inflation = JAP_cb_inflation }
+	divide_temp_variable = { cb_inflation = -200 }
+	add_to_temp_variable = { cb_inflation = 1 }
+	multiply_variable = { JAP_cb_income = cb_inflation }
+}
+
+JAP_cb_update_perks = {
+	if = { limit = { check_variable = { JAP_cb_inf_mitsubishi > 49 } } set_variable = { JAP_zb_industrial_capacity_dockyard = 0.05 } } else = { set_variable = { JAP_zb_industrial_capacity_dockyard = 0 } }
+	if = { limit = { check_variable = { JAP_cb_inf_mitsui > 49 } } set_variable = { JAP_zb_local_resources_factor = 0.05 } } else = { set_variable = { JAP_zb_local_resources_factor = 0 } }
+	if = { limit = { check_variable = { JAP_cb_inf_sumitomo > 49 } } set_variable = { JAP_zb_production_factory_max_efficiency_factor = 0.03 } } else = { set_variable = { JAP_zb_production_factory_max_efficiency_factor = 0 } }
+	if = { limit = { check_variable = { JAP_cb_inf_nissan > 49 } } set_variable = { JAP_zb_production_speed_arms_factory_factor = 0.10 } } else = { set_variable = { JAP_zb_production_speed_arms_factory_factor = 0 } }
+	set_temp_variable = { cb_total = 0 }
+	add_to_temp_variable = { cb_total = JAP_cb_inf_mitsui }
+	add_to_temp_variable = { cb_total = JAP_cb_inf_mitsubishi }
+	add_to_temp_variable = { cb_total = JAP_cb_inf_sumitomo }
+	add_to_temp_variable = { cb_total = JAP_cb_inf_yasuda }
+	add_to_temp_variable = { cb_total = JAP_cb_inf_nissan }
+	divide_temp_variable = { cb_total = -1000 }
+	set_variable = { JAP_zb_political_power_gain = cb_total }
+	force_update_dynamic_modifier = yes
+}
+
+JAP_cb_recompute_ranks = {
+	if = {
+		limit = { JAP_cb_queued_mitsubishi_charter = yes }
+		set_variable = { JAP_cb_rank_mitsubishi_charter = 1 }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_mitsubishi_charter compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_charter = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_mitsubishi_charter = 0 } }
+	if = {
+		limit = { JAP_cb_queued_nagasaki_shipyards = yes }
+		set_variable = { JAP_cb_rank_nagasaki_shipyards = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_nagasaki_shipyards compare = less_than } } add_to_variable = { JAP_cb_rank_nagasaki_shipyards = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_nagasaki_shipyards = 0 } }
+	if = {
+		limit = { JAP_cb_queued_mitsubishi_aircraft = yes }
+		set_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } add_to_variable = { JAP_cb_rank_mitsubishi_aircraft = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_mitsubishi_aircraft = 0 } }
+	if = {
+		limit = { JAP_cb_queued_mitsui_trading = yes }
+		set_variable = { JAP_cb_rank_mitsui_trading = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_mitsui_trading compare = less_than } } add_to_variable = { JAP_cb_rank_mitsui_trading = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_mitsui_trading = 0 } }
+	if = {
+		limit = { JAP_cb_queued_miike_coal = yes }
+		set_variable = { JAP_cb_rank_miike_coal = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_miike_coal compare = less_than } } add_to_variable = { JAP_cb_rank_miike_coal = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_miike_coal = 0 } }
+	if = {
+		limit = { JAP_cb_queued_sumitomo_charter = yes }
+		set_variable = { JAP_cb_rank_sumitomo_charter = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_sumitomo_charter compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_charter = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_sumitomo_charter = 0 } }
+	if = {
+		limit = { JAP_cb_queued_sumitomo_metal = yes }
+		set_variable = { JAP_cb_rank_sumitomo_metal = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_sumitomo_metal compare = less_than } } add_to_variable = { JAP_cb_rank_sumitomo_metal = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_sumitomo_metal = 0 } }
+	if = {
+		limit = { JAP_cb_queued_besshi_copper = yes }
+		set_variable = { JAP_cb_rank_besshi_copper = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_besshi_copper compare = less_than } } add_to_variable = { JAP_cb_rank_besshi_copper = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_besshi_copper = 0 } }
+	if = {
+		limit = { JAP_cb_queued_yasuda_finance = yes }
+		set_variable = { JAP_cb_rank_yasuda_finance = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_yasuda_finance compare = less_than } } add_to_variable = { JAP_cb_rank_yasuda_finance = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_yasuda_finance = 0 } }
+	if = {
+		limit = { JAP_cb_queued_dowa_automobile = yes }
+		set_variable = { JAP_cb_rank_dowa_automobile = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_dowa_automobile compare = less_than } } add_to_variable = { JAP_cb_rank_dowa_automobile = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_dowa_automobile = 0 } }
+	if = {
+		limit = { JAP_cb_queued_manchurian_motors = yes }
+		set_variable = { JAP_cb_rank_manchurian_motors = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_manchurian_motors compare = less_than } } add_to_variable = { JAP_cb_rank_manchurian_motors = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_manchurian_motors = 0 } }
+	if = {
+		limit = { JAP_cb_queued_showa_steel = yes }
+		set_variable = { JAP_cb_rank_showa_steel = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_showa_steel compare = less_than } } add_to_variable = { JAP_cb_rank_showa_steel = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_showa_steel = 0 } }
+	if = {
+		limit = { JAP_cb_queued_korean_hydro = yes }
+		set_variable = { JAP_cb_rank_korean_hydro = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_korean_hydro compare = less_than } } add_to_variable = { JAP_cb_rank_korean_hydro = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_korean_hydro = 0 } }
+	if = {
+		limit = { JAP_cb_queued_hainan_iron = yes }
+		set_variable = { JAP_cb_rank_hainan_iron = 1 }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_hainan_iron compare = less_than } } add_to_variable = { JAP_cb_rank_hainan_iron = 1 } }
+	}
+	else = { set_variable = { JAP_cb_rank_hainan_iron = 0 } }
+	JAP_cb_update_eta = yes
+}
+
+JAP_cb_clear_queue = {
+	set_variable = { JAP_cb_q_mitsubishi_charter = 0 }
+	set_variable = { JAP_cb_q_nagasaki_shipyards = 0 }
+	set_variable = { JAP_cb_q_mitsubishi_aircraft = 0 }
+	set_variable = { JAP_cb_q_mitsui_trading = 0 }
+	set_variable = { JAP_cb_q_miike_coal = 0 }
+	set_variable = { JAP_cb_q_sumitomo_charter = 0 }
+	set_variable = { JAP_cb_q_sumitomo_metal = 0 }
+	set_variable = { JAP_cb_q_besshi_copper = 0 }
+	set_variable = { JAP_cb_q_yasuda_finance = 0 }
+	set_variable = { JAP_cb_q_dowa_automobile = 0 }
+	set_variable = { JAP_cb_q_manchurian_motors = 0 }
+	set_variable = { JAP_cb_q_showa_steel = 0 }
+	set_variable = { JAP_cb_q_korean_hydro = 0 }
+	set_variable = { JAP_cb_q_hainan_iron = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+
+JAP_cb_queue_mitsubishi_charter = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_mitsubishi_charter = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_mitsubishi_charter = {
+	set_variable = { JAP_cb_q_mitsubishi_charter = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_mitsubishi_charter = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_mitsubishi_charter }
+	set_country_flag = JAP_cb_built_mitsubishi_charter
+	set_variable = { JAP_cb_q_mitsubishi_charter = 0 }
+	set_variable = { JAP_cb_last = 1 }
+	add_to_variable = { JAP_cb_inf_mitsubishi = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_mitsubishi = 5 } }
+	clamp_variable = { var = JAP_cb_inf_mitsubishi min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_production_speed_dockyard_factor value = 0.10 tooltip = production_speed_dockyard_factor_tt }
+	add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.05 tooltip = industrial_capacity_dockyard_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_nagasaki_shipyards = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_nagasaki_shipyards = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_nagasaki_shipyards = {
+	set_variable = { JAP_cb_q_nagasaki_shipyards = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_nagasaki_shipyards = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_nagasaki_shipyards }
+	set_country_flag = JAP_cb_built_nagasaki_shipyards
+	set_variable = { JAP_cb_q_nagasaki_shipyards = 0 }
+	set_variable = { JAP_cb_last = 2 }
+	add_to_variable = { JAP_cb_inf_mitsubishi = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_mitsubishi = 5 } }
+	clamp_variable = { var = JAP_cb_inf_mitsubishi min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.05 tooltip = industrial_capacity_dockyard_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	random_owned_controlled_state = {
+	limit = { is_core_of = JAP is_coastal = yes free_building_slots = { building = dockyard size > 0 include_locked = yes } }
+	add_extra_state_shared_building_slots = 4
+	add_building_construction = { type = dockyard level = 4 instant_build = yes }
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_mitsubishi_aircraft = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_mitsubishi_aircraft = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_mitsubishi_aircraft = {
+	set_variable = { JAP_cb_q_mitsubishi_aircraft = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_mitsubishi_aircraft = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_mitsubishi_aircraft }
+	set_country_flag = JAP_cb_built_mitsubishi_aircraft
+	set_variable = { JAP_cb_q_mitsubishi_aircraft = 0 }
+	set_variable = { JAP_cb_last = 3 }
+	add_to_variable = { JAP_cb_inf_mitsubishi = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_mitsubishi = 5 } }
+	clamp_variable = { var = JAP_cb_inf_mitsubishi min = 0 max = 100 }
+	air_experience = 25
+	add_tech_bonus = { name = JAP_mitsubishi_air bonus = 1.0 uses = 2 category = light_fighter category = naval_bomber }
+	if = {
+	limit = { has_dlc = "Arms Against Tyranny" }
+	mio:JAP_mitsubishi_organization = {
+	add_mio_funds = 2000
+	add_mio_funds_gain_factor = 0.05
+	}
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_mitsui_trading = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_mitsui_trading = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_mitsui_trading = {
+	set_variable = { JAP_cb_q_mitsui_trading = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_mitsui_trading = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_mitsui_trading }
+	set_country_flag = JAP_cb_built_mitsui_trading
+	set_variable = { JAP_cb_q_mitsui_trading = 0 }
+	set_variable = { JAP_cb_last = 4 }
+	add_to_variable = { JAP_cb_inf_mitsui = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_mitsui = 5 } }
+	clamp_variable = { var = JAP_cb_inf_mitsui min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_global_building_slots_factor value = 0.50 tooltip = global_building_slots_factor_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	random_owned_controlled_state = {
+	limit = { is_core_of = JAP free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+	add_extra_state_shared_building_slots = 3
+	add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_miike_coal = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_miike_coal = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_miike_coal = {
+	set_variable = { JAP_cb_q_miike_coal = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_miike_coal = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_miike_coal }
+	set_country_flag = JAP_cb_built_miike_coal
+	set_variable = { JAP_cb_q_miike_coal = 0 }
+	set_variable = { JAP_cb_last = 5 }
+	add_to_variable = { JAP_cb_inf_mitsui = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_mitsui = 5 } }
+	clamp_variable = { var = JAP_cb_inf_mitsui min = 0 max = 100 }
+	add_tech_bonus = { name = JAP_mitsui_industry bonus = 1.0 uses = 2 category = industry }
+	282 = { add_resource = { type = coal  amount = 800 } }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_sumitomo_charter = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_sumitomo_charter = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_sumitomo_charter = {
+	set_variable = { JAP_cb_q_sumitomo_charter = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_sumitomo_charter = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_sumitomo_charter }
+	set_country_flag = JAP_cb_built_sumitomo_charter
+	set_variable = { JAP_cb_q_sumitomo_charter = 0 }
+	set_variable = { JAP_cb_last = 6 }
+	add_to_variable = { JAP_cb_inf_sumitomo = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_sumitomo = 5 } }
+	clamp_variable = { var = JAP_cb_inf_sumitomo min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_local_resources_factor value = 0.075 tooltip = local_resources_factor_tt }
+	add_to_variable = { var = JAP_eco_consumer_goods_expected_value value = 0.025 tooltip = consumer_goods_expected_value_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_sumitomo_metal = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_sumitomo_metal = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_sumitomo_metal = {
+	set_variable = { JAP_cb_q_sumitomo_metal = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_sumitomo_metal = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_sumitomo_metal }
+	set_country_flag = JAP_cb_built_sumitomo_metal
+	set_variable = { JAP_cb_q_sumitomo_metal = 0 }
+	set_variable = { JAP_cb_last = 7 }
+	add_to_variable = { JAP_cb_inf_sumitomo = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_sumitomo = 5 } }
+	clamp_variable = { var = JAP_cb_inf_sumitomo min = 0 max = 100 }
+	282 = { add_resource = { type = chromium amount = 250 } }
+	282 = { add_resource = { type = aluminium amount = 300 } }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_besshi_copper = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_besshi_copper = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_besshi_copper = {
+	set_variable = { JAP_cb_q_besshi_copper = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_besshi_copper = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_besshi_copper }
+	set_country_flag = JAP_cb_built_besshi_copper
+	set_variable = { JAP_cb_q_besshi_copper = 0 }
+	set_variable = { JAP_cb_last = 8 }
+	add_to_variable = { JAP_cb_inf_sumitomo = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_sumitomo = 5 } }
+	clamp_variable = { var = JAP_cb_inf_sumitomo min = 0 max = 100 }
+	282 = { add_resource = { type = steel amount = 500 } }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_yasuda_finance = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_yasuda_finance = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_yasuda_finance = {
+	set_variable = { JAP_cb_q_yasuda_finance = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_yasuda_finance = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_yasuda_finance }
+	set_country_flag = JAP_cb_built_yasuda_finance
+	set_variable = { JAP_cb_q_yasuda_finance = 0 }
+	set_variable = { JAP_cb_last = 9 }
+	add_to_variable = { JAP_cb_inf_yasuda = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_yasuda = 5 } }
+	clamp_variable = { var = JAP_cb_inf_yasuda min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_consumer_goods_factor value = -0.1 tooltip = consumer_goods_factor_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	random_owned_controlled_state = {
+	limit = { is_core_of = JAP free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+	add_extra_state_shared_building_slots = 3
+	add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_dowa_automobile = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_dowa_automobile = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_dowa_automobile = {
+	set_variable = { JAP_cb_q_dowa_automobile = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_dowa_automobile = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_dowa_automobile }
+	set_country_flag = JAP_cb_built_dowa_automobile
+	set_variable = { JAP_cb_q_dowa_automobile = 0 }
+	set_variable = { JAP_cb_last = 10 }
+	add_to_variable = { JAP_cb_inf_nissan = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } add_to_variable = { JAP_cb_inf_nissan = 5 } }
+	clamp_variable = { var = JAP_cb_inf_nissan min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.025 tooltip = industrial_capacity_factory_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	random_owned_controlled_state = {
+	limit = { is_core_of = JAP free_building_slots = { building = arms_factory size > 0 include_locked = yes } }
+	add_extra_state_shared_building_slots = 3
+	add_building_construction = { type = arms_factory level = 3 instant_build = yes }
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_manchurian_motors = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_manchurian_motors = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_manchurian_motors = {
+	set_variable = { JAP_cb_q_manchurian_motors = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_manchurian_motors = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_manchurian_motors }
+	set_country_flag = JAP_cb_built_manchurian_motors
+	set_variable = { JAP_cb_q_manchurian_motors = 0 }
+	set_variable = { JAP_cb_last = 11 }
+	add_to_variable = { JAP_cb_inf_nissan = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } add_to_variable = { JAP_cb_inf_nissan = 5 } }
+	clamp_variable = { var = JAP_cb_inf_nissan min = 0 max = 100 }
+	add_tech_bonus = { name = JAP_nissan_motorized bonus = 1.0 uses = 2 category = motorized_equipment }
+	if = {
+	limit = { has_subject = MAN }
+	MAN = {
+	custom_effect_tooltip = MAN_eco_spirit_changed_tt
+	custom_effect_tooltip = MAN_nissan_arms_factory_tt
+	hidden_effect = {
+	add_to_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0.10 }
+	force_update_dynamic_modifier = yes
+	}
+	}
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_showa_steel = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_showa_steel = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_showa_steel = {
+	set_variable = { JAP_cb_q_showa_steel = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_showa_steel = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_showa_steel }
+	set_country_flag = JAP_cb_built_showa_steel
+	set_variable = { JAP_cb_q_showa_steel = 0 }
+	set_variable = { JAP_cb_last = 12 }
+	add_to_variable = { JAP_cb_inf_nissan = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } add_to_variable = { JAP_cb_inf_nissan = 5 } }
+	clamp_variable = { var = JAP_cb_inf_nissan min = 0 max = 100 }
+	if = {
+	limit = { has_subject = MAN }
+	MAN = {
+	add_to_variable = { var = MAN_behemoth_industrial_capacity_factory value = 0.05 tooltip = industrial_capacity_factory_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	}
+	}
+	else = {
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.025 tooltip = industrial_capacity_factory_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	}
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_korean_hydro = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_korean_hydro = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_korean_hydro = {
+	set_variable = { JAP_cb_q_korean_hydro = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_korean_hydro = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_korean_hydro }
+	set_country_flag = JAP_cb_built_korean_hydro
+	set_variable = { JAP_cb_q_korean_hydro = 0 }
+	set_variable = { JAP_cb_last = 13 }
+	add_to_variable = { JAP_cb_inf_nissan = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_new } add_to_variable = { JAP_cb_inf_nissan = 5 } }
+	clamp_variable = { var = JAP_cb_inf_nissan min = 0 max = 100 }
+	custom_effect_tooltip = JAP_eco_spirit_changed_tt
+	add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.03 tooltip = industrial_capacity_factory_tt }
+	add_to_variable = { var = JAP_eco_production_speed_buildings_factor value = 0.05 tooltip = production_speed_buildings_factor_tt }
+	hidden_effect = { force_update_dynamic_modifier = yes }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_queue_hainan_iron = {
+	add_to_variable = { JAP_cb_qcounter = 1 }
+	set_variable = { JAP_cb_q_hainan_iron = JAP_cb_qcounter }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_unqueue_hainan_iron = {
+	set_variable = { JAP_cb_q_hainan_iron = 0 }
+	JAP_cb_recompute_ranks = yes
+}
+JAP_cb_build_hainan_iron = {
+	subtract_from_variable = { JAP_cb_capital = JAP_cb_cost_hainan_iron }
+	set_country_flag = JAP_cb_built_hainan_iron
+	set_variable = { JAP_cb_q_hainan_iron = 0 }
+	set_variable = { JAP_cb_last = 14 }
+	add_to_variable = { JAP_cb_inf_mitsui = 20 }
+	if = { limit = { has_country_flag = JAP_zaibatsu_big_four } add_to_variable = { JAP_cb_inf_mitsui = 5 } }
+	clamp_variable = { var = JAP_cb_inf_mitsui min = 0 max = 100 }
+	591 = { add_resource = { type = steel amount = 200 } }
+	JAP_cb_recompute_ranks = yes
+	JAP_cb_update_perks = yes
+	country_event = { id = JAP_contracts.1 }
+}
+
+JAP_cb_weekly = {
+	JAP_cb_update_costs = yes
+	JAP_cb_update_income = yes
+	add_to_variable = { JAP_cb_capital = JAP_cb_income }
+	subtract_from_variable = { JAP_cb_inflation = 0.25 }
+	clamp_variable = { var = JAP_cb_inflation min = 0 max = 100 }
+	if = {
+		limit = { has_country_flag = JAP_cb_skip }
+		if = { limit = { JAP_cb_cand_mitsubishi_charter = yes } JAP_cb_build_mitsubishi_charter = yes }
+		else_if = { limit = { JAP_cb_cand_nagasaki_shipyards = yes } JAP_cb_build_nagasaki_shipyards = yes }
+		else_if = { limit = { JAP_cb_cand_mitsubishi_aircraft = yes } JAP_cb_build_mitsubishi_aircraft = yes }
+		else_if = { limit = { JAP_cb_cand_mitsui_trading = yes } JAP_cb_build_mitsui_trading = yes }
+		else_if = { limit = { JAP_cb_cand_miike_coal = yes } JAP_cb_build_miike_coal = yes }
+		else_if = { limit = { JAP_cb_cand_sumitomo_charter = yes } JAP_cb_build_sumitomo_charter = yes }
+		else_if = { limit = { JAP_cb_cand_sumitomo_metal = yes } JAP_cb_build_sumitomo_metal = yes }
+		else_if = { limit = { JAP_cb_cand_besshi_copper = yes } JAP_cb_build_besshi_copper = yes }
+		else_if = { limit = { JAP_cb_cand_yasuda_finance = yes } JAP_cb_build_yasuda_finance = yes }
+		else_if = { limit = { JAP_cb_cand_dowa_automobile = yes } JAP_cb_build_dowa_automobile = yes }
+		else_if = { limit = { JAP_cb_cand_manchurian_motors = yes } JAP_cb_build_manchurian_motors = yes }
+		else_if = { limit = { JAP_cb_cand_showa_steel = yes } JAP_cb_build_showa_steel = yes }
+		else_if = { limit = { JAP_cb_cand_korean_hydro = yes } JAP_cb_build_korean_hydro = yes }
+		else_if = { limit = { JAP_cb_cand_hainan_iron = yes } JAP_cb_build_hainan_iron = yes }
+	}
+	else = {
+		if = { limit = { JAP_cb_head_mitsubishi_charter = yes JAP_cb_affordable_mitsubishi_charter = yes } JAP_cb_build_mitsubishi_charter = yes }
+		else_if = { limit = { JAP_cb_head_nagasaki_shipyards = yes JAP_cb_affordable_nagasaki_shipyards = yes } JAP_cb_build_nagasaki_shipyards = yes }
+		else_if = { limit = { JAP_cb_head_mitsubishi_aircraft = yes JAP_cb_affordable_mitsubishi_aircraft = yes } JAP_cb_build_mitsubishi_aircraft = yes }
+		else_if = { limit = { JAP_cb_head_mitsui_trading = yes JAP_cb_affordable_mitsui_trading = yes } JAP_cb_build_mitsui_trading = yes }
+		else_if = { limit = { JAP_cb_head_miike_coal = yes JAP_cb_affordable_miike_coal = yes } JAP_cb_build_miike_coal = yes }
+		else_if = { limit = { JAP_cb_head_sumitomo_charter = yes JAP_cb_affordable_sumitomo_charter = yes } JAP_cb_build_sumitomo_charter = yes }
+		else_if = { limit = { JAP_cb_head_sumitomo_metal = yes JAP_cb_affordable_sumitomo_metal = yes } JAP_cb_build_sumitomo_metal = yes }
+		else_if = { limit = { JAP_cb_head_besshi_copper = yes JAP_cb_affordable_besshi_copper = yes } JAP_cb_build_besshi_copper = yes }
+		else_if = { limit = { JAP_cb_head_yasuda_finance = yes JAP_cb_affordable_yasuda_finance = yes } JAP_cb_build_yasuda_finance = yes }
+		else_if = { limit = { JAP_cb_head_dowa_automobile = yes JAP_cb_affordable_dowa_automobile = yes } JAP_cb_build_dowa_automobile = yes }
+		else_if = { limit = { JAP_cb_head_manchurian_motors = yes JAP_cb_affordable_manchurian_motors = yes } JAP_cb_build_manchurian_motors = yes }
+		else_if = { limit = { JAP_cb_head_showa_steel = yes JAP_cb_affordable_showa_steel = yes } JAP_cb_build_showa_steel = yes }
+		else_if = { limit = { JAP_cb_head_korean_hydro = yes JAP_cb_affordable_korean_hydro = yes } JAP_cb_build_korean_hydro = yes }
+		else_if = { limit = { JAP_cb_head_hainan_iron = yes JAP_cb_affordable_hainan_iron = yes } JAP_cb_build_hainan_iron = yes }
+	}
+	JAP_cb_update_perks = yes
+	JAP_cb_update_eta = yes
+}
+
+JAP_cb_raise_savings = {
+	add_stability = -0.03
+	add_to_variable = { JAP_cb_capital = 100 }
+	add_to_variable = { JAP_cb_inf_yasuda = 10 }
+	clamp_variable = { var = JAP_cb_inf_yasuda min = 0 max = 100 }
+	set_country_flag = { flag = JAP_cb_savings_cd days = 30 }
+	JAP_cb_update_perks = yes
+	JAP_cb_update_eta = yes
+}
+JAP_cb_raise_boj = {
+	add_to_variable = { JAP_cb_capital = 100 }
+	add_to_variable = { JAP_cb_inflation = 5 }
+	clamp_variable = { var = JAP_cb_inflation min = 0 max = 100 }
+	set_country_flag = { flag = JAP_cb_boj_cd days = 30 }
+	JAP_cb_update_eta = yes
+}
+JAP_cb_raise_ncdc = {
+	add_to_variable = { JAP_cb_capital = 100 }
+	every_controlled_state = {
+		limit = { is_core_of = CHI }
+		add_resistance = 5
+	}
+	add_to_variable = { JAP_cb_inf_mitsui = 10 }
+	clamp_variable = { var = JAP_cb_inf_mitsui min = 0 max = 100 }
+	set_country_flag = { flag = JAP_cb_ncdc_cd days = 30 }
+	JAP_cb_update_perks = yes
+	JAP_cb_update_eta = yes
+}
+
+# Weeks until each contract is funded: its cost plus every queued contract ahead of it (all queued contracts
+# for one not yet queued), minus current Capital, over weekly income. Rounded up for display.
+JAP_cb_update_eta = {
+	if = {
+		limit = { has_country_flag = JAP_cb_built_mitsubishi_charter }
+		set_variable = { JAP_cb_eta_mitsubishi_charter = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_mitsubishi_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_mitsubishi_charter = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_nagasaki_shipyards }
+		set_variable = { JAP_cb_eta_nagasaki_shipyards = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_nagasaki_shipyards compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_nagasaki_shipyards = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_mitsubishi_aircraft }
+		set_variable = { JAP_cb_eta_mitsubishi_aircraft = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_mitsubishi_aircraft compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_mitsubishi_aircraft = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_mitsui_trading }
+		set_variable = { JAP_cb_eta_mitsui_trading = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_mitsui_trading = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_mitsui_trading compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_mitsui_trading = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_miike_coal }
+		set_variable = { JAP_cb_eta_miike_coal = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_miike_coal }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_miike_coal = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_miike_coal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_miike_coal = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_sumitomo_charter }
+		set_variable = { JAP_cb_eta_sumitomo_charter = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_sumitomo_charter = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_sumitomo_charter compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_sumitomo_charter = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_sumitomo_metal }
+		set_variable = { JAP_cb_eta_sumitomo_metal = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_sumitomo_metal = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_sumitomo_metal compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_sumitomo_metal = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_besshi_copper }
+		set_variable = { JAP_cb_eta_besshi_copper = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_besshi_copper }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_besshi_copper = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_besshi_copper compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_besshi_copper = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_yasuda_finance }
+		set_variable = { JAP_cb_eta_yasuda_finance = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_yasuda_finance = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_yasuda_finance compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_yasuda_finance = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_dowa_automobile }
+		set_variable = { JAP_cb_eta_dowa_automobile = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_dowa_automobile = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_dowa_automobile compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_dowa_automobile = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_manchurian_motors }
+		set_variable = { JAP_cb_eta_manchurian_motors = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_manchurian_motors = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_manchurian_motors compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_manchurian_motors = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_showa_steel }
+		set_variable = { JAP_cb_eta_showa_steel = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_showa_steel }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_showa_steel = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_showa_steel compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_showa_steel = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_korean_hydro }
+		set_variable = { JAP_cb_eta_korean_hydro = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_korean_hydro }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_hainan_iron = yes OR = { NOT = { JAP_cb_queued_korean_hydro = yes } check_variable = { var = JAP_cb_q_hainan_iron value = JAP_cb_q_korean_hydro compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_hainan_iron } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_korean_hydro = cb_need }
+	}
+	if = {
+		limit = { has_country_flag = JAP_cb_built_hainan_iron }
+		set_variable = { JAP_cb_eta_hainan_iron = 0 }
+	}
+	else = {
+		set_temp_variable = { cb_need = JAP_cb_cost_hainan_iron }
+		if = { limit = { JAP_cb_queued_mitsubishi_charter = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_mitsubishi_charter value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_charter } }
+		if = { limit = { JAP_cb_queued_nagasaki_shipyards = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_nagasaki_shipyards value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_nagasaki_shipyards } }
+		if = { limit = { JAP_cb_queued_mitsubishi_aircraft = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_mitsubishi_aircraft value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsubishi_aircraft } }
+		if = { limit = { JAP_cb_queued_mitsui_trading = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_mitsui_trading value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_mitsui_trading } }
+		if = { limit = { JAP_cb_queued_miike_coal = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_miike_coal value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_miike_coal } }
+		if = { limit = { JAP_cb_queued_sumitomo_charter = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_sumitomo_charter value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_charter } }
+		if = { limit = { JAP_cb_queued_sumitomo_metal = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_sumitomo_metal value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_sumitomo_metal } }
+		if = { limit = { JAP_cb_queued_besshi_copper = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_besshi_copper value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_besshi_copper } }
+		if = { limit = { JAP_cb_queued_yasuda_finance = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_yasuda_finance value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_yasuda_finance } }
+		if = { limit = { JAP_cb_queued_dowa_automobile = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_dowa_automobile value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_dowa_automobile } }
+		if = { limit = { JAP_cb_queued_manchurian_motors = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_manchurian_motors value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_manchurian_motors } }
+		if = { limit = { JAP_cb_queued_showa_steel = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_showa_steel value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_showa_steel } }
+		if = { limit = { JAP_cb_queued_korean_hydro = yes OR = { NOT = { JAP_cb_queued_hainan_iron = yes } check_variable = { var = JAP_cb_q_korean_hydro value = JAP_cb_q_hainan_iron compare = less_than } } } add_to_temp_variable = { cb_need = JAP_cb_cost_korean_hydro } }
+		subtract_from_temp_variable = { cb_need = JAP_cb_capital }
+		if = { limit = { check_variable = { cb_need < 0 } } set_temp_variable = { cb_need = 0 } }
+		if = { limit = { check_variable = { JAP_cb_income > 0 } } divide_temp_variable = { cb_need = JAP_cb_income } }
+		else = { set_temp_variable = { cb_need = 999 } }
+		add_to_temp_variable = { cb_need = 0.49 }
+		set_variable = { JAP_cb_eta_hainan_iron = cb_need }
+	}
+}

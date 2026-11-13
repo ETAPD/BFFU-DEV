@@ -1,0 +1,273 @@
+scripted_gui = {
+
+	# Launcher embedded in the Contracts Board decision category
+	JAP_cb_launcher = {
+		context_type = decision_category
+		window_name = "JAP_cb_launcher"
+		effects = {
+			JAP_cb_open_button_click = { set_country_flag = JAP_cb_open JAP_cb_update_eta = yes }
+		}
+	}
+
+	# The Contracts Board window
+	JAP_cb_window = {
+		context_type = player_context
+		window_name = "JAP_cb_window"
+		visible = { original_tag = JAP has_country_flag = JAP_cb_active has_country_flag = JAP_cb_open }
+		effects = {
+			JAP_cb_close_button_click = { clr_country_flag = JAP_cb_open }
+			JAP_cb_clear_button_click = { JAP_cb_clear_queue = yes }
+			JAP_cb_savings_button_click = { JAP_cb_raise_savings = yes }
+			JAP_cb_boj_button_click = { JAP_cb_raise_boj = yes }
+			JAP_cb_ncdc_button_click = { JAP_cb_raise_ncdc = yes }
+			JAP_cb_rule_save_off_click = { clr_country_flag = JAP_cb_skip }
+			JAP_cb_rule_skip_off_click = { set_country_flag = JAP_cb_skip }
+			JAP_cb_off_mitsubishi_charter_click = { JAP_cb_queue_mitsubishi_charter = yes }
+			JAP_cb_on_mitsubishi_charter_click = { JAP_cb_unqueue_mitsubishi_charter = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_mitsubishi_charter_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_mitsubishi_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_production_speed_dockyard_factor value = 0.10 tooltip = production_speed_dockyard_factor_tt }
+					add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.05 tooltip = industrial_capacity_dockyard_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+				}
+			}
+			JAP_cb_off_nagasaki_shipyards_click = { JAP_cb_queue_nagasaki_shipyards = yes }
+			JAP_cb_on_nagasaki_shipyards_click = { JAP_cb_unqueue_nagasaki_shipyards = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_nagasaki_shipyards_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_mitsubishi_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_industrial_capacity_dockyard value = 0.05 tooltip = industrial_capacity_dockyard_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+					random_owned_controlled_state = {
+					limit = { is_core_of = JAP is_coastal = yes free_building_slots = { building = dockyard size > 0 include_locked = yes } }
+					add_extra_state_shared_building_slots = 4
+					add_building_construction = { type = dockyard level = 4 instant_build = yes }
+					}
+				}
+			}
+			JAP_cb_off_mitsubishi_aircraft_click = { JAP_cb_queue_mitsubishi_aircraft = yes }
+			JAP_cb_on_mitsubishi_aircraft_click = { JAP_cb_unqueue_mitsubishi_aircraft = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_mitsubishi_aircraft_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_mitsubishi_tt
+					air_experience = 25
+					add_tech_bonus = { name = JAP_mitsubishi_air bonus = 1.0 uses = 2 category = light_fighter category = naval_bomber }
+					if = {
+					limit = { has_dlc = "Arms Against Tyranny" }
+					mio:JAP_mitsubishi_organization = {
+					add_mio_funds = 2000
+					add_mio_funds_gain_factor = 0.05
+					}
+					}
+				}
+			}
+			JAP_cb_off_mitsui_trading_click = { JAP_cb_queue_mitsui_trading = yes }
+			JAP_cb_on_mitsui_trading_click = { JAP_cb_unqueue_mitsui_trading = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_mitsui_trading_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_mitsui_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_global_building_slots_factor value = 0.50 tooltip = global_building_slots_factor_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+					random_owned_controlled_state = {
+					limit = { is_core_of = JAP free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+					add_extra_state_shared_building_slots = 3
+					add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+					}
+				}
+			}
+			JAP_cb_off_miike_coal_click = { JAP_cb_queue_miike_coal = yes }
+			JAP_cb_on_miike_coal_click = { JAP_cb_unqueue_miike_coal = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_miike_coal_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_mitsui_tt
+					add_tech_bonus = { name = JAP_mitsui_industry bonus = 1.0 uses = 2 category = industry }
+					282 = { add_resource = { type = coal  amount = 800 } }
+				}
+			}
+			JAP_cb_off_sumitomo_charter_click = { JAP_cb_queue_sumitomo_charter = yes }
+			JAP_cb_on_sumitomo_charter_click = { JAP_cb_unqueue_sumitomo_charter = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_sumitomo_charter_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_sumitomo_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_local_resources_factor value = 0.075 tooltip = local_resources_factor_tt }
+					add_to_variable = { var = JAP_eco_consumer_goods_expected_value value = 0.025 tooltip = consumer_goods_expected_value_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+				}
+			}
+			JAP_cb_off_sumitomo_metal_click = { JAP_cb_queue_sumitomo_metal = yes }
+			JAP_cb_on_sumitomo_metal_click = { JAP_cb_unqueue_sumitomo_metal = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_sumitomo_metal_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_sumitomo_tt
+					282 = { add_resource = { type = chromium amount = 250 } }
+					282 = { add_resource = { type = aluminium amount = 300 } }
+				}
+			}
+			JAP_cb_off_besshi_copper_click = { JAP_cb_queue_besshi_copper = yes }
+			JAP_cb_on_besshi_copper_click = { JAP_cb_unqueue_besshi_copper = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_besshi_copper_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_sumitomo_tt
+					282 = { add_resource = { type = steel amount = 500 } }
+				}
+			}
+			JAP_cb_off_yasuda_finance_click = { JAP_cb_queue_yasuda_finance = yes }
+			JAP_cb_on_yasuda_finance_click = { JAP_cb_unqueue_yasuda_finance = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_yasuda_finance_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_yasuda_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_consumer_goods_factor value = -0.1 tooltip = consumer_goods_factor_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+					random_owned_controlled_state = {
+					limit = { is_core_of = JAP free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+					add_extra_state_shared_building_slots = 3
+					add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+					}
+				}
+			}
+			JAP_cb_off_dowa_automobile_click = { JAP_cb_queue_dowa_automobile = yes }
+			JAP_cb_on_dowa_automobile_click = { JAP_cb_unqueue_dowa_automobile = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_dowa_automobile_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_nissan_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.025 tooltip = industrial_capacity_factory_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+					random_owned_controlled_state = {
+					limit = { is_core_of = JAP free_building_slots = { building = arms_factory size > 0 include_locked = yes } }
+					add_extra_state_shared_building_slots = 3
+					add_building_construction = { type = arms_factory level = 3 instant_build = yes }
+					}
+				}
+			}
+			JAP_cb_off_manchurian_motors_click = { JAP_cb_queue_manchurian_motors = yes }
+			JAP_cb_on_manchurian_motors_click = { JAP_cb_unqueue_manchurian_motors = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_manchurian_motors_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_nissan_tt
+					add_tech_bonus = { name = JAP_nissan_motorized bonus = 1.0 uses = 2 category = motorized_equipment }
+					if = {
+					limit = { has_subject = MAN }
+					MAN = {
+					custom_effect_tooltip = MAN_eco_spirit_changed_tt
+					custom_effect_tooltip = MAN_nissan_arms_factory_tt
+					hidden_effect = {
+					add_to_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0.10 }
+					force_update_dynamic_modifier = yes
+					}
+					}
+					}
+				}
+			}
+			JAP_cb_off_showa_steel_click = { JAP_cb_queue_showa_steel = yes }
+			JAP_cb_on_showa_steel_click = { JAP_cb_unqueue_showa_steel = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_showa_steel_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_nissan_tt
+					if = {
+					limit = { has_subject = MAN }
+					MAN = {
+					add_to_variable = { var = MAN_behemoth_industrial_capacity_factory value = 0.05 tooltip = industrial_capacity_factory_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+					}
+					}
+					else = {
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.025 tooltip = industrial_capacity_factory_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+					}
+				}
+			}
+			JAP_cb_off_korean_hydro_click = { JAP_cb_queue_korean_hydro = yes }
+			JAP_cb_on_korean_hydro_click = { JAP_cb_unqueue_korean_hydro = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_korean_hydro_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_nissan_tt
+					custom_effect_tooltip = JAP_eco_spirit_changed_tt
+					add_to_variable = { var = JAP_eco_industrial_capacity_factory value = 0.03 tooltip = industrial_capacity_factory_tt }
+					add_to_variable = { var = JAP_eco_production_speed_buildings_factor value = 0.05 tooltip = production_speed_buildings_factor_tt }
+					hidden_effect = { force_update_dynamic_modifier = yes }
+				}
+			}
+			JAP_cb_off_hainan_iron_click = { JAP_cb_queue_hainan_iron = yes }
+			JAP_cb_on_hainan_iron_click = { JAP_cb_unqueue_hainan_iron = yes }
+			# hovering the icon shows exactly what the contract builds (shown only, never executed)
+			JAP_cb_icon_hainan_iron_click = {
+				effect_tooltip = {
+					custom_effect_tooltip = JAP_cb_inf_gain_mitsui_tt
+					591 = { add_resource = { type = steel amount = 200 } }
+				}
+			}
+		}
+		triggers = {
+			JAP_cb_savings_button_click_enabled = { NOT = { has_country_flag = JAP_cb_savings_cd } }
+			JAP_cb_boj_button_click_enabled = { NOT = { has_country_flag = JAP_cb_boj_cd } }
+			JAP_cb_ncdc_button_click_enabled = { NOT = { has_country_flag = JAP_cb_ncdc_cd } JAP_cb_can_use_ncdc = yes }
+			JAP_cb_rule_save_on_visible = { NOT = { has_country_flag = JAP_cb_skip } }
+			JAP_cb_rule_save_off_visible = { has_country_flag = JAP_cb_skip }
+			JAP_cb_rule_skip_on_visible = { has_country_flag = JAP_cb_skip }
+			JAP_cb_rule_skip_off_visible = { NOT = { has_country_flag = JAP_cb_skip } }
+			JAP_cb_on_mitsubishi_charter_visible = { OR = { JAP_cb_queued_mitsubishi_charter = yes has_country_flag = JAP_cb_built_mitsubishi_charter } }
+			JAP_cb_on_mitsubishi_charter_click_enabled = { NOT = { has_country_flag = JAP_cb_built_mitsubishi_charter } }
+			JAP_cb_off_mitsubishi_charter_visible = { NOT = { JAP_cb_queued_mitsubishi_charter = yes } NOT = { has_country_flag = JAP_cb_built_mitsubishi_charter } }
+			JAP_cb_on_nagasaki_shipyards_visible = { OR = { JAP_cb_queued_nagasaki_shipyards = yes has_country_flag = JAP_cb_built_nagasaki_shipyards } }
+			JAP_cb_on_nagasaki_shipyards_click_enabled = { NOT = { has_country_flag = JAP_cb_built_nagasaki_shipyards } }
+			JAP_cb_off_nagasaki_shipyards_visible = { NOT = { JAP_cb_queued_nagasaki_shipyards = yes } NOT = { has_country_flag = JAP_cb_built_nagasaki_shipyards } }
+			JAP_cb_on_mitsubishi_aircraft_visible = { OR = { JAP_cb_queued_mitsubishi_aircraft = yes has_country_flag = JAP_cb_built_mitsubishi_aircraft } }
+			JAP_cb_on_mitsubishi_aircraft_click_enabled = { NOT = { has_country_flag = JAP_cb_built_mitsubishi_aircraft } }
+			JAP_cb_off_mitsubishi_aircraft_visible = { NOT = { JAP_cb_queued_mitsubishi_aircraft = yes } NOT = { has_country_flag = JAP_cb_built_mitsubishi_aircraft } }
+			JAP_cb_on_mitsui_trading_visible = { OR = { JAP_cb_queued_mitsui_trading = yes has_country_flag = JAP_cb_built_mitsui_trading } }
+			JAP_cb_on_mitsui_trading_click_enabled = { NOT = { has_country_flag = JAP_cb_built_mitsui_trading } }
+			JAP_cb_off_mitsui_trading_visible = { NOT = { JAP_cb_queued_mitsui_trading = yes } NOT = { has_country_flag = JAP_cb_built_mitsui_trading } }
+			JAP_cb_on_miike_coal_visible = { OR = { JAP_cb_queued_miike_coal = yes has_country_flag = JAP_cb_built_miike_coal } }
+			JAP_cb_on_miike_coal_click_enabled = { NOT = { has_country_flag = JAP_cb_built_miike_coal } }
+			JAP_cb_off_miike_coal_visible = { NOT = { JAP_cb_queued_miike_coal = yes } NOT = { has_country_flag = JAP_cb_built_miike_coal } }
+			JAP_cb_on_sumitomo_charter_visible = { OR = { JAP_cb_queued_sumitomo_charter = yes has_country_flag = JAP_cb_built_sumitomo_charter } }
+			JAP_cb_on_sumitomo_charter_click_enabled = { NOT = { has_country_flag = JAP_cb_built_sumitomo_charter } }
+			JAP_cb_off_sumitomo_charter_visible = { NOT = { JAP_cb_queued_sumitomo_charter = yes } NOT = { has_country_flag = JAP_cb_built_sumitomo_charter } }
+			JAP_cb_on_sumitomo_metal_visible = { OR = { JAP_cb_queued_sumitomo_metal = yes has_country_flag = JAP_cb_built_sumitomo_metal } }
+			JAP_cb_on_sumitomo_metal_click_enabled = { NOT = { has_country_flag = JAP_cb_built_sumitomo_metal } }
+			JAP_cb_off_sumitomo_metal_visible = { NOT = { JAP_cb_queued_sumitomo_metal = yes } NOT = { has_country_flag = JAP_cb_built_sumitomo_metal } }
+			JAP_cb_on_besshi_copper_visible = { OR = { JAP_cb_queued_besshi_copper = yes has_country_flag = JAP_cb_built_besshi_copper } }
+			JAP_cb_on_besshi_copper_click_enabled = { NOT = { has_country_flag = JAP_cb_built_besshi_copper } }
+			JAP_cb_off_besshi_copper_visible = { NOT = { JAP_cb_queued_besshi_copper = yes } NOT = { has_country_flag = JAP_cb_built_besshi_copper } }
+			JAP_cb_on_yasuda_finance_visible = { OR = { JAP_cb_queued_yasuda_finance = yes has_country_flag = JAP_cb_built_yasuda_finance } }
+			JAP_cb_on_yasuda_finance_click_enabled = { NOT = { has_country_flag = JAP_cb_built_yasuda_finance } }
+			JAP_cb_off_yasuda_finance_visible = { NOT = { JAP_cb_queued_yasuda_finance = yes } NOT = { has_country_flag = JAP_cb_built_yasuda_finance } }
+			JAP_cb_on_dowa_automobile_visible = { OR = { JAP_cb_queued_dowa_automobile = yes has_country_flag = JAP_cb_built_dowa_automobile } }
+			JAP_cb_on_dowa_automobile_click_enabled = { NOT = { has_country_flag = JAP_cb_built_dowa_automobile } }
+			JAP_cb_off_dowa_automobile_visible = { NOT = { JAP_cb_queued_dowa_automobile = yes } NOT = { has_country_flag = JAP_cb_built_dowa_automobile } }
+			JAP_cb_on_manchurian_motors_visible = { OR = { JAP_cb_queued_manchurian_motors = yes has_country_flag = JAP_cb_built_manchurian_motors } }
+			JAP_cb_on_manchurian_motors_click_enabled = { NOT = { has_country_flag = JAP_cb_built_manchurian_motors } }
+			JAP_cb_off_manchurian_motors_visible = { NOT = { JAP_cb_queued_manchurian_motors = yes } NOT = { has_country_flag = JAP_cb_built_manchurian_motors } }
+			JAP_cb_on_showa_steel_visible = { OR = { JAP_cb_queued_showa_steel = yes has_country_flag = JAP_cb_built_showa_steel } }
+			JAP_cb_on_showa_steel_click_enabled = { NOT = { has_country_flag = JAP_cb_built_showa_steel } }
+			JAP_cb_off_showa_steel_visible = { NOT = { JAP_cb_queued_showa_steel = yes } NOT = { has_country_flag = JAP_cb_built_showa_steel } }
+			JAP_cb_on_korean_hydro_visible = { OR = { JAP_cb_queued_korean_hydro = yes has_country_flag = JAP_cb_built_korean_hydro } }
+			JAP_cb_on_korean_hydro_click_enabled = { NOT = { has_country_flag = JAP_cb_built_korean_hydro } }
+			JAP_cb_off_korean_hydro_visible = { NOT = { JAP_cb_queued_korean_hydro = yes } NOT = { has_country_flag = JAP_cb_built_korean_hydro } }
+			JAP_cb_on_hainan_iron_visible = { OR = { JAP_cb_queued_hainan_iron = yes has_country_flag = JAP_cb_built_hainan_iron } }
+			JAP_cb_on_hainan_iron_click_enabled = { NOT = { has_country_flag = JAP_cb_built_hainan_iron } }
+			JAP_cb_off_hainan_iron_visible = { NOT = { JAP_cb_queued_hainan_iron = yes } NOT = { has_country_flag = JAP_cb_built_hainan_iron } }
+		}
+	}
+}
