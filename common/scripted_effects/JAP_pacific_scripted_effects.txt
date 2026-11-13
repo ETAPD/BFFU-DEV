@@ -181,6 +181,20 @@ JAP_war_autocomplete_check = {
 		}
 		complete_national_focus = JAP_war_fall_of_chongqing
 	}
+	# China settles once the government is chosen and the war is over or Chongqing has fallen.
+	if = {
+		limit = {
+			OR = { has_completed_focus = JAP_war_wang_regime has_completed_focus = JAP_war_direct_rule }
+			NOT = { has_completed_focus = JAP_war_china_settled }
+			OR = {
+				NOT = { country_exists = CHI }
+				CHI = { has_capitulated = yes }
+				NOT = { has_war_with = CHI }
+				controls_state = 1037
+			}
+		}
+		complete_national_focus = JAP_war_china_settled
+	}
 	if = {
 		limit = {
 			has_country_flag = JAP_pacific_war_active
@@ -237,5 +251,65 @@ JAP_cn_regime_init = {
 		set_variable = { JAP_cn_consumer_goods_factor = 0 }
 		set_variable = { JAP_cn_resistance_target = 0 }
 		add_dynamic_modifier = { modifier = JAP_china_regime }
+	}
+}
+
+# Wang Jingwei's Government: the East Hebei regime (RCC) becomes the Reorganized National Government at Nanjing.
+# If Japan annexed it earlier, it is founded again at Nanjing as a puppet. Occupied Chinese core states pass to it
+# (owned ones outright, occupied ones as controller and contested owner, as in vanilla's hand-over decision).
+JAP_cn_create_rcc = {
+	if = {
+		limit = { NOT = { country_exists = RCC } }
+		1035 = { add_core_of = RCC transfer_state_to = RCC }
+		set_autonomy = {
+			target = RCC
+			autonomous_state = autonomy_puppet
+			end_wars = no
+			end_civil_wars = no
+		}
+		RCC = {
+			set_politics = { ruling_party = neutrality elections_allowed = no }
+			if = { limit = { country_exists = CHI } inherit_technology = CHI }
+			add_manpower = 30000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 3000 producer = JAP }
+			add_equipment_to_stockpile = { type = convoy_1 amount = 50 producer = JAP }
+			if = {
+				limit = { country_exists = CHI JAP = { has_war_with = CHI } NOT = { has_war_with = CHI } }
+				add_to_war = { targeted_alliance = JAP enemy = CHI hostility_reason = asked_to_join }
+			}
+		}
+	}
+	JAP_cn_hand_states_to_rcc = yes
+	RCC = { RCC_become_reorganized = yes }
+	add_ai_strategy = { type = befriend id = RCC value = 100 }
+	add_ai_strategy = { type = protect id = RCC value = 50 }
+}
+
+JAP_cn_hand_states_to_rcc = {
+	every_state = {
+		limit = {
+			is_core_of = CHI
+			NOT = { is_core_of = MAN }
+			NOT = { is_owned_by = RCC }
+			OR = { is_owned_by = JAP is_controlled_by = JAP }
+			NOT = {
+				state = 524 # Taiwan
+				state = 591 # Hainan, kept as a naval base
+				state = 743 # Qingdao
+				state = 745 # Kwantung Leased Territory
+				state = 326 # Hong Kong
+				state = 728 # Guangzhouwan
+				state = 729 # Macau
+			}
+		}
+		add_core_of = RCC
+		if = {
+			limit = { is_owned_by = JAP }
+			transfer_state_to = RCC
+		}
+		else = {
+			set_state_controller_to = RCC
+			add_contested_owner = RCC
+		}
 	}
 }

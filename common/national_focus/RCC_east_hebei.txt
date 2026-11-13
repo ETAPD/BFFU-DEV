@@ -1,0 +1,847 @@
+focus_tree = {
+	id = rcc_east_hebei
+	country = {
+		factor = 0
+		modifier = {
+			add = 10
+			original_tag = RCC
+		}
+	}
+	default = no
+	continuous_focus_position = { x = 1350 y = 1100 }
+
+	focus = {
+		id = RCC_special_trade
+		icon = GFX_focus_RCC_special_trade
+		x = 2
+		y = 0
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			add_ideas = RCC_special_trade
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_trade value = 0.25 tooltip = RCC_tt_pol_trade }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_kailuan_mines
+		icon = GFX_focus_RCC_kailuan_mines
+		x = 0
+		y = 1
+		cost = 5
+		prerequisite = { focus = RCC_special_trade }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_lrf value = 0.05 tooltip = RCC_tt_pol_lrf }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			609 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } }
+		}
+	}
+	focus = {
+		id = RCC_tangshan_cement
+		icon = GFX_focus_RCC_tangshan_cement
+		x = 2
+		y = 1
+		cost = 5
+		prerequisite = { focus = RCC_special_trade }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			show_ideas_tooltip = RCC_mei_siping_adv
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_bld value = 0.05 tooltip = RCC_tt_pol_bld }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			609 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = RCC_federal_reserve_bank
+		icon = GFX_focus_RCC_federal_reserve_bank
+		x = 1
+		y = 2
+		prerequisite = { focus = RCC_kailuan_mines focus = RCC_tangshan_cement }
+		cost = 5
+		available = { has_completed_focus = RCC_provisional_government }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_pp value = 0.1 tooltip = RCC_tt_pol_pp }
+			add_to_variable = { var = RCC_pol_cg value = -0.03 tooltip = RCC_tt_pol_cg }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_north_china_development
+		icon = GFX_focus_RCC_north_china_development
+		x = 0
+		y = 3
+		cost = 5
+		prerequisite = { focus = RCC_federal_reserve_bank }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_lrf value = 0.05 tooltip = RCC_tt_pol_lrf }
+			add_to_variable = { var = RCC_pol_ic value = 0.03 tooltip = RCC_tt_pol_ic }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_north_china_railways
+		icon = GFX_focus_RCC_north_china_railways
+		x = 3
+		y = 3
+		prerequisite = { focus = RCC_federal_reserve_bank focus = RCC_shanhaiguan }
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_bld value = 0.05 tooltip = RCC_tt_pol_bld }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			every_owned_state = {
+				limit = { is_controlled_by = ROOT infrastructure < 5 }
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = RCC_central_reserve_bank
+		icon = GFX_focus_RCC_central_reserve_bank
+		x = 1
+		y = 4
+		cost = 5
+		prerequisite = { focus = RCC_north_china_development focus = RCC_north_china_railways }
+		available = { has_country_flag = RCC_reorganized }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_pp value = 0.1 tooltip = RCC_tt_pol_pp }
+			add_to_variable = { var = RCC_pol_stab value = 0.03 tooltip = RCC_tt_pol_stab }
+			add_to_variable = { var = RCC_pol_cg value = -0.03 tooltip = RCC_tt_pol_cg }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_lower_yangtze
+		icon = GFX_focus_RCC_lower_yangtze
+		x = 0
+		y = 5
+		cost = 5
+		prerequisite = { focus = RCC_central_reserve_bank }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_ic value = 0.03 tooltip = RCC_tt_pol_ic }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			if = {
+				limit = { owns_state = 613 }
+				613 = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+				}
+			}
+			if = {
+				limit = { owns_state = 1035 }
+				1035 = {
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+			}
+		}
+	}
+	focus = {
+		id = RCC_commerce_control
+		icon = GFX_focus_RCC_commerce_control
+		x = 3
+		y = 5
+		cost = 5
+		prerequisite = { focus = RCC_central_reserve_bank }
+		available = { date > 1943.3.1 }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_lrf value = 0.05 tooltip = RCC_tt_pol_lrf }
+			add_to_variable = { var = RCC_pol_stab value = 0.03 tooltip = RCC_tt_pol_stab }
+			add_to_variable = { var = RCC_pol_res value = -0.03 tooltip = RCC_tt_pol_res }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_arsenals
+		icon = GFX_focus_RCC_arsenals
+		x = 1
+		y = 6
+		cost = 5
+		prerequisite = { focus = RCC_lower_yangtze }
+		prerequisite = { focus = RCC_commerce_control }
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_ic value = 0.05 tooltip = RCC_tt_pol_ic }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			capital_scope = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = RCC_autonomous_government
+		icon = GFX_focus_RCC_autonomous_government
+		x = 9
+		y = 0
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			add_political_power = 50
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_anti_communist_pledge
+		icon = GFX_focus_RCC_anti_communist_pledge
+		x = 7
+		y = 1
+		cost = 5
+		prerequisite = { focus = RCC_autonomous_government }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_res value = -0.02 tooltip = RCC_tt_pol_res }
+			add_to_variable = { var = RCC_pol_stab value = 0.03 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_japanese_advisers
+		icon = GFX_focus_RCC_japanese_advisers
+		x = 11
+		y = 1
+		cost = 5
+		prerequisite = { focus = RCC_autonomous_government }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_pp value = 0.1 tooltip = RCC_tt_pol_pp }
+			add_to_variable = { var = RCC_pol_rsp value = 0.05 tooltip = RCC_tt_pol_rsp }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			add_autonomy_score = { value = -10 }
+		}
+	}
+	focus = {
+		id = RCC_tangshan
+		icon = GFX_focus_RCC_tangshan
+		x = 9
+		y = 2
+		cost = 5
+		prerequisite = { focus = RCC_anti_communist_pledge focus = RCC_japanese_advisers }
+		available = {
+			OR = {
+				has_country_flag = RCC_tongzhou_mutiny
+				date > 1938.1.1
+			}
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			if = {
+				limit = { has_idea = RCC_tongzhou_aftermath }
+				remove_ideas = RCC_tongzhou_aftermath
+			}
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_provisional_government
+		icon = GFX_focus_RCC_provisional_government
+		x = 9
+		y = 3
+		cost = 7
+		prerequisite = { focus = RCC_tangshan }
+		available = {
+			OR = {
+				JAP = { has_completed_focus = JAP_war_beijing_regime }
+				AND = {
+					JAP = { is_ai = yes }
+					date > 1937.12.14
+				}
+			}
+			OR = {
+				JAP = { controls_state = 608 }
+				controls_state = 608
+			}
+		}
+		bypass = { has_country_flag = RCC_provisional }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			show_ideas_tooltip = RCC_kita_seiichi_adv
+			custom_effect_tooltip = RCC_provisional_tt
+			hidden_effect = { RCC_become_provisional = yes }
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_pp value = 0.1 tooltip = RCC_tt_pol_pp }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_xinmin_hui
+		icon = GFX_focus_RCC_xinmin_hui
+		x = 7
+		y = 4
+		cost = 5
+		prerequisite = { focus = RCC_provisional_government }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_comp value = 0.0002 tooltip = RCC_tt_pol_comp }
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_merge_reformed
+		icon = GFX_focus_RCC_merge_reformed
+		x = 11
+		y = 4
+		cost = 7
+		prerequisite = { focus = RCC_provisional_government }
+		available = {
+			OR = {
+				JAP = { has_completed_focus = JAP_war_reformed_nanjing }
+				AND = {
+					JAP = { is_ai = yes }
+					date > 1938.3.28
+				}
+			}
+			OR = {
+				JAP = { controls_state = 1035 }
+				controls_state = 1035
+			}
+		}
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_reformed_tt
+			hidden_effect = { RCC_absorb_reformed = yes }
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_rec value = 0.05 tooltip = RCC_tt_pol_rec }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			show_ideas_tooltip = RCC_liang_hongzhi_adv
+		}
+	}
+	focus = {
+		id = RCC_return_to_nanjing
+		icon = GFX_focus_RCC_return_to_nanjing
+		x = 9
+		y = 5
+		cost = 7
+		prerequisite = { focus = RCC_xinmin_hui }
+		prerequisite = { focus = RCC_merge_reformed }
+		available = {
+			date > 1940.3.1
+			owns_state = 1035
+		}
+		bypass = { has_country_flag = RCC_reorganized }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			show_ideas_tooltip = RCC_kagesa_sadaaki_adv
+			show_ideas_tooltip = RCC_chen_bijun_adv
+			show_ideas_tooltip = RCC_zhou_fohai_adv
+			show_ideas_tooltip = RCC_chen_gongbo_adv
+			custom_effect_tooltip = RCC_reorganized_tt
+			hidden_effect = { RCC_become_reorganized = yes }
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_pp value = 0.15 tooltip = RCC_tt_pol_pp }
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_north_china_council
+		icon = GFX_focus_RCC_north_china_council
+		x = 6
+		y = 6
+		cost = 5
+		prerequisite = { focus = RCC_return_to_nanjing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_rec value = 0.05 tooltip = RCC_tt_pol_rec }
+			add_to_variable = { var = RCC_pol_comp value = 0.0001 tooltip = RCC_tt_pol_comp }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			show_ideas_tooltip = RCC_wang_yitang_adv
+		}
+	}
+	focus = {
+		id = RCC_peace_anti_communism
+		icon = GFX_focus_RCC_peace_anti_communism
+		x = 12
+		y = 6
+		cost = 5
+		prerequisite = { focus = RCC_return_to_nanjing }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_res value = -0.03 tooltip = RCC_tt_pol_res }
+			add_to_variable = { var = RCC_pol_stab value = 0.03 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_qingxiang
+		icon = GFX_focus_RCC_qingxiang
+		x = 6
+		y = 7
+		cost = 5
+		prerequisite = { focus = RCC_north_china_council }
+		mutually_exclusive = { focus = RCC_new_citizen }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_res value = -0.08 tooltip = RCC_tt_pol_res }
+			add_to_variable = { var = RCC_pol_stab value = -0.03 tooltip = RCC_tt_pol_stab }
+			add_to_variable = { var = RCC_pol_gar value = -0.15 tooltip = RCC_tt_pol_gar }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			show_ideas_tooltip = RCC_li_shiqun_adv
+		}
+	}
+	focus = {
+		id = RCC_new_citizen
+		icon = GFX_focus_RCC_new_citizen
+		x = 12
+		y = 7
+		cost = 5
+		prerequisite = { focus = RCC_peace_anti_communism }
+		mutually_exclusive = { focus = RCC_qingxiang }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			show_ideas_tooltip = RCC_ding_mocun_adv
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_comp value = 0.0002 tooltip = RCC_tt_pol_comp }
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			add_to_variable = { var = RCC_pol_res value = -0.03 tooltip = RCC_tt_pol_res }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_return_of_concessions
+		icon = GFX_focus_RCC_return_of_concessions
+		x = 9
+		y = 8
+		cost = 5
+		prerequisite = { focus = RCC_qingxiang focus = RCC_new_citizen }
+		available = { date > 1943.1.1 }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			add_political_power = 100
+			custom_effect_tooltip = RCC_concessions_tt
+			hidden_effect = {
+				every_owned_state = {
+					limit = { is_core_of = CHI }
+					add_core_of = ROOT
+				}
+			}
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_join_the_war
+		icon = GFX_focus_RCC_join_the_war
+		x = 8
+		y = 9
+		cost = 5
+		prerequisite = { focus = RCC_return_of_concessions }
+		available = {
+			JAP = {
+				OR = { has_war_with = USA has_war_with = ENG }
+			}
+		}
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			if = {
+				limit = { JAP = { has_war_with = USA } NOT = { has_war_with = USA } }
+				add_to_war = { targeted_alliance = JAP enemy = USA hostility_reason = asked_to_join }
+			}
+			if = {
+				limit = { JAP = { has_war_with = ENG } NOT = { has_war_with = ENG } }
+				add_to_war = { targeted_alliance = JAP enemy = ENG hostility_reason = asked_to_join }
+			}
+			add_war_support = 0.10
+			army_experience = 10
+		}
+	}
+	focus = {
+		id = RCC_greater_east_asia_conference
+		icon = GFX_focus_RCC_greater_east_asia_conference
+		x = 10
+		y = 9
+		cost = 5
+		prerequisite = { focus = RCC_return_of_concessions }
+		available = { date > 1943.11.1 }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			add_political_power = 75
+			add_autonomy_score = { value = 25 }
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_rsp value = 0.05 tooltip = RCC_tt_pol_rsp }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_sovereign_china
+		icon = GFX_focus_RCC_sovereign_china
+		x = 9
+		y = 10
+		cost = 7
+		prerequisite = { focus = RCC_join_the_war }
+		prerequisite = { focus = RCC_greater_east_asia_conference }
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			add_research_slot = 1
+			add_autonomy_score = { value = 25 }
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_stab value = 0.05 tooltip = RCC_tt_pol_stab }
+			add_to_variable = { var = RCC_pol_ic value = 0.05 tooltip = RCC_tt_pol_ic }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_peace_preservation_corps
+		icon = GFX_focus_RCC_peace_preservation_corps
+		x = 17
+		y = 0
+		cost = 5
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			show_ideas_tooltip = RCC_bao_wenyue_adv
+			army_experience = 5
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_org value = 0.05 tooltip = RCC_tt_army_org }
+			add_to_variable = { var = RCC_army_def value = 0.05 tooltip = RCC_tt_army_def }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_japanese_instructors
+		icon = GFX_focus_RCC_japanese_instructors
+		x = 15
+		y = 1
+		cost = 5
+		prerequisite = { focus = RCC_peace_preservation_corps }
+		mutually_exclusive = { focus = RCC_own_officers }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_exp value = 0.1 tooltip = RCC_tt_army_exp }
+			add_to_variable = { var = RCC_army_train value = -0.1 tooltip = RCC_tt_army_train }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			add_autonomy_score = { value = -5 }
+		}
+	}
+	focus = {
+		id = RCC_own_officers
+		icon = GFX_focus_RCC_own_officers
+		x = 19
+		y = 1
+		cost = 5
+		prerequisite = { focus = RCC_peace_preservation_corps }
+		mutually_exclusive = { focus = RCC_japanese_instructors }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			army_experience = 10
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_org value = 0.05 tooltip = RCC_tt_army_org }
+			add_to_variable = { var = RCC_army_morale value = 0.05 tooltip = RCC_tt_army_morale }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_purge_the_corps
+		icon = GFX_focus_RCC_purge_the_corps
+		x = 17
+		y = 2
+		cost = 5
+		prerequisite = { focus = RCC_japanese_instructors focus = RCC_own_officers }
+		available = {
+			OR = {
+				has_country_flag = RCC_tongzhou_mutiny
+				date > 1938.1.1
+			}
+		}
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_org value = 0.05 tooltip = RCC_tt_army_org }
+			add_to_variable = { var = RCC_army_morale value = 0.05 tooltip = RCC_tt_army_morale }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_security_army
+		icon = GFX_focus_RCC_security_army
+		x = 16
+		y = 3
+		cost = 5
+		prerequisite = { focus = RCC_purge_the_corps }
+		available = { has_completed_focus = RCC_provisional_government }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			recruit_character = RCC_qi_xieyuan
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_atk value = 0.05 tooltip = RCC_tt_army_atk }
+			add_to_variable = { var = RCC_army_def value = 0.05 tooltip = RCC_tt_army_def }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			custom_effect_tooltip = RCC_two_divisions_tt
+			hidden_effect = {
+			capital_scope = {
+				create_unit = {
+					division = "division_template = \"Zhi'an Shi\" start_experience_factor = 0.2"
+					owner = ROOT
+					count = 2
+				}
+			}
+			}
+			show_ideas_tooltip = RCC_qi_xieyuan_adv
+		}
+	}
+	focus = {
+		id = RCC_railway_guards
+		icon = GFX_focus_RCC_railway_guards
+		x = 19
+		y = 3
+		cost = 5
+		prerequisite = { focus = RCC_purge_the_corps }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_gar value = -0.15 tooltip = RCC_tt_pol_gar }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_def value = 0.05 tooltip = RCC_tt_army_def }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_central_military_academy
+		icon = GFX_focus_RCC_central_military_academy
+		x = 17
+		y = 4
+		cost = 5
+		prerequisite = { focus = RCC_security_army focus = RCC_railway_guards }
+		available = { has_country_flag = RCC_reorganized }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			recruit_character = RCC_ye_peng
+			show_ideas_tooltip = RCC_ye_peng_adv
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_exp value = 0.15 tooltip = RCC_tt_army_exp }
+			add_to_variable = { var = RCC_army_train value = -0.1 tooltip = RCC_tt_army_train }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_national_army
+		icon = GFX_focus_RCC_national_army
+		x = 15
+		y = 5
+		cost = 5
+		prerequisite = { focus = RCC_central_military_academy }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_atk value = 0.05 tooltip = RCC_tt_army_atk }
+			add_to_variable = { var = RCC_army_def value = 0.05 tooltip = RCC_tt_army_def }
+			add_to_variable = { var = RCC_army_org value = 0.05 tooltip = RCC_tt_army_org }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			custom_effect_tooltip = RCC_two_divisions_tt
+			hidden_effect = {
+			capital_scope = {
+				create_unit = {
+					division = "division_template = \"Zhi'an Shi\" start_experience_factor = 0.2"
+					owner = ROOT
+					count = 2
+				}
+			}
+			}
+		}
+	}
+	focus = {
+		id = RCC_tax_police
+		icon = GFX_focus_RCC_tax_police
+		x = 17
+		y = 5
+		cost = 5
+		prerequisite = { focus = RCC_central_military_academy }
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_sf value = 0.1 tooltip = RCC_tt_army_sf }
+			add_to_variable = { var = RCC_army_morale value = 0.05 tooltip = RCC_tt_army_morale }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_defectors
+		icon = GFX_focus_RCC_defectors
+		x = 15
+		y = 6
+		cost = 5
+		prerequisite = { focus = RCC_national_army }
+		available = { date > 1942.1.1 }
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			add_manpower = 30000
+			recruit_character = RCC_sun_dianying
+			recruit_character = RCC_pang_bingxun
+			recruit_character = RCC_hao_pengju
+		}
+	}
+	focus = {
+		id = RCC_nanjing_navy
+		icon = GFX_focus_RCC_nanjing_navy
+		x = 19
+		y = 5
+		prerequisite = { focus = RCC_central_military_academy }
+		cost = 5
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			show_ideas_tooltip = RCC_ren_yuandao_adv
+			navy_experience = 10
+			recruit_character = RCC_ren_yuandao
+			if = {
+				limit = { owns_state = 613 }
+				613 = { add_building_construction = { type = dockyard level = 1 instant_build = yes } }
+			}
+			else = {
+				609 = { add_building_construction = { type = dockyard level = 1 instant_build = yes } }
+			}
+		}
+	}
+	focus = {
+		id = RCC_air_force
+		icon = GFX_focus_RCC_air_force
+		x = 19
+		y = 6
+		prerequisite = { focus = RCC_nanjing_navy }
+		cost = 5
+		search_filters = { FOCUS_FILTER_AIR_XP }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			air_experience = 15
+			capital_scope = { add_building_construction = { type = air_base level = 2 instant_build = yes } }
+		}
+	}
+	focus = {
+		id = RCC_shanhaiguan
+		icon = GFX_focus_RCC_shanhaiguan
+		x = 4
+		y = 1
+		prerequisite = { focus = RCC_special_trade }
+		cost = 5
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_trade value = 0.25 tooltip = RCC_tt_pol_trade }
+			add_to_variable = { var = RCC_pol_pp value = 0.05 tooltip = RCC_tt_pol_pp }
+			add_to_variable = { var = RCC_pol_stab value = -0.02 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_blockhouse_lines
+		icon = GFX_focus_RCC_blockhouse_lines
+		x = 5
+		y = 8
+		prerequisite = { focus = RCC_qingxiang }
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_gar value = -0.1 tooltip = RCC_tt_pol_gar }
+			add_to_variable = { var = RCC_pol_res value = -0.03 tooltip = RCC_tt_pol_res }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			custom_effect_tooltip = RCC_army_changed_tt
+			add_to_variable = { var = RCC_army_def value = 0.05 tooltip = RCC_tt_army_def }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+	focus = {
+		id = RCC_youth_corps
+		icon = GFX_focus_RCC_youth_corps
+		x = 13
+		y = 8
+		prerequisite = { focus = RCC_new_citizen }
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_comp value = 0.0001 tooltip = RCC_tt_pol_comp }
+			add_to_variable = { var = RCC_pol_rec value = 0.03 tooltip = RCC_tt_pol_rec }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+			add_war_support = 0.05
+		}
+	}
+	focus = {
+		id = RCC_jessfield_road
+		icon = GFX_focus_RCC_jessfield_road
+		x = 17
+		y = 6
+		prerequisite = { focus = RCC_tax_police }
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		ai_will_do = { factor = 1 }
+		completion_reward = {
+			custom_effect_tooltip = RCC_regime_changed_tt
+			add_to_variable = { var = RCC_pol_res value = -0.04 tooltip = RCC_tt_pol_res }
+			add_to_variable = { var = RCC_pol_gar value = -0.05 tooltip = RCC_tt_pol_gar }
+			add_to_variable = { var = RCC_pol_stab value = -0.02 tooltip = RCC_tt_pol_stab }
+			hidden_effect = { force_update_dynamic_modifier = yes }
+		}
+	}
+}

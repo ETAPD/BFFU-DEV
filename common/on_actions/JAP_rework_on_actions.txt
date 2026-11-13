@@ -32,6 +32,108 @@ on_actions = {
 		}
 	}
 
+	# RCC advisor portfolios: while seated, each grows one Collaborationist Regime value up to a cap (the gain stays).
+	on_weekly_RCC = {
+		effect = {
+			if = {
+				limit = {
+					has_idea_with_trait = RCC_master_of_the_purse
+					check_variable = { RCC_wk_zhou < 0.1 }
+				}
+				add_to_variable = { RCC_wk_zhou = 0.0025 }
+				add_to_variable = { RCC_pol_ic = 0.0025 }
+				force_update_dynamic_modifier = yes
+			}
+			if = {
+				limit = {
+					has_idea_with_trait = RCC_southern_literatus
+					check_variable = { RCC_wk_liang > -0.08 }
+				}
+				add_to_variable = { RCC_wk_liang = -0.0025 }
+				add_to_variable = { RCC_pol_res = -0.0025 }
+				force_update_dynamic_modifier = yes
+			}
+			if = {
+				limit = {
+					has_idea_with_trait = RCC_legislative_president
+					check_variable = { RCC_wk_chen < 0.08 }
+				}
+				add_to_variable = { RCC_wk_chen = 0.0025 }
+				add_to_variable = { RCC_pol_stab = 0.0025 }
+				force_update_dynamic_modifier = yes
+			}
+			if = {
+				limit = {
+					has_idea_with_trait = RCC_lord_of_the_north
+					check_variable = { RCC_wk_wangyt < 0.1 }
+				}
+				add_to_variable = { RCC_wk_wangyt = 0.0025 }
+				add_to_variable = { RCC_pol_lrf = 0.0025 }
+				force_update_dynamic_modifier = yes
+			}
+			if = {
+				limit = {
+					has_idea_with_trait = RCC_master_of_no76
+					check_variable = { RCC_wk_li > -0.1 }
+				}
+				add_to_variable = { RCC_wk_li = -0.005 }
+				add_to_variable = { RCC_pol_res = -0.005 }
+				force_update_dynamic_modifier = yes
+			}
+			if = {
+				limit = {
+					has_idea_with_trait = RCC_double_dealer
+					check_variable = { RCC_wk_ding < 0.08 }
+				}
+				add_to_variable = { RCC_wk_ding = 0.0025 }
+				add_to_variable = { RCC_pol_rec = 0.0025 }
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	on_monthly_RCC = {
+		effect = {
+			# Wang Jingwei dies in November 1944 and Chen Gongbo succeeds him.
+			if = {
+				limit = {
+					date > 1944.11.9
+					has_country_flag = RCC_reorganized
+					NOT = { has_country_flag = RCC_wang_died }
+				}
+				country_event = { id = rcc.2 }
+			}
+			# The bullet lodged in Wang Jingwei's spine since 1935 worsens in stages.
+			if = {
+				limit = {
+					date > 1943.6.1
+					has_country_leader = { character = RCC_wang_jingwei ruling_only = yes }
+					has_country_leader_with_trait = RCC_bullet_of_1935_1
+				}
+				remove_country_leader_trait = RCC_bullet_of_1935_1
+				add_country_leader_trait = RCC_bullet_of_1935_2
+			}
+			if = {
+				limit = {
+					date > 1944.3.1
+					has_country_leader = { character = RCC_wang_jingwei ruling_only = yes }
+					has_country_leader_with_trait = RCC_bullet_of_1935_2
+				}
+				remove_country_leader_trait = RCC_bullet_of_1935_2
+				add_country_leader_trait = RCC_bullet_of_1935_3
+			}
+			# September 1943: Li Shiqun is poisoned by the Kempeitai.
+			if = {
+				limit = {
+					date > 1943.9.6
+					has_country_flag = RCC_reorganized
+					NOT = { has_country_flag = RCC_li_shiqun_poisoned }
+				}
+				country_event = { id = rcc.3 }
+			}
+		}
+	}
+
 	on_weekly_JAP = {
 		effect = {
 			if = { limit = { has_country_flag = JAP_cb_active } JAP_cb_weekly = yes }
