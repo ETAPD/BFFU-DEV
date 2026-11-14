@@ -1,167 +1,202 @@
 JAP_GEACPS_category = {
 
-	JAP_Found_the_Greater_East_Asian_Film_Sphere = {
-		icon = GFX_decision_generic_brainwash
-		fire_only_once = yes
-		allowed = { original_tag = JAP }
-		cost = 25
-		complete_effect = {
-			add_stability = 0.05
-			set_temp_variable = { hakko_ichiu_progress_to_add = 5 }
-			JAP_add_hakko_ichiu_progress = yes
-			set_country_flag = JAP_Founded_the_Greater_East_Asian_Film_Sphere
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Fund_and_Peddle_Propaganda = {
-		icon = GFX_decision_eng_propaganda_campaigns
-		fire_only_once = yes
-		allowed = { original_tag = JAP }
-		visible = { has_country_flag = JAP_Founded_the_Greater_East_Asian_Film_Sphere }
-		cost = 15
-		complete_effect = {
-			add_war_support = 0.05
-			set_temp_variable = { hakko_ichiu_progress_to_add = 5 }
-			JAP_add_hakko_ichiu_progress = yes
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Ingratiate_the_Japanese_Language_in_the_Sphere = {
-		icon = GFX_decision_jap_pacific_guardian
-		fire_only_once = yes
-		allowed = { original_tag = JAP }
-		visible = { has_country_flag = JAP_Founded_the_Greater_East_Asian_Film_Sphere }
-		cost = 25
-		days_remove = 180
-		modifier = { resistance_growth = -0.1 }
-		complete_effect = {
-			set_temp_variable = { hakko_ichiu_progress_to_add = -5 }
-			JAP_add_hakko_ichiu_progress = yes
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Open_up_an_Exhibition_Street_in_Siam = {
-		icon = GFX_decision_generic_police_action
-		fire_only_once = yes
-		allowed = { original_tag = JAP }
-		visible = { has_country_flag = JAP_Founded_the_Greater_East_Asian_Film_Sphere }
-		available = { SIA = { exists = yes } }
-		highlight_states = { highlight_state_targets = { state = 289 } }
-		on_map_mode = map_and_decisions_view
-		cost = 75
-		complete_effect = {
-			SIA = { add_timed_idea = { idea = JAP_siam_exhibition_output days = 180 } }
-			set_temp_variable = { hakko_ichiu_progress_to_add = 5 }
-			JAP_add_hakko_ichiu_progress = yes
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Unity_Marches_and_Parades = {
-		icon = GFX_decision_eng_blackshirt_march
-		fire_only_once = no
-		allowed = { original_tag = JAP }
-		days_remove = 60
-		cost = 75
-		modifier = { training_time_factor = -0.15 }
-		complete_effect = {
-			army_experience = 50
-			add_war_support = 0.05
-			set_temp_variable = { hakko_ichiu_progress_to_add = 5 }
-			JAP_add_hakko_ichiu_progress = yes
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Requisition_Extra_Resources = {
-		icon = GFX_decision_steel
-		fire_only_once = no
-		allowed = { original_tag = JAP }
-		days_remove = 180
-		cost = 100
-		modifier = {
-			industrial_capacity_factory = 0.025
-			local_resources_factor = 0.025
-		}
-		complete_effect = {
-			set_temp_variable = { hakko_ichiu_progress_to_add = -5 }
-			JAP_add_hakko_ichiu_progress = yes
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Rebuild_Dutch_Oil_Wells = {
-		icon = GFX_decision_oil
-		fire_only_once = yes
-		allowed = { original_tag = JAP }
-		visible = {
-			672 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
-			335 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
-			334 = { controller = { OR = { tag = JAP is_in_faction_with = JAP } } }
-		}
-		on_map_mode = map_and_decisions_view
-		highlight_states = { highlight_state_targets = { state = 672 state = 335 state = 334 } }
-		days_remove = 60
-		modifier = { research_speed_factor = -0.05 }
-		remove_effect = {
-			add_resource = { type = oil amount = 8 state = 672 }
-			add_resource = { type = oil amount = 8 state = 335 }
-			add_resource = { type = oil amount = 3 state = 334 }
-		}
-		ai_will_do = { base = 1 }
-	}
-
-	JAP_Hold_the_Tokyo_Conference = {
+	# Ministry of Greater East Asia (November 1942): faster development across the sphere.
+	JAP_sl_ministry = {
 		icon = GFX_decision_generic_speech
 		fire_only_once = yes
 		allowed = { original_tag = JAP }
-		visible = {
-			date > 1939.1.1
-			any_country = { is_in_faction_with = JAP }
+		visible = { has_country_flag = JAP_sl_active date > 1942.1.1 }
+		cost = 100
+		complete_effect = {
+			set_country_flag = JAP_sl_ministry
+			add_to_variable = { JAP_sl_accord = 10 }
+			custom_effect_tooltip = JAP_sl_ministry_tt
+			hidden_effect = { JAP_sl_weekly_preview = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	# Grand Escort Command (November 1943): convoy escorts cut tanker losses.
+	JAP_sl_escort_command = {
+		icon = GFX_decision_generic_naval
+		fire_only_once = yes
+		allowed = { original_tag = JAP }
+		visible = { has_country_flag = JAP_sl_active has_country_flag = JAP_pacific_war_active }
+		cost = 75
+		complete_effect = {
+			set_country_flag = JAP_sl_escorts
+			custom_effect_tooltip = JAP_sl_escorts_tt
+			navy_experience = -15
+			hidden_effect = { JAP_sl_weekly_preview = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	# Emergency Rice Levy: an extra cargo this week at the cost of accord.
+	JAP_sl_rice_levy = {
+		icon = GFX_decision_generic_civil_support
+		allowed = { original_tag = JAP }
+		visible = { has_country_flag = JAP_sl_active }
+		cost = 25
+		days_re_enable = 60
+		complete_effect = {
+			set_variable = { JAP_sl_levy = 25 }
+			add_to_variable = { JAP_sl_accord = -8 }
+			custom_effect_tooltip = JAP_sl_levy_tt
+			hidden_effect = { JAP_sl_weekly_preview = yes }
+		}
+		ai_will_do = {
+			base = 0
+			modifier = { add = 5 check_variable = { JAP_sl_balance < 0 } check_variable = { JAP_sl_accord > 40 } }
+		}
+	}
+
+	# The Greater East Asia Conference (Tokyo, 5-6 November 1943).
+	JAP_sl_conference = {
+		icon = GFX_decision_generic_speech
+		fire_only_once = yes
+		allowed = { original_tag = JAP }
+		visible = { has_country_flag = JAP_sl_active date > 1943.1.1 }
+		available = {
+			date > 1943.11.1
+			check_variable = { JAP_sl_accord > 39 }
 		}
 		cost = 100
 		complete_effect = {
+			add_to_variable = { JAP_sl_accord = 15 }
+			custom_effect_tooltip = JAP_sl_accord_15_tt
 			every_country = {
 				limit = { OR = { tag = JAP is_in_faction_with = JAP } }
 				add_stability = 0.05
 				add_war_support = 0.05
 			}
-			set_temp_variable = { hakko_ichiu_progress_to_add = 10 }
-			JAP_add_hakko_ichiu_progress = yes
+			hidden_effect = { JAP_sl_weekly_preview = yes }
 		}
-		ai_will_do = { base = 100 }
+		ai_will_do = { base = 20 }
 	}
 
-	JAP_Build_Shinto_Shrines = {
-		icon = GFX_decision_JAP_Build_Shinto_Shrines
-		fire_only_once = no
+	JAP_sl_grant_nch_decision = {
+		icon = GFX_decision_generic_form_nation
+		fire_only_once = yes
 		allowed = { original_tag = JAP }
-		modifier = { compliance_growth = 0.15 }
-		days_remove = 180
+		visible = {
+			has_country_flag = JAP_sl_active
+			JAP_sl_active_nch = yes
+			check_variable = { JAP_sl_st_nch = 3 }
+		}
+		available = {
+			check_variable = { JAP_sl_pl_nch > 25 }
+			date > 1940.3.30
+			country_exists = RCC
+			RCC = { is_subject_of = JAP }
+			NOT = { has_country_flag = JAP_china_direct_rule }
+		}
 		cost = 50
 		complete_effect = {
-			set_temp_variable = { hakko_ichiu_progress_to_add = 5 }
-			JAP_add_hakko_ichiu_progress = yes
+			custom_effect_tooltip = JAP_sl_grant_nch_tt
+			hidden_effect = { JAP_sl_grant_nch = yes }
 		}
-		ai_will_do = { base = 1 }
+		ai_will_do = { base = 5 }
 	}
 
-	JAP_Launch_Pacification_Operations = {
-		icon = GFX_decision_oppression
-		fire_only_once = no
+	JAP_sl_grant_inc_decision = {
+		icon = GFX_decision_JAP_establish_empire_of_vietnam
+		fire_only_once = yes
 		allowed = { original_tag = JAP }
-		available = { has_army_experience > 10 }
-		modifier = { resistance_target = -0.1 }
-		days_remove = 120
-		complete_effect = {
-			army_experience = -10
-			set_temp_variable = { hakko_ichiu_progress_to_add = -5 }
-			JAP_add_hakko_ichiu_progress = yes
+		visible = {
+			has_country_flag = JAP_sl_active
+			JAP_sl_active_inc = yes
+			check_variable = { JAP_sl_st_inc = 3 }
 		}
-		ai_will_do = { base = 1 }
+		available = {
+			check_variable = { JAP_sl_pl_inc > 25 }
+			date > 1944.1.1
+			OR = {
+				NOT = { country_exists = VIN }
+				VIN = { is_subject_of = JAP }
+			}
+		}
+		cost = 50
+		complete_effect = {
+			custom_effect_tooltip = JAP_sl_grant_inc_tt
+			hidden_effect = { JAP_sl_grant_inc = yes }
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	JAP_sl_grant_dei_decision = {
+		icon = GFX_decision_generic_form_nation
+		fire_only_once = yes
+		allowed = { original_tag = JAP }
+		visible = {
+			has_country_flag = JAP_sl_active
+			JAP_sl_active_dei = yes
+			check_variable = { JAP_sl_st_dei = 3 }
+		}
+		available = {
+			check_variable = { JAP_sl_pl_dei > 25 }
+			date > 1944.9.7
+			OR = {
+				NOT = { country_exists = INS }
+				INS = { is_subject_of = JAP }
+			}
+		}
+		cost = 50
+		complete_effect = {
+			custom_effect_tooltip = JAP_sl_grant_dei_tt
+			hidden_effect = { JAP_sl_grant_dei = yes }
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	JAP_sl_grant_phi_decision = {
+		icon = GFX_decision_generic_form_nation
+		fire_only_once = yes
+		allowed = { original_tag = JAP }
+		visible = {
+			has_country_flag = JAP_sl_active
+			JAP_sl_active_phi = yes
+			check_variable = { JAP_sl_st_phi = 3 }
+		}
+		available = {
+			check_variable = { JAP_sl_pl_phi > 25 }
+			date > 1943.10.14
+			OR = {
+				NOT = { country_exists = PHI }
+				PHI = { is_subject_of = JAP }
+			}
+		}
+		cost = 50
+		complete_effect = {
+			custom_effect_tooltip = JAP_sl_grant_phi_tt
+			hidden_effect = { JAP_sl_grant_phi = yes }
+		}
+		ai_will_do = { base = 5 }
+	}
+
+	JAP_sl_grant_brm_decision = {
+		icon = GFX_decision_generic_form_nation
+		fire_only_once = yes
+		allowed = { original_tag = JAP }
+		visible = {
+			has_country_flag = JAP_sl_active
+			JAP_sl_active_brm = yes
+			check_variable = { JAP_sl_st_brm = 3 }
+		}
+		available = {
+			check_variable = { JAP_sl_pl_brm > 25 }
+			date > 1943.8.1
+			OR = {
+				NOT = { country_exists = BRM }
+				BRM = { is_subject_of = JAP }
+			}
+		}
+		cost = 50
+		complete_effect = {
+			custom_effect_tooltip = JAP_sl_grant_brm_tt
+			hidden_effect = { JAP_sl_grant_brm = yes }
+		}
+		ai_will_do = { base = 5 }
 	}
 
 	JAP_Invite_to_Yen_Bloc_Manchukuo = {
@@ -197,5 +232,4 @@ JAP_GEACPS_category = {
 		}
 		ai_will_do = { base = 1 }
 	}
-
 }

@@ -1,5 +1,45 @@
 on_actions = {
 
+	on_startup = {
+		effect = {
+			every_state = {
+				limit = {
+					OR = { state = 597 state = 598 state = 606 state = 607 state = 608 state = 613 state = 614 state = 621 state = 743 state = 746 state = 1034 state = 1035 state = 1038 }
+					NOT = { has_dynamic_modifier = { modifier = JAP_occ_tier_0 } }
+				}
+				add_dynamic_modifier = { modifier = JAP_occ_tier_0 }
+			}
+			every_state = {
+				limit = {
+					OR = { state = 286 state = 327 state = 335 state = 336 state = 591 state = 592 state = 593 state = 594 state = 595 state = 596 state = 615 state = 623 state = 625 state = 628 state = 640 state = 667 state = 671 state = 672 state = 741 state = 749 state = 994 state = 995 state = 996 state = 1017 state = 1021 state = 1023 state = 1027 state = 1033 state = 1036 state = 1039 state = 1047 state = 1048 state = 1049 state = 1051 state = 1052 state = 1053 state = 1054 state = 1058 state = 1060 state = 1061 state = 1062 state = 1064 state = 1065 state = 1066 state = 1067 state = 1068 }
+					NOT = { has_dynamic_modifier = { modifier = JAP_occ_tier_1 } }
+				}
+				add_dynamic_modifier = { modifier = JAP_occ_tier_1 }
+			}
+			every_state = {
+				limit = {
+					OR = { state = 325 state = 333 state = 334 state = 599 state = 600 state = 602 state = 620 state = 622 state = 626 state = 627 state = 668 state = 669 state = 670 state = 673 state = 738 state = 744 state = 997 state = 998 state = 999 state = 1024 state = 1025 state = 1026 state = 1050 state = 1055 state = 1056 state = 1057 state = 1059 state = 1063 state = 1069 state = 1089 }
+					NOT = { has_dynamic_modifier = { modifier = JAP_occ_tier_2 } }
+				}
+				add_dynamic_modifier = { modifier = JAP_occ_tier_2 }
+			}
+			every_state = {
+				limit = {
+					OR = { state = 603 state = 605 state = 747 state = 748 state = 750 state = 751 state = 752 state = 753 state = 1032 state = 1037 state = 1041 state = 1045 state = 1046 }
+					NOT = { has_dynamic_modifier = { modifier = JAP_occ_tier_3 } }
+				}
+				add_dynamic_modifier = { modifier = JAP_occ_tier_3 }
+			}
+			every_state = {
+				limit = {
+					OR = { state = 283 state = 601 state = 604 state = 616 state = 754 state = 755 state = 756 state = 1040 state = 1044 }
+					NOT = { has_dynamic_modifier = { modifier = JAP_occ_tier_4 } }
+				}
+				add_dynamic_modifier = { modifier = JAP_occ_tier_4 }
+			}
+		}
+	}
+
 	# Schedule the historical cabinet-transition events at game start.
 	on_startup = {
 		effect = {
@@ -137,6 +177,8 @@ on_actions = {
 	on_weekly_JAP = {
 		effect = {
 			if = { limit = { has_country_flag = JAP_cb_active } JAP_cb_weekly = yes }
+			JAP_occ_weekly = yes
+			if = { limit = { has_country_flag = JAP_sl_active } JAP_sl_weekly = yes }
 			JAP_war_autocomplete_check = yes
 			if = {
 				limit = {
@@ -154,6 +196,25 @@ on_actions = {
 	# clears the flag - then it expires on its own within ~6 weeks.
 	on_monthly_JAP = {
 		effect = {
+			# Sphere Ledger: accord extremes
+			if = {
+				limit = {
+					has_country_flag = JAP_sl_active
+					check_variable = { JAP_sl_accord < 25 }
+					NOT = { has_country_flag = JAP_sl_unrest_cd }
+				}
+				set_country_flag = { flag = JAP_sl_unrest_cd days = 120 }
+				country_event = { id = JAP_sphere.1 }
+			}
+			if = {
+				limit = {
+					has_country_flag = JAP_sl_active
+					check_variable = { JAP_sl_accord > 74 }
+					NOT = { has_country_flag = JAP_sl_volunteer_cd }
+				}
+				set_country_flag = { flag = JAP_sl_volunteer_cd days = 180 }
+				country_event = { id = JAP_sphere.2 }
+			}
 			if = {
 				limit = {
 					has_country_flag = JAP_nap_with_SOV
