@@ -87,9 +87,7 @@ MAN_systems_init = {
 	612 = { set_variable = { MAN_bandit = 20 } set_variable = { MAN_bgrow = 0.08 } set_variable = { MAN_eff = 1 } set_variable = { MAN_btier = 0 } set_variable = { MAN_colony_g = 0 } }
 	1043 = { set_variable = { MAN_bandit = 20 } set_variable = { MAN_bgrow = 0.08 } set_variable = { MAN_eff = 1 } set_variable = { MAN_btier = 0 } set_variable = { MAN_colony_g = 0 } }
 	add_dynamic_modifier = { modifier = MAN_hsinking_bureaucracy }
-	add_dynamic_modifier = { modifier = MAN_kwantung_supervision }
 	add_dynamic_modifier = { modifier = MAN_public_security }
-	add_dynamic_modifier = { modifier = MAN_labour_levies }
 	MAN_pol_compute = yes
 	MAN_sec_refresh = yes
 	MAN_plan_recalc = yes
@@ -129,7 +127,7 @@ MAN_plan_weekly = {
 	clamp_variable = { var = MAN_levy min = 0 max = 40 }
 	set_variable = { MAN_lv_wk = MAN_levy }
 	multiply_variable = { MAN_lv_wk = -0.00015 }
-	force_update_dynamic_modifier = yes
+	MAN_dm_sums = yes
 	MAN_prov_weekly = yes
 	MAN_plan_recalc = yes
 }
@@ -313,7 +311,7 @@ MAN_sec_refresh = {
 	subtract_from_variable = { MAN_ps_wk = 25 }
 	multiply_variable = { MAN_ps_wk = -0.00005 }
 	clamp_variable = { var = MAN_ps_wk min = -0.004 max = 0 }
-	force_update_dynamic_modifier = yes
+	MAN_dm_sums = yes
 }
 
 MAN_sec_set_tier = {
@@ -437,6 +435,59 @@ MAN_pol_compute = {
 	subtract_from_variable = { MAN_kp_wk = 40 }
 	multiply_variable = { MAN_kp_wk = 0.0001 }
 	clamp_variable = { var = MAN_kp_wk min = -0.004 max = 0 }
+	MAN_dm_sums = yes
+}
+
+MAN_dm_sums = {
+	set_variable = { MAN_s_res = 0 }
+	add_to_variable = { MAN_s_res = MAN_influence_local_resources_factor }
+	add_to_variable = { MAN_s_res = MAN_dream_local_resources_factor }
+	add_to_variable = { MAN_s_res = MAN_behemoth_local_resources_factor }
+	set_variable = { MAN_s_effg = 0.1 }
+	add_to_variable = { MAN_s_effg = MAN_behemoth_production_factory_efficiency_gain_factor }
+	set_variable = { MAN_s_effm = 0 }
+	add_to_variable = { MAN_s_effm = MAN_dream_production_factory_max_efficiency_factor }
+	add_to_variable = { MAN_s_effm = MAN_behemoth_production_factory_max_efficiency_factor }
+	set_variable = { MAN_s_bld = 0 }
+	add_to_variable = { MAN_s_bld = MAN_dream_production_speed_buildings_factor }
+	add_to_variable = { MAN_s_bld = MAN_behemoth_production_speed_buildings_factor }
+	add_to_variable = { MAN_s_bld = MAN_bm_ind }
+	set_variable = { MAN_s_ic = 0 }
+	add_to_variable = { MAN_s_ic = MAN_dream_production_speed_industrial_complex_factor }
+	add_to_variable = { MAN_s_ic = MAN_behemoth_production_speed_industrial_complex_factor }
+	set_variable = { MAN_s_arms = 0 }
+	add_to_variable = { MAN_s_arms = MAN_dream_production_speed_arms_factory_factor }
+	add_to_variable = { MAN_s_arms = MAN_behemoth_production_speed_arms_factory_factor }
+	set_variable = { MAN_s_infra = 0 }
+	add_to_variable = { MAN_s_infra = MAN_behemoth_production_speed_infrastructure_factor }
+	add_to_variable = { MAN_s_infra = MAN_bm_smr }
+	set_variable = { MAN_s_icf = 0 }
+	add_to_variable = { MAN_s_icf = MAN_dream_industrial_capacity_factory }
+	add_to_variable = { MAN_s_icf = MAN_behemoth_industrial_capacity_factory }
+	add_to_variable = { MAN_s_icf = MAN_bm_mgy }
+	set_variable = { MAN_s_cge = 0 }
+	add_to_variable = { MAN_s_cge = MAN_dream_consumer_goods_expected_value }
+	add_to_variable = { MAN_s_cge = MAN_behemoth_consumer_goods_factor }
+	set_variable = { MAN_s_rsp = 0 }
+	add_to_variable = { MAN_s_rsp = MAN_dream_research_speed_factor }
+	add_to_variable = { MAN_s_rsp = MAN_behemoth_research_speed_factor }
+	set_variable = { MAN_s_rec = 0 }
+	add_to_variable = { MAN_s_rec = MAN_dream_recruitable_population_factor }
+	add_to_variable = { MAN_s_rec = MAN_behemoth_recruitable_population_factor }
+	set_variable = { MAN_s_ppf = 0 }
+	add_to_variable = { MAN_s_ppf = MAN_dream_political_power_factor }
+	add_to_variable = { MAN_s_ppf = MAN_behemoth_political_power_factor }
+	add_to_variable = { MAN_s_ppf = MAN_bm_gab }
+	set_variable = { MAN_s_stf = -0.2 }
+	add_to_variable = { MAN_s_stf = MAN_behemoth_stability_factor }
+	add_to_variable = { MAN_s_stf = MAN_kp_stab }
+	set_variable = { MAN_s_stw = 0 }
+	add_to_variable = { MAN_s_stw = MAN_dream_stability_weekly }
+	add_to_variable = { MAN_s_stw = MAN_behemoth_stability_weekly }
+	add_to_variable = { MAN_s_stw = MAN_kp_wk }
+	set_variable = { MAN_s_psw = 0 }
+	add_to_variable = { MAN_s_psw = MAN_ps_wk }
+	add_to_variable = { MAN_s_psw = MAN_lv_wk }
 	force_update_dynamic_modifier = yes
 }
 
