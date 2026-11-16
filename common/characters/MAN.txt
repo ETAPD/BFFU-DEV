@@ -18,7 +18,8 @@ characters={
 	}
 	MAN_zhang_jinghui={
 		name=MAN_zhang_jinghui
-		portraits={
+		portraits = {
+			civilian = { small = "GFX_idea_MAN_zhang_jinghui" }
 			army={
 				large="GFX_portrait_man_zhang_jinghui"
 				small="GFX_idea_MAN_zhang_jinghui"
@@ -43,15 +44,31 @@ characters={
 			expire="1960.1.1.1"
 			id=-1
 		}
-		# Imported advisor role (blank trait - to be rebuilt).
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_zhang_jinghui
 			allowed = { original_tag = MAN }
-			available = { }
-			cost = 100
-			traits = { fascist_demagogue_japan }
-			ai_will_do = { factor = 1 }
+			cost = 150
+			traits = { MAN_adv_old_bandit_premier }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_bgrow_g = -0.02 }
+					custom_effect_tooltip = MAN_tt_adv_zhang_jinghui_0
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_bgrow_g = -0.02 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 3 }
 		}
 	}
 	MAN_aisin_gioro_xiqia={
@@ -71,20 +88,20 @@ characters={
 			logistics_skill = 1
 			legacy_id=-1
 		}
-		# Imported advisor role.
 		advisor = {
 			slot = army_chief
 			idea_token = MAN_aisin_gioro_xiqia
+			ledger = army
 			allowed = { original_tag = MAN }
-			available = { }
-			cost = 150
-			traits = { army_chief_defensive_2 }
-			ai_will_do = { factor = 1 }
+			cost = 125
+			traits = { MAN_adv_bannerman_general }
+			ai_will_do = { factor = 2 }
 		}
 	}
 	MAN_yoshiko_kawashima={
 		name=MAN_yoshiko_kawashima
-		portraits={
+		portraits = {
+			civilian = { small = "GFX_idea_MAN_yoshiko_kawashima" }
 			army={
 				large="GFX_portrait_man_yoshiko_kawashima"
 				small="GFX_idea_MAN_yoshiko_kawashima"
@@ -99,6 +116,33 @@ characters={
 			planning_skill = 3
 			logistics_skill = 2
 			legacy_id = -1
+		}
+		advisor = {
+			slot = political_advisor
+			idea_token = MAN_yoshiko_kawashima
+			allowed = { original_tag = MAN }
+			available = { date < 1941.1.1 }
+			cost = 100
+			traits = { MAN_adv_eastern_jewel }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_bgrow_g = -0.02 }
+					custom_effect_tooltip = MAN_tt_adv_yoshiko_kawashima_0
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_bgrow_g = -0.02 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 1 }
 		}
 	}
 	MAN_tong_xingde={
@@ -129,8 +173,6 @@ characters={
 			id=-1
 		}
 	}
-	# Political Advisors from new focus tree
-
 	MAN_pujie = {
 		name = MAN_pujie
 
@@ -143,35 +185,17 @@ characters={
 				small = GFX_portrait_MAN_pujie_civilian_small
 			}
 		}
-
-		#corps_commander = {
-		#	traits = { politically_connected infantry_leader }
-		#	skill = 3
-		#	attack_skill = 2
-		#	defense_skill = 2
-		#	planning_skill = 2
-		#	logistics_skill = 4
-		#	legacy_id = -1
-		#}
-
 		advisor = {
-			cost = 100
 			slot = theorist
 			idea_token = MAN_pujie_theorist
 			ledger = army
-			allowed = {
-				original_tag = MAN
-			}
-			available = {
-				not_already_hired_except_as = theorist
-			}
-			traits = {
-				military_theorist
-			}
+			allowed = { original_tag = MAN }
+			available = { not_already_hired_except_as = theorist }
+			cost = 100
+			traits = { MAN_adv_imperial_guard }
+			ai_will_do = { factor = 2 }
 		}
-
 	}
-
 	MAN_songgotu_zhanshan = {
 		name = "Tatsunosuke Takasaki"
 
@@ -180,25 +204,34 @@ characters={
 				small = GFX_idea_generic_political_advisor_asia_1
 			}
 		}
-
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_songgotu_zhanshan
-			allowed = {
-				original_tag = MAN
+			allowed = { original_tag = MAN }
+			available = { custom_trigger_tooltip = { tooltip = MAN_tt_adv_seat_mgy_2 check_variable = { MAN_h_mgy = 2 } } }
+			cost = 125
+			traits = { MAN_adv_mangyo_engineer }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_qb_mach = 0.15 }
+					custom_effect_tooltip = MAN_tt_adv_songgotu_zhanshan_0
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			available = {
-
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_qb_mach = 0.15 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
 			}
-			cost = 150
-			traits = { MAN_president_of_mangyo }
-			ai_will_do = {
-				factor = 1
-			}
+			ai_will_do = { factor = 2 }
 		}
-
 	}
-
 	MAN_zhang_shiyi = {
 		name = MAN_zhang_shiyi
 
@@ -206,53 +239,16 @@ characters={
 			civilian = {
 				small = GFX_portrait_MAN_zhang_shiyi_small
 			}
-		}	
-
+		}
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_zhang_shiyi
-			allowed = {
-				original_tag = MAN
-			}
-			available = {
-				
-			}
-			cost = 150
-			traits = { MAN_speaker_of_the_senate }
-			ai_will_do = {
-				factor = 1
-			}
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_fengtian_elder }
+			ai_will_do = { factor = 2 }
 		}
-
 	}
-
-	MAN_zhang_yanqing = {
-		name = MAN_zhang_yanqing
-
-		portraits = {
-			civilian = {
-				small = GFX_portrait_MAN_zhang_yanqing_small
-			}
-		}	
-
-		advisor = {
-			slot = political_advisor
-			idea_token = MAN_zhang_yanqing
-			allowed = {
-				original_tag = MAN
-			}
-			available = {
-				
-			}
-			cost = 150
-			traits = { MAN_foreign_minister }
-			ai_will_do = {
-				factor = 1
-			}
-		}
-
-	}
-
 	MAN_sun_qichang = {
 		name = MAN_sun_qichang
 
@@ -260,26 +256,16 @@ characters={
 			civilian = {
 				small = GFX_portrait_MAN_sun_qichang_small
 			}
-		}	
-
+		}
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_sun_qichang
-			allowed = {
-				original_tag = MAN
-			}
-			available = {
-
-			}
-			cost = 150
-			traits = { MAN_minister_of_civil_affairs }
-			ai_will_do = {
-				factor = 1
-			}
+			allowed = { original_tag = MAN }
+			cost = 125
+			traits = { MAN_adv_finance_minister }
+			ai_will_do = { factor = 2 }
 		}
-
 	}
-
 	MAN_li_shaogeng = {
 		name = MAN_li_shaogeng
 
@@ -287,26 +273,39 @@ characters={
 			civilian = {
 				small = GFX_portrait_MAN_li_shaogeng_small
 			}
-		}	
-
+		}
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_li_shaogeng
-			allowed = {
-				original_tag = MAN
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_cer_veteran }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_rail_built = 1 }
+					custom_effect_tooltip = MAN_tt_adv_li_shaogeng_0
+					add_to_variable = { MAN_dt_smr = 5 }
+					custom_effect_tooltip = MAN_tt_adv_li_shaogeng_1
+					add_to_variable = { MAN_bgrow_g = -0.01 }
+					custom_effect_tooltip = MAN_tt_adv_li_shaogeng_2
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			available = {
-
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_dt_smr = 5 }
+						subtract_from_variable = { MAN_bgrow_g = -0.01 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
 			}
-			cost = 150
-			traits = { MAN_chinese_eastern_railway_director }
-			ai_will_do = {
-				factor = 1
-			}
+			ai_will_do = { factor = 2 }
 		}
-
 	}
-
 	MAN_xie_jieshi = {
 		name = MAN_xie_jieshi
 
@@ -314,26 +313,37 @@ characters={
 			civilian = {
 				small = GFX_portrait_MAN_xie_jieshi_small
 			}
-		}	
-
+		}
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_xie_jieshi
-			allowed = {
-				original_tag = MAN
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_foreign_minister }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_pat_drift = 0.02 }
+					custom_effect_tooltip = MAN_tt_adv_xie_jieshi_0
+					add_to_variable = { MAN_review_relief = 5 }
+					custom_effect_tooltip = MAN_tt_adv_xie_jieshi_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			available = {
-				
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_pat_drift = 0.02 }
+						subtract_from_variable = { MAN_review_relief = 5 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
 			}
-			cost = 150
-			traits = { industry_reformer }
-			ai_will_do = {
-				factor = 1
-			}
+			ai_will_do = { factor = 2 }
 		}
-
 	}
-
 	MAN_ding_chao = {
 		name = MAN_ding_chao
 
@@ -341,26 +351,38 @@ characters={
 			army = {
 				small = GFX_portrait_MAN_ding_chao_small
 			}
-		}	
-
+		}
 		advisor = {
 			slot = high_command
 			idea_token = MAN_ding_chao
-			allowed = {
-				original_tag = MAN
+			ledger = army
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_turncoat_general }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_band_drain = 0.02 }
+					custom_effect_tooltip = MAN_tt_adv_ding_chao_0
+					add_to_variable = { MAN_bgrow_g = -0.01 }
+					custom_effect_tooltip = MAN_tt_adv_ding_chao_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			available = {
-				
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_band_drain = 0.02 }
+						subtract_from_variable = { MAN_bgrow_g = -0.01 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
 			}
-			cost = 150
-			traits = { PRC_guerilla_fighter }
-			ai_will_do = {
-				factor = 1
-			}
+			ai_will_do = { factor = 1 }
 		}
-
 	}
-
 	MAN_ding_jianxiu = {
 		name = MAN_ding_jianxiu
 
@@ -368,137 +390,118 @@ characters={
 			civilian = {
 				small = GFX_portrait_MAN_ding_jianxiu_small
 			}
-		}	
-
+		}
 		advisor = {
 			slot = political_advisor
 			idea_token = MAN_ding_jianxiu
-			allowed = {
-				original_tag = MAN
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_labour_recruiter }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_labour_income = 0.75 }
+					custom_effect_tooltip = MAN_tt_adv_ding_jianxiu_0
+					add_to_variable = { MAN_qb_coal = 0.1 }
+					custom_effect_tooltip = MAN_tt_adv_ding_jianxiu_1
+					add_to_variable = { MAN_levy_g = 0.6 }
+					custom_effect_tooltip = MAN_tt_adv_ding_jianxiu_2
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			available = {
-
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_labour_income = 0.75 }
+						subtract_from_variable = { MAN_qb_coal = 0.1 }
+						subtract_from_variable = { MAN_levy_g = 0.6 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
 			}
-			cost = 150
-			traits = { MAN_transport_department_director }
-			ai_will_do = {
-				factor = 1
-			}
-		}
-
-	}
-
-	# Political Advisors
-	MAN_megata_toshiro={
-		name="MAN_megata_toshiro"
-		portraits={
-			army={
-				small="GFX_idea_generic_political_advisor_asia_2"
-			}
-		}
-		advisor={
-			slot = political_advisor
-			idea_token = MAN_megata_toshiro
-			allowed  = {
-				original_tag = MAN
-			}
-			traits  = {
-				armaments_organizer 
-			}
+			ai_will_do = { factor = 2 }
 		}
 	}
-	MAN_nalan_kang_an={
-		name="MAN_nalan_kang_an"
-		portraits={
-			army={
-				small="GFX_idea_generic_political_advisor_asia_3"
-			}
-		}
-		advisor={
-			slot = political_advisor
-			idea_token = MAN_nalan_kang_an
-			allowed  = {
-				original_tag = MAN
-			}
-			traits  = {
-				fortification_engineer 
-			}
-		}
-	}
-	# MAN_songgotu_zhanshan={
-	# 	name="MAN_songgotu_zhanshan"
-	# 	portraits={
-	# 		army={
-	# 			small="GFX_idea_generic_political_advisor_asia_1"
-	# 		}
-	# 	}
-	# 	advisor={
-	# 		slot = political_advisor
-	# 		idea_token = MAN_songgotu_zhanshan
-	# 		allowed  = {
-	# 			original_tag = MAN
-	# 		}
-	# 		available = {
-	# 			if = {
-	# 				limit = { has_dlc = "Waking the Tiger" }
-	# 				or = {
-	# 				always = no
-	# 				always = no
-	# 				}
-	# 			}
-	# 		}
-	# 		traits  = {
-	# 			captain_of_industry 
-	# 		}
-	# 	}
-	# }
 	MAN_nobusuke_kishi={
 		name="MAN_nobusuke_kishi"
-		portraits={
+		portraits = {
+			civilian = { small = "GFX_idea_generic_political_advisor_asia_1" }
 			army={
 				small="GFX_idea_generic_political_advisor_asia_1"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = political_advisor
 			idea_token = MAN_nobusuke_kishi
-			allowed  = {
-				original_tag = MAN
+			allowed = { original_tag = MAN }
+			available = { custom_trigger_tooltip = { tooltip = MAN_tt_adv_seat_ind_1 check_variable = { MAN_h_ind = 1 } } }
+			cost = 150
+			traits = { MAN_adv_reform_bureaucrat }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_quota_focus = 0.05 }
+					custom_effect_tooltip = MAN_tt_adv_nobusuke_kishi_0
+					add_to_variable = { MAN_proj_slots = 1 }
+					custom_effect_tooltip = MAN_tt_adv_nobusuke_kishi_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			available = {
-				if = {
-					limit = { has_dlc = "Waking the Tiger" }
-					or = {
-					always = no
-					always = no
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_quota_focus = 0.05 }
+						subtract_from_variable = { MAN_proj_slots = 1 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
 					}
 				}
 			}
-			traits  = {
-				war_industrialist 
-				backroom_backstabber
-			}
+			ai_will_do = { factor = 3 }
 		}
 	}
 	MAN_yoshisuke_ayukawa={
 		name="MAN_yoshisuke_ayukawa"
-		portraits={
+		portraits = {
+			civilian = { small = "GFX_idea_generic_political_advisor_asia_2" }
 			army={
 				small="GFX_idea_generic_political_advisor_asia_2"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = political_advisor
 			idea_token = MAN_yoshisuke_ayukawa
-			allowed  = {
-				original_tag = MAN
+			allowed = { original_tag = MAN }
+			available = { custom_trigger_tooltip = { tooltip = MAN_tt_adv_seat_mgy_1 check_variable = { MAN_h_mgy = 1 } } }
+			cost = 150
+			traits = { MAN_adv_nissan_capital }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_labour_income = 0.5 }
+					custom_effect_tooltip = MAN_tt_adv_yoshisuke_ayukawa_0
+					add_to_variable = { MAN_dt_mgy = 10 }
+					custom_effect_tooltip = MAN_tt_adv_yoshisuke_ayukawa_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
-			traits  = {
-				technocrat 
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_labour_income = 0.5 }
+						subtract_from_variable = { MAN_dt_mgy = 10 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
 			}
+			ai_will_do = { factor = 3 }
 		}
 	}
-	# Army Chief
 	MAN_guan_xingde={
 		name="MAN_guan_xingde"
 		portraits={
@@ -506,22 +509,16 @@ characters={
 				small="GFX_idea_generic_army_asia_4"
 			}
 		}
-		advisor={	
+		advisor = {
 			slot = army_chief
 			idea_token = MAN_guan_xingde
-			allowed = {
-				original_tag = MAN
-			}
-			traits = {
-				army_chief_offensive_2
-			}
+			ledger = army
+			allowed = { original_tag = MAN }
 			cost = 100
-			ai_will_do = {
-				factor = 1.000
-			}
+			traits = { MAN_adv_winter_campaigner }
+			ai_will_do = { factor = 2 }
 		}
 	}
-	# Air Chief
 	MAN_nakajima_kesago={
 		name="MAN_nakajima_kesago"
 		portraits={
@@ -529,22 +526,16 @@ characters={
 				small="GFX_idea_generic_air_asia_3"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = air_chief
 			idea_token = MAN_nakajima_kesago
-			allowed  = {
-				original_tag = MAN
-			}
-			traits  = {
-				air_chief_ground_support_2 
-			}
+			ledger = air
+			allowed = { original_tag = MAN }
 			cost = 100
-			ai_will_do = {
-				factor = 1
-			}
+			traits = { MAN_adv_army_air_liaison }
+			ai_will_do = { factor = 2 }
 		}
 	}
-	# Navy Chief
 	MAN_yin_zuoqian={
 		name="MAN_yin_zuoqian"
 		portraits={
@@ -552,24 +543,16 @@ characters={
 				small="GFX_idea_generic_navy_asia_3"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = navy_chief
 			idea_token = MAN_yin_zuoqian
-			allowed  = {
-				original_tag = MAN
-			}
-			traits  = {
-				navy_chief_decisive_battle_1 
-			}
-			ai_will_do = {
-				factor = 1
-			}
+			ledger = navy
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_sungari_flotilla }
+			ai_will_do = { factor = 1 }
 		}
 	}
-
-
-	### MILITARY HIGH COMMAND ###
-
 	MAN_yonimitsu_kasahara={
 		name=MAN_yonimitsu_kasahara
 		portraits={
@@ -577,23 +560,34 @@ characters={
 				small="GFX_idea_generic_army_asia_3"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = high_command
 			idea_token = MAN_yonimitsu_kasahara
 			ledger = army
-			allowed = {
-				original_tag = MAN
-			}
-			traits = {
-				army_regrouping_2
-			}
+			allowed = { original_tag = MAN }
 			cost = 100
-			ai_will_do = {
-				factor = 1.000
+			traits = { MAN_adv_pacification_staff }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_band_drain = 0.05 }
+					custom_effect_tooltip = MAN_tt_adv_yonimitsu_kasahara_0
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
 			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_band_drain = 0.05 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 2 }
 		}
 	}
-
 	MAN_kyoiji_tomonaga={
 		name=MAN_kyoiji_tomonaga
 		portraits={
@@ -601,23 +595,16 @@ characters={
 				small="GFX_idea_generic_air_asia_2"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = high_command
 			idea_token = MAN_kyoiji_tomonaga
 			ledger = army
-			allowed = {
-				original_tag = MAN
-			}
-			traits = {
-				army_infantry_2
-			}
+			allowed = { original_tag = MAN }
 			cost = 100
-			ai_will_do = {
-				factor = 1.000
-			}
+			traits = { MAN_adv_xingan_cavalry }
+			ai_will_do = { factor = 2 }
 		}
 	}
-
 	MAN_hesehn_tiemei={
 		name=MAN_hesehn_tiemei
 		portraits={
@@ -625,41 +612,14 @@ characters={
 				small="GFX_idea_generic_army_asia_1"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = high_command
 			idea_token = MAN_hesehn_tiemei
 			ledger = army
-			allowed = {
-				original_tag = MAN
-			}
-			traits = {
-				army_logistics_2
-			}
+			allowed = { original_tag = MAN }
 			cost = 100
-			ai_will_do = {
-				factor = 1.000
-			}
-		}
-	}
-	# Theorist
-	MAN_hung_zhehuang={
-		name="MAN_hung_zhehuang"
-		portraits={
-			army={
-				small="GFX_idea_generic_army_asia_1"
-			}
-		}
-		advisor={
-			slot = theorist
-			idea_token = MAN_hung_zhehuang
-			ledger = army
-			allowed  = {
-				original_tag = MAN
-			}
-			traits  = {
-				military_theorist 
-			}
-
+			traits = { MAN_adv_rail_logistics }
+			ai_will_do = { factor = 2 }
 		}
 	}
 	MAN_xian_yuan={
@@ -669,17 +629,14 @@ characters={
 				small="GFX_idea_generic_navy_asia_1"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = theorist
 			idea_token = MAN_xian_yuan
 			ledger = navy
-			allowed  = {
-				original_tag = MAN
-			}
-			traits  = {
-				naval_theorist 
-			}
-
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_river_war_theorist }
+			ai_will_do = { factor = 1 }
 		}
 	}
 	MAN_deng_linge={
@@ -689,27 +646,16 @@ characters={
 				small="GFX_idea_generic_air_asia_2"
 			}
 		}
-		advisor={
+		advisor = {
 			slot = theorist
 			idea_token = MAN_deng_linge
 			ledger = air
-			allowed  = {
-				original_tag = MAN
-			}
-
-			traits  = {
-				air_warfare_theorist
-			}
-
+			allowed = { original_tag = MAN }
+			cost = 100
+			traits = { MAN_adv_steppe_air_theorist }
+			ai_will_do = { factor = 1 }
 		}
 	}
-
-	######################################################################
-	# Advisors imported from Oak's Manchukuo. Traits are blank shells
-	# (see common/country_leader/MAN_imported_traits.txt) - effects to be
-	# rebuilt later. Oak-specific availability conditions were stripped.
-	######################################################################
-
 	MAN_bao_manbo = {
 		name = "Bao Guancheng"
 		portraits = { civilian = { small = "GFX_idea_hiroshi_oshima" } }
@@ -717,13 +663,31 @@ characters={
 			slot = political_advisor
 			idea_token = MAN_bao_manbo
 			allowed = { original_tag = MAN }
-			available = { }
 			cost = 100
-			traits = { MAN_ambassador_to_japan }
-			ai_will_do = { factor = 1 }
+			traits = { MAN_adv_envoy_tokyo }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_pat_drift = 0.03 }
+					custom_effect_tooltip = MAN_tt_adv_bao_manbo_0
+					add_to_variable = { MAN_fav_kw = 5 }
+					custom_effect_tooltip = MAN_tt_adv_bao_manbo_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_pat_drift = 0.03 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 2 }
 		}
 	}
-
 	MAN_Chu_Kudo = {
 		name = "Chu Kudo"
 		portraits = { civilian = { small = "GFX_idea_MAN_chu_kudo" } }
@@ -731,13 +695,11 @@ characters={
 			slot = political_advisor
 			idea_token = Chu_Kudo
 			allowed = { original_tag = MAN }
-			available = { }
-			cost = 100
-			traits = { MAN_chu_kudo_ronin }
-			ai_will_do = { factor = 1 }
+			cost = 75
+			traits = { MAN_adv_imperial_bodyguard }
+			ai_will_do = { factor = 2 }
 		}
 	}
-
 	MAN_ruan_zhenduo = {
 		name = "Ruan Zhenduo"
 		portraits = { civilian = { small = "GFX_idea_asia_generic_fascism" } }
@@ -746,12 +708,32 @@ characters={
 			idea_token = MAN_ruan_zhenduo
 			allowed = { original_tag = MAN }
 			available = { has_completed_focus = MAN_restoring_control_to_the_concord_society }
-			cost = 150
+			cost = 125
 			traits = { MAN_cofounder_of_concordia }
-			ai_will_do = { factor = 1 }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_dt_gab = 5 }
+					custom_effect_tooltip = MAN_tt_adv_ruan_zhenduo_0
+					add_to_variable = { MAN_pat_drift = -0.02 }
+					custom_effect_tooltip = MAN_tt_adv_ruan_zhenduo_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_dt_gab = 5 }
+						subtract_from_variable = { MAN_pat_drift = -0.02 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 2 }
 		}
 	}
-
 	MAN_masahiko_amakasu = {
 		name = "Masahiko Amakasu"
 		portraits = { civilian = { small = "GFX_idea_MAN_masahiko_amakasu" } }
@@ -759,13 +741,30 @@ characters={
 			slot = political_advisor
 			idea_token = masahiko_amakasu
 			allowed = { original_tag = MAN }
-			available = { has_completed_focus = MAN_establish_the_manchuko_film_association }
-			cost = 100
-			traits = { MAN_head_of_film_association }
-			ai_will_do = { factor = 1 }
+			available = { OR = { has_completed_focus = MAN_establish_the_manchuko_film_association date > 1939.11.1 } }
+			cost = 125
+			traits = { MAN_adv_manei_chief }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_bgrow_g = -0.01 }
+					custom_effect_tooltip = MAN_tt_adv_masahiko_amakasu_0
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_bgrow_g = -0.01 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 2 }
 		}
 	}
-
 	MAN_Hajime_Satomi = {
 		name = "Hajime Satomi"
 		portraits = { civilian = { small = "GFX_idea_MAN_hajime_satomi" } }
@@ -773,13 +772,32 @@ characters={
 			slot = political_advisor
 			idea_token = Hajime_Satomi
 			allowed = { original_tag = MAN }
-			available = { }
 			cost = 125
-			traits = { MAN_opium_baron }
+			traits = { MAN_adv_opium_king }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_bgrow_g = 0.01 }
+					custom_effect_tooltip = MAN_tt_adv_hajime_satomi_0
+					set_country_flag = MAN_adv_satomi
+					custom_effect_tooltip = MAN_tt_adv_hajime_satomi_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_bgrow_g = 0.01 }
+						clr_country_flag = MAN_adv_satomi
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
 			ai_will_do = { factor = 1 }
 		}
 	}
-
 	MAN_naoki_hoshino = {
 		name = "Naoki Hoshino"
 		portraits = { civilian = { small = "GFX_idea_generic_political_advisor_asia_2" } }
@@ -787,18 +805,32 @@ characters={
 			slot = political_advisor
 			idea_token = MAN_naoki_hoshino
 			allowed = { original_tag = MAN }
-			available = { }
-			cost = 100
-			traits = { MAN_director_of_general_affairs }
-			ai_will_do = { factor = 1 }
+			available = { custom_trigger_tooltip = { tooltip = MAN_tt_adv_seat_gab_1 check_variable = { MAN_h_gab = 1 } } }
+			cost = 150
+			traits = { MAN_adv_gab_director }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_dt_gab = 10 }
+					custom_effect_tooltip = MAN_tt_adv_naoki_hoshino_0
+					add_to_variable = { MAN_fav_gab = 10 }
+					custom_effect_tooltip = MAN_tt_adv_naoki_hoshino_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_dt_gab = 10 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 3 }
 		}
 	}
-
-
-	######################################################################
-	# Generals imported from Oak's Manchukuo (motorized_officer and the
-	# backroom_backstabber_manchu advisor trait dropped - not in ours).
-	######################################################################
 	MAN_grigory_semyonov = {
 		name = "Grigory Semyonov"
 		portraits = { army = { small = "GFX_idea_generic_army_asia_1" } }
@@ -824,6 +856,70 @@ characters={
 			traits = { jap_kwantung_veto cavalry_leader old_guard }
 			skill = 2 attack_skill = 3 defense_skill = 1 planning_skill = 2 logistics_skill = 2
 			legacy_id = -1
+		}
+	}
+	MAN_matsuoka_yosuke = {
+		name = "Matsuoka Yosuke"
+		portraits = { civilian = { small = "GFX_idea_generic_political_advisor_asia_3" } }
+		advisor = {
+			slot = political_advisor
+			idea_token = MAN_matsuoka_yosuke
+			allowed = { original_tag = MAN }
+			available = { custom_trigger_tooltip = { tooltip = MAN_tt_adv_seat_smr_1 check_variable = { MAN_h_smr = 1 } } }
+			cost = 125
+			traits = { MAN_adv_mantetsu_president }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_dt_smr = 10 }
+					custom_effect_tooltip = MAN_tt_adv_matsuoka_yosuke_0
+					add_to_variable = { MAN_rail_built = 2 }
+					custom_effect_tooltip = MAN_tt_adv_matsuoka_yosuke_1
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_dt_smr = 10 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+	}
+	MAN_yu_zhishan = {
+		name = "Yu Zhishan"
+		portraits = { army = { small = "gfx/leaders/MAN/Portrait_Man_Yu_Zhishan1.dds" large = "gfx/leaders/MAN/Portrait_Man_Yu_Zhishan1.dds" } }
+		advisor = {
+			slot = army_chief
+			idea_token = MAN_yu_zhishan
+			ledger = army
+			allowed = { original_tag = MAN }
+			cost = 125
+			traits = { MAN_adv_defence_minister }
+			always_show_on_actions_tooltip = yes
+			on_add = {
+				owner = {
+					add_to_variable = { MAN_band_drain = 0.03 }
+					custom_effect_tooltip = MAN_tt_adv_yu_zhishan_0
+					hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+				}
+			}
+			on_remove = {
+				hidden_effect = {
+					owner = {
+						subtract_from_variable = { MAN_band_drain = 0.03 }
+						MAN_pol_compute = yes
+						MAN_plan_recalc = yes
+						MAN_ui_refresh = yes
+					}
+				}
+			}
+			ai_will_do = { factor = 3 }
 		}
 	}
 }

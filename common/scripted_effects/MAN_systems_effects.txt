@@ -55,6 +55,11 @@ MAN_systems_init = {
 	set_variable = { MAN_band3p = 60 }
 	set_variable = { MAN_bandit_avg = 30 }
 	set_variable = { MAN_ps_stab = 0 }
+	set_variable = { MAN_ps_wk = 0 }
+	set_variable = { MAN_kp_wk = 0 }
+	set_variable = { MAN_levy = 0 }
+	set_variable = { MAN_levy_g = 0 }
+	set_variable = { MAN_lv_wk = 0 }
 	set_variable = { MAN_mega_showa_n = 0 }
 	set_variable = { MAN_mega_fengman_n = 0 }
 	set_variable = { MAN_mega_supung_n = 0 }
@@ -62,6 +67,7 @@ MAN_systems_init = {
 	set_variable = { MAN_mega_mamc_n = 0 }
 	set_variable = { MAN_mega_arsenal_n = 0 }
 	if = { limit = { date > 1937.12.1 } MAN_ayukawa_arrives = yes }
+	if = { limit = { date < 1938.1.1 } set_country_flag = MAN_sec_plan_active }
 	716 = { set_state_flag = MAN_surveyed add_dynamic_modifier = { modifier = MAN_surveyed_dm } }
 	328 = { set_state_flag = MAN_surveyed add_dynamic_modifier = { modifier = MAN_surveyed_dm } }
 	if = {
@@ -83,6 +89,7 @@ MAN_systems_init = {
 	add_dynamic_modifier = { modifier = MAN_hsinking_bureaucracy }
 	add_dynamic_modifier = { modifier = MAN_kwantung_supervision }
 	add_dynamic_modifier = { modifier = MAN_public_security }
+	add_dynamic_modifier = { modifier = MAN_labour_levies }
 	MAN_pol_compute = yes
 	MAN_sec_refresh = yes
 	MAN_plan_recalc = yes
@@ -117,6 +124,12 @@ MAN_plan_weekly = {
 	add_to_variable = { MAN_labour = MAN_labour_income }
 	if = { limit = { check_variable = { MAN_bop_t < -0.5 } } set_temp_variable = { MAN_v = MAN_bop_t } multiply_temp_variable = { MAN_v = -0.2 } add_to_variable = { MAN_labour = MAN_v } }
 	clamp_variable = { var = MAN_labour min = 0 max = 300 }
+	multiply_variable = { MAN_levy = 0.94 }
+	add_to_variable = { MAN_levy = MAN_levy_g }
+	clamp_variable = { var = MAN_levy min = 0 max = 40 }
+	set_variable = { MAN_lv_wk = MAN_levy }
+	multiply_variable = { MAN_lv_wk = -0.00015 }
+	force_update_dynamic_modifier = yes
 	MAN_prov_weekly = yes
 	MAN_plan_recalc = yes
 }
@@ -295,7 +308,11 @@ MAN_sec_refresh = {
 		divide_variable = { MAN_bandit_avg = MAN_bn }
 	}
 	set_variable = { MAN_ps_stab = MAN_bandit_avg }
-	multiply_variable = { MAN_ps_stab = -0.001 }
+	multiply_variable = { MAN_ps_stab = -0.002 }
+	set_variable = { MAN_ps_wk = MAN_bandit_avg }
+	subtract_from_variable = { MAN_ps_wk = 25 }
+	multiply_variable = { MAN_ps_wk = -0.00005 }
+	clamp_variable = { var = MAN_ps_wk min = -0.004 max = 0 }
 	force_update_dynamic_modifier = yes
 }
 
@@ -416,6 +433,10 @@ MAN_pol_compute = {
 	set_variable = { MAN_kp_ws = MAN_kw_pat }
 	subtract_from_variable = { MAN_kp_ws = 50 }
 	divide_variable = { MAN_kp_ws = 1000 }
+	set_variable = { MAN_kp_wk = MAN_kw_pat }
+	subtract_from_variable = { MAN_kp_wk = 40 }
+	multiply_variable = { MAN_kp_wk = 0.0001 }
+	clamp_variable = { var = MAN_kp_wk min = -0.004 max = 0 }
 	force_update_dynamic_modifier = yes
 }
 

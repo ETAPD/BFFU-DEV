@@ -1883,9 +1883,10 @@ MAN_plan_cat = {
 				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1875 }
 				else = { add_cic = 1250 }
 			}
-			add_stability = -0.01
+			add_stability = -0.02
 			add_to_variable = { MAN_fav_kw = 2 }
 			custom_effect_tooltip = MAN_tt_fav_kw_2
+			if = { limit = { has_country_flag = MAN_adv_satomi } add_cic = 1500 }
 			FROM = {
 				set_state_flag = { flag = MAN_run_cd days = 120 }
 				add_to_variable = { MAN_bandit = 4 }
@@ -2213,10 +2214,14 @@ MAN_plan_cat = {
 		complete_effect = {
 			add_to_variable = { MAN_labour = 12 }
 			custom_effect_tooltip = MAN_tt_labour_12
-			add_stability = -0.01
-			hidden_effect = { MAN_ui_refresh = yes }
+			add_to_variable = { MAN_levy = 10 }
+			custom_effect_tooltip = MAN_tt_levy_10
+			hidden_effect = { force_update_dynamic_modifier = yes MAN_ui_refresh = yes }
 		}
-		ai_will_do = { base = 5 }
+		ai_will_do = {
+			base = 5
+			modifier = { factor = 0 OR = { has_stability < 0.25 check_variable = { MAN_levy > 20 } } }
+		}
 	}
 	MAN_lab_daito = {
 		icon = GFX_decision_generic_construction
@@ -2230,9 +2235,14 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_labour = 25 }
 			custom_effect_tooltip = MAN_tt_labour_25
-			hidden_effect = { MAN_ui_refresh = yes }
+			add_to_variable = { MAN_levy = 15 }
+			custom_effect_tooltip = MAN_tt_levy_15
+			hidden_effect = { force_update_dynamic_modifier = yes MAN_ui_refresh = yes }
 		}
-		ai_will_do = { base = 6 }
+		ai_will_do = {
+			base = 6
+			modifier = { factor = 0 OR = { has_stability < 0.25 check_variable = { MAN_levy > 20 } } }
+		}
 	}
 	MAN_lab_special = {
 		icon = oppression
@@ -2248,7 +2258,9 @@ MAN_plan_cat = {
 		complete_effect = {
 			add_to_variable = { MAN_labour = 30 }
 			custom_effect_tooltip = MAN_tt_labour_30
-			add_stability = -0.02
+			add_stability = -0.03
+			add_to_variable = { MAN_levy = 25 }
+			custom_effect_tooltip = MAN_tt_levy_25
 			add_war_support = -0.01
 			add_to_variable = { MAN_kw_pat = 3 }
 			custom_effect_tooltip = MAN_tt_pat_3
@@ -2256,9 +2268,12 @@ MAN_plan_cat = {
 				limit = { has_state_flag = MAN_zone_min }
 				set_state_flag = { flag = MAN_grievance days = 180 }
 			}
-			hidden_effect = { MAN_ui_refresh = yes }
+			hidden_effect = { force_update_dynamic_modifier = yes MAN_ui_refresh = yes }
 		}
-		ai_will_do = { base = 2 }
+		ai_will_do = {
+			base = 2
+			modifier = { factor = 0 OR = { has_stability < 0.3 check_variable = { MAN_levy > 15 } } }
+		}
 	}
 	MAN_plan_review = {
 		icon = generic_industry
@@ -2319,8 +2334,10 @@ MAN_politics_cat = {
 		days_re_enable = 120
 		fire_only_once = no
 		complete_effect = {
-			add_stability = 0.02
+			add_stability = 0.03
 			add_war_support = 0.02
+			add_to_variable = { MAN_levy = -8 }
+			custom_effect_tooltip = MAN_tt_levy_m8
 			add_to_variable = { MAN_kw_pat = 2 }
 			custom_effect_tooltip = MAN_tt_pat_2
 			hidden_effect = { MAN_ui_refresh = yes }
@@ -2368,7 +2385,7 @@ MAN_politics_cat = {
 		days_re_enable = 180
 		fire_only_once = no
 		complete_effect = {
-			add_stability = 0.02
+			add_stability = 0.04
 			add_to_variable = { MAN_fav_gab = 8 }
 			custom_effect_tooltip = MAN_tt_fav_gab_8
 			add_to_variable = { MAN_kw_pat = -3 }
@@ -2387,7 +2404,7 @@ MAN_politics_cat = {
 		days_re_enable = 120
 		fire_only_once = no
 		complete_effect = {
-			add_stability = -0.01
+			add_stability = -0.03
 			add_to_variable = { MAN_fav_kw = 10 }
 			custom_effect_tooltip = MAN_tt_fav_kw_10
 			add_to_variable = { MAN_kw_pat = 5 }
@@ -2690,7 +2707,7 @@ MAN_security_cat = {
 			custom_effect_tooltip = MAN_tt_pat_m20
 			add_to_variable = { MAN_fav_kw = -15 }
 			custom_effect_tooltip = MAN_tt_fav_kw_m15
-			add_stability = -0.03
+			add_stability = -0.08
 			hidden_effect = { MAN_ui_refresh = yes }
 		}
 		ai_will_do = { base = 1 }

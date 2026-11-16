@@ -178,100 +178,252 @@ ideas = {
 	}
 
 	industrial_concern = {
-		# South Manchuria Railway Company (Mantetsu) - construction concern.
-		# Non-AAT fallback; AAT players get the MAN_south_manchuria_railway_company_organisation MIO instead.
 		MAN_south_manchuria_railway_company = {
-
 			picture = MAN_mantetsu_concern
-
-			available = {
-				has_country_flag = MAN_mantetsu_founded
-			}
-
-			allowed = {
-				original_tag = MAN
-				NOT = { has_dlc = "Arms Against Tyranny" }
-			}
-
-			traits = {
-				construction_company
-			}
-
-			ai_will_do = {
-				factor = 1
-			}
-		}
-
-		MAN_manchukuo_film_association = {
-
-			picture = MAN_manchukuo_film_association
-
-			available = {
-				has_country_flag = MAN_film_association_unlocked
-			}
-
-			allowed = {
-				original_tag = MAN
-			}
-
+			allowed = { original_tag = MAN }
+			cost = 150
 			modifier = {
-				stability_weekly = 0.002
-				war_support_weekly = 0.002
+				production_speed_infrastructure_factor = 0.15
+				production_speed_rail_way_factor = 0.15
 			}
-
-			research_bonus = {
-				electronics = 0.15
+			on_add = {
+				add_to_variable = { MAN_dt_smr = 5 }
+				custom_effect_tooltip = MAN_tt_adv_south_manchuria_railway_company_0
+				add_to_variable = { MAN_qb_coal = 0.1 }
+				custom_effect_tooltip = MAN_tt_adv_south_manchuria_railway_company_1
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
 			}
-
-			ai_will_do = {
-				factor = 1
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_dt_smr = 5 }
+					subtract_from_variable = { MAN_qb_coal = 0.1 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
 			}
+			ai_will_do = { factor = 3 }
 		}
-
-		MAN_korean_colonisation_company = {
-
-			picture = MAN_korean_colonisation_company
-
-			available = {
-				has_country_flag = MAN_korean_colonisation_unlocked
-			}
-
-			allowed = {
-				original_tag = MAN
-			}
-
-			modifier = {
-				production_speed_buildings_factor = 0.10
-				political_power_factor = 0.10
-			}
-
-			ai_will_do = {
-				factor = 1
-			}
-		}
-
-		# Mange / Mangyo - Manchurian Industrial Development Company. Construction concern.
-		# Non-AAT fallback; AAT players get the MAN_mange_organisation MIO instead.
 		MAN_mange_concern = {
-
 			picture = MAN_mangyo_concern
-
-			available = {
-				has_country_flag = MAN_mangyo_founded
+			allowed = { original_tag = MAN }
+			available = { has_country_flag = MAN_mangyo_founded }
+			cost = 150
+			modifier = {
+				industrial_capacity_factory = 0.05
 			}
-
-			allowed = {
-				original_tag = MAN
-				NOT = { has_dlc = "Arms Against Tyranny" }
+			on_add = {
+				add_to_variable = { MAN_dt_mgy = 5 }
+				custom_effect_tooltip = MAN_tt_adv_mange_concern_0
+				add_to_variable = { MAN_qb_steel = 0.1 }
+				custom_effect_tooltip = MAN_tt_adv_mange_concern_1
+				add_to_variable = { MAN_qb_mach = 0.1 }
+				custom_effect_tooltip = MAN_tt_adv_mange_concern_2
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
 			}
-
-			traits = {
-				construction_company
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_dt_mgy = 5 }
+					subtract_from_variable = { MAN_qb_steel = 0.1 }
+					subtract_from_variable = { MAN_qb_mach = 0.1 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
 			}
-
-			ai_will_do = {
-				factor = 1
+			ai_will_do = { factor = 3 }
+		}
+		MAN_showa_steel = {
+			picture = JAP_japan_steel_works
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_showa_steel } }
+			cost = 150
+			modifier = {
+				production_factory_start_efficiency_factor = 0.05
 			}
+			on_add = {
+				add_to_variable = { MAN_qb_steel = 0.2 }
+				custom_effect_tooltip = MAN_tt_adv_showa_steel_0
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_qb_steel = 0.2 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+		MAN_manchuria_electric = {
+			picture = CHI_shanghai_power_company
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_zone_planning } }
+			cost = 150
+			modifier = {
+				production_speed_buildings_factor = 0.05
+			}
+			on_add = {
+				add_to_variable = { MAN_qb_power = 0.25 }
+				custom_effect_tooltip = MAN_tt_adv_manchuria_electric_0
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_qb_power = 0.25 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+		MAN_manchuria_coal_mining = {
+			picture = PER_iranian_oil_company
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_fushun_shale } }
+			cost = 150
+			modifier = {
+				fuel_gain_factor = 0.1
+			}
+			on_add = {
+				add_to_variable = { MAN_qb_coal = 0.2 }
+				custom_effect_tooltip = MAN_tt_adv_manchuria_coal_mining_0
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_qb_coal = 0.2 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+		MAN_manchuria_chemical = {
+			picture = CHI_yongli_chemical_industries
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_powder_company has_completed_focus = MAN_eco_synthetic_fuel has_completed_focus = MAN_eco_hydrogenation } }
+			cost = 125
+			modifier = {
+				production_speed_synthetic_refinery_factor = 0.1
+			}
+			research_bonus = {
+				synth_resources = 0.15
+			}
+			ai_will_do = { factor = 1 }
+		}
+		MAN_manshu_hikoki_concern = {
+			picture = JAP_tachikawa_aircraft_company
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_manshu_hikoki } }
+			cost = 150
+			research_bonus = {
+				air_equipment = 0.15
+			}
+			on_add = {
+				add_to_variable = { MAN_qb_mach = 0.1 }
+				custom_effect_tooltip = MAN_tt_adv_manshu_hikoki_concern_0
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_qb_mach = 0.1 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+		MAN_dowa_automobile = {
+			picture = ENG_crossley_motors
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_dowa } }
+			cost = 125
+			research_bonus = {
+				motorized_equipment = 0.15
+			}
+			on_add = {
+				add_to_variable = { MAN_qb_mach = 0.05 }
+				custom_effect_tooltip = MAN_tt_adv_dowa_automobile_0
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_qb_mach = 0.05 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 1 }
+		}
+		MAN_daito_koshi = {
+			picture = MAN_manchurian_industry
+			allowed = { original_tag = MAN }
+			available = { OR = { has_completed_focus = MAN_eco_labour_agency } }
+			cost = 125
+			modifier = {
+				production_speed_industrial_complex_factor = 0.05
+			}
+			on_add = {
+				add_to_variable = { MAN_labour_income = 1.0 }
+				custom_effect_tooltip = MAN_tt_adv_daito_koshi_0
+				add_to_variable = { MAN_levy_g = 0.8 }
+				custom_effect_tooltip = MAN_tt_adv_daito_koshi_1
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_labour_income = 1.0 }
+					subtract_from_variable = { MAN_levy_g = 0.8 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+		MAN_korean_colonisation_company = {
+			picture = MAN_korean_colonisation_company
+			allowed = { original_tag = MAN }
+			available = { OR = { has_country_flag = MAN_korean_colonisation_unlocked has_completed_focus = MAN_eco_korean_settlers has_completed_focus = MAN_eco_million_households } }
+			cost = 125
+			modifier = {
+				recruitable_population_factor = 0.03
+			}
+			on_add = {
+				add_to_variable = { MAN_zone_cap = 1 }
+				custom_effect_tooltip = MAN_tt_adv_korean_colonisation_company_0
+				hidden_effect = { MAN_pol_compute = yes MAN_plan_recalc = yes MAN_ui_refresh = yes }
+			}
+			on_remove = {
+				hidden_effect = {
+					subtract_from_variable = { MAN_zone_cap = 1 }
+					MAN_pol_compute = yes
+					MAN_plan_recalc = yes
+					MAN_ui_refresh = yes
+				}
+			}
+			ai_will_do = { factor = 2 }
+		}
+		MAN_manchukuo_film_association = {
+			picture = MAN_manchukuo_film_association
+			allowed = { original_tag = MAN }
+			available = { OR = { has_country_flag = MAN_film_association_unlocked date > 1937.8.21 } }
+			cost = 125
+			modifier = {
+				stability_weekly = 0.001
+				war_support_weekly = 0.001
+				power_balance_weekly = 0.001
+			}
+			research_bonus = {
+				electronics = 0.1
+			}
+			ai_will_do = { factor = 1 }
 		}
 	}
 

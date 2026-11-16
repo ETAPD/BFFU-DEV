@@ -989,6 +989,7 @@ NDefines.NGame.COMBAT_LOG_MAX_MONTHS = 12
 NDefines.NDiplomacy.VOLUNTEERS_DIVISIONS_REQUIRED = 0	-- This many divisons are required for the country to be able to send volunteers.
 NDefines.NProduction.DEFAULT_MAX_NAV_FACTORIES_PER_LINE = 20
 NDefines.NProduction.CAPITAL_SHIP_MAX_NAV_FACTORIES_PER_LINE = 10
+NDefines.NProduction.CIC_BANK_SPEED_BOOST_FACTOR = 0.2	-- Vanilla 0.25 -- The CIC bank can boost production speed with this factor (0.5 means 50 %)
 NDefines.NProduction.MIN_POSSIBLE_TRAINING_MANPOWER = 10000000	-- Vanilla 100000 -- How many deployment lines minimum can be training
 NDefines.NAir.COMBAT_BETTER_SPEED_DAMAGE_INCREASE = 1.0	
 NDefines.NAir.TOP_SPEED_DAMAGE_BONUS_FACTOR = 0
