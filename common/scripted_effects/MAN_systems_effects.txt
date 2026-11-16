@@ -117,6 +117,7 @@ MAN_plan_weekly = {
 	add_to_variable = { MAN_labour = MAN_labour_income }
 	if = { limit = { check_variable = { MAN_bop_t < -0.5 } } set_temp_variable = { MAN_v = MAN_bop_t } multiply_temp_variable = { MAN_v = -0.2 } add_to_variable = { MAN_labour = MAN_v } }
 	clamp_variable = { var = MAN_labour min = 0 max = 300 }
+	MAN_prov_weekly = yes
 	MAN_plan_recalc = yes
 }
 
@@ -173,6 +174,7 @@ MAN_plan_begin = {
 
 MAN_sec_weekly = {
 	MAN_bop_tier = yes
+	MAN_sec_orders_weekly = yes
 	if = { limit = { divisions_in_state = { state = 716 size > 0 } } 716 = { set_state_flag = { flag = MAN_garrisoned days = 8 } } }
 	if = { limit = { divisions_in_state = { state = 715 size > 0 } } 715 = { set_state_flag = { flag = MAN_garrisoned days = 8 } } }
 	if = { limit = { divisions_in_state = { state = 328 size > 0 } } 328 = { set_state_flag = { flag = MAN_garrisoned days = 8 } } }
@@ -675,6 +677,8 @@ MAN_pol_monthly = {
 		else_if = { limit = { check_variable = { MAN_h_mgy > 0.5 } check_variable = { MAN_fav_mgy < 45 } NOT = { has_country_flag = MAN_court_cd_mgy } } MAN_court_mgy = yes }
 		else_if = { limit = { check_variable = { MAN_fav_smr < 45 } NOT = { has_country_flag = MAN_court_cd_smr } } MAN_court_smr = yes }
 	}
+	MAN_prov_ai = yes
+	MAN_sec_ai = yes
 }
 
 MAN_depart_itagaki = {
@@ -947,3 +951,319 @@ MAN_ui_refresh = {
 	add_to_variable = { MAN_f_bl_1043 = 1 }
 	clamp_variable = { var = MAN_f_bl_1043 min = 1 max = 11 }
 }
+
+MAN_survey_begin = {
+	set_state_flag = MAN_svy_on
+	set_variable = { MAN_svy = 45 }
+	ROOT = {
+		set_country_flag = MAN_surveying
+		add_political_power = -15
+		subtract_from_variable = { MAN_labour = 5 }
+	}
+}
+
+MAN_survey_done = {
+	set_state_flag = MAN_surveyed
+	add_dynamic_modifier = { modifier = MAN_surveyed_dm }
+	random_list = {
+		30 = {
+			if = { limit = { state = 716 } add_resource = { type = steel amount = 15 } }
+			if = { limit = { state = 715 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 328 } add_resource = { type = steel amount = 15 } }
+			if = { limit = { state = 717 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 714 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 761 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 610 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 611 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 612 } add_resource = { type = coal amount = 15 } }
+			if = { limit = { state = 1043 } add_resource = { type = coal amount = 15 } }
+		}
+		70 = { }
+	}
+}
+
+MAN_zone_apply_hi = {
+	set_state_flag = MAN_zoned
+	set_state_flag = MAN_zone_hi
+	add_dynamic_modifier = { modifier = MAN_zone_hi_dm }
+}
+
+MAN_zone_apply_min = {
+	set_state_flag = MAN_zoned
+	set_state_flag = MAN_zone_min
+	add_dynamic_modifier = { modifier = MAN_zone_min_dm }
+}
+
+MAN_zone_apply_pow = {
+	set_state_flag = MAN_zoned
+	set_state_flag = MAN_zone_pow
+	add_dynamic_modifier = { modifier = MAN_zone_pow_dm }
+}
+
+MAN_zone_apply_set = {
+	set_state_flag = MAN_zoned
+	set_state_flag = MAN_zone_set
+	add_dynamic_modifier = { modifier = MAN_zone_set_dm }
+}
+
+MAN_zone_lift = {
+	clr_state_flag = MAN_zoned
+	clr_state_flag = MAN_zone_hi
+	if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_hi_dm } } remove_dynamic_modifier = { modifier = MAN_zone_hi_dm } }
+	clr_state_flag = MAN_zone_min
+	if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_min_dm } } remove_dynamic_modifier = { modifier = MAN_zone_min_dm } }
+	clr_state_flag = MAN_zone_pow
+	if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_pow_dm } } remove_dynamic_modifier = { modifier = MAN_zone_pow_dm } }
+	clr_state_flag = MAN_zone_set
+	if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_set_dm } } remove_dynamic_modifier = { modifier = MAN_zone_set_dm } }
+}
+
+MAN_prov_weekly = {
+	every_owned_state = {
+		limit = { has_state_flag = MAN_svy_on }
+		subtract_from_variable = { MAN_svy = 7 }
+		if = {
+			limit = { check_variable = { MAN_svy < 0.5 } }
+			clr_state_flag = MAN_svy_on
+			MAN_survey_done = yes
+		}
+	}
+	if = {
+		limit = { has_country_flag = MAN_surveying NOT = { any_owned_state = { has_state_flag = MAN_svy_on } } }
+		clr_country_flag = MAN_surveying
+	}
+}
+
+MAN_prov_ai = {
+	if = {
+		limit = { is_ai = yes has_country_flag = MAN_plan_unlocked }
+		if = {
+			limit = { NOT = { has_country_flag = MAN_surveying } has_political_power > 40 check_variable = { MAN_labour > 9.99 } }
+			random_owned_controlled_state = {
+				limit = { OR = { state = 716 state = 715 state = 328 state = 717 state = 714 state = 761 state = 610 state = 611 state = 612 state = 1043 } NOT = { has_state_flag = MAN_surveyed } }
+				MAN_survey_begin = yes
+			}
+		}
+		if = {
+			limit = { has_political_power > 60 check_variable = { MAN_zones_used < MAN_zone_cap } }
+			if = {
+				limit = { has_country_flag = MAN_zone_unl_hi 716 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				716 = { MAN_zone_apply_hi = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_hi 328 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				328 = { MAN_zone_apply_hi = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_min 715 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				715 = { MAN_zone_apply_min = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_min 717 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				717 = { MAN_zone_apply_min = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_min 714 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				714 = { MAN_zone_apply_min = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_min 761 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				761 = { MAN_zone_apply_min = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_min 610 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				610 = { MAN_zone_apply_min = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_set 612 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				612 = { MAN_zone_apply_set = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_set 611 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				611 = { MAN_zone_apply_set = yes }
+			}
+			else_if = {
+				limit = { has_country_flag = MAN_zone_unl_pow 717 = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+				add_political_power = -25
+				add_to_variable = { MAN_zones_used = 1 }
+				717 = { MAN_zone_apply_pow = yes }
+			}
+		}
+	}
+}
+
+MAN_sw_begin = {
+	set_state_flag = MAN_sw_on
+	set_variable = { MAN_sw = 30 }
+	set_state_flag = { flag = MAN_sw_cd days = 60 }
+	ROOT = {
+		add_political_power = -10
+		add_command_power = -15
+	}
+}
+
+MAN_hm_begin = {
+	set_state_flag = MAN_hm_on
+	set_variable = { MAN_hm = 120 }
+	ROOT = {
+		add_political_power = -40
+		subtract_from_variable = { MAN_labour = 10 }
+	}
+}
+
+MAN_bh_begin = {
+	set_state_flag = MAN_bh_on
+	set_variable = { MAN_bh = 60 }
+	ROOT = {
+		add_political_power = -30
+		subtract_from_variable = { MAN_labour = 10 }
+	}
+}
+
+MAN_inf_begin = {
+	set_state_flag = { flag = MAN_informants days = 180 }
+	ROOT = {
+		add_political_power = -20
+	}
+}
+
+MAN_sw_done = {
+	set_temp_variable = { MAN_s = ROOT.MAN_fav_kw }
+	divide_temp_variable = { MAN_s = 10 }
+	add_to_temp_variable = { MAN_s = 10 }
+	if = { limit = { has_state_flag = MAN_informants } multiply_temp_variable = { MAN_s = 1.5 } }
+	subtract_from_variable = { MAN_bandit = MAN_s }
+	clamp_variable = { var = MAN_bandit min = 0 max = 100 }
+	if = { limit = { OR = { state = 715 state = 328 } ROOT = { check_variable = { MAN_band1 > 0 } } } ROOT = { subtract_from_variable = { MAN_band1 = 6 } } }
+	if = { limit = { OR = { state = 717 state = 328 } ROOT = { check_variable = { MAN_band2 > 0 } } } ROOT = { subtract_from_variable = { MAN_band2 = 6 } } }
+	if = { limit = { OR = { state = 714 state = 717 } ROOT = { check_variable = { MAN_band3 > 0 } } } ROOT = { subtract_from_variable = { MAN_band3 = 6 } } }
+	ROOT = { add_stability = -0.005 army_experience = 1 }
+	random_list = {
+		70 = { }
+		30 = { set_state_flag = { flag = MAN_grievance days = 120 } }
+	}
+}
+
+MAN_hm_done = {
+	set_state_flag = MAN_hamlets
+	add_dynamic_modifier = { modifier = MAN_hamlets_dm }
+	subtract_from_variable = { MAN_bandit = 15 }
+	clamp_variable = { var = MAN_bandit min = 0 max = 100 }
+	if = { limit = { OR = { state = 715 state = 328 } ROOT = { check_variable = { MAN_band1 > 0 } } } ROOT = { subtract_from_variable = { MAN_band1 = 10 } } }
+	if = { limit = { OR = { state = 717 state = 328 } ROOT = { check_variable = { MAN_band2 > 0 } } } ROOT = { subtract_from_variable = { MAN_band2 = 10 } } }
+	if = { limit = { OR = { state = 714 state = 717 } ROOT = { check_variable = { MAN_band3 > 0 } } } ROOT = { subtract_from_variable = { MAN_band3 = 10 } } }
+	ROOT = { add_stability = -0.02 }
+}
+
+MAN_bh_done = {
+	set_state_flag = MAN_blockhouses
+}
+
+MAN_sec_orders_weekly = {
+	every_owned_state = {
+		limit = { has_state_flag = MAN_sw_on }
+		subtract_from_variable = { MAN_sw = 7 }
+		if = {
+			limit = { check_variable = { MAN_sw < 0.5 } }
+			clr_state_flag = MAN_sw_on
+			MAN_sw_done = yes
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = MAN_hm_on }
+		subtract_from_variable = { MAN_hm = 7 }
+		if = {
+			limit = { check_variable = { MAN_hm < 0.5 } }
+			clr_state_flag = MAN_hm_on
+			MAN_hm_done = yes
+		}
+	}
+	every_owned_state = {
+		limit = { has_state_flag = MAN_bh_on }
+		subtract_from_variable = { MAN_bh = 7 }
+		if = {
+			limit = { check_variable = { MAN_bh < 0.5 } }
+			clr_state_flag = MAN_bh_on
+			MAN_bh_done = yes
+		}
+	}
+}
+
+MAN_sec_ai = {
+	if = {
+		limit = { is_ai = yes }
+		if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 717 size > 1 } 717 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			717 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 715 size > 1 } 715 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			715 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 328 size > 1 } 328 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			328 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 610 size > 1 } 610 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			610 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 714 size > 1 } 714 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			714 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 611 size > 1 } 611 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			611 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 716 size > 1 } 716 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			716 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 612 size > 1 } 612 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			612 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 1043 size > 1 } 1043 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			1043 = { MAN_sw_begin = yes }
+		}
+		else_if = {
+			limit = { has_political_power > 50 command_power > 30 divisions_in_state = { state = 761 size > 1 } 761 = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 35 } NOT = { has_state_flag = MAN_sw_on } NOT = { has_state_flag = MAN_sw_cd } } }
+			761 = { MAN_sw_begin = yes }
+		}
+		if = {
+			limit = { has_completed_focus = MAN_sec_collective_hamlets has_political_power > 90 check_variable = { MAN_labour > 30 } }
+			random_owned_controlled_state = {
+				limit = { OR = { state = 716 state = 715 state = 328 state = 717 state = 714 state = 761 state = 610 state = 611 state = 612 state = 1043 } check_variable = { MAN_bandit > 50 } NOT = { has_state_flag = MAN_hamlets } NOT = { has_state_flag = MAN_hm_on } }
+				MAN_hm_begin = yes
+			}
+		}
+		if = {
+			limit = { has_completed_focus = MAN_sec_blockhouses has_political_power > 90 check_variable = { MAN_labour > 30 } }
+			random_owned_controlled_state = {
+				limit = { OR = { state = 716 state = 715 state = 328 state = 717 state = 714 state = 761 state = 610 state = 611 state = 612 state = 1043 } check_variable = { MAN_bandit > 30 } NOT = { has_state_flag = MAN_blockhouses } NOT = { has_state_flag = MAN_bh_on } }
+				MAN_bh_begin = yes
+			}
+		}
+	}
+}
+
