@@ -1,168 +1,139 @@
-# Decisions for the "Racial Harmony" balance of power
-# The MAN_jews_are_another_race focus gate was removed (focus blocks come later).
-# These appear inside the BoP window.
+# Racial Harmony balance of power decisions (shown in the balance of power window)
 MAN_racial_harmony_category_bop = {
-
-	# Shift toward Chinese influence
-	MAN_promote_chinese_in_concordia_association = {
+	MAN_bop_chinese_officials = {
 		icon = MAN_promote_chinese_in_concordia_association
-
-		cost = 30
-
-		days_remove = 1
-		days_re_enable = 30
-
-		remove_effect = {
-			add_power_balance_value = {
-				id = MAN_racial_harmony
-				value = -0.01
-			}
-		}
-	}
-
-	# Shift toward Japanese influence
-	MAN_promote_japanese_in_concordia_association = {
-		icon = MAN_promote_japanese_in_concordia_association
-
-		cost = 30
-
-		days_remove = 1
-		days_re_enable = 30
-
-		remove_effect = {
-			add_power_balance_value = {
-				id = MAN_racial_harmony
-				value = 0.01
-			}
-		}
-	}
-
-	# Minor peoples — only relevant when the balance has swung to an extreme,
-	# nudging it back toward the centre.
-	MAN_promote_koreans_in_concordia_association = {
-		icon = MAN_promote_koreans_in_concordia_association
-
-		available = {
-			power_balance_value = {
-				id = MAN_racial_harmony
-				value < -0.3
-			}
-		}
-
-		cost = 60
-
-		days_remove = 1
-		days_re_enable = 50
-
-		remove_effect = {
-			add_power_balance_value = {
-				id = MAN_racial_harmony
-				value = 0.01
-			}
-		}
-	}
-
-	MAN_promote_mongols_in_concordia_association = {
-		icon = MAN_promote_mongols_in_concordia_association
-
-		available = {
-			OR = {
-				power_balance_value = { id = MAN_racial_harmony value < -0.3 }
-				power_balance_value = { id = MAN_racial_harmony value > 0.3 }
-			}
-		}
-
+		allowed = { original_tag = MAN }
 		cost = 40
-
-		days_remove = 1
-		days_re_enable = 45
-
-		remove_effect = {
-			if = {
-				limit = { power_balance_value = { id = MAN_racial_harmony value > 0 } }
-				add_power_balance_value = { id = MAN_racial_harmony value = -0.01 }
-			}
-			else = {
-				add_power_balance_value = { id = MAN_racial_harmony value = 0.01 }
-			}
+		fire_only_once = no
+		days_re_enable = 90
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = -0.06 }
+			add_stability = 0.01
+			add_to_variable = { MAN_kw_pat = -4 }
+			custom_effect_tooltip = MAN_tt_pat_m4
+			add_to_variable = { MAN_fav_ind = -2 }
+			custom_effect_tooltip = MAN_tt_fav_ind_m2
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
 		}
+		ai_will_do = { base = 2 }
 	}
-
-	MAN_promote_manchus_in_concordia_association = {
-		icon = MAN_promote_manchus_in_concordia_association
-
-		available = {
-			OR = {
-				power_balance_value = { id = MAN_racial_harmony value < -0.3 }
-				power_balance_value = { id = MAN_racial_harmony value > 0.3 }
-			}
-		}
-
-		cost = 50
-
-		days_remove = 1
-		days_re_enable = 60
-
-		remove_effect = {
-			if = {
-				limit = { power_balance_value = { id = MAN_racial_harmony value > 0 } }
-				add_power_balance_value = { id = MAN_racial_harmony value = -0.01 }
-			}
-			else = {
-				add_power_balance_value = { id = MAN_racial_harmony value = 0.01 }
-			}
-		}
-	}
-
-	MAN_promote_russians_in_concordia_association = {
-		icon = MAN_promote_russians_in_concordia_association
-
-		available = {
-			OR = {
-				power_balance_value = { id = MAN_racial_harmony value < -0.3 }
-				power_balance_value = { id = MAN_racial_harmony value > 0.3 }
-			}
-		}
-
-		cost = 75
-
-		days_remove = 1
-		days_re_enable = 50
-
-		remove_effect = {
-			if = {
-				limit = { power_balance_value = { id = MAN_racial_harmony value > 0 } }
-				add_power_balance_value = { id = MAN_racial_harmony value = -0.01 }
-			}
-			else = {
-				add_power_balance_value = { id = MAN_racial_harmony value = 0.01 }
-			}
-		}
-	}
-
-	MAN_promote_jews_in_concordia_association = {
-		icon = MAN_promote_jews_in_concordia_association
-
-		available = {
-			OR = {
-				power_balance_value = { id = MAN_racial_harmony value < -0.3 }
-				power_balance_value = { id = MAN_racial_harmony value > 0.3 }
-			}
-		}
-
+	MAN_bop_mongol_autonomy = {
+		icon = MAN_promote_mongols_in_concordia_association
+		allowed = { original_tag = MAN }
+		visible = { OR = { 761 = { is_owned_and_controlled_by = ROOT } 612 = { is_owned_and_controlled_by = ROOT } } }
 		cost = 35
-
-		days_remove = 1
-		days_re_enable = 50
-
-		remove_effect = {
-			if = {
-				limit = { power_balance_value = { id = MAN_racial_harmony value > 0 } }
-				add_power_balance_value = { id = MAN_racial_harmony value = -0.01 }
+		fire_only_once = no
+		days_re_enable = 180
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = -0.05 }
+			custom_effect_tooltip = MAN_tt_bop_mongol
+			hidden_effect = {
+			if = { limit = { 761 = { is_owned_and_controlled_by = ROOT } } 761 = { add_to_variable = { MAN_bandit = -5 } } }
+			if = { limit = { 612 = { is_owned_and_controlled_by = ROOT } } 612 = { add_to_variable = { MAN_bandit = -5 } } }
+			if = { limit = { 1043 = { is_owned_and_controlled_by = ROOT } } 1043 = { add_to_variable = { MAN_bandit = -5 } } }
 			}
-			else = {
-				add_power_balance_value = { id = MAN_racial_harmony value = 0.01 }
-			}
+			add_to_variable = { MAN_fav_kw = -2 }
+			custom_effect_tooltip = MAN_tt_fav_kw_m2
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
 		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_bop_korean_council = {
+		icon = MAN_promote_koreans_in_concordia_association
+		allowed = { original_tag = MAN }
+		cost = 30
+		fire_only_once = no
+		days_re_enable = 120
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = -0.04 }
+			add_to_variable = { MAN_labour = 8 }
+			custom_effect_tooltip = MAN_tt_labour_8
+			custom_effect_tooltip = MAN_tt_bop_korean
+			hidden_effect = { if = { limit = { check_variable = { MAN_band1 > 5 } } subtract_from_variable = { MAN_band1 = 5 } } }
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_bop_russian_bureau = {
+		icon = MAN_promote_russians_in_concordia_association
+		allowed = { original_tag = MAN }
+		cost = 25
+		fire_only_once = no
+		days_re_enable = 180
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = -0.03 }
+			add_to_variable = { MAN_fav_kw = 3 }
+			custom_effect_tooltip = MAN_tt_fav_kw_3
+			custom_effect_tooltip = MAN_tt_bop_russian
+			hidden_effect = { if = { limit = { check_variable = { MAN_band3 > 3 } } subtract_from_variable = { MAN_band3 = 3 } } }
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_bop_fugu = {
+		icon = MAN_promote_jews_in_concordia_association
+		allowed = { original_tag = MAN }
+		available = { date > 1937.12.25 }
+		cost = 50
+		fire_only_once = yes
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = -0.05 }
+			add_to_variable = { MAN_fav_mgy = 8 }
+			custom_effect_tooltip = MAN_tt_fav_mgy_8
+			add_cic = 2000
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_bop_vice_ministers = {
+		icon = MAN_promote_japanese_in_concordia_association
+		allowed = { original_tag = MAN }
+		cost = 30
+		fire_only_once = no
+		days_re_enable = 90
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = 0.06 }
+			add_to_variable = { MAN_fav_gab = 4 }
+			custom_effect_tooltip = MAN_tt_fav_gab_4
+			add_to_variable = { MAN_kw_pat = 3 }
+			custom_effect_tooltip = MAN_tt_pat_3
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 3 }
+	}
+	MAN_bop_manchu_court = {
+		icon = MAN_promote_manchus_in_concordia_association
+		allowed = { original_tag = MAN }
+		cost = 35
+		fire_only_once = no
+		days_re_enable = 180
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = 0.03 }
+			add_stability = 0.02
+			add_to_variable = { MAN_kw_pat = 2 }
+			custom_effect_tooltip = MAN_tt_pat_2
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_bop_kempeitai = {
+		icon = oppression
+		allowed = { original_tag = MAN }
+		visible = { OR = { has_completed_focus = MAN_sec_kempeitai has_completed_focus = MAN_pol_tojo_kempeitai } }
+		cost = 20
+		fire_only_once = no
+		days_re_enable = 180
+		complete_effect = {
+			add_power_balance_value = { id = MAN_racial_harmony value = 0.08 }
+			add_stability = -0.02
+			add_to_variable = { MAN_fav_kw = 3 }
+			custom_effect_tooltip = MAN_tt_fav_kw_3
+			add_to_variable = { MAN_fav_gab = -3 }
+			custom_effect_tooltip = MAN_tt_fav_gab_m3
+			custom_effect_tooltip = MAN_tt_bop_kempeitai
+			hidden_effect = { every_owned_state = { limit = { OR = { state = 716 state = 715 state = 328 state = 717 state = 714 state = 761 state = 610 state = 611 state = 612 state = 1043 } } add_to_variable = { MAN_bandit = -3 } } }
+			hidden_effect = { MAN_pol_compute = yes MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
 	}
 }

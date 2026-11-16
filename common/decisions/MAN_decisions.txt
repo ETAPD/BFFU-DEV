@@ -1,1372 +1,3029 @@
-# GUTTED for Manchukuo rework — all old Manchukuo decisions removed (overrides vanilla MAN_decisions.txt).
+# Manchukuo rework: three decision systems
 
-############################################################
-########### INDUSTRIAL BEHEMOTH OF THE EAST ################
-############################################################
-# Rapid industrialization at a price: every project costs political power
-# and stability up front, and carries a hidden risk of industrial accidents
-# (man_behemoth.31 minor / .32 major — the major one destroys a factory).
-# Each completed project adds +20 plan progress; at 100 the plan concludes
-# (man_behemoth.1 / .2) and the next stage unlocks.
-# All economy effects accumulate in the MAN_industrial_behemoth spirit.
-
-######## MATSUOKA VS AYUKAWA — Bureaucratic Confrontation ########
-
-MAN_ayukawa_vs_matsuoka_category = {
-
-	# Resolution mission — at timeout, whoever holds the bureaucracy wins
-	MAN_bureaucratic_confrontation = {
-		icon = GFX_decision_category_MAN_second_fyp
-		priority = 100
+MAN_plan_cat = {
+	MAN_zone_hi = {
+		icon = GFX_decision_generic_factory
+		priority = 200
 		allowed = { original_tag = MAN }
-		available = { hidden_trigger = { always = no } }
-		activation = { has_country_flag = MAN_ayukawa_vs_matsuoka_flag }
-		is_good = no
+		visible = { has_country_flag = MAN_zone_unl_hi }
+		state_target = yes
+		targets = { 716 328 717 714 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+		on_map_mode = map_and_decisions_view
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_zone check_variable = { MAN_zones_used < MAN_zone_cap } } }
+		cost = 25
+		fire_only_once = no
+		complete_effect = {
+			FROM = {
+				set_state_flag = MAN_zoned
+				set_state_flag = MAN_zone_hi
+				add_dynamic_modifier = { modifier = MAN_zone_hi_dm }
+			}
+			add_to_variable = { MAN_zones_used = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_zone_min = {
+		icon = GFX_decision_generic_merge_plant_materiel
+		priority = 199
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_zone_unl_min }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+		on_map_mode = map_and_decisions_view
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_zone check_variable = { MAN_zones_used < MAN_zone_cap } } }
+		cost = 25
+		fire_only_once = no
+		complete_effect = {
+			FROM = {
+				set_state_flag = MAN_zoned
+				set_state_flag = MAN_zone_min
+				add_dynamic_modifier = { modifier = MAN_zone_min_dm }
+			}
+			add_to_variable = { MAN_zones_used = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_zone_pow = {
+		icon = GFX_decision_hol_inundate_water_lines
+		priority = 198
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_zone_unl_pow }
+		state_target = yes
+		targets = { 716 328 717 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+		on_map_mode = map_and_decisions_view
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_zone check_variable = { MAN_zones_used < MAN_zone_cap } } }
+		cost = 25
+		fire_only_once = no
+		complete_effect = {
+			FROM = {
+				set_state_flag = MAN_zoned
+				set_state_flag = MAN_zone_pow
+				add_dynamic_modifier = { modifier = MAN_zone_pow_dm }
+			}
+			add_to_variable = { MAN_zones_used = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_zone_set = {
+		icon = GFX_decision_generic_colonial_administration
+		priority = 197
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_zone_unl_set }
+		state_target = yes
+		targets = { 717 714 761 328 715 611 612 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_surveyed NOT = { has_state_flag = MAN_zoned } } }
+		on_map_mode = map_and_decisions_view
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_zone check_variable = { MAN_zones_used < MAN_zone_cap } } }
+		cost = 25
+		fire_only_once = no
+		complete_effect = {
+			FROM = {
+				set_state_flag = MAN_zoned
+				set_state_flag = MAN_zone_set
+				add_dynamic_modifier = { modifier = MAN_zone_set_dm }
+			}
+			add_to_variable = { MAN_zones_used = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_zone_clear = {
+		icon = GFX_decision_generic_break_treaty
+		priority = 60
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT has_state_flag = MAN_zoned } }
+		on_map_mode = map_and_decisions_view
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } } }
+		cost = 50
+		fire_only_once = no
+		complete_effect = {
+			FROM = {
+				clr_state_flag = MAN_zoned
+				clr_state_flag = MAN_zone_hi
+				if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_hi_dm } } remove_dynamic_modifier = { modifier = MAN_zone_hi_dm } }
+				clr_state_flag = MAN_zone_min
+				if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_min_dm } } remove_dynamic_modifier = { modifier = MAN_zone_min_dm } }
+				clr_state_flag = MAN_zone_pow
+				if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_pow_dm } } remove_dynamic_modifier = { modifier = MAN_zone_pow_dm } }
+				clr_state_flag = MAN_zone_set
+				if = { limit = { has_dynamic_modifier = { modifier = MAN_zone_set_dm } } remove_dynamic_modifier = { modifier = MAN_zone_set_dm } }
+			}
+			subtract_from_variable = { MAN_zones_used = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 0 }
+	}
+	MAN_survey = {
+		icon = GFX_decision_generic_research
+		priority = 210
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT NOT = { has_state_flag = MAN_surveyed } } }
+		on_map_mode = map_and_decisions_view
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_survey NOT = { has_country_flag = MAN_surveying } } }
+		custom_cost_trigger = { has_political_power > 14.99 check_variable = { MAN_labour > 4.99 } }
+		custom_cost_text = MAN_cc_15_5_0
+		fire_only_once = no
+		days_remove = 45
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = { clr_country_flag = MAN_surveying }
+		complete_effect = {
+			add_political_power = -15
+			subtract_from_variable = { MAN_labour = 5 }
+			set_country_flag = MAN_surveying
+		}
+		remove_effect = {
+			clr_country_flag = MAN_surveying
+			FROM = {
+				set_state_flag = MAN_surveyed
+				add_dynamic_modifier = { modifier = MAN_surveyed_dm }
+				if = { limit = { state = 716 } custom_effect_tooltip = MAN_tt_found_716 }
+				if = { limit = { state = 715 } custom_effect_tooltip = MAN_tt_found_715 }
+				if = { limit = { state = 328 } custom_effect_tooltip = MAN_tt_found_328 }
+				if = { limit = { state = 717 } custom_effect_tooltip = MAN_tt_found_717 }
+				if = { limit = { state = 714 } custom_effect_tooltip = MAN_tt_found_714 }
+				if = { limit = { state = 761 } custom_effect_tooltip = MAN_tt_found_761 }
+				if = { limit = { state = 610 } custom_effect_tooltip = MAN_tt_found_610 }
+				if = { limit = { state = 611 } custom_effect_tooltip = MAN_tt_found_611 }
+				if = { limit = { state = 612 } custom_effect_tooltip = MAN_tt_found_612 }
+				if = { limit = { state = 1043 } custom_effect_tooltip = MAN_tt_found_1043 }
+				custom_effect_tooltip = MAN_tt_rich_find
+				hidden_effect = {
+					random_list = {
+						30 = {
+							if = { limit = { state = 716 } add_resource = { type = steel amount = 15 } }
+							if = { limit = { state = 715 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 328 } add_resource = { type = steel amount = 15 } }
+							if = { limit = { state = 717 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 714 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 761 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 610 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 611 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 612 } add_resource = { type = coal amount = 15 } }
+							if = { limit = { state = 1043 } add_resource = { type = coal amount = 15 } }
+						}
+						70 = { }
+					}
+				}
+			}
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 12 }
+	}
+	MAN_site_gongchangling = {
+		icon = GFX_decision_steel
+		priority = 170
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 716 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_gongchangling > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_gongchangling = 1 }
+				add_resource = { type = steel amount = 30 }
+			}
+			custom_effect_tooltip = MAN_tt_q_steel_10
+			set_temp_variable = { MAN_t = 10 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_fushun_shale = {
+		icon = GFX_decision_oil
+		priority = 169
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked has_country_flag = MAN_shale_known }
+		state_target = yes
+		targets = { 716 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_fushun_shale > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_30_20_0
+		fire_only_once = no
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_fushun_shale = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = synthetic_refinery level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_10
+			set_temp_variable = { MAN_t = 10 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_tiexi = {
+		icon = GFX_decision_generic_factory
+		priority = 168
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 716 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_hi
+				NOT = { check_variable = { MAN_lv_tiexi > 2.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 24.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_25_20_0
+		fire_only_once = no
+		days_remove = 100
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -25
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_tiexi = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_6
+			set_temp_variable = { MAN_t = 6 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_steel_3
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_antung = {
+		icon = GFX_decision_aluminium
+		priority = 167
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked has_completed_focus = MAN_eco_light_metals }
+		state_target = yes
+		targets = { 716 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_hi
+				NOT = { check_variable = { MAN_lv_antung > 0.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_30_20_0
+		fire_only_once = no
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_antung = 1 }
+				add_resource = { type = aluminium amount = 40 }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_6
+			set_temp_variable = { MAN_t = 6 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_steel_4
+			set_temp_variable = { MAN_t = 4 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_fuxin = {
+		icon = GFX_decision_coal
+		priority = 166
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 715 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_fuxin > 2.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_20_20_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_fuxin = 1 }
+				add_resource = { type = coal amount = 40 }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_12
+			set_temp_variable = { MAN_t = 12 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_molybdenum = {
+		icon = GFX_decision_steel
+		priority = 165
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 715 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_molybdenum > 0.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 24.99 check_variable = { MAN_labour > 9.99 } }
+		custom_cost_text = MAN_cc_25_10_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -25
+			subtract_from_variable = { MAN_labour = 10 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_molybdenum = 1 }
+				add_resource = { type = tungsten amount = 20 }
+			}
+			custom_effect_tooltip = MAN_tt_q_steel_4
+			set_temp_variable = { MAN_t = 4 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_mach_6
+			set_temp_variable = { MAN_t = 6 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_hsinking = {
+		icon = GFX_decision_generic_construction
+		priority = 164
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 328 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_hi
+				NOT = { check_variable = { MAN_lv_hsinking > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_30_15_0
+		fire_only_once = no
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_hsinking = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_5
+			set_temp_variable = { MAN_t = 5 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			add_political_power = 15
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_harbin = {
+		icon = GFX_decision_generic_train
+		priority = 163
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 328 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_hi
+				NOT = { check_variable = { MAN_lv_harbin > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 100
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_harbin = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_8
+			set_temp_variable = { MAN_t = 8 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_dongbiandao = {
+		icon = GFX_decision_steel
+		priority = 162
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked OR = { has_country_flag = MAN_mangyo_founded check_variable = { MAN_fav_mgy > 49.99 } } }
+		state_target = yes
+		targets = { 328 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_dongbiandao > 2.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 24.99 } }
+		custom_cost_text = MAN_cc_30_25_0
+		fire_only_once = no
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 25 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_dongbiandao = 1 }
+				add_resource = { type = steel amount = 25 }
+				add_resource = { type = coal amount = 20 }
+			}
+			custom_effect_tooltip = MAN_tt_q_steel_8
+			set_temp_variable = { MAN_t = 8 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_coal_6
+			set_temp_variable = { MAN_t = 6 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_fav_mgy = 3 }
+			custom_effect_tooltip = MAN_tt_fav_mgy_3
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_kirin_chem = {
+		icon = GFX_decision_rubber
+		priority = 161
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked check_variable = { MAN_mega_fengman_n > 0.5 } }
+		state_target = yes
+		targets = { 328 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_pow
+				NOT = { check_variable = { MAN_lv_kirin_chem > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_30_20_0
+		fire_only_once = no
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_kirin_chem = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = synthetic_refinery level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_power_6
+			set_temp_variable = { MAN_t = 6 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_power = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_coal_4
+			set_temp_variable = { MAN_t = 4 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_hegang = {
+		icon = GFX_decision_coal
+		priority = 160
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 717 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_hegang > 2.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_20_20_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_hegang = 1 }
+				add_resource = { type = coal amount = 35 }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_12
+			set_temp_variable = { MAN_t = 12 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_jixi = {
+		icon = GFX_decision_coal
+		priority = 159
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 717 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_jixi > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_jixi = 1 }
+				add_resource = { type = coal amount = 30 }
+				add_to_variable = { MAN_bandit = 3 }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_10
+			set_temp_variable = { MAN_t = 10 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_mudanjiang = {
+		icon = GFX_decision_generic_factory
+		priority = 158
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 717 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_hi
+				NOT = { check_variable = { MAN_lv_mudanjiang > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 24.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_25_15_0
+		fire_only_once = no
+		days_remove = 100
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -25
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_mudanjiang = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_8
+			set_temp_variable = { MAN_t = 8 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			add_to_variable = { MAN_fav_kw = 3 }
+			custom_effect_tooltip = MAN_tt_fav_kw_3
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_jingpo = {
+		icon = GFX_decision_generic_electricity
+		priority = 157
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 717 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_pow
+				NOT = { check_variable = { MAN_lv_jingpo > 0.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 24.99 } }
+		custom_cost_text = MAN_cc_30_25_0
+		fire_only_once = no
+		days_remove = 150
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 25 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_jingpo = 1 }
+				add_extra_state_shared_building_slots = 1
+			}
+			custom_effect_tooltip = MAN_tt_q_power_14
+			set_temp_variable = { MAN_t = 14 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_power = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_heihe_gold = {
+		icon = GFX_decision_hol_attract_foreign_investors
+		priority = 156
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 714 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_heihe_gold > 2.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 14.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_15_20_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -15
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_heihe_gold = 1 }
+			}
+			add_political_power = 15
+			custom_effect_tooltip = MAN_tt_cic_3000
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 3000 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 2250 }
+				else = { add_cic = 1500 }
+			}
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_qiqihar = {
+		icon = GFX_decision_generic_industry
+		priority = 155
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 714 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_hi
+				NOT = { check_variable = { MAN_lv_qiqihar > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 100
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_qiqihar = 1 }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_6
+			set_temp_variable = { MAN_t = 6 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_steel_2
+			set_temp_variable = { MAN_t = 2 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_jalainur = {
+		icon = GFX_decision_coal
+		priority = 154
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 761 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_jalainur > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_jalainur = 1 }
+				add_resource = { type = coal amount = 30 }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_10
+			set_temp_variable = { MAN_t = 10 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_hailar = {
+		icon = GFX_decision_USA_cnc_trade_pact
+		priority = 153
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 761 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_set
+				NOT = { check_variable = { MAN_lv_hailar > 0.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 9.99 check_variable = { MAN_labour > 4.99 } }
+		custom_cost_text = MAN_cc_10_5_0
+		fire_only_once = no
+		days_remove = 60
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -10
+			subtract_from_variable = { MAN_labour = 5 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_hailar = 1 }
+			}
+			custom_effect_tooltip = MAN_tt_cic_2000
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 2000 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1500 }
+				else = { add_cic = 1000 }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_beipiao = {
+		icon = GFX_decision_coal
+		priority = 152
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 610 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_min
+				NOT = { check_variable = { MAN_lv_beipiao > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_beipiao = 1 }
+				add_resource = { type = coal amount = 25 }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_10
+			set_temp_variable = { MAN_t = 10 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_spur
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_wool = {
+		icon = GFX_decision_USA_cnc_trade_pact
+		priority = 151
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 611 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_set
+				NOT = { check_variable = { MAN_lv_wool > 0.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 9.99 check_variable = { MAN_labour > 4.99 } }
+		custom_cost_text = MAN_cc_10_5_0
+		fire_only_once = no
+		days_remove = 60
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -10
+			subtract_from_variable = { MAN_labour = 5 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_wool = 1 }
+			}
+			custom_effect_tooltip = MAN_tt_cic_1500
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 1500 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1125 }
+				else = { add_cic = 750 }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_site_remount = {
+		icon = GFX_decision_generic_cavalry
+		priority = 150
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 612 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_surveyed
+				has_state_flag = MAN_zone_set
+				NOT = { check_variable = { MAN_lv_remount > 1.5 } }
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 14.99 check_variable = { MAN_labour > 4.99 } }
+		custom_cost_text = MAN_cc_15_5_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -15
+			subtract_from_variable = { MAN_labour = 5 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_remount = 1 }
+			}
+			add_to_variable = { MAN_fav_kw = 3 }
+			custom_effect_tooltip = MAN_tt_fav_kw_3
+			custom_effect_tooltip = MAN_tt_cic_1200
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 1200 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 900 }
+				else = { add_cic = 600 }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 10 }
+	}
+	MAN_pj_thermal = {
+		icon = GFX_decision_generic_electricity
+		priority = 140
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_zone_pow
+				NOT = { check_variable = { MAN_lv_thermal > 2.5 } }
+
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 19.99 check_variable = { MAN_labour > 14.99 } }
+		custom_cost_text = MAN_cc_20_15_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 2 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -20
+			subtract_from_variable = { MAN_labour = 15 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_thermal = 1 }
+				if = { limit = { check_variable = { MAN_lv_thermal = 1 } } add_dynamic_modifier = { modifier = MAN_power_station_1 } }
+				else_if = { limit = { check_variable = { MAN_lv_thermal = 2 } } remove_dynamic_modifier = { modifier = MAN_power_station_1 } add_dynamic_modifier = { modifier = MAN_power_station_2 } }
+				else = { if = { limit = { has_dynamic_modifier = { modifier = MAN_power_station_2 } } remove_dynamic_modifier = { modifier = MAN_power_station_2 } } add_dynamic_modifier = { modifier = MAN_power_station_3 } }
+			}
+			custom_effect_tooltip = MAN_tt_q_power_14
+			set_temp_variable = { MAN_t = 14 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_power = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+	MAN_pj_grid = {
+		icon = GFX_decision_generic_electricity
+		priority = 139
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_zone_pow
+				NOT = { check_variable = { MAN_lv_grid > 0.5 } }
+
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 14.99 check_variable = { MAN_labour > 9.99 } }
+		custom_cost_text = MAN_cc_15_10_0
+		fire_only_once = no
+		days_remove = 60
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -15
+			subtract_from_variable = { MAN_labour = 10 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_grid = 1 }
+				add_dynamic_modifier = { modifier = MAN_grid_dm }
+			}
+			custom_effect_tooltip = MAN_tt_q_power_8
+			set_temp_variable = { MAN_t = 8 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_power = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_mach_4
+			set_temp_variable = { MAN_t = 4 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+	MAN_pj_colony = {
+		icon = GFX_decision_generic_colonial_administration
+		priority = 138
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked  }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				has_state_flag = MAN_zone_set
+				NOT = { check_variable = { MAN_lv_colony > 2.5 } }
+
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_not_busy FROM = { NOT = { has_state_flag = MAN_busy } } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 14.99 check_variable = { MAN_labour > 9.99 } }
+		custom_cost_text = MAN_cc_15_10_0
+		fire_only_once = no
+		days_remove = 90
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		cancel_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			FROM = { clr_state_flag = MAN_busy }
+		}
+		complete_effect = {
+			add_political_power = -15
+			subtract_from_variable = { MAN_labour = 10 }
+			add_to_variable = { MAN_proj_active = 1 }
+			FROM = { set_state_flag = MAN_busy }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			FROM = {
+				clr_state_flag = MAN_busy
+				add_to_variable = { MAN_lv_colony = 1 }
+				add_to_variable = { MAN_colony_g = 0.03 }
+				add_to_variable = { MAN_bandit = 6 }
+				set_state_flag = { flag = MAN_grievance days = 180 }
+			}
+			add_to_variable = { MAN_labour_income = 0.25 }
+			custom_effect_tooltip = MAN_tt_colony
+			add_to_variable = { var = MAN_behemoth_consumer_goods_factor value = -0.005 tooltip = consumer_goods_expected_value_tt }
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 8 }
+	}
+	MAN_line_jehol = {
+		icon = GFX_decision_generic_train
+		priority = 130
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_lines_unl }
+		highlight_states = { highlight_state_targets = { state = 715 state = 610 } }
+		available = {
+			715 = { is_owned_and_controlled_by = ROOT }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 24.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_25_20_0
 		fire_only_once = yes
-		days_mission_timeout = 540
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		complete_effect = {
+			add_political_power = -25
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_line_jehol
+			hidden_effect = {
+				if = { limit = { 715 = { is_owned_and_controlled_by = ROOT } } 715 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } } }
+				if = { limit = { 610 = { is_owned_and_controlled_by = ROOT } } 610 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } } }
+				if = { limit = { 610 = { is_owned_and_controlled_by = ROOT } } 610 = { add_to_variable = { MAN_bandit = -8 } } }
+			}
+			add_to_variable = { MAN_fav_smr = 5 }
+			custom_effect_tooltip = MAN_tt_fav_smr_5
+			custom_effect_tooltip = MAN_tt_q_steel_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_coal_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 6 }
+	}
+	MAN_line_tumen = {
+		icon = GFX_decision_generic_train
+		priority = 129
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_lines_unl }
+		highlight_states = { highlight_state_targets = { state = 717 } }
+		available = {
+			717 = { is_owned_and_controlled_by = ROOT }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 24.99 } }
+		custom_cost_text = MAN_cc_30_25_0
+		fire_only_once = yes
+		days_remove = 150
+		modifier = { civilian_factory_use = 2 }
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 25 }
+			add_to_variable = { MAN_proj_active = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_line_tumen
+			hidden_effect = {
+				if = { limit = { 717 = { is_owned_and_controlled_by = ROOT } } 717 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } } }
+				if = { limit = { 717 = { is_owned_and_controlled_by = ROOT } } 717 = { add_to_variable = { MAN_bandit = -8 } } }
+			}
+			add_to_variable = { MAN_fav_smr = 5 }
+			custom_effect_tooltip = MAN_tt_fav_smr_5
+			custom_effect_tooltip = MAN_tt_q_steel_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_coal_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 6 }
+	}
+	MAN_line_heihe = {
+		icon = GFX_decision_generic_train
+		priority = 128
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_lines_unl }
+		highlight_states = { highlight_state_targets = { state = 714 } }
+		available = {
+			714 = { is_owned_and_controlled_by = ROOT }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 24.99 check_variable = { MAN_labour > 19.99 } }
+		custom_cost_text = MAN_cc_25_20_0
+		fire_only_once = yes
+		days_remove = 120
+		modifier = { civilian_factory_use = 2 }
+		complete_effect = {
+			add_political_power = -25
+			subtract_from_variable = { MAN_labour = 20 }
+			add_to_variable = { MAN_proj_active = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_line_heihe
+			hidden_effect = {
+				if = { limit = { 714 = { is_owned_and_controlled_by = ROOT } } 714 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } } }
+				if = { limit = { 714 = { is_owned_and_controlled_by = ROOT } } 714 = { add_to_variable = { MAN_bandit = -6 } } }
+			}
+			add_to_variable = { MAN_fav_smr = 5 }
+			custom_effect_tooltip = MAN_tt_fav_smr_5
+			add_to_variable = { MAN_fav_kw = 5 }
+			custom_effect_tooltip = MAN_tt_fav_kw_5
+			custom_effect_tooltip = MAN_tt_q_steel_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_coal_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 6 }
+	}
+	MAN_line_north = {
+		icon = GFX_decision_generic_train
+		priority = 127
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_lines_unl }
+		highlight_states = { highlight_state_targets = { state = 328 state = 761 } }
+		available = {
+			328 = { is_owned_and_controlled_by = ROOT }
+			custom_trigger_tooltip = { tooltip = MAN_trg_slot check_variable = { MAN_proj_active < MAN_proj_slots } }
+		}
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 24.99 } }
+		custom_cost_text = MAN_cc_30_25_0
+		fire_only_once = yes
+		days_remove = 150
+		modifier = { civilian_factory_use = 2 }
+		complete_effect = {
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 25 }
+			add_to_variable = { MAN_proj_active = 1 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			subtract_from_variable = { MAN_proj_active = 1 }
+			add_to_variable = { MAN_proj_done = 1 }
+			add_to_variable = { MAN_rail_built = 1 }
+			custom_effect_tooltip = MAN_tt_line_north
+			hidden_effect = {
+				if = { limit = { 328 = { is_owned_and_controlled_by = ROOT } } 328 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } } }
+				if = { limit = { 761 = { is_owned_and_controlled_by = ROOT } } 761 = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } } }
+				if = { limit = { 761 = { is_owned_and_controlled_by = ROOT } } 761 = { add_to_variable = { MAN_bandit = -4 } } }
+			}
+			add_to_variable = { MAN_fav_smr = 5 }
+			custom_effect_tooltip = MAN_tt_fav_smr_5
+			add_to_variable = { MAN_fav_kw = 3 }
+			custom_effect_tooltip = MAN_tt_fav_kw_3
+			custom_effect_tooltip = MAN_tt_q_steel_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			custom_effect_tooltip = MAN_tt_q_coal_3_flat
+			set_temp_variable = { MAN_t = 3 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 6 }
+	}
+	MAN_run_empire = {
+		icon = GFX_decision_USA_cnc_arms_export
+		priority = 120
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked }
+		state_target = yes
+		targets = { 716 328 717 714 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				NOT = { has_state_flag = MAN_run_cd }
+				has_state_flag = MAN_zone_hi
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		cost = 10
+		fire_only_once = no
+		days_remove = 60
+		modifier = { civilian_factory_use = 3 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		remove_effect = {
+			custom_effect_tooltip = MAN_tt_cic_3000
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 3000 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 2250 }
+				else = { add_cic = 1500 }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_4
+			set_temp_variable = { MAN_t = 4 }
+			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			add_to_variable = { MAN_fav_ind = 2 }
+			custom_effect_tooltip = MAN_tt_fav_ind_2
+			FROM = {
+				set_state_flag = { flag = MAN_run_cd days = 90 }
+			}
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 4 }
+	}
+	MAN_run_soy = {
+		icon = GFX_decision_USA_cnc_trade_pact
+		priority = 119
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked }
+		state_target = yes
+		targets = { 717 714 761 328 715 611 612 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				NOT = { has_state_flag = MAN_run_cd }
+				has_state_flag = MAN_zone_set
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		cost = 5
+		fire_only_once = no
+		days_remove = 30
+		modifier = { civilian_factory_use = 1 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		remove_effect = {
+			custom_effect_tooltip = MAN_tt_cic_1500
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 1500 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1125 }
+				else = { add_cic = 750 }
+			}
+			add_to_variable = { MAN_fav_smr = 3 }
+			custom_effect_tooltip = MAN_tt_fav_smr_3
+			FROM = {
+				set_state_flag = { flag = MAN_run_cd days = 180 }
+				random_list = { 25 = { set_state_flag = { flag = MAN_grievance days = 120 } } 75 = { } }
+			}
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 4 }
+	}
+	MAN_run_opium = {
+		icon = GFX_decision_USA_cnc_money
+		priority = 118
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked }
+		state_target = yes
+		targets = { 610 }
+		target_trigger = {
+			FROM = {
+				is_owned_and_controlled_by = ROOT
+				NOT = { has_state_flag = MAN_run_cd }
+
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		cost = 0
+		fire_only_once = no
+		days_remove = 30
+		modifier = { civilian_factory_use = 0 }
+		cancel_trigger = { FROM = { NOT = { is_owned_and_controlled_by = ROOT } } }
+		remove_effect = {
+			custom_effect_tooltip = MAN_tt_cic_2500
+			hidden_effect = {
+				if = { limit = { FROM = { check_variable = { MAN_eff > 0.849 } } } add_cic = 2500 }
+				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1875 }
+				else = { add_cic = 1250 }
+			}
+			add_stability = -0.01
+			add_to_variable = { MAN_fav_kw = 2 }
+			custom_effect_tooltip = MAN_tt_fav_kw_2
+			FROM = {
+				set_state_flag = { flag = MAN_run_cd days = 120 }
+				add_to_variable = { MAN_bandit = 4 }
+			}
+			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 4 }
+	}
+	MAN_mega_showa = {
+		icon = GFX_decision_steel
+		priority = 180
+		allowed = { original_tag = MAN }
+		visible = {
+			has_completed_focus = MAN_eco_showa_steel
+			NOT = { check_variable = { MAN_mega_showa_n > 2.5 } }
+		}
+		highlight_states = { highlight_state_targets = { state = 716 } }
+		available = {
+			716 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { has_political_power > 39.99 check_variable = { MAN_labour > 29.99 } }
+		custom_cost_text = MAN_cc_40_30_0
+		fire_only_once = no
+		days_remove = 150
+		modifier = { civilian_factory_use = 3 }
+		complete_effect = {
+			add_political_power = -40
+			subtract_from_variable = { MAN_labour = 30 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			add_to_variable = { MAN_mega_showa_n = 1 }
+			716 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+				add_resource = { type = steel amount = 60 }
+			}
+			custom_effect_tooltip = MAN_tt_q_steel_20_flat
+			set_temp_variable = { MAN_t = 20 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_steel = MAN_t }
+			if = {
+				limit = { check_variable = { MAN_mega_showa_n > 2.5 } }
+				custom_effect_tooltip = MAN_mega_final_tt
+				custom_effect_tooltip = MAN_eco_spirit_changed_tt
+				add_to_variable = { var = MAN_behemoth_industrial_capacity_factory value = 0.04 tooltip = industrial_capacity_factory_tt }
+				hidden_effect = { force_update_dynamic_modifier = yes }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 15 }
+	}
+	MAN_mega_fengman = {
+		icon = GFX_decision_hol_inundate_water_lines
+		priority = 179
+		allowed = { original_tag = MAN }
+		visible = {
+			has_completed_focus = MAN_eco_fengman_dam
+			NOT = { check_variable = { MAN_mega_fengman_n > 2.5 } }
+		}
+		highlight_states = { highlight_state_targets = { state = 328 } }
+		available = {
+			328 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { has_political_power > 39.99 check_variable = { MAN_labour > 39.99 } }
+		custom_cost_text = MAN_cc_40_40_0
+		fire_only_once = no
+		days_remove = 180
+		modifier = { civilian_factory_use = 3 }
+		complete_effect = {
+			add_political_power = -40
+			subtract_from_variable = { MAN_labour = 40 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			add_to_variable = { MAN_mega_fengman_n = 1 }
+			328 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_power_15_flat
+			set_temp_variable = { MAN_t = 15 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_power = MAN_t }
+			if = {
+				limit = { check_variable = { MAN_mega_fengman_n > 2.5 } }
+				custom_effect_tooltip = MAN_mega_final_tt
+				328 = { add_building_construction = { type = dam level = 1 instant_build = yes province = { id = 946 } } }
+				add_to_variable = { MAN_q_power = 20 }
+				custom_effect_tooltip = MAN_tt_q_power_20_flat
+				hidden_effect = { force_update_dynamic_modifier = yes }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 15 }
+	}
+	MAN_mega_supung = {
+		icon = GFX_decision_hol_inundate_water_lines
+		priority = 178
+		allowed = { original_tag = MAN }
+		visible = {
+			has_completed_focus = MAN_eco_supung_dam
+			NOT = { check_variable = { MAN_mega_supung_n > 1.5 } }
+		}
+		highlight_states = { highlight_state_targets = { state = 716 } }
+		available = {
+			716 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { has_political_power > 49.99 check_variable = { MAN_labour > 39.99 } }
+		custom_cost_text = MAN_cc_50_40_0
+		fire_only_once = no
+		days_remove = 200
+		modifier = { civilian_factory_use = 3 }
+		complete_effect = {
+			add_political_power = -50
+			subtract_from_variable = { MAN_labour = 40 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			add_to_variable = { MAN_mega_supung_n = 1 }
+			716 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_power_18_flat
+			set_temp_variable = { MAN_t = 18 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_power = MAN_t }
+			if = {
+				limit = { check_variable = { MAN_mega_supung_n > 1.5 } }
+				custom_effect_tooltip = MAN_mega_final_tt
+				716 = { add_building_construction = { type = dam level = 1 instant_build = yes province = { id = 836 } } }
+				add_to_variable = { MAN_q_power = 20 }
+				custom_effect_tooltip = MAN_tt_q_power_20_flat
+				JAP = { add_political_power = 25 }
+				hidden_effect = { force_update_dynamic_modifier = yes }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 15 }
+	}
+	MAN_mega_kirin_fuel = {
+		icon = GFX_decision_oil
+		priority = 177
+		allowed = { original_tag = MAN }
+		visible = {
+			has_completed_focus = MAN_eco_synthetic_fuel
+			NOT = { check_variable = { MAN_mega_kirin_fuel_n > 1.5 } }
+		}
+		highlight_states = { highlight_state_targets = { state = 328 } }
+		available = {
+			328 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { has_political_power > 39.99 check_variable = { MAN_labour > 29.99 } }
+		custom_cost_text = MAN_cc_40_30_0
+		fire_only_once = no
+		days_remove = 160
+		modifier = { civilian_factory_use = 3 }
+		complete_effect = {
+			add_political_power = -40
+			subtract_from_variable = { MAN_labour = 30 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			add_to_variable = { MAN_mega_kirin_fuel_n = 1 }
+			328 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = synthetic_refinery level = 2 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_coal_15_flat
+			set_temp_variable = { MAN_t = 15 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_coal = MAN_t }
+			if = {
+				limit = { check_variable = { MAN_mega_kirin_fuel_n > 1.5 } }
+				custom_effect_tooltip = MAN_mega_final_tt
+				custom_effect_tooltip = MAN_eco_spirit_changed_tt
+				add_to_variable = { var = MAN_behemoth_production_speed_synthetic_refinery_factor value = 0.15 tooltip = production_speed_synthetic_refinery_factor_tt }
+				hidden_effect = { force_update_dynamic_modifier = yes }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 15 }
+	}
+	MAN_mega_mamc = {
+		icon = GFX_decision_generic_merge_plant_aircraft
+		priority = 176
+		allowed = { original_tag = MAN }
+		visible = {
+			has_completed_focus = MAN_eco_manshu_hikoki
+			NOT = { check_variable = { MAN_mega_mamc_n > 1.5 } }
+		}
+		highlight_states = { highlight_state_targets = { state = 716 } }
+		available = {
+			716 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { has_political_power > 39.99 check_variable = { MAN_labour > 29.99 } }
+		custom_cost_text = MAN_cc_40_30_0
+		fire_only_once = no
+		days_remove = 150
+		modifier = { civilian_factory_use = 3 }
+		complete_effect = {
+			add_political_power = -40
+			subtract_from_variable = { MAN_labour = 30 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			add_to_variable = { MAN_mega_mamc_n = 1 }
+			716 = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = { type = arms_factory level = 3 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_18_flat
+			set_temp_variable = { MAN_t = 18 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			if = {
+				limit = { check_variable = { MAN_mega_mamc_n > 1.5 } }
+				custom_effect_tooltip = MAN_mega_final_tt
+				add_tech_bonus = { name = MAN_mega_mamc bonus = 1.0 uses = 2 category = air_equipment }
+				hidden_effect = { force_update_dynamic_modifier = yes }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 15 }
+	}
+	MAN_mega_arsenal = {
+		icon = GFX_decision_generic_factory
+		priority = 175
+		allowed = { original_tag = MAN }
+		visible = {
+			has_completed_focus = MAN_eco_mukden_arsenal
+			NOT = { check_variable = { MAN_mega_arsenal_n > 1.5 } }
+		}
+		highlight_states = { highlight_state_targets = { state = 716 } }
+		available = {
+			716 = { is_owned_and_controlled_by = ROOT }
+		}
+		custom_cost_trigger = { has_political_power > 39.99 check_variable = { MAN_labour > 29.99 } }
+		custom_cost_text = MAN_cc_40_30_0
+		fire_only_once = no
+		days_remove = 150
+		modifier = { civilian_factory_use = 3 }
+		complete_effect = {
+			add_political_power = -40
+			subtract_from_variable = { MAN_labour = 30 }
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		remove_effect = {
+			add_to_variable = { MAN_mega_arsenal_n = 1 }
+			716 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			}
+			custom_effect_tooltip = MAN_tt_q_mach_15_flat
+			set_temp_variable = { MAN_t = 15 }
+			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t2 = MAN_t }
+			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			add_to_temp_variable = { MAN_t = MAN_t2 }
+			add_to_variable = { MAN_q_mach = MAN_t }
+			if = {
+				limit = { check_variable = { MAN_mega_arsenal_n > 1.5 } }
+				custom_effect_tooltip = MAN_mega_final_tt
+				add_tech_bonus = { name = MAN_mega_arsenal bonus = 1.0 uses = 2 category = infantry_weapons }
+				hidden_effect = { force_update_dynamic_modifier = yes }
+			}
+			custom_effect_tooltip = MAN_behemoth_risk_tt
+			hidden_effect = {
+				MAN_behemoth_accident_roll = yes
+				MAN_plan_recalc = yes
+				MAN_ui_refresh = yes
+			}
+		}
+		ai_will_do = { base = 15 }
+	}
+	MAN_lab_concordia = {
+		icon = GFX_decision_generic_civil_support
+		priority = 70
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_plan_unlocked }
+		cost = 10
+		days_re_enable = 90
+		fire_only_once = no
+		complete_effect = {
+			add_to_variable = { MAN_labour = 12 }
+			custom_effect_tooltip = MAN_tt_labour_12
+			add_stability = -0.01
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 5 }
+	}
+	MAN_lab_daito = {
+		icon = GFX_decision_generic_construction
+		priority = 71
+		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_eco_labour_agency }
+		cost = 25
+		days_remove = 30
+		days_re_enable = 60
+		fire_only_once = no
+		remove_effect = {
+			add_to_variable = { MAN_labour = 25 }
+			custom_effect_tooltip = MAN_tt_labour_25
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 6 }
+	}
+	MAN_lab_special = {
+		icon = oppression
+		priority = 69
+		allowed = { original_tag = MAN }
+		visible = {
+			has_country_flag = MAN_plan_unlocked
+			OR = { has_war_with = CHI JAP = { has_war_with = CHI } JAP = { has_war_with = PRC } }
+		}
+		cost = 0
+		days_re_enable = 120
+		fire_only_once = no
+		complete_effect = {
+			add_to_variable = { MAN_labour = 30 }
+			custom_effect_tooltip = MAN_tt_labour_30
+			add_stability = -0.02
+			add_war_support = -0.01
+			add_to_variable = { MAN_kw_pat = 3 }
+			custom_effect_tooltip = MAN_tt_pat_3
+			random_owned_controlled_state = {
+				limit = { has_state_flag = MAN_zone_min }
+				set_state_flag = { flag = MAN_grievance days = 180 }
+			}
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_plan_review = {
+		icon = generic_industry
+		priority = 300
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_review_running }
+		available = {
+			custom_trigger_tooltip = { tooltip = MAN_trg_review_lock NOT = { has_country_flag = MAN_review_lock } }
+			custom_trigger_tooltip = { tooltip = MAN_trg_review check_variable = { MAN_plan_pct > MAN_review_need_m } }
+		}
+		cancel_trigger = { NOT = { has_country_flag = MAN_review_running } }
+		days_mission_timeout = 365
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_review_running
+			country_event = { id = man_sys.2 hours = 6 }
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_review_running
+			add_to_variable = { MAN_kw_pat = -8 }
+			custom_effect_tooltip = MAN_tt_pat_m8
+			country_event = { id = man_sys.3 hours = 6 }
+		}
+		ai_will_do = { base = 1 }
+	}
+}
+
+MAN_politics_cat = {
+	MAN_mantetsu_question = {
+		icon = GFX_decision_category_MAN_second_fyp
+		priority = 260
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_ayukawa_vs_matsuoka_flag }
+		available = { always = no }
 		cancel_trigger = { NOT = { has_country_flag = MAN_ayukawa_vs_matsuoka_flag } }
+		days_mission_timeout = 360
+		fire_only_once = yes
+		is_good = no
 		timeout_effect = {
 			if = {
-				limit = { check_variable = { MAN_ayukawa_vs_matsuoka_var > 74 } }
-				country_event = { id = manchukou.134 hours = 6 }
-				country_event = { id = manchukou.127 days = 7 }
-				JAP = { country_event = { id = manchukou.127 days = 7 } }
-			}
-			else_if = {
-				limit = { check_variable = { MAN_ayukawa_vs_matsuoka_var > 49 } }
+				limit = { check_variable = { MAN_fav_mgy > MAN_fav_smr } }
 				country_event = { id = manchukou.127 hours = 6 }
 				JAP = { country_event = { id = manchukou.127 hours = 6 } }
 			}
-			else_if = {
-				limit = { check_variable = { MAN_ayukawa_vs_matsuoka_var > 25 } }
+			else = {
 				country_event = { id = manchukou.132 hours = 6 }
 				JAP = { country_event = { id = manchukou.132 hours = 6 } }
 			}
-			else = {
-				country_event = { id = manchukou.136 hours = 6 }
-				country_event = { id = manchukou.132 days = 7 }
-				JAP = { country_event = { id = manchukou.132 days = 7 } }
-			}
 		}
+		ai_will_do = { base = 1 }
 	}
-
-	MAN_support_ayukawa = {
-		icon = GFX_decision_generic_construction
-		priority = 99
-
+	MAN_pol_concordia_rally = {
+		icon = GFX_decision_generic_political_rally
+		priority = 90
 		allowed = { original_tag = MAN }
-		fire_only_once = no
-
-		visible = {
-			has_country_flag = MAN_ayukawa_vs_matsuoka_flag
-		}
-
 		cost = 25
-		days_remove = 21
-		days_re_enable = 30
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_support_ayukawa_tt
-			add_to_variable = { MAN_ayukawa_vs_matsuoka_var = 10 }
-			clamp_variable = { var = MAN_ayukawa_vs_matsuoka_var min = 0 max = 100 }
-			hidden_effect = {
-				if = {
-					limit = {
-						check_variable = { MAN_ayukawa_vs_matsuoka_var > 69 }
-						NOT = { has_country_flag = MAN_matsuoka_conspiracy_fired }
-					}
-					set_country_flag = MAN_matsuoka_conspiracy_fired
-					country_event = { id = manchukou.133 days = 5 }
-				}
-			}
-		}
-
-		ai_will_do = { base = 5 }
-	}
-
-	MAN_support_matsuoka = {
-		icon = GFX_decision_category_MAN_first_fyp
-		priority = 98
-
-		allowed = { original_tag = MAN }
-		fire_only_once = no
-
-		visible = {
-			has_country_flag = MAN_ayukawa_vs_matsuoka_flag
-		}
-
-		cost = 25
-		days_remove = 21
-		days_re_enable = 30
-
-		remove_effect = {
-			custom_effect_tooltip = MAN_support_matsuoka_tt
-			subtract_from_variable = { MAN_ayukawa_vs_matsuoka_var = 10 }
-			clamp_variable = { var = MAN_ayukawa_vs_matsuoka_var min = 0 max = 100 }
-		}
-
-		ai_will_do = { base = 5 }
-	}
-
-}
-
-######## THE FIRST FIVE-YEAR PLAN (1937 historical) ########
-
-MAN_first_five_year_plan_cat = {
-
-	# Read-only progress tracker - one variant is visible at a time (progress only
-	# moves in +20 steps, see MAN_fyp1_progress), always greyed out since it does
-	# nothing when clicked. Answers "how close is the plan to concluding?".
-	MAN_fyp1_status_0 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp1_progress = 0 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp1_status_20 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp1_progress = 20 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp1_status_40 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp1_progress = 40 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp1_status_60 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp1_progress = 60 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp1_status_80 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp1_progress = 80 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp1_status_100 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp1_progress > 99 } }
-		available = { always = no }
-		cost = 0
-	}
-
-	# Showa Steel Works at Anshan
-	MAN_fyp_showa_steel = {
-		icon = GFX_decision_MAN_fyp_showa_steel
-		priority = 60
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_formmanestsusindustrialsector }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 715 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 3
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.05
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			715 = {
-				add_extra_state_shared_building_slots = 5
-				add_building_construction = {
-					type = industrial_complex
-					level = 4
-					instant_build = yes
-				}
-			}
-			add_resource = {
-				type = steel
-				amount = 400
-				state = 715
-			}
-			hidden_effect = {
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# Fushun Coal Liquefaction Plant
-	MAN_fyp_fushun_fuel = {
-		icon = GFX_decision_MAN_fyp_fushun
-		priority = 59
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_purchase_german_liscenses }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 328 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 100
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 3
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.05
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			328 = {
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = synthetic_refinery
-					level = 3
-					instant_build = yes
-				}
-			}
-			add_resource = {
-				type = coal
-				amount = 300
-				state = 328
-			}
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_fushun_fuel_tt
-			add_to_variable = { MAN_behemoth_production_speed_synthetic_refinery_factor = 0.1 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# Benxihu Coal and Iron Company
-	MAN_fyp_benxihu = {
-		icon = generic_prospect_for_resources
-		priority = 58
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_the_matsuoka_plan }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 716 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.015
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			add_resource = {
-				type = steel
-				amount = 250
-				state = 716
-			}
-			add_resource = {
-				type = coal
-				amount = 200
-				state = 716
-			}
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_benxihu_tt
-			add_to_variable = { MAN_behemoth_production_factory_efficiency_gain_factor = 0.05 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# Dowa Automobile Plant
-	MAN_fyp_dowa_auto = {
-		icon = generic_factory
-		priority = 57
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_the_aikawa_plan }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 328 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.025
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			328 = {
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = industrial_complex
-					level = 2
-					instant_build = yes
-				}
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			715 = {
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = industrial_complex
-					level = 2
-					instant_build = yes
-				}
-				add_building_construction = {
-					type = arms_factory
-					level = 1
-					instant_build = yes
-				}
-			}
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_dowa_auto_tt
-			add_to_variable = { MAN_behemoth_production_factory_efficiency_gain_factor = 0.02 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# Manchuria Aeroplane Manufacturing Company
-	MAN_fyp_mamc = {
-		icon = GFX_decision_MAN_fyp_mamc
-		priority = 56
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_manchurian_aircrafts_company }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 714 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 100
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.01
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			714 = {
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = arms_factory
-					level = 4
-					instant_build = yes
-				}
-			}
-			716 = {
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = arms_factory
-					level = 4
-					instant_build = yes
-				}
-			}
-			hidden_effect = {
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# The Sungari River Dams (Fengman / Shuifeng)
-	MAN_fyp_sungari_dams = {
-		icon = GFX_decision_MAN_fyp_dams
-		priority = 55
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_restructure_the_liaohe_river_flow }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 717 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 75
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 4
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.02
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			# Fengman Dam on the Sungari - state 328 (dam spawn point at province 946).
-			328 = {
-				add_building_construction = {
-					type = dam
-					level = 1
-					instant_build = yes
-					province = { id = 946 }
-				}
-			}
-			# Shuifeng Dam - state 717, state-scoped spawn.
-			717 = {
-				add_building_construction = {
-					type = dam
-					level = 1
-					instant_build = yes
-				}
-			}
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_sungari_dams_tt
-			add_to_variable = { MAN_behemoth_production_speed_industrial_complex_factor = 0.05 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# The Asia Express — Mantetsu's flagship high-speed line, Dairen to Hsinking
-	MAN_fyp_asia_express = {
-		icon = generic_construction
-		priority = 54
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_create_the_main_railway_administration }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 716 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 3
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.015
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			716 = {
-				add_building_construction = {
-					type = infrastructure
-					level = 2
-					instant_build = yes
-				}
-			}
-			328 = {
-				add_building_construction = {
-					type = infrastructure
-					level = 2
-					instant_build = yes
-				}
-			}
-			714 = {
-				add_building_construction = {
-					type = infrastructure
-					level = 2
-					instant_build = yes
-				}
-			}
-			add_war_support = 0.02
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_asia_express_tt
-			add_to_variable = { MAN_behemoth_production_speed_infrastructure_factor = 0.15 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp1_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp1_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# Emergency Production Quotas — repeatable, no progress, worse odds
-	MAN_fyp_emergency_quotas = {
-		icon = GFX_decision_MAN_fyp_quotas
-		priority = 50
-
-		allowed = { original_tag = MAN }
-		fire_only_once = no
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 25
-		days_remove = 90
 		days_re_enable = 120
-
-		modifier = {
-			stability_weekly = -0.002
-		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_behemoth_high_risk_tt
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_emergency_quotas_tt
-			715 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			add_to_variable = { MAN_behemoth_production_speed_buildings_factor = 0.03 }
-			add_to_variable = { MAN_behemoth_consumer_goods_factor = 0.005 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				MAN_behemoth_accident_roll_severe = yes
-			}
-		}
-
-		ai_will_do = { base = 0 }
-	}
-
-	######## Auxiliary measures (no plan progress) ########
-
-	# Kirin Aluminium Deposits
-	MAN_fyp_kirin_aluminium = {
-		icon = GFX_decision_MAN_syp_aluminum
-		priority = 45
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_foster_a_light_metal_society }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 328 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 25
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 1
-		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			add_resource = {
-				type = aluminium
-				amount = 350
-				state = 328
-			}
-		}
-
-		ai_will_do = { base = 5 }
-	}
-
-	# Chahar Ore Surveys
-	MAN_fyp_chahar_ores = {
-		icon = generic_prospect_for_resources
-		priority = 44
-
-		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_expansionofmanestucontrol }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 612 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 25
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 1
-		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			add_resource = {
-				type = tungsten
-				amount = 800
-				state = 612
-			}
-			add_resource = {
-				type = coal
-				amount = 150
-				state = 612
-			}
-		}
-
-		ai_will_do = { base = 5 }
-	}
-
-	# Oil Surveys on the Manchurian Plain — a gamble, repeatable until struck
-	MAN_fyp_oil_surveys = {
-		icon = generic_prospect_for_resources
-		priority = 42
-
-		allowed = { original_tag = MAN }
 		fire_only_once = no
-
-		visible = {
-			NOT = { has_country_flag = MAN_oil_found_flag }
-			has_completed_focus = MAN_purchase_german_liscenses
+		complete_effect = {
+			add_stability = 0.02
+			add_war_support = 0.02
+			add_to_variable = { MAN_kw_pat = 2 }
+			custom_effect_tooltip = MAN_tt_pat_2
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
-		highlight_states = {
-			highlight_state_targets = { state = 714 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 25
-		days_remove = 90
-		days_re_enable = 270
-
-		modifier = {
-			civilian_factory_use = 1
-		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_fyp_oil_surveys_tt
-			hidden_effect = {
-				random_list = {
-					20 = {
-						country_event = { id = man_behemoth.33 days = 2 }
-					}
-					80 = {
-					}
-				}
-			}
-		}
-
 		ai_will_do = { base = 3 }
 	}
-
-	# The Dairen Dockyards
-	MAN_fyp_dairen_dockyards = {
-		icon = generic_construction
-		priority = 41
-
+	MAN_pol_imperial_tour = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 91
 		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_remove_extraterritorially_privledges }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 716 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
+		visible = { check_variable = { MAN_kw_pat < 70 } }
 		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
+		fire_only_once = yes
+		days_remove = 30
+		remove_effect = {
+			add_stability = 0.05
+			add_to_variable = { MAN_kw_pat = 15 }
+			custom_effect_tooltip = MAN_tt_pat_15
+			add_power_balance_value = { id = MAN_racial_harmony value = 0.05 }
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
+		ai_will_do = { base = 2 }
+	}
+	MAN_pol_appeal_tokyo = {
+		icon = GFX_decision_generic_political_address
+		priority = 92
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_has_patron }
+		cost = 50
+		days_re_enable = 180
+		fire_only_once = no
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
+			add_to_variable = { MAN_kw_pat = 15 }
+			custom_effect_tooltip = MAN_tt_pat_15
+			hidden_effect = { MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_pol_joint_council = {
+		icon = GFX_decision_generic_political_rally
+		priority = 93
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_pf_councils }
+		cost = 40
+		days_re_enable = 180
+		fire_only_once = no
+		complete_effect = {
+			add_stability = 0.02
+			add_to_variable = { MAN_fav_gab = 8 }
+			custom_effect_tooltip = MAN_tt_fav_gab_8
+			add_to_variable = { MAN_kw_pat = -3 }
+			custom_effect_tooltip = MAN_tt_pat_m3
+			add_power_balance_value = { id = MAN_racial_harmony value = -0.05 }
+			hidden_effect = { MAN_pol_compute = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 2 }
+	}
+	MAN_pol_guidance_directive = {
+		icon = GFX_decision_generic_political_address
+		priority = 94
+		allowed = { original_tag = MAN }
+		visible = { has_country_flag = MAN_pf_guidance }
+		cost = 35
+		days_re_enable = 120
+		fire_only_once = no
+		complete_effect = {
 			add_stability = -0.01
+			add_to_variable = { MAN_fav_kw = 10 }
+			custom_effect_tooltip = MAN_tt_fav_kw_10
+			add_to_variable = { MAN_kw_pat = 5 }
+			custom_effect_tooltip = MAN_tt_pat_5
+			add_to_variable = { MAN_fav_gab = -5 }
+			custom_effect_tooltip = MAN_tt_fav_gab_m5
+			add_power_balance_value = { id = MAN_racial_harmony value = 0.04 }
+			hidden_effect = { MAN_pol_compute = yes MAN_ui_refresh = yes }
 		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			# 716 (Liaotung/Dairen) is Manchukuo's only coastal state, so all
-			# dockyards go here.
-			716 = {
-				add_extra_state_shared_building_slots = 9
-				add_building_construction = {
-					type = dockyard
-					level = 8
-					instant_build = yes
-				}
-			}
-			navy_experience = 75
-			hidden_effect = {
-				MAN_behemoth_accident_roll = yes
-			}
-		}
-
-		ai_will_do = { base = 5 }
+		ai_will_do = { base = 3 }
 	}
-
-	# Japanese Settler Workforce
-	MAN_fyp_settler_workforce = {
-		icon = generic_civil_support
-		priority = 40
-
+	MAN_req_kw_a = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
 		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_create_new_worker_ethos }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 35
-		days_remove = 90
-
+		activation = { has_country_flag = MAN_req_kw_a }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_kw check_variable = { MAN_bandit_avg < MAN_req_kw_t } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_kw_a } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.10
+			clr_country_flag = MAN_req_kw_a
+			MAN_req_success_kw = yes
 		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_fyp_settler_workforce_tt
-			add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.075 }
-			add_to_variable = { MAN_behemoth_recruitable_population_factor = 0.035 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-			}
+		timeout_effect = {
+			clr_country_flag = MAN_req_kw_a
+			MAN_req_fail_kw = yes
 		}
-
-		ai_will_do = { base = 5 }
+		ai_will_do = { base = 1 }
 	}
-
-	# The Mantetsu Research Unit
-	MAN_fyp_mantetsu_research = {
-		icon = GFX_decision_SOV_academy_of_sciences
-		priority = 39
-
+	MAN_req_kw_b = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
 		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_manetsu_research_department }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 25
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-			consumer_goods_expected_value = 0.01
+		activation = { has_country_flag = MAN_req_kw_b }
+		available = { has_equipment = { infantry_equipment > 1499 } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_kw_b } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_kw_b
+			send_equipment = { equipment = infantry_equipment amount = 1500 target = JAP }
+			MAN_req_success_kw = yes
 		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			add_research_slot = 1
+		timeout_effect = {
+			clr_country_flag = MAN_req_kw_b
+			MAN_req_fail_kw = yes
 		}
-
-		ai_will_do = { base = 15 }
+		ai_will_do = { base = 1 }
 	}
-
-	# Industrial Studies Commission
-	MAN_fyp_industrial_studies = {
-		icon = generic_research
-		priority = 38
-
+	MAN_req_gab_a = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
 		allowed = { original_tag = MAN }
-		visible = { has_completed_focus = MAN_manetsu_research_department }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 35
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
+		activation = { has_country_flag = MAN_req_gab_a }
+		available = { has_political_power > 119.99 }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_gab_a } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_gab_a
+			add_political_power = -80
+			MAN_req_success_gab = yes
 		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			add_tech_bonus = {
-				bonus = 0.5
-				uses = 1
-				category = industry
-				name = MAN_fyp_industrial_studies
-			}
+		timeout_effect = {
+			clr_country_flag = MAN_req_gab_a
+			MAN_req_fail_gab = yes
 		}
-
-		ai_will_do = { base = 8 }
+		ai_will_do = { base = 1 }
 	}
-
+	MAN_req_gab_b = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_gab_b }
+		available = { has_stability > 0.6 }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_gab_b } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_gab_b
+			MAN_req_success_gab = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_gab_b
+			MAN_req_fail_gab = yes
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_req_ind_a = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_ind_a }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_ind_a check_variable = { MAN_pct_steel > MAN_req_ind_t } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_ind_a } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_ind_a
+			MAN_req_success_ind = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_ind_a
+			MAN_req_fail_ind = yes
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_req_ind_b = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_ind_b }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_ind_b check_variable = { MAN_zones_used > MAN_req_ind_m } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_ind_b } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_ind_b
+			MAN_req_success_ind = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_ind_b
+			MAN_req_fail_ind = yes
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_req_mgy_a = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_mgy_a }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_mgy_a check_variable = { MAN_pct_mach > MAN_req_mgy_t } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_mgy_a } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_mgy_a
+			MAN_req_success_mgy = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_mgy_a
+			MAN_req_fail_mgy = yes
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_req_mgy_b = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_mgy_b }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_mgy_b check_variable = { MAN_proj_done > MAN_req_mgy_m } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_mgy_b } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_mgy_b
+			MAN_req_success_mgy = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_mgy_b
+			MAN_req_fail_mgy = yes
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_req_smr_a = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_smr_a }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_smr_a check_variable = { MAN_rail_built > MAN_req_smr_m } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_smr_a } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_smr_a
+			MAN_req_success_smr = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_smr_a
+			MAN_req_fail_smr = yes
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_req_smr_b = {
+		icon = GFX_decision_generic_political_discourse
+		priority = 250
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_req_smr_b }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_req_smr_b check_variable = { MAN_pct_coal > MAN_req_smr_t } } }
+		cancel_trigger = { NOT = { has_country_flag = MAN_req_smr_b } }
+		days_mission_timeout = 150
+		fire_only_once = no
+		is_good = yes
+		complete_effect = {
+			clr_country_flag = MAN_req_smr_b
+			MAN_req_success_smr = yes
+		}
+		timeout_effect = {
+			clr_country_flag = MAN_req_smr_b
+			MAN_req_fail_smr = yes
+		}
+		ai_will_do = { base = 1 }
+	}
 }
 
-######## THE SECOND FIVE-YEAR PLAN (1942 historical) ########
-
-MAN_second_five_year_plan_cat = {
-
-	# Read-only progress tracker - see MAN_fyp1_status_0 above for how this works.
-	MAN_fyp2_status_0 = {
-		icon = generic_construction
-		priority = 999
+MAN_security_cat = {
+	MAN_sec_sweep = {
+		icon = GFX_decision_generic_army_support
+		priority = 100
 		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp2_progress = 0 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp2_status_20 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp2_progress = 20 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp2_status_40 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp2_progress = 40 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp2_status_60 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp2_progress = 60 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp2_status_80 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp2_progress = 80 } }
-		available = { always = no }
-		cost = 0
-	}
-	MAN_fyp2_status_100 = {
-		icon = generic_construction
-		priority = 999
-		allowed = { original_tag = MAN }
-		visible = { check_variable = { MAN_fyp2_progress > 99 } }
-		available = { always = no }
-		cost = 0
-	}
-
-	# Expand the Showa Steel Works
-	MAN_syp_anshan_expansion = {
-		icon = GFX_decision_MAN_fyp_showa_steel
-		priority = 60
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 715 }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT check_variable = { MAN_bandit > 9.99 } } }
+		on_map_mode = map_and_decisions_view
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = MAN_sweep_troops_tt
+				OR = { AND = { FROM = { state = 716 } divisions_in_state = { state = 716 size > 1 } } AND = { FROM = { state = 715 } divisions_in_state = { state = 715 size > 1 } } AND = { FROM = { state = 328 } divisions_in_state = { state = 328 size > 1 } } AND = { FROM = { state = 717 } divisions_in_state = { state = 717 size > 1 } } AND = { FROM = { state = 714 } divisions_in_state = { state = 714 size > 1 } } AND = { FROM = { state = 761 } divisions_in_state = { state = 761 size > 1 } } AND = { FROM = { state = 610 } divisions_in_state = { state = 610 size > 1 } } AND = { FROM = { state = 611 } divisions_in_state = { state = 611 size > 1 } } AND = { FROM = { state = 612 } divisions_in_state = { state = 612 size > 1 } } AND = { FROM = { state = 1043 } divisions_in_state = { state = 1043 size > 1 } } }
+			}
 		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 3
-		}
-
+		custom_cost_trigger = { has_political_power > 9.99 command_power > 14.99 }
+		custom_cost_text = MAN_cc_10_0_15
+		fire_only_once = no
+		days_remove = 30
+		days_re_enable = 60
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.015
+			add_political_power = -10
+			add_command_power = -15
 		}
-
 		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_syp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			715 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = {
-					type = arms_factory
-					level = 1
-					instant_build = yes
-				}
-				add_building_construction = {
-					type = industrial_complex
-					level = 1
-					instant_build = yes
-				}
+			custom_effect_tooltip = MAN_tt_sweep
+			set_temp_variable = { MAN_s = MAN_fav_kw }
+			divide_temp_variable = { MAN_s = 10 }
+			add_to_temp_variable = { MAN_s = 10 }
+			if = { limit = { FROM = { has_state_flag = MAN_informants } } multiply_temp_variable = { MAN_s = 1.5 } }
+			FROM = {
+				subtract_from_variable = { MAN_bandit = MAN_s }
+				clamp_variable = { var = MAN_bandit min = 0 max = 100 }
 			}
-			add_resource = {
-				type = steel
-				amount = 15
-				state = 715
+			if = { limit = { FROM = { OR = { state = 715 state = 328 } } check_variable = { MAN_band1 > 0 } } subtract_from_variable = { MAN_band1 = 6 } }
+			if = { limit = { FROM = { OR = { state = 717 state = 328 } } check_variable = { MAN_band2 > 0 } } subtract_from_variable = { MAN_band2 = 6 } }
+			if = { limit = { FROM = { OR = { state = 714 state = 717 } } check_variable = { MAN_band3 > 0 } } subtract_from_variable = { MAN_band3 = 6 } }
+			add_stability = -0.005
+			army_experience = 1
+			random_list = {
+				70 = { }
+				30 = { FROM = { set_state_flag = { flag = MAN_grievance days = 120 } } custom_effect_tooltip = MAN_tt_reprisal }
 			}
-			hidden_effect = {
-				add_to_variable = { MAN_fyp2_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp2_completion_check = yes
-			}
+			hidden_effect = { MAN_sec_refresh = yes MAN_ui_refresh = yes }
 		}
-
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = 2
+			modifier = { FROM = { check_variable = { MAN_bandit > 40 } } add = 15 }
+		}
 	}
-
-	# Dowa Tank Plant
-	MAN_syp_dowa_tank = {
-		icon = generic_tank
-		priority = 59
-
+	MAN_sec_hamlets = {
+		icon = oppression
+		priority = 99
 		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 328 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
+		visible = { has_completed_focus = MAN_sec_collective_hamlets }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT NOT = { has_state_flag = MAN_hamlets } check_variable = { MAN_bandit > 19.99 } } }
+		on_map_mode = map_and_decisions_view
+		custom_cost_trigger = { has_political_power > 39.99 check_variable = { MAN_labour > 9.99 } }
+		custom_cost_text = MAN_cc_40_10_0
+		fire_only_once = no
+		days_remove = 120
+		modifier = { civilian_factory_use = 1 }
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.015
+			add_political_power = -40
+			subtract_from_variable = { MAN_labour = 10 }
 		}
-
 		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_syp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			328 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = arms_factory
-					level = 1
-					instant_build = yes
-				}
+			FROM = {
+				set_state_flag = MAN_hamlets
+				add_dynamic_modifier = { modifier = MAN_hamlets_dm }
+				subtract_from_variable = { MAN_bandit = 15 }
+				clamp_variable = { var = MAN_bandit min = 0 max = 100 }
 			}
-			army_experience = 15
-			hidden_effect = {
-				add_to_variable = { MAN_fyp2_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp2_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# The Manchurian Light Metals Society
-	MAN_syp_light_metals = {
-		icon = GFX_decision_MAN_syp_aluminum
-		priority = 58
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 716 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.01
-		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_syp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			716 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = industrial_complex
-					level = 1
-					instant_build = yes
-				}
-			}
-			add_resource = {
-				type = aluminium
-				amount = 20
-				state = 716
-			}
-			hidden_effect = {
-				add_to_variable = { MAN_fyp2_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp2_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
-	# Massive Increase in Steel Rolling
-	MAN_syp_steel_rolling = {
-		icon = steel
-		priority = 57
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
+			custom_effect_tooltip = MAN_tt_hamlets
+			if = { limit = { FROM = { OR = { state = 715 state = 328 } } check_variable = { MAN_band1 > 0 } } subtract_from_variable = { MAN_band1 = 10 } }
+			if = { limit = { FROM = { OR = { state = 717 state = 328 } } check_variable = { MAN_band2 > 0 } } subtract_from_variable = { MAN_band2 = 10 } }
+			if = { limit = { FROM = { OR = { state = 714 state = 717 } } check_variable = { MAN_band3 > 0 } } subtract_from_variable = { MAN_band3 = 10 } }
 			add_stability = -0.02
+			hidden_effect = { MAN_sec_refresh = yes MAN_ui_refresh = yes }
 		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_syp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_syp_steel_rolling_tt
-			add_to_variable = { MAN_behemoth_industrial_capacity_factory = 0.03 }
-			add_to_variable = { MAN_behemoth_production_factory_max_efficiency_factor = 0.02 }
-			add_to_variable = { MAN_behemoth_consumer_goods_factor = 0.005 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp2_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp2_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
+		ai_will_do = { base = 2 modifier = { FROM = { check_variable = { MAN_bandit > 50 } } add = 8 } }
 	}
-
-	# Expand the Manchuria Aeroplane Manufacturing Company
-	MAN_syp_expand_mamc = {
-		icon = GFX_decision_MAN_fyp_mamc
-		priority = 56
-
+	MAN_sec_blockhouses = {
+		icon = GFX_decision_generic_fortification
+		priority = 98
 		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 714 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
+		visible = { has_completed_focus = MAN_sec_blockhouses }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT NOT = { has_state_flag = MAN_blockhouses } } }
+		on_map_mode = map_and_decisions_view
+		custom_cost_trigger = { has_political_power > 29.99 check_variable = { MAN_labour > 9.99 } }
+		custom_cost_text = MAN_cc_30_10_0
+		fire_only_once = no
+		days_remove = 60
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.01
+			add_political_power = -30
+			subtract_from_variable = { MAN_labour = 10 }
 		}
-
 		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_syp_progress_20_tt
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			714 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = arms_factory
-					level = 1
-					instant_build = yes
-				}
-			}
-			air_experience = 15
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_syp_expand_mamc_tt
-			add_to_variable = { MAN_behemoth_production_speed_arms_factory_factor = 0.05 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp2_progress = 20 }
-				MAN_behemoth_accident_roll = yes
-				MAN_fyp2_completion_check = yes
-			}
+			FROM = { set_state_flag = MAN_blockhouses }
+			custom_effect_tooltip = MAN_tt_blockhouses
+			hidden_effect = { MAN_sec_refresh = yes MAN_ui_refresh = yes }
 		}
-
-		ai_will_do = { base = 10 }
+		ai_will_do = { base = 4 }
 	}
-
-	######## Auxiliary measures (no plan progress) ########
-
-	# Double-Track the Mantetsu Mainline
-	MAN_syp_mantetsu_mainline = {
-		icon = generic_construction
-		priority = 45
-
+	MAN_sec_informants = {
+		icon = GFX_decision_generic_police_action
+		priority = 97
 		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 3
-		}
-
+		visible = { has_completed_focus = MAN_sec_kempeitai }
+		state_target = yes
+		targets = { 716 715 328 717 714 761 610 611 612 1043 }
+		target_trigger = { FROM = { is_owned_and_controlled_by = ROOT NOT = { has_state_flag = MAN_informants } } }
+		on_map_mode = map_and_decisions_view
+		cost = 20
+		fire_only_once = no
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.025
+			FROM = { set_state_flag = { flag = MAN_informants days = 180 } }
+			custom_effect_tooltip = MAN_tt_informants
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_behemoth_risk_tt
-			714 = {
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = industrial_complex
-					level = 3
-					instant_build = yes
-				}
-			}
-			hidden_effect = {
-				MAN_behemoth_accident_roll = yes
-			}
-		}
-
-		ai_will_do = { base = 8 }
+		ai_will_do = { base = 3 }
 	}
-
-	# The Manchurian Powder Company — explosives are dangerous work
-	MAN_syp_powder_company = {
-		icon = generic_factory
-		priority = 44
-
+	MAN_sec_surrender_1 = {
+		icon = GFX_decision_generic_civil_support
+		priority = 89
 		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_sec_surrender check_variable = { MAN_band1 > 0 } NOT = { has_country_flag = MAN_band1_exile } }
+		highlight_states = { highlight_state_targets = { state = 715 } }
+		cost = 40
+		days_remove = 45
+		days_re_enable = 90
+		fire_only_once = no
+		remove_effect = {
+			subtract_from_variable = { MAN_band1 = 12 }
+			custom_effect_tooltip = MAN_tt_band1_m12
+			add_to_variable = { MAN_labour = 5 }
+			custom_effect_tooltip = MAN_tt_labour_5
+			add_manpower = 2000
+			715 = { subtract_from_variable = { MAN_bandit = 5 } clamp_variable = { var = MAN_bandit min = 0 max = 100 } }
+			hidden_effect = { MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 3 }
+	}
+	MAN_sec_surrender_2 = {
+		icon = GFX_decision_generic_civil_support
+		priority = 88
+		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_sec_surrender check_variable = { MAN_band2 > 0 } NOT = { has_country_flag = MAN_band2_exile } }
+		highlight_states = { highlight_state_targets = { state = 717 } }
+		cost = 40
+		days_remove = 45
+		days_re_enable = 90
+		fire_only_once = no
+		remove_effect = {
+			subtract_from_variable = { MAN_band2 = 12 }
+			custom_effect_tooltip = MAN_tt_band2_m12
+			add_to_variable = { MAN_labour = 5 }
+			custom_effect_tooltip = MAN_tt_labour_5
+			add_manpower = 2000
+			717 = { subtract_from_variable = { MAN_bandit = 5 } clamp_variable = { var = MAN_bandit min = 0 max = 100 } }
+			hidden_effect = { MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 3 }
+	}
+	MAN_sec_surrender_3 = {
+		icon = GFX_decision_generic_civil_support
+		priority = 87
+		allowed = { original_tag = MAN }
+		visible = { has_completed_focus = MAN_sec_surrender check_variable = { MAN_band3 > 0 } NOT = { has_country_flag = MAN_band3_exile } }
+		highlight_states = { highlight_state_targets = { state = 714 } }
+		cost = 40
+		days_remove = 45
+		days_re_enable = 90
+		fire_only_once = no
+		remove_effect = {
+			subtract_from_variable = { MAN_band3 = 12 }
+			custom_effect_tooltip = MAN_tt_band3_m12
+			add_to_variable = { MAN_labour = 5 }
+			custom_effect_tooltip = MAN_tt_labour_5
+			add_manpower = 2000
+			714 = { subtract_from_variable = { MAN_bandit = 5 } clamp_variable = { var = MAN_bandit min = 0 max = 100 } }
+			hidden_effect = { MAN_sec_refresh = yes MAN_ui_refresh = yes }
+		}
+		ai_will_do = { base = 3 }
+	}
+	MAN_sec_three_year = {
+		icon = GFX_decision_generic_police_action
+		priority = 280
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_sec_plan_active }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_bandit25 check_variable = { MAN_bandit_avg < 25 } } }
+		days_mission_timeout = 1095
 		fire_only_once = yes
-
-		highlight_states = {
-			highlight_state_targets = { state = 715 }
-		}
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 35
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
+		is_good = yes
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.05
+			add_stability = 0.05
+			add_to_variable = { MAN_kw_pat = 15 }
+			custom_effect_tooltip = MAN_tt_pat_15
+			add_to_variable = { MAN_fav_kw = 15 }
+			custom_effect_tooltip = MAN_tt_fav_kw_15
+			add_political_power = 100
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_behemoth_high_risk_tt
-			715 = {
-				add_extra_state_shared_building_slots = 6
-				add_building_construction = {
-					type = industrial_complex
-					level = 3
-					instant_build = yes
-				}
-				add_building_construction = {
-					type = arms_factory
-					level = 2
-					instant_build = yes
-				}
-			}
-			hidden_effect = {
-				MAN_behemoth_accident_roll_severe = yes
-			}
+		timeout_effect = {
+			add_to_variable = { MAN_kw_pat = -20 }
+			custom_effect_tooltip = MAN_tt_pat_m20
+			add_to_variable = { MAN_fav_kw = -15 }
+			custom_effect_tooltip = MAN_tt_fav_kw_m15
+			add_stability = -0.03
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
-		ai_will_do = { base = 8 }
+		ai_will_do = { base = 1 }
 	}
-
-	# Aviation Research Programme
-	MAN_syp_aviation_research = {
-		icon = GFX_decision_MAN_fyp_mamc
-		priority = 43
-
+	MAN_sec_nozoe = {
+		icon = GFX_decision_generic_army_support
+		priority = 270
 		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_nozoe_active }
+		available = { custom_trigger_tooltip = { tooltip = MAN_trg_band1 check_variable = { MAN_band1 < 0.01 } } }
+		days_mission_timeout = 365
 		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 35
-		days_remove = 90
-
-		modifier = {
-			civilian_factory_use = 2
-		}
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			air_experience = 100
-			add_equipment_to_stockpile = {
-				type = cas_equipment_1
-				amount = 300
-				producer = MAN
-			}
-		}
-
-		ai_will_do = { base = 8 }
-	}
-
-	# Mass Labor Conscription — the behemoth devours its builders
-	MAN_syp_mass_labor = {
-		icon = GFX_decision_MAN_fyp_quotas
-		priority = 42
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
+		is_good = yes
 		complete_effect = {
-			add_to_variable = { MAN_fyp_active_slots = 1 }
-			add_stability = -0.15
+			clr_country_flag = MAN_nozoe_active
+			add_to_variable = { MAN_kw_pat = 20 }
+			custom_effect_tooltip = MAN_tt_pat_20
+			add_to_variable = { MAN_fav_kw = 15 }
+			custom_effect_tooltip = MAN_tt_fav_kw_15
+			army_experience = 20
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_behemoth_high_risk_tt
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_syp_mass_labor_tt
-			add_to_variable = { MAN_behemoth_production_speed_buildings_factor = 0.15 }
-			add_to_variable = { MAN_behemoth_consumer_goods_factor = -0.05 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				MAN_behemoth_accident_roll_severe = yes
-			}
+		timeout_effect = {
+			clr_country_flag = MAN_nozoe_active
+			add_to_variable = { MAN_kw_pat = -8 }
+			custom_effect_tooltip = MAN_tt_pat_m8
+			hidden_effect = { MAN_ui_refresh = yes }
 		}
-
-		ai_will_do = { base = 5 }
+		ai_will_do = { base = 1 }
 	}
-
-	# Focus on Agriculture — the relief valve, no accident risk
-	MAN_syp_agriculture = {
-		icon = GFX_decision_MAN_syp_agriculture
-		priority = 55
-
-		allowed = { original_tag = MAN }
-		fire_only_once = yes
-
-		available = { check_variable = { MAN_fyp_active_slots < 2 } }
-		cost = 50
-		days_remove = 90
-
-		complete_effect = { add_to_variable = { MAN_fyp_active_slots = 1 } }
-		remove_effect = {
-			add_to_variable = { MAN_fyp_active_slots = -1 }
-			custom_effect_tooltip = MAN_syp_progress_20_tt
-			add_stability = 0.02
-			custom_effect_tooltip = MAN_eco_spirit_changed_tt
-			custom_effect_tooltip = MAN_syp_agriculture_tt
-			add_to_variable = { MAN_behemoth_consumer_goods_factor = -0.005 }
-			add_to_variable = { MAN_behemoth_stability_factor = 0.01 }
-			hidden_effect = {
-				force_update_dynamic_modifier = yes
-				add_to_variable = { MAN_fyp2_progress = 20 }
-				MAN_fyp2_completion_check = yes
-			}
-		}
-
-		ai_will_do = { base = 10 }
-	}
-
 }
