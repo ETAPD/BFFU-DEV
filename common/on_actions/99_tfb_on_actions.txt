@@ -234,6 +234,10 @@ on_actions = {
 			set_global_flag = game_has_started
 		}
 		effect = {
+			# Demand the Sudetenland starts on 1938.3.1 (game starts 1936.1.1: 366 + 365 + 31 + 28 days)
+			GER = { country_event = { id = germany.2110 days = 790 } }
+		}
+		effect = {
 			every_country = { TFB_join_trade_bloc = yes }
 		}
 		effect = {
@@ -2344,6 +2348,22 @@ on_actions = {
 					NOT = { has_military_access_to = FROM }
 				}
 				FROM = { give_military_access = ROOT }
+			}
+		}
+	}
+
+	# Cash and Carry: the market closes when the USA enters a war; unsold lots return to the US stockpile
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = {
+					OR = {
+						ROOT = { tag = USA }
+						FROM = { tag = USA }
+					}
+					USA = { has_country_flag = USA_cash_and_carry_active }
+				}
+				USA = { USA_cnc_refund_all = yes }
 			}
 		}
 	}
