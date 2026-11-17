@@ -629,6 +629,9 @@ NDefines.NNavy.MIN_SPOTTING_PROGRESS = 0.1								-- Minimum spotting progress (
 NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SURFACE = 0.6							-- task force surface spotting value is multiplied by this and added to spotting percentage every hour
 NDefines.NNavy.SPOTTING_ENEMY_SPOTTING_MULTIPLIER_FOR_RUNNING_AWAY = 0.5		-- enemy spotting is multiplied by this value to simulate running away
 NDefines.NNavy.NAVY_VISIBILITY_BONUS_ON_RETURN_FOR_REPAIR = 0.5				-- Multiplier for the surface/sub visiblity when the heavily damaged fleet is returning to the home base for reparation. 1.0 = no bonus. 0.0 = invisible
+NDefines.NNavy.NAVY_REPAIR_BASE_SEARCH_SCORE_PER_SHIP_WAITING_EXTRA_SHIP = 500  -- if a naval base has more ships than it can repair, it will get penalties
+NDefines.NNavy.NAVY_REPAIR_BASE_SEARCH_SCORE_PER_SLOT = 500					-- while searching for a naval base for repairs, the bases gets a bonus to their scores per empty slot they have
+NDefines.NNavy.NAVAL_TRANSFER_BASE_SPEED = 12                                  -- base speed of units on water being transported
 NDefines.NNavy.SPOTTING_MULTIPLIER_FOR_SUB = 2.0
 
 NDefines.NNavy.COMBAT_DAMAGE_RANDOMNESS = 0.30								-- random factor in damage. So if max damage is fe. 10 and randomness is 30% then damage will be between 7-10.

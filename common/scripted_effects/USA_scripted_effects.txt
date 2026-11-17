@@ -332,3 +332,2164 @@ USA_cnc_pay_from_pool = {
 }
 
 
+#####################################################################
+# Cash and Carry — lots keep the exact equipment models the USA stocked.
+# global.cnc_inv_<model> holds the units of each model on the market;
+# global.cnc_inv_<archetype>_any holds units of models not listed here.
+# All take temp variable cnc_need (units). Models move oldest first.
+#####################################################################
+
+# USA scope: move cnc_need infantry_equipment from our stockpile onto the market
+USA_cnc_stock_infantry_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@infantry_equipment_0 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment_0 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_infantry_equipment_0 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@infantry_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_infantry_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@infantry_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_infantry_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@infantry_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_infantry_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@infantry_equipment_4 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = infantry_equipment_4 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_infantry_equipment_4 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_infantry_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need infantry_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_infantry_equipment = {
+	set_temp_variable = { cnc_got_infantry_equipment_0 = global.cnc_inv_infantry_equipment_0 }
+	clamp_temp_variable = { var = cnc_got_infantry_equipment_0 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_infantry_equipment_0 = cnc_got_infantry_equipment_0 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_infantry_equipment_0 }
+	set_temp_variable = { cnc_got_infantry_equipment_1 = global.cnc_inv_infantry_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_infantry_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_infantry_equipment_1 = cnc_got_infantry_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_infantry_equipment_1 }
+	set_temp_variable = { cnc_got_infantry_equipment_2 = global.cnc_inv_infantry_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_infantry_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_infantry_equipment_2 = cnc_got_infantry_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_infantry_equipment_2 }
+	set_temp_variable = { cnc_got_infantry_equipment_3 = global.cnc_inv_infantry_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_infantry_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_infantry_equipment_3 = cnc_got_infantry_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_infantry_equipment_3 }
+	set_temp_variable = { cnc_got_infantry_equipment_4 = global.cnc_inv_infantry_equipment_4 }
+	clamp_temp_variable = { var = cnc_got_infantry_equipment_4 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_infantry_equipment_4 = cnc_got_infantry_equipment_4 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_infantry_equipment_4 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_infantry_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_infantry_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_infantry_equipment_any = cnc_got_infantry_equipment_any }
+	clamp_variable = { var = global.cnc_inv_infantry_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need infantry_equipment from the market for delivery
+USA_cnc_reserve_infantry_equipment = {
+	USA_cnc_pull_infantry_equipment = yes
+	add_to_variable = { cnc_dlv_infantry_equipment_0 = cnc_got_infantry_equipment_0 }
+	add_to_variable = { cnc_dlv_infantry_equipment_1 = cnc_got_infantry_equipment_1 }
+	add_to_variable = { cnc_dlv_infantry_equipment_2 = cnc_got_infantry_equipment_2 }
+	add_to_variable = { cnc_dlv_infantry_equipment_3 = cnc_got_infantry_equipment_3 }
+	add_to_variable = { cnc_dlv_infantry_equipment_4 = cnc_got_infantry_equipment_4 }
+	add_to_variable = { cnc_dlv_infantry_equipment_any = cnc_got_infantry_equipment_any }
+}
+
+# Buyer scope: deliver the reserved infantry_equipment as American-built models
+USA_cnc_deliver_infantry_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_infantry_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_0 amount = cnc_dlv_infantry_equipment_0 producer = USA }
+	}
+	clear_variable = cnc_dlv_infantry_equipment_0
+	if = {
+		limit = { check_variable = { cnc_dlv_infantry_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_1 amount = cnc_dlv_infantry_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_infantry_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_infantry_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_2 amount = cnc_dlv_infantry_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_infantry_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_infantry_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_3 amount = cnc_dlv_infantry_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_infantry_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_infantry_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_4 amount = cnc_dlv_infantry_equipment_4 producer = USA }
+	}
+	clear_variable = cnc_dlv_infantry_equipment_4
+	if = {
+		limit = { check_variable = { cnc_dlv_infantry_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = cnc_dlv_infantry_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_infantry_equipment_any
+}
+
+# USA scope: return cnc_need infantry_equipment from the market to our stockpile
+USA_cnc_return_infantry_equipment = {
+	USA_cnc_pull_infantry_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_infantry_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_0 amount = cnc_got_infantry_equipment_0 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_infantry_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_1 amount = cnc_got_infantry_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_infantry_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_2 amount = cnc_got_infantry_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_infantry_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_3 amount = cnc_got_infantry_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_infantry_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment_4 amount = cnc_got_infantry_equipment_4 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_infantry_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = infantry_equipment amount = cnc_got_infantry_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need squad_equipment from our stockpile onto the market
+USA_cnc_stock_squad_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@squad_equipment_0 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = squad_equipment_0 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_squad_equipment_0 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@squad_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = squad_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_squad_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@squad_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = squad_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_squad_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@squad_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = squad_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_squad_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = squad_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_squad_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need squad_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_squad_equipment = {
+	set_temp_variable = { cnc_got_squad_equipment_0 = global.cnc_inv_squad_equipment_0 }
+	clamp_temp_variable = { var = cnc_got_squad_equipment_0 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_squad_equipment_0 = cnc_got_squad_equipment_0 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_squad_equipment_0 }
+	set_temp_variable = { cnc_got_squad_equipment_1 = global.cnc_inv_squad_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_squad_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_squad_equipment_1 = cnc_got_squad_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_squad_equipment_1 }
+	set_temp_variable = { cnc_got_squad_equipment_2 = global.cnc_inv_squad_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_squad_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_squad_equipment_2 = cnc_got_squad_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_squad_equipment_2 }
+	set_temp_variable = { cnc_got_squad_equipment_3 = global.cnc_inv_squad_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_squad_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_squad_equipment_3 = cnc_got_squad_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_squad_equipment_3 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_squad_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_squad_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_squad_equipment_any = cnc_got_squad_equipment_any }
+	clamp_variable = { var = global.cnc_inv_squad_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need squad_equipment from the market for delivery
+USA_cnc_reserve_squad_equipment = {
+	USA_cnc_pull_squad_equipment = yes
+	add_to_variable = { cnc_dlv_squad_equipment_0 = cnc_got_squad_equipment_0 }
+	add_to_variable = { cnc_dlv_squad_equipment_1 = cnc_got_squad_equipment_1 }
+	add_to_variable = { cnc_dlv_squad_equipment_2 = cnc_got_squad_equipment_2 }
+	add_to_variable = { cnc_dlv_squad_equipment_3 = cnc_got_squad_equipment_3 }
+	add_to_variable = { cnc_dlv_squad_equipment_any = cnc_got_squad_equipment_any }
+}
+
+# Buyer scope: deliver the reserved squad_equipment as American-built models
+USA_cnc_deliver_squad_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_squad_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_0 amount = cnc_dlv_squad_equipment_0 producer = USA }
+	}
+	clear_variable = cnc_dlv_squad_equipment_0
+	if = {
+		limit = { check_variable = { cnc_dlv_squad_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_1 amount = cnc_dlv_squad_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_squad_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_squad_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_2 amount = cnc_dlv_squad_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_squad_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_squad_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_3 amount = cnc_dlv_squad_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_squad_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_squad_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment amount = cnc_dlv_squad_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_squad_equipment_any
+}
+
+# USA scope: return cnc_need squad_equipment from the market to our stockpile
+USA_cnc_return_squad_equipment = {
+	USA_cnc_pull_squad_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_squad_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_0 amount = cnc_got_squad_equipment_0 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_squad_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_1 amount = cnc_got_squad_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_squad_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_2 amount = cnc_got_squad_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_squad_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment_3 amount = cnc_got_squad_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_squad_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = squad_equipment amount = cnc_got_squad_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need support_equipment from our stockpile onto the market
+USA_cnc_stock_support_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@support_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_support_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = support_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_support_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need support_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_support_equipment = {
+	set_temp_variable = { cnc_got_support_equipment_1 = global.cnc_inv_support_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_support_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_support_equipment_1 = cnc_got_support_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_support_equipment_1 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_support_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_support_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_support_equipment_any = cnc_got_support_equipment_any }
+	clamp_variable = { var = global.cnc_inv_support_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need support_equipment from the market for delivery
+USA_cnc_reserve_support_equipment = {
+	USA_cnc_pull_support_equipment = yes
+	add_to_variable = { cnc_dlv_support_equipment_1 = cnc_got_support_equipment_1 }
+	add_to_variable = { cnc_dlv_support_equipment_any = cnc_got_support_equipment_any }
+}
+
+# Buyer scope: deliver the reserved support_equipment as American-built models
+USA_cnc_deliver_support_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_support_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = cnc_dlv_support_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_support_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_support_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = support_equipment amount = cnc_dlv_support_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_support_equipment_any
+}
+
+# USA scope: return cnc_need support_equipment from the market to our stockpile
+USA_cnc_return_support_equipment = {
+	USA_cnc_pull_support_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_support_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = cnc_got_support_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_support_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = support_equipment amount = cnc_got_support_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need radio_equipment from our stockpile onto the market
+USA_cnc_stock_radio_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@radio_equipment_0 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = radio_equipment_0 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_radio_equipment_0 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@radio_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = radio_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_radio_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@radio_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = radio_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_radio_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@radio_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = radio_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_radio_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = radio_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_radio_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need radio_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_radio_equipment = {
+	set_temp_variable = { cnc_got_radio_equipment_0 = global.cnc_inv_radio_equipment_0 }
+	clamp_temp_variable = { var = cnc_got_radio_equipment_0 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_radio_equipment_0 = cnc_got_radio_equipment_0 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_radio_equipment_0 }
+	set_temp_variable = { cnc_got_radio_equipment_1 = global.cnc_inv_radio_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_radio_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_radio_equipment_1 = cnc_got_radio_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_radio_equipment_1 }
+	set_temp_variable = { cnc_got_radio_equipment_2 = global.cnc_inv_radio_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_radio_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_radio_equipment_2 = cnc_got_radio_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_radio_equipment_2 }
+	set_temp_variable = { cnc_got_radio_equipment_3 = global.cnc_inv_radio_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_radio_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_radio_equipment_3 = cnc_got_radio_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_radio_equipment_3 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_radio_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_radio_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_radio_equipment_any = cnc_got_radio_equipment_any }
+	clamp_variable = { var = global.cnc_inv_radio_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need radio_equipment from the market for delivery
+USA_cnc_reserve_radio_equipment = {
+	USA_cnc_pull_radio_equipment = yes
+	add_to_variable = { cnc_dlv_radio_equipment_0 = cnc_got_radio_equipment_0 }
+	add_to_variable = { cnc_dlv_radio_equipment_1 = cnc_got_radio_equipment_1 }
+	add_to_variable = { cnc_dlv_radio_equipment_2 = cnc_got_radio_equipment_2 }
+	add_to_variable = { cnc_dlv_radio_equipment_3 = cnc_got_radio_equipment_3 }
+	add_to_variable = { cnc_dlv_radio_equipment_any = cnc_got_radio_equipment_any }
+}
+
+# Buyer scope: deliver the reserved radio_equipment as American-built models
+USA_cnc_deliver_radio_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_radio_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_0 amount = cnc_dlv_radio_equipment_0 producer = USA }
+	}
+	clear_variable = cnc_dlv_radio_equipment_0
+	if = {
+		limit = { check_variable = { cnc_dlv_radio_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_1 amount = cnc_dlv_radio_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_radio_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_radio_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_2 amount = cnc_dlv_radio_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_radio_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_radio_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_3 amount = cnc_dlv_radio_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_radio_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_radio_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment amount = cnc_dlv_radio_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_radio_equipment_any
+}
+
+# USA scope: return cnc_need radio_equipment from the market to our stockpile
+USA_cnc_return_radio_equipment = {
+	USA_cnc_pull_radio_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_radio_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_0 amount = cnc_got_radio_equipment_0 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_radio_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_1 amount = cnc_got_radio_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_radio_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_2 amount = cnc_got_radio_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_radio_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment_3 amount = cnc_got_radio_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_radio_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = radio_equipment amount = cnc_got_radio_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need sf_equipment from our stockpile onto the market
+USA_cnc_stock_sf_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@sf_equipment_0 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = sf_equipment_0 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_sf_equipment_0 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = sf_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_sf_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need sf_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_sf_equipment = {
+	set_temp_variable = { cnc_got_sf_equipment_0 = global.cnc_inv_sf_equipment_0 }
+	clamp_temp_variable = { var = cnc_got_sf_equipment_0 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_sf_equipment_0 = cnc_got_sf_equipment_0 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_sf_equipment_0 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_sf_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_sf_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_sf_equipment_any = cnc_got_sf_equipment_any }
+	clamp_variable = { var = global.cnc_inv_sf_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need sf_equipment from the market for delivery
+USA_cnc_reserve_sf_equipment = {
+	USA_cnc_pull_sf_equipment = yes
+	add_to_variable = { cnc_dlv_sf_equipment_0 = cnc_got_sf_equipment_0 }
+	add_to_variable = { cnc_dlv_sf_equipment_any = cnc_got_sf_equipment_any }
+}
+
+# Buyer scope: deliver the reserved sf_equipment as American-built models
+USA_cnc_deliver_sf_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_sf_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = sf_equipment_0 amount = cnc_dlv_sf_equipment_0 producer = USA }
+	}
+	clear_variable = cnc_dlv_sf_equipment_0
+	if = {
+		limit = { check_variable = { cnc_dlv_sf_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = sf_equipment amount = cnc_dlv_sf_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_sf_equipment_any
+}
+
+# USA scope: return cnc_need sf_equipment from the market to our stockpile
+USA_cnc_return_sf_equipment = {
+	USA_cnc_pull_sf_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_sf_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = sf_equipment_0 amount = cnc_got_sf_equipment_0 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_sf_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = sf_equipment amount = cnc_got_sf_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need artillery_equipment from our stockpile onto the market
+USA_cnc_stock_artillery_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@artillery_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = artillery_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_artillery_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@artillery_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = artillery_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_artillery_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@dp_artillery_equipment }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = dp_artillery_equipment amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_dp_artillery_equipment = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@dp_artillery_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = dp_artillery_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_dp_artillery_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@artillery_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = artillery_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_artillery_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@dp_artillery_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = dp_artillery_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_dp_artillery_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@artillery_equipment_4 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = artillery_equipment_4 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_artillery_equipment_4 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = artillery_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_artillery_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need artillery_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_artillery_equipment = {
+	set_temp_variable = { cnc_got_artillery_equipment_1 = global.cnc_inv_artillery_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_artillery_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_artillery_equipment_1 = cnc_got_artillery_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_artillery_equipment_1 }
+	set_temp_variable = { cnc_got_artillery_equipment_2 = global.cnc_inv_artillery_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_artillery_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_artillery_equipment_2 = cnc_got_artillery_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_artillery_equipment_2 }
+	set_temp_variable = { cnc_got_dp_artillery_equipment = global.cnc_inv_dp_artillery_equipment }
+	clamp_temp_variable = { var = cnc_got_dp_artillery_equipment min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_dp_artillery_equipment = cnc_got_dp_artillery_equipment }
+	subtract_from_temp_variable = { cnc_need = cnc_got_dp_artillery_equipment }
+	set_temp_variable = { cnc_got_dp_artillery_equipment_1 = global.cnc_inv_dp_artillery_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_dp_artillery_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_dp_artillery_equipment_1 = cnc_got_dp_artillery_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_dp_artillery_equipment_1 }
+	set_temp_variable = { cnc_got_artillery_equipment_3 = global.cnc_inv_artillery_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_artillery_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_artillery_equipment_3 = cnc_got_artillery_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_artillery_equipment_3 }
+	set_temp_variable = { cnc_got_dp_artillery_equipment_2 = global.cnc_inv_dp_artillery_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_dp_artillery_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_dp_artillery_equipment_2 = cnc_got_dp_artillery_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_dp_artillery_equipment_2 }
+	set_temp_variable = { cnc_got_artillery_equipment_4 = global.cnc_inv_artillery_equipment_4 }
+	clamp_temp_variable = { var = cnc_got_artillery_equipment_4 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_artillery_equipment_4 = cnc_got_artillery_equipment_4 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_artillery_equipment_4 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_artillery_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_artillery_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_artillery_equipment_any = cnc_got_artillery_equipment_any }
+	clamp_variable = { var = global.cnc_inv_artillery_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need artillery_equipment from the market for delivery
+USA_cnc_reserve_artillery_equipment = {
+	USA_cnc_pull_artillery_equipment = yes
+	add_to_variable = { cnc_dlv_artillery_equipment_1 = cnc_got_artillery_equipment_1 }
+	add_to_variable = { cnc_dlv_artillery_equipment_2 = cnc_got_artillery_equipment_2 }
+	add_to_variable = { cnc_dlv_dp_artillery_equipment = cnc_got_dp_artillery_equipment }
+	add_to_variable = { cnc_dlv_dp_artillery_equipment_1 = cnc_got_dp_artillery_equipment_1 }
+	add_to_variable = { cnc_dlv_artillery_equipment_3 = cnc_got_artillery_equipment_3 }
+	add_to_variable = { cnc_dlv_dp_artillery_equipment_2 = cnc_got_dp_artillery_equipment_2 }
+	add_to_variable = { cnc_dlv_artillery_equipment_4 = cnc_got_artillery_equipment_4 }
+	add_to_variable = { cnc_dlv_artillery_equipment_any = cnc_got_artillery_equipment_any }
+}
+
+# Buyer scope: deliver the reserved artillery_equipment as American-built models
+USA_cnc_deliver_artillery_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_1 amount = cnc_dlv_artillery_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_artillery_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_2 amount = cnc_dlv_artillery_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_artillery_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_dp_artillery_equipment > 0 } }
+		add_equipment_to_stockpile = { type = dp_artillery_equipment amount = cnc_dlv_dp_artillery_equipment producer = USA }
+	}
+	clear_variable = cnc_dlv_dp_artillery_equipment
+	if = {
+		limit = { check_variable = { cnc_dlv_dp_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = dp_artillery_equipment_1 amount = cnc_dlv_dp_artillery_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_dp_artillery_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_artillery_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_3 amount = cnc_dlv_artillery_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_artillery_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_dp_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = dp_artillery_equipment_2 amount = cnc_dlv_dp_artillery_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_dp_artillery_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_artillery_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_4 amount = cnc_dlv_artillery_equipment_4 producer = USA }
+	}
+	clear_variable = cnc_dlv_artillery_equipment_4
+	if = {
+		limit = { check_variable = { cnc_dlv_artillery_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment amount = cnc_dlv_artillery_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_artillery_equipment_any
+}
+
+# USA scope: return cnc_need artillery_equipment from the market to our stockpile
+USA_cnc_return_artillery_equipment = {
+	USA_cnc_pull_artillery_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_1 amount = cnc_got_artillery_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_2 amount = cnc_got_artillery_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_dp_artillery_equipment > 0 } }
+		add_equipment_to_stockpile = { type = dp_artillery_equipment amount = cnc_got_dp_artillery_equipment producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_dp_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = dp_artillery_equipment_1 amount = cnc_got_dp_artillery_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_artillery_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_3 amount = cnc_got_artillery_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_dp_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = dp_artillery_equipment_2 amount = cnc_got_dp_artillery_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_artillery_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment_4 amount = cnc_got_artillery_equipment_4 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_artillery_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = artillery_equipment amount = cnc_got_artillery_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need motorized_equipment from our stockpile onto the market
+USA_cnc_stock_motorized_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@motorized_equipment_0 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment_0 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_motorized_equipment_0 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@motorized_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_motorized_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@motorized_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_motorized_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@motorized_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = motorized_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_motorized_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_motorized_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need motorized_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_motorized_equipment = {
+	set_temp_variable = { cnc_got_motorized_equipment_0 = global.cnc_inv_motorized_equipment_0 }
+	clamp_temp_variable = { var = cnc_got_motorized_equipment_0 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_motorized_equipment_0 = cnc_got_motorized_equipment_0 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_motorized_equipment_0 }
+	set_temp_variable = { cnc_got_motorized_equipment_1 = global.cnc_inv_motorized_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_motorized_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_motorized_equipment_1 = cnc_got_motorized_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_motorized_equipment_1 }
+	set_temp_variable = { cnc_got_motorized_equipment_2 = global.cnc_inv_motorized_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_motorized_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_motorized_equipment_2 = cnc_got_motorized_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_motorized_equipment_2 }
+	set_temp_variable = { cnc_got_motorized_equipment_3 = global.cnc_inv_motorized_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_motorized_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_motorized_equipment_3 = cnc_got_motorized_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_motorized_equipment_3 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_motorized_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_motorized_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_motorized_equipment_any = cnc_got_motorized_equipment_any }
+	clamp_variable = { var = global.cnc_inv_motorized_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need motorized_equipment from the market for delivery
+USA_cnc_reserve_motorized_equipment = {
+	USA_cnc_pull_motorized_equipment = yes
+	add_to_variable = { cnc_dlv_motorized_equipment_0 = cnc_got_motorized_equipment_0 }
+	add_to_variable = { cnc_dlv_motorized_equipment_1 = cnc_got_motorized_equipment_1 }
+	add_to_variable = { cnc_dlv_motorized_equipment_2 = cnc_got_motorized_equipment_2 }
+	add_to_variable = { cnc_dlv_motorized_equipment_3 = cnc_got_motorized_equipment_3 }
+	add_to_variable = { cnc_dlv_motorized_equipment_any = cnc_got_motorized_equipment_any }
+}
+
+# Buyer scope: deliver the reserved motorized_equipment as American-built models
+USA_cnc_deliver_motorized_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_motorized_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_0 amount = cnc_dlv_motorized_equipment_0 producer = USA }
+	}
+	clear_variable = cnc_dlv_motorized_equipment_0
+	if = {
+		limit = { check_variable = { cnc_dlv_motorized_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cnc_dlv_motorized_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_motorized_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_motorized_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_2 amount = cnc_dlv_motorized_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_motorized_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_motorized_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_3 amount = cnc_dlv_motorized_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_motorized_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_motorized_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = cnc_dlv_motorized_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_motorized_equipment_any
+}
+
+# USA scope: return cnc_need motorized_equipment from the market to our stockpile
+USA_cnc_return_motorized_equipment = {
+	USA_cnc_pull_motorized_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_motorized_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_0 amount = cnc_got_motorized_equipment_0 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_motorized_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = cnc_got_motorized_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_motorized_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_2 amount = cnc_got_motorized_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_motorized_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment_3 amount = cnc_got_motorized_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_motorized_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = motorized_equipment amount = cnc_got_motorized_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need mechanized_equipment from our stockpile onto the market
+USA_cnc_stock_mechanized_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@mechanized_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = mechanized_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_mechanized_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@mechanized_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = mechanized_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_mechanized_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@mechanized_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = mechanized_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_mechanized_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@mechanized_equipment_4 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = mechanized_equipment_4 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_mechanized_equipment_4 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = mechanized_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_mechanized_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need mechanized_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_mechanized_equipment = {
+	set_temp_variable = { cnc_got_mechanized_equipment_1 = global.cnc_inv_mechanized_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_mechanized_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_mechanized_equipment_1 = cnc_got_mechanized_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_mechanized_equipment_1 }
+	set_temp_variable = { cnc_got_mechanized_equipment_2 = global.cnc_inv_mechanized_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_mechanized_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_mechanized_equipment_2 = cnc_got_mechanized_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_mechanized_equipment_2 }
+	set_temp_variable = { cnc_got_mechanized_equipment_3 = global.cnc_inv_mechanized_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_mechanized_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_mechanized_equipment_3 = cnc_got_mechanized_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_mechanized_equipment_3 }
+	set_temp_variable = { cnc_got_mechanized_equipment_4 = global.cnc_inv_mechanized_equipment_4 }
+	clamp_temp_variable = { var = cnc_got_mechanized_equipment_4 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_mechanized_equipment_4 = cnc_got_mechanized_equipment_4 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_mechanized_equipment_4 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_mechanized_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_mechanized_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_mechanized_equipment_any = cnc_got_mechanized_equipment_any }
+	clamp_variable = { var = global.cnc_inv_mechanized_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need mechanized_equipment from the market for delivery
+USA_cnc_reserve_mechanized_equipment = {
+	USA_cnc_pull_mechanized_equipment = yes
+	add_to_variable = { cnc_dlv_mechanized_equipment_1 = cnc_got_mechanized_equipment_1 }
+	add_to_variable = { cnc_dlv_mechanized_equipment_2 = cnc_got_mechanized_equipment_2 }
+	add_to_variable = { cnc_dlv_mechanized_equipment_3 = cnc_got_mechanized_equipment_3 }
+	add_to_variable = { cnc_dlv_mechanized_equipment_4 = cnc_got_mechanized_equipment_4 }
+	add_to_variable = { cnc_dlv_mechanized_equipment_any = cnc_got_mechanized_equipment_any }
+}
+
+# Buyer scope: deliver the reserved mechanized_equipment as American-built models
+USA_cnc_deliver_mechanized_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_mechanized_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_1 amount = cnc_dlv_mechanized_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_mechanized_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_mechanized_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_2 amount = cnc_dlv_mechanized_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_mechanized_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_mechanized_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_3 amount = cnc_dlv_mechanized_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_mechanized_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_mechanized_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_4 amount = cnc_dlv_mechanized_equipment_4 producer = USA }
+	}
+	clear_variable = cnc_dlv_mechanized_equipment_4
+	if = {
+		limit = { check_variable = { cnc_dlv_mechanized_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment amount = cnc_dlv_mechanized_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_mechanized_equipment_any
+}
+
+# USA scope: return cnc_need mechanized_equipment from the market to our stockpile
+USA_cnc_return_mechanized_equipment = {
+	USA_cnc_pull_mechanized_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_mechanized_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_1 amount = cnc_got_mechanized_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_mechanized_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_2 amount = cnc_got_mechanized_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_mechanized_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_3 amount = cnc_got_mechanized_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_mechanized_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment_4 amount = cnc_got_mechanized_equipment_4 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_mechanized_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = mechanized_equipment amount = cnc_got_mechanized_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need anti_air_equipment from our stockpile onto the market
+USA_cnc_stock_anti_air_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_air_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_air_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_air_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_air_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_air_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_air_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_air_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_air_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_air_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = anti_air_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_anti_air_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need anti_air_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_anti_air_equipment = {
+	set_temp_variable = { cnc_got_anti_air_equipment_1 = global.cnc_inv_anti_air_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_anti_air_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_air_equipment_1 = cnc_got_anti_air_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_air_equipment_1 }
+	set_temp_variable = { cnc_got_anti_air_equipment_2 = global.cnc_inv_anti_air_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_anti_air_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_air_equipment_2 = cnc_got_anti_air_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_air_equipment_2 }
+	set_temp_variable = { cnc_got_anti_air_equipment_3 = global.cnc_inv_anti_air_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_anti_air_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_air_equipment_3 = cnc_got_anti_air_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_air_equipment_3 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_anti_air_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_anti_air_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_anti_air_equipment_any = cnc_got_anti_air_equipment_any }
+	clamp_variable = { var = global.cnc_inv_anti_air_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need anti_air_equipment from the market for delivery
+USA_cnc_reserve_anti_air_equipment = {
+	USA_cnc_pull_anti_air_equipment = yes
+	add_to_variable = { cnc_dlv_anti_air_equipment_1 = cnc_got_anti_air_equipment_1 }
+	add_to_variable = { cnc_dlv_anti_air_equipment_2 = cnc_got_anti_air_equipment_2 }
+	add_to_variable = { cnc_dlv_anti_air_equipment_3 = cnc_got_anti_air_equipment_3 }
+	add_to_variable = { cnc_dlv_anti_air_equipment_any = cnc_got_anti_air_equipment_any }
+}
+
+# Buyer scope: deliver the reserved anti_air_equipment as American-built models
+USA_cnc_deliver_anti_air_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_air_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_1 amount = cnc_dlv_anti_air_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_air_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_air_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_2 amount = cnc_dlv_anti_air_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_air_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_air_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_3 amount = cnc_dlv_anti_air_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_air_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_air_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment amount = cnc_dlv_anti_air_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_air_equipment_any
+}
+
+# USA scope: return cnc_need anti_air_equipment from the market to our stockpile
+USA_cnc_return_anti_air_equipment = {
+	USA_cnc_pull_anti_air_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_anti_air_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_1 amount = cnc_got_anti_air_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_air_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_2 amount = cnc_got_anti_air_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_air_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_3 amount = cnc_got_anti_air_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_air_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment amount = cnc_got_anti_air_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need anti_tank_equipment from our stockpile onto the market
+USA_cnc_stock_anti_tank_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_tank_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_tank_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_tank_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_tank_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_tank_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_tank_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_tank_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_tank_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_tank_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_tank_equipment_4 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_tank_equipment_4 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_tank_equipment_4 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = anti_tank_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_anti_tank_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need anti_tank_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_anti_tank_equipment = {
+	set_temp_variable = { cnc_got_anti_tank_equipment_1 = global.cnc_inv_anti_tank_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_anti_tank_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_tank_equipment_1 = cnc_got_anti_tank_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_tank_equipment_1 }
+	set_temp_variable = { cnc_got_anti_tank_equipment_2 = global.cnc_inv_anti_tank_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_anti_tank_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_tank_equipment_2 = cnc_got_anti_tank_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_tank_equipment_2 }
+	set_temp_variable = { cnc_got_anti_tank_equipment_3 = global.cnc_inv_anti_tank_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_anti_tank_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_tank_equipment_3 = cnc_got_anti_tank_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_tank_equipment_3 }
+	set_temp_variable = { cnc_got_anti_tank_equipment_4 = global.cnc_inv_anti_tank_equipment_4 }
+	clamp_temp_variable = { var = cnc_got_anti_tank_equipment_4 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_tank_equipment_4 = cnc_got_anti_tank_equipment_4 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_tank_equipment_4 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_anti_tank_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_anti_tank_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_anti_tank_equipment_any = cnc_got_anti_tank_equipment_any }
+	clamp_variable = { var = global.cnc_inv_anti_tank_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need anti_tank_equipment from the market for delivery
+USA_cnc_reserve_anti_tank_equipment = {
+	USA_cnc_pull_anti_tank_equipment = yes
+	add_to_variable = { cnc_dlv_anti_tank_equipment_1 = cnc_got_anti_tank_equipment_1 }
+	add_to_variable = { cnc_dlv_anti_tank_equipment_2 = cnc_got_anti_tank_equipment_2 }
+	add_to_variable = { cnc_dlv_anti_tank_equipment_3 = cnc_got_anti_tank_equipment_3 }
+	add_to_variable = { cnc_dlv_anti_tank_equipment_4 = cnc_got_anti_tank_equipment_4 }
+	add_to_variable = { cnc_dlv_anti_tank_equipment_any = cnc_got_anti_tank_equipment_any }
+}
+
+# Buyer scope: deliver the reserved anti_tank_equipment as American-built models
+USA_cnc_deliver_anti_tank_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_tank_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_1 amount = cnc_dlv_anti_tank_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_tank_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_tank_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_2 amount = cnc_dlv_anti_tank_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_tank_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_tank_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_3 amount = cnc_dlv_anti_tank_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_tank_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_tank_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_4 amount = cnc_dlv_anti_tank_equipment_4 producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_tank_equipment_4
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_tank_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment amount = cnc_dlv_anti_tank_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_tank_equipment_any
+}
+
+# USA scope: return cnc_need anti_tank_equipment from the market to our stockpile
+USA_cnc_return_anti_tank_equipment = {
+	USA_cnc_pull_anti_tank_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_anti_tank_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_1 amount = cnc_got_anti_tank_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_tank_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_2 amount = cnc_got_anti_tank_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_tank_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_3 amount = cnc_got_anti_tank_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_tank_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment_4 amount = cnc_got_anti_tank_equipment_4 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_tank_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = anti_tank_equipment amount = cnc_got_anti_tank_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need rocket_artillery_equipment from our stockpile onto the market
+USA_cnc_stock_rocket_artillery_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@rocket_artillery_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = rocket_artillery_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_rocket_artillery_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@rocket_artillery_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = rocket_artillery_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_rocket_artillery_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_rocket_artillery_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need rocket_artillery_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_rocket_artillery_equipment = {
+	set_temp_variable = { cnc_got_rocket_artillery_equipment_1 = global.cnc_inv_rocket_artillery_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_rocket_artillery_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_rocket_artillery_equipment_1 = cnc_got_rocket_artillery_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_rocket_artillery_equipment_1 }
+	set_temp_variable = { cnc_got_rocket_artillery_equipment_2 = global.cnc_inv_rocket_artillery_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_rocket_artillery_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_rocket_artillery_equipment_2 = cnc_got_rocket_artillery_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_rocket_artillery_equipment_2 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_rocket_artillery_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_rocket_artillery_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_rocket_artillery_equipment_any = cnc_got_rocket_artillery_equipment_any }
+	clamp_variable = { var = global.cnc_inv_rocket_artillery_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need rocket_artillery_equipment from the market for delivery
+USA_cnc_reserve_rocket_artillery_equipment = {
+	USA_cnc_pull_rocket_artillery_equipment = yes
+	add_to_variable = { cnc_dlv_rocket_artillery_equipment_1 = cnc_got_rocket_artillery_equipment_1 }
+	add_to_variable = { cnc_dlv_rocket_artillery_equipment_2 = cnc_got_rocket_artillery_equipment_2 }
+	add_to_variable = { cnc_dlv_rocket_artillery_equipment_any = cnc_got_rocket_artillery_equipment_any }
+}
+
+# Buyer scope: deliver the reserved rocket_artillery_equipment as American-built models
+USA_cnc_deliver_rocket_artillery_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_rocket_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment_1 amount = cnc_dlv_rocket_artillery_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_rocket_artillery_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_rocket_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment_2 amount = cnc_dlv_rocket_artillery_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_rocket_artillery_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_rocket_artillery_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment amount = cnc_dlv_rocket_artillery_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_rocket_artillery_equipment_any
+}
+
+# USA scope: return cnc_need rocket_artillery_equipment from the market to our stockpile
+USA_cnc_return_rocket_artillery_equipment = {
+	USA_cnc_pull_rocket_artillery_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_rocket_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment_1 amount = cnc_got_rocket_artillery_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_rocket_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment_2 amount = cnc_got_rocket_artillery_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_rocket_artillery_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = rocket_artillery_equipment amount = cnc_got_rocket_artillery_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need heavy_anti_air_equipment from our stockpile onto the market
+USA_cnc_stock_heavy_anti_air_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_anti_air_equipment_0 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_anti_air_equipment_0 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_anti_air_equipment_0 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_anti_air_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_anti_air_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_anti_air_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_anti_air_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_anti_air_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_anti_air_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@anti_air_equipment_sam }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = anti_air_equipment_sam amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_anti_air_equipment_sam = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_heavy_anti_air_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need heavy_anti_air_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_heavy_anti_air_equipment = {
+	set_temp_variable = { cnc_got_heavy_anti_air_equipment_0 = global.cnc_inv_heavy_anti_air_equipment_0 }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_air_equipment_0 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_air_equipment_0 = cnc_got_heavy_anti_air_equipment_0 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_anti_air_equipment_0 }
+	set_temp_variable = { cnc_got_heavy_anti_air_equipment_1 = global.cnc_inv_heavy_anti_air_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_air_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_air_equipment_1 = cnc_got_heavy_anti_air_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_anti_air_equipment_1 }
+	set_temp_variable = { cnc_got_heavy_anti_air_equipment_2 = global.cnc_inv_heavy_anti_air_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_air_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_air_equipment_2 = cnc_got_heavy_anti_air_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_anti_air_equipment_2 }
+	set_temp_variable = { cnc_got_anti_air_equipment_sam = global.cnc_inv_anti_air_equipment_sam }
+	clamp_temp_variable = { var = cnc_got_anti_air_equipment_sam min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_anti_air_equipment_sam = cnc_got_anti_air_equipment_sam }
+	subtract_from_temp_variable = { cnc_need = cnc_got_anti_air_equipment_sam }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_heavy_anti_air_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_air_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_air_equipment_any = cnc_got_heavy_anti_air_equipment_any }
+	clamp_variable = { var = global.cnc_inv_heavy_anti_air_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need heavy_anti_air_equipment from the market for delivery
+USA_cnc_reserve_heavy_anti_air_equipment = {
+	USA_cnc_pull_heavy_anti_air_equipment = yes
+	add_to_variable = { cnc_dlv_heavy_anti_air_equipment_0 = cnc_got_heavy_anti_air_equipment_0 }
+	add_to_variable = { cnc_dlv_heavy_anti_air_equipment_1 = cnc_got_heavy_anti_air_equipment_1 }
+	add_to_variable = { cnc_dlv_heavy_anti_air_equipment_2 = cnc_got_heavy_anti_air_equipment_2 }
+	add_to_variable = { cnc_dlv_anti_air_equipment_sam = cnc_got_anti_air_equipment_sam }
+	add_to_variable = { cnc_dlv_heavy_anti_air_equipment_any = cnc_got_heavy_anti_air_equipment_any }
+}
+
+# Buyer scope: deliver the reserved heavy_anti_air_equipment as American-built models
+USA_cnc_deliver_heavy_anti_air_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_air_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment_0 amount = cnc_dlv_heavy_anti_air_equipment_0 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_air_equipment_0
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_air_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment_1 amount = cnc_dlv_heavy_anti_air_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_air_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_air_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment_2 amount = cnc_dlv_heavy_anti_air_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_air_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_anti_air_equipment_sam > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_sam amount = cnc_dlv_anti_air_equipment_sam producer = USA }
+	}
+	clear_variable = cnc_dlv_anti_air_equipment_sam
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_air_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment amount = cnc_dlv_heavy_anti_air_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_air_equipment_any
+}
+
+# USA scope: return cnc_need heavy_anti_air_equipment from the market to our stockpile
+USA_cnc_return_heavy_anti_air_equipment = {
+	USA_cnc_pull_heavy_anti_air_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_air_equipment_0 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment_0 amount = cnc_got_heavy_anti_air_equipment_0 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_air_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment_1 amount = cnc_got_heavy_anti_air_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_air_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment_2 amount = cnc_got_heavy_anti_air_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_anti_air_equipment_sam > 0 } }
+		add_equipment_to_stockpile = { type = anti_air_equipment_sam amount = cnc_got_anti_air_equipment_sam producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_air_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_air_equipment amount = cnc_got_heavy_anti_air_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need heavy_anti_tank_equipment from our stockpile onto the market
+USA_cnc_stock_heavy_anti_tank_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_anti_tank_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_anti_tank_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_anti_tank_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_anti_tank_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_heavy_anti_tank_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need heavy_anti_tank_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_heavy_anti_tank_equipment = {
+	set_temp_variable = { cnc_got_heavy_anti_tank_equipment_1 = global.cnc_inv_heavy_anti_tank_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_tank_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_tank_equipment_1 = cnc_got_heavy_anti_tank_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_anti_tank_equipment_1 }
+	set_temp_variable = { cnc_got_heavy_anti_tank_equipment_2 = global.cnc_inv_heavy_anti_tank_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_tank_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_tank_equipment_2 = cnc_got_heavy_anti_tank_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_anti_tank_equipment_2 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_heavy_anti_tank_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_heavy_anti_tank_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_heavy_anti_tank_equipment_any = cnc_got_heavy_anti_tank_equipment_any }
+	clamp_variable = { var = global.cnc_inv_heavy_anti_tank_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need heavy_anti_tank_equipment from the market for delivery
+USA_cnc_reserve_heavy_anti_tank_equipment = {
+	USA_cnc_pull_heavy_anti_tank_equipment = yes
+	add_to_variable = { cnc_dlv_heavy_anti_tank_equipment_1 = cnc_got_heavy_anti_tank_equipment_1 }
+	add_to_variable = { cnc_dlv_heavy_anti_tank_equipment_2 = cnc_got_heavy_anti_tank_equipment_2 }
+	add_to_variable = { cnc_dlv_heavy_anti_tank_equipment_any = cnc_got_heavy_anti_tank_equipment_any }
+}
+
+# Buyer scope: deliver the reserved heavy_anti_tank_equipment as American-built models
+USA_cnc_deliver_heavy_anti_tank_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_tank_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_1 amount = cnc_dlv_heavy_anti_tank_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_tank_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_tank_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_2 amount = cnc_dlv_heavy_anti_tank_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_tank_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_anti_tank_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment amount = cnc_dlv_heavy_anti_tank_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_anti_tank_equipment_any
+}
+
+# USA scope: return cnc_need heavy_anti_tank_equipment from the market to our stockpile
+USA_cnc_return_heavy_anti_tank_equipment = {
+	USA_cnc_pull_heavy_anti_tank_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_tank_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_1 amount = cnc_got_heavy_anti_tank_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_tank_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment_2 amount = cnc_got_heavy_anti_tank_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_anti_tank_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = heavy_anti_tank_equipment amount = cnc_got_heavy_anti_tank_equipment_any producer = USA }
+	}
+}
+
+# USA scope: move cnc_need heavy_artillery_equipment from our stockpile onto the market
+USA_cnc_stock_heavy_artillery_equipment = {
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_artillery_equipment_1 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment_1 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_artillery_equipment_1 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_artillery_equipment_2 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment_2 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_artillery_equipment_2 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_artillery_equipment_3 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment_3 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_artillery_equipment_3 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_take = num_equipment@heavy_artillery_equipment_4 }
+		clamp_temp_variable = { var = cnc_take min = 0 max = cnc_need }
+		if = {
+			limit = { check_variable = { cnc_take > 0 } }
+			set_temp_variable = { cnc_neg = cnc_take }
+			multiply_temp_variable = { cnc_neg = -1 }
+			add_equipment_to_stockpile = { type = heavy_artillery_equipment_4 amount = cnc_neg }
+			add_to_variable = { global.cnc_inv_heavy_artillery_equipment_4 = cnc_take }
+			subtract_from_temp_variable = { cnc_need = cnc_take }
+		}
+	}
+	# models not listed above (the stock decision already checked the total)
+	if = {
+		limit = { check_variable = { cnc_need > 0 } }
+		set_temp_variable = { cnc_neg = cnc_need }
+		multiply_temp_variable = { cnc_neg = -1 }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment amount = cnc_neg }
+		add_to_variable = { global.cnc_inv_heavy_artillery_equipment_any = cnc_need }
+	}
+}
+
+# Take cnc_need heavy_artillery_equipment off the market into temp variables cnc_got_<model>
+USA_cnc_pull_heavy_artillery_equipment = {
+	set_temp_variable = { cnc_got_heavy_artillery_equipment_1 = global.cnc_inv_heavy_artillery_equipment_1 }
+	clamp_temp_variable = { var = cnc_got_heavy_artillery_equipment_1 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_artillery_equipment_1 = cnc_got_heavy_artillery_equipment_1 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_artillery_equipment_1 }
+	set_temp_variable = { cnc_got_heavy_artillery_equipment_2 = global.cnc_inv_heavy_artillery_equipment_2 }
+	clamp_temp_variable = { var = cnc_got_heavy_artillery_equipment_2 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_artillery_equipment_2 = cnc_got_heavy_artillery_equipment_2 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_artillery_equipment_2 }
+	set_temp_variable = { cnc_got_heavy_artillery_equipment_3 = global.cnc_inv_heavy_artillery_equipment_3 }
+	clamp_temp_variable = { var = cnc_got_heavy_artillery_equipment_3 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_artillery_equipment_3 = cnc_got_heavy_artillery_equipment_3 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_artillery_equipment_3 }
+	set_temp_variable = { cnc_got_heavy_artillery_equipment_4 = global.cnc_inv_heavy_artillery_equipment_4 }
+	clamp_temp_variable = { var = cnc_got_heavy_artillery_equipment_4 min = 0 max = cnc_need }
+	subtract_from_variable = { global.cnc_inv_heavy_artillery_equipment_4 = cnc_got_heavy_artillery_equipment_4 }
+	subtract_from_temp_variable = { cnc_need = cnc_got_heavy_artillery_equipment_4 }
+	# the rest: models not listed above, or lots stocked before models were tracked
+	set_temp_variable = { cnc_got_heavy_artillery_equipment_any = cnc_need }
+	clamp_temp_variable = { var = cnc_got_heavy_artillery_equipment_any min = 0 }
+	subtract_from_variable = { global.cnc_inv_heavy_artillery_equipment_any = cnc_got_heavy_artillery_equipment_any }
+	clamp_variable = { var = global.cnc_inv_heavy_artillery_equipment_any min = 0 }
+	set_temp_variable = { cnc_need = 0 }
+}
+
+# Buyer scope: reserve cnc_need heavy_artillery_equipment from the market for delivery
+USA_cnc_reserve_heavy_artillery_equipment = {
+	USA_cnc_pull_heavy_artillery_equipment = yes
+	add_to_variable = { cnc_dlv_heavy_artillery_equipment_1 = cnc_got_heavy_artillery_equipment_1 }
+	add_to_variable = { cnc_dlv_heavy_artillery_equipment_2 = cnc_got_heavy_artillery_equipment_2 }
+	add_to_variable = { cnc_dlv_heavy_artillery_equipment_3 = cnc_got_heavy_artillery_equipment_3 }
+	add_to_variable = { cnc_dlv_heavy_artillery_equipment_4 = cnc_got_heavy_artillery_equipment_4 }
+	add_to_variable = { cnc_dlv_heavy_artillery_equipment_any = cnc_got_heavy_artillery_equipment_any }
+}
+
+# Buyer scope: deliver the reserved heavy_artillery_equipment as American-built models
+USA_cnc_deliver_heavy_artillery_equipment = {
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_1 amount = cnc_dlv_heavy_artillery_equipment_1 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_artillery_equipment_1
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_2 amount = cnc_dlv_heavy_artillery_equipment_2 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_artillery_equipment_2
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_artillery_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_3 amount = cnc_dlv_heavy_artillery_equipment_3 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_artillery_equipment_3
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_artillery_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_4 amount = cnc_dlv_heavy_artillery_equipment_4 producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_artillery_equipment_4
+	if = {
+		limit = { check_variable = { cnc_dlv_heavy_artillery_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment amount = cnc_dlv_heavy_artillery_equipment_any producer = USA }
+	}
+	clear_variable = cnc_dlv_heavy_artillery_equipment_any
+}
+
+# USA scope: return cnc_need heavy_artillery_equipment from the market to our stockpile
+USA_cnc_return_heavy_artillery_equipment = {
+	USA_cnc_pull_heavy_artillery_equipment = yes
+	if = {
+		limit = { check_variable = { cnc_got_heavy_artillery_equipment_1 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_1 amount = cnc_got_heavy_artillery_equipment_1 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_artillery_equipment_2 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_2 amount = cnc_got_heavy_artillery_equipment_2 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_artillery_equipment_3 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_3 amount = cnc_got_heavy_artillery_equipment_3 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_artillery_equipment_4 > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment_4 amount = cnc_got_heavy_artillery_equipment_4 producer = USA }
+	}
+	if = {
+		limit = { check_variable = { cnc_got_heavy_artillery_equipment_any > 0 } }
+		add_equipment_to_stockpile = { type = heavy_artillery_equipment amount = cnc_got_heavy_artillery_equipment_any producer = USA }
+	}
+}
+
+# USA scope: withdraw one unsold infantry lot back to our stockpile
+USA_cnc_withdraw_inf = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_inf > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_inf = 1 }
+		set_temp_variable = { cnc_need = 6000 }
+		USA_cnc_return_infantry_equipment = yes
+		set_temp_variable = { cnc_need = 2000 }
+		USA_cnc_return_squad_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold support lot back to our stockpile
+USA_cnc_withdraw_sup = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_sup > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_sup = 1 }
+		set_temp_variable = { cnc_need = 1000 }
+		USA_cnc_return_support_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold radio lot back to our stockpile
+USA_cnc_withdraw_rad = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_rad > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_rad = 1 }
+		set_temp_variable = { cnc_need = 1000 }
+		USA_cnc_return_radio_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold special forces equipment lot back to our stockpile
+USA_cnc_withdraw_sfe = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_sfe > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_sfe = 1 }
+		set_temp_variable = { cnc_need = 1000 }
+		USA_cnc_return_sf_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold artillery lot back to our stockpile
+USA_cnc_withdraw_art = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_art > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_art = 1 }
+		set_temp_variable = { cnc_need = 750 }
+		USA_cnc_return_artillery_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold truck lot back to our stockpile
+USA_cnc_withdraw_mot = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_mot > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_mot = 1 }
+		set_temp_variable = { cnc_need = 2000 }
+		USA_cnc_return_motorized_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold mechanised lot back to our stockpile
+USA_cnc_withdraw_mec = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_mec > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_mec = 1 }
+		set_temp_variable = { cnc_need = 500 }
+		USA_cnc_return_mechanized_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold anti-air lot back to our stockpile
+USA_cnc_withdraw_aa = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_aa > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_aa = 1 }
+		set_temp_variable = { cnc_need = 500 }
+		USA_cnc_return_anti_air_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold anti-tank lot back to our stockpile
+USA_cnc_withdraw_at = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_at > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_at = 1 }
+		set_temp_variable = { cnc_need = 500 }
+		USA_cnc_return_anti_tank_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold rocket artillery lot back to our stockpile
+USA_cnc_withdraw_rkt = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_rkt > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_rkt = 1 }
+		set_temp_variable = { cnc_need = 800 }
+		USA_cnc_return_rocket_artillery_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold heavy anti-air lot back to our stockpile
+USA_cnc_withdraw_haa = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_haa > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_haa = 1 }
+		set_temp_variable = { cnc_need = 400 }
+		USA_cnc_return_heavy_anti_air_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold heavy anti-tank lot back to our stockpile
+USA_cnc_withdraw_hat = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_hat > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_hat = 1 }
+		set_temp_variable = { cnc_need = 240 }
+		USA_cnc_return_heavy_anti_tank_equipment = yes
+	}
+}
+
+# USA scope: withdraw one unsold heavy artillery lot back to our stockpile
+USA_cnc_withdraw_hart = {
+	if = {
+		limit = { check_variable = { global.cnc_stock_hart > 0.5 } }
+		subtract_from_variable = { global.cnc_stock_hart = 1 }
+		set_temp_variable = { cnc_need = 240 }
+		USA_cnc_return_heavy_artillery_equipment = yes
+	}
+}
+
+# USA scope: the market closes (we are at war): every unsold lot returns to our stockpile
+USA_cnc_refund_all = {
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_inf > 0.5 } }
+		USA_cnc_withdraw_inf = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_sup > 0.5 } }
+		USA_cnc_withdraw_sup = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_rad > 0.5 } }
+		USA_cnc_withdraw_rad = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_sfe > 0.5 } }
+		USA_cnc_withdraw_sfe = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_art > 0.5 } }
+		USA_cnc_withdraw_art = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_mot > 0.5 } }
+		USA_cnc_withdraw_mot = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_mec > 0.5 } }
+		USA_cnc_withdraw_mec = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_aa > 0.5 } }
+		USA_cnc_withdraw_aa = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_at > 0.5 } }
+		USA_cnc_withdraw_at = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_rkt > 0.5 } }
+		USA_cnc_withdraw_rkt = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_haa > 0.5 } }
+		USA_cnc_withdraw_haa = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_hat > 0.5 } }
+		USA_cnc_withdraw_hat = yes
+	}
+	while_loop_effect = {
+		limit = { check_variable = { global.cnc_stock_hart > 0.5 } }
+		USA_cnc_withdraw_hart = yes
+	}
+}
