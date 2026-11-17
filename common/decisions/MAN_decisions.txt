@@ -13,7 +13,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_gongchangling > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_gongchangling > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_gongchangling > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -44,14 +50,19 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_gongchangling = 1 }
-				add_resource = { type = steel amount = 30 }
+				if = {
+					limit = { check_variable = { MAN_lv_gongchangling < 2.5 } }
+					add_resource = { type = steel amount = 30 }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_steel_10
 			set_temp_variable = { MAN_t = 10 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -78,7 +89,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_fushun_shale > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_fushun_shale > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_fushun_shale > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -109,15 +126,20 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_fushun_shale = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = synthetic_refinery level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_fushun_shale < 2.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = synthetic_refinery level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_coal_10
 			set_temp_variable = { MAN_t = 10 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -144,7 +166,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_hi
-				NOT = { check_variable = { MAN_lv_tiexi > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_tiexi > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_tiexi > 4.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -175,23 +203,30 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_tiexi = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_tiexi < 3.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_mach_6
 			set_temp_variable = { MAN_t = 6 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_steel_3
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			add_to_variable = { MAN_lvc_tiexi = 1 }
@@ -216,7 +251,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_hi
-				NOT = { check_variable = { MAN_lv_antung > 0.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_antung > 0.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_antung > 1.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -247,24 +288,32 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_antung = 1 }
-				add_resource = { type = aluminium amount = 40 }
+				if = {
+					limit = { check_variable = { MAN_lv_antung < 1.5 } }
+					add_resource = { type = aluminium amount = 40 }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_mach_6
 			set_temp_variable = { MAN_t = 6 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_steel_4
 			set_temp_variable = { MAN_t = 4 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
+			add_to_variable = { MAN_lvc_antung = 1 }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
 			hidden_effect = {
 				MAN_behemoth_accident_roll = yes
@@ -286,7 +335,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_fuxin > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_fuxin > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_fuxin > 4.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -317,14 +372,19 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_fuxin = 1 }
-				add_resource = { type = coal amount = 40 }
+				if = {
+					limit = { check_variable = { MAN_lv_fuxin < 3.5 } }
+					add_resource = { type = coal amount = 40 }
+				}
 			}
-			custom_effect_tooltip = MAN_tt_q_coal_12
-			set_temp_variable = { MAN_t = 12 }
+			custom_effect_tooltip = MAN_tt_q_coal_9
+			set_temp_variable = { MAN_t = 9 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -351,7 +411,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_molybdenum > 0.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_molybdenum > 0.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_molybdenum > 1.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -382,26 +448,34 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_molybdenum = 1 }
-				add_resource = { type = tungsten amount = 20 }
+				if = {
+					limit = { check_variable = { MAN_lv_molybdenum < 1.5 } }
+					add_resource = { type = tungsten amount = 20 }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_steel_4
 			set_temp_variable = { MAN_t = 4 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_mach_6
 			set_temp_variable = { MAN_t = 6 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
 			custom_effect_tooltip = MAN_tt_spur
+			add_to_variable = { MAN_lvc_molybdenum = 1 }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
 			hidden_effect = {
 				MAN_behemoth_accident_roll = yes
@@ -423,7 +497,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_hi
-				NOT = { check_variable = { MAN_lv_hsinking > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_hsinking > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_hsinking > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -454,15 +534,20 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_hsinking = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_hsinking < 2.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_mach_5
 			set_temp_variable = { MAN_t = 5 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			add_political_power = 15
@@ -488,7 +573,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_hi
-				NOT = { check_variable = { MAN_lv_harbin > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_harbin > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_harbin > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -519,15 +610,20 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_harbin = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_harbin < 2.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_mach_8
 			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			add_to_variable = { MAN_lvc_harbin = 1 }
@@ -552,7 +648,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_dongbiandao > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_dongbiandao > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_dongbiandao > 4.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -583,23 +685,30 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_dongbiandao = 1 }
-				add_resource = { type = steel amount = 25 }
-				add_resource = { type = coal amount = 20 }
+				if = {
+					limit = { check_variable = { MAN_lv_dongbiandao < 3.5 } }
+					add_resource = { type = steel amount = 25 }
+					add_resource = { type = coal amount = 20 }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_steel_8
 			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_coal_6
 			set_temp_variable = { MAN_t = 6 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_fav_mgy = 3 }
@@ -628,7 +737,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_pow
-				NOT = { check_variable = { MAN_lv_kirin_chem > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_kirin_chem > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_kirin_chem > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -659,23 +774,30 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_kirin_chem = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = synthetic_refinery level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_kirin_chem < 2.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = synthetic_refinery level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_power_6
 			set_temp_variable = { MAN_t = 6 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_power }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_power = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_coal_4
 			set_temp_variable = { MAN_t = 4 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_lvc_kirin_chem = 1 }
@@ -700,7 +822,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_hegang > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_hegang > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_hegang > 4.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -731,14 +859,19 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_hegang = 1 }
-				add_resource = { type = coal amount = 35 }
+				if = {
+					limit = { check_variable = { MAN_lv_hegang < 3.5 } }
+					add_resource = { type = coal amount = 35 }
+				}
 			}
-			custom_effect_tooltip = MAN_tt_q_coal_12
-			set_temp_variable = { MAN_t = 12 }
+			custom_effect_tooltip = MAN_tt_q_coal_9
+			set_temp_variable = { MAN_t = 9 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -765,7 +898,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_jixi > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_jixi > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_jixi > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -796,15 +935,20 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_jixi = 1 }
-				add_resource = { type = coal amount = 30 }
-				add_to_variable = { MAN_bandit = 3 }
+				if = {
+					limit = { check_variable = { MAN_lv_jixi < 2.5 } }
+					add_resource = { type = coal amount = 30 }
+					add_to_variable = { MAN_bandit = 3 }
+				}
 			}
-			custom_effect_tooltip = MAN_tt_q_coal_10
-			set_temp_variable = { MAN_t = 10 }
+			custom_effect_tooltip = MAN_tt_q_coal_8
+			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -831,7 +975,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_hi
-				NOT = { check_variable = { MAN_lv_mudanjiang > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_mudanjiang > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_mudanjiang > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -862,15 +1012,20 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_mudanjiang = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_mudanjiang < 2.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_mach_8
 			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			add_to_variable = { MAN_fav_kw = 3 }
@@ -897,7 +1052,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_pow
-				NOT = { check_variable = { MAN_lv_jingpo > 0.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_jingpo > 0.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_jingpo > 1.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -928,16 +1089,22 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_jingpo = 1 }
-				add_extra_state_shared_building_slots = 1
+				if = {
+					limit = { check_variable = { MAN_lv_jingpo < 1.5 } }
+					add_extra_state_shared_building_slots = 1
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_power_14
 			set_temp_variable = { MAN_t = 14 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_power }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_power = MAN_t }
+			add_to_variable = { MAN_lvc_jingpo = 1 }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
 			hidden_effect = {
 				MAN_behemoth_accident_roll = yes
@@ -959,7 +1126,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_heihe_gold > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_heihe_gold > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_heihe_gold > 4.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1022,7 +1195,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_hi
-				NOT = { check_variable = { MAN_lv_qiqihar > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_qiqihar > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_qiqihar > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1053,23 +1232,30 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_qiqihar = 1 }
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				if = {
+					limit = { check_variable = { MAN_lv_qiqihar < 2.5 } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
 			}
 			custom_effect_tooltip = MAN_tt_q_mach_6
 			set_temp_variable = { MAN_t = 6 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_steel_2
 			set_temp_variable = { MAN_t = 2 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			add_to_variable = { MAN_lvc_qiqihar = 1 }
@@ -1094,7 +1280,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_jalainur > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_jalainur > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_jalainur > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1125,14 +1317,19 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_jalainur = 1 }
-				add_resource = { type = coal amount = 30 }
+				if = {
+					limit = { check_variable = { MAN_lv_jalainur < 2.5 } }
+					add_resource = { type = coal amount = 30 }
+				}
 			}
-			custom_effect_tooltip = MAN_tt_q_coal_10
-			set_temp_variable = { MAN_t = 10 }
+			custom_effect_tooltip = MAN_tt_q_coal_8
+			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -1159,7 +1356,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_set
-				NOT = { check_variable = { MAN_lv_hailar > 0.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_hailar > 0.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_hailar > 1.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1197,6 +1400,7 @@ MAN_plan_cat = {
 				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1500 }
 				else = { add_cic = 1000 }
 			}
+			add_to_variable = { MAN_lvc_hailar = 1 }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
 			hidden_effect = {
 				MAN_behemoth_accident_roll = yes
@@ -1218,7 +1422,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_min
-				NOT = { check_variable = { MAN_lv_beipiao > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_beipiao > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_beipiao > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1249,14 +1459,19 @@ MAN_plan_cat = {
 			FROM = {
 				clr_state_flag = MAN_busy
 				add_to_variable = { MAN_lv_beipiao = 1 }
-				add_resource = { type = coal amount = 25 }
+				if = {
+					limit = { check_variable = { MAN_lv_beipiao < 2.5 } }
+					add_resource = { type = coal amount = 25 }
+				}
 			}
-			custom_effect_tooltip = MAN_tt_q_coal_10
-			set_temp_variable = { MAN_t = 10 }
+			custom_effect_tooltip = MAN_tt_q_coal_8
+			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			add_to_variable = { MAN_rail_built = 1 }
@@ -1283,7 +1498,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_set
-				NOT = { check_variable = { MAN_lv_wool > 0.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_wool > 0.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_wool > 1.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1321,6 +1542,7 @@ MAN_plan_cat = {
 				else_if = { limit = { FROM = { check_variable = { MAN_eff > 0.599 } } } add_cic = 1125 }
 				else = { add_cic = 750 }
 			}
+			add_to_variable = { MAN_lvc_wool = 1 }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
 			hidden_effect = {
 				MAN_behemoth_accident_roll = yes
@@ -1342,7 +1564,13 @@ MAN_plan_cat = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_surveyed
 				has_state_flag = MAN_zone_set
-				NOT = { check_variable = { MAN_lv_remount > 1.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_remount > 1.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_remount > 2.5 } }
+					}
+				}
 			}
 		}
 		on_map_mode = map_and_decisions_view
@@ -1403,7 +1631,13 @@ MAN_plan_cat = {
 			FROM = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_zone_pow
-				NOT = { check_variable = { MAN_lv_thermal > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_thermal > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_thermal > 4.5 } }
+					}
+				}
 
 			}
 		}
@@ -1437,14 +1671,16 @@ MAN_plan_cat = {
 				add_to_variable = { MAN_lv_thermal = 1 }
 				if = { limit = { check_variable = { MAN_lv_thermal = 1 } } add_dynamic_modifier = { modifier = MAN_power_station_1 } }
 				else_if = { limit = { check_variable = { MAN_lv_thermal = 2 } } remove_dynamic_modifier = { modifier = MAN_power_station_1 } add_dynamic_modifier = { modifier = MAN_power_station_2 } }
-				else = { if = { limit = { has_dynamic_modifier = { modifier = MAN_power_station_2 } } remove_dynamic_modifier = { modifier = MAN_power_station_2 } } add_dynamic_modifier = { modifier = MAN_power_station_3 } }
+				else_if = { limit = { check_variable = { MAN_lv_thermal = 3 } } remove_dynamic_modifier = { modifier = MAN_power_station_2 } add_dynamic_modifier = { modifier = MAN_power_station_3 } }
 			}
 			custom_effect_tooltip = MAN_tt_q_power_14
 			set_temp_variable = { MAN_t = 14 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_power }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_power = MAN_t }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
@@ -1467,7 +1703,13 @@ MAN_plan_cat = {
 			FROM = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_zone_pow
-				NOT = { check_variable = { MAN_lv_grid > 0.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_grid > 0.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_grid > 0.5 } }
+					}
+				}
 
 			}
 		}
@@ -1505,16 +1747,20 @@ MAN_plan_cat = {
 			set_temp_variable = { MAN_t = 8 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_power }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_power = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_mach_4
 			set_temp_variable = { MAN_t = 4 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			custom_effect_tooltip = MAN_behemoth_risk_tt
@@ -1537,7 +1783,13 @@ MAN_plan_cat = {
 			FROM = {
 				is_owned_and_controlled_by = ROOT
 				has_state_flag = MAN_zone_set
-				NOT = { check_variable = { MAN_lv_colony > 2.5 } }
+				OR = {
+					NOT = { check_variable = { MAN_lv_colony > 2.5 } }
+					AND = {
+						ROOT = { has_country_flag = MAN_second_five_year_plan_active }
+						NOT = { check_variable = { MAN_lv_colony > 2.5 } }
+					}
+				}
 
 			}
 		}
@@ -1621,15 +1873,19 @@ MAN_plan_cat = {
 			custom_effect_tooltip = MAN_tt_q_steel_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_coal_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
@@ -1671,15 +1927,19 @@ MAN_plan_cat = {
 			custom_effect_tooltip = MAN_tt_q_steel_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_coal_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
@@ -1723,15 +1983,19 @@ MAN_plan_cat = {
 			custom_effect_tooltip = MAN_tt_q_steel_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_coal_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
@@ -1776,15 +2040,19 @@ MAN_plan_cat = {
 			custom_effect_tooltip = MAN_tt_q_steel_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_steel }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_steel = MAN_t }
 			custom_effect_tooltip = MAN_tt_q_coal_3_flat
 			set_temp_variable = { MAN_t = 3 }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_coal }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_coal = MAN_t }
 			hidden_effect = { MAN_plan_recalc = yes MAN_ui_refresh = yes }
@@ -1822,8 +2090,10 @@ MAN_plan_cat = {
 			set_temp_variable = { MAN_t = 4 }
 			multiply_temp_variable = { MAN_t = FROM.MAN_eff }
 			multiply_temp_variable = { MAN_t = MAN_quota_mult }
+			set_temp_variable = { MAN_t3 = MAN_qb_mach }
+			clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
 			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
+			multiply_temp_variable = { MAN_t2 = MAN_t3 }
 			add_to_temp_variable = { MAN_t = MAN_t2 }
 			add_to_variable = { MAN_q_mach = MAN_t }
 			add_to_variable = { MAN_fav_ind = 2 }
@@ -1917,7 +2187,7 @@ MAN_plan_cat = {
 		allowed = { original_tag = MAN }
 		visible = {
 			has_completed_focus = MAN_eco_showa_steel
-			NOT = { check_variable = { MAN_mega_showa_n > 2.5 } }
+			check_variable = { MAN_mega_showa_n < MAN_megacap_showa }
 		}
 		highlight_states = { highlight_state_targets = { state = 716 } }
 		available = {
@@ -1936,19 +2206,25 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_mega_showa_n = 1 }
 			716 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
-				add_resource = { type = steel amount = 60 }
+				if = {
+					limit = { ROOT = { check_variable = { MAN_mega_showa_n < 3.5 } } }
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+					add_resource = { type = steel amount = 60 }
+				}
+				custom_effect_tooltip = MAN_tt_q_steel_20
+				set_temp_variable = { MAN_t = 20 }
+				multiply_temp_variable = { MAN_t = THIS.MAN_eff }
+				multiply_temp_variable = { MAN_t = ROOT.MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = ROOT.MAN_qb_steel }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { ROOT.MAN_q_steel = MAN_t }
 			}
-			custom_effect_tooltip = MAN_tt_q_steel_20_flat
-			set_temp_variable = { MAN_t = 20 }
-			multiply_temp_variable = { MAN_t = MAN_quota_mult }
-			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_steel }
-			add_to_temp_variable = { MAN_t = MAN_t2 }
-			add_to_variable = { MAN_q_steel = MAN_t }
 			if = {
-				limit = { check_variable = { MAN_mega_showa_n > 2.5 } }
+				limit = { check_variable = { MAN_mega_showa_n > 2.5 } check_variable = { MAN_mega_showa_n < 3.5 } }
 				custom_effect_tooltip = MAN_mega_final_tt
 				custom_effect_tooltip = MAN_eco_spirit_changed_tt
 				add_to_variable = { var = MAN_behemoth_industrial_capacity_factory value = 0.04 tooltip = industrial_capacity_factory_tt }
@@ -1969,7 +2245,7 @@ MAN_plan_cat = {
 		allowed = { original_tag = MAN }
 		visible = {
 			has_completed_focus = MAN_eco_fengman_dam
-			NOT = { check_variable = { MAN_mega_fengman_n > 2.5 } }
+			check_variable = { MAN_mega_fengman_n < MAN_megacap_fengman }
 		}
 		highlight_states = { highlight_state_targets = { state = 328 } }
 		available = {
@@ -1988,22 +2264,34 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_mega_fengman_n = 1 }
 			328 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				if = {
+					limit = { ROOT = { check_variable = { MAN_mega_fengman_n < 3.5 } } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				custom_effect_tooltip = MAN_tt_q_power_12_flat
+				set_temp_variable = { MAN_t = 12 }
+				multiply_temp_variable = { MAN_t = ROOT.MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = ROOT.MAN_qb_power }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { ROOT.MAN_q_power = MAN_t }
 			}
-			custom_effect_tooltip = MAN_tt_q_power_15_flat
-			set_temp_variable = { MAN_t = 15 }
-			multiply_temp_variable = { MAN_t = MAN_quota_mult }
-			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
-			add_to_temp_variable = { MAN_t = MAN_t2 }
-			add_to_variable = { MAN_q_power = MAN_t }
 			if = {
-				limit = { check_variable = { MAN_mega_fengman_n > 2.5 } }
+				limit = { check_variable = { MAN_mega_fengman_n > 2.5 } check_variable = { MAN_mega_fengman_n < 3.5 } }
 				custom_effect_tooltip = MAN_mega_final_tt
 				328 = { add_building_construction = { type = dam level = 1 instant_build = yes province = { id = 946 } } }
-				add_to_variable = { MAN_q_power = 20 }
-				custom_effect_tooltip = MAN_tt_q_power_20_flat
+				custom_effect_tooltip = MAN_tt_q_power_14_flat
+				set_temp_variable = { MAN_t = 14 }
+				multiply_temp_variable = { MAN_t = MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = MAN_qb_power }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { MAN_q_power = MAN_t }
 				hidden_effect = { force_update_dynamic_modifier = yes }
 			}
 			custom_effect_tooltip = MAN_behemoth_risk_tt
@@ -2021,7 +2309,7 @@ MAN_plan_cat = {
 		allowed = { original_tag = MAN }
 		visible = {
 			has_completed_focus = MAN_eco_supung_dam
-			NOT = { check_variable = { MAN_mega_supung_n > 1.5 } }
+			check_variable = { MAN_mega_supung_n < MAN_megacap_supung }
 		}
 		highlight_states = { highlight_state_targets = { state = 716 } }
 		available = {
@@ -2030,7 +2318,7 @@ MAN_plan_cat = {
 		custom_cost_trigger = { has_political_power > 49.99 check_variable = { MAN_labour > 39.99 } }
 		custom_cost_text = MAN_cc_50_40_0
 		fire_only_once = no
-		days_remove = 200
+		days_remove = 180
 		modifier = { civilian_factory_use = 3 }
 		complete_effect = {
 			add_political_power = -50
@@ -2040,22 +2328,34 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_mega_supung_n = 1 }
 			716 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				if = {
+					limit = { ROOT = { check_variable = { MAN_mega_supung_n < 2.5 } } }
+					add_extra_state_shared_building_slots = 1
+					add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+				}
+				custom_effect_tooltip = MAN_tt_q_power_14_flat
+				set_temp_variable = { MAN_t = 14 }
+				multiply_temp_variable = { MAN_t = ROOT.MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = ROOT.MAN_qb_power }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { ROOT.MAN_q_power = MAN_t }
 			}
-			custom_effect_tooltip = MAN_tt_q_power_18_flat
-			set_temp_variable = { MAN_t = 18 }
-			multiply_temp_variable = { MAN_t = MAN_quota_mult }
-			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_power }
-			add_to_temp_variable = { MAN_t = MAN_t2 }
-			add_to_variable = { MAN_q_power = MAN_t }
 			if = {
-				limit = { check_variable = { MAN_mega_supung_n > 1.5 } }
+				limit = { check_variable = { MAN_mega_supung_n > 1.5 } check_variable = { MAN_mega_supung_n < 2.5 } }
 				custom_effect_tooltip = MAN_mega_final_tt
 				716 = { add_building_construction = { type = dam level = 1 instant_build = yes province = { id = 836 } } }
-				add_to_variable = { MAN_q_power = 20 }
-				custom_effect_tooltip = MAN_tt_q_power_20_flat
+				custom_effect_tooltip = MAN_tt_q_power_14_flat
+				set_temp_variable = { MAN_t = 14 }
+				multiply_temp_variable = { MAN_t = MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = MAN_qb_power }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { MAN_q_power = MAN_t }
 				JAP = { add_political_power = 25 }
 				hidden_effect = { force_update_dynamic_modifier = yes }
 			}
@@ -2074,7 +2374,7 @@ MAN_plan_cat = {
 		allowed = { original_tag = MAN }
 		visible = {
 			has_completed_focus = MAN_eco_synthetic_fuel
-			NOT = { check_variable = { MAN_mega_kirin_fuel_n > 1.5 } }
+			check_variable = { MAN_mega_kirin_fuel_n < MAN_megacap_kirin_fuel }
 		}
 		highlight_states = { highlight_state_targets = { state = 328 } }
 		available = {
@@ -2093,18 +2393,24 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_mega_kirin_fuel_n = 1 }
 			328 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = { type = synthetic_refinery level = 2 instant_build = yes }
+				if = {
+					limit = { ROOT = { check_variable = { MAN_mega_kirin_fuel_n < 2.5 } } }
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = { type = synthetic_refinery level = 2 instant_build = yes }
+				}
+				custom_effect_tooltip = MAN_tt_q_coal_15
+				set_temp_variable = { MAN_t = 15 }
+				multiply_temp_variable = { MAN_t = THIS.MAN_eff }
+				multiply_temp_variable = { MAN_t = ROOT.MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = ROOT.MAN_qb_coal }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { ROOT.MAN_q_coal = MAN_t }
 			}
-			custom_effect_tooltip = MAN_tt_q_coal_15_flat
-			set_temp_variable = { MAN_t = 15 }
-			multiply_temp_variable = { MAN_t = MAN_quota_mult }
-			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_coal }
-			add_to_temp_variable = { MAN_t = MAN_t2 }
-			add_to_variable = { MAN_q_coal = MAN_t }
 			if = {
-				limit = { check_variable = { MAN_mega_kirin_fuel_n > 1.5 } }
+				limit = { check_variable = { MAN_mega_kirin_fuel_n > 1.5 } check_variable = { MAN_mega_kirin_fuel_n < 2.5 } }
 				custom_effect_tooltip = MAN_mega_final_tt
 				custom_effect_tooltip = MAN_eco_spirit_changed_tt
 				add_to_variable = { var = MAN_behemoth_production_speed_synthetic_refinery_factor value = 0.15 tooltip = production_speed_synthetic_refinery_factor_tt }
@@ -2125,7 +2431,7 @@ MAN_plan_cat = {
 		allowed = { original_tag = MAN }
 		visible = {
 			has_completed_focus = MAN_eco_manshu_hikoki
-			NOT = { check_variable = { MAN_mega_mamc_n > 1.5 } }
+			check_variable = { MAN_mega_mamc_n < MAN_megacap_mamc }
 		}
 		highlight_states = { highlight_state_targets = { state = 716 } }
 		available = {
@@ -2144,18 +2450,24 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_mega_mamc_n = 1 }
 			716 = {
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = { type = arms_factory level = 3 instant_build = yes }
+				if = {
+					limit = { ROOT = { check_variable = { MAN_mega_mamc_n < 2.5 } } }
+					add_extra_state_shared_building_slots = 3
+					add_building_construction = { type = arms_factory level = 3 instant_build = yes }
+				}
+				custom_effect_tooltip = MAN_tt_q_mach_18
+				set_temp_variable = { MAN_t = 18 }
+				multiply_temp_variable = { MAN_t = THIS.MAN_eff }
+				multiply_temp_variable = { MAN_t = ROOT.MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = ROOT.MAN_qb_mach }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { ROOT.MAN_q_mach = MAN_t }
 			}
-			custom_effect_tooltip = MAN_tt_q_mach_18_flat
-			set_temp_variable = { MAN_t = 18 }
-			multiply_temp_variable = { MAN_t = MAN_quota_mult }
-			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
-			add_to_temp_variable = { MAN_t = MAN_t2 }
-			add_to_variable = { MAN_q_mach = MAN_t }
 			if = {
-				limit = { check_variable = { MAN_mega_mamc_n > 1.5 } }
+				limit = { check_variable = { MAN_mega_mamc_n > 1.5 } check_variable = { MAN_mega_mamc_n < 2.5 } }
 				custom_effect_tooltip = MAN_mega_final_tt
 				add_tech_bonus = { name = MAN_mega_mamc bonus = 1.0 uses = 2 category = air_equipment }
 				hidden_effect = { force_update_dynamic_modifier = yes }
@@ -2175,7 +2487,7 @@ MAN_plan_cat = {
 		allowed = { original_tag = MAN }
 		visible = {
 			has_completed_focus = MAN_eco_mukden_arsenal
-			NOT = { check_variable = { MAN_mega_arsenal_n > 1.5 } }
+			check_variable = { MAN_mega_arsenal_n < MAN_megacap_arsenal }
 		}
 		highlight_states = { highlight_state_targets = { state = 716 } }
 		available = {
@@ -2194,18 +2506,24 @@ MAN_plan_cat = {
 		remove_effect = {
 			add_to_variable = { MAN_mega_arsenal_n = 1 }
 			716 = {
-				add_extra_state_shared_building_slots = 2
-				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+				if = {
+					limit = { ROOT = { check_variable = { MAN_mega_arsenal_n < 2.5 } } }
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+				}
+				custom_effect_tooltip = MAN_tt_q_mach_15
+				set_temp_variable = { MAN_t = 15 }
+				multiply_temp_variable = { MAN_t = THIS.MAN_eff }
+				multiply_temp_variable = { MAN_t = ROOT.MAN_quota_mult }
+				set_temp_variable = { MAN_t3 = ROOT.MAN_qb_mach }
+				clamp_temp_variable = { var = MAN_t3 min = 0 max = 0.5 }
+				set_temp_variable = { MAN_t2 = MAN_t }
+				multiply_temp_variable = { MAN_t2 = MAN_t3 }
+				add_to_temp_variable = { MAN_t = MAN_t2 }
+				add_to_variable = { ROOT.MAN_q_mach = MAN_t }
 			}
-			custom_effect_tooltip = MAN_tt_q_mach_15_flat
-			set_temp_variable = { MAN_t = 15 }
-			multiply_temp_variable = { MAN_t = MAN_quota_mult }
-			set_temp_variable = { MAN_t2 = MAN_t }
-			multiply_temp_variable = { MAN_t2 = MAN_qb_mach }
-			add_to_temp_variable = { MAN_t = MAN_t2 }
-			add_to_variable = { MAN_q_mach = MAN_t }
 			if = {
-				limit = { check_variable = { MAN_mega_arsenal_n > 1.5 } }
+				limit = { check_variable = { MAN_mega_arsenal_n > 1.5 } check_variable = { MAN_mega_arsenal_n < 2.5 } }
 				custom_effect_tooltip = MAN_mega_final_tt
 				add_tech_bonus = { name = MAN_mega_arsenal bonus = 1.0 uses = 2 category = infantry_weapons }
 				hidden_effect = { force_update_dynamic_modifier = yes }
@@ -2313,6 +2631,30 @@ MAN_plan_cat = {
 			add_to_variable = { MAN_kw_pat = -8 }
 			custom_effect_tooltip = MAN_tt_pat_m8
 			country_event = { id = man_sys.3 hours = 6 }
+		}
+		ai_will_do = { base = 1 }
+	}
+	MAN_survey_mission = {
+		icon = GFX_decision_generic_research
+		priority = 299
+		allowed = { original_tag = MAN }
+		activation = { has_country_flag = MAN_surveying }
+		available = { always = no }
+		cancel_trigger = { NOT = { any_owned_state = { has_state_flag = MAN_svy_on } } }
+		days_mission_timeout = 45
+		fire_only_once = no
+		is_good = yes
+		timeout_effect = {
+			custom_effect_tooltip = MAN_tt_survey_report
+			hidden_effect = {
+				every_owned_state = {
+					limit = { has_state_flag = MAN_svy_on }
+					clr_state_flag = MAN_svy_on
+					MAN_survey_done = yes
+				}
+				clr_country_flag = MAN_surveying
+				MAN_ui_refresh = yes
+			}
 		}
 		ai_will_do = { base = 1 }
 	}
