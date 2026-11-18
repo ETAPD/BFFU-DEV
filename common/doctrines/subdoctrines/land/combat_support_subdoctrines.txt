@@ -50,6 +50,18 @@ fire_concentration = {
                 set_technology = { all_terrain_arty_6 = 0 popup = no }
                 clr_country_flag = pack_artillery_doctrine_check
             }
+
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_general_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = pack_artillery_general }
+                    remove_unit_leader_trait = adaptable
+                    clr_character_flag = pack_artillery_general
+                }
+                clr_country_flag = pack_artillery_general_check
+            }
         }
     }
     enable_tactic = tactic_overwhelming_fire
@@ -167,6 +179,17 @@ anti_tank_frontline = {
                 set_technology = { fire_concentration = 0 popup = no }
                 clr_country_flag = fire_concentration_doctrine_check
             }
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_general_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = pack_artillery_general }
+                    remove_unit_leader_trait = adaptable
+                    clr_character_flag = pack_artillery_general
+                }
+                clr_country_flag = pack_artillery_general_check
+            }
         }
     }
 
@@ -260,14 +283,14 @@ pack_artillery = {
             }
             custom_effect_tooltip = generic_skip_one_line_tt
         }
-        custom_effect_tooltip  = pack_artillery_tech_1_tt
+        #custom_effect_tooltip  = pack_artillery_tech_1_tt
         
         set_country_flag = pack_artillery_doctrine_check
         hidden_effect = {
-            set_technology = {
-                all_terrain_arty_1 = 1
-                popup = no
-            }
+            #set_technology = {
+            #    all_terrain_arty_1 = 1
+            #    popup = no
+            #}
             if = {
                 limit = {
                     has_country_flag = fire_concentration_doctrine_check
@@ -278,74 +301,106 @@ pack_artillery = {
         }
     }
 
+    category_artillery = {
+        soft_attack = 0.02
+    }
+
     rewards = {
         hill_battery_management = {
-            effect = {
-                custom_effect_tooltip  = pack_artillery_tech_2_tt
-                hidden_effect = {
-                    set_technology = {
-                        all_terrain_arty_2 = 1
-                        popup = no
-                    }
-                }
+            pack_artillery_brigade = {
+                combat_width = -0.5
             }
+            category_artillery = {
+                defense = 0.05
+            }
+            # effect = {
+            #    custom_effect_tooltip  = pack_artillery_tech_2_tt
+            #    hidden_effect = {
+            #        set_technology = {
+            #            all_terrain_arty_2 = 1
+            #            popup = no
+            #        }
+            #    }
+            # }
         }
 
         marsh_screening_fire = {
 
-            effect = {
-                custom_effect_tooltip  = pack_artillery_tech_3_tt
-                hidden_effect = {
-                    set_technology = {
-                        all_terrain_arty_3 = 1
-                        popup = no
-                    }
-                }
-            }
+            # effect = {
+            #    custom_effect_tooltip  = pack_artillery_tech_3_tt
+            #    hidden_effect = {
+            #        set_technology = {
+            #            all_terrain_arty_3 = 1
+            #            popup = no
+            #        }
+            #    }
+            # }
             category_artillery = {
-                max_organisation = 3
+                max_organisation = 6
             }
         }
 
         cross_country_gun_mobility = {
-            effect = {
-                custom_effect_tooltip  = pack_artillery_tech_4_tt
-                hidden_effect = {
-                    set_technology = {
-                        all_terrain_arty_4 = 1
-                        popup = no
-                    }
-                }
-            }
+            # effect = {
+            #    custom_effect_tooltip  = pack_artillery_tech_4_tt
+            #    hidden_effect = {
+            #        set_technology = {
+            #            all_terrain_arty_4 = 1
+            #            popup = no
+            #        }
+            #    }
+            # }
             category_artillery = {
                 max_organisation = 3
+                supply_consumption = -0.05
             }
         }
 
         urban_support_vehicles = {
-            effect = {
-                custom_effect_tooltip  = pack_artillery_tech_5_tt
-                hidden_effect = {
-                    set_technology = {
-                        all_terrain_arty_5 = 1
-                        popup = no
-                    }
-                }
+            # effect = {
+            #    custom_effect_tooltip  = pack_artillery_tech_5_tt
+            #    hidden_effect = {
+            #        set_technology = {
+            #            all_terrain_arty_5 = 1
+            #            popup = no
+            #        }
+            #    }
+            # }
+            category_artillery = {
+                breakthrough = 0.05
+            }
+            category_anti_tank = {
+                hard_attack = 0.05
+                defense = 0.05
             }
         }
 
         shoot_and_scoot_batteries = {
-            effect = {
-                custom_effect_tooltip  = pack_artillery_tech_6_tt
-                hidden_effect = {
-                    set_technology = {
-                        all_terrain_arty_6 = 1
-                        popup = no
-                    }
-                }
-            }
+            # effect = {
+            #    custom_effect_tooltip  = pack_artillery_tech_6_tt
+            #    hidden_effect = {
+            #        set_technology = {
+            #            all_terrain_arty_6 = 1
+            #            popup = no
+            #        }
+            #    }
+            # }
             category_artillery = {
-                max_organisation = 3
+                soft_attack = 0.05
+                breakthrough = 0.05
+            }
+            effect = {
+                custom_effect_tooltip = pack_artillery_general_tt
+                
+                every_army_leader = {
+                    limit = {
+                        has_trait = fortress_buster
+                        NOT = { has_trait = panzer_leader}
+                    }
+                    add_unit_leader_trait = adaptable
+                    set_character_flag = pack_artillery_general
+                }
+                set_country_flag = pack_artillery_general_check
             }
         }
     }
@@ -400,6 +455,17 @@ heavy_artillery = {
                 }
                 set_technology = { fire_concentration = 0 popup = no }
                 clr_country_flag = fire_concentration_doctrine_check
+            }
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_general_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = pack_artillery_general }
+                    remove_unit_leader_trait = adaptable
+                    clr_character_flag = pack_artillery_general
+                }
+                clr_country_flag = pack_artillery_general_check
             }
         }
     }
@@ -530,6 +596,17 @@ siege_artillery = {
                 }
                 set_technology = { fire_concentration = 0 popup = no }
                 clr_country_flag = fire_concentration_doctrine_check
+            }
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_general_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = pack_artillery_general }
+                    remove_unit_leader_trait = adaptable
+                    clr_character_flag = pack_artillery_general
+                }
+                clr_country_flag = pack_artillery_general_check
             }
         }
     }
@@ -700,6 +777,17 @@ field_engineering = {
                 }
                 set_technology = { fire_concentration = 0 popup = no }
                 clr_country_flag = fire_concentration_doctrine_check
+            }
+            if = {
+                limit = {
+                    has_country_flag = pack_artillery_general_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = pack_artillery_general }
+                    remove_unit_leader_trait = adaptable
+                    clr_character_flag = pack_artillery_general
+                }
+                clr_country_flag = pack_artillery_general_check
             }
         }
     }

@@ -9,6 +9,8 @@ mission_type_tactics = {
 
     # EFFECTS
     effect = {
+        set_country_flag = mission_type_tactics_doctrine_check
+        custom_effect_tooltip = mission_type_tactics_probing_attack_tt
         custom_effect_tooltip = generic_skip_one_line_tt
         if = {
             limit = {
@@ -36,6 +38,19 @@ mission_type_tactics = {
                 set_technology = { last_stand_terran = 0 popup = no }
                 clr_country_flag = last_stand_doctrine_check
             }
+            officer_training_set_full_days = yes 
+            if = {
+                limit = {
+                    has_country_flag = operational_command_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = operational_command_general }
+                    add_attack = -1
+                    add_planning = -1
+                    clr_character_flag = operational_command_general
+                }
+                clr_country_flag = operational_command_check
+            }
         }
     }
     coordination_bonus = 0.05
@@ -44,14 +59,9 @@ mission_type_tactics = {
     rewards = {
         low_level_delegation ={
         #1
-            signal_company = {
-                initiative = 0.05
-            }
-            armored_signal = {
-                initiative = 0.05
-            }
+            coordination_bonus = 0.05
             planning_speed = 0.05
-            land_reinforce_rate = 0.01
+            army_org_regain = 0.1
         }
         flexible_command = {
         #2
@@ -59,35 +69,30 @@ mission_type_tactics = {
             planning_decay_rate_factor = -0.1
             category_army = {
                 max_organisation = 2
+                breakthrough = 0.03
             }
         }
         maneouver_drills = {
         #3
-           
             planning_speed = 0.1
             land_reinforce_rate = 0.01
-
         }
         flexible_combat_formations = {
         #4
-            signal_company = {
-                initiative = 0.05
-            }
-            armored_signal = {
-                initiative = 0.05
+            land_reinforce_rate = 0.01
+            category_army = {
+                max_organisation = 3
             }
         }
         control_zone_responsibilities = {
         #5
             planning_speed = 0.05
-            signal_company = {
-                initiative = 0.15
+            coordination_bonus = 0.05
+            army_morale_factor = 0.05
+            category_army = {
+                breakthrough = 0.03
             }
-            armored_signal = {
-                initiative = 0.15
-            }
-            land_reinforce_rate = 0.01
-
+            army_org_regain = 0.1
         }
     }
 }
@@ -119,6 +124,25 @@ last_stand = {
                 flag = last_stand_doctrine_selected
                 value = 1
                 days = 1250
+            }
+            officer_training_set_full_days = yes
+            if = {
+                limit = {
+                    has_country_flag = mission_type_tactics_doctrine_check
+                }
+                clr_country_flag = mission_type_tactics_doctrine_check
+            }
+            if = {
+                limit = {
+                    has_country_flag = operational_command_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = operational_command_general }
+                    add_attack = -1
+                    add_planning = -1
+                    clr_character_flag = operational_command_general
+                }
+                clr_country_flag = operational_command_check
             }
         }
         set_country_flag = last_stand_doctrine_check
@@ -202,6 +226,26 @@ guerilla_warfare = {
                 set_technology = { last_stand_terran = 0 popup = no }
                 clr_country_flag = last_stand_doctrine_check
             }
+            hidden_effect = { officer_training_set_full_days = yes }
+            if = {
+                limit = {
+                    has_country_flag = mission_type_tactics_doctrine_check
+                }
+                clr_country_flag = mission_type_tactics_doctrine_check
+            }
+
+            if = {
+                limit = {
+                    has_country_flag = operational_command_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = operational_command_general }
+                    add_attack = -1
+                    add_planning = -1
+                    clr_character_flag = operational_command_general
+                }
+                clr_country_flag = operational_command_check
+            }
         }
     }
 
@@ -221,6 +265,14 @@ guerilla_warfare = {
             resistance_growth_on_our_occupied_states = 0.05
             resistance_damage_to_garrison_on_our_occupied_states = 0.05
             pocket_penalty = -0.1
+            effect = {
+
+                unlock_decision_tooltip = {
+                    decision = guerilla_partisan_uprising
+                    show_effect_tooltip = yes
+                }
+                set_country_flag = guerilla_partisan_uprising_unlocked
+            }
         }
         hidden_fieldworks = {
         #3
@@ -281,6 +333,25 @@ grand_assault = {
                 }
                 set_technology = { last_stand_terran = 0 popup = no }
                 clr_country_flag = last_stand_doctrine_check
+            }
+            hidden_effect = { officer_training_set_full_days = yes }
+            if = {
+                limit = {
+                    has_country_flag = operational_command_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = operational_command_general }
+                    add_attack = -1
+                    add_planning = -1
+                    clr_character_flag = operational_command_general
+                }
+                clr_country_flag = operational_command_check
+            }
+            if = {
+                limit = {
+                    has_country_flag = mission_type_tactics_doctrine_check
+                }
+                clr_country_flag = mission_type_tactics_doctrine_check
             }
         }
     }
@@ -364,6 +435,26 @@ expeditionary_warfare = {
                 set_technology = { last_stand_terran = 0 popup = no }
                 clr_country_flag = last_stand_doctrine_check
             }
+            hidden_effect = { officer_training_set_full_days = yes }
+            if = {
+                limit = {
+                    has_country_flag = mission_type_tactics_doctrine_check
+                }
+                clr_country_flag = mission_type_tactics_doctrine_check
+            }
+
+            if = {
+                limit = {
+                    has_country_flag = operational_command_check
+                }
+                every_army_leader = {
+                    limit = { has_character_flag = operational_command_general }
+                    add_attack = -1
+                    add_planning = -1
+                    clr_character_flag = operational_command_general
+                }
+                clr_country_flag = operational_command_check
+            }
         }
     }
 
@@ -427,6 +518,7 @@ operational_command = {
     xp_type = army
 
     effect = {
+        custom_effect_tooltip = operational_command_officer_training_tt
         custom_effect_tooltip = generic_skip_one_line_tt
         if = {
             limit = {
@@ -449,11 +541,18 @@ operational_command = {
         hidden_effect = {
             if = {
                 limit = {
+                    has_country_flag = mission_type_tactics_doctrine_check
+                }
+                clr_country_flag = mission_type_tactics_doctrine_check
+            }
+            if = {
+                limit = {
                     has_country_flag = last_stand_doctrine_check
                 }
                 set_technology = { last_stand_terran = 0 popup = no }
                 clr_country_flag = last_stand_doctrine_check
             }
+            officer_training_set_half_days = yes
         }
     }
 
@@ -476,7 +575,7 @@ operational_command = {
         sustainment_staff = {
         #3
             experience_gain_army_unit_factor = 0.1
-            skill_bonus_factor = 0.1
+            army_attack_factor = 0.025
         }
 
         combat_support_sections = {
@@ -490,9 +589,18 @@ operational_command = {
 
         field_command_network = {
         #5
-            skill_bonus_factor = 0.1
+            army_leader_start_attack_level = 1
             command_abilities_cost_factor = -0.15
             max_command_power = 20
+            effect = {
+                every_army_leader = {
+                    add_attack = 1
+                    add_planning = 1
+                    set_character_flag = operational_command_general
+                }
+                set_country_flag = operational_command_check
+                custom_effect_tooltip = operational_command_general_lost_tt
+            }
         }
     }
 }
