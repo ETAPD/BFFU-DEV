@@ -1,0 +1,88 @@
+guerilla_warfare_category = {
+
+	guerilla_partisan_uprising = {
+		icon = GFX_decision_generic_military
+
+		state_target = yes
+		target_array = core_states
+		on_map_mode = map_and_decisions_view
+
+		target_root_trigger = {
+			has_country_flag = guerilla_partisan_uprising_unlocked
+		}
+
+		target_trigger = {
+			FROM = {
+				is_core_of = ROOT
+				OR = {
+					has_dynamic_modifier = { modifier = guerilla_partisan_uprising_modifier }	
+					AND = {
+						NOT = { is_controlled_by = ROOT }
+						controller = { has_war_with = ROOT }
+					}
+				}
+			}
+		}
+
+		available = {
+			has_war = yes
+			NOT = { has_country_flag = guerilla_partisan_uprising_active }
+			FROM = {
+				NOT = { is_controlled_by = ROOT }
+				controller = { has_war_with = ROOT }
+				NOT = { has_dynamic_modifier = { modifier = guerilla_partisan_uprising_modifier } }
+			}
+		}
+
+		custom_cost_trigger = {
+			command_power > 24
+		}
+		custom_cost_text = decision_cost_CP_25
+
+		days_remove = 30
+		days_re_enable = 90
+
+		complete_effect = {
+			hidden_effect = {
+				add_command_power = -25
+			}
+			set_country_flag = guerilla_partisan_uprising_active
+			
+			FROM = {
+				add_dynamic_modifier = {
+					modifier = guerilla_partisan_uprising_modifier
+					days = 30
+				}
+			}
+			hidden_effect = {
+				FROM = {
+					add_province_modifier = {
+						static_modifiers = { guerilla_partisan_uprising_province }
+						days = 40
+						province = {
+							all_provinces = yes
+						}
+					}
+				}
+			}
+		}
+
+		remove_effect = {
+			hidden_effect = {
+				FROM = {
+					remove_province_modifier = {
+						static_modifiers = { guerilla_partisan_uprising_province }
+						province = {
+							all_provinces = yes
+						}
+					}
+				}
+			}
+			clr_country_flag = guerilla_partisan_uprising_active
+		}
+
+		ai_will_do = {
+			base = 1
+		}
+	}
+}

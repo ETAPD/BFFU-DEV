@@ -1,86 +1,9 @@
-special_forces_quantity = {
-    folder = special_forces
-
-    name = GRAND_DOCTRINE_SPECIAL_FORCES_QUANTITY
-    description = GRAND_DOCTRINE_SPECIAL_FORCES_QUANTITY_DESC
-    icon = GFX_doctrine_special_forces_1_medium
-    available = {
-        OR = {
-            has_tech = tech_mountaineers
-            has_tech = marines
-            has_tech = paratroopers
-            has_tech = rangers_tech
-        }
-    }
-
-    xp_cost = 60
-    xp_type = army
-
-    ai_will_do = {
-        base = 1
-    }
-
-    tracks = {
-    	special_forces_first
-    	special_forces_second
-    }
-
-    special_forces_cap = 0.02
-    special_forces_min = 24
-    special_forces_training_time_factor = -0.2
-    category_special_forces = {
-        breakthrough = -0.05
-        soft_attack = -0.05
-    }
-
-    milestones = {
-        {
-        	special_forces_cap = 0.02
-            category_special_forces = {
-                default_morale = 0.05
-            }
-            effect = {
-                if = {
-                    limit = {
-                        NOT = {
-                            has_variable = special_forces_milestone_var
-                        }
-                    }
-                    set_variable = { special_forces_milestone_var = 1 }
-                }
-                else = {
-                    add_to_variable = { special_forces_milestone_var = 1 }
-                }
-            }
-        }
-        {
-        	special_forces_cap = 0.02
-            category_special_forces = {
-                max_organisation = 5
-            }
-            effect = {
-                if = {
-                    limit = {
-                        NOT = {
-                            has_variable = special_forces_milestone_var
-                        }
-                    }
-                    set_variable = { special_forces_milestone_var = 1 }
-                }
-                else = {
-                    add_to_variable = { special_forces_milestone_var = 1 }
-                }
-            }
-        }
-    }
-}
-
 special_forces_quality = {
     folder = special_forces
-
     name = GRAND_DOCTRINE_SPECIAL_FORCES_QUALITY
     description = GRAND_DOCTRINE_SPECIAL_FORCES_QUALITY_DESC
     icon = GFX_doctrine_special_forces_2_medium
+
     available = {
         OR = {
             has_tech = tech_mountaineers
@@ -102,17 +25,28 @@ special_forces_quality = {
         special_forces_second
     }
 
-    category_special_forces = {
-        soft_attack = 0.05
-        hard_attack = 0.05
-    }
+    special_forces_training_time_factor = 0.3
     special_forces_no_supply_grace = 24
+
+    category_special_forces = {
+        need = {
+            sf_equipment = 40
+        }
+        soft_attack = 0.15
+        hard_attack = 0.15
+        breakthrough = 0.15
+    }
+
+    effect = {
+        custom_effect_tooltip = special_forces_quality_equipment_tt
+    }
+
 
     milestones = {
         {
             category_special_forces = {
-                default_morale = 0.05
-                max_organisation = 5
+                default_morale = 0.1
+                max_organisation = 10
             }
             effect = {
                 if = {
@@ -130,9 +64,178 @@ special_forces_quality = {
         }
         {
             category_special_forces = {
+                soft_attack = 0.05
+                hard_attack = 0.05
+            }
+            special_forces_cap_flat = 24
+            effect = {
+                if = {
+                    limit = {
+                        NOT = {
+                            has_variable = special_forces_milestone_var
+                        }
+                    }
+                    set_variable = { special_forces_milestone_var = 1 }
+                }
+                else = {
+                    add_to_variable = { special_forces_milestone_var = 1 }
+                }
+            }
+        }
+    }
+}
+
+special_forces_independent = {
+    folder = special_forces
+    name = GRAND_DOCTRINE_SPECIAL_FORCES_INDEPENDENT
+    description = GRAND_DOCTRINE_SPECIAL_FORCES_INDEPENDENT_DESC
+    icon = GFX_doctrine_special_forces_1_medium
+
+    available = {
+        OR = {
+            has_tech = tech_mountaineers
+            has_tech = marines
+            has_tech = paratroopers
+            has_tech = rangers_tech
+        }
+    }
+
+    xp_cost = 60
+    xp_type = army
+
+    ai_will_do = {
+        base = 1
+    }
+
+    tracks = {
+        special_forces_first
+        special_forces_second
+    }
+
+    special_forces_cap = 0.02
+    special_forces_cap_flat = 24
+    special_forces_no_supply_grace = 72
+
+    category_special_forces = {
+        soft_attack = 0.05
+        breakthrough = 0.05
+    }
+
+    milestones = {
+        {
+            category_special_forces = {
                 default_morale = 0.05
                 max_organisation = 5
             }
+            effect = {
+                set_technology = { mtg_floating_harbors = 1 }
+                if = {
+                    limit = {
+                        NOT = {
+                            has_variable = special_forces_milestone_var
+                        }
+                    }
+                    set_variable = { special_forces_milestone_var = 1 }
+                }
+                else = {
+                    add_to_variable = { special_forces_milestone_var = 1 }
+                }
+            }
+        }
+        {
+            category_special_forces = {
+                soft_attack = 0.05
+                hard_attack = 0.05
+            }
+            effect = {
+                if = {
+                    limit = {
+                        NOT = {
+                            has_variable = special_forces_milestone_var
+                        }
+                    }
+                    set_variable = { special_forces_milestone_var = 1 }
+                }
+                else = {
+                    add_to_variable = { special_forces_milestone_var = 1 }
+                }
+            }
+        }
+    }
+}
+
+special_forces_quantity = {
+    folder = special_forces
+    name = GRAND_DOCTRINE_SPECIAL_FORCES_QUANTITY
+    description = GRAND_DOCTRINE_SPECIAL_FORCES_QUANTITY_DESC
+    icon = GFX_doctrine_special_forces_1_medium
+
+    available = {
+        OR = {
+            has_tech = tech_mountaineers
+            has_tech = marines
+            has_tech = paratroopers
+            has_tech = rangers_tech
+        }
+    }
+
+    xp_cost = 60
+    xp_type = army
+
+    ai_will_do = {
+        base = 1
+    }
+
+    tracks = {
+        special_forces_first
+        special_forces_second
+    }
+
+    special_forces_cap = 0
+    special_forces_min = 36
+    special_forces_training_time_factor = -0.3
+
+    category_special_forces = {
+        need = {
+            sf_equipment = -15
+        }
+        soft_attack = -0.2
+        hard_attack = -0.2
+        breakthrough = -0.1
+    }
+
+    effect = {
+        custom_effect_tooltip = special_forces_quantity_equipment_tt
+    }
+
+
+    milestones = {
+        {
+            special_forces_cap = 0.02
+            category_special_forces = {
+                default_morale = 0.05
+            }
+            special_forces_cap_flat = 24
+            effect = {
+                if = {
+                    limit = {
+                        NOT = {
+                            has_variable = special_forces_milestone_var
+                        }
+                    }
+                    set_variable = { special_forces_milestone_var = 1 }
+                }
+                else = {
+                    add_to_variable = { special_forces_milestone_var = 1 }
+                }
+            }
+        }
+        {
+        	special_forces_cap = 0.02
+            category_special_forces = {
+                max_organisation = 5
+            }
+            special_forces_cap_flat = 24
             effect = {
                 if = {
                     limit = {
