@@ -1,4 +1,4 @@
-version="1.19"
+version="1.20"
 tags={
 	"Balance"
 	"Events"
@@ -26,4 +26,4 @@ replace_path="history/states"
 replace_path="common/operations"
 replace_path="common/units/equipment"
 replace_path="map/strategicregions"
-supported_version="1.19.*"
+supported_version="1.20.*"
