@@ -12,6 +12,7 @@ NDefines.NGame.ALERT_SFX_COOLDOWN_DAYS = 3					-- After playing an alert sound, 
 NDefines.NDiplomacy.WARGOAL_WORLD_TENSION_REDUCTION = -0.25			-- Reduction of pp cost for wargoal at 100% world tension scales linearly
 NDefines.NDiplomacy.VOLUNTEERS_PER_TARGET_PROVINCE = 0.04			-- Each province owned by the target country contributes this amount of volunteers to the limit.
 NDefines.NDiplomacy.VOLUNTEERS_PER_COUNTRY_ARMY = 0.04	-- Each army unit owned by the source country contributes this amount of volunteers to the limit.
+NDefines.NDiplomacy.SEND_VOLUNTEERS_AGAIN_COOLDOWN = 7			-- How long after recalling volunteers can you send volunteers to the same country (Days)
 NDefines.NDiplomacy.TENSION_PEACE_FACTOR = 0.1				-- scale of the amount of tension (from war declaration) reduced when peace is completed.
 NDefines.NDiplomacy.TENSION_PEACE_FACTOR_THREAT_FACTOR  = 0				-- scale of the amount of tension (from war declaration) reduced when peace is completed.
 NDefines.NDiplomacy.TENSION_CAPITULATE = 1.5					-- Scale of the amount of tension created by a countries capitulation.
@@ -55,6 +56,11 @@ NDefines.NCountry.AIR_SUPPLY_CONVERSION_SCALE = 0.15				-- Conversion scale for 
 NDefines.NCountry.BASE_MAX_COMMAND_POWER = 100					-- base value for maximum command power
 NDefines.NCountry.BASE_COMMAND_POWER_GAIN = 0.2				-- base value for daily command power gain
 NDefines.NCountry.ATTACHE_XP_SHARE = 0.15							-- Country received xp from attaches
+NDefines.NCountry.REINFORCEMENT_DELIVERY_SPEED_MIN = 0.2			-- The distance from the supply region to capital should affect the speed only a little bit. Main factor for penalty is overcrowded areas, and not the route length.
+NDefines.NCountry.REINFORCEMENT_EQUIPMENT_DELIVERY_SPEED = 0.25	-- Modifier for army equipment reinforcement speed
+NDefines.NCountry.REINFORCEMENT_MANPOWER_DELIVERY_SPEED = 30	-- Modifier for army manpower reinforcement delivery speed (travel time)
+NDefines.NCountry.REINFORCEMENT_MANPOWER_CHUNK = 0.25				-- Chunk size of manpower reinforcement delivery, in % of total manpower needed by the template.
+NDefines.NCountry.NAVY_USE_HOME_BASE_FOR_RANGE = false			-- If true, will calculate task force range from home base, otherwise will calculate from any friendly naval base
 NDefines.NCountry.SPECIAL_FORCES_CAP_MIN = 36					-- You can have a minimum of this many special forces battalions regardless of the number of non-special forces battalions you have this can also be modified by a country modifier
 NDefines.NCountry.BASE_FUEL_GAIN_PER_OIL = 0.2						-- base amount of fuel gained hourly per excess oil
 NDefines.NCountry.STARTING_FUEL_RATIO = 0.5						-- starting fuel ratio compared to max fuel for countries
@@ -148,6 +154,7 @@ NDefines.NProduction.BASE_LAND_EQUIPMENT_CONVERSION_IC_COST_FACTOR = 1		-- Fract
 NDefines.NProduction.MIN_LAND_EQUIPMENT_CONVERSION_RESOURCE_COST_FACTOR = 1		-- Minimum fraction of a land equipment's strategic resource cost that any conversion will cost.
 NDefines.NProduction.CONVOY_MAX_NAV_FACTORIES_PER_LINE = 150
 NDefines.NProduction.MINIMUM_NUMBER_OF_FACTORIES_TAKEN_BY_CONSUMER_GOODS_PERCENT = 0.05	-- The minimum number of factories we have to put on consumer goods, in percent. (Vanilla is 0.1)
+NDefines.NProduction.SHIP_REFIT_MAX_PROGRESS_TO_CANCEL = 0.8		-- Maximum refitting progress % that we still allow to cancel wihtout having to scuttle the ship.
 
 
 
@@ -155,6 +162,7 @@ NDefines.NTechnology.BASE_RESEARCH_POINTS_SAVED = 75.0		-- Base amount of resear
 NDefines.NTechnology.BASE_YEAR_AHEAD_PENALTY_FACTOR = 6.0		-- Base year ahead penalty
 NDefines.NTechnology.BASE_TECH_COST = 100					-- Base cost for a tech. multiplied with tech cost and ahead of time penalties
 NDefines.NTechnology.MIN_RESEARCH_SPEED = 0.1				-- research speed can't go below this value
+NDefines.NTechnology.USE_BONUS_REGRET_TIMER = 7				-- Number of days the player has to regret using a limited tech bonus
 
 NDefines.NPolitics.ARMY_LEADER_COST = 5					-- cost for recruiting new leaders 'this value' * number_of_existing_leaders_of_type
 NDefines.NPolitics.NAVY_LEADER_COST = 5					-- cost for recruiting new leaders 'this value' * number_of_existing_leaders_of_type
@@ -863,6 +871,11 @@ NDefines.NIntel.CIVILIAN_TRADE_SHOW_TRADE_PARTNERS = 0.35 -- minimum value to sh
 NDefines.NIntel.CIVILIAN_INTEL_NEEDED_TO_SHOW_FOCUS_TREE = 0.6 -- min required intel to focus tree with taken focuses
 NDefines.NIntel.ARMY_ARMY_COUNT_RANGE_INTEL_MIN = 0.15
 NDefines.NIntel.ARMY_DEPLOYED_MANPOWER_COUNT_RANGE_INTEL_MIN = 0.15
+NDefines.NIntel.ARMY_INTEL_COMBAT_BONUS_MAX_BONUS = 0.10 -- max combat bonus that will apply when intel is high enough
+NDefines.NIntel.ARMY_INTEL_COMBAT_BONUS_FACTOR_ATTACK = 1.25 -- multiplier for attack value of intel combat bonus
+NDefines.NIntel.ARMY_INTEL_COMBAT_BONUS_FACTOR_DEFENSE = 1.25 -- multiplier for defense value of intel combat bonus
+NDefines.NIntel.ARMY_INTEL_COMBAT_BONUS_MIN_INTEL_FOR_BONUS = 20 -- min intel needed to start applying ARMY_INTEL_COMBAT_BONUS_MAX_BONUS
+NDefines.NIntel.ARMY_INTEL_COMBAT_BONUS_MAX_INTEL_FOR_BONUS = 60 -- intel needed to fully apply ARMY_INTEL_COMBAT_BONUS_MAX_BONUS
 NDefines.NIntel.NAVAL_DOMINANCE_INTEL_LOW = 0.3								-- we need more intel than this to get any supremacy
 NDefines.NIntel.NAVY_DEPLOYED_MANPOWER_COUNT_RANGE_INTEL_MIN = 0.1
 NDefines.NIntel.AIR_AIRWING_COUNT_INTEL_RANGE_AT_LOWEST_INTEL = 2
@@ -873,6 +886,9 @@ NDefines.NIntel.NAVY_INTEL_MINE_DAMAGE_REDUCTION_FACTOR_MIN_INTEL_FOR_BONUS = 5 
 NDefines.NIntel.NAVY_INTEL_MINE_DAMAGE_REDUCTION_FACTOR_MAX_INTEL_FOR_BONUS = 40 -- t this intel NAVAL_MINES_INTEL_DIFF_FACTOR will be applied fully
 
 -- NDefines.NIntel.STATIC_INTEL_SOURCE_INTEL_NETWORK_MAXIMUMS = { 30.0, 30.0, 30.0, 30.0}
+NDefines.NIntel.INTEL_NETWORK_MAX_CIVILIAN_INTEL = 25.0
+NDefines.NIntel.INTEL_NETWORK_MAX_ARMY_INTEL = 25.0
+NDefines.NIntel.INTEL_NETWORK_MAX_AIRFORCE_INTEL = 25.0
 NDefines.NIntel.STATIC_INTEL_SOURCE_RADAR_MAXIMUMS = { 0.0, 0.0, 30.0, 30.0} -- Vanilla 10/10/20/20
 NDefines.NIntel.RADAR_BASE_INTEL_VALUES_FOR_COVERED_LAND_PROVINCES = { 0.0, 0.0, 0.0, 12.0} -- Vanilla 5/5/0/12
 NDefines.NIntel.RADAR_BASE_INTEL_VALUES_FOR_COUNTRY_COVERAGE_PERCENTAGE = { 0.0, 0.0, 0.0, 18.0} -- Vanilla 9/9/0/18
