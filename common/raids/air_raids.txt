@@ -1557,7 +1557,7 @@ types = {
 ###################################################################################################
 	
 	industrial_sector_bombing_raid = {
-		days_to_prepare = 45
+		days_to_prepare = 30
 		days_re_enable = 90
 
 		category = air_raids
@@ -1867,5 +1867,268 @@ types = {
 		}
 	}
 
+	fort_bombing_raid = {
+		days_to_prepare = 30
+		days_re_enable = 120
+
+		category = air_raids
+
+		command_power = 15 # command power allocation cost
+
+		allowed = {
+			has_dlc = "Gotterdammerung"
+		}
+		
+		# Raid Type is visible
+		visible = {
+			
+		}
+
+		# Specific Target is visible
+		show_target = {
+			NOT = {
+				is_in_faction_with = FROM
+			}
+		}
+
+		# Can prepare
+		available = {
+		}
+
+		launchable = {
+			has_war_with = FROM
+		}
+
+		target_type = {
+			state = {
+				OR = {
+					any_province_building_level = {
+           				province = {
+           				    all_provinces = yes
+           				}
+           				building = bunker
+           				level > 4
+        			}
+
+        			any_province_building_level = {
+        			    province = {
+        			        all_provinces = yes
+        			    }
+        			    building = coastal_bunker
+        			    level > 4
+        			}
+
+					any_province_building_level = {
+           				province = {
+           				    all_provinces = yes
+           				}
+           				building = fortress
+           				level > 1
+        			}
+
+        			any_province_building_level = {
+        			    province = {
+        			        all_provinces = yes
+        			    }
+        			    building = coastal_fortress
+        			    level > 1
+        			}
+				}
+				
+				NOT = {
+					has_state_flag = fort_raided
+				}
+			}
+		}
+
+		custom_map_icon = GFX_raid_type_icon_fort_raid
+		target_icon = GFX_raid_type_icon_fort_raid
+		launch_sound = raid_launch_air
+
+		arrow = {
+		    type = air
+		}
+
+		unit_requirements = {
+			equipment = {
+				type = { tactical_bomber }
+				amount = { min = 50 }
+			}
+		}
+
+		unit_requirements = {
+			equipment = {
+				type = { strategic_bomber }
+				amount = { min = 30 }
+			}
+		}
+
+		starting_point = {
+		    types = { air_base }
+		}
+
+		success_factors = {
+			success = {
+				base = 0.50
+
+				# Raiding unit modifiers
+				experience = {
+					weight = 0.1
+					start_weight = -0.1
+					reference = 1.0
+				}
+				air_agility = {
+					reference = 100.0 # As air unit agility approaches 100 (as defined by the value above), increase chance by this value
+					weight = 0.1 # At 0 agility, the modifier will have negative effect.
+					start_weight = -0.1 # The modifier will scale linearly, meaning at 50 agility, the modifier will be 0.
+				}
+				reliability = {
+					reference = 1
+					weight = 0.05
+					start_weight = -0.1
+				}
+				air_defence = {
+					reference = 100
+					weight = 0.05
+					start_weight = -0.05
+				}
+				air_superiority = {
+					reference = 1
+					weight = 0.5
+					start_weight = -0.5
+				}
+
+				### Target Modifiers
+				anti_air = {
+					reference = 5
+					weight = -0.25
+				}
+				intel = {
+					weight = 0.3
+					#start_reference = 50
+					reference = 100
+				}
+			
+			}
+
+			critical = {
+				base = 0.10
+
+			}
+		}
+
+
+
+		success_levels = {
+			failure = {
+				victim_effects = {
+					var:target_state = {
+						set_state_flag = {
+							flag = fort_raided
+							days = 120
+							value = 1
+						}
+
+						raid_damage_fail_all_provinces_in_target_state = yes
+					}
+				}
+				actor_effects = {
+					# Damage to raiding units
+					raid_damage_units = {
+						plane_loss = 0.7
+						ratio = yes
+					}
+					raid_add_unit_experience = 0.05
+				}
+				visual_effect = {
+					entity = "raid_failed_entity"
+					animation = "attack"
+					}
+			}
+			limited_success = {
+			    victim_effects = {
+					var:target_state = {
+						set_state_flag = {
+							flag = fort_raided
+							days = 120
+							value = 1
+						}
+
+						raid_damage_limited_all_provinces_in_target_state = yes
+					}
+				}
+				actor_effects = {
+					# Damage to raiding units
+					raid_damage_units = {
+						plane_loss = 0.5
+						ratio = yes
+					}
+
+					# XP etc
+					raid_add_unit_experience = 0.1
+				}
+				visual_effect = {
+					entity = "air_raids_1_limited_success_entity"
+					animation = "attack"
+				}
+			}
+			success = {
+			    victim_effects = {
+					var:target_state = {
+						set_state_flag = {
+							flag = fort_raided
+							days = 120
+							value = 1
+						}
+
+						raid_damage_success_all_provinces_in_target_state = yes
+					}
+				}
+				actor_effects = {
+					# Damage to raiding units
+					raid_damage_units = {
+						plane_loss = 0.2
+						ratio = yes
+					}
+
+					# XP etc
+					raid_add_unit_experience = 0.2
+
+				}
+				visual_effect = {
+					entity = "air_raids_1_success_entity"
+					animation = "attack"
+				}
+			}
+			critical_success = {
+			    victim_effects = {
+					var:target_state = {
+						set_state_flag = {
+							flag = fort_raided
+							days = 120
+							value = 1
+						}
+						
+					}
+
+					raid_damage_critical_success_all_provinces_in_target_state = yes
+				}
+				actor_effects = {
+					# Damage to raiding units
+					raid_damage_units = {
+						plane_loss = 0.1
+						ratio = yes
+					}
+
+					# XP etc
+					raid_add_unit_experience = 0.35
+				}
+				visual_effect = {
+					entity = "air_raids_1_critical_success_entity"
+					animation = "attack"
+				}
+			}
+		}
+	}
 # END OF TYPES
 }
