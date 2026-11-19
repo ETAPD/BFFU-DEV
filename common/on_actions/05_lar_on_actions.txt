@@ -634,6 +634,48 @@ on_actions = {
 		}
 	}
 	
+	# Panzer licence from the German Technical Mission: Spain receives the German upgrade of the line it picked
+	on_weekly_SPR = {
+		effect = {
+			if = {
+				limit = {
+					has_country_flag = SPA_panzer_iii_line
+					NOT = { has_tech = ger_p3_tank_g }
+					country_exists = GER
+					GER = { has_tech = ger_p3_tank_g }
+				}
+				set_technology = {
+					ger_p3_tank_g = 1
+				}
+			}
+			else_if = {
+				limit = {
+					has_country_flag = SPA_panzer_iv_line
+					NOT = { has_tech = ger_p4_turret_1 }
+					NOT = { has_tech = ger_p4_tank_h }
+					country_exists = GER
+					GER = {
+						OR = {
+							has_tech = ger_p4_turret_1
+							has_tech = ger_p4_tank_h
+						}
+					}
+				}
+				if = {
+					limit = { GER = { has_tech = ger_p4_turret_1 } }
+					set_technology = {
+						ger_p4_turret_1 = 1
+					}
+				}
+				else = {
+					set_technology = {
+						ger_p4_tank_h = 1
+					}
+				}
+			}
+		}
+	}
+
 	# Spanish Civil War safety net: if the Nationalists are about to fall (or already have), the Republic yields to them instead
 	on_daily_SPR = {
 		effect = {
