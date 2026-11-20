@@ -980,6 +980,23 @@ NDefines.NIndustrialOrganisation.DEFAULT_INITIAL_TASK_CAPACITY = 3			-- Default 
 NDefines.NProject.SUPPORTIVE_SCIENTISTS_FRACTION = 0.05 -- how effective supportive scientists are compared to how strong they would be on default
 NDefines.NProject.AMOUNT_OF_SUPPORTIVE_SCIENTISTS = 4 -- The amount of supportive scientists a facility can have
 NDefines.NProject.DAYS_TO_REMOVE_SCIENTIST = 1 -- Amount of days needed for a scientist to be unassigned.
+NDefines.NProject.DISMANTLE_FACILITY_DAYS = 500                   -- Amount of days needed to dismantle a facility.
+NDefines.NProject.DEFAULT_PROJECT_COMPLETION_SCIENTIST_EXPERIENCE_GAIN = 450.0	-- Default experience gain for assigned scientist when a project is completed
+NDefines.NProject.SCIENTIST_BASIC_RESEARCH_DAILY_XP_GAIN = 0.65	-- Daily experience gain for doing basic research
+NDefines.NProject.SCIENTIST_SKILL_LEVEL_THRESHOLDS = {			-- Threshold for scientist to level up
+	100,		-- to go from level 0 to level 1
+	200,		-- to go from level 1 to level 2
+	500,		-- to go from level 2 to level 3
+	1200,		-- ...
+	2200,		-- Max level = Array size
+}
+NDefines.NProject.PROJECT_CAPTURE_BREAKTHROUGH_PROGRESS = 0.15        -- Ratio of breakthrough progress on capture to the captor for the facilities specialization
+NDefines.NProject.BASIC_RESEARCH_TECHNOLOGY_BONUS_FACTOR = 0.05     -- Bonus research factor applied to technologies per scientist skill level when performing basic research in a matching facility.
+NDefines.NProject.BASIC_RESEARCH_TECHNOLOGY_BONUS_DIMINISHING_RETURN_FACTOR = 0.1 -- Diminishing return on BASIC_RESEARCH_TECHNOLOGY_BONUS_FACTOR for each extra scientist performing basic research for multiple facilities.
+NDefines.NProject.BREAKTHROUGH_DAILY_TECHNOLOGY_GAIN = 8           -- Amount in 1/100th percentage. E.g. 25 = 0.25%
+NDefines.NProject.BREAKTHROUGH_DAILY_SCIENTIST_SKILL_GAIN = 8       -- Amount in 1/100th percentage gained per skill when doing basic research. E.g. 5 = 0.05% per skill level.
+NDefines.NProject.BREAKTHROUGH_DAILY_ROCKET_SITE_GAIN = 3		   -- Amount in 1/100th percentage gained per rocket site level. E.g. 1 = 0.01% per rocket site level.
+NDefines.NProject.BREAKTHROUGH_DAILY_NUCLEAR_REACTOR_GAIN = 20       -- Amount in 1/100th percentage gained per nuclear reactor. E.g. 2 = 0.02% per nuclear reactor.
 
 NDefines.NRaids.RAID_MEDIUM_RISK_SETTING_DISASTER_MODIFIER = 0.15  -- How much the disaster risk is modified when the dial is set to "medium"
 NDefines.NRaids.RAID_HIGH_RISK_SETTING_DISASTER_MODIFIER = 0.35
