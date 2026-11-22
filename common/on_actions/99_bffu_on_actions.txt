@@ -23,6 +23,19 @@ on_actions = {
 		effect = {
 			TFB_join_trade_bloc = yes
 			scw_update_allied_volunteers = yes # Spanish Civil War Allied volunteer caps
+			if = { # Soviet armour commanders get +25 max army size (hidden status trait)
+				limit = { original_tag = SOV }
+				every_army_leader = {
+					limit = {
+						OR = {
+							has_trait = panzer_leader
+							has_trait = armor_officer
+						}
+						NOT = { has_trait = SOV_armored_command_staff }
+					}
+					add_unit_leader_trait = SOV_armored_command_staff
+				}
+			}
 			if = { # Day of Infamy fallback (USA already at war when Japan attacked)
 				limit = { tag = USA has_war_with = JAP NOT = { has_global_flag = day_of_infamy_happened } }
 				BFFU_usa_day_of_infamy = yes
