@@ -867,7 +867,7 @@ focus_tree = {
 		icon = GFX_goal_generic_national_unity
 		x = 19
 		y = 1
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -898,7 +898,7 @@ focus_tree = {
 		icon = GFX_goal_generic_political_pressure
 		x = 19
 		y = 2
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -929,7 +929,7 @@ focus_tree = {
 		icon = GFX_goal_generic_propaganda
 		x = 21
 		y = 1
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -961,7 +961,7 @@ focus_tree = {
 		icon = GFX_USA_landonsuproar-896295
 		x = 21
 		y = 2
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -993,7 +993,7 @@ focus_tree = {
 		icon = GFX_goal_generic_propaganda
 		x = 23
 		y = 1
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -1025,7 +1025,7 @@ focus_tree = {
 		icon = GFX_goal_generic_construct_infrastructure
 		x = 23
 		y = 2
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -1057,7 +1057,7 @@ focus_tree = {
 		icon = GFX_USA_on_the_shoulder_of_giants-896310
 		x = 25
 		y = 1
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -1089,7 +1089,7 @@ focus_tree = {
 		icon = GFX_goal_generic_consumer_goods
 		x = 25
 		y = 2
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
@@ -1782,7 +1782,11 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			remove_ideas = USA_naval_treaty
+			# ends Dormant Naval Industry inside Economy of the United States
+			custom_effect_tooltip = USA_modify_war_economy_tt
+			add_to_variable = { USA_we_dock_speed = 0.10 tooltip = production_speed_dockyard_factor_tt }
+			add_to_variable = { USA_we_bunker_speed = 0.75 tooltip = production_speed_coastal_bunker_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			# New York (Brooklyn Navy Yard) — Atlantic
 			358 = {
 				add_extra_state_shared_building_slots = 4
@@ -1825,7 +1829,9 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_vinsontrammell_act  }
 		completion_reward = {
-			add_ideas = USA_two_ocean_navy_act
+			custom_effect_tooltip = USA_modify_war_economy_tt
+			add_to_variable = { USA_we_dock_speed = 0.05 tooltip = production_speed_dockyard_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			navy_experience = 25
 			# New England (Fore River / Bath Iron Works) — new Atlantic construction yards
 			357 = {
@@ -1868,10 +1874,14 @@ focus_tree = {
 		prerequisite = { focus = USA_prepare_the_twoocean_navy_act  }
 		prerequisite = { focus = USA_push_forward_the_naval_act }
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = USA_two_ocean_navy_act
-				add_idea = USA_bureau_of_ships
-			}
+			# Bureau of Ships replaces the Two-Ocean Navy Act's +5%/+5%: totals +25% output, +20% speed, +5% consumer goods, -0.1 political power
+			custom_effect_tooltip = USA_modify_war_economy_tt
+			add_to_variable = { USA_we_dock_output = 0.20 tooltip = industrial_capacity_dockyard_tt }
+			add_to_variable = { USA_we_dock_speed = 0.15 tooltip = production_speed_dockyard_factor_tt }
+			custom_effect_tooltip = USA_bureau_of_ships_cg_tt
+			hidden_effect = { add_to_variable = { USA_we_consumer = 0.05 } }
+			add_to_variable = { USA_we_pp_gain = -0.1 tooltip = political_power_gain_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			country_event = { id = USA_naval.1 days = 3 }
 		}
 	}
