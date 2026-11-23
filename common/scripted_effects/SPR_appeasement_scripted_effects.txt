@@ -264,10 +264,11 @@ SPR_reopen_mainland_airfields = {
 	}
 }
 
-# Allied backing for the Spanish Civil War ending: Soviet and French rewards
+# Spanish Civil War forced to an end (End Spanish Civil War decision, or the Republic yields as the Nationalists collapse):
+# Soviet and French rewards
 SPR_scw_allied_victory_rewards = {
 	SOV = {
-		add_offsite_building = { type = arms_factory level = 10 }
+		add_offsite_building = { type = industrial_complex level = 15 }
 		army_experience = 50
 	}
 	FRA = {
@@ -286,7 +287,7 @@ SPR_scw_allied_victory_rewards = {
 	}
 }
 
-# Nationalists about to fall (or fallen): the Republic yields to them instead, the civil war ends and the Allied victory focus fires
+# Nationalists about to fall (or fallen): the Republic yields to them instead, the civil war ends and the Pyrrhic Victory focus fires
 SPR_scw_republic_yields_to_nationalists = {
 	hidden_effect = {
 		SPR = {
@@ -300,7 +301,109 @@ SPR_scw_republic_yields_to_nationalists = {
 			limit = { original_tag = SPR }
 			PREV = { annex_country = { target = PREV transfer_troops = no } }
 		}
-		complete_national_focus = SPA_Allies_Victory
+		complete_national_focus = SPA_Pyrrhic_Victory
 	}
 	SPR_scw_allied_victory_rewards = yes
+}
+
+# Spanish Civil War: Allied volunteer caps (France and the Soviet Union use their own ideas).
+# ENG 3, or 1 after ENG_appeasement. CAN, AST, SAF, NZL, RAJ and POL 1 each.
+# An AI minor sends 0 and its slot passes to its human partner: NZL <-> AST, CAN <-> SAF, RAJ -> ENG, POL -> RAJ.
+# Runs from on_monthly and when the civil war starts; cleans itself up when scw_over is set.
+scw_update_allied_volunteers = {
+	if = {
+		limit = { OR = { tag = ENG tag = CAN tag = AST tag = SAF tag = NZL tag = RAJ tag = POL } }
+		set_temp_variable = { scw_cap = 0 }
+		if = {
+			limit = {
+				has_global_flag = spanish_civil_war
+				NOT = { has_global_flag = scw_over }
+				NOT = { has_government = fascism }
+			}
+			if = {
+				limit = { tag = ENG }
+				set_temp_variable = { scw_cap = 3 }
+				if = {
+					limit = { has_completed_focus = ENG_appeasement }
+					set_temp_variable = { scw_cap = 1 }
+				}
+				if = {
+					limit = { RAJ = { exists = yes is_ai = yes } }
+					add_to_temp_variable = { scw_cap = 1 }
+				}
+				if = {
+					limit = { has_idea = ENG_volunteers_idea }
+					subtract_from_temp_variable = { scw_cap = 2 }
+					if = {
+						limit = { check_variable = { scw_cap < 2 } }
+						set_temp_variable = { scw_cap = 0 }
+					}
+				}
+			}
+			else_if = {
+				limit = { is_ai = no }
+				set_temp_variable = { scw_cap = 1 }
+				if = {
+					limit = {
+						tag = AST
+						NZL = { exists = yes is_ai = yes }
+					}
+					add_to_temp_variable = { scw_cap = 1 }
+				}
+				if = {
+					limit = {
+						tag = NZL
+						AST = { exists = yes is_ai = yes }
+					}
+					add_to_temp_variable = { scw_cap = 1 }
+				}
+				if = {
+					limit = {
+						tag = CAN
+						SAF = { exists = yes is_ai = yes }
+					}
+					add_to_temp_variable = { scw_cap = 1 }
+				}
+				if = {
+					limit = {
+						tag = SAF
+						CAN = { exists = yes is_ai = yes }
+					}
+					add_to_temp_variable = { scw_cap = 1 }
+				}
+				if = {
+					limit = {
+						tag = RAJ
+						POL = { exists = yes is_ai = yes }
+					}
+					add_to_temp_variable = { scw_cap = 1 }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { scw_cap > 0 } }
+			set_variable = { scw_volunteer_cap = scw_cap }
+			subtract_from_variable = { scw_volunteer_cap = 1 }
+			if = {
+				limit = { NOT = { has_country_flag = scw_allied_volunteers_flag } }
+				set_country_flag = scw_allied_volunteers_flag
+				add_relation_rule_override = {
+					trigger = scw_allied_volunteer_target
+					usage_desc = scw_allied_volunteer_target_tt
+					can_send_volunteers = yes
+				}
+				add_dynamic_modifier = { modifier = scw_allied_volunteers }
+			}
+		}
+		else_if = {
+			limit = { has_country_flag = scw_allied_volunteers_flag }
+			clr_country_flag = scw_allied_volunteers_flag
+			remove_relation_rule_override = {
+				trigger = scw_allied_volunteer_target
+				can_send_volunteers = yes
+			}
+			remove_dynamic_modifier = { modifier = scw_allied_volunteers }
+			clear_variable = scw_volunteer_cap
+		}
+	}
 }

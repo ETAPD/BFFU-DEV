@@ -16,6 +16,13 @@ country_event = {
 
 	immediate = {
 		set_politics = { ruling_party = democratic elections_allowed = no }
+		# Election Honeymoon (180 days): size set by the margin below, plus the voting blocs we secured
+		set_variable = { USA_hm_pp = 0 }
+		set_variable = { USA_hm_stab = 0 }
+		set_variable = { USA_hm_ws = 0 }
+		set_variable = { USA_hm_output = 0 }
+		set_variable = { USA_hm_build = 0 }
+		set_variable = { USA_hm_cg = 0 }
 		# The polling bar is the source of truth: cursor clearly on the Landon (right)
 		# side wins it for him, otherwise Roosevelt holds. The campaign minigame uses
 		# swings of 0.04-0.24, so the bar CAN land on exactly 0 (and float noise can
@@ -28,20 +35,29 @@ country_event = {
 				if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value > 0.7 } }
 					set_country_flag = USA_we_mandate_lan_3
-					add_to_variable = { USA_we_stab_factor = 0.08 }
-					add_to_variable = { USA_we_ws_factor = 0.03 }
-					add_to_variable = { USA_we_output = 0.06 }
-					add_political_power = 60
+					add_to_variable = { USA_hm_output = 0.12 }
+					add_to_variable = { USA_hm_stab = 0.1 }
+					add_to_variable = { USA_hm_ws = 0.05 }
+					add_to_variable = { USA_hm_build = 0.1 }
+					add_to_variable = { USA_we_stab_factor = 0.10 }
+					add_to_variable = { USA_we_ws_factor = 0.05 }
+					add_to_variable = { USA_we_output = 0.08 }
+					add_political_power = 100
 				}
 				else_if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value > 0.4 } }
 					set_country_flag = USA_we_mandate_lan_2
-					add_to_variable = { USA_we_stab_factor = 0.05 }
-					add_to_variable = { USA_we_output = 0.04 }
-					add_political_power = 30
+					add_to_variable = { USA_hm_output = 0.08 }
+					add_to_variable = { USA_hm_stab = 0.06 }
+					add_to_variable = { USA_hm_build = 0.05 }
+					add_to_variable = { USA_we_stab_factor = 0.06 }
+					add_to_variable = { USA_we_output = 0.05 }
+					add_political_power = 50
 				}
 				else = {
 					set_country_flag = USA_we_mandate_lan_1
+					add_to_variable = { USA_hm_output = 0.04 }
+					add_to_variable = { USA_hm_stab = 0.03 }
 					add_to_variable = { USA_we_stab_factor = 0.03 }
 					add_to_variable = { USA_we_output = 0.02 }
 				}
@@ -55,20 +71,29 @@ country_event = {
 				if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value < -0.7 } }
 					set_country_flag = USA_we_mandate_fdr_3
-					add_to_variable = { USA_we_stab_factor = 0.08 }
-					add_to_variable = { USA_we_pp_gain = 0.15 }
-					add_to_variable = { USA_we_ws_factor = 0.03 }
-					add_political_power = 60
+					add_to_variable = { USA_hm_pp = 0.5 }
+					add_to_variable = { USA_hm_stab = 0.1 }
+					add_to_variable = { USA_hm_ws = 0.05 }
+					add_to_variable = { USA_hm_output = 0.03 }
+					add_to_variable = { USA_we_stab_factor = 0.10 }
+					add_to_variable = { USA_we_pp_gain = 0.20 }
+					add_to_variable = { USA_we_ws_factor = 0.05 }
+					add_political_power = 100
 				}
 				else_if = {
 					limit = { power_balance_value = { id = USA_1936_election_bop value < -0.4 } }
 					set_country_flag = USA_we_mandate_fdr_2
-					add_to_variable = { USA_we_stab_factor = 0.05 }
-					add_to_variable = { USA_we_pp_gain = 0.1 }
-					add_political_power = 30
+					add_to_variable = { USA_hm_pp = 0.3 }
+					add_to_variable = { USA_hm_stab = 0.06 }
+					add_to_variable = { USA_hm_ws = 0.03 }
+					add_to_variable = { USA_we_stab_factor = 0.06 }
+					add_to_variable = { USA_we_pp_gain = 0.12 }
+					add_political_power = 50
 				}
 				else = {
 					set_country_flag = USA_we_mandate_fdr_1
+					add_to_variable = { USA_hm_pp = 0.15 }
+					add_to_variable = { USA_hm_stab = 0.03 }
 					add_to_variable = { USA_we_stab_factor = 0.03 }
 					add_to_variable = { USA_we_pp_gain = 0.05 }
 				}
@@ -76,6 +101,51 @@ country_event = {
 				country_event = { id = usa.231 days = 730 }
 			}
 			complete_national_focus = USA_on_the_shoulder_of_giants
+		}
+		# Absentee Candidate: fewer than 4 campaign stops made -> no margin honeymoon, a 180-day penalty instead
+		if = {
+			limit = { check_variable = { USA_camp_stops_done < 4 } }
+			set_variable = { USA_hm_pp = 0 }
+			set_variable = { USA_hm_stab = 0 }
+			set_variable = { USA_hm_ws = 0 }
+			set_variable = { USA_hm_output = 0 }
+			set_variable = { USA_hm_build = 0 }
+			set_variable = { USA_hm_cg = 0 }
+			add_dynamic_modifier = { modifier = USA_election_absentee days = 180 }
+		}
+		# voting blocs secured during the campaign add to the honeymoon
+		if = {
+			limit = { has_country_flag = USA_campaign_bloc_labor }
+			add_to_variable = { USA_hm_output = 0.03 }
+			add_to_variable = { USA_hm_cg = 0.02 }
+		}
+		if = {
+			limit = { has_country_flag = USA_campaign_bloc_business }
+			add_to_variable = { USA_hm_build = 0.05 }
+			add_to_variable = { USA_hm_stab = -0.02 }
+		}
+		if = {
+			limit = { has_country_flag = USA_campaign_bloc_farm }
+			add_to_variable = { USA_hm_stab = 0.03 }
+			add_to_variable = { USA_hm_pp = 0.05 }
+		}
+		if = {
+			limit = { has_country_flag = USA_campaign_bloc_south }
+			add_to_variable = { USA_hm_pp = 0.1 }
+			add_to_variable = { USA_hm_ws = 0.02 }
+		}
+		# an absentee candidate only gets a honeymoon from the voting blocs secured
+		if = {
+			limit = {
+				OR = {
+					check_variable = { USA_camp_stops_done > 3 }
+					has_country_flag = USA_campaign_bloc_labor
+					has_country_flag = USA_campaign_bloc_business
+					has_country_flag = USA_campaign_bloc_farm
+					has_country_flag = USA_campaign_bloc_south
+				}
+			}
+			add_dynamic_modifier = { modifier = USA_election_honeymoon days = 180 }
 		}
 		remove_power_balance = { id = USA_1936_election_bop }
 	}
@@ -1369,7 +1439,7 @@ country_event = {
 	}
 }
 
-# Two years after the 1936 election the mandate ends: take its bonuses back out of War Economy of the United States
+# Two years after the 1936 election the mandate ends: take its bonuses back out of Economy of the United States
 country_event = {
 	id = usa.231
 	hidden = yes
@@ -1385,15 +1455,15 @@ country_event = {
 		}
 		if = {
 			limit = { has_country_flag = USA_we_mandate_fdr_2 }
-			add_to_variable = { USA_we_stab_factor = -0.05 }
-			add_to_variable = { USA_we_pp_gain = -0.1 }
+			add_to_variable = { USA_we_stab_factor = -0.06 }
+			add_to_variable = { USA_we_pp_gain = -0.12 }
 			clr_country_flag = USA_we_mandate_fdr_2
 		}
 		if = {
 			limit = { has_country_flag = USA_we_mandate_fdr_3 }
-			add_to_variable = { USA_we_stab_factor = -0.08 }
-			add_to_variable = { USA_we_pp_gain = -0.15 }
-			add_to_variable = { USA_we_ws_factor = -0.03 }
+			add_to_variable = { USA_we_stab_factor = -0.10 }
+			add_to_variable = { USA_we_pp_gain = -0.20 }
+			add_to_variable = { USA_we_ws_factor = -0.05 }
 			clr_country_flag = USA_we_mandate_fdr_3
 		}
 		if = {
@@ -1404,15 +1474,15 @@ country_event = {
 		}
 		if = {
 			limit = { has_country_flag = USA_we_mandate_lan_2 }
-			add_to_variable = { USA_we_stab_factor = -0.05 }
-			add_to_variable = { USA_we_output = -0.04 }
+			add_to_variable = { USA_we_stab_factor = -0.06 }
+			add_to_variable = { USA_we_output = -0.05 }
 			clr_country_flag = USA_we_mandate_lan_2
 		}
 		if = {
 			limit = { has_country_flag = USA_we_mandate_lan_3 }
-			add_to_variable = { USA_we_stab_factor = -0.08 }
-			add_to_variable = { USA_we_ws_factor = -0.03 }
-			add_to_variable = { USA_we_output = -0.06 }
+			add_to_variable = { USA_we_stab_factor = -0.10 }
+			add_to_variable = { USA_we_ws_factor = -0.05 }
+			add_to_variable = { USA_we_output = -0.08 }
 			clr_country_flag = USA_we_mandate_lan_3
 		}
 	}

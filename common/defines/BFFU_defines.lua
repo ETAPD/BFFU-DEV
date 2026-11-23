@@ -9,6 +9,9 @@ NDefines.NGame.HANDS_OFF_START_TAG = "VEN"
 NDefines.NGame.ALERT_SFX_COOLDOWN_DAYS = 3					-- After playing an alert sound, don't play the same sound for XXX days, even if it fires again.
 -- NDefines.NGame.TRADE_ROUTE_RECALCULATE_FREQUENCY_DAYS = 7 -- Max recalculation time for all trade routes (0 means we do not recalucate prediodically trade routes)
 
+NDefines.NDiplomacy.VOLUNTEERS_RECALL_DAYS_PER_UNIT = 0
+NDefines.NDiplomacy.SEND_VOLUNTEERS_AGAIN_COOLDOWN = 1
+NDefines.NDiplomacy.RECALL_VOLUNTEERS_AFTER_ARRIVAL_COOLDOWN = 1
 NDefines.NDiplomacy.WARGOAL_WORLD_TENSION_REDUCTION = -0.25			-- Reduction of pp cost for wargoal at 100% world tension scales linearly
 NDefines.NDiplomacy.VOLUNTEERS_PER_TARGET_PROVINCE = 0.04			-- Each province owned by the target country contributes this amount of volunteers to the limit.
 NDefines.NDiplomacy.VOLUNTEERS_PER_COUNTRY_ARMY = 0.04	-- Each army unit owned by the source country contributes this amount of volunteers to the limit.
@@ -977,6 +980,23 @@ NDefines.NIndustrialOrganisation.DEFAULT_INITIAL_TASK_CAPACITY = 3			-- Default 
 NDefines.NProject.SUPPORTIVE_SCIENTISTS_FRACTION = 0.05 -- how effective supportive scientists are compared to how strong they would be on default
 NDefines.NProject.AMOUNT_OF_SUPPORTIVE_SCIENTISTS = 4 -- The amount of supportive scientists a facility can have
 NDefines.NProject.DAYS_TO_REMOVE_SCIENTIST = 1 -- Amount of days needed for a scientist to be unassigned.
+NDefines.NProject.DISMANTLE_FACILITY_DAYS = 500                   -- Amount of days needed to dismantle a facility.
+NDefines.NProject.DEFAULT_PROJECT_COMPLETION_SCIENTIST_EXPERIENCE_GAIN = 450.0	-- Default experience gain for assigned scientist when a project is completed
+NDefines.NProject.SCIENTIST_BASIC_RESEARCH_DAILY_XP_GAIN = 0.65	-- Daily experience gain for doing basic research
+NDefines.NProject.SCIENTIST_SKILL_LEVEL_THRESHOLDS = {			-- Threshold for scientist to level up
+	100,		-- to go from level 0 to level 1
+	200,		-- to go from level 1 to level 2
+	500,		-- to go from level 2 to level 3
+	1200,		-- ...
+	2200,		-- Max level = Array size
+}
+NDefines.NProject.PROJECT_CAPTURE_BREAKTHROUGH_PROGRESS = 0.15        -- Ratio of breakthrough progress on capture to the captor for the facilities specialization
+NDefines.NProject.BASIC_RESEARCH_TECHNOLOGY_BONUS_FACTOR = 0.05     -- Bonus research factor applied to technologies per scientist skill level when performing basic research in a matching facility.
+NDefines.NProject.BASIC_RESEARCH_TECHNOLOGY_BONUS_DIMINISHING_RETURN_FACTOR = 0.1 -- Diminishing return on BASIC_RESEARCH_TECHNOLOGY_BONUS_FACTOR for each extra scientist performing basic research for multiple facilities.
+NDefines.NProject.BREAKTHROUGH_DAILY_TECHNOLOGY_GAIN = 8           -- Amount in 1/100th percentage. E.g. 25 = 0.25%
+NDefines.NProject.BREAKTHROUGH_DAILY_SCIENTIST_SKILL_GAIN = 8       -- Amount in 1/100th percentage gained per skill when doing basic research. E.g. 5 = 0.05% per skill level.
+NDefines.NProject.BREAKTHROUGH_DAILY_ROCKET_SITE_GAIN = 3		   -- Amount in 1/100th percentage gained per rocket site level. E.g. 1 = 0.01% per rocket site level.
+NDefines.NProject.BREAKTHROUGH_DAILY_NUCLEAR_REACTOR_GAIN = 20       -- Amount in 1/100th percentage gained per nuclear reactor. E.g. 2 = 0.02% per nuclear reactor.
 
 NDefines.NRaids.RAID_MEDIUM_RISK_SETTING_DISASTER_MODIFIER = 0.15  -- How much the disaster risk is modified when the dial is set to "medium"
 NDefines.NRaids.RAID_HIGH_RISK_SETTING_DISASTER_MODIFIER = 0.35

@@ -56,7 +56,41 @@ on_actions = {
 
 	on_monthly_USA = {
 		effect = {
-			# Two-Ocean Surge (Plan for FY42, shown on War Economy of the United States): +5% dockyard output a month from 1 January 1941 (or war, if earlier),
+			# 1936 campaign, opposition momentum: one campaign stop is due every 35 days (one stop of slack).
+			# Each stop we are behind gives the candidate we do not back +0.015 on the polling bar this month.
+			if = {
+				limit = { has_country_flag = USA_1936_election_in_progress_flag }
+				set_temp_variable = { usa_camp_due = 0 }
+				if = { limit = { date > 1936.4.1 } set_temp_variable = { usa_camp_due = 1 } }
+				if = { limit = { date > 1936.5.1 } set_temp_variable = { usa_camp_due = 2 } }
+				if = { limit = { date > 1936.6.1 } set_temp_variable = { usa_camp_due = 3 } }
+				if = { limit = { date > 1936.7.1 } set_temp_variable = { usa_camp_due = 4 } }
+				if = { limit = { date > 1936.8.1 } set_temp_variable = { usa_camp_due = 5 } }
+				if = { limit = { date > 1936.10.1 } set_temp_variable = { usa_camp_due = 6 } }
+				if = { limit = { date > 1936.11.1 } set_temp_variable = { usa_camp_due = 7 } }
+				subtract_from_temp_variable = { usa_camp_due = USA_camp_stops_done }
+				if = {
+					limit = { check_variable = { USA_campaign_side < 0 } }
+					if = { limit = { check_variable = { usa_camp_due > 6.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.105 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 5.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.09 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 4.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.075 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 3.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.06 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 2.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.045 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 1.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.03 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 0.5 } } add_power_balance_value = { id = USA_1936_election_bop value = 0.015 } }
+				}
+				else = {
+					if = { limit = { check_variable = { usa_camp_due > 6.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.105 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 5.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.09 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 4.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.075 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 3.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.06 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 2.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.045 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 1.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.03 } }
+					else_if = { limit = { check_variable = { usa_camp_due > 0.5 } } add_power_balance_value = { id = USA_1936_election_bop value = -0.015 } }
+				}
+			}
+
+			# Two-Ocean Surge (Plan for FY42, shown on Economy of the United States): +5% dockyard output a month from 1 January 1941 (or war, if earlier),
 			# at war +1% more per 10% our navy lags behind Japan's (max +5% more), capped at +50%.
 			if = {
 				limit = {
@@ -67,6 +101,7 @@ on_actions = {
 					}
 					NOT = { has_country_flag = USA_two_ocean_surge_maxed }
 				}
+				set_temp_variable = { usa_surge_old = USA_fy42_surge }
 				add_to_variable = { USA_fy42_surge = 0.05 }
 				if = {
 					limit = {
@@ -173,6 +208,10 @@ on_actions = {
 					set_variable = { USA_fy42_surge = 0.5 }
 					set_country_flag = USA_two_ocean_surge_maxed
 				}
+				# pass this month's surge on to the modifier's dockyard output
+				set_temp_variable = { usa_surge_delta = USA_fy42_surge }
+				subtract_from_temp_variable = { usa_surge_delta = usa_surge_old }
+				add_to_variable = { USA_we_dock_output = usa_surge_delta }
 				force_update_dynamic_modifier = yes
 			}
 

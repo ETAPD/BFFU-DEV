@@ -1,0 +1,54 @@
+# Fort raid damage, one effect per success level. Call inside var:target_state = { ... }.
+# raid_fort_collect_provinces (generated, raid_fort_provinces.txt) fills fort_raid_provs with the state's provinces.
+# damage_building finds no building in a province without a fort, so only existing forts are hit.
+
+raid_damage_fail_all_provinces_in_target_state = {
+	raid_fort_collect_provinces = yes
+	for_each_loop = {
+		array = fort_raid_provs
+		value = fort_raid_p
+		set_variable = { fort_raid_province = fort_raid_p }
+		damage_building = { tags = { fort coastal_fort } damage = 2 province = var:fort_raid_province }
+	}
+	clear_variable = fort_raid_province
+	clear_array = fort_raid_provs
+}
+
+raid_damage_limited_all_provinces_in_target_state = {
+	raid_fort_collect_provinces = yes
+	for_each_loop = {
+		array = fort_raid_provs
+		value = fort_raid_p
+		set_variable = { fort_raid_province = fort_raid_p }
+		damage_building = { tags = { fort coastal_fort } damage = 2 province = var:fort_raid_province }
+		damage_building = { tags = { fortress coastal_fortress } damage = 1 province = var:fort_raid_province }
+	}
+	clear_variable = fort_raid_province
+	clear_array = fort_raid_provs
+}
+
+raid_damage_success_all_provinces_in_target_state = {
+	raid_fort_collect_provinces = yes
+	for_each_loop = {
+		array = fort_raid_provs
+		value = fort_raid_p
+		set_variable = { fort_raid_province = fort_raid_p }
+		damage_building = { tags = { fort coastal_fort } damage = 3 province = var:fort_raid_province }
+		damage_building = { tags = { fortress coastal_fortress } damage = 2 province = var:fort_raid_province }
+	}
+	clear_variable = fort_raid_province
+	clear_array = fort_raid_provs
+}
+
+raid_damage_critical_success_all_provinces_in_target_state = {
+	raid_fort_collect_provinces = yes
+	for_each_loop = {
+		array = fort_raid_provs
+		value = fort_raid_p
+		set_variable = { fort_raid_province = fort_raid_p }
+		damage_building = { tags = { fort coastal_fort } damage = 4 province = var:fort_raid_province }
+		damage_building = { tags = { fortress coastal_fortress } damage = 3 province = var:fort_raid_province }
+	}
+	clear_variable = fort_raid_province
+	clear_array = fort_raid_provs
+}

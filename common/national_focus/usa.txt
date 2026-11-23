@@ -29,7 +29,7 @@ focus_tree = {
 	focus = {
 		id = USA_commence_the_louisiana_maneuvers
 		icon = GFX_USA_commence_the_louisiana_maneuvers-897013
-		x = 52
+		x = 66
 		y = 5
 		cost = 2
 		search_filters = {
@@ -48,7 +48,7 @@ focus_tree = {
 	focus = {
 		id = USA_selective_service_act
 		icon = GFX_focus_generic_manpower
-		x = 44
+		x = 58
 		y = 4
 		cost = 3
 		search_filters = {
@@ -830,7 +830,7 @@ focus_tree = {
 	focus = {
 		id = USA_camp_info
 		icon = GFX_goal_generic_scientific_exchange
-		x = 22
+		x = 40
 		y = 0
 		cost = 1
 		search_filters = {
@@ -847,30 +847,54 @@ focus_tree = {
 
 		completion_reward = {
 			custom_effect_tooltip = USA_camp_info_e1
-			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = USA_camp_info_e2
-			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = USA_camp_info_e3
-			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = USA_camp_info_e4
-			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = USA_camp_info_e5
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = USA_camp_info_e6
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = USA_camp_info_e7
+		}
+	}
+
+	focus = {
+		id = USA_camp_season_opens
+		icon = GFX_focus_USA_camp_season_opens
+		x = 40
+		y = 1
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			custom_effect_tooltip = USA_camp_toward_backed_tt
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.06 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.06 }
+			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_defend_new_deal
-		icon = GFX_goal_generic_national_unity
-		x = 19
-		y = 1
-		cost = 10
+		icon = GFX_focus_USA_camp_defend_new_deal
+		x = 37
+		y = 2
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
+		prerequisite = { focus = USA_camp_season_opens }
 		mutually_exclusive = { focus = USA_camp_liberty_league }
 		available = {
 			custom_trigger_tooltip = {
@@ -882,26 +906,28 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
 				value = -0.12
 			}
-			add_timed_idea = { 
-				idea = USA_camp_new_deal_momentum 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_new_deal_momentum
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_liberty_league
-		icon = GFX_goal_generic_political_pressure
-		x = 19
+		icon = GFX_focus_USA_camp_liberty_league
+		x = 43
 		y = 2
-		cost = 10
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
+		prerequisite = { focus = USA_camp_season_opens }
 		mutually_exclusive = { focus = USA_camp_defend_new_deal }
 		available = {
 			custom_trigger_tooltip = {
@@ -913,28 +939,160 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
 			add_power_balance_value = {
 				id = USA_1936_election_bop
 				value = 0.12
 			}
-			add_timed_idea = { 
-				idea = USA_camp_business_backing 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_business_backing
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_soil_conservation
+		icon = GFX_focus_USA_camp_soil_conservation
+		x = 35
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_defend_new_deal }
+		mutually_exclusive = { focus = USA_camp_labor_league }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.06
+			}
+			add_timed_idea = {
+				idea = USA_camp_farm_belt
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_labor_league
+		icon = GFX_focus_USA_camp_labor_league
+		x = 39
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_defend_new_deal }
+		mutually_exclusive = { focus = USA_camp_soil_conservation }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.06
+			}
+			add_timed_idea = {
+				idea = USA_camp_union_vote
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_kansas_coolidge
+		icon = GFX_focus_USA_camp_kansas_coolidge
+		x = 41
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_liberty_league }
+		mutually_exclusive = { focus = USA_camp_hearst_press }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.06
+			}
+			add_timed_idea = {
+				idea = USA_camp_balanced_budget
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_hearst_press
+		icon = GFX_focus_USA_camp_hearst_press
+		x = 45
+		y = 3
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_liberty_league }
+		mutually_exclusive = { focus = USA_camp_kansas_coolidge }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.06
+			}
+			add_timed_idea = {
+				idea = USA_camp_hearst_headlines
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_renominate_fdr
-		icon = GFX_goal_generic_propaganda
-		x = 21
-		y = 1
-		cost = 10
+		icon = GFX_focus_USA_camp_renominate_fdr
+		x = 37
+		y = 4
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
-		prerequisite = { focus = USA_camp_defend_new_deal focus = USA_camp_liberty_league }
-		mutually_exclusive = { focus = USA_camp_nominate_landon }
+		prerequisite = { focus = USA_camp_soil_conservation focus = USA_camp_labor_league }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_camp_open_tt
@@ -945,28 +1103,28 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
-				value = -0.08 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.08
 			}
-			add_timed_idea = { 
-				idea = USA_camp_party_unity 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_party_unity
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_nominate_landon
-		icon = GFX_USA_landonsuproar-896295
-		x = 21
-		y = 2
-		cost = 10
+		icon = GFX_focus_USA_camp_nominate_landon
+		x = 43
+		y = 4
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
-		prerequisite = { focus = USA_camp_defend_new_deal focus = USA_camp_liberty_league }
-		mutually_exclusive = { focus = USA_camp_renominate_fdr }
+		prerequisite = { focus = USA_camp_kansas_coolidge focus = USA_camp_hearst_press }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_camp_open_tt
@@ -977,28 +1135,96 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
-				value = 0.08 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.08
 			}
-			add_timed_idea = { 
-				idea = USA_camp_republican_unity 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_republican_unity
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_summer_campaign
+		icon = GFX_focus_USA_camp_summer_campaign
+		x = 40
+		y = 5
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_renominate_fdr focus = USA_camp_nominate_landon }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			custom_effect_tooltip = USA_camp_toward_backed_tt
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.06 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.06 }
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_rendezvous_destiny
+		icon = GFX_focus_USA_camp_rendezvous_destiny
+		x = 34
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_summer_campaign }
+		prerequisite = { focus = USA_camp_renominate_fdr }
+		mutually_exclusive = { focus = USA_camp_fireside_chats focus = USA_camp_drought_tour }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.08
+			}
+			add_timed_idea = {
+				idea = USA_camp_rendezvous
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_fireside_chats
-		icon = GFX_goal_generic_propaganda
-		x = 23
-		y = 1
-		cost = 10
+		icon = GFX_focus_generic_radio_communication
+		x = 36
+		y = 6
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
-		prerequisite = { focus = USA_camp_renominate_fdr focus = USA_camp_nominate_landon }
-		mutually_exclusive = { focus = USA_camp_heartland_tour }
+		prerequisite = { focus = USA_camp_summer_campaign }
+		prerequisite = { focus = USA_camp_renominate_fdr }
+		mutually_exclusive = { focus = USA_camp_rendezvous_destiny focus = USA_camp_drought_tour }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_camp_open_tt
@@ -1009,28 +1235,98 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
-				value = -0.12 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.08
 			}
-			add_timed_idea = { 
-				idea = USA_camp_fireside_glow 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_fireside_glow
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_drought_tour
+		icon = GFX_focus_USA_camp_drought_tour
+		x = 38
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_summer_campaign }
+		prerequisite = { focus = USA_camp_renominate_fdr }
+		mutually_exclusive = { focus = USA_camp_rendezvous_destiny focus = USA_camp_fireside_chats }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.08
+			}
+			add_timed_idea = {
+				idea = USA_camp_drought_relief
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_topeka_notification
+		icon = GFX_focus_USA_camp_topeka_notification
+		x = 42
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_summer_campaign }
+		prerequisite = { focus = USA_camp_nominate_landon }
+		mutually_exclusive = { focus = USA_camp_heartland_tour focus = USA_camp_pay_envelope }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.08
+			}
+			add_timed_idea = {
+				idea = USA_camp_topeka
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_heartland_tour
-		icon = GFX_goal_generic_construct_infrastructure
-		x = 23
-		y = 2
-		cost = 10
+		icon = GFX_focus_USA_camp_heartland_tour
+		x = 44
+		y = 6
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
-		prerequisite = { focus = USA_camp_renominate_fdr focus = USA_camp_nominate_landon }
-		mutually_exclusive = { focus = USA_camp_fireside_chats }
+		prerequisite = { focus = USA_camp_summer_campaign }
+		prerequisite = { focus = USA_camp_nominate_landon }
+		mutually_exclusive = { focus = USA_camp_topeka_notification focus = USA_camp_pay_envelope }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_camp_open_tt
@@ -1041,28 +1337,62 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
-				value = 0.12 
-			} 
-			add_timed_idea = { 
-				idea = USA_camp_heartland_tour_mod 
-				days = 90 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.08
+			}
+			add_timed_idea = {
+				idea = USA_camp_heartland_tour_mod
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_pay_envelope
+		icon = GFX_focus_USA_camp_pay_envelope
+		x = 46
+		y = 6
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_summer_campaign }
+		prerequisite = { focus = USA_camp_nominate_landon }
+		mutually_exclusive = { focus = USA_camp_topeka_notification focus = USA_camp_heartland_tour }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.08
+			}
+			add_timed_idea = {
+				idea = USA_camp_payroll_fears
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_msg_rally
-		icon = GFX_USA_on_the_shoulder_of_giants-896310
-		x = 25
-		y = 1
-		cost = 10
+		icon = GFX_focus_USA_camp_msg_rally
+		x = 37
+		y = 7
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
-		prerequisite = { focus = USA_camp_fireside_chats focus = USA_camp_heartland_tour }
-		mutually_exclusive = { focus = USA_camp_wall_street_push }
+		prerequisite = { focus = USA_camp_rendezvous_destiny focus = USA_camp_fireside_chats focus = USA_camp_drought_tour }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_camp_open_tt
@@ -1073,28 +1403,28 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
-				value = -0.08 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = -0.08
 			}
-			add_timed_idea = { 
-				idea = USA_camp_msg_afterglow 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_msg_afterglow
+				days = 90
 			}
 		}
 	}
 
 	focus = {
 		id = USA_camp_wall_street_push
-		icon = GFX_goal_generic_consumer_goods
-		x = 25
-		y = 2
-		cost = 10
+		icon = GFX_focus_USA_camp_wall_street_push
+		x = 43
+		y = 7
+		cost = 5
 		search_filters = {
 			FOCUS_FILTER_POLITICAL
 		}
-		prerequisite = { focus = USA_camp_fireside_chats focus = USA_camp_heartland_tour }
-		mutually_exclusive = { focus = USA_camp_msg_rally }
+		prerequisite = { focus = USA_camp_topeka_notification focus = USA_camp_heartland_tour focus = USA_camp_pay_envelope }
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = USA_camp_open_tt
@@ -1105,13 +1435,46 @@ focus_tree = {
 		ai_will_do = { factor = 5 }
 
 		completion_reward = {
-			add_power_balance_value = { 
-				id = USA_1936_election_bop 
-				value = 0.08 
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			add_power_balance_value = {
+				id = USA_1936_election_bop
+				value = 0.08
 			}
-			add_timed_idea = { 
-				idea = USA_camp_wall_street_money 
-				days = 90 
+			add_timed_idea = {
+				idea = USA_camp_wall_street_money
+				days = 90
+			}
+		}
+	}
+
+	focus = {
+		id = USA_camp_get_out_the_vote
+		icon = GFX_focus_usa_voter_registration_act
+		x = 40
+		y = 8
+		cost = 5
+		search_filters = {
+			FOCUS_FILTER_POLITICAL
+		}
+		prerequisite = { focus = USA_camp_msg_rally focus = USA_camp_wall_street_push }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = USA_camp_open_tt
+				has_country_flag = USA_1936_election_in_progress_flag
+			}
+		}
+		bypass = { has_completed_focus = USA_the_1936_election }
+		ai_will_do = { factor = 5 }
+
+		completion_reward = {
+			hidden_effect = { add_to_variable = { USA_camp_stops_done = 1 } }
+			custom_effect_tooltip = USA_camp_toward_backed_tt
+			if = {
+				limit = { check_variable = { USA_campaign_side < 0 } }
+				add_power_balance_value = { id = USA_1936_election_bop value = -0.08 }
+			}
+			else = {
+				add_power_balance_value = { id = USA_1936_election_bop value = 0.08 }
 			}
 		}
 	}
@@ -1693,7 +2056,7 @@ focus_tree = {
 	focus = {
 		id = USA_plans_for_the_pentagon
 		icon = GFX_focus_usa_build_the_pentagon
-		x = 48
+		x = 62
 		y = 2
 		cost = 3
 		available = {
@@ -1714,7 +2077,7 @@ focus_tree = {
 	focus = {
 		id = USA_address_the_airforce_crisis
 		icon = GFX_goal_generic_build_airforce
-		x = 38
+		x = 52
 		y = 3
 		cost = 3
 		search_filters = {
@@ -1731,7 +2094,7 @@ focus_tree = {
 	focus = {
 		id = USA_vinsontrammell_act
 		icon = GFX_USA_vinsontrammell_act-896569
-		x = 56
+		x = 70
 		y = 3
 		cost = 5
 		search_filters = {
@@ -1766,7 +2129,7 @@ focus_tree = {
 	focus = {
 		id = USA_push_forward_the_naval_act
 		icon = GFX_USA_push_forward_the_naval_act-896570
-		x = 57
+		x = 71
 		y = 4
 		cost = 7
 		search_filters = {
@@ -1782,7 +2145,11 @@ focus_tree = {
 		}
 
 		completion_reward = {
-			remove_ideas = USA_naval_treaty
+			# ends Dormant Naval Industry inside Economy of the United States
+			custom_effect_tooltip = USA_modify_war_economy_tt
+			add_to_variable = { USA_we_dock_speed = 0.10 tooltip = production_speed_dockyard_factor_tt }
+			add_to_variable = { USA_we_bunker_speed = 0.75 tooltip = production_speed_coastal_bunker_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			# New York (Brooklyn Navy Yard) — Atlantic
 			358 = {
 				add_extra_state_shared_building_slots = 4
@@ -1817,7 +2184,7 @@ focus_tree = {
 	focus = {
 		id = USA_prepare_the_twoocean_navy_act
 		icon = GFX_USA_prepare_the_twoocean_navy_act-896571
-		x = 55
+		x = 69
 		y = 4
 		cost = 5
 		search_filters = {
@@ -1825,7 +2192,9 @@ focus_tree = {
 		}
 		prerequisite = { focus = USA_vinsontrammell_act  }
 		completion_reward = {
-			add_ideas = USA_two_ocean_navy_act
+			custom_effect_tooltip = USA_modify_war_economy_tt
+			add_to_variable = { USA_we_dock_speed = 0.05 tooltip = production_speed_dockyard_factor_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			navy_experience = 25
 			# New England (Fore River / Bath Iron Works) — new Atlantic construction yards
 			357 = {
@@ -1852,7 +2221,7 @@ focus_tree = {
 	focus = {
 		id = USA_congres_passes_the_bureau_of_ships
 		icon = GFX_USA_congres_passes_the_bureau_of_ships-896572
-		x = 56
+		x = 70
 		y = 5
 		cost = 5
 		available = {
@@ -1868,10 +2237,14 @@ focus_tree = {
 		prerequisite = { focus = USA_prepare_the_twoocean_navy_act  }
 		prerequisite = { focus = USA_push_forward_the_naval_act }
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = USA_two_ocean_navy_act
-				add_idea = USA_bureau_of_ships
-			}
+			# Bureau of Ships replaces the Two-Ocean Navy Act's +5%/+5%: totals +25% output, +20% speed, +5% consumer goods, -0.1 political power
+			custom_effect_tooltip = USA_modify_war_economy_tt
+			add_to_variable = { USA_we_dock_output = 0.20 tooltip = industrial_capacity_dockyard_tt }
+			add_to_variable = { USA_we_dock_speed = 0.15 tooltip = production_speed_dockyard_factor_tt }
+			custom_effect_tooltip = USA_bureau_of_ships_cg_tt
+			hidden_effect = { add_to_variable = { USA_we_consumer = 0.05 } }
+			add_to_variable = { USA_we_pp_gain = -0.1 tooltip = political_power_gain_tt }
+			hidden_effect = { force_update_dynamic_modifier = yes }
 			country_event = { id = USA_naval.1 days = 3 }
 		}
 	}
@@ -1880,7 +2253,7 @@ focus_tree = {
 	focus = {
 		id = USA_build_for_fy40
 		icon = GFX_USA_build_for_fy40-896573
-		x = 54
+		x = 68
 		y = 6
 		cost = 0
 		available = { always = no }
@@ -1954,7 +2327,7 @@ focus_tree = {
 	focus = {
 		id = USA_a_middle_ground
 		icon = GFX_goal_generic_construct_naval_dockyard
-		x = 56
+		x = 70
 		y = 6
 		cost = 0
 		available = { always = no }
@@ -1972,7 +2345,7 @@ focus_tree = {
 	focus = {
 		id = USA_plan_for_fy42
 		icon = GFX_USA_plan_for_fy42-896575
-		x = 58
+		x = 72
 		y = 6
 		cost = 0
 		available = { always = no }
@@ -1992,7 +2365,7 @@ focus_tree = {
 	focus = {
 		id = USA_research_new_ship_classes
 		icon = GFX_USA_research_new_ship_classes-896578
-		x = 56
+		x = 70
 		y = 7
 		cost = 5
 		search_filters = {
@@ -2014,7 +2387,7 @@ focus_tree = {
 	focus = {
 		id = USA_battleship_primacy
 		icon = GFX_USA_battleship_primacy-896579
-		x = 52
+		x = 66
 		y = 8
 		cost = 5
 		search_filters = {
@@ -2045,7 +2418,7 @@ focus_tree = {
 		id = USA_lay_down_the_montanna_class
 		mutually_exclusive = { focus = USA_rush_new_battlecruisers }
 		icon = GFX_USA_lay_down_the_montanna_class-896779
-		x = 51
+		x = 65
 		y = 9
 		cost = 5
 		search_filters = {
@@ -2122,7 +2495,7 @@ focus_tree = {
 	focus = {
 		id = USA_rush_new_battlecruisers
 		icon = GFX_USA_rush_new_battlecruisers-645516
-		x = 53
+		x = 67
 		y = 9
 		cost = 5
 		search_filters = {
@@ -2145,7 +2518,7 @@ focus_tree = {
 	focus = {
 		id = USA_update_the_role_of_the_cruiser
 		icon = GFX_USA_update_the_role_of_the_cruiser-645910
-		x = 56
+		x = 70
 		y = 10
 		cost = 5
 		search_filters = {
@@ -2180,7 +2553,7 @@ focus_tree = {
 	focus = {
 		id = USA_carrier_primacy
 		icon = GFX_USA_carrier_primacy-898138
-		x = 60
+		x = 74
 		y = 8
 		cost = 5
 		search_filters = {
@@ -2212,7 +2585,7 @@ focus_tree = {
 	focus = {
 		id = USA_further_fund_the_bureau_of_aeronautics
 		icon = GFX_USA_further_fund_the_bureau_of_aeronautics-896789
-		x = 59
+		x = 73
 		y = 9
 		cost = 5
 		search_filters = {
@@ -2238,7 +2611,7 @@ focus_tree = {
 	focus = {
 		id = USA_study_the_kido_butai
 		icon = GFX_USA_study_the_kido_butai-896799
-		x = 61
+		x = 75
 		y = 9
 		cost = 5
 		search_filters = {
@@ -2258,7 +2631,7 @@ focus_tree = {
 	focus = {
 		id = USA_lay_down_the_midway_class
 		icon = GFX_USA_lay_down_the_midway_class-896787
-		x = 60
+		x = 74
 		y = 10
 		cost = 5
 		search_filters = {
@@ -2333,7 +2706,7 @@ focus_tree = {
 	focus = {
 		id = USA_expand_the_repair_yards
 		icon = GFX_USA_expand_the_repair_yards-896807
-		x = 54
+		x = 68
 		y = 8
 		cost = 5
 		search_filters = {
@@ -2350,7 +2723,7 @@ focus_tree = {
 	focus = {
 		id = USA_capital_ship_hunters
 		icon = GFX_USA_capital_ship_hunters-896814
-		x = 55
+		x = 69
 		y = 9
 		cost = 5
 		search_filters = {
@@ -2374,7 +2747,7 @@ focus_tree = {
 	focus = {
 		id = USA_advanced_radar_and_fire_control_systems
 		icon = GFX_goal_generic_radar
-		x = 58
+		x = 72
 		y = 8
 		cost = 3
 		search_filters = {
@@ -2402,7 +2775,7 @@ focus_tree = {
 	focus = {
 		id = USA_procure_the_liberty_ship
 		icon = GFX_USA_procure_the_liberty_ship-896816
-		x = 57
+		x = 71
 		y = 9
 		cost = 3
 		search_filters = {
@@ -2419,7 +2792,7 @@ focus_tree = {
 	focus = {
 		id = USA_propose_foward_naval_basing
 		icon = GFX_USA_propose_foward_naval_basing-896817
-		x = 54
+		x = 68
 		y = 10
 		cost = 3
 		search_filters = {
@@ -2465,7 +2838,7 @@ focus_tree = {
 	focus = {
 		id = USA_start_the_creation_of_independant_airforce
 		icon = GFX_USA_start_the_creation_of_independant_airforce-896820
-		x = 35
+		x = 49
 		y = 4
 		cost = 3
 		search_filters = {
@@ -2486,7 +2859,7 @@ focus_tree = {
 	focus = {
 		id = USA_keep_the_army_air_corps
 		icon = GFX_USA_keep_the_army_air_corps-896838
-		x = 41
+		x = 55
 		y = 4
 		cost = 3
 		search_filters = {
@@ -2507,7 +2880,7 @@ focus_tree = {
 	focus = {
 		id = USA_establish_the_general_headquarter_air_force
 		icon = GFX_USA_establish_the_general_headquarter_air_force-896847
-		x = 38
+		x = 52
 		y = 5
 		cost = 5
 		search_filters = {
@@ -2523,7 +2896,7 @@ focus_tree = {
 	focus = {
 		id = USA_give_power_to_the_bomber_mafia
 		icon = GFX_USA_give_power_to_the_bomber_mafia-896849
-		x = 34
+		x = 48
 		y = 5
 		cost = 5
 		search_filters = {
@@ -2550,7 +2923,7 @@ focus_tree = {
 	focus = {
 		id = USA_offer_a_compromise
 		icon = GFX_USA_offer_a_compromise-896850
-		x = 36
+		x = 50
 		y = 5
 		cost = 5
 		search_filters = {
@@ -2579,7 +2952,7 @@ focus_tree = {
 	focus = {
 		id = USA_buildforbigweek
 		icon = GFX_USA_buildforbigweek-896851
-		x = 34
+		x = 48
 		y = 6
 		cost = 5
 		search_filters = {
@@ -2598,7 +2971,7 @@ focus_tree = {
 	focus = {
 		id = USA_promote_combined_heavy_aircraft_operations
 		icon = GFX_USA_promote_combined_heavy_aircraft_operations-896852
-		x = 36
+		x = 50
 		y = 6
 		cost = 5
 		search_filters = {
@@ -2617,7 +2990,7 @@ focus_tree = {
 	focus = {
 		id = USA_theherosofthethemightyeighth
 		icon = GFX_USA_theherosofthethemightyeighth-646323
-		x = 35
+		x = 49
 		y = 7
 		cost = 5
 		search_filters = {
@@ -2633,7 +3006,7 @@ focus_tree = {
 	focus = {
 		id = USA_napalm_research_breakthrough
 		icon = GFX_USA_napalm_research_breakthrough-896862
-		x = 35
+		x = 49
 		y = 8
 		cost = 5
 		search_filters = {
@@ -2658,7 +3031,7 @@ focus_tree = {
 	focus = {
 		id = USA_form_the_usaaf
 		icon = GFX_USA_form_the_usaaf-896863
-		x = 37
+		x = 51
 		y = 9
 		cost = 5
 		search_filters = {
@@ -2678,7 +3051,7 @@ focus_tree = {
 	focus = {
 		id = USA_clairechennaultsexperiance
 		icon = GFX_USA_clairechennaultsexperiance-896864
-		x = 40
+		x = 54
 		y = 5
 		cost = 5
 		search_filters = {
@@ -2706,7 +3079,7 @@ focus_tree = {
 	focus = {
 		id = USA_model_after_the_4th_fighter_group
 		icon = GFX_goal_generic_air_fighter2
-		x = 41
+		x = 55
 		y = 8
 		cost = 3
 		search_filters = {
@@ -2722,7 +3095,7 @@ focus_tree = {
 	focus = {
 		id = USA_side_with_the_buccaneer
 		icon = GFX_USA_side_with_the_buccaneer-896866
-		x = 42
+		x = 56
 		y = 5
 		cost = 5
 		search_filters = {
@@ -2751,7 +3124,7 @@ focus_tree = {
 	focus = {
 		id = USA_the_perfect_stikers
 		icon = GFX_USA_the_perfect_stikers-645903
-		x = 42
+		x = 56
 		y = 6
 		cost = 5
 		search_filters = {
@@ -2770,7 +3143,7 @@ focus_tree = {
 	focus = {
 		id = USA_double_down_on_fighter_armaments
 		icon = GFX_focus_usa_escort_fighters
-		x = 40
+		x = 54
 		y = 6
 		cost = 5
 		search_filters = {
@@ -2789,7 +3162,7 @@ focus_tree = {
 	focus = {
 		id = USA_a_fully_decentralised_airforce
 		icon = GFX_USA_a_fully_decentralised_airforce-645961
-		x = 39
+		x = 53
 		y = 9
 		cost = 3
 		search_filters = {
@@ -2809,7 +3182,7 @@ focus_tree = {
 	focus = {
 		id = USA_achieve_victory_through_airpower
 		icon = GFX_goal_generic_air_doctrine
-		x = 38
+		x = 52
 		y = 7
 		cost = 6
 		search_filters = {
@@ -2831,7 +3204,7 @@ focus_tree = {
 	focus = {
 		id = USA_expand_the_usmc
 		icon = GFX_goal_generic_amphibious_assault
-		x = 61
+		x = 75
 		y = 4
 		cost = 5
 		search_filters = {
@@ -2851,7 +3224,7 @@ focus_tree = {
 	focus = {
 		id = USA_the_us_army
 		icon = GFX_USA_the_us_army-896895
-		x = 48
+		x = 62
 		y = 3
 		cost = 5
 		search_filters = {
@@ -2875,7 +3248,7 @@ focus_tree = {
 	focus = {
 		id = USA_analyse_the_scw
 		icon = GFX_focus_intervention_spain_republic
-		x = 51
+		x = 65
 		y = 4
 		cost = 2
 		search_filters = {
@@ -2897,7 +3270,7 @@ focus_tree = {
 	focus = {
 		id = USA_analyse_the_french_defeat
 		icon = GFX_focus_chi_reach_out_to_france
-		x = 53
+		x = 67
 		y = 4
 		cost = 2
 		search_filters = {
@@ -2920,7 +3293,7 @@ focus_tree = {
 	focus = {
 		id = USA_service_extension_act
 		icon = GFX_focus_generic_little_entente
-		x = 44
+		x = 58
 		y = 5
 		cost = 3
 		search_filters = {
@@ -2943,7 +3316,7 @@ focus_tree = {
 	focus = {
 		id = USA_createthewomensarmycorps
 		icon = GFX_USA_createthewomensarmycorps-262028
-		x = 44
+		x = 58
 		y = 6
 		cost = 3
 		search_filters = {
@@ -2965,7 +3338,7 @@ focus_tree = {
 	focus = {
 		id = USA_finish_the_final_army_reforms
 		icon = GFX_focus_chi_army_reform
-		x = 52
+		x = 66
 		y = 6
 		cost = 5
 		search_filters = {
@@ -3005,7 +3378,7 @@ focus_tree = {
 	focus = {
 		id = USA_initalise_the_armour_branch
 		icon = GFX_USA_initalise_the_armour_branch-897243
-		x = 48
+		x = 62
 		y = 4
 		cost = 3
 		search_filters = {
@@ -3032,7 +3405,7 @@ focus_tree = {
 	focus = {
 		id = USA_develop_the_sherman_series
 		icon = GFX_USA_develop_the_sherman_series-897244
-		x = 46
+		x = 60
 		y = 5
 		cost = 3
 		search_filters = {
@@ -3053,7 +3426,7 @@ focus_tree = {
 	focus = {
 		id = USA_invest_into_the_transportation_corps
 		icon = GFX_USA_invest_into_the_transportation_corps-262129
-		x = 48
+		x = 62
 		y = 5
 		cost = 3
 		search_filters = {
@@ -3076,7 +3449,7 @@ focus_tree = {
 	focus = {
 		id = USA_give_pershing_full_support
 		icon = GFX_goal_USA_heavy_tank_doctrine
-		x = 50
+		x = 64
 		y = 5
 		cost = 3
 		search_filters = {
@@ -3098,7 +3471,7 @@ focus_tree = {
 	focus = {
 		id = USA_expand_for_global_operations
 		icon = GFX_USA_expand_for_global_operations-897246
-		x = 61
+		x = 75
 		y = 5
 		cost = 3
 		search_filters = {
@@ -3136,7 +3509,7 @@ focus_tree = {
 	focus = {
 		id = USA_prepare_for_a_large_scale_invasion
 		icon = GFX_USA_prepare_for_a_large_scale_invasion-897247
-		x = 60
+		x = 74
 		y = 6
 		cost = 3
 		search_filters = {
@@ -3157,7 +3530,7 @@ focus_tree = {
 	focus = {
 		id = USA_train_for_an_island_campaign
 		icon = GFX_USA_train_for_an_island_campaign-897248
-		x = 62
+		x = 76
 		y = 6
 		cost = 3
 		search_filters = {
@@ -3177,7 +3550,7 @@ focus_tree = {
 	focus = {
 		id = USA_rushthefirstmbts
 		icon = GFX_goal_USA_main_battle_tanks
-		x = 50
+		x = 64
 		y = 6
 		cost = 5
 		search_filters = {
@@ -3209,7 +3582,7 @@ focus_tree = {
 	focus = {
 		id = USA_streamline_the_sherman_family
 		icon = GFX_focus_generic_tank_production
-		x = 46
+		x = 60
 		y = 6
 		cost = 5
 		search_filters = {
@@ -3235,7 +3608,7 @@ focus_tree = {
 	focus = {
 		id = USA_shatter_the_panzers_5th_generation
 		icon = GFX_focus_generic_anti_fascist_diplomacy
-		x = 48
+		x = 62
 		y = 7
 		cost = 5
 		search_filters = {
@@ -3255,7 +3628,7 @@ focus_tree = {
 	focus = {
 		id = USA_procure_little_rock_island
 		icon = GFX_USA_procure_little_rock_island-897250
-		x = 45
+		x = 59
 		y = 7
 		cost = 3
 		search_filters = {
@@ -3277,7 +3650,7 @@ focus_tree = {
 	focus = {
 		id = USA_offer_invasion_advisors
 		icon = GFX_USA_offer_invasion_advisors-645632
-		x = 61
+		x = 75
 		y = 7
 		cost = 5
 		search_filters = {
@@ -3299,7 +3672,7 @@ focus_tree = {
 	focus = {
 		id = USA_perfect_the_timeontarget_system
 		icon = GFX_USA_perfect_the_timeontarget_system-897251
-		x = 45
+		x = 59
 		y = 8
 		cost = 5
 		search_filters = {
@@ -3318,7 +3691,7 @@ focus_tree = {
 	focus = {
 		id = USA_learn_from_the_fifth_army
 		icon = GFX_USA_learn_from_the_fifth_army-897252
-		x = 45
+		x = 59
 		y = 9
 		cost = 5
 		search_filters = {
@@ -3341,7 +3714,7 @@ focus_tree = {
 	focus = {
 		id = USA_first_special_service_force
 		icon = GFX_USA_first_special_service_force-897253
-		x = 44
+		x = 58
 		y = 10
 		cost = 5
 		search_filters = {
@@ -3361,7 +3734,7 @@ focus_tree = {
 	focus = {
 		id = USA_army_rangers
 		icon = GFX_USA_army_rangers-897254
-		x = 46
+		x = 60
 		y = 10
 		cost = 5
 		search_filters = {
@@ -3387,7 +3760,7 @@ focus_tree = {
 	focus = {
 		id = USA_commision_the_m29
 		icon = GFX_USA_commision_the_m29-897255
-		x = 45
+		x = 59
 		y = 11
 		cost = 5
 		search_filters = {
@@ -4065,7 +4438,7 @@ focus_tree = {
 
 		completion_reward = {
 			custom_effect_tooltip = USA_modify_war_economy_tt
-			add_to_variable = { USA_we_pp_gain = 0.15 tooltip = political_power_gain_tt }
+			add_to_variable = { USA_we_pp_gain = 0.25 tooltip = political_power_gain_tt } # +0.15, plus the day-one -0.1 removed
 			add_to_variable = { USA_we_conscription = 0.05 tooltip = conscription_factor_tt }
 			add_to_variable = { USA_we_stability = -0.001 tooltip = stability_weekly_tt }
 		}
