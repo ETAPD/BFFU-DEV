@@ -473,6 +473,7 @@ focus_tree = {
 			}
 		}
 		bypass = {
+			has_global_flag = scw_over
 		}
 		prerequisite = { focus = SPA_con_paquito }
 		
@@ -480,11 +481,18 @@ focus_tree = {
 		x = 0
 		y = 2
 		relative_position_id = SPA_con_paquito
-		cost = 3
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_RESEARCH}
 		completion_reward = {
+			custom_effect_tooltip = SPA_cwe_modify_tt
+			add_to_variable = { SPA_cwe_output = 0.15 tooltip = industrial_capacity_factory_tt }
+			add_to_variable = { SPA_cwe_cap = 0.05 tooltip = production_factory_max_efficiency_factor_tt }
+			hidden_effect = {
+				add_dynamic_modifier = { modifier = SPA_crusade_war_economy }
+				force_update_dynamic_modifier = yes
+			}
 			GER = {
 				army_experience = 25
 				air_experience = 50
@@ -527,6 +535,7 @@ focus_tree = {
 	focus = {
 		id = SPA_save_the_alcazar
 		available = {
+			NOT = { has_global_flag = scw_over }
 		}
 		bypass = {
 			has_global_flag = scw_over
@@ -537,11 +546,18 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_the_condor_legion
-		cost = 2
+		cost = 5
 
 		available_if_capitulated = yes
 
 		completion_reward = {
+			custom_effect_tooltip = SPA_cwe_modify_tt
+			add_to_variable = { SPA_cwe_defence = 0.05 tooltip = army_defence_factor_tt }
+			add_to_variable = { SPA_cwe_org = 0.05 tooltip = army_org_factor_tt }
+			hidden_effect = {
+				add_dynamic_modifier = { modifier = SPA_crusade_war_economy }
+				force_update_dynamic_modifier = yes
+			}
 			activate_mission = SPA_save_the_alcazar_mission
 			custom_effect_tooltip = SPA_save_the_alcazar_tt
 		}
@@ -550,6 +566,7 @@ focus_tree = {
 	focus = {
 		id = SPA_buy_italian_equipment
 		available = {
+			NOT = { has_global_flag = scw_over }
 		}
 		bypass = {
 			has_global_flag = scw_over
@@ -560,7 +577,7 @@ focus_tree = {
 		x = -2
 		y = 1
 		relative_position_id = SPA_save_the_alcazar
-		cost = 2
+		cost = 5
 
 		available_if_capitulated = yes
 
@@ -606,7 +623,7 @@ focus_tree = {
 		x = 0
 		y = 1
 		relative_position_id = SPA_save_the_alcazar
-		cost = 3
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_INDUSTRY}
@@ -693,6 +710,7 @@ focus_tree = {
 	focus = {
 		id = SPA_a_methodical_approach
 		available = {
+			NOT = { has_global_flag = scw_over }
 		}
 		bypass = {
 			has_global_flag = scw_over
@@ -703,7 +721,7 @@ focus_tree = {
 		x = 2
 		y = 1
 		relative_position_id = SPA_save_the_alcazar
-		cost = 2
+		cost = 5
 
 		available_if_capitulated = yes
 
@@ -729,6 +747,7 @@ focus_tree = {
 			}
 		}
 		bypass = {
+			has_global_flag = scw_over
 		}
 		prerequisite = { focus = SPA_consolidate_the_north focus = SPA_a_methodical_approach focus = SPA_buy_italian_equipment }
 		
@@ -736,11 +755,17 @@ focus_tree = {
 		x = -2
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
-		cost = 3
+		cost = 5
 
 		available_if_capitulated = yes
 
 		completion_reward = {
+			custom_effect_tooltip = SPA_cwe_modify_tt
+			add_to_variable = { SPA_cwe_attack = 0.05 tooltip = army_attack_factor_tt }
+			hidden_effect = {
+				add_dynamic_modifier = { modifier = SPA_crusade_war_economy }
+				force_update_dynamic_modifier = yes
+			}
 			GER = {
 				add_timed_idea = { idea = SPR_equipment_shipments days = 730 }
 				add_ai_strategy = { type = send_lend_lease_desire id = SPA value = 200 }
@@ -754,80 +779,98 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SPA_royal_intelligence_service
+		id = SPA_technical_state_junta
 		available = {
+			NOT = { has_global_flag = scw_over }
+		}
+		bypass = {
+			has_global_flag = scw_over
 		}
 		prerequisite = { focus = SPA_consolidate_the_north focus = SPA_a_methodical_approach focus = SPA_buy_italian_equipment }
 		
-		icon = GFX_focus_generic_secret_service_agency
+		icon = GFX_goal_generic_production
 		x = 0
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
-		cost = 3
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
 			if = {
-				limit = {
-					has_intelligence_agency = no
+				limit = { controls_state = 169 }
+				169 = {
+					add_extra_state_shared_building_slots = 3
+					add_building_construction = {
+						type = arms_factory
+						level = 3
+						instant_build = yes
+					}
 				}
-				create_intelligence_agency = yes
-				custom_effect_tooltip = generic_skip_one_line_tt
 			}
-			add_ideas = SPA_intel1
 		}
 	}
 
 	focus = {
-		id = SPA_share_intelligence
+		id = SPA_altos_hornos_de_vizcaya
 		available = {
+			NOT = { has_global_flag = scw_over }
+			controls_state = 792
 		}
-		prerequisite = { focus = SPA_royal_intelligence_service }
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_technical_state_junta }
 		
-		icon = GFX_goal_generic_intelligence_exchange
+		icon = GFX_focus_generic_industry_3
 		x = -1
 		y = 1
-		relative_position_id = SPA_royal_intelligence_service
-		cost = 3
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = SPA_intel1
-				add_idea = SPA_intel2
+			if = {
+				limit = { controls_state = 792 }
+				792 = {
+					add_extra_state_shared_building_slots = 2
+					add_building_construction = {
+						type = arms_factory
+						level = 2
+						instant_build = yes
+					}
+				}
+			}
+			add_resource = {
+				type = steel
+				amount = 40
+				state = 792
 			}
 		}
 	}
 
 	focus = {
-		id = SPA_empower_royal_police
+		id = SPA_national_wheat_service
 		available = {
+			NOT = { has_global_flag = scw_over }
 		}
-		prerequisite = { focus = SPA_royal_intelligence_service }
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_technical_state_junta }
 		
-		icon = GFX_focus_GER_expand_ss_security_duties
+		icon = GFX_focus_generic_farmland
 		x = 1
 		y = 1
-		relative_position_id = SPA_royal_intelligence_service
-		cost = 3
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_STABILITY}
 		completion_reward = {
-			add_tech_bonus = {
-				name = GER_expand_ss_security_duties
-				bonus = 0.5
-				uses = 2
-				category = military_police_tech
-			}
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_passive_defense
-			upgrade_intelligence_agency = upgrade_anti_partisan
-			upgrade_intelligence_agency = upgrade_anti_partisan
+			add_stability = 0.1
+			add_war_support = 0.05
 		}
 	}
 
@@ -847,6 +890,7 @@ focus_tree = {
 			}
 		}
 		bypass = {
+			has_global_flag = scw_over
 		}
 		prerequisite = { focus = SPA_consolidate_the_north focus = SPA_a_methodical_approach focus = SPA_buy_italian_equipment }
 		
@@ -854,7 +898,7 @@ focus_tree = {
 		x = 2
 		y = 1
 		relative_position_id = SPA_consolidate_the_north
-		cost = 3
+		cost = 5
 
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_RESEARCH}
@@ -875,6 +919,177 @@ focus_tree = {
 				name = SPA_learn_from_the_battlefield
 				bonus = 0.15
 				days = 360
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_hisma_company
+		available = {
+			NOT = { has_global_flag = scw_over }
+		}
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_equipment_shipments }
+		icon = GFX_focus_generic_german_trade
+		x = -2
+		y = 2
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_POLITICAL}
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 4000 producer = GER }
+			add_equipment_to_stockpile = { type = artillery_equipment amount = 300 producer = GER }
+			add_equipment_to_stockpile = { type = support_equipment amount = 200 producer = GER }
+		}
+	}
+
+	focus = {
+		id = SPA_fall_of_the_north
+		available = {
+			NOT = { has_global_flag = scw_over }
+			controls_state = 790
+			controls_state = 792
+		}
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_altos_hornos_de_vizcaya }
+		icon = GFX_goal_generic_construct_civ_factory
+		x = 0
+		y = 2
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_POLITICAL}
+		completion_reward = {
+			790 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			army_experience = 25
+		}
+	}
+
+	focus = {
+		id = SPA_recruit_the_regulares
+		available = {
+			NOT = { has_global_flag = scw_over }
+		}
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_national_wheat_service }
+		icon = GFX_goal_generic_allies_build_infantry
+		x = 2
+		y = 2
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_POLITICAL}
+		completion_reward = {
+			add_manpower = 60000
+			custom_effect_tooltip = SPA_cwe_modify_tt
+			add_to_variable = { SPA_cwe_attack = 0.05 tooltip = army_attack_factor_tt }
+			hidden_effect = {
+				add_dynamic_modifier = { modifier = SPA_crusade_war_economy }
+				force_update_dynamic_modifier = yes
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_ferrol_shipyards
+		available = {
+			NOT = { has_global_flag = scw_over }
+			controls_state = 171
+		}
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_hisma_company focus = SPA_fall_of_the_north }
+		icon = GFX_goal_generic_construct_naval_dockyard
+		x = -1
+		y = 3
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_POLITICAL}
+		completion_reward = {
+			171 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = dockyard
+					level = 2
+					instant_build = yes
+				}
+			}
+			navy_experience = 25
+		}
+	}
+
+	focus = {
+		id = SPA_rio_tinto_mines
+		available = {
+			NOT = { has_global_flag = scw_over }
+			controls_state = 169
+		}
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_fall_of_the_north focus = SPA_recruit_the_regulares }
+		icon = GFX_focus_generic_mining_industry
+		x = 1
+		y = 3
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_POLITICAL}
+		completion_reward = {
+			add_resource = {
+				type = steel
+				amount = 80
+				state = 169
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_the_final_offensive
+		available = {
+			NOT = { has_global_flag = scw_over }
+		}
+		bypass = {
+			has_global_flag = scw_over
+		}
+		prerequisite = { focus = SPA_ferrol_shipyards focus = SPA_rio_tinto_mines }
+		icon = GFX_goal_generic_major_war
+		x = 0
+		y = 4
+		relative_position_id = SPA_technical_state_junta
+		cost = 5
+		available_if_capitulated = yes
+		search_filters = {FOCUS_FILTER_POLITICAL}
+		completion_reward = {
+			custom_effect_tooltip = SPA_cwe_modify_tt
+			add_to_variable = { SPA_cwe_attack = 0.05 tooltip = army_attack_factor_tt }
+			add_to_variable = { SPA_cwe_defence = 0.05 tooltip = army_defence_factor_tt }
+			hidden_effect = {
+				add_dynamic_modifier = { modifier = SPA_crusade_war_economy }
+				force_update_dynamic_modifier = yes
+			}
+			army_experience = 50
+			add_doctrine_cost_reduction = {
+				name = SPA_the_final_offensive
+				cost_reduction = 0.5
+				uses = 1
+				category = land_doctrine
 			}
 		}
 	}
@@ -8650,7 +8865,7 @@ focus_tree = {
 		id = SPA_Total_Axis_Victory		
 		
         mutually_exclusive = { focus = SPA_Axis_Victory }
-		mutually_exclusive = { focus = SPA_Allies_Victory }
+		mutually_exclusive = { focus = SPA_Pyrrhic_Victory }
 		
 		available = {
 			always = no
@@ -8770,7 +8985,7 @@ focus_tree = {
 		}
 
         mutually_exclusive = { focus = SPA_Total_Axis_Victory }
-		mutually_exclusive = { focus = SPA_Allies_Victory }		
+		mutually_exclusive = { focus = SPA_Pyrrhic_Victory }		
 		
 		icon = GFX_focus_spa_unify_the_nationalist_front
 		x = -2
@@ -8830,20 +9045,20 @@ focus_tree = {
 	}
 	
 	focus = {
-		id = SPA_Allies_Victory	
+		id = SPA_Pyrrhic_Victory
 		relative_position_id = SPA_Total_Axis_Victory
 		available = {
 			always = no
 		}
-		
+
 		bypass = {
-		    has_idea = SPR_Bozo_Spain_Build
+			has_idea = SPR_Bozo_Spain_Build
 		}
 
-        mutually_exclusive = { focus = SPA_Total_Axis_Victory }
-		mutually_exclusive = { focus = SPA_Axis_Victory }		
-		
-		icon = GFX_focus_spr_war_of_independence
+		mutually_exclusive = { focus = SPA_Total_Axis_Victory }
+		mutually_exclusive = { focus = SPA_Axis_Victory }
+
+		icon = GFX_focus_spa_save_the_alcazar
 		x = -4
 		y = 0
 		cost = 1
@@ -8860,47 +9075,28 @@ focus_tree = {
 			news_event = {
 				id = news.65
 			}
-            give_resource_rights = {
-            receiver = SOV
-            state = 167
-            	resources = { Tungsten }
-            }
-			complete_national_focus = SPA_Big_Allied_Resource_Investments
-			add_ideas = SPA_AlliesV
-			custom_effect_tooltip = generic_skip_one_line_tt
-        if = {
-        limit = {
-		    SOV = { has_completed_focus = SOV_spanish_gold }
-	    }
-	    SOV = {
-		    add_offsite_building = { type = arms_factory level = 5 }
-	        }
-        }
-        else = {
-	        SOV = {
-		        complete_national_focus = SOV_spanish_gold
-	        }
-        }
-			custom_effect_tooltip = generic_skip_one_line_tt
+			complete_national_focus = SPA_Pyrrhic_Tungsten
+			hidden_effect = { add_ideas = SPA_AlliesV }
 			SPR = {
 				add_timed_idea = {
 					idea = SPR_Bozo_Spain_Build
-					days = 730
+					days = 365
 				}
 			}
-        custom_effect_tooltip = Allies_Victory_focus_1
+			custom_effect_tooltip = Pyrrhic_Victory_focus_1
 		}
 	}
+
 	focus = {
-		id = SPA_Big_Allied_Resource_Investments
-		relative_position_id = SPA_Allies_Victory
-		prerequisite = { focus = SPA_Allies_Victory }
-		
+		id = SPA_Pyrrhic_Tungsten
+		relative_position_id = SPA_Pyrrhic_Victory
+		prerequisite = { focus = SPA_Pyrrhic_Victory }
+
 		available = {
-			
+
 		}
-		
-		icon = GFX_SOV_capitals_of_socialism_1
+
+		icon = GFX_focus_generic_mining_industry
 		x = 0
 		y = 1
 		cost = 1
@@ -8908,18 +9104,11 @@ focus_tree = {
 		available_if_capitulated = yes
 		search_filters = {FOCUS_FILTER_POLITICAL}
 		completion_reward = {
-            add_resource = {
+			add_resource = {
 				type = tungsten
 				amount = 400
 				state = 167
-            }
-			give_resource_rights = {
-				receiver = SOV
-				state = 167
-				resources = { Tungsten }
 			}
-			add_offsite_building = { type = industrial_complex level = 8 }
-			add_ideas = { free_trade }
 		}
 	}
 	
