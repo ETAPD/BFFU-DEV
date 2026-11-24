@@ -1508,9 +1508,9 @@ sp_land_hollow_charge = {
 		}
 	}
 
-	prototype_time = sp_time.prototype.short
+	prototype_time = sp_time.prototype.hollowcharge
 
-	complexity = sp_complexity.small
+	complexity = sp_complexity.hollowcharge
 
 	breakthrough_cost = {
 		specialization_land = 1
@@ -1553,6 +1553,89 @@ sp_land_hollow_charge = {
 		sp_land_generic_reward_test_failure_3
 		sp_land_generic_reward_resource_scarcity
 	}
+
+	unique_prototype_rewards = {
+		sp_land_hollow_charge_standoff = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 20
+				max = 60
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_hollow_charge_standoff_a
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_hollow_charge_standoff_b
+
+				iteration_output = {
+					country_effects = {
+						add_tech_bonus = {
+							name = sp_land_hollow_charge_standoff
+							bonus = 0.5
+							uses = 1
+							category = cat_anti_tank
+						}
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+						}
+					}
+				}
+			}
+		}
+
+		sp_land_hollow_charge_copper_liner = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 50
+				max = 95
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_hollow_charge_copper_liner_a
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.low
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_hollow_charge_copper_liner_b
+
+				iteration_output = {
+					country_effects = {
+						add_political_power = -25
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 sp_land_blood_plasma = {
@@ -1565,9 +1648,9 @@ sp_land_blood_plasma = {
 		}
 	}
 
-	prototype_time = sp_time.prototype.short
+	prototype_time = sp_time.prototype.bloodplasma
 
-	complexity = sp_complexity.small
+	complexity = sp_complexity.bloodplasma
 
 	breakthrough_cost = {
 		specialization_land = 1
@@ -1604,6 +1687,90 @@ sp_land_blood_plasma = {
 		sp_land_generic_reward_test_failure_3
 		sp_land_generic_reward_resource_scarcity
 	}
+
+	unique_prototype_rewards = {
+		sp_land_blood_plasma_drying = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 20
+				max = 60
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_blood_plasma_drying_a
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_blood_plasma_drying_b
+
+				iteration_output = {
+					country_effects = {
+						add_tech_bonus = {
+							name = sp_land_blood_plasma_drying
+							bonus = 0.5
+							uses = 1
+							category = hospital_tech
+						}
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+						}
+					}
+				}
+			}
+		}
+
+		sp_land_blood_plasma_donor_drive = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 50
+				max = 95
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_blood_plasma_donor_drive_a
+
+				iteration_output = {
+					country_effects = {
+						add_political_power = -25
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.high
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_blood_plasma_donor_drive_b
+
+				iteration_output = {
+					country_effects = {
+						army_experience = 15
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.low
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 sp_land_assault_rifle_trials = {
@@ -1616,9 +1783,9 @@ sp_land_assault_rifle_trials = {
 		}
 	}
 
-	prototype_time = sp_time.prototype.long
+	prototype_time = sp_time.prototype.assaultrifle
 
-	complexity = sp_complexity.medium
+	complexity = sp_complexity.assaultrifle
 
 	breakthrough_cost = {
 		specialization_land = 1
@@ -1643,6 +1810,46 @@ sp_land_assault_rifle_trials = {
 					popup = no
 				}
 			}
+			if = {
+				limit = {
+					FROM = {
+						has_project_flag = sp_assault_rifle_new_round
+						has_project_flag = sp_assault_rifle_front_trials
+					}
+				}
+				add_tech_bonus = {
+					name = sp_land_assault_rifle_trials
+					bonus = 1.0
+					ahead_reduction = 2
+					uses = 1
+					technology = advanced_infantry_weapons2
+				}
+			}
+			else_if = {
+				limit = {
+					FROM = {
+						OR = {
+							has_project_flag = sp_assault_rifle_new_round
+							has_project_flag = sp_assault_rifle_front_trials
+						}
+					}
+				}
+				add_tech_bonus = {
+					name = sp_land_assault_rifle_trials
+					bonus = 0.5
+					ahead_reduction = 1
+					uses = 1
+					technology = advanced_infantry_weapons2
+				}
+			}
+			else = {
+				add_tech_bonus = {
+					name = sp_land_assault_rifle_trials
+					ahead_reduction = 1
+					uses = 1
+					technology = advanced_infantry_weapons2
+				}
+			}
 		}
 	}
 
@@ -1661,6 +1868,87 @@ sp_land_assault_rifle_trials = {
 		sp_land_generic_reward_test_failure_3
 		sp_land_generic_reward_resource_scarcity
 	}
+
+	unique_prototype_rewards = {
+		sp_land_assault_rifle_trials_cartridge = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 20
+				max = 60
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_assault_rifle_trials_cartridge_a
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_assault_rifle_trials_cartridge_b
+
+				iteration_output = {
+					country_effects = {
+						custom_effect_tooltip = sp_land_assault_rifle_better_reward_tt
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.medium
+							set_project_flag = sp_assault_rifle_new_round
+						}
+					}
+				}
+			}
+		}
+
+		sp_land_assault_rifle_trials_troop_trials = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 50
+				max = 95
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_assault_rifle_trials_troop_trials_a
+
+				iteration_output = {
+					country_effects = {
+						army_experience = 25
+						custom_effect_tooltip = sp_land_assault_rifle_better_reward_tt
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+							set_project_flag = sp_assault_rifle_front_trials
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_assault_rifle_trials_troop_trials_b
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 sp_land_muzzle_brake = {
@@ -1674,9 +1962,9 @@ sp_land_muzzle_brake = {
 		}
 	}
 
-	prototype_time = sp_time.prototype.medium
+	prototype_time = sp_time.prototype.muzzlebrake
 
-	complexity = sp_complexity.medium
+	complexity = sp_complexity.muzzlebrake
 
 	breakthrough_cost = {
 		specialization_land = 1
@@ -1718,5 +2006,94 @@ sp_land_muzzle_brake = {
 		sp_land_generic_reward_test_failure_2
 		sp_land_generic_reward_test_failure_3
 		sp_land_generic_reward_resource_scarcity
+	}
+
+	unique_prototype_rewards = {
+		sp_land_muzzle_brake_baffle_erosion = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 20
+				max = 60
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_muzzle_brake_baffle_erosion_a
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_muzzle_brake_baffle_erosion_b
+
+				iteration_output = {
+					country_effects = {
+						add_tech_bonus = {
+							name = sp_land_muzzle_brake_baffle_erosion
+							bonus = 0.5
+							uses = 1
+							category = artillery
+							category = cat_anti_tank
+						}
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+						}
+					}
+				}
+			}
+		}
+
+		sp_land_muzzle_brake_muzzle_blast = {
+			fire_only_once = yes
+
+			threshold = {
+				min = 50
+				max = 95
+			}
+
+			weight = {
+				base = 100
+			}
+
+			option = {
+				token = sp_land_muzzle_brake_muzzle_blast_a
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.loss.low
+						}
+					}
+					scientist_effects = {
+						add_scientist_xp = {
+							experience = constant:sp_scientist_xp_gain.medium
+							specialization = specialization_land
+						}
+					}
+				}
+			}
+
+			option = {
+				token = sp_land_muzzle_brake_muzzle_blast_b
+
+				iteration_output = {
+					country_effects = {
+						FROM = {
+							add_project_progress_ratio = constant:sp_progress.gain.medium
+						}
+					}
+				}
+			}
+		}
 	}
 }
