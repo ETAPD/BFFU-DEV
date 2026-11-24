@@ -1231,6 +1231,92 @@ JAP_southern_expansion = {
 
 political_actions = {
 
+	# Incite Increased Tensions in the Diet
+	JAP_incite_increased_tensions_in_the_diet_decision = {
+
+		priority = 950
+
+		icon = GFX_decision_generic_political_discourse
+
+		ai_will_do = {
+			base = 20
+			modifier = {
+				factor = 0
+				is_historical_focus_on = yes
+			}
+		}
+
+		allowed = {
+			original_tag = JAP
+		}
+
+		visible = {
+			has_completed_focus = JAP_promulgate_the_military_ministers_system
+			OR = {
+				has_government = neutrality
+				has_government = fascism
+			}
+			NOT = {
+				has_completed_focus = JAP_the_harakiri_debate
+				has_completed_focus = JAP_reprimand_hamada_kunimatsu
+			}
+		}
+
+		available = {
+			has_active_mission = JAP_conflict_between_faction_reaching_boiling_point_mission
+		}
+
+		cost = 50
+
+		complete_effect = {
+			add_days_mission_timeout = {
+				mission = JAP_conflict_between_faction_reaching_boiling_point_mission
+				days = -70
+			}
+		}
+
+		fire_only_once = yes
+	}
+
+	# Conflict Between the Civilian Government and the Military Reaching a Breaking Point
+	JAP_conflict_between_faction_reaching_boiling_point_mission = {
+
+		priority = 1000
+
+		icon = GFX_decision_generic_political_address
+
+		available = {
+			hidden_trigger = { always = no }
+		}
+
+		days_mission_timeout = 265
+
+		fire_only_once = yes
+
+		activation = {
+			always = no
+		}
+
+		visible = {
+			original_tag = JAP
+			has_civil_war = no
+			has_government = neutrality
+			NOT = {
+				has_completed_focus = JAP_the_harakiri_debate
+			}
+		}
+
+		cancel_if_not_visible = yes
+
+		is_good = no
+
+		timeout_effect = {
+			country_event = {
+				id = SEA_japan_popup_events.3
+			}
+		}
+	}
+
 	# Promote Hayao Tada to Lieutenant General
 	JAP_promote_hayao_tada_to_lieutenant_general_decision  = {
 
