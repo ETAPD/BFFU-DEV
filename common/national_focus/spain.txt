@@ -2180,543 +2180,505 @@ focus_tree = {
 	################ NAVY ####################
 
 	focus = {
-		id = SPA_rebuild_the_armada
+		id = SPA_programa_naval
+		icon = GFX_focus_generic_large_navy
+		x = 33
+		y = 10
+		cost = 5
 		available = {
 			has_global_flag = scw_over
 		}
-		bypass = {
-		}
-		
-		icon = GFX_focus_generic_large_navy
-		x = 31
-		y = 10
-		cost = 5
-
 		available_if_capitulated = yes
-
-		complete_tooltip = {
-			every_state = {
-				limit = { has_state_flag = SPA_invest_in_naval_infrastructure_3DY }
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = dockyard
-					level = 3
-					instant_build = yes
-				}
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 5
+		}
+		completion_reward = {
+			navy_experience = 50
+			add_dynamic_modifier = { modifier = SPA_la_armada }
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_output = 0.05
+				tooltip = industrial_capacity_dockyard_tt
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_doctrine_cost_reduction = {
+				name = SPA_programa_naval
+				cost_reduction = 0.25
+				uses = 1
+				category = naval_doctrine
 			}
 		}
+	}
 
+	focus = {
+		id = SPA_italian_naval_plans
+		icon = GFX_focus_generic_navy_battleship2
+		x = 31
+		y = 11
+		cost = 5
+		prerequisite = { focus = SPA_programa_naval }
+		mutually_exclusive = { focus = SPA_vickers_partnership focus = SPA_spanish_naval_designs }
+		available = {
+			OR = {
+				has_government = fascism
+				is_in_faction_with = ITA
+				is_in_faction_with = GER
+			}
+		}
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
 		completion_reward = {
-			navy_experience = 75
-			random_owned_controlled_state = {
-				limit = {
-					free_building_slots = {
-						building = dockyard
-						size > 2
-						include_locked = yes
-					}
-					is_core_of = ROOT
-				}
+			add_tech_bonus = {
+				name = SPA_italian_naval_plans
+				bonus = 1
+				uses = 1
+				category = bb_tech
+			}
+			add_tech_bonus = {
+				name = SPA_italian_naval_plans
+				bonus = 0.5
+				uses = 1
+				category = ca_tech
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_speed = 0.05
+				tooltip = production_speed_dockyard_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_vickers_partnership
+		icon = GFX_focus_generic_destroyer
+		x = 33
+		y = 11
+		cost = 5
+		prerequisite = { focus = SPA_programa_naval }
+		mutually_exclusive = { focus = SPA_italian_naval_plans focus = SPA_spanish_naval_designs }
+		available = {
+			NOT = { has_government = fascism }
+		}
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
+		completion_reward = {
+			add_tech_bonus = {
+				name = SPA_vickers_partnership
+				bonus = 1
+				uses = 1
+				category = dd_tech
+			}
+			add_tech_bonus = {
+				name = SPA_vickers_partnership
+				bonus = 0.5
+				uses = 1
+				category = ca_tech
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_refit_speed = 0.1
+				tooltip = refit_speed_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_spanish_naval_designs
+		icon = GFX_focus_generic_navy_research_bonus
+		x = 35
+		y = 11
+		cost = 5
+		prerequisite = { focus = SPA_programa_naval }
+		mutually_exclusive = { focus = SPA_italian_naval_plans focus = SPA_vickers_partnership }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 1
+		}
+		completion_reward = {
+			add_tech_bonus = {
+				name = SPA_spanish_naval_designs
+				bonus = 0.5
+				uses = 1
+				category = naval_equipment
+			}
+			mio:SPR_secn_organization = {
+				add_mio_funds = 1000
+				add_mio_size = 1
+			}
+			mio:SPR_euskalduna_organization = {
+				add_mio_funds = 1000
+				add_mio_size = 1
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_resource_penalty = -0.1
+				tooltip = production_lack_of_resource_penalty_factor_tt
+			}
+			add_to_variable = {
+				SPA_armada_dockyard_speed = 0.05
+				tooltip = production_speed_dockyard_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_departamentos_maritimos
+		icon = GFX_goal_generic_build_navy
+		x = 33
+		y = 12
+		cost = 5
+		prerequisite = { focus = SPA_italian_naval_plans focus = SPA_vickers_partnership focus = SPA_spanish_naval_designs }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
+		completion_reward = {
+			navy_experience = 25
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_departamentos_explained_tt
+		}
+	}
+
+	focus = {
+		id = SPA_arsenal_de_ferrol
+		icon = GFX_goal_generic_construct_naval_dockyard
+		x = 30
+		y = 13
+		cost = 5
+		prerequisite = { focus = SPA_departamentos_maritimos }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
+		completion_reward = {
+			171 = {
+				limit = { is_controlled_by = ROOT }
 				add_extra_state_shared_building_slots = 2
 				add_building_construction = {
 					type = dockyard
 					level = 2
 					instant_build = yes
 				}
-				set_state_flag = SPA_invest_in_naval_infrastructure_3DY
+			}
+			custom_effect_tooltip = SPA_primary_department_tt
+			hidden_effect = {
+				if = {
+					limit = { NOT = { has_country_flag = SPA_primary_department_set } }
+					set_country_flag = SPA_primary_department_set
+					171 = {
+						limit = { is_controlled_by = ROOT }
+						add_extra_state_shared_building_slots = 2
+						add_building_construction = {
+							type = dockyard
+							level = 2
+							instant_build = yes
+						}
+					}
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_speed = 0.05
+				tooltip = production_speed_dockyard_factor_tt
 			}
 		}
 	}
 
 	focus = {
-		id = SPA_invest_in_naval_infrastructure
-		bypass = {
-		}
-
-		prerequisite = {
-			focus = SPA_rebuild_the_armada
-		}
-		
-		icon = GFX_goal_generic_navy_doctrines_tactics
-		x = -2
-		y = 1
+		id = SPA_ferrol_heavy_slipways
+		icon = GFX_goal_generic_navy_battleship
+		x = 30
+		y = 14
 		cost = 5
-		relative_position_id = SPA_rebuild_the_armada
-
+		prerequisite = { focus = SPA_arsenal_de_ferrol }
 		available_if_capitulated = yes
-
-		complete_tooltip = {
-			every_state = {
-				limit = { has_state_flag = SPA_invest_in_naval_infrastructure_3DY }
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = dockyard
-					level = 4
-					instant_build = yes
-				}
-			}
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
 		}
-
 		completion_reward = {
-			navy_experience = 25
-			random_owned_controlled_state = {
-				limit = {
-					free_building_slots = {
-						building = dockyard
-						size > 4
-						include_locked = yes
-					}
-					is_core_of = ROOT
-				}
-				add_extra_state_shared_building_slots = 4
-				add_building_construction = {
-					type = dockyard
-					level = 4
-					instant_build = yes
-				}
-				set_state_flag = SPA_invest_in_naval_infrastructure_3DY
-			}
-		}
-	}
-
-	focus = {
-		id = SPA_expand_the_slipways
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_invest_in_naval_infrastructure }
-		
-		icon = GFX_goal_generic_construct_naval_dockyard
-		x = 0
-		y = 1
-		relative_position_id = SPA_invest_in_naval_infrastructure
-		cost = 5
-
-		available_if_capitulated = yes
-
-		complete_tooltip = {
-			every_state = {
-				limit = { has_state_flag = SPA_expand_the_slipways_3DY }
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = dockyard
-					level = 3
-					instant_build = yes
-				}
-			}
-		}
-
-		completion_reward = {
-			random_owned_controlled_state = {
-				limit = {
-					free_building_slots = {
-						building = dockyard
-						size > 2
-						include_locked = yes
-					}
-					is_core_of = ROOT
-				}
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = dockyard
-					level = 3
-					instant_build = yes
-				}
-				set_state_flag = SPA_expand_the_slipways_3DY
-			}
-			random_owned_controlled_state = {
-				limit = {
-					free_building_slots = {
-						building = dockyard
-						size > 2
-						include_locked = yes
-					}
-					is_core_of = ROOT
-					NOT = { has_state_flag = SPA_expand_the_slipways_3DY }
-				}
-				add_extra_state_shared_building_slots = 3
-				add_building_construction = {
-					type = dockyard
-					level = 3
-					instant_build = yes
-				}
-				set_state_flag = SPA_expand_the_slipways_3DY
-			}
-		}
-	}
-
-	focus = {
-		id = SPA_italian_shipbuilding_expertise
-		available = {
-			is_in_faction_with = ITA
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_expand_the_slipways }
-		
-		icon = GFX_focus_generic_navy_battleship2
-		x = 0
-		y = 1
-		relative_position_id = SPA_expand_the_slipways
-		cost = 5
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			add_ideas = SPA_italian_shipbuilding_expertise
 			add_tech_bonus = {
-				name = SPA_italian_shipbuilding_expertise
+				name = SPA_ferrol_heavy_slipways
 				bonus = 0.5
 				uses = 1
 				category = bb_tech
 			}
-		}
-	}
-	
-	focus = {
-		id = SPA_italian_steel_investments
-		available = {
-			is_in_faction_with = ITA
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_italian_shipbuilding_expertise }
-		
-		icon = GFX_focus_generic_navy_battleship2
-		x = 0
-		y = 1
-		relative_position_id = SPA_italian_shipbuilding_expertise
-		cost = 6
-
-		available_if_capitulated = yes
-		
-		completion_reward = {
-			168 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = steel_refinery
-					level = 1
-					instant_build = yes
-				}
-			}
-			167 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = steel_refinery
-					level = 1
-					instant_build = yes
-				}
-			}
-			165 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = steel_refinery
-					level = 1
-					instant_build = yes
-				}
-			}
-			173 = {
-				add_extra_state_shared_building_slots = 1
-				add_building_construction = {
-					type = steel_refinery
-					level = 1
-					instant_build = yes
-				}
-			}
-		}
-	}
-
-	focus = {
-		id = SPA_the_plan_imperial
-		available = {
-			has_completed_focus = SPA_supremacy_of_the_communion
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_rebuild_the_armada }
-		mutually_exclusive = {
-			focus = SPA_defenses_against_invasion
-		}
-		
-		icon = GFX_focus_PHI_thats_not_an_island
-		x = 3
-		y = 1
-		relative_position_id = SPA_rebuild_the_armada
-		cost = 5
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			navy_experience = 50
-			add_ideas = SPA_the_plan_imperial
 			add_tech_bonus = {
-				name = cv_bonus
-				bonus = 0.50
-				uses = 1
-				technology = improved_heavy_battery
-				technology = advanced_heavy_battery
-			}
-			add_tech_bonus = {
-				name = cv_bonus
-				bonus = 0.50
-				ahead_reduction = 0.25
-				uses = 1
-				category = bb_tech
-			}
-		}
-	}
-	
-	focus = {
-		id = SPA_looking_to_the_past
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_the_plan_imperial }
-		
-		icon = GFX_focus_generic_free_iberia
-		x = 0
-		y = 1
-		relative_position_id = SPA_the_plan_imperial
-		cost = 5
-
-		available_if_capitulated = yes
-
-		completion_reward = {
-			add_mastery_bonus = {
-				name = SPA_plan_imperial
-				bonus = 0.2
-				days = 360
-				grand_doctrine = new_fleet_in_being
-				
-			}
-			add_mastery = {
-                amount = 50
-                grand_doctrine = new_fleet_in_being
-            }
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-			
-			add_doctrine_cost_reduction = {
-				name = SPA_plan_imperial
-				cost_reduction = 0.25
-				uses = 1
-				category = naval_doctrine
-			}
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-			
-			add_ideas = SPA_schizo_naval_focus
-		}
-	}
-	
-	focus = {
-		id = SPA_screens_for_the_armada
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_looking_to_the_past }
-
-		icon = GFX_focus_CHL_armada_de_chile
-		x = 0
-		y = 1
-		relative_position_id = SPA_looking_to_the_past
-		cost = 5
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			navy_experience = 50
-			
-			swap_ideas = {
-				remove_idea = SPA_the_plan_imperial
-				add_idea = SPA_the_plan_imperial_2
-			}
-			
-			add_tech_bonus = {
-				name = SPA_glory_and_wealth_on_the_sea_lanes
-				bonus = 1
+				name = SPA_ferrol_heavy_slipways
+				bonus = 0.5
 				uses = 1
 				category = ca_tech
 			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_output = 0.05
+				tooltip = industrial_capacity_dockyard_tt
+			}
 		}
 	}
-	
-	focus = {
-		id = SPA_emergency_refitting
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_screens_for_the_armada }
-		
-		icon = GFX_focus_generic_refit_civilian_ships
-		x = 0
-		y = 1
-		relative_position_id = SPA_screens_for_the_armada
-		cost = 2
 
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			add_timed_idea = {
-				idea = SPA_emergency_refitting
-				days = 180
-			}
-		}
-	}
-	
 	focus = {
-		id = SPA_santiago_y_cierra_espana
-		
-		available = {
-			has_navy_size = {
-				unit = battleship
-				size > 5
-			}
-			has_navy_size = {
-				unit = light_cruiser
-				size > 19
-			}
-			has_war_with_major = yes
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_emergency_refitting }
-		
-		icon = GFX_focus_spa_strengthen_the_supreme_reality_of_spain
-		x = 0
-		y = 1
-		relative_position_id = SPA_emergency_refitting
-		cost = 10
-
-		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
-		completion_reward = {
-			add_timed_idea = {
-				idea = SPA_santiago_idea
-				days = 90
-			}
-			country_event = { id = spain.112 }
-		}
-	}
-	
-	focus = {
-		id = SPA_avenging_Gravelines
-		
-		available = {
-			118 = {
-				is_controlled_by_ROOT_or_subject = yes
-			}
-			126 = {
-				is_controlled_by_ROOT_or_subject = yes
-			}
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_italian_steel_investments focus = SPA_santiago_y_cierra_espana }
-		
-		icon = GFX_focus_ICE_infiltrating_the_british_isles
-		x = -2
-		y = 2
-		relative_position_id = SPA_santiago_y_cierra_espana
+		id = SPA_euskalduna_yards
+		icon = GFX_focus_generic_merchant_fleet
+		x = 28
+		y = 14
 		cost = 5
-
+		prerequisite = { focus = SPA_arsenal_de_ferrol }
 		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
 		completion_reward = {
-			swap_ideas = {
-				remove_idea = SPA_schizo_naval_focus
-				add_idea = SPA_a_new_marquis
-			}
-			country_event = { id = spain.113 }
-		}
-	}
-	
-	
-	
-	
-	
-	
-
-	focus = {
-		id = SPA_defenses_against_invasion
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_rebuild_the_armada }
-		mutually_exclusive = {
-			focus = SPA_the_plan_imperial
-		}
-		
-		icon = GFX_focus_generic_coastal_fort
-		x = 1
-		y = 1
-		relative_position_id = SPA_rebuild_the_armada
-		cost = 6
-
-		available_if_capitulated = yes
-
-		completion_reward = {
-			custom_effect_tooltip = SPA_defenses_against_invasion_tt
-			every_owned_state = {
-				limit = {
-					is_controlled_by = ROOT
-					is_core_of = ROOT
-					is_in_home_area = yes
-				}
+			792 = {
+				limit = { is_controlled_by = ROOT }
+				add_extra_state_shared_building_slots = 1
 				add_building_construction = {
-					type = coastal_bunker
-					province = {
-						all_provinces = yes
-						limit_to_naval_base = yes
-					}
-					level = 2
-					instant_build = yes
-				}
-				add_building_construction = {
-					type = bunker
-					province = {
-						all_provinces = yes
-						limit_to_naval_base = yes
-					}
+					type = dockyard
 					level = 1
 					instant_build = yes
 				}
 			}
+			mio:SPR_euskalduna_organization = {
+				add_mio_funds = 1000
+			}
+			add_equipment_to_stockpile = {
+				type = convoy
+				amount = 100
+				producer = ROOT
+			}
 		}
 	}
 
 	focus = {
-		id = SPA_restart_small_scale_shipbuilding
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_defenses_against_invasion}
-		
-		icon = GFX_focus_generic_destroyer
-		x = 0
-		y = 1
-		relative_position_id = SPA_defenses_against_invasion
-		cost = 6
-
+		id = SPA_san_fernando
+		icon = GFX_goal_generic_occupy_states_coastal
+		x = 33
+		y = 13
+		cost = 5
+		prerequisite = { focus = SPA_departamentos_maritimos }
 		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
 		completion_reward = {
-			navy_experience = 25
-			add_tech_bonus = {
-				name = SPA_restart_small_scale_shipbuilding
-				bonus = 0.75
-				uses = 1
-				category = dd_tech
+			169 = {
+				limit = { is_controlled_by = ROOT }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = dockyard
+					level = 1
+					instant_build = yes
+				}
 			}
+			169 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = naval_base
+					level = 2
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+			custom_effect_tooltip = SPA_primary_department_tt
+			hidden_effect = {
+				if = {
+					limit = { NOT = { has_country_flag = SPA_primary_department_set } }
+					set_country_flag = SPA_primary_department_set
+					169 = {
+						limit = { is_controlled_by = ROOT }
+						add_extra_state_shared_building_slots = 2
+						add_building_construction = {
+							type = dockyard
+							level = 2
+							instant_build = yes
+						}
+					}
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_naval_base_speed = 0.1
+				tooltip = production_speed_naval_base_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_baterias_del_estrecho
+		icon = GFX_focus_generic_coastal_fort
+		x = 32
+		y = 14
+		cost = 5
+		prerequisite = { focus = SPA_san_fernando }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			169 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = coastal_bunker
+					level = 2
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+			173 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = coastal_bunker
+					level = 2
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+			290 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = coastal_bunker
+					level = 2
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_coastal_bunker_speed = 0.1
+				tooltip = production_speed_coastal_bunker_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_base_atlantica_canarias
+		icon = GFX_focus_generic_north_atlantic_fleet
+		x = 34
+		y = 14
+		cost = 5
+		prerequisite = { focus = SPA_san_fernando }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			178 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = naval_base
+					level = 3
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_range = 0.1
+				tooltip = navy_max_range_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_arsenal_de_cartagena
+		icon = GFX_goal_generic_construct_naval_dockyard
+		x = 36
+		y = 13
+		cost = 5
+		prerequisite = { focus = SPA_departamentos_maritimos }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
+		completion_reward = {
+			168 = {
+				limit = { is_controlled_by = ROOT }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = dockyard
+					level = 1
+					instant_build = yes
+				}
+			}
+			custom_effect_tooltip = SPA_primary_department_tt
+			hidden_effect = {
+				if = {
+					limit = { NOT = { has_country_flag = SPA_primary_department_set } }
+					set_country_flag = SPA_primary_department_set
+					168 = {
+						limit = { is_controlled_by = ROOT }
+						add_extra_state_shared_building_slots = 2
+						add_building_construction = {
+							type = dockyard
+							level = 2
+							instant_build = yes
+						}
+					}
+				}
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_speed = 0.05
+				tooltip = production_speed_dockyard_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_cartagena_submarine_school
+		icon = GFX_goal_generic_navy_submarine
+		x = 36
+		y = 14
+		cost = 5
+		prerequisite = { focus = SPA_arsenal_de_cartagena }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
 			add_tech_bonus = {
-				name = SPA_restart_small_scale_shipbuilding
-				bonus = 0.5
+				name = SPA_cartagena_submarine_school
+				bonus = 1
 				uses = 1
 				category = ss_tech
 			}
@@ -2724,53 +2686,269 @@ focus_tree = {
 	}
 
 	focus = {
-		id = SPA_bolster_trading_fleet
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_restart_small_scale_shipbuilding }
-		
-		icon = GFX_focus_generic_merchant_fleet
-		x = 0
-		y = 1
-		relative_position_id = SPA_restart_small_scale_shipbuilding
-		cost = 6
-
+		id = SPA_fortaleza_de_mahon
+		icon = GFX_goal_generic_fortify_city
+		x = 38
+		y = 14
+		cost = 5
+		prerequisite = { focus = SPA_arsenal_de_cartagena }
 		available_if_capitulated = yes
-		search_filters = {FOCUS_FILTER_RESEARCH}
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
 		completion_reward = {
-			add_ideas = SPA_bolster_trading_fleet
-
-			add_equipment_to_stockpile = { 
-				type = convoy 
-				amount = 150 
-				producer = SPR
+			177 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = naval_base
+					level = 2
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
+			}
+			177 = {
+				limit = { is_controlled_by = ROOT }
+				add_building_construction = {
+					type = coastal_bunker
+					level = 2
+					instant_build = yes
+					province = {
+						all_provinces = yes
+						limit_to_naval_base = yes
+					}
+				}
 			}
 		}
 	}
-	
-	focus = {
-		id = SPA_defense_of_iberia
-		available = {
-		}
-		bypass = {
-		}
-		prerequisite = { focus = SPA_bolster_trading_fleet }
-		
-		icon = GFX_goal_generic_fortify_city
-		x = 0
-		y = 1
-		
-		relative_position_id = SPA_bolster_trading_fleet
-		cost = 5
 
+	focus = {
+		id = SPA_flota_en_potencia
+		icon = GFX_goal_generic_navy_doctrines_tactics
+		x = 30
+		y = 15
+		cost = 5
+		prerequisite = { focus = SPA_ferrol_heavy_slipways }
+		mutually_exclusive = { focus = SPA_cerrojo_del_estrecho focus = SPA_guerra_al_trafico }
 		available_if_capitulated = yes
-		
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
 		completion_reward = {
-			add_ideas = FRA_fortification_focus
+			set_country_flag = SPA_doctrine_fleet_in_being
+			custom_effect_tooltip = SPA_fleet_in_being_tt
+			custom_effect_tooltip = generic_skip_one_line_tt
+			add_doctrine_cost_reduction = {
+				name = SPA_flota_en_potencia
+				cost_reduction = 0.5
+				uses = 1
+				category = naval_doctrine
+			}
 		}
 	}
+
+	focus = {
+		id = SPA_cerrojo_del_estrecho
+		icon = GFX_focus_generic_mediterranean_sea_focus
+		x = 32
+		y = 15
+		cost = 5
+		prerequisite = { focus = SPA_baterias_del_estrecho }
+		mutually_exclusive = { focus = SPA_flota_en_potencia focus = SPA_guerra_al_trafico }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_mines = 0.2
+				tooltip = mines_planting_by_fleets_factor_tt
+			}
+			add_dynamic_modifier = { modifier = SPA_strait_lock }
+			custom_effect_tooltip = SPA_strait_lock_tt
+		}
+	}
+
+	focus = {
+		id = SPA_guerra_al_trafico
+		icon = GFX_focus_generic_cruiser_submarines
+		x = 36
+		y = 15
+		cost = 5
+		prerequisite = { focus = SPA_cartagena_submarine_school }
+		mutually_exclusive = { focus = SPA_flota_en_potencia focus = SPA_cerrojo_del_estrecho }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_convoy_raiding = 0.05
+				tooltip = convoy_raiding_efficiency_factor_tt
+			}
+			set_country_flag = SPA_doctrine_commerce_war
+			custom_effect_tooltip = SPA_commerce_war_tt
+		}
+	}
+
+	focus = {
+		id = SPA_acorazados_clase_littorio
+		icon = GFX_goal_generic_navy_battleship
+		x = 30
+		y = 16
+		cost = 5
+		prerequisite = { focus = SPA_flota_en_potencia }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			add_tech_bonus = {
+				name = SPA_acorazados_clase_littorio
+				bonus = 1
+				uses = 1
+				category = bb_tech
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_aviacion_naval
+		icon = GFX_goal_generic_air_naval_bomber
+		x = 32
+		y = 16
+		cost = 5
+		prerequisite = { focus = SPA_cerrojo_del_estrecho }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			add_tech_bonus = {
+				name = SPA_aviacion_naval
+				bonus = 1
+				uses = 1
+				category = naval_bomber
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_corsarios_del_atlantico
+		icon = GFX_focus_generic_cruiser2
+		x = 36
+		y = 16
+		cost = 5
+		prerequisite = { focus = SPA_guerra_al_trafico }
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 2
+		}
+		completion_reward = {
+			add_tech_bonus = {
+				name = SPA_corsarios_del_atlantico
+				bonus = 0.75
+				uses = 1
+				category = ca_tech
+			}
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_range = 0.05
+				tooltip = navy_max_range_factor_tt
+			}
+		}
+	}
+
+	focus = {
+		id = SPA_santiago_y_cierra_espana
+		icon = GFX_focus_SMB_blue_water_fleet
+		x = 33
+		y = 17
+		cost = 10
+		prerequisite = { focus = SPA_acorazados_clase_littorio focus = SPA_aviacion_naval focus = SPA_corsarios_del_atlantico }
+		available = {
+			has_war_with_major = yes
+			OR = {
+				has_navy_size = { unit = battleship size > 3 }
+				has_navy_size = { unit = submarine size > 29 }
+				has_navy_size = { unit = light_cruiser size > 14 }
+			}
+		}
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
+		completion_reward = {
+			navy_experience = 100
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_output = 0.05
+				tooltip = industrial_capacity_dockyard_tt
+			}
+			hidden_effect = { country_event = { id = spain.112 } }
+		}
+	}
+
+	focus = {
+		id = SPA_avenging_Gravelines
+		icon = GFX_focus_generic_naval_invasion
+		x = 33
+		y = 18
+		cost = 10
+		prerequisite = { focus = SPA_santiago_y_cierra_espana }
+		available = {
+			118 = { is_controlled_by_ROOT_or_subject = yes }
+			126 = { is_controlled_by_ROOT_or_subject = yes }
+		}
+		available_if_capitulated = yes
+		search_filters = { FOCUS_FILTER_NAVY_XP }
+		ai_will_do = {
+			factor = 3
+		}
+		completion_reward = {
+			custom_effect_tooltip = SPA_modify_armada_tt
+			add_to_variable = {
+				SPA_armada_dockyard_output = 0.1
+				tooltip = industrial_capacity_dockyard_tt
+			}
+			hidden_effect = { country_event = { id = spain.113 } }
+		}
+	}
+
+
+
+
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+	
 	
 	 ###### ARMY ##############
 
