@@ -606,6 +606,184 @@ SOV_increase_propaganda_campaign_cost_effect = {
 	multiply_variable = { SOV_propaganda_cost = SOV_propaganda_cost_increase } #Using generic var SOV_propaganda_cost so that we only need to change this operation to tweak all propagandas' cost escalation
 }
 
+SOV_advisor_monthly_effect = {
+	if = {
+		limit = {
+			has_country_flag = SOV_kaganovich_in_office
+			check_variable = { SOV_kaganovich_civ_added < 0.0999 }
+		}
+		add_to_variable = { SOV_kaganovich_civ_added = 0.01 }
+		add_to_variable = { SOV_command_economy_production_speed_industrial_complex_factor_var = 0.01 }
+		force_update_dynamic_modifier = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_malenkov_in_office
+			check_variable = { SOV_malenkov_mil_added < 0.0999 }
+		}
+		add_to_variable = { SOV_malenkov_mil_added = 0.01 }
+		add_to_variable = { SOV_command_economy_production_speed_arms_factory_factor_var = 0.01 }
+		force_update_dynamic_modifier = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_anastas_mikoyan_in_office
+			check_variable = { SOV_anastas_mikoyan_cg_added > -0.0299 }
+		}
+		add_to_variable = { SOV_anastas_mikoyan_cg_added = -0.0025 }
+		add_to_variable = { SOV_command_economy_consumer_goods_expected_value_var = -0.0025 }
+		force_update_dynamic_modifier = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_bulganin_in_office
+			check_variable = { SOV_bulganin_org_added < 0.0999 }
+		}
+		add_to_variable = { SOV_bulganin_org_added = 0.01 }
+		add_to_variable = { SOV_red_army_army_org_factor_var = 0.01 }
+		force_update_dynamic_modifier = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_bulganin_in_office
+			check_variable = { SOV_bulganin_xp_added < 0.2499 }
+		}
+		add_to_variable = { SOV_bulganin_xp_added = 0.025 }
+		add_to_variable = { SOV_red_army_experience_gain_army_factor_var = 0.025 }
+		force_update_dynamic_modifier = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_molotov_agreement_started
+			check_variable = { SOV_molotov_research_var > 0.001 }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_war_with = GER
+					check_variable = { SOV_molotov_research_var < 0.0101 }
+				}
+			}
+			set_variable = { SOV_molotov_research_var = 0 }
+			set_variable = { SOV_molotov_resources_var = 0 }
+			if = {
+				limit = { has_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement } }
+				remove_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement }
+			}
+		}
+		else = {
+			add_to_variable = { SOV_molotov_research_var = -0.01 }
+			add_to_variable = { SOV_molotov_resources_var = 0.005 }
+			force_update_dynamic_modifier = yes
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_litvinov_in_office
+			check_variable = { SOV_litvinov_output_added < 0.0999 }
+		}
+		add_to_variable = { SOV_litvinov_output_added = 0.01 }
+		add_to_variable = { SOV_command_economy_industrial_capacity_factory_var = 0.01 }
+		force_update_dynamic_modifier = yes
+	}
+	if = {
+		limit = { has_country_flag = SOV_khrushchev_in_office }
+		add_power_balance_value = {
+			id = SOV_purge_bop
+			value = -0.02
+		}
+	}
+	if = {
+		limit = { has_country_flag = SOV_saburov_in_office }
+		add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 1 }
+		clamp_variable = {
+			var = var_SOV_second_5_year_plan_progress_bar_counter
+			max = 105
+		}
+		add_to_variable = { SOV_gosplan_gui_dirty_var = 1 }
+		SOV_check_plan_completion = yes
+	}
+	if = {
+		limit = { has_country_flag = SOV_artem_mikoyan_in_office }
+		mio:SOV_mig_design_bureau_organization = { add_mio_funds = 250 }
+	}
+	if = {
+		limit = { has_country_flag = SOV_vannikov_in_office }
+		mio:SOV_grabin_design_bureau_organization = { add_mio_funds = 250 }
+	}
+	if = {
+		limit = { has_country_flag = SOV_ustinov_in_office }
+		mio:SOV_tula_arms_plant_organization = { add_mio_funds = 150 }
+		mio:SOV_Izhevsk_organization = { add_mio_funds = 150 }
+	}
+	if = {
+		limit = {
+			has_country_flag = SOV_vannikov_in_office
+			has_war_with = GER
+			date < 1942.1.1
+		}
+		set_country_flag = SOV_vannikov_arrested
+		clr_country_flag = SOV_vannikov_in_office
+		deactivate_advisor = SOV_boris_vannikov
+	}
+}
+
+SOV_zhdanov_propaganda_on_effect = {
+	set_variable = { SOV_propaganda_cost_increase = 1.5 }
+	multiply_variable = { SOV_propaganda_motherland_calls_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_victory_at_hand_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_defend_moscow_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_fight_to_the_last_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_hit_of_hammer_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_transport_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_oil_for_the_motherland_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_more_metal_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_high_yield_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_for_the_motherland_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_heroes_forward_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_anti_capitalism_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_anti_fascism_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_treacherous_enemy_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_do_not_blab_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_sweep_scum_out_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_knowledge_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_builders_of_communism_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_glory_to_partisans_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_death_to_invaders_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_stalin_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_rebuild_to_glory_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_peace_cost = 0.5 }
+	multiply_variable = { SOV_propaganda_happy_life_cost = 0.5 }
+}
+
+SOV_zhdanov_propaganda_off_effect = {
+	set_variable = { SOV_propaganda_cost_increase = 2 }
+	multiply_variable = { SOV_propaganda_motherland_calls_cost = 2 }
+	multiply_variable = { SOV_propaganda_victory_at_hand_cost = 2 }
+	multiply_variable = { SOV_propaganda_defend_moscow_cost = 2 }
+	multiply_variable = { SOV_propaganda_fight_to_the_last_cost = 2 }
+	multiply_variable = { SOV_propaganda_hit_of_hammer_cost = 2 }
+	multiply_variable = { SOV_propaganda_transport_cost = 2 }
+	multiply_variable = { SOV_propaganda_oil_for_the_motherland_cost = 2 }
+	multiply_variable = { SOV_propaganda_more_metal_cost = 2 }
+	multiply_variable = { SOV_propaganda_high_yield_cost = 2 }
+	multiply_variable = { SOV_propaganda_for_the_motherland_cost = 2 }
+	multiply_variable = { SOV_propaganda_heroes_forward_cost = 2 }
+	multiply_variable = { SOV_propaganda_anti_capitalism_cost = 2 }
+	multiply_variable = { SOV_propaganda_anti_fascism_cost = 2 }
+	multiply_variable = { SOV_propaganda_treacherous_enemy_cost = 2 }
+	multiply_variable = { SOV_propaganda_do_not_blab_cost = 2 }
+	multiply_variable = { SOV_propaganda_sweep_scum_out_cost = 2 }
+	multiply_variable = { SOV_propaganda_knowledge_cost = 2 }
+	multiply_variable = { SOV_propaganda_builders_of_communism_cost = 2 }
+	multiply_variable = { SOV_propaganda_glory_to_partisans_cost = 2 }
+	multiply_variable = { SOV_propaganda_death_to_invaders_cost = 2 }
+	multiply_variable = { SOV_propaganda_stalin_cost = 2 }
+	multiply_variable = { SOV_propaganda_rebuild_to_glory_cost = 2 }
+	multiply_variable = { SOV_propaganda_peace_cost = 2 }
+	multiply_variable = { SOV_propaganda_happy_life_cost = 2 }
+}
+
 
 #####
 ##### PARANOIA SYSTEM #####
