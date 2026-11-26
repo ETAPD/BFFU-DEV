@@ -12,7 +12,7 @@ focus_tree = {
 	
 	default = no
 	
-	continuous_focus_position = { x = 50 y = 1075 }
+	continuous_focus_position = { x = 2500 y = 2200 }
 
 
 	# 	available_if_capitulated = yes
@@ -206,7 +206,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_STABILITY  FOCUS_FILTER_POLITICAL_CHARACTER  FOCUS_FILTER_POLITICAL FOCUS_FILTER_MEX_CHURCH_AUTHORITY }
 
 		relative_position_id = SOV_pol_purge4
-		cost = 3
+		cost = 2
 		ai_will_do = {
 			factor = 5
 		}
@@ -216,24 +216,16 @@ focus_tree = {
 		bypass = {
 		}
 
-		available = {
-        has_political_power > 28
-    	}
-
 		completion_reward = {
-			add_political_power = -50
+			add_stability = 0.05
+			add_war_support = 0.05
+			add_power_balance_value = {
+				id = SOV_purge_bop
+				value = -0.1
+			}
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = available_political_advisor
 			show_ideas_tooltip = SOV_patriarch_sergy
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_political_advisor
-			show_ideas_tooltip = SOV_metropolitan_anastasy
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_political_advisor
-			show_ideas_tooltip = SOV_metropolitan_nikolay
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = available_political_advisor
-			show_ideas_tooltip = SOV_metropolitan_aleksy
 		}
 	}
 
@@ -1047,7 +1039,7 @@ focus_tree = {
 				idea = SOV_minor_industrial_effort
 				days = 60
 			}
-			#add_ideas = SOV_volunteers_in_china_small
+			add_ideas = SOV_volunteers_in_china_small
 			hidden_effect = {
 				set_technology = {
 					nkvd_tech_2 = 1
@@ -6885,70 +6877,67 @@ focus_tree = {
 	}
 	
 	focus = {
-		id = SOV_light_popovs_legacy
-		prerequisite = { focus = SOV_light_capitals_of_socialism }
-		icon = GFX_SOV_improve_signals
-		x = -1
-		y = 1
-
-		search_filters = { FOCUS_FILTER_RESEARCH }
-
-		relative_position_id = SOV_light_capitals_of_socialism
-		cost = 5
-		
-		completion_reward = {
-			add_tech_bonus = {
-				bonus = 0.5
-				uses = 3
-				category = electronics
-			}
-			
-			custom_effect_tooltip = generic_skip_one_line_tt
-			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-			custom_effect_tooltip = SOV_research_speed_5_tt
-			add_to_variable = { SOV_command_economy_research_speed_factor_var = 0.05 }
-		}
-	}
-	
-	focus = {
 		id = SOV_light_expand_belarusian_science_academy
 		prerequisite = { focus = SOV_light_capitals_of_socialism }
 		icon = GFX_focus_generic_socialist_science
-		x = 1
+		x = 0
 		y = 1
 
 		relative_position_id = SOV_light_capitals_of_socialism
+		search_filters = { FOCUS_FILTER_RESEARCH }
+
 		cost = 5
 		completion_reward = {
-		
+			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
+			custom_effect_tooltip = SOV_research_speed_5_tt
+			add_to_variable = { SOV_command_economy_research_speed_factor_var = 0.05 }
+			custom_effect_tooltip = generic_skip_one_line_tt
+
 			custom_effect_tooltip = SOV_more_decisions_generic_tt
 			unlock_decision_tooltip = { decision = SOV_increase_research_funding show_effect_tooltip = no }
 			custom_effect_tooltip = generic_skip_one_line_tt
 
 			custom_effect_tooltip = unlock_propaganda_campaign_tt
 			unlock_decision_tooltip = { decision = SOV_propaganda_knowledge show_effect_tooltip = no }
-			custom_effect_tooltip = generic_skip_one_line_tt	
+			custom_effect_tooltip = generic_skip_one_line_tt
 
 			custom_effect_tooltip = SOV_generic_modify_belarus_level_tt
 			SOV_upgrade_region_belarus = yes
-			custom_effect_tooltip = generic_skip_one_line_tt
-			206 = {
-				add_building_construction = {
-					type = infrastructure
-					level = 3
-					instant_build = yes
-				}
+		}
+	}
+
+	focus = {
+		id = SOV_light_popovs_legacy
+		prerequisite = { focus = SOV_light_expand_belarusian_science_academy }
+		icon = GFX_SOV_improve_signals
+		x = 0
+		y = 1
+
+		search_filters = { FOCUS_FILTER_RESEARCH }
+
+		relative_position_id = SOV_light_expand_belarusian_science_academy
+		cost = 5
+		
+		completion_reward = {
+			add_tech_bonus = {
+				bonus = 1
+				uses = 1
+				category = electronics
 			}
+
+			custom_effect_tooltip = generic_skip_one_line_tt
+			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
+			custom_effect_tooltip = SOV_research_speed_5_tt
+			add_to_variable = { SOV_command_economy_research_speed_factor_var = 0.05 }
 		}
 	}
 
 	focus = {
 		id = SOV_light_narrow_research_efforts
 		prerequisite = { focus = SOV_light_popovs_legacy }
-		prerequisite = { focus = SOV_light_expand_belarusian_science_academy }
 		mutually_exclusive = { focus = SOV_light_broad_research_efforts }
 		icon = GFX_focus_NOR_moscows_education_centers
-		x = 1
+		x = -1
 		y = 1
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
@@ -6963,8 +6952,14 @@ focus_tree = {
 			
 			#add_research_slot = -1
 			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-			custom_effect_tooltip = SOV_research_speed_20_tt
+			custom_effect_tooltip = SOV_research_speed_30_tt
 			add_to_variable = { SOV_command_economy_research_speed_factor_var = 0.20 }
+			custom_effect_tooltip = generic_skip_one_line_tt
+
+			add_breakthrough_progress = {
+				specialization = all
+				value = 1
+			}
 			
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = SOV_increase_5_year_plan_3_tt 
@@ -6981,7 +6976,7 @@ focus_tree = {
 	
 	focus = {
 		id = SOV_light_broad_research_efforts
-		prerequisite = { focus = SOV_light_expand_belarusian_science_academy }
+		prerequisite = { focus = SOV_light_popovs_legacy }
 		mutually_exclusive = { focus = SOV_light_narrow_research_efforts }
 		icon = GFX_focus_generic_university_3
 		x = 1
@@ -6989,7 +6984,7 @@ focus_tree = {
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 
-		relative_position_id = SOV_light_expand_belarusian_science_academy
+		relative_position_id = SOV_light_popovs_legacy
 		cost = 5
 		completion_reward = {
 			custom_effect_tooltip = SOV_more_decisions_generic_tt
@@ -6999,10 +6994,7 @@ focus_tree = {
 			custom_effect_tooltip = generic_skip_one_line_tt
 		
 			add_research_slot = 1
-			custom_effect_tooltip = SOV_generic_modify_command_economy_tt
-			custom_effect_tooltip = SOV_research_speed_-20_tt
-			add_to_variable = { SOV_command_economy_research_speed_factor_var = -0.20 }
-			
+
 			custom_effect_tooltip = generic_skip_one_line_tt
 			custom_effect_tooltip = SOV_increase_5_year_plan_3_tt 
 			add_to_variable = { var_SOV_second_5_year_plan_progress_bar_counter = 3 }
@@ -7018,14 +7010,14 @@ focus_tree = {
 	
 	focus = {
 		id = SOV_soviet_atomic_bomb_project
-		prerequisite = { focus = SOV_light_capitals_of_socialism }
+		prerequisite = { focus = SOV_light_expand_belarusian_science_academy }
 		icon = GFX_SOV_rework46
-		x = 3
+		x = 2
 		y = 1
 
 		search_filters = { FOCUS_FILTER_RESEARCH }
 
-		relative_position_id = SOV_light_capitals_of_socialism
+		relative_position_id = SOV_light_expand_belarusian_science_academy
 		cost = 4
 
 		available = {
@@ -7044,8 +7036,8 @@ focus_tree = {
 				}
 				add_tech_bonus = {
 					name = SOV_soviet_atomic_bomb_project_tech_bonus_name
-					bonus = 0.25
-					uses = 1
+					bonus = 1
+					uses = 2
 					#ahead_reduction = 1
 					category = nuclear
 				}
