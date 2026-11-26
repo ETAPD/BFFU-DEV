@@ -606,6 +606,30 @@ SOV_increase_propaganda_campaign_cost_effect = {
 	multiply_variable = { SOV_propaganda_cost = SOV_propaganda_cost_increase } #Using generic var SOV_propaganda_cost so that we only need to change this operation to tweak all propagandas' cost escalation
 }
 
+SOV_molotov_agreement_on_effect = {
+	if = {
+		limit = {
+			NOT = { has_war_with = GER }
+			NOT = { has_country_flag = SOV_molotov_agreement_broken }
+		}
+		add_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement }
+		GER = { add_dynamic_modifier = { modifier = SOV_soviet_raw_material_shipments } }
+	}
+}
+
+SOV_molotov_agreement_off_effect = {
+	if = {
+		limit = { has_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement } }
+		remove_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement }
+	}
+	GER = {
+		if = {
+			limit = { has_dynamic_modifier = { modifier = SOV_soviet_raw_material_shipments } }
+			remove_dynamic_modifier = { modifier = SOV_soviet_raw_material_shipments }
+		}
+	}
+}
+
 SOV_advisor_monthly_effect = {
 	if = {
 		limit = {
@@ -637,10 +661,10 @@ SOV_advisor_monthly_effect = {
 	if = {
 		limit = {
 			has_country_flag = SOV_bulganin_in_office
-			check_variable = { SOV_bulganin_org_added < 0.0999 }
+			check_variable = { SOV_bulganin_mastery_added < 0.1999 }
 		}
-		add_to_variable = { SOV_bulganin_org_added = 0.01 }
-		add_to_variable = { SOV_red_army_army_org_factor_var = 0.01 }
+		add_to_variable = { SOV_bulganin_mastery_added = 0.02 }
+		add_to_variable = { SOV_red_army_land_mastery_gain_factor_var = 0.02 }
 		force_update_dynamic_modifier = yes
 	}
 	if = {
@@ -653,38 +677,68 @@ SOV_advisor_monthly_effect = {
 		force_update_dynamic_modifier = yes
 	}
 	if = {
-		limit = {
-			has_country_flag = SOV_molotov_agreement_started
-			check_variable = { SOV_molotov_research_var > 0.001 }
-		}
+		limit = { has_country_flag = SOV_molotov_in_office }
 		if = {
 			limit = {
-				OR = {
-					has_war_with = GER
-					check_variable = { SOV_molotov_research_var < 0.0101 }
+				has_war_with = GER
+				NOT = { has_country_flag = SOV_molotov_agreement_broken }
+			}
+			set_country_flag = SOV_molotov_agreement_broken
+			SOV_molotov_agreement_off_effect = yes
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = SOV_molotov_agreement_broken } }
+			add_to_variable = { SOV_molotov_months = 1 }
+			if = {
+				limit = { check_variable = { SOV_molotov_months > 3 } }
+				set_variable = { SOV_molotov_months = 0 }
+				if = {
+					limit = { check_variable = { SOV_molotov_delivery_cycle = 1 } }
+					add_tech_bonus = { name = SOV_molotov_machine_tools bonus = 1 uses = 1 category = industry }
+					set_variable = { SOV_molotov_delivery_cycle = 2 }
+				}
+				else_if = {
+					limit = { check_variable = { SOV_molotov_delivery_cycle = 2 } }
+					add_tech_bonus = { name = SOV_molotov_electronics bonus = 1 uses = 1 category = electronics }
+					set_variable = { SOV_molotov_delivery_cycle = 0 }
+				}
+				else = {
+					add_tech_bonus = { name = SOV_molotov_aircraft_samples bonus = 1 uses = 1 category = air_equipment }
+					set_variable = { SOV_molotov_delivery_cycle = 1 }
 				}
 			}
-			set_variable = { SOV_molotov_research_var = 0 }
-			set_variable = { SOV_molotov_resources_var = 0 }
-			if = {
-				limit = { has_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement } }
-				remove_dynamic_modifier = { modifier = SOV_molotov_commercial_agreement }
-			}
-		}
-		else = {
-			add_to_variable = { SOV_molotov_research_var = -0.01 }
-			add_to_variable = { SOV_molotov_resources_var = 0.005 }
-			force_update_dynamic_modifier = yes
 		}
 	}
 	if = {
 		limit = {
 			has_country_flag = SOV_litvinov_in_office
-			check_variable = { SOV_litvinov_output_added < 0.0999 }
+			NOT = { check_variable = { SOV_litvinov_deliveries > 2 } }
+			NOT = { has_war_with = ENG }
+			NOT = { has_war_with = FRA }
+			NOT = { has_war_with = USA }
 		}
-		add_to_variable = { SOV_litvinov_output_added = 0.01 }
-		add_to_variable = { SOV_command_economy_industrial_capacity_factory_var = 0.01 }
-		force_update_dynamic_modifier = yes
+		add_to_variable = { SOV_litvinov_months = 1 }
+		if = {
+			limit = { check_variable = { SOV_litvinov_months > 3 } }
+			set_variable = { SOV_litvinov_months = 0 }
+			add_to_variable = { SOV_litvinov_deliveries = 1 }
+			random_core_state = {
+				limit = {
+					is_controlled_by = ROOT
+					free_building_slots = {
+						building = industrial_complex
+						size > 1
+						include_locked = yes
+					}
+				}
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+		}
 	}
 	if = {
 		limit = { has_country_flag = SOV_khrushchev_in_office }
